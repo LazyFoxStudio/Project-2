@@ -1,0 +1,6 @@
+Floor = 1
+BGFloor = 2
+Dead = 3
+Start = 4
+End = 5
+Player = 6
