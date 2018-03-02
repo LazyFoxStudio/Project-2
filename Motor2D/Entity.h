@@ -33,8 +33,11 @@ public:
 	void selectedDraw();
 	bool Collides(Entity& other);
 
-	virtual bool Update()		{ return true; };
-	virtual void Draw()			{};
+	virtual bool Update(float dt)	{ return true; };
+	virtual void Draw()		{};
+
+	virtual bool Save()		{ return true; };
+	virtual bool Load()		{ return true; };
 };
 
 #endif

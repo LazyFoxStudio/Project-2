@@ -26,7 +26,7 @@ public:
 	int getTotalHP();
 	int getTotalMaxHP();
 
-	bool nextStep();
+	bool nextStep(float dt);
 	void Halt();
 	void Reshape();
 	fPoint getCenter();

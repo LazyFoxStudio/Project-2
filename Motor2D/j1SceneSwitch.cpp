@@ -53,7 +53,6 @@ bool j1SceneSwitch::Update(float dt)
 				to_disable->Disable();
 				App->gui->CleanUp();
 				App->map->CleanUp();
-				App->entitycontroller->DeleteEntities();
 				App->gui->Start();
 				to_enable->Enable();
 				switchtimer.Start();

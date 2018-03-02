@@ -1,40 +1,30 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1Audio.h"
-#include "p2List.h"
 
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
-j1Audio::j1Audio() : j1Module()
-{
-	music = NULL;
-	name.create("audio");
-}
+
+j1Audio::j1Audio() : j1Module() { name.create("audio"); }
 
 // Destructor
-j1Audio::~j1Audio()
-{}
+j1Audio::~j1Audio() {}
 
 // Called before render is available
 bool j1Audio::Awake(pugi::xml_node& config)
 {
-	//Stores the path names to each folder
-	music_folder = config.child("music").child_value("folder");
-	sfx_folder = config.child("sfx").child_value("folder");
 	musicVolumeModifier = config.child("music").child("musicVolumeModifier").attribute("value").as_float();
 	sfxVolumeModifier = config.child("sfx").child("sfxVolumeModifier").attribute("value").as_float();
 
 	LOG("Loading Audio Mixer");
-	bool ret = true;
 	SDL_Init(0);
 
 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
 	{
 		LOG("SDL_INIT_AUDIO could not initialize! SDL_Error: %s\n", SDL_GetError());
-		active = false;
-		ret = true;
+		return (active = false);
 	}
 
 	// load support for the OGG audio format
@@ -44,44 +34,35 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	if((init & flags) != flags)
 	{
 		LOG("Could not initialize Mixer lib. Mix_Init: %s", Mix_GetError());
-		active = false;
-		ret = true;
+		return (active = false);
 	}
 
 	//Initialize SDL_mixer
 	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 	{
 		LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-		active = false;
-		ret = true;
+		return (active = false);
 	}
 
-	return ret;
+	return true;
 }
 
 // Called before quitting
 bool j1Audio::CleanUp()
 {
-	if(!active)
-		return true;
-
-	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
-
-	if(music != NULL)
+	if (active)
 	{
-		Mix_FreeMusic(music);
+		LOG("Freeing sound FX, closing Mixer and Audio subsystem");
+
+		if (music) Mix_FreeMusic(music);
+
+		for (int i = 0; i < fx.size(); i++)   Mix_FreeChunk(fx[i]);
+		fx.clear();
+
+		Mix_CloseAudio();
+		Mix_Quit();
+		SDL_QuitSubSystem(SDL_INIT_AUDIO);
 	}
-
-	p2List_item<Mix_Chunk*>* item;
-	for(item = fx.start; item != NULL; item = item->next)
-		Mix_FreeChunk(item->data);
-
-	fx.clear();
-
-	Mix_CloseAudio();
-	Mix_Quit();
-	SDL_QuitSubSystem(SDL_INIT_AUDIO);
-
 	return true;
 }
 
@@ -103,119 +84,83 @@ bool j1Audio::Load(pugi::xml_node & config)
 }
 
 // Play a music file
-bool j1Audio::PlayMusic(const char* path, float fade_time)
+bool j1Audio::PlayMusic(const char* path, uint fade_time)
 {
-	bool ret = true;
+	bool ret = false;
 
-	if(!active)
-		return false;
+	if (active) {
 
-	if(music != NULL)
-	{
-		if(fade_time > 0.0f)
+		if (music)
 		{
-			Mix_FadeOutMusic(int(fade_time * 1000.0f));
-		}
-		else
-		{
-			Mix_HaltMusic();
+			if (fade_time)	Mix_FadeOutMusic(int(fade_time * 1000.0f));
+			else			Mix_HaltMusic();
+
+			// this call blocks until fade out is done
+			Mix_FreeMusic(music);
 		}
 
-		// this call blocks until fade out is done
-		Mix_FreeMusic(music);
-	}
-	 
-	//Temporal string to merge the path to the folder and the sound file
-	p2SString tmp("%s%s", music_folder.GetString(), path);
+		//Temporal string to merge the path to the folder and the sound file
+		std::string full_path(MUSIC_FOLDER);
+		full_path.append(path);
 
-	music = Mix_LoadMUS(tmp.GetString());
+		if (music = Mix_LoadMUS(full_path.c_str()))
+		{
+			if (fade_time)	ret = (Mix_FadeInMusic(music, -1, fade_time * 1000) < 0);
+			else			ret = (Mix_PlayMusic(music, -1) < 0);
+		}
 
-	if(music == NULL)
-	{
-		LOG("Cannot load music %s. Mix_GetError(): %s\n", path, Mix_GetError());
-		ret = false;
-	}
-	else
-	{
-		if(fade_time > 0.0f)
-		{
-			if(Mix_FadeInMusic(music, -1, (int) (fade_time * 1000.0f)) < 0)
-			{
-				LOG("Cannot fade in music %s. Mix_GetError(): %s", path, Mix_GetError());
-				ret = false;
-			}
-		}
-		else
-		{
-			if(Mix_PlayMusic(music, -1) < 0)
-			{
-				LOG("Cannot play in music %s. Mix_GetError(): %s", path, Mix_GetError());
-				ret = false;
-			}
-		}
+		if (ret) LOG("Successfully playing %s", path);
+		else	 LOG("Cannot load music %s. Mix_GetError(): %s\n", path, Mix_GetError());
 	}
 
-	LOG("Successfully playing %s", path);
 	return ret;
 }
 
 // Load WAV
 unsigned int j1Audio::LoadFx(const char* path)
 {
-	unsigned int ret = 0;
+	if (active) {
 
-	if(!active)
-		return 0;
+		//Temporal string to merge the path to the folder and the sound file
+		std::string full_path(FX_FOLDER);
+		full_path.append(path);
 
-	//Temporal string to merge the path to the folder and the sound file
-	p2SString tmp("%s%s", sfx_folder.GetString(), path);
-
-	Mix_Chunk* chunk = Mix_LoadWAV(tmp.GetString());
-
-	if(chunk == NULL)
-	{
-		LOG("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());
-	}
-	else
-	{
-		fx.add(chunk);
-		ret = fx.count();
+		if (Mix_Chunk* chunk = Mix_LoadWAV(full_path.c_str()))
+		{
+			fx.push_back(chunk);
+			return fx.size();
+		}
+		else LOG("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());
 	}
 
-	return ret;
+	return 0;
 }
 
 // Play WAV
 bool j1Audio::PlayFx(unsigned int id, int repeat, uint volume)
 {
-	bool ret = false;
-
-	if(!active)
-		return false;
-
-	if(id > 0 && id <= fx.count())
+	if(id > 0 && id <= fx.size() && active)
 	{
 		Mix_VolumeChunk(fx[id - 1], volume*sfxVolumeModifier);
 		Mix_PlayChannel(-1, fx[id - 1], repeat);
+		return true;
 	}
 
-	return ret;
+	return false;
 }
+
 void j1Audio::ModifyMusicVolume(int value)
 {
-	//LOG("%i", value);
-	
 	musicVolumeModifier = (float)value/100;
-	LOG("%i", musicVolumeModifier);
 	if (musicVolumeModifier < 0)musicVolumeModifier = 0;
-	if (musicVolumeModifier > 1)musicVolumeModifier = 1;
+	else if (musicVolumeModifier > 1)musicVolumeModifier = 1;
 
 	Mix_VolumeMusic(128 * musicVolumeModifier);
 }
+
 void j1Audio::ModifySFXVolume(int value)
 {
-	value = value / 100;
 	sfxVolumeModifier = (float)value / 100;
 	if (sfxVolumeModifier < 0)sfxVolumeModifier = 0;
-	if (sfxVolumeModifier > 1)sfxVolumeModifier = 1;
+	else if (sfxVolumeModifier > 1)sfxVolumeModifier = 1;
 }

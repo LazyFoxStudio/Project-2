@@ -5,7 +5,7 @@ Ally::~Ally()
 
 }
 
-bool Ally::Update()
+bool Ally::Update(float dt)
 {
 	return true;
 }

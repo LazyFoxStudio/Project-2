@@ -10,7 +10,7 @@ public:
 public:
 	~Enemy();
 
-	bool Update();
+	bool Update(float dt);
 
 	Entity* findTarget();
 	void attackEntity(Entity* target);

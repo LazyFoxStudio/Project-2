@@ -2,14 +2,16 @@
 #define __j1AUDIO_H__
 
 #include "j1Module.h"
-#include "SDL_mixer\include\SDL_mixer.h"
-#include "p2List.h"
 
-#define DEFAULT_MUSIC_FADE_TIME 2.0f
+#include <vector>
+
+#define DEFAULT_MUSIC_FADE_TIME 2
+#define MUSIC_FOLDER "audio/music/"
+#define FX_FOLDER "audio/fx/"
 
 struct _Mix_Music;
 struct Mix_Chunk;
-class Scrollbar;
+
 class j1Audio : public j1Module
 {
 public:
@@ -29,7 +31,7 @@ public:
 	bool Load(pugi::xml_node&);
 
 	// Play a music file
-	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
+	bool PlayMusic(const char* path, uint fade_time = DEFAULT_MUSIC_FADE_TIME);
 
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
@@ -44,10 +46,10 @@ public:
 
 private:
 
-	float				musicVolumeModifier;
-	float				sfxVolumeModifier;
-	_Mix_Music*			music = nullptr;
-	p2List<Mix_Chunk*>	fx;
+	float					musicVolumeModifier = 1;
+	float					sfxVolumeModifier = 1;
+	_Mix_Music*				music = nullptr;
+	std::vector<Mix_Chunk*>	fx;
 
 public:
 

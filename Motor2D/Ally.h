@@ -13,7 +13,7 @@ public:
 public:
 	~Ally();
 
-	bool Update();
+	bool Update(float dt);
 
 	Entity* findTarget();
 	void attackEntity(Entity* target);

@@ -23,7 +23,7 @@ public:
 public:
 	~Hero();
 
-	bool Update();
+	bool Update(float dt);
 
 	void UseSkill(int index);
 

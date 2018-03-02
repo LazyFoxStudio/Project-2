@@ -12,15 +12,15 @@ class Unit;
 class Effect
 {
 public:
-	j1Timer timer;
+	float elapsed = 0.0f;
 	int duration = 0;
 	Unit* unit = nullptr;
 
 public:
-	Effect(Unit* unit) : unit(unit) {};
+	Effect(Unit* unit, int duration) : unit(unit), duration(duration) {};
 	~Effect() {};
 
-	void updateTimer() {};
+	void updateTimer(float dt) { elapsed += dt; };
 	virtual void Apply(Unit* unit) {};
 	virtual void Remove(Unit* unit) {};
 };
@@ -32,7 +32,7 @@ public:
 	int buff = 0;
 
 public:
-	DamageBuff(int buff, Unit* unit) : buff(buff), Effect(unit) {};
+	DamageBuff(int buff, int duration, Unit* unit) : buff(buff), Effect(unit, duration) {};
 	~DamageBuff() { Remove(); };
 
 	void Apply();

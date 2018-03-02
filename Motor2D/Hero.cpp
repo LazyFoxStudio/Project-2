@@ -5,7 +5,7 @@ Hero::~Hero()
 
 }
 
-bool Hero::Update()
+bool Hero::Update(float dt)
 {
 	return true;
 }

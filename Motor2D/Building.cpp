@@ -10,7 +10,7 @@ Building::~Building()
 
 }
 
-bool Building::Update()
+bool Building::Update(float dt)
 {
 	return true;
 }

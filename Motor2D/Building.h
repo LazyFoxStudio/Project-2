@@ -28,7 +28,7 @@ public:
 	Building(iPoint pos, buildingType type);
 	~Building();
 
-	bool Update();
+	bool Update(float dt);
 	void Draw();
 };
 

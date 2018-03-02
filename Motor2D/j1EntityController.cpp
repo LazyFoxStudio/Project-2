@@ -9,134 +9,70 @@
 #include "j1Gui.h"
 #include "LabelledImage.h"
 
-j1EntityController::j1EntityController()
-{
-	name.create("entitycontroller");
-}
+j1EntityController::j1EntityController() { name.create("entitycontroller"); }
 
-j1EntityController::~j1EntityController()
-{
-}
+j1EntityController::~j1EntityController() {}
 
-bool j1EntityController::Awake(pugi::xml_node &config)
-{
-	bool ret = true;
-	
-	return ret;
-}
 
 bool j1EntityController::Start()
 {
-	bool ret = true;
-	//texture = App->tex->Load(PATH(folder.GetString(), texture_path.GetString()));
-
-	return ret;
+	//return loadEntitiesDB();
+	return true;
 }
 
 bool j1EntityController::Update(float dt)
 {
-	if (App->scene->pause) return true;
-
 	BROFILER_CATEGORY("Entites update", Profiler::Color::Maroon);
 	if (App->map->debug) DebugDraw();
 
-	bool ret = true;
-	/*p2List_item<Entity*>* tmp = Entities.start;
-	while (tmp != nullptr)
-	{
-		ret = tmp->data->Update(dt);
-		tmp = tmp->next;
-	}*/
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)  
+		if ((*it)->Update(dt)) return false; 
 
-	return ret;
+	return true;
 }
 
 bool j1EntityController::PostUpdate()
 {
-	if (App->scene->pause)
-		return true;
+	//for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	//	if (!(*it)->PostUpdate(dt)) return false;
 
-	bool ret = true;
-	//p2List_item<Entity*>* tmp = Entities.start;
-	//while (tmp != nullptr)
-	//{
-	//	tmp->data->PostUpdate();
-	//	tmp = tmp->next;
-	//}
-	return ret;
+	return true;
 }
 
 bool j1EntityController::CleanUp()
 {
-	bool ret = true;
-	//p2List_item<Entity*>* tmp = Entities.start;
-	//while (tmp != nullptr)
-	//{
-	//	tmp->data->CleanUp();
-	//	tmp = tmp->next;
-	//}
-	//DeleteEntities();
-	return ret;
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++) RELEASE(*it);
+	entities.clear();
+
+	if (!DeleteDB()) return false;
+
+	selected_entities.clear();
+
+	return true;
 }
 
 bool j1EntityController::Save(pugi::xml_node& file) const
 {
-	bool ret = true;
-	/*p2List_item<Entity*>* tmp = Entities.start;
-	while (tmp != nullptr)
-	{
-		tmp->data->Save( file);
-		tmp = tmp->next;
-	}*/
-	return ret;
+	for (std::list<Entity*>::const_iterator it = entities.begin(); it != entities.end(); it++)
+		if ((*it)->Save()) return false;
+
 }
 
 bool j1EntityController::Load(pugi::xml_node& file)
 {
-	bool ret = true;
-	return ret;
+	//TODO
+	return true;
 }
-
-void j1EntityController::DeleteEntities()
-{
-	//p2List_item<Entity*>* tmp = Entities.end;
-	//while (tmp != nullptr)
-	//{
-	//p2List_item<Entity*>* tmp2 = tmp;
-	//	RELEASE(tmp->data);
-	//	Entities.del(tmp2);
-	//	tmp = tmp->prev;
-	}
-
 
 
 bool j1EntityController::DebugDraw()
 {
-	//p2List_item<Entity*>* tmp = Entities.start;
-	//while (tmp != nullptr)
-	//{
-	//	tmp = tmp->next;
-	//}
-
+	// TODO
 	return true;
 }
 
-//Entity* j1EntityController::AddEntity(Entity::entityType type, iPoint position)
-//{
-//	Entity* tmp = nullptr;
-//
-//	switch (type)
-//	{
-//	default: break;
-//	}
-//
-//	if (tmp) Entities.add(tmp);
-//	return tmp;
-//}
-
-bool j1EntityController::DeleteEntity(Entity * entity)
+void j1EntityController::DeleteEntity(Entity* entity)
 {
-	//entity->CleanUp();
-	//Entities.del(Entities.At(Entities.find(entity)));
-	return true;
+	entities.remove(entity);
+	selected_entities.remove(entity);
 }

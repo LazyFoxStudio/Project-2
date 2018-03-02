@@ -11,7 +11,7 @@ Squad::~Squad()
 
 }
 
-bool Squad::nextStep()
+bool Squad::nextStep(float dt)
 {
 	return true;
 }

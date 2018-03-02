@@ -11,7 +11,7 @@ Enemy::~Enemy()
 
 }
 
-bool Enemy::Update()
+bool Enemy::Update(float dt)
 {
 	return true;
 }
