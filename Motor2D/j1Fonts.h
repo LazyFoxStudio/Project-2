@@ -2,11 +2,11 @@
 #define __j1FONTS_H__
 
 #include "j1Module.h"
-#include "p2List.h"
-#include "SDL\include\SDL_pixels.h"
+#include <list>
 
 #define DEFAULT_FONT "fonts/open_sans/OpenSans-Regular.ttf"
 #define DEFAULT_FONT_SIZE 18
+#define FONTS_FOLDER "fonts/"
 
 struct SDL_Texture;
 struct _TTF_Font;
@@ -38,8 +38,8 @@ public:
 
 public:
 
-	p2List<_TTF_Font*>	fonts;
-	_TTF_Font*			default;
+	std::list<_TTF_Font*>	fonts;
+	_TTF_Font*				default_font = nullptr;
 };
 
 
