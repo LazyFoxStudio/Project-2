@@ -56,7 +56,11 @@ bool j1Scene::Start()
 	config = App->LoadConfig(config_file);
 
 	to_end = false;
-	bool ret = App->map->Load_map(map_names.start->data->GetString());
+	if (!App->map->Load_map(map_names.start->data->GetString()))
+	{
+		LOG("Error loading map %s", map_names.start->data->GetString());
+		return false;
+	}
 
 	int w, h;
 	uchar* data = NULL;

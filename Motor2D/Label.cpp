@@ -8,7 +8,7 @@
 Label::Label(SDL_Rect& position, iPoint Labelrelativepos, p2SString fontPath, SDL_Color textColor, p2SString label, int size) : Labelrelativepos(Labelrelativepos), textColor(textColor)
 {
 	font = App->font->Load(fontPath.GetString(), size);
-	fontTexture = App->font->Print(label.GetString(), textColor, font);
+	fontTexture = App->font->Print(label.GetString(), &textColor, font);
 
 }
 
@@ -47,6 +47,7 @@ bool Label::LabelDraw(float dt)
 	else
 		ret = App->render->Blit(fontTexture, tmp.x + winElement->relativePosition.x, tmp.y + winElement->relativePosition.y);
 
+	return true;
 }
 
 
@@ -60,7 +61,7 @@ bool Label::LabelCleanUp()
 void Label::ChangeText(p2SString* newText)
 {
 	SDL_DestroyTexture(fontTexture);
-	fontTexture = App->font->Print(newText->GetString(), textColor, font);
+	fontTexture = App->font->Print(newText->GetString(), &textColor, font);
 }
 
 Label::Label()

@@ -23,13 +23,6 @@ struct Color
 		return (float*)this;
 	}
 
-	SDL_Color toSDL_Color()
-	{
-		SDL_Color ret;
-		ret.r = r, ret.g = g, ret.b = b, ret.a = a;
-		return ret;
-	}
-
 };
  
 

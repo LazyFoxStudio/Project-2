@@ -12,8 +12,8 @@ struct SDL_Rect;
 enum j1EventWindow
 {
 	WE_QUIT = 0,
-	WE_HIDE = 1,
-	WE_SHOW = 2,
+	WE_HIDE,
+	WE_SHOW,
 	WE_COUNT
 };
 
@@ -51,15 +51,9 @@ public:
 	bool GetWindowEvent(j1EventWindow ev);
 
 	// Check key states (includes mouse and joy buttons)
-	j1KeyState GetKey(int id) const
-	{
-		return keyboard[id];
-	}
+	j1KeyState GetKey(int id) const				{ return keyboard[id]; }
 
-	j1KeyState GetMouseButtonDown(int id) const
-	{
-		return mouse_buttons[id - 1];
-	}
+	j1KeyState GetMouseButtonDown(int id) const { return mouse_buttons[id - 1]; }
 
 
 	// Get mouse / axis position

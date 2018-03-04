@@ -4,11 +4,12 @@
 #include "j1Module.h"
 #include <list>
 
-#define DEFAULT_FONT "fonts/open_sans/OpenSans-Regular.ttf"
+#define DEFAULT_FONT "fonts/Old School Adventures.ttf"
 #define DEFAULT_FONT_SIZE 18
 #define FONTS_FOLDER "fonts/"
 
 struct SDL_Texture;
+struct SDL_Color;
 struct _TTF_Font;
 
 class j1Fonts : public j1Module
@@ -30,7 +31,7 @@ public:
 	_TTF_Font* const Load(const char* path, int size = 12);
 
 	// Create a surface from text
-	SDL_Texture* Print(const char* text, SDL_Color color = {255, 255, 255, 255}, _TTF_Font* font = NULL);
+	SDL_Texture* Print(const char* text, SDL_Color* color, _TTF_Font* font = NULL);
 
 	bool CalcSize(const char* text, int& width, int& height, _TTF_Font* font = NULL) const;
 

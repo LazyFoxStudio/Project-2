@@ -9,7 +9,9 @@
 j1Render::j1Render() : j1Module()
 {
 	name.create("renderer");
-	background = Black.toSDL_Color();
+	SDL_Color black;
+	black.r = black.g = black.b = 0; black.a = 255;
+	background = black;
 }
 
 // Destructor
