@@ -2,7 +2,6 @@
 #define __IMAGE_H__
 
 #include "UIElement.h"
-#include "p2SString.h"
 #include "SDL/include/SDL_rect.h"
 
 struct SDL_Texture;

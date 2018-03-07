@@ -1,7 +1,8 @@
 #ifndef __WINDOW_H__
 #define __WINDOW_H__
 
-#include "p2List.h"
+#include <list>
+
 #include "SDL/include/SDL.h"
 #include "UIElement.h"
 
@@ -27,15 +28,12 @@ public:
 
 private:
 	void HandleMovement();
-	void HandleFocus();
-	void FocusOnFirstInteractiveElement();
-	void FindNextFocusableElement(p2List_item<WinElement*>* current);
 
 public:
 	bool active = true;
 	bool draggable = false;
 	bool hasFocus = false;
-	p2List<WinElement*> children_list;
+	std::list<WinElement*> children_list;
 	iPoint mouseLastFrame;
 	SDL_Rect collider;
 
