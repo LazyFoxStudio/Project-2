@@ -3,6 +3,7 @@
 
 #include "UIElement.h"
 #include "j1Fonts.h"
+#include <string>
 
 class Label : virtual public UIElement
 {
@@ -13,17 +14,17 @@ public:
 	bool LabelDraw(float dt);
 	bool LabelCleanUp();
 
-	void ChangeText(p2SString* newText);
+	void ChangeText(std::string& newText);
 
 	Label();
 
-	Label(SDL_Rect& position, iPoint positionOffset, p2SString fontPath, SDL_Color textColor, p2SString label, int size = 12);
+	Label(SDL_Rect& position, iPoint positionOffset, std::string& fontPath, SDL_Color textColor, std::string& label, int size = 12);
 
 	~Label();
 
 public:
 	iPoint Labelrelativepos = { 0,0 };
-	p2SString label;
+	std::string label;
 	_TTF_Font* font = nullptr;
 	SDL_Texture* fontTexture;
 	SDL_Color textColor;

@@ -13,8 +13,6 @@ public:
 	j1SceneSwitch();
 	~j1SceneSwitch();
 
-	bool Awake();
-
 	bool Start();
 
 	bool Update(float dt);
@@ -30,10 +28,10 @@ private:
 		none,
 		fade_to_black,
 		fade_from_black
-	} current_step = fade_step::none;
+	} 
+	current_step = fade_step::none;
 
 public:
-	bool switchingFromSaveGame = false;
 private:
 
 	float fadetime = 3.0f;

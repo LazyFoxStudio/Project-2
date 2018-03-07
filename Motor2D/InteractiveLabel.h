@@ -4,11 +4,13 @@
 #include "Interactive.h"
 #include "Label.h"
 
+#include <string>
+
 class InteractiveLabel : public Interactive, public Label
 {
 public:
 
-	InteractiveLabel(SDL_Rect & pos, iPoint posOffsetA, iPoint posOffsetB, p2SString fontPath, SDL_Color textColor, p2SString label, int size, InteractiveType type, j1Module* callback, bool draggable);
+	InteractiveLabel(SDL_Rect & pos, iPoint posOffsetA, iPoint posOffsetB, std::string& fontPath, SDL_Color textColor, std::string&  label, int size, InteractiveType type, j1Module* callback, bool draggable);
 	~InteractiveLabel();
 
 	bool PreUpdate();

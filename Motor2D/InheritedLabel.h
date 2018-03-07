@@ -1,10 +1,11 @@
 #pragma once
 #include "Label.h"
+
 class InheritedLabel : public Label
 {
 public:
 	InheritedLabel();
-	InheritedLabel(SDL_Rect& position, iPoint positionOffset, p2SString fontPath, SDL_Color textColor, p2SString& label, int size, bool draggable);
+	InheritedLabel(SDL_Rect& position, iPoint positionOffset, std::string&  fontPath, SDL_Color textColor, std::string&  label, int size, bool draggable);
 	~InheritedLabel();
 
 	bool PreUpdate();

@@ -8,7 +8,7 @@
 
 j1Render::j1Render() : j1Module()
 {
-	name.create("renderer");
+	name = "renderer";
 	background.r = background.g = background.b = 0; background.a = 255;   //  black
 }
 

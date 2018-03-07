@@ -16,22 +16,10 @@
 #include "InteractiveLabelledImage.h"
 #include "Window.h"
 
+j1IntroScene::j1IntroScene() { name = "introscene";}
 
+j1IntroScene::~j1IntroScene() {}
 
-j1IntroScene::j1IntroScene()
-{
-	name.create("introscene");
-}
-
-
-j1IntroScene::~j1IntroScene()
-{
-}
-
-bool j1IntroScene::Awake()
-{
-	return true;
-}
 
 bool j1IntroScene::Start()
 {
@@ -39,7 +27,6 @@ bool j1IntroScene::Start()
 	pugi::xml_node		guiconfig;
 
 	guiconfig = App->LoadConfig(Gui_config_file, "Gui_config.xml");
-
 	guiconfig = guiconfig.child("introscene");
 
 	// App->audio->PlayMusic("MainTheme.ogg");
@@ -47,10 +34,6 @@ bool j1IntroScene::Start()
 	return true;
 }
 
-bool j1IntroScene::PreUpdate()
-{
-	return true;
-}
 
 bool j1IntroScene::Update(float dt)
 {
@@ -61,10 +44,6 @@ bool j1IntroScene::Update(float dt)
 	return true;
 }
 
-bool j1IntroScene::PostUpdate()
-{
-	return true;
-}
 
 bool j1IntroScene::CleanUp()
 {

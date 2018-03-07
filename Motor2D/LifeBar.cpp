@@ -15,7 +15,6 @@ LifeBar::~LifeBar()
 
 bool LifeBar::Draw(float dt)
 {
-	ChangeSection(App->scene->playerLives);
 	ImageDraw(image_section, dt);
 	return true;
 }

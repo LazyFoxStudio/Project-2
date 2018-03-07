@@ -2,7 +2,7 @@
 
 
 
-LabelledImage::LabelledImage(SDL_Rect & pos, iPoint posOffsetA, iPoint posOffsetB, p2SString fontPath, SDL_Color textColor, p2SString label, int size, SDL_Rect image_section, bool draggable) :
+LabelledImage::LabelledImage(SDL_Rect & pos, iPoint posOffsetA, iPoint posOffsetB, std::string&  fontPath, SDL_Color textColor, std::string&  label, int size, SDL_Rect image_section, bool draggable) :
 	Label(pos, posOffsetA, fontPath, textColor, label, size), Image(pos, posOffsetB, image_section), UIElement(pos, draggable)
 {
 	UItype = UIType::LABELLED_IMAGE;

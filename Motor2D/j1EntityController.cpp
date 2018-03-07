@@ -9,7 +9,7 @@
 #include "j1Gui.h"
 #include "LabelledImage.h"
 
-j1EntityController::j1EntityController() { name.create("entitycontroller"); }
+j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
 j1EntityController::~j1EntityController() {}
 

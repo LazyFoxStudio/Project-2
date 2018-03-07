@@ -53,8 +53,8 @@ private:
 
 public:
 
-	p2SString			music_folder;
-	p2SString			sfx_folder;
+	std::string			music_folder;
+	std::string			sfx_folder;
 };
 
 #endif // __j1AUDIO_H__

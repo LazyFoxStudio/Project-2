@@ -17,33 +17,17 @@
 #include "j1Gui.h"
 #include "LifeBar.h"
 
-j1Scene::j1Scene() : j1Module()
-{
-	name.create("scene");
-}
+j1Scene::j1Scene() : j1Module() { name = "scene"; }
 
 // Destructor
-j1Scene::~j1Scene()
-{}
+j1Scene::~j1Scene() {}
 
 // Called before render is available
 bool j1Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
 
-	fade_time = config.child("fade_time").attribute("value").as_float();
-
-	for (pugi::xml_node map = config.child("map_name"); map; map = map.next_sibling("map_name"))
-	{
-		p2SString* data = new p2SString;
-
-		data->create(map.attribute("name").as_string());
-		map_names.add(data);
-	}
-	
-	bool ret = true;
-
-	return ret;
+	return true;
 }
 
 // Called before the first frame
@@ -55,37 +39,19 @@ bool j1Scene::Start()
 
 	config = App->LoadConfig(config_file);
 
-	to_end = false;
-	if (!App->map->Load_map(map_names.start->data->GetString()))
-	{
-		LOG("Error loading map %s", map_names.start->data->GetString());
-		return false;
-	}
+	int w = -1, h = -1;
+	uchar* data = nullptr;
 
-	int w, h;
-	uchar* data = NULL;
-	if (App->map->CreateWalkabilityMap(w, h, &data))
-		App->pathfinding->SetMap(w, h, data);
+	if (App->map->CreateWalkabilityMap(w, h, &data))	App->pathfinding->SetMap(w, h, data);
 
 	debug_tex = App->tex->Load("maps/Navigable.png");
-
 
 	pugi::xml_document	Gui_config_file;
 	pugi::xml_node		guiconfig;
 
 	guiconfig = App->LoadConfig(Gui_config_file, "Gui_config.xml");
-
 	guiconfig = guiconfig.child("scene");
-
-	transcurredTime.Start();
 	
-	return true;
-
-}
-
-// Called each loop iteration
-bool j1Scene::PreUpdate()
-{
 	return true;
 }
 
@@ -94,11 +60,8 @@ bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene update", Profiler::Color::Black);
 
-
 	App->map->Draw();
 	App->gui->Draw(dt);
-
-
 
 	return true;
 }
@@ -106,24 +69,18 @@ bool j1Scene::Update(float dt)
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
-	bool ret = true;
-
-
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && sceneMenu)
 	{
-		pause = !pause;
-		if (pause)
-			OpenPauseMenu();
-		else
-			ClosePauseMenu();
+		if (sceneMenu->active)	sceneMenu->active = true;
+		else					sceneMenu->active = false;
 	}
-	return ret;
+
+	return true;
 }
 
 // Called before quitting
 bool j1Scene::CleanUp()
 {
-	currentTime = 0;
 	LOG("Freeing scene");
 
 	return true;
@@ -131,35 +88,15 @@ bool j1Scene::CleanUp()
 
 bool j1Scene::OnEvent(UIElement* element, int eventType)
 {
-	bool ret = true;
-
-	return ret;
+	return true;
 }
 
 bool j1Scene::Load(pugi::xml_node& data)
 {
-
 	return true;
 }
 
 bool j1Scene::Save(pugi::xml_node& data) const
 {
-	data.append_child("currentMap").append_attribute("num") = currentMap;
-	data.append_child("time").append_attribute("value") = currentTime;
-
-
 	return true;
-}
-
-
-void j1Scene::OpenPauseMenu()
-{
-	if(sceneMenu)
-	sceneMenu->active = true;
-}
-
-void j1Scene::ClosePauseMenu()
-{
-	if (sceneMenu)
-	sceneMenu->active = false;
 }

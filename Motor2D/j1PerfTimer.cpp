@@ -11,9 +11,7 @@ uint64 j1PerfTimer::frequency = 0;
 // ---------------------------------------------
 j1PerfTimer::j1PerfTimer()
 {
-	if(frequency == 0)
-		frequency = SDL_GetPerformanceFrequency();
-
+	if(!frequency) frequency = SDL_GetPerformanceFrequency();
 	Start();
 }
 

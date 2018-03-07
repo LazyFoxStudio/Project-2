@@ -8,7 +8,7 @@
 #include "SDL_ttf\include\SDL_ttf.h"
 #pragma comment( lib, "SDL_ttf/libx86/SDL2_ttf.lib" )
 
-j1Fonts::j1Fonts() : j1Module() { name.create("fonts"); }
+j1Fonts::j1Fonts() : j1Module() { name = "fonts"; }
 
 // Destructor
 j1Fonts::~j1Fonts(){}

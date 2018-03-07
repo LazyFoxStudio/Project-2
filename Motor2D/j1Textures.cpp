@@ -9,7 +9,7 @@
 
 j1Textures::j1Textures() : j1Module()
 {
-	name.create("textures");
+	name = "textures";
 }
 
 // Destructor
@@ -20,7 +20,6 @@ j1Textures::~j1Textures()
 bool j1Textures::Awake(pugi::xml_node& config)
 {
 	LOG("Init Image library");
-	bool ret = true;
 	// load support for the PNG image format
 	int flags = IMG_INIT_PNG;
 	int init = IMG_Init(flags);
@@ -28,30 +27,18 @@ bool j1Textures::Awake(pugi::xml_node& config)
 	if((init & flags) != flags)
 	{
 		LOG("Could not initialize Image lib. IMG_Init: %s", IMG_GetError());
-		ret = false;
+		return false;
 	}
 
-	return ret;
-}
-
-// Called before the first frame
-bool j1Textures::Start()
-{
-	LOG("start textures");
-	bool ret = true;
-	return ret;
+	return true;
 }
 
 // Called before quitting
 bool j1Textures::CleanUp()
 {
 	LOG("Freeing textures and Image library");
-	p2List_item<SDL_Texture*>* item;
-
-	for(item = textures.start; item != NULL; item = item->next)
-	{
-		SDL_DestroyTexture(item->data);
-	}
+	for(std::list<SDL_Texture*>::iterator it = textures.begin(); it != textures.end(); it++)
+		SDL_DestroyTexture(*it);
 
 	textures.clear();
 	IMG_Quit();
@@ -61,18 +48,16 @@ bool j1Textures::CleanUp()
 // Load new texture from file path
 SDL_Texture* const j1Textures::Load(const char* path)
 {
-	SDL_Texture* texture = NULL;
+	SDL_Texture* texture = nullptr;
 	SDL_Surface* surface = IMG_Load(path);
 
-	if(surface == NULL)
-	{
-		LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
-	}
-	else
+	if(surface)
 	{
 		texture = LoadSurface(surface);
 		SDL_FreeSurface(surface);
 	}
+	else LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
+
 
 	return texture;
 }
@@ -80,14 +65,12 @@ SDL_Texture* const j1Textures::Load(const char* path)
 // Unload texture
 bool j1Textures::UnLoad(SDL_Texture* texture)
 {
-	p2List_item<SDL_Texture*>* item;
-
-	for(item = textures.start; item != NULL; item = item->next)
+	for (std::list<SDL_Texture*>::iterator it = textures.begin(); it != textures.end(); it++)
 	{
-		if(texture == item->data)
+		if (texture == *it)
 		{
-			SDL_DestroyTexture(item->data);
-			textures.del(item);
+			SDL_DestroyTexture(*it);
+			textures.remove(*it);
 			return true;
 		}
 	}
@@ -100,14 +83,8 @@ SDL_Texture* const j1Textures::LoadSurface(SDL_Surface* surface)
 {
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(App->render->renderer, surface);
 
-	if(texture == NULL)
-	{
-		LOG("Unable to create texture from surface! SDL Error: %s\n", SDL_GetError());
-	}
-	else
-	{
-		textures.add(texture);
-	}
+	if(texture) textures.push_back(texture);
+	else		LOG("Unable to create texture from surface! SDL Error: %s\n", SDL_GetError());
 
 	return texture;
 }

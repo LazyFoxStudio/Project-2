@@ -33,7 +33,7 @@ bool Window::PreUpdate()
 	{
 		if (SDL_PointInRect(&mousePos, &collider))
 		{
-			if (App->gui->BecomeFocus(this))
+			//if (App->gui->BecomeFocus(this))
 				hasFocus = true;
 		}
 		else hasFocus = false;

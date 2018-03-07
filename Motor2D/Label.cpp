@@ -5,10 +5,10 @@
 #include "j1Textures.h"
 
 
-Label::Label(SDL_Rect& position, iPoint Labelrelativepos, p2SString fontPath, SDL_Color textColor, p2SString label, int size) : Labelrelativepos(Labelrelativepos), textColor(textColor)
+Label::Label(SDL_Rect& position, iPoint Labelrelativepos, std::string& fontPath, SDL_Color textColor, std::string& label, int size) : Labelrelativepos(Labelrelativepos), textColor(textColor)
 {
-	font = App->font->Load(fontPath.GetString(), size);
-	fontTexture = App->font->Print(label.GetString(), &textColor, font);
+	font = App->font->Load(fontPath.c_str(), size);
+	fontTexture = App->font->Print(label.c_str(), &textColor, font);
 
 }
 
@@ -58,10 +58,10 @@ bool Label::LabelCleanUp()
 	return true;
 }
 
-void Label::ChangeText(p2SString* newText)
+void Label::ChangeText(std::string& newText)
 {
 	SDL_DestroyTexture(fontTexture);
-	fontTexture = App->font->Print(newText->GetString(), &textColor, font);
+	fontTexture = App->font->Print(newText.c_str(), &textColor, font);
 }
 
 Label::Label()

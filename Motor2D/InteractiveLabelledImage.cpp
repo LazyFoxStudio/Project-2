@@ -2,7 +2,7 @@
 
 
 
-InteractiveLabelledImage::InteractiveLabelledImage(SDL_Rect & pos, iPoint posOffsetA, iPoint posOffsetB, iPoint posOffsetC, SDL_Rect image_section, p2SString fontPath, SDL_Color textColor, p2SString label, int size, InteractiveType type, j1Module* callback, bool draggable) :
+InteractiveLabelledImage::InteractiveLabelledImage(SDL_Rect & pos, iPoint posOffsetA, iPoint posOffsetB, iPoint posOffsetC, SDL_Rect image_section, std::string&  fontPath, SDL_Color textColor, std::string&  label, int size, InteractiveType type, j1Module* callback, bool draggable) :
 	Interactive(pos, posOffsetA, type, callback), Label(pos, posOffsetB, fontPath, textColor, label, size), Image(pos, posOffsetC, image_section), UIElement(pos, draggable)
 {
 	UItype = UIType::INTERACTIVE_LABELLED_IMAGE;

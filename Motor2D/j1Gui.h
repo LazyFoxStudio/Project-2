@@ -4,6 +4,9 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "SDL/include/SDL_rect.h"
+#include <string>
+#include <list>
+
 struct SDL_Texture;
 
 enum EventTypes
@@ -104,19 +107,19 @@ public:
 	// TODO 2: Create the factory methods
 
 	InheritedInteractive* AddInteractive(SDL_Rect& position, iPoint positionOffset, SDL_Rect& size,	 InteractiveType type, j1Module* callback, bool draggable = false);
-	InheritedLabel* AddLabel(SDL_Rect& position, iPoint positionOffset, p2SString fontPath, SDL_Color textColor, p2SString label, int size = 12, bool draggable = false);
+	InheritedLabel* AddLabel(SDL_Rect& position, iPoint positionOffset, std::string& fontPath, SDL_Color textColor, std::string& label, int size = 12, bool draggable = false);
 	InheritedImage* AddImage(SDL_Rect& position, iPoint positionOffset, SDL_Rect& section, bool draggable = false);
 	LifeBar* AddLifebar(SDL_Rect& position, iPoint positionOffset, SDL_Rect& section, bool draggable = false);
 
 	InteractiveImage* AddInteractiveImage(SDL_Rect& position, iPoint positionOffsetA, iPoint positionOffsetB, SDL_Rect image_section, InteractiveType type, j1Module* callback, bool draggable = false);
-	InteractiveLabel* AddInteractiveLabel(SDL_Rect& position, iPoint positionOffsetA, iPoint positionOffsetB, p2SString fontPath, SDL_Color textColor, p2SString label, int size, InteractiveType type, j1Module* callback, bool draggable = false);
-	InteractiveLabelledImage* AddInteractiveLabelledImage(SDL_Rect& position, iPoint positionOffsetA, iPoint positionOffsetB, iPoint positionOffsetC, SDL_Rect& image_section, p2SString& fontPath, SDL_Color& textColor, p2SString& label, int size, InteractiveType type, j1Module* callback, bool draggable = false);
-	LabelledImage* AddLabelledImage(SDL_Rect& position, iPoint positionOffsetA, iPoint positionOffsetB, p2SString fontPath, SDL_Color textColor, p2SString label, int size, SDL_Rect image_section, bool draggable = false);
+	InteractiveLabel* AddInteractiveLabel(SDL_Rect& position, iPoint positionOffsetA, iPoint positionOffsetB, std::string& fontPath, SDL_Color textColor, std::string& label, int size, InteractiveType type, j1Module* callback, bool draggable = false);
+	InteractiveLabelledImage* AddInteractiveLabelledImage(SDL_Rect& position, iPoint positionOffsetA, iPoint positionOffsetB, iPoint positionOffsetC, SDL_Rect& image_section, std::string& fontPath, SDL_Color& textColor, std::string& label, int size, InteractiveType type, j1Module* callback, bool draggable = false);
+	LabelledImage* AddLabelledImage(SDL_Rect& position, iPoint positionOffsetA, iPoint positionOffsetB, std::string& fontPath, SDL_Color textColor, std::string& label, int size, SDL_Rect image_section, bool draggable = false);
 	Scrollbar* AddScrollbar(SDL_Rect & scroller_image, bool moves_vertically, int min, SDL_Rect & pos, iPoint Sliderrelativepos, SDL_Rect image_section, ScrollbarType type, bool draggable);
 
-	UIElement* DeleteElement(UIElement* element);
+	void DeleteElement(UIElement* element);
 
-	UIElement* AddImage_From_otherFile(SDL_Rect& position, iPoint positionOffset, p2SString& path, bool draggable = false);
+	UIElement* AddImage_From_otherFile(SDL_Rect& position, iPoint positionOffset, std::string& path, bool draggable = false);
 
 	Window* AddWindow(SDL_Rect &window, bool draggable = false);
 	// Gui creation functions
@@ -136,30 +139,23 @@ public:
 
 	InteractiveType InteractiveType_from_int(int type);
 	ScrollbarType ScrollbarType_from_int(int type);
-	bool BecomeFocus(Window* curr);
-	void RemoveFocuses();
-	bool CheckWindowFocuses();
-	void WindowlessFocuses();
-	void FocusOnFirstElement();
-	void FocusOnNextElement(p2List_item<UIElement*>* item);
 
 	SDL_Texture* GetAtlas() const;
 
 public:
-	p2List<UIElement*> elements;
-	p2List<Window*> window_list;
-	bool dragging_window = false;
-	int currentFocus = -1;
-	LabelledImage* timeLabel = nullptr;
-	p2SString		buttonFX;
+	std::list<UIElement*>	elements;
+	std::list<Window*>		window_list;
+	bool					dragging_window = false;
+	LabelledImage*			timeLabel = nullptr;
+	std::string				buttonFX;
 
 private:
 
-	bool debug = false;
-	SDL_Texture* atlas = nullptr;
-	p2SString atlas_file_name;
-	p2SString background;
-	iPoint mouseLastFrame;
+	bool					debug = false;
+	SDL_Texture*			atlas = nullptr;
+	std::string				atlas_file_name;
+	std::string				background;
+	iPoint					mouseLastFrame;
 };
 
 #endif // __j1GUI_H__

@@ -2,6 +2,7 @@
 #define __j1WINDOW_H__
 
 #include "j1Module.h"
+#include <string>
 
 struct SDL_Window;
 struct SDL_Surface;
@@ -28,7 +29,7 @@ public:
 	void GetWindowSize(uint& width, uint& height) const;
 
 	// Retrieve window scale
-	uint GetScale() const;
+	uint GetScale() const { return scale; };
 
 public:
 	//The window we'll be rendering to
@@ -37,10 +38,10 @@ public:
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
 
-	p2SString	title;
-	int		width;
-	int		height;
-	int		scale;
+	std::string	title;
+	int			width;
+	int			height;
+	int			scale;
 };
 
 #endif // __j1WINDOW_H__

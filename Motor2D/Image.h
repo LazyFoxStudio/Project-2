@@ -14,7 +14,7 @@ public:
 	Image();
 	Image(SDL_Rect& position, iPoint Imagerelativepos);
 	Image(SDL_Rect& position, iPoint Imagerelativepos, SDL_Rect& image_section);
-	Image(p2SString& path, SDL_Rect& position, iPoint Imagerelativepos);
+	Image(std::string&  path, SDL_Rect& position, iPoint Imagerelativepos);
 
 	~Image();
 	

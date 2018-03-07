@@ -1,12 +1,14 @@
 #ifndef __j1APP_H__
 #define __j1APP_H__
 
-#include"Brofiler/Brofiler.h"
-#include "p2List.h"
+#include "Brofiler/Brofiler.h"
 #include "j1Module.h"
 #include "j1PerfTimer.h"
 #include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
+
+#include <list>
+#include <string>
 
 // Modules
 class j1Window;
@@ -18,7 +20,6 @@ class j1IntroScene;
 class j1Scene;
 class j1SceneSwitch;
 class j1Map;
-class j1MapChange;
 class j1EntityController;
 class j1PathFinding;
 class j1Fonts;
@@ -50,10 +51,10 @@ public:
 	void AddModule(j1Module* module, bool init = true);
 
 	// Exposing some properties for reading
-	int GetArgc() const;
+	int GetArgc() const					{ return argc; };
+	const char* GetTitle() const		{ return title.c_str(); };
+	const char* GetOrganization() const { return organization.c_str(); };
 	const char* GetArgv(int index) const;
-	const char* GetTitle() const;
-	const char* GetOrganization() const;
 
 	void LoadGame();
 	void SaveGame() const;
@@ -93,31 +94,30 @@ public:
 	j1Render*			render;
 	j1Textures*			tex;
 	j1Audio*			audio;
-	j1IntroScene* introscene;
+	j1IntroScene*		introscene;
 	j1Scene*			scene;
-	j1SceneSwitch* sceneswitch;
+	j1SceneSwitch*		sceneswitch;
 	j1Map*				map;
-	j1MapChange*		scenechange;
 	j1EntityController* entitycontroller;
 	j1PathFinding*		pathfinding;
-	j1Fonts*				font;
-	j1Gui*					gui;
+	j1Fonts*			font;
+	j1Gui*				gui;
 	bool fpsCapON = true;
-	p2SString			load_game;
+	std::string			load_game;
 
 private:
 
-	p2List<j1Module*>	modules;
-	int					argc;
-	char**				args = nullptr;
+	std::list<j1Module*>	modules;
+	int						argc;
+	char**					args = nullptr;
 
-	p2SString			title;
-	p2SString			organization;
+	std::string			title;
+	std::string			organization;
 
 	mutable bool		want_to_save = false;
 	bool				want_to_load = false;
 
-	mutable p2SString	save_game;
+	mutable std::string	save_game;
 
 	j1PerfTimer			ptimer;
 	uint64				frame_count = 0;
@@ -126,11 +126,10 @@ private:
 	j1Timer				last_sec_frame_time;
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
-
-	float DeltaTime;
+	float				DeltaTime = 0.0f;
 
 public:
-	uint16_t			framerate;
+	uint16_t			framerate = 0;
 
 };
 

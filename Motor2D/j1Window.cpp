@@ -8,28 +8,20 @@
 
 j1Window::j1Window() : j1Module()
 {
-	window = NULL;
-	screen_surface = NULL;
-	name.create("window");
+	window = nullptr;
+	screen_surface = nullptr;
+	name = "window";
 }
 
 // Destructor
-j1Window::~j1Window()
-{
-}
+j1Window::~j1Window() {}
 
 // Called before render is available
 bool j1Window::Awake(pugi::xml_node& config)
 {
 	LOG("Init SDL window & surface");
-	bool ret = true;
 
-	if(SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
-		ret = false;
-	}
-	else
+	if(SDL_Init(SDL_INIT_VIDEO) >= 0)
 	{
 		//Create window
 		Uint32 flags = SDL_WINDOW_SHOWN;
@@ -42,41 +34,27 @@ bool j1Window::Awake(pugi::xml_node& config)
 		height = config.child("resolution").attribute("height").as_int(480);
 		scale = config.child("resolution").attribute("scale").as_int(1);
 
-		if(fullscreen == true)
-		{
-			flags |= SDL_WINDOW_FULLSCREEN;
-		}
-
-		if(borderless == true)
-		{
-			flags |= SDL_WINDOW_BORDERLESS;
-		}
-
-		if(resizable == true)
-		{
-			flags |= SDL_WINDOW_RESIZABLE;
-		}
-
-		if(fullscreen_window == true)
-		{
-			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-		}
+		if(fullscreen)				flags |= SDL_WINDOW_FULLSCREEN;
+		else if(borderless)			flags |= SDL_WINDOW_BORDERLESS;
+		else if(resizable)			flags |= SDL_WINDOW_RESIZABLE;
+		else if(fullscreen_window)	flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 
 		window = SDL_CreateWindow(App->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
-		if(window == NULL)
-		{
-			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-			ret = false;
-		}
+		if(window) screen_surface = SDL_GetWindowSurface(window);
 		else
 		{
-			//Get window surface
-			screen_surface = SDL_GetWindowSurface(window);
+			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+			return false;
 		}
 	}
+	else
+	{
+		LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
+		return false;
+	}
 
-	return ret;
+	return true;
 }
 
 // Called before quitting
@@ -85,11 +63,7 @@ bool j1Window::CleanUp()
 	LOG("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
-	if(window != NULL)
-	{
-		SDL_DestroyWindow(window);
-	}
-
+	if(window) SDL_DestroyWindow(window);
 	//Quit SDL subsystems
 	SDL_Quit();
 	return true;
@@ -106,9 +80,4 @@ void j1Window::GetWindowSize(uint& width, uint& height) const
 {
 	width = this->width;
 	height = this->height;
-}
-
-uint j1Window::GetScale() const
-{
-	return scale;
 }

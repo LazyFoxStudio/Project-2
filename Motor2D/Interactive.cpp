@@ -129,7 +129,6 @@ bool Interactive::OnEvent()
 		break;
 	case CONTINUE:
 		App->sceneswitch->SwitchScene(App->scene, App->introscene);
-		App->sceneswitch->switchingFromSaveGame = true;
 		break;
 	case NEWGAME:
 		App->sceneswitch->SwitchScene(App->scene, App->introscene);

@@ -11,7 +11,7 @@
 #include "Color.h"
 #include <math.h>
 
-j1Map::j1Map() { name.create("map"); }
+j1Map::j1Map() { name = "map"; }
 
 // Destructor
 j1Map::~j1Map()

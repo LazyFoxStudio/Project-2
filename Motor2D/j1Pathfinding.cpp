@@ -4,7 +4,7 @@
 
 j1PathFinding::j1PathFinding() : j1Module(), map(nullptr),width(0), height(0)
 {
-	name.create("pathfinding");
+	name = "pathfinding";
 }
 
 // Destructor
@@ -81,7 +81,7 @@ PathNode PathList::GetNodeLowestScore() const
 	int min = 65535;
 	const PathNode* node = nullptr;
 
-	for (std::list<PathNode>::const_iterator it = list.end(); it != list.begin(); it--)
+	for (std::list<PathNode>::const_reverse_iterator it = list.rbegin(); it != list.rend(); it++)
 	{
 		if ((*it).Score() < min)
 		{

@@ -7,7 +7,7 @@
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 
-j1Audio::j1Audio() : j1Module() { name.create("audio"); }
+j1Audio::j1Audio() : j1Module() { name = "audio"; }
 
 // Destructor
 j1Audio::~j1Audio() {}

@@ -26,10 +26,10 @@ Image::Image(SDL_Rect& position, iPoint positionOffset, SDL_Rect&  image_section
 	this->image_section = image_section;
 }
 
-Image::Image(p2SString& path, SDL_Rect& position, iPoint positionOffset)
+Image::Image(std::string&  path, SDL_Rect& position, iPoint positionOffset)
 {
 	Image_from_atlas = false;
-	this->image = App->tex->Load(path.GetString());
+	this->image = App->tex->Load(path.c_str());
 	image_section.x = 0;
 	image_section.y = 0;
 	
