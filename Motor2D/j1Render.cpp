@@ -138,7 +138,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	rect.x = (int)(camera.x * speed) + x * scale;
 	rect.y = (int)(camera.y * speed) + y * scale;
 
-	if(section)			SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+	if(!section)			SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 	else
 	{
 		rect.w = section->w;

@@ -24,15 +24,26 @@ void j1Map::Draw()
 
 	iPoint wCoord;
 	SDL_Rect camera = App->render->camera;
-	for (uint y = 0; y < data.layers.size(); y++)
-		if (data.layers[y]->name != "Navigation")
+	for (uint a = 0; a < data.layers.size(); a++)
+		if (data.layers[a]->name != "Navigation")
 		{
-			for (uint x = 0; x < data.tilesets.size(); x++)
+			MapLayer* layer = data.layers[a];
+
+			for (uint b = 0; b < data.tilesets.size(); b++)
 				for (uint i = 0; i < data.height; i++)
 					for (uint j = 0; j < data.width; j++)
 					{
 						// TODO
+						int tile_id = layer->GetID(j, i);
 
+						if (tile_id > 0)
+						{
+							iPoint tileWorld = MapToWorld(j, i);
+							TileSet* tileset = GetTilesetFromTileId(tile_id);
+							SDL_Rect r = tileset->GetTileRect(tile_id);
+
+							App->render->Blit(tileset->texture, tileWorld.x, tileWorld.y, &r);
+						}
 					}
 		}
 
@@ -113,10 +124,8 @@ bool j1Map::CleanUp()
 bool j1Map::Load_map(const char* file_name)
 {
 	LOG("Loading map");
-	std::string full_path(FX_FOLDER);
-	full_path.append(file_name);
 
-	pugi::xml_parse_result result = map_file.load_file(full_path.c_str());
+	pugi::xml_parse_result result = map_file.load_file(PATH(MAP_FOLDER, file_name));
 
 	if (result)
 	{
@@ -313,37 +322,27 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	{
 		MapLayer* layer = data.layers[i];
 
-		if (layer->properties.Get("Navigation", 0) == 0) continue;
-
-		uchar* map = new uchar[layer->width*layer->height];
-		memset(map, 1, layer->width*layer->height);
-
-		for (int y = 0; y < data.height; ++y)
+		if (layer->name == "Resources")
 		{
-			for (int x = 0; x < data.width; ++x)
+			uchar* map = new uchar[layer->width*layer->height];
+			memset(map, 0, layer->width*layer->height);
+
+			for (int y = 0; y < data.height; ++y)
 			{
-				int i = (y*layer->width) + x;
-
-				int tile_id = layer->GetID(x, y);
-				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
-
-				if (tileset != NULL)
+				for (int x = 0; x < data.width; ++x)
 				{
-					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
+					int i = (y*layer->width) + x;
+					int tile_id = layer->GetID(x, y);
 
-					/*TileType* ts = tileset->GetTileType(tile_id);
-					if(ts != NULL)
-					{
-					map[i] = ts->properties.Get("walkable", 1);
-					}*/
+					if (tile_id != 0)  map[i] = INVALID_WALK_CODE;
 				}
 			}
-		}
 
-		*buffer = map;
-		width = data.width;
-		height = data.height;
-		return true;
+			*buffer = map;
+			width = data.width;
+			height = data.height;
+			return true;
+		}
 	}
 
 	return false;

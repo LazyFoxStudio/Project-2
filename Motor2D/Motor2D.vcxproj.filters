@@ -325,12 +325,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Game\maps\MaidInAbyss.tmx">
-      <Filter>Desenvolupament  ========\Files</Filter>
-    </None>
-    <None Include="..\Game\maps\DepthsOfTheAbyss.tmx">
-      <Filter>Desenvolupament  ========\Files</Filter>
-    </None>
     <None Include="..\Game\save_file.tmx">
       <Filter>Desenvolupament  ========\Files</Filter>
     </None>

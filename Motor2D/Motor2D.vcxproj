@@ -174,10 +174,6 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Game\maps\DepthsOfTheAbyss.tmx" />
-    <None Include="..\Game\maps\MaidInAbyss.tmx">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="..\Game\maps\map1.tmx" />
     <None Include="..\Game\save_file.tmx" />
   </ItemGroup>

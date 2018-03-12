@@ -99,11 +99,7 @@ bool j1Audio::PlayMusic(const char* path, uint fade_time)
 			Mix_FreeMusic(music);
 		}
 
-		//Temporal string to merge the path to the folder and the sound file
-		std::string full_path(MUSIC_FOLDER);
-		full_path.append(path);
-
-		if (music = Mix_LoadMUS(full_path.c_str()))
+		if (music = Mix_LoadMUS(PATH(MUSIC_FOLDER, path)))
 		{
 			if (fade_time)	ret = (Mix_FadeInMusic(music, -1, fade_time * 1000) < 0);
 			else			ret = (Mix_PlayMusic(music, -1) < 0);
@@ -121,11 +117,7 @@ unsigned int j1Audio::LoadFx(const char* path)
 {
 	if (active) {
 
-		//Temporal string to merge the path to the folder and the sound file
-		std::string full_path(FX_FOLDER);
-		full_path.append(path);
-
-		if (Mix_Chunk* chunk = Mix_LoadWAV(full_path.c_str()))
+		if (Mix_Chunk* chunk = Mix_LoadWAV(PATH(FX_FOLDER, path)))
 		{
 			fx.push_back(chunk);
 			return fx.size();

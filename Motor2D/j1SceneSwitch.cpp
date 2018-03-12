@@ -27,7 +27,7 @@ bool j1SceneSwitch::Update(float dt)
 {
 	BROFILER_CATEGORY("SceneSwitchUpdate", Profiler::Color::AliceBlue);
 
-	if (!IsSwitching())
+	if (IsSwitching())
 	{
 		float normalized = MIN(1.0f, switchtimer.ReadSec() / fadetime);
 

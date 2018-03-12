@@ -42,7 +42,10 @@ bool j1Scene::Start()
 	int w = -1, h = -1;
 	uchar* data = nullptr;
 
-	if (App->map->CreateWalkabilityMap(w, h, &data))	App->pathfinding->SetMap(w, h, data);
+	App->map->Load_map("map1.tmx");
+
+	if (App->map->CreateWalkabilityMap(w, h, &data))	
+		App->pathfinding->SetMap(w, h, data);
 
 	debug_tex = App->tex->Load("maps/Navigable.png");
 
@@ -59,6 +62,8 @@ bool j1Scene::Start()
 bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene update", Profiler::Color::Black);
+
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
 
 	App->map->Draw();
 	App->gui->Draw(dt);
