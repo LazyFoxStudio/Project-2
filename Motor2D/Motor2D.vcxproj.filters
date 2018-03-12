@@ -334,6 +334,9 @@
     <None Include="..\Game\save_file.tmx">
       <Filter>Desenvolupament  ========\Files</Filter>
     </None>
+    <None Include="..\Game\maps\map1.tmx">
+      <Filter>Desenvolupament  ========\Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml">
