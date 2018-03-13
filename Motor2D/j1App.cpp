@@ -1,3 +1,5 @@
+//This is a comment just to test the appveyor. Hugo should be doing this but is too busy watching k-pop stars
+
 #include <iostream> 
 #include <sstream>
 
