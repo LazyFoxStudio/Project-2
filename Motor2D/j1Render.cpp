@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Input.h"
 
 #define VSYNC true
 
@@ -35,8 +36,11 @@ bool j1Render::Awake(pugi::xml_node& config)
 	{
 		camera.w = App->win->screen_surface->w;
 		camera.h = App->win->screen_surface->h;
-		camera.x = 0;
-		camera.y = 0;
+		camera.x = camera.y = 0;
+
+		culling_camera.w = App->win->screen_surface->w + 100;
+		culling_camera.h = App->win->screen_surface->h + 100;
+		culling_camera.x = camera.y = -100;
 	}
 	else
 	{
@@ -45,6 +49,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 	}
 
 	return true;
+	
 }
 
 // Called before the first frame
@@ -63,10 +68,6 @@ bool j1Render::PreUpdate()
 	return true;
 }
 
-bool j1Render::Update(float dt)
-{
-	return true;
-}
 
 bool j1Render::PostUpdate()
 {
@@ -237,4 +238,36 @@ bool j1Render::DrawCircle(int x, int y, int radius, Color& color, bool use_camer
 	}
 
 	return true;
+}
+
+
+void j1Render::MouseCameraMovement(float dt)
+{
+	int mousePosX, mousePosY, mov_x, mov_y;
+	mousePosX = mousePosY = mov_x = mov_y = 0;
+
+	App->input->GetMousePosition(mousePosX, mousePosY);
+
+	if (mousePosX < 10 && camera.x < 0)								mov_x = 1000;  //Move left
+	else if (mousePosX > camera.w - 10 && camera.x > -cam_limit_x)	 mov_x = -1000; //Move right
+		
+	if (mousePosY < 10 && camera.y < 0)								 mov_y = 1000;	 //Move up 
+	else if (mousePosY > camera.h - 10 && camera.y > -cam_limit_y)	 mov_y = -1000; //Move down
+		
+	camera.x += mov_x * dt;
+	camera.y += mov_y * dt;
+
+	//clamp values to 0 and limit
+	camera.x = (camera.x < -cam_limit_x ? -cam_limit_x : (camera.x > 0 ? 0 : camera.x));
+	camera.y = (camera.y < -cam_limit_y ? -cam_limit_y : (camera.y > 0 ? 0 : camera.y));
+
+	culling_camera.x = -camera.x - 100;
+	culling_camera.y = -camera.y - 100;
+
+}
+
+bool j1Render::CullingCam(iPoint point) 
+{
+	SDL_Point p = { point.x, point.y };
+	return SDL_PointInRect(&p, &culling_camera);
 }

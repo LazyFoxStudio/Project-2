@@ -23,7 +23,6 @@ public:
 
 	// Called each loop iteration
 	bool PreUpdate();
-	bool Update(float dt);
 	bool PostUpdate();
 
 	// Called before quitting
@@ -45,12 +44,20 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
+	//Move camera with cursor
+	void MouseCameraMovement(float dt);
+	bool CullingCam(iPoint point);
+
 public:
 
 	SDL_Renderer*	renderer;
 	SDL_Rect		camera;
+	SDL_Rect		culling_camera;
 	SDL_Rect		viewport;
 	SDL_Color		background;
+
+	int cam_limit_x = 0;
+	int cam_limit_y = 0;
 };
 
 #endif // __j1RENDER_H__

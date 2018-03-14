@@ -65,6 +65,7 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
 
+	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
 	App->gui->Draw(dt);
 

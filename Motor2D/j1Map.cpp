@@ -174,6 +174,9 @@ bool j1Map::Load_map(const char* file_name)
 				LOG("layer width: %d layer height: %d", l->width, l->height);
 			}
 
+			App->render->cam_limit_x = data.width * data.tile_width - App->render->camera.w;
+			App->render->cam_limit_y = data.height * data.tile_height - App->render->camera.h;
+
 			return true;
 		}
 	}
