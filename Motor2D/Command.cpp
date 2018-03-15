@@ -11,11 +11,11 @@ void Command::Execute(float dt)
 {
 	bool ret = false;
 
-	switch (state)
+	switch (state)    
 	{
-	case TO_INIT: ret = OnInit();		state = UPDATE;		break;
-	case UPDATE:  ret = OnUpdate(dt);						break;
-	case TO_STOP: ret = OnStop();		state = FINISHED;	break;
+	case TO_INIT: state = UPDATE;	ret = OnInit();			break;    // state change MUST happen before calling the method
+	case UPDATE:					ret = OnUpdate(dt);		break;
+	case TO_STOP: state = FINISHED;	ret = OnStop();			break;
 	default:												break;
 	}
 
@@ -64,7 +64,6 @@ bool MoveTo::OnUpdate(float dt)
 bool MoveTo::OnStop()
 {
 	if (!path.empty())	path.clear();
-	state = FINISHED;
 	return true;
 }
 
