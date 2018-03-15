@@ -59,6 +59,17 @@ public:
 		return(r);
 	}
 
+
+	p2Point<float> operator * (float scalar)
+	{
+		fPoint r;
+
+		r.x = x * scalar;
+		r.y = y * scalar;
+
+		return(r);
+	}
+
 	const p2Point& operator -=(const p2Point &v)
 	{
 		x -= v.x;

@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClCompile Include="Ally.cpp" />
     <ClCompile Include="Building.cpp" />
+    <ClCompile Include="Command.cpp" />
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -126,6 +127,7 @@
     <ClInclude Include="Ally.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Command.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />

@@ -4,11 +4,9 @@
 #define _UNIT_H_
 
 #include "Entity.h"
-#include "Effects.h"
-#include "p2Animation.h"
-#include "Squad.h"
 #include <list>
 #include <vector>
+#include <deque>
 
 enum unitType
 {
@@ -18,25 +16,32 @@ enum unitType
 
 };
 
+class Animation;
+class Squad;
+class Effect;
+class Command;
+
 class Unit : public Entity
 {
 public:
 	//Stats
 	unitType type = NONE_UNIT;
-	int current_HP = 0;
-	int max_HP = 0;
-	int attack = 0;
-	int defense = 0;
+	uint current_HP = 0;
+	uint max_HP = 0;
+	uint attack = 0;
+	uint defense = 0;
+	uint line_of_sight = 0;
+	uint range = 0;
+	float speed = 0.0f;
 	//...
 
 	//Utilities
-	std::list<iPoint> path;
 	Squad* squad = nullptr;
-	Entity* target = nullptr;
 	bool flying = false;
 
 	std::vector<Animation*> animations;
 	std::vector<Effect*> effects;
+	std::deque<Command*> commands;
 	Animation* current_anim = nullptr;
 
 public:
@@ -48,6 +53,10 @@ public:
 	void Draw();
 	void Move(fPoint direction);
 	void animationController();
+	void Halt();
+
+	bool IsEnemy();
+	Unit* SearchNearestEnemy();
 };
 
 #endif

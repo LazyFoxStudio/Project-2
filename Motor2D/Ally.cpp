@@ -1,4 +1,5 @@
 #include "Ally.h"
+#include "Command.h"
 
 Ally::~Ally()
 {
@@ -7,6 +8,12 @@ Ally::~Ally()
 
 bool Ally::Update(float dt)
 {
+	if (!commands.empty())
+	{
+		if (commands.front()->state == FINISHED) commands.pop_front();
+		else									 commands.front()->Execute(dt);
+	}
+
 	return true;
 }
 
