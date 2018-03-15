@@ -266,7 +266,7 @@ void j1Render::MouseCameraMovement(float dt)
 
 }
 
-bool j1Render::CullingCam(iPoint point) 
+bool j1Render::CullingCam(fPoint point) 
 {
 	SDL_Point p = { point.x, point.y };
 	return SDL_PointInRect(&p, &culling_camera);

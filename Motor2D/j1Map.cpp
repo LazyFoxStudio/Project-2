@@ -35,10 +35,10 @@ void j1Map::Draw()
 					{
 						// TODO
 						int tile_id = layer->GetID(j, i);
+						iPoint tileWorld = MapToWorld(j, i);
 
-						if (tile_id > 0)
+						if (tile_id > 0 && App->render->CullingCam(fPoint(tileWorld.x, tileWorld.y)))
 						{
-							iPoint tileWorld = MapToWorld(j, i);
 							TileSet* tileset = GetTilesetFromTileId(tile_id);
 							SDL_Rect r = tileset->GetTileRect(tile_id);
 

@@ -25,8 +25,14 @@ bool j1EntityController::Update(float dt)
 	BROFILER_CATEGORY("Entites update", Profiler::Color::Maroon);
 	if (App->map->debug) DebugDraw();
 
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)  
-		if ((*it)->Update(dt)) return false; 
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		if ((*it)->isActive)
+		{
+			if (App->render->CullingCam((*it)->position))	(*it)->Draw();
+			if (!(*it)->Update(dt))							return false;
+		}
+	}
 
 	return true;
 }

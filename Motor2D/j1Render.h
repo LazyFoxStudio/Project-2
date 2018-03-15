@@ -46,7 +46,7 @@ public:
 
 	//Move camera with cursor
 	void MouseCameraMovement(float dt);
-	bool CullingCam(iPoint point);
+	bool CullingCam(fPoint point);
 
 public:
 
