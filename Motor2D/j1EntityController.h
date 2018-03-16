@@ -40,6 +40,8 @@ public:
 
 	std::list<Entity*> entities;
 	std::list<Entity*> selected_entities;
+
+	std::list<Entity*> entities_to_destroy;
 	
 	std::map<uint, Unit*> unitDB;
 	std::map<uint, Building*> buildingDB;

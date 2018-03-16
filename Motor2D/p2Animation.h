@@ -2,6 +2,7 @@
 #define __P2ANIMATION_H__
 #include <assert.h>
 #include "SDL/include/SDL_rect.h"
+#include "PugiXml\src\pugixml.hpp"
 
 #define MAX_FRAMES 50
 
@@ -12,7 +13,6 @@ public:
 	float speed = 1.0f;
 	SDL_Rect frames[MAX_FRAMES];
 
-
 private:
 
 	float current_frame;
@@ -20,57 +20,18 @@ private:
 	int loops = 0;
 
 public:
+	bool LoadAnimation(pugi::xml_node& data);
 
-	void PushBack(const SDL_Rect& rect)
-	{
-		if (last_frame < MAX_FRAMES)
-			frames[last_frame++] = rect;
-		assert(last_frame < MAX_FRAMES);
-	}
+	void PushBack(const SDL_Rect& rect);
+	SDL_Rect& GetCurrentFrame(float dt);
 
-	SDL_Rect& GetCurrentFrame(float dt)
-	{
-		float tmp = speed;
-		current_frame += tmp*dt;
+	bool Finished() const;
+	void Reset();
 
-		if (current_frame < 0)
-		{
-			current_frame = 0;
-		}
+	float GetCurrentFrameinFloat();
+	int GetLastFrameinInt();
+	void ChangeCurrentFrame(float frame);
 
-		if (current_frame >= last_frame)
-		{
-			current_frame = (loop) ? 0.0f : last_frame - 1;
-			loops++;
-		}
-
-		return frames[(int)current_frame];
-	}
-
-	bool Finished() const
-	{
-		return loops > 0;
-	}
-
-	void Reset()
-	{
-		current_frame = 0;
-	}
-
-	float GetCurrentFrameinFloat()
-	{
-		return current_frame;
-	}
-
-	int GetLastFrameinInt()
-	{
-		return last_frame;
-	}
-
-	void ChangeCurrentFrame(float frame)
-	{
-		current_frame = frame;
-	}
 };
 
 #endif

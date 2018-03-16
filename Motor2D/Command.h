@@ -110,7 +110,8 @@ public:
 
 public:
 	Patrol(Unit* unit, std::vector<iPoint>& patrol_points) : Command(unit, PATROL), patrol_points(patrol_points) {};
-
+	~Patrol() { patrol_points.clear(); }
+	
 private:
 
 	bool OnInit();

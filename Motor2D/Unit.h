@@ -11,9 +11,15 @@
 enum unitType
 {
 	NONE_UNIT,
-	DEFENDER,
-	//...
 
+	// Heroes
+	HERO_1, /* ... */ HERO_X,
+	
+	// Allies
+	ALLY_1, /* ... */ ALLY_X,
+
+	//Enemies
+	ENEMY_1, /* ... */ ENEMY_X,
 };
 
 class Animation;
@@ -29,6 +35,7 @@ public:
 	uint current_HP = 0;
 	uint max_HP = 0;
 	uint attack = 0;
+	uint piercing_atk = 0;
 	uint defense = 0;
 	uint line_of_sight = 0;
 	uint range = 0;

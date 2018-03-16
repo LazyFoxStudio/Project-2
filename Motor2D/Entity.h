@@ -26,7 +26,7 @@ public:
 	entityType entity_type = NONE_ENTITY;
 
 public:
-	virtual ~Entity() {};
+	virtual ~Entity();
 
 	iPoint getSize();
 	void setActive(bool active) { isActive = active; };
