@@ -32,6 +32,7 @@ bool Animation::LoadAnimation(pugi::xml_node& data)
 	int height = data.child("Height").attribute("value").as_int();
 	int rows = data.child("Rows").attribute("value").as_int();
 	int columns = data.child("Columns").attribute("value").as_int();
+
 	for (int i = 0; i < rows; i++) 
 		for (int j = 0; j < columns; j++) 
 			PushBack({ width*j,height*i,width,height });

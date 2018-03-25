@@ -10,8 +10,8 @@ bool Ally::Update(float dt)
 {
 	if (!commands.empty())
 	{
+		commands.front()->Execute(dt);
 		if (commands.front()->state == FINISHED) commands.pop_front();
-		else									 commands.front()->Execute(dt);
 	}
 
 	return true;

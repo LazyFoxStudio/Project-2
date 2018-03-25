@@ -52,7 +52,8 @@ public:
 	Animation* current_anim = nullptr;
 
 public:
-	Unit(iPoint pos, unitType type, Squad* squad = nullptr);
+	Unit() {};												// this constructor should only be used when loading unit Database
+	Unit(iPoint pos, Unit& unit, Squad* squad = nullptr);
 	
 	virtual Entity* findTarget() { return nullptr; };
 	virtual void attackEntity(Entity* target) {};

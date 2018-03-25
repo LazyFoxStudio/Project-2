@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include "PugiXml/src/pugixml.hpp"
 #include "j1Textures.h"
+#include "j1Audio.h"
 #include "Hero.h"
 
 j1EntityController::j1EntityController() { name = "entitycontroller"; }
@@ -90,6 +91,14 @@ void j1EntityController::DeleteEntity(Entity* entity)
 	selected_entities.remove(entity);
 }
 
+void j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
+{
+	Unit* unit = new Unit(pos, *unitDB[type], squad);
+	entities.push_back(unit);
+
+	// App->audio->PlayFx(UNIT_CREATED_FX);
+}
+
 bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 {
 	pugi::xml_node NodeInfo;
@@ -99,7 +108,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 	for (NodeInfo = data.child("Units").child("Unit"); NodeInfo; NodeInfo = NodeInfo.next_sibling("Unit")) {
 
 		unitType type = (unitType)NodeInfo.child("Info").child("ID").attribute("value").as_int();
-		Unit* unitTemplate = new Unit(p_zero, type);
+		Unit* unitTemplate = new Unit();
 
 		if (type < HERO_X)  // HERO_X should the last hero in the type enum
 		{

@@ -4,7 +4,7 @@
 #include "Command.h"
 #include "p2Animation.h"
 
-Unit::Unit(iPoint pos, unitType type, Squad* squad) : type(type), squad(squad)
+Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : type(type), squad(squad)
 {
 
 }
