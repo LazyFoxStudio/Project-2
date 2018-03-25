@@ -28,10 +28,10 @@ SDL_Rect& Animation::GetCurrentFrame(float dt)
 
 bool Animation::LoadAnimation(pugi::xml_node& data)
 {
-	int width = data.child("Width").attribute("value").as_int();
-	int height = data.child("Height").attribute("value").as_int();
-	int rows = data.child("Rows").attribute("value").as_int();
-	int columns = data.child("Columns").attribute("value").as_int();
+	int width = data.child("width").attribute("value").as_int(0);
+	int height = data.child("height").attribute("value").as_int(0);
+	int rows = data.child("rows").attribute("value").as_int(0);
+	int columns = data.child("columns").attribute("value").as_int(0);
 
 	for (int i = 0; i < rows; i++) 
 		for (int j = 0; j < columns; j++) 

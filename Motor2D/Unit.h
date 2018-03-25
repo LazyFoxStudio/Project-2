@@ -16,7 +16,7 @@ enum unitType
 	HERO_1, /* ... */ HERO_X,
 	
 	// Allies
-	ALLY_1, /* ... */ ALLY_X,
+	FOOTMAN, /* ... */ ALLY_X,
 
 	//Enemies
 	ENEMY_1, /* ... */ ENEMY_X,
@@ -52,18 +52,17 @@ public:
 	Animation* current_anim = nullptr;
 
 public:
-	Unit() {};												// this constructor should only be used when loading unit Database
+	Unit() { entity_type = UNIT; };					// this constructor should only be used when loading unit Database
 	Unit(iPoint pos, Unit& unit, Squad* squad = nullptr);
 	
 	virtual Entity* findTarget() { return nullptr; };
 	virtual void attackEntity(Entity* target) {};
 
-	void Draw();
-	void Move(fPoint direction);
+	void Draw(float dt);
 	void animationController();
 	void Halt();
 
-	bool IsEnemy();
+	bool IsEnemy() { return type >= ENEMY_1; };
 	Unit* SearchNearestEnemy();
 };
 

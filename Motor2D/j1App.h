@@ -8,6 +8,7 @@
 #include "PugiXml\src\pugixml.hpp"
 
 #include <list>
+#include <vector>
 #include <string>
 
 // Modules
@@ -60,7 +61,7 @@ public:
 	void SaveGame() const;
 
 	// Load config file
-	pugi::xml_node LoadConfig(pugi::xml_document&, char* file = "config.xml") const;
+	pugi::xml_node LoadFile(pugi::xml_document&, char* file) const;
 
 private:
 

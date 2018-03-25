@@ -33,12 +33,6 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-
-	pugi::xml_document	config_file;
-	pugi::xml_node		config;
-
-	config = App->LoadConfig(config_file);
-
 	int w = -1, h = -1;
 	uchar* data = nullptr;
 
@@ -52,7 +46,7 @@ bool j1Scene::Start()
 	pugi::xml_document	Gui_config_file;
 	pugi::xml_node		guiconfig;
 
-	guiconfig = App->LoadConfig(Gui_config_file, "Gui_config.xml");
+	guiconfig = App->LoadFile(Gui_config_file, "Gui_config.xml");
 	guiconfig = guiconfig.child("scene");
 	
 	return true;

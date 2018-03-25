@@ -80,30 +80,23 @@ bool j1App::Awake()
 	PERF_START(ptimer);
 	LOG("Awake:");
 
-	pugi::xml_document	config_file;
-	pugi::xml_node		config;
-	pugi::xml_node		app_config;
-
 	save_game = "save_file.xml";
 	load_game = "save_file.xml";
-		
-	config = LoadConfig(config_file);
+	pugi::xml_document doc;
+	pugi::xml_node config = LoadFile(doc, "config.xml");
 
 	if (!config.empty())
 	{
 		// self-config
-		app_config = config.child("app");
-		title = (app_config.child("title").child_value());
-		organization = (app_config.child("organization").child_value());
-		int cap = app_config.attribute("framerate_cap").as_int(0);
+		title = config.child("app").child("title").child_value();
+		organization = config.child("app").child("organization").child_value();
+		int cap = config.child("app").attribute("framerate_cap").as_int(0);
 
 		if (cap) framerate = 1000 / cap;
 
 		for (std::list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++)
-		{
-			if((*it)->Awake(config.child((*it)->name.c_str())))  LOG("name: %s", (*it)->name.c_str());
-			else return false;
-		}
+			if(!(*it)->Awake(config.child((*it)->name.c_str()))) return false;
+		
 
 	}
 
@@ -148,16 +141,17 @@ bool j1App::Update()
 }
 
 // ---------------------------------------------
-pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file, char* file) const
+pugi::xml_node j1App::LoadFile(pugi::xml_document& doc, char* file) const
 {
 	pugi::xml_node ret;
-	pugi::xml_parse_result result = config_file.load_file(file);
+	pugi::xml_parse_result result = doc.load_file(file);
 
-	if(result)	ret = config_file.child("config");
+	if (result)	ret = doc.first_child();
 	else		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
 		
 	return ret;
 }
+
 
 // ---------------------------------------------
 void j1App::PrepareUpdate()
@@ -201,15 +195,11 @@ void j1App::FinishUpdate()
 bool j1App::PreUpdate()
 {
 	BROFILER_CATEGORY("PreUpdate", Profiler::Color::Blue);
-	LOG("Preupdate:");
 
 	for (std::list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
 		if ((*it)->active)
-		{
-			if ((*it)->PreUpdate())  LOG("name: %s", (*it)->name.c_str());
-			else return false;
-		}
+			if (!(*it)->PreUpdate()) return false;
 	}
 
 	return true;
@@ -219,15 +209,11 @@ bool j1App::PreUpdate()
 bool j1App::DoUpdate()
 {
 	BROFILER_CATEGORY("DoUpdate", Profiler::Color::LightBlue);
-	LOG("Update:");
 
 	for (std::list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
 		if ((*it)->active)
-		{
-			if ((*it)->Update(DeltaTime))  LOG("name: %s", (*it)->name.c_str());
-			else return false;
-		}
+			if (!(*it)->Update(DeltaTime)) return false;
 	}
 
 	return true;
@@ -237,15 +223,11 @@ bool j1App::DoUpdate()
 bool j1App::PostUpdate()
 {
 	BROFILER_CATEGORY("PostUpdate", Profiler::Color::Magenta);
-	LOG("PostUpdate:");
 
 	for (std::list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
 		if ((*it)->active)
-		{
-			if ((*it)->PostUpdate())  LOG("name: %s", (*it)->name.c_str());
-			else return false;
-		}
+			if (!(*it)->PostUpdate()) return false;
 	}
 
 	return true;
@@ -255,13 +237,10 @@ bool j1App::PostUpdate()
 bool j1App::CleanUp()
 {
 	PERF_START(ptimer);
-	LOG("CleanUp:");
 
 	for (std::list<j1Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend(); it++)
-	{
-		if ((*it)->CleanUp())  LOG("name: %s", (*it)->name.c_str()); 
-		else return false;
-	}
+		if (!(*it)->CleanUp()) return false;
+	
 
 	PERF_PEEK(ptimer);
 	return true;

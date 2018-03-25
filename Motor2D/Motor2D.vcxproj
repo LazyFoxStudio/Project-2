@@ -184,6 +184,7 @@
     <Xml Include="..\Game\config.xml">
       <SubType>Designer</SubType>
     </Xml>
+    <Xml Include="..\Game\GameData.xml" />
     <Xml Include="..\Game\Gui_config.xml">
       <SubType>Designer</SubType>
     </Xml>

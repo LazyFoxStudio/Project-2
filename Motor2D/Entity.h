@@ -34,7 +34,7 @@ public:
 	bool Collides(Entity& other);
 
 	virtual bool Update(float dt)	{ return true; };
-	virtual void Draw()		{};
+	virtual void Draw(float dt)		{};
 
 	virtual bool Save()		{ return true; };
 	virtual bool Load()		{ return true; };

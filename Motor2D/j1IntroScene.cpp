@@ -23,11 +23,6 @@ j1IntroScene::~j1IntroScene() {}
 
 bool j1IntroScene::Start()
 {
-	pugi::xml_document	Gui_config_file;
-	pugi::xml_node		guiconfig;
-
-	guiconfig = App->LoadConfig(Gui_config_file, "Gui_config.xml");
-	guiconfig = guiconfig.child("introscene");
 
 	// App->audio->PlayMusic("MainTheme.ogg");
 

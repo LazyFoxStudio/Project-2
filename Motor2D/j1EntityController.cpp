@@ -14,7 +14,13 @@ j1EntityController::~j1EntityController() {}
 
 bool j1EntityController::Start()
 {
-	//return loadEntitiesDB();
+	pugi::xml_document doc;
+	pugi::xml_node gameData;
+
+	gameData = App->LoadFile(doc, "GameData.xml");
+
+	loadEntitiesDB(gameData);
+	addUnit(iPoint(50, 50), FOOTMAN);
 	return true;
 }
 
@@ -27,7 +33,7 @@ bool j1EntityController::Update(float dt)
 	{
 		if ((*it)->isActive)
 		{
-			if (App->render->CullingCam((*it)->position))	(*it)->Draw();
+			if (App->render->CullingCam((*it)->position))	(*it)->Draw(dt);
 			if (!(*it)->Update(dt))							return false;
 		}
 	}
@@ -93,42 +99,42 @@ void j1EntityController::DeleteEntity(Entity* entity)
 
 void j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
 {
-	Unit* unit = new Unit(pos, *unitDB[type], squad);
+	Unit* unit = new Unit(pos, *(unitDB[type]), squad);
 	entities.push_back(unit);
-
-	// App->audio->PlayFx(UNIT_CREATED_FX);
+	
+	// if(App->render->CullingCam(unit->position))  App->audio->PlayFx(UNIT_CREATED_FX);
 }
 
 bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 {
 	pugi::xml_node NodeInfo;
-	pugi::xml_node AnimInfo;
-	iPoint p_zero = { 0,0 };
 
 	for (NodeInfo = data.child("Units").child("Unit"); NodeInfo; NodeInfo = NodeInfo.next_sibling("Unit")) {
 
-		unitType type = (unitType)NodeInfo.child("Info").child("ID").attribute("value").as_int();
 		Unit* unitTemplate = new Unit();
+		unitTemplate->type = (unitType)NodeInfo.child("type").attribute("value").as_int(0);
 
-		if (type < HERO_X)  // HERO_X should the last hero in the type enum
+		if (unitTemplate->type < HERO_X)  // HERO_X should the last hero in the type enum
 		{
 			// TODO: hero specific functions
 		}
 
-		unitTemplate->texture = App->tex->Load(NodeInfo.child("Texture").attribute("value").as_string());
+		unitTemplate->name		= NodeInfo.child("name").attribute("value").as_string("error");
+		unitTemplate->texture	= App->tex->Load(NodeInfo.child("texture").attribute("value").as_string("error"));
 
-		unitTemplate->current_HP	= unitTemplate->max_HP = NodeInfo.child("Stats").child("Life").attribute("value").as_int();
-		unitTemplate->attack		= NodeInfo.child("Stats").child("Attack").attribute("value").as_int();
-		unitTemplate->defense		= NodeInfo.child("Stats").child("Defense").attribute("value").as_int();
-		unitTemplate->piercing_atk	= NodeInfo.child("Stats").child("PiercingDamage").attribute("value").as_int();
-		unitTemplate->speed			= NodeInfo.child("Stats").child("MovementSpeed").attribute("value").as_int();
-		unitTemplate->range			= NodeInfo.child("Stats").child("Range").attribute("value").as_int();
-		unitTemplate->line_of_sight = NodeInfo.child("Stats").child("LineOfSight").attribute("value").as_int();
-		unitTemplate->flying		= NodeInfo.child("Stats").child("Flying").attribute("value").as_bool();
+		unitTemplate->current_HP	= unitTemplate->max_HP = NodeInfo.child("Stats").child("life").attribute("value").as_int(0);
+		unitTemplate->attack		= NodeInfo.child("Stats").child("attack").attribute("value").as_int(0);
+		unitTemplate->defense		= NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
+		unitTemplate->piercing_atk	= NodeInfo.child("Stats").child("piercingDamage").attribute("value").as_int(0);
+		unitTemplate->speed			= NodeInfo.child("Stats").child("movementSpeed").attribute("value").as_int(0);
+		unitTemplate->range			= NodeInfo.child("Stats").child("range").attribute("value").as_int(0);
+		unitTemplate->line_of_sight = NodeInfo.child("Stats").child("lineOfSight").attribute("value").as_int(0);
+		unitTemplate->flying		= NodeInfo.child("Stats").child("flying").attribute("value").as_bool(false);
 
 		// TODO unit cost & cooldown, outside the DB so it's not unnecessarily repeated on every unit
 
-		for (AnimInfo = data.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"))
+		pugi::xml_node AnimInfo;
+		for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"))
 		{
 			Animation* animation = new Animation();
 			if (animation->LoadAnimation(AnimInfo))

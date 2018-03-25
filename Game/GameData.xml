@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<GameData>
+    <Units>
+        <Unit>
+            <name value="Footman"/>
+            <type value="3"/>
+            <texture value="Assets\Sprites\Alliance Sprites\Footman_Spritesheet.png"/>
+            <Stats>
+                <life value="60"/>
+                <attack value="6"/>
+                <defense value="2"/>
+                <piercingDamage value="3"/>
+                <movementSpeed value="1"/>
+                <range value="1"/>
+                <lineOfSight value="20"/>
+            </Stats>
+            <Animations>
+              <Animation>
+                <width value="48"/>
+                <height value="48"/>
+                <rows value="1"/>
+                <columns value="1"/>
+              </Animation>
+            </Animations>
+        </Unit>
+    </Units>
+</GameData>
