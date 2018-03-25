@@ -9,7 +9,8 @@
 #include <string>
 #include "PugiXml\src\pugixml.hpp"
 
-class UIElement;
+class UI_element;
+enum event_type;
 
 class j1Module
 {
@@ -26,7 +27,7 @@ public:
 
 	virtual bool CleanUp()									{ return true; }
 
-	virtual bool OnEvent(UIElement* element, int eventType) { return true; }
+	virtual bool OnUIEvent(UI_element* element, event_type eventType) { return true; }
 
 	virtual bool Load(pugi::xml_node&)						{ return true; }
 	virtual bool Save(pugi::xml_node&) const				{ return true; }

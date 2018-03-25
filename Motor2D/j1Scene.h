@@ -33,13 +33,10 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	bool OnEvent(UIElement* element, int eventType);
-
 	bool Load(pugi::xml_node& data);
 	bool Save(pugi::xml_node& data) const;
 
 public:
-	Window* sceneMenu = nullptr;
 	SDL_Texture* debug_tex;
 };
 
