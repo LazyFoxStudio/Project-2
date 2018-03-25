@@ -6,16 +6,13 @@
 #include "j1Audio.h"
 #include "j1Render.h"
 #include "j1Window.h"
-#include "Window.h"
 #include "j1Map.h"
-#include "LabelledImage.h"
 #include "j1Scene.h"
-#include "j1IntroScene.h"
+#include "j1UIScene.h"
 #include "j1Sceneswitch.h"
 #include "j1Pathfinding.h"
 #include "j1EntityController.h"
 #include "j1Gui.h"
-#include "LifeBar.h"
 
 j1Scene::j1Scene() : j1Module() { name = "scene"; }
 
@@ -61,7 +58,6 @@ bool j1Scene::Update(float dt)
 
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
-	App->gui->Draw(dt);
 
 	return true;
 }
@@ -69,11 +65,6 @@ bool j1Scene::Update(float dt)
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && sceneMenu)
-	{
-		if (sceneMenu->active)	sceneMenu->active = true;
-		else					sceneMenu->active = false;
-	}
 
 	return true;
 }
@@ -83,11 +74,6 @@ bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
-	return true;
-}
-
-bool j1Scene::OnEvent(UIElement* element, int eventType)
-{
 	return true;
 }
 

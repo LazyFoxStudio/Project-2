@@ -52,62 +52,11 @@
     <ClCompile Include="j1Pathfinding.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="j1IntroScene.cpp">
-      <Filter>Desenvolupament  ========\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Gui.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1Fonts.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Desenvolupament  ========\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Image.cpp">
-      <Filter>Desenvolupament  ========\GUI\Parents</Filter>
-    </ClCompile>
-    <ClCompile Include="Interactive.cpp">
-      <Filter>Desenvolupament  ========\GUI\Parents</Filter>
-    </ClCompile>
-    <ClCompile Include="Label.cpp">
-      <Filter>Desenvolupament  ========\GUI\Parents</Filter>
-    </ClCompile>
-    <ClCompile Include="UIElement.cpp">
-      <Filter>Desenvolupament  ========\GUI\Parents</Filter>
-    </ClCompile>
-    <ClCompile Include="InheritedImage.cpp">
-      <Filter>Desenvolupament  ========\GUI\SingleParent</Filter>
-    </ClCompile>
-    <ClCompile Include="InheritedInteractive.cpp">
-      <Filter>Desenvolupament  ========\GUI\SingleParent</Filter>
-    </ClCompile>
-    <ClCompile Include="InheritedLabel.cpp">
-      <Filter>Desenvolupament  ========\GUI\SingleParent</Filter>
-    </ClCompile>
-    <ClCompile Include="InteractiveImage.cpp">
-      <Filter>Desenvolupament  ========\GUI\MultiParent</Filter>
-    </ClCompile>
-    <ClCompile Include="InteractiveLabel.cpp">
-      <Filter>Desenvolupament  ========\GUI\MultiParent</Filter>
-    </ClCompile>
-    <ClCompile Include="InteractiveLabelledImage.cpp">
-      <Filter>Desenvolupament  ========\GUI\MultiParent</Filter>
-    </ClCompile>
-    <ClCompile Include="LabelledImage.cpp">
-      <Filter>Desenvolupament  ========\GUI\MultiParent</Filter>
-    </ClCompile>
     <ClCompile Include="j1SceneSwitch.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="InputBox.cpp">
-      <Filter>Desenvolupament  ========\GUI\MultiParent</Filter>
-    </ClCompile>
-    <ClCompile Include="Scrollbar.cpp">
-      <Filter>Desenvolupament  ========\GUI\Custom</Filter>
-    </ClCompile>
-    <ClCompile Include="LifeBar.cpp">
-      <Filter>Desenvolupament  ========\GUI\Custom</Filter>
     </ClCompile>
     <ClCompile Include="Ally.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
@@ -138,6 +87,33 @@
     </ClCompile>
     <ClCompile Include="p2Animation.cpp">
       <Filter>Desenvolupament  ========\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Button.cpp">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Chrono.cpp">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Image.cpp">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_ProgressBar.cpp">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Text.cpp">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Window.cpp">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Gui.cpp">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1UIScene.cpp">
+      <Filter>Desenvolupament  ========\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_element.cpp">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,62 +177,11 @@
     <ClInclude Include="j1Pathfinding.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="j1IntroScene.h">
-      <Filter>Desenvolupament  ========\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Gui.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="j1Fonts.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Desenvolupament  ========\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Image.h">
-      <Filter>Desenvolupament  ========\GUI\Parents</Filter>
-    </ClInclude>
-    <ClInclude Include="Interactive.h">
-      <Filter>Desenvolupament  ========\GUI\Parents</Filter>
-    </ClInclude>
-    <ClInclude Include="Label.h">
-      <Filter>Desenvolupament  ========\GUI\Parents</Filter>
-    </ClInclude>
-    <ClInclude Include="UIElement.h">
-      <Filter>Desenvolupament  ========\GUI\Parents</Filter>
-    </ClInclude>
-    <ClInclude Include="InheritedImage.h">
-      <Filter>Desenvolupament  ========\GUI\SingleParent</Filter>
-    </ClInclude>
-    <ClInclude Include="InheritedInteractive.h">
-      <Filter>Desenvolupament  ========\GUI\SingleParent</Filter>
-    </ClInclude>
-    <ClInclude Include="InheritedLabel.h">
-      <Filter>Desenvolupament  ========\GUI\SingleParent</Filter>
-    </ClInclude>
-    <ClInclude Include="InteractiveImage.h">
-      <Filter>Desenvolupament  ========\GUI\MultiParent</Filter>
-    </ClInclude>
-    <ClInclude Include="InteractiveLabel.h">
-      <Filter>Desenvolupament  ========\GUI\MultiParent</Filter>
-    </ClInclude>
-    <ClInclude Include="InteractiveLabelledImage.h">
-      <Filter>Desenvolupament  ========\GUI\MultiParent</Filter>
-    </ClInclude>
-    <ClInclude Include="LabelledImage.h">
-      <Filter>Desenvolupament  ========\GUI\MultiParent</Filter>
-    </ClInclude>
     <ClInclude Include="j1SceneSwitch.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="InputBox.h">
-      <Filter>Desenvolupament  ========\GUI\MultiParent</Filter>
-    </ClInclude>
-    <ClInclude Include="Scrollbar.h">
-      <Filter>Desenvolupament  ========\GUI\Custom</Filter>
-    </ClInclude>
-    <ClInclude Include="LifeBar.h">
-      <Filter>Desenvolupament  ========\GUI\Custom</Filter>
     </ClInclude>
     <ClInclude Include="Unit.h">
       <Filter>Desenvolupament  ========\Entities</Filter>
@@ -291,6 +216,33 @@
     <ClInclude Include="p2Animation.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="UI_Button.h">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Chrono.h">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_element.h">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Image.h">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_ProgressBar.h">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Text.h">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Window.h">
+      <Filter>Desenvolupament  ========\UI elements</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Gui.h">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1UIScene.h">
+      <Filter>Desenvolupament  ========\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -317,20 +269,8 @@
     <Filter Include="Desenvolupament  ========\Entities">
       <UniqueIdentifier>{cb479061-eae6-44a1-acb6-29edb60003aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Desenvolupament  ========\GUI">
+    <Filter Include="Desenvolupament  ========\UI elements">
       <UniqueIdentifier>{35e96c29-4c6f-4b2e-819c-81d75beb2966}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\GUI\Parents">
-      <UniqueIdentifier>{02b237b9-8e6c-4885-bbd8-d7bf0a0fc02f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\GUI\SingleParent">
-      <UniqueIdentifier>{c29a8fe1-fe6b-4902-b42a-2bb9a1e87b88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\GUI\MultiParent">
-      <UniqueIdentifier>{7d6c60b9-eb66-490f-8ce4-fa4b044d252d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\GUI\Custom">
-      <UniqueIdentifier>{ef778b01-d104-42d3-b5e1-8d1b709b3c80}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

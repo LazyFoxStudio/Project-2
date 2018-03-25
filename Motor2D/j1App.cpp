@@ -11,7 +11,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Audio.h"
-#include "j1IntroScene.h"
+#include "j1UIScene.h"
 #include "j1Scene.h"
 #include "j1SceneSwitch.h"
 #include "j1Map.h"
@@ -31,7 +31,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	render				= new j1Render();
 	tex					= new j1Textures();
 	audio				= new j1Audio();
-	introscene			= new j1IntroScene();
+	uiscene			    = new j1UIScene();
 	scene				= new j1Scene();
 	sceneswitch			= new j1SceneSwitch();
 	map					= new j1Map();
@@ -49,8 +49,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(font);
 	AddModule(gui);
-	AddModule(introscene, false);
 	AddModule(scene);
+	AddModule(uiscene);
 	AddModule(sceneswitch);
 	AddModule(entitycontroller);
 	AddModule(pathfinding);
