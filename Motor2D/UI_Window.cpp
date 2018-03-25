@@ -13,7 +13,7 @@ void Window::BlitElement()
 
 	SDL_SetTextureAlphaMod(texture, App->gui->alpha_value);
 	iPoint globalPos = calculateAbsolutePosition();
-	App->render->Blit(texture, globalPos.x, globalPos.y, &section);
+	App->render->Blit(texture, globalPos.x, globalPos.y, &section, false);
 
 	BlitChilds();
 }

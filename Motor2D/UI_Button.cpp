@@ -11,18 +11,18 @@ void Button::BlitElement()
 	{
 	case STANDBY:
 		if (!active)
-			App->render->Blit(texture, globalPos.x, globalPos.y, &section);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &section, false);
 		else
-			App->render->Blit(texture, globalPos.x, globalPos.y, &sectionActive);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &sectionActive, false);
 		break;
 	case MOUSEOVER:
 		if (!active)
-			App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouse);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouse, false);
 		else
-			App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouseActive);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouseActive, false);
 		break;
 	case CLICKED:
-		App->render->Blit(texture, globalPos.x, globalPos.y, &OnClick);
+		App->render->Blit(texture, globalPos.x, globalPos.y, &OnClick, false);
 		break;
 	}
 
