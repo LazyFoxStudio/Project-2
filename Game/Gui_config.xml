@@ -44,16 +44,30 @@ non-constant elements:
 	  - 9 labels
 	 actions:
 	  - 9 buttons
+	  
+To use a different texture than atlas add path attribute to an element ex. <button path="path.png" />
+
+The id of the fonts will be ordered as they are in the file, starting with 1
 		
 -->
 <config>
+  <font path="fonts/Old School Adventures.ttf" size="10"/>
   <menu type="2" active="true">
 	<atlas_image>
 	  <position x="0" y="0"/>
       <section x="414" y="168" w="225" h="68"/>
-      <draggable horizontal="false" vertical="true"/>
+      <draggable horizontal="true" vertical="true"/>
 	  <interactive value="true"/>
-	</atlas_image>
+	  <childs>
+		<text text="Hello World!" center="true">
+			<position x="10" y="10"/>
+			<font id="1"/>
+			<color r="255" g="255" b="255" a="255"/>
+			<draggable horizontal="false" vertical="false"/>
+			<interactive value="false"/>
+		</text>
+	  </childs>
+	</atlas_image>	
   </menu>
 </config>
 

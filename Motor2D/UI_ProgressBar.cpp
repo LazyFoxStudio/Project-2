@@ -5,12 +5,11 @@
 #include "UI_Image.h"
 #include "Brofiler\Brofiler.h"
 
-ProgressBar::ProgressBar(int x, int y, SDL_Texture* texture, SDL_Rect empty, SDL_Rect full, Image* head, j1Module* callback) : UI_element(x, y, PROGRESSBAR, empty, callback, texture),
+ProgressBar::ProgressBar(int x, int y, SDL_Texture* texture, SDL_Rect empty, SDL_Rect full, SDL_Rect head, j1Module* callback) : UI_element(x, y, PROGRESSBAR, empty, callback, texture),
 full(full),
-head(head)
-{
-	head->parent = this;
-}
+head(head),
+head_pos({x,y})
+{}
 
 void ProgressBar::addMarker(int x, int y, Image* active, Image* unactive)
 {
@@ -59,12 +58,12 @@ void ProgressBar::BlitElement()
 		bar_start = 0;
 		bar_end = full.w;
 		App->render->Blit(texture, globalPos.x, globalPos.y, &full);
-		head->localPosition.x = (int)(full.w) - (int)(head->section.w) / 2;
-		if (head->localPosition.x < 1)
-			head->localPosition.x = 1;
-		if (head->localPosition.x + head->section.w > section.w)
-			head->localPosition.x = section.w - head->section.w - 2;
-		head->BlitElement();
+		head_pos.x = (int)(full.w) - (int)(head.w) / 2;
+		if (head_pos.x < 1)
+			head_pos.x = 1;
+		if (head_pos.x + head.w > section.w)
+			head_pos.x = section.w - head.w - 2;
+		App->render->Blit(texture, head_pos.x, head_pos.y, &head);
 		break;
 	case DECREASING:
 		full.w = section.w*(1.0f-progress);
@@ -72,9 +71,9 @@ void ProgressBar::BlitElement()
 		bar_start = (section.w) - (full.w);
 		bar_end = section.w;
 		App->render->Blit(texture, globalPos.x + (section.w) - (full.w), globalPos.y, &full);
-		head->localPosition.x = (int)(section.w) - (int)(full.w) - 3;
-		if (head->localPosition.x < (section.w) - head->section.w/1.5f)
-			head->BlitElement();
+		head_pos.x = (int)(section.w) - (int)(full.w) - 3;
+		if (head_pos.x < (section.w) - head.w/1.5f)
+			App->render->Blit(texture, head_pos.x, head_pos.y, &head);
 		break;
 	}
 
@@ -95,4 +94,5 @@ void ProgressBar::BlitElement()
 		}
 	}
 	
+	BlitChilds();
 }

@@ -25,14 +25,10 @@ public:
 	~Button()
 	{}
 
-	void setOutlined(bool isOutlined);
-	void appendChild(int x, int y, UI_element* child);
-	void appendChildAtCenter(UI_element* child);
 	void BlitElement();
 
 public:
 
-	Text* text = nullptr;
 	SDL_Rect OnMouse;
 	SDL_Rect sectionActive;
 	SDL_Rect OnMouseActive;

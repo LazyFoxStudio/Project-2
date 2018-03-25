@@ -16,13 +16,7 @@ public:
 	~Window()
 	{}
 
-	void appendChild(int x, int y, UI_element* child);
-	void appendChildAtCenter(UI_element* child);
 	void BlitElement();
-
-public:
-
-	std::list<UI_element*> content;
 
 };
 

@@ -213,40 +213,80 @@ const SDL_Texture* j1Gui::GetAtlas() const
 	return atlas;
 }
 
-void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback)
+void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback, UI_element* parent)
 {
 	BROFILER_CATEGORY("Load UI elements", Profiler::Color::Chocolate);
 
 	pugi::xml_node tmp;
 
-	tmp = node.child("atlas_image");
-	if (tmp)
+	tmp = node.first_child();
+	UI_element* element = nullptr;
+	for (; tmp; tmp = tmp.next_sibling())
 	{
-		UI_element* element = createImageFromAtlas(tmp, callback);
-		menu->elements.push_back(element);
-		while (tmp = tmp.next_sibling("atlas_image"))
-		{
+		std::string type = tmp.name();
+		if(type == "atlas_image")
 			element = createImageFromAtlas(tmp, callback);
-			menu->elements.push_back(element);
-		}
-	}
+		else if(type == "text")
+			element = createText(tmp, callback);
+		else if (type == "timer")
+			element = createTimer(tmp, callback);
+		else if(type == "stopwatch")
+			element = createStopWatch(tmp, callback);
+		else if(type == "image")
+			element = createImage(tmp, callback);
+		else if(type == "button")
+			element = createButton(tmp, callback);
+		else if(type == "window")
+			element = createWindow(tmp, callback);
+		else if(type == "progressbar")
+			element = createProgressBar(tmp, callback);
 
+		pugi::xml_node childs = tmp.child("childs");
+		if(childs)
+		{ 
+			Load_UIElements(childs, menu, callback, element);
+		}
+		
+		if (parent != nullptr)
+		{
+			parent->appendChild(element, tmp.attribute("center").as_bool());
+		}
+
+		menu->elements.push_back(element);
+	}
 }
 
-Text* j1Gui::createText(char* text, int x, int y, _TTF_Font* font, SDL_Color color, j1Module* callback)
+Text* j1Gui::createText(pugi::xml_node node, j1Module* callback)
 {
-	Text* ret = new Text(text, x, y, font, color, callback);
-	ret->interactive = false;
+	std::string text = node.attribute("text").as_string();
+	int x = node.child("position").attribute("x").as_int();
+	int y = node.child("position").attribute("y").as_int();
+	int font_id = node.child("font").attribute("id").as_int();
+	std::list<_TTF_Font*>::iterator font = std::next(App->font->fonts.begin(), font_id-1);
+	SDL_Color color = { node.child("color").attribute("r").as_int(), node.child("color").attribute("g").as_int(), node.child("color").attribute("b").as_int(), node.child("color").attribute("a").as_int() };
+
+	Text* ret = new Text(text, x, y, (*font), color, callback);
+	
+	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
+	ret->interactive = node.child("interactive").attribute("value").as_bool();
 	UI_elements.push_back(ret);
 
 	return ret;
 }
 
-Image* j1Gui::createImage(int x, int y, SDL_Texture* texture, j1Module* callback)
+Image* j1Gui::createImage(pugi::xml_node node, j1Module* callback)
 {
+	SDL_Texture* texture = App->tex->Load(node.attribute("path").as_string());
 	uint tex_width, tex_height;
 	App->tex->GetSize(texture, tex_width, tex_height);
+
+	int x = node.child("position").attribute("x").as_int();
+	int y = node.child("position").attribute("y").as_int();
+
 	Image* ret = new Image(texture, x, y, {0, 0, (int)tex_width, (int)tex_height }, callback);
+	
+	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
+	ret->interactive = node.child("interactive").attribute("value").as_bool();
 	UI_elements.push_back(ret);
 
 	return ret;
@@ -259,6 +299,7 @@ Image* j1Gui::createImageFromAtlas(pugi::xml_node node, j1Module* callback)
 	SDL_Rect section = { node.child("section").attribute("x").as_int(), node.child("section").attribute("y").as_int(), node.child("section").attribute("w").as_int(), node.child("section").attribute("h").as_int() };
 
 	Image* ret = new Image(atlas, x, y, section, callback);
+	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
 	UI_elements.push_back(ret);
@@ -266,50 +307,106 @@ Image* j1Gui::createImageFromAtlas(pugi::xml_node node, j1Module* callback)
 	return ret;
 }
 
-Window* j1Gui::createWindow(int x, int y, SDL_Texture * texture, SDL_Rect section, j1Module * callback)
+Window* j1Gui::createWindow(pugi::xml_node node, j1Module * callback)
 {
-	SDL_Texture* usingTexture = (texture) ? texture : atlas;
+	SDL_Texture* texture = nullptr;
+	if (node.attribute("path"))
+		texture = App->tex->Load(node.attribute("path").as_string());
+	else
+		texture = atlas;
 
-	Window* ret = new Window(usingTexture, x, y, section, callback);
+	int x = node.child("position").attribute("x").as_int();
+	int y = node.child("position").attribute("y").as_int();
+	SDL_Rect section = { node.child("section").attribute("x").as_int(), node.child("section").attribute("y").as_int(), node.child("section").attribute("w").as_int(), node.child("section").attribute("h").as_int() };
+
+	Window* ret = new Window(texture, x, y, section, callback);
+	
+	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
+	ret->interactive = node.child("interactive").attribute("value").as_bool();
 	UI_elements.push_back(ret);
 
 	return ret;
 }
 
-Button* j1Gui::createButton(int x, int y, SDL_Texture* texture, SDL_Rect standby, SDL_Rect OnMouse, SDL_Rect OnClick, j1Module* callback)
+Button* j1Gui::createButton(pugi::xml_node node, j1Module* callback)
 {
-	SDL_Texture* usingTexture = (texture) ? texture : atlas;
+	SDL_Texture* texture = nullptr;
+	if (node.attribute("path"))
+		texture = App->tex->Load(node.attribute("path").as_string());
+	else
+		texture = atlas;
 
-	Button* ret = new Button(x, y, usingTexture, standby, OnMouse, OnClick, callback);
+	int x = node.child("position").attribute("x").as_int();
+	int y = node.child("position").attribute("y").as_int();
+	SDL_Rect standby = { node.child("standby").attribute("x").as_int(), node.child("standby").attribute("y").as_int(), node.child("standby").attribute("w").as_int(), node.child("standby").attribute("h").as_int() };
+	SDL_Rect OnMouse = { node.child("OnMouse").attribute("x").as_int(), node.child("OnMouse").attribute("y").as_int(), node.child("OnMouse").attribute("w").as_int(), node.child("OnMouse").attribute("h").as_int() };
+	SDL_Rect OnClick = { node.child("OnClick").attribute("x").as_int(), node.child("OnClick").attribute("y").as_int(), node.child("OnClick").attribute("w").as_int(), node.child("OnClick").attribute("h").as_int() };
+
+	Button* ret = new Button(x, y, texture, standby, OnMouse, OnClick, callback);
+	
+	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
+	ret->interactive = node.child("interactive").attribute("value").as_bool();
 	UI_elements.push_back(ret);
 
 	return ret;
 }
 
-Chrono * j1Gui::createTimer(int x, int y, int initial_value, _TTF_Font * font, SDL_Color color, j1Module * callback)
+Chrono * j1Gui::createTimer(pugi::xml_node node, j1Module * callback)
 {
-	Chrono* ret = new Chrono(x, y, TIMER, font, color, callback);
-	ret->setStartValue(initial_value);
-	ret->interactive = false;
+	int x = node.child("position").attribute("x").as_int();
+	int y = node.child("position").attribute("y").as_int();
+
+	int font_id = node.child("font").attribute("id").as_int();
+	std::list<_TTF_Font*>::iterator font = std::next(App->font->fonts.begin(), font_id - 1);
+	SDL_Color color = { node.child("color").attribute("r").as_int(), node.child("color").attribute("g").as_int(), node.child("color").attribute("b").as_int(), node.child("color").attribute("a").as_int() };
+	
+	Chrono* ret = new Chrono(x, y, TIMER, (*font), color, callback);
+	
+	ret->setStartValue(node.attribute("initial_value").as_int());
+	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
+	ret->interactive = node.child("interactive").attribute("value").as_bool();
 	UI_elements.push_back(ret);
 
 	return ret;
 }
 
-Chrono * j1Gui::createStopWatch(int x, int y, _TTF_Font * font, SDL_Color color, j1Module * callback)
+Chrono * j1Gui::createStopWatch(pugi::xml_node node, j1Module * callback)
 {
-	Chrono* ret = new Chrono(x, y, STOPWATCH, font, color, callback);
-	ret->interactive = false;
+	int x = node.child("position").attribute("x").as_int();
+	int y = node.child("position").attribute("y").as_int();
+	
+	int font_id = node.child("font").attribute("id").as_int();
+	std::list<_TTF_Font*>::iterator font = std::next(App->font->fonts.begin(), font_id - 1);
+	SDL_Color color = { node.child("color").attribute("r").as_int(), node.child("color").attribute("g").as_int(), node.child("color").attribute("b").as_int(), node.child("color").attribute("a").as_int() };
+
+	Chrono* ret = new Chrono(x, y, STOPWATCH, (*font), color, callback);
+	
+	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
+	ret->interactive = node.child("interactive").attribute("value").as_bool();
 	UI_elements.push_back(ret);
 
 	return ret;
 }
 
-ProgressBar* j1Gui::createProgressBar(int x, int y, SDL_Texture* texture, SDL_Rect empty, SDL_Rect full, Image* head, j1Module* callback)
+ProgressBar* j1Gui::createProgressBar(pugi::xml_node node, j1Module* callback)
 {
-	SDL_Texture* usingTexture = (texture) ? texture : atlas;
+	SDL_Texture* texture = nullptr;
+	if (node.attribute("path"))
+		texture = App->tex->Load(node.attribute("path").as_string());
+	else
+		texture = atlas;
 
-	ProgressBar* ret = new ProgressBar(x, y, usingTexture, empty, full, head, callback);
+	int x = node.child("position").attribute("x").as_int();
+	int y = node.child("position").attribute("y").as_int();
+
+	SDL_Rect empty = { node.child("empty").attribute("x").as_int(), node.child("empty").attribute("y").as_int(), node.child("empty").attribute("w").as_int(), node.child("empty").attribute("h").as_int() };
+	SDL_Rect full = { node.child("full").attribute("x").as_int(), node.child("full").attribute("y").as_int(), node.child("full").attribute("w").as_int(), node.child("full").attribute("h").as_int() };
+	SDL_Rect head = { node.child("head").attribute("x").as_int(), node.child("head").attribute("y").as_int(), node.child("head").attribute("w").as_int(), node.child("head").attribute("h").as_int() };
+
+	ProgressBar* ret = new ProgressBar(x, y, texture, empty, full, head, callback);
+	
+	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
+	ret->interactive = node.child("interactive").attribute("value").as_bool();
 	UI_elements.push_back(ret);
 
 	return ret;

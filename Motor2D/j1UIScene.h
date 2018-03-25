@@ -37,6 +37,7 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
+	void LoadFonts(pugi::xml_node node);
 	void LoadUI(pugi::xml_node node);
 
 	bool OnUIEvent(UI_element* element, event_type event_type);

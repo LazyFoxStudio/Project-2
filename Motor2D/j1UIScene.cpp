@@ -13,6 +13,7 @@
 #include "j1Textures.h"
 #include "UI_Element.h"
 #include "UI_Chrono.h"
+#include "j1Fonts.h"
 
 j1UIScene::j1UIScene() { name = "introscene";}
 
@@ -40,8 +41,18 @@ bool j1UIScene::Update(float dt)
 	return true;
 }
 
+void j1UIScene::LoadFonts(pugi::xml_node node)
+{
+	pugi::xml_node font;
+	for (font = node.child("font"); font; font = font.next_sibling("font"))
+	{
+		App->font->Load(font.attribute("path").as_string(), font.attribute("size").as_int());
+	}
+}
+
 void j1UIScene::LoadUI(pugi::xml_node node)
 {
+	LoadFonts(node);
 	pugi::xml_node menuconfig;
 	for (menuconfig = node.child("menu"); menuconfig; menuconfig = menuconfig.next_sibling("menu"))
 	{

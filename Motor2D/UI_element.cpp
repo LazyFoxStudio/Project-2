@@ -17,6 +17,28 @@ iPoint UI_element::calculateAbsolutePosition() const
 		return localPosition;
 }
 
+void UI_element::appendChild(UI_element * child, bool center)
+{
+	if (center)
+	{
+		iPoint child_pos(section.w / 2, section.h / 2);
+		child_pos.x -= child->section.w / 2;
+		child_pos.y -= child->section.h / 2;
+		child->localPosition = child_pos;
+		child->setOriginalPos(child_pos.x, child_pos.y);
+	}	
+	child->parent = this;
+	childs.push_back(child);
+}
+
+void UI_element::BlitChilds()
+{
+	for (std::list<UI_element*>::iterator it_e = childs.begin(); it_e != childs.end(); it_e++)
+	{
+		(*it_e)->BlitElement();
+	}
+}
+
 void UI_element::setDragable(bool horizontally, bool vertically)
 {
 	if (horizontally || vertically)

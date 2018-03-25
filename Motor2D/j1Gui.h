@@ -61,16 +61,16 @@ public:
 	// Gui creation functions
 	const SDL_Texture* GetAtlas() const;
 
-	void Load_UIElements(pugi::xml_node node, menu* menu,j1Module* callback);
-	Text* createText(char* text, int x, int y, _TTF_Font* font, SDL_Color color = { 255, 255, 255, 255 }, j1Module* callback = nullptr);
-	Chrono* createTimer(int x, int y, int initial_value, _TTF_Font* font, SDL_Color color, j1Module* callback = nullptr);
-	Chrono* createStopWatch(int x, int y, _TTF_Font* font, SDL_Color color, j1Module* callback = nullptr);
-	Image* createImage(int x, int y, SDL_Texture* texture, j1Module* callback = nullptr);
+	void Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback = nullptr, UI_element* parent = nullptr);
+	Text* createText(pugi::xml_node node, j1Module* callback = nullptr);
+	Chrono* createTimer(pugi::xml_node node, j1Module* callback = nullptr);
+	Chrono* createStopWatch(pugi::xml_node node, j1Module* callback = nullptr);
+	Image* createImage(pugi::xml_node node, j1Module* callback = nullptr);
 	Image* createImageFromAtlas(pugi::xml_node node, j1Module* callback = nullptr);
 	//NULL texture to use atlas
-	Button* createButton(int x, int y, SDL_Texture* texture, SDL_Rect standby, SDL_Rect OnMouse, SDL_Rect OnClick, j1Module* callback = nullptr);
-	Window* createWindow(int x, int y, SDL_Texture* texture, SDL_Rect section, j1Module* callback = nullptr);
-	ProgressBar* createProgressBar(int x, int y, SDL_Texture* texture, SDL_Rect empty, SDL_Rect full, Image* head, j1Module* callback = nullptr);
+	Button* createButton(pugi::xml_node node, j1Module* callback = nullptr);
+	Window* createWindow(pugi::xml_node node, j1Module* callback = nullptr);
+	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr);
 
 public:
 	bool UI_Debug = false;

@@ -80,6 +80,8 @@ void Text::BlitElement()
 		}
 		App->render->Blit(texture, globalPos.x, globalPos.y, NULL);
 	}
+
+	BlitChilds();
 }
 
 void Text::setOutlined(bool isOutlined)
@@ -96,13 +98,7 @@ std::string Text::getText() const
 	return text;
 }
 
-void Text::setText(const char * string)
-{
-	text = string;
-	createTexture();
-}
-
-void Text::setText(const std::string string)
+void Text::setText(std::string string)
 {
 	text = string;
 	createTexture();

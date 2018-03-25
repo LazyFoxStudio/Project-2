@@ -69,14 +69,12 @@ public:
 
 	iPoint calculateAbsolutePosition() const;
 
-	virtual void appendChild(int x, int y, UI_element* child)
-	{}
-
-	virtual void appendChildAtCenter(UI_element* child)
-	{}
+	void appendChild(UI_element* child, bool center = false);
 
 	virtual void BlitElement()
 	{}
+
+	void BlitChilds();
 
 	void setDragable(bool horizontally, bool vertically);
 
@@ -101,6 +99,7 @@ public:
 	element_function function = NONE;
 	j1Module* callback = nullptr;
 	UI_element* parent = nullptr;
+	std::list<UI_element*> childs;
 	bool hovering = false;
 	bool moving = false;
 	bool dragable = false;

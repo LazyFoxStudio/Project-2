@@ -3,31 +3,6 @@
 #include "j1Render.h"
 #include "Brofiler\Brofiler.h"
 
-void Button::setOutlined(bool isOutlined)
-{
-	if (text != nullptr)
-		text->setOutlined(isOutlined);
-}
-
-void Button::appendChild(int x, int y, UI_element * child)
-{
-	child->localPosition = { x, y };
-	child->setOriginalPos(x, y);
-	child->parent = this;
-	text = (Text*)child;
-}
-
-void Button::appendChildAtCenter(UI_element * child)
-{
-	iPoint child_pos(section.w / 2, section.h / 2);
-	child_pos.x -= child->section.w / 2;
-	child_pos.y -= child->section.h / 2;
-	child->localPosition = { child_pos.x, child_pos.y };
-	child->setOriginalPos(child_pos.x, child_pos.y);
-	child->parent = this;
-	text = (Text*)child;
-}
-
 void Button::BlitElement()
 {
 	BROFILER_CATEGORY("Button Blit", Profiler::Color::DarkKhaki);
@@ -51,8 +26,5 @@ void Button::BlitElement()
 		break;
 	}
 
-	if (text != nullptr)
-	{		
-		text->BlitElement();
-	}
+	BlitChilds();
 }

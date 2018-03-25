@@ -75,4 +75,6 @@ void Chrono::BlitElement()
 	}
 
 	text->BlitElement();
+
+	BlitChilds();
 }

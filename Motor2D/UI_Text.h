@@ -14,7 +14,7 @@ public:
 	Text()
 	{}
 
-	Text(char* text, int x, int y, _TTF_Font* font, SDL_Color color, j1Module* callback) : UI_element(x, y, element_type::TEXT, {0, 0, 0, 0}, callback, nullptr),
+	Text(std::string text, int x, int y, _TTF_Font* font, SDL_Color color, j1Module* callback) : UI_element(x, y, element_type::TEXT, {0, 0, 0, 0}, callback, nullptr),
 		text(text),
 		font(font),
 		color(color)
@@ -30,8 +30,7 @@ public:
 	void setOutlined(bool isOutlined);
 
 	std::string getText() const;
-	void setText(const char* string);
-	void setText(const std::string string);
+	void setText(std::string string);
 	int getLength() const;
 
 	void BlitElement();
