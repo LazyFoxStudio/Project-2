@@ -13,6 +13,7 @@
 #include "j1Textures.h"
 #include "UI_Element.h"
 #include "UI_Chrono.h"
+#include "UI_Text.h"
 #include "j1Fonts.h"
 
 j1UIScene::j1UIScene() { name = "introscene";}
@@ -30,6 +31,20 @@ bool j1UIScene::Start()
 	// App->audio->PlayMusic("MainTheme.ogg");
 
 	LoadUI(guiconfig);
+
+	for (std::list<menu*>::iterator it_m = App->uiscene->menus.begin(); it_m != App->uiscene->menus.end(); it_m++)
+	{
+		if ((*it_m) == nullptr) break;
+		if (!(*it_m)->active) continue;
+		for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++)
+		{
+			if ((*it_e)->element_type == TEXT)
+			{
+				Text* text = (Text*)(*it_e);
+				text->convertIntoCounter(&text->parent->localPosition.x);
+			}
+		}
+	}
 
 	return true;
 }

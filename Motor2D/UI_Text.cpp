@@ -68,6 +68,23 @@ void Text::BlitElement()
 {
 	BROFILER_CATEGORY("Text Blit", Profiler::Color::Fuchsia);
 
+	if (counting)
+	{
+		if (counter != nullptr)
+		{
+			std::string newValue = std::to_string(*counter);
+			if (newValue != text)
+			{
+				setText(newValue);
+			}
+		}
+		else
+		{
+			if (text != "No counter assigned")
+				setText("No counter assigned");
+		}
+	}
+
 	if (texture != nullptr)
 	{
 		SDL_SetTextureAlphaMod(texture, App->gui->alpha_value);
@@ -91,6 +108,12 @@ void Text::setOutlined(bool isOutlined)
 		outlined = isOutlined;
 		createTexture();
 	}
+}
+
+void Text::convertIntoCounter(int* variableCounting)
+{
+	counting = true;
+	counter = variableCounting;
 }
 
 std::string Text::getText() const
