@@ -182,8 +182,8 @@ bool j1Render::DrawQuad(SDL_Rect& rect, Color& color, bool filled, bool use_came
 
 	if(use_camera)
 	{
-		rect.x = (int)(-camera.x + rect.x * scale);
-		rect.y = (int)(-camera.y + rect.y * scale);
+		rect.x = (int)(camera.x + rect.x * scale);
+		rect.y = (int)(camera.y + rect.y * scale);
 		rect.w *= scale, rect.h *= scale;
 	}
 

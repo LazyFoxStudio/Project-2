@@ -16,6 +16,7 @@
 #include "j1UIScene.h"
 #include "UI_Chrono.h"
 #include "UI_ProgressBar.h"
+#include "j1EntityController.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -150,6 +151,13 @@ bool j1Gui::Update(float dt)
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
+	//Draw selection quads
+	for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
+	{
+		SDL_Rect quad = { (*it_e)->position.x, (*it_e)->position.y, 70, 70 };
+		App->render->DrawQuad(quad, Green, false);
+	}
+	//Draw UI_elements
 	for (std::list<menu*>::iterator it_m = App->uiscene->menus.begin(); it_m != App->uiscene->menus.end(); it_m++)
 	{
 		if ((*it_m) == nullptr) break;
@@ -166,6 +174,7 @@ bool j1Gui::PostUpdate()
 				(*it_e)->BlitElement();
 		}
 	}
+	//Draw Debug
 	if (UI_Debug)
 		UIDebugDraw();
 	
