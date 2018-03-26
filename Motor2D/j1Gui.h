@@ -4,6 +4,9 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "SDL/include/SDL_rect.h"
+#include "Unit.h"
+#include "Building.h"
+#include <map>
 #include <string>
 #include <list>
 
@@ -60,6 +63,7 @@ public:
 	void UIDebugDraw();
 	// Gui creation functions
 	const SDL_Texture* GetAtlas() const;
+	UI_element* GetElement(int id);
 
 	void Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback = nullptr, UI_element* parent = nullptr);
 	Text* createText(pugi::xml_node node, j1Module* callback = nullptr);
@@ -71,6 +75,11 @@ public:
 	Button* createButton(pugi::xml_node node, j1Module* callback = nullptr);
 	Window* createWindow(pugi::xml_node node, j1Module* callback = nullptr);
 	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr);
+
+	void AddIconData(unitType type, pugi::xml_node node);
+	void AddIconData(buildingType type, pugi::xml_node node);
+	SDL_Rect GetIconRect(unitType type);
+	SDL_Rect GetIconRect(buildingType type);
 
 public:
 	bool UI_Debug = false;
@@ -84,6 +93,8 @@ private:
 	std::string	buttonFX;
 	std::list<UI_element*> UI_elements;
 	UI_element* draggingElement = nullptr;
+	std::map<unitType, SDL_Rect> unitIconRect;
+	std::map<buildingType, SDL_Rect> buildingIconRect;
 };
 
 #endif // __j1GUI_H__

@@ -2,6 +2,7 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Scene.h"
+#include "j1Gui.h"
 #include "Entity.h"
 #include "PugiXml/src/pugixml.hpp"
 #include "j1Textures.h"
@@ -132,6 +133,10 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitTemplate->flying		= NodeInfo.child("Stats").child("flying").attribute("value").as_bool(false);
 
 		// TODO unit cost & cooldown, outside the DB so it's not unnecessarily repeated on every unit
+
+		pugi::xml_node IconData;
+		if (NodeInfo.child("iconData"))
+			App->gui->AddIconData(unitTemplate->type, NodeInfo.child("iconData"));
 
 		pugi::xml_node AnimInfo;
 		for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"))

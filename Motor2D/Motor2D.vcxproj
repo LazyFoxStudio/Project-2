@@ -155,6 +155,7 @@
     <ClInclude Include="UI_Chrono.h" />
     <ClInclude Include="UI_element.h" />
     <ClInclude Include="UI_Image.h" />
+    <ClInclude Include="UI_IngameMenu.h" />
     <ClInclude Include="UI_ProgressBar.h" />
     <ClInclude Include="UI_Text.h" />
     <ClInclude Include="UI_Window.h" />

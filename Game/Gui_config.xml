@@ -51,7 +51,9 @@ The id of the fonts will be ordered as they are in the file, starting with 1
 		
 -->
 <config>
-  <font path="fonts/Old School Adventures.ttf" size="10"/>
+  <fonts>
+	<font path="fonts/Old School Adventures.ttf" size="10"/>
+  </fonts>
   <menu type="2" active="true">
 	<atlas_image>
 	  <position x="0" y="0"/>
@@ -59,7 +61,7 @@ The id of the fonts will be ordered as they are in the file, starting with 1
       <draggable horizontal="true" vertical="true"/>
 	  <interactive value="true"/>
 	  <childs>
-		<text text="Hello World!" center="true">
+		<text text="Hello World!" center="true" counter="true">
 			<position x="10" y="10"/>
 			<font id="1"/>
 			<color r="255" g="255" b="255" a="255"/>
@@ -67,7 +69,12 @@ The id of the fonts will be ordered as they are in the file, starting with 1
 			<interactive value="false"/>
 		</text>
 	  </childs>
-	</atlas_image>	
+	</atlas_image>
+	<text text="Hello World!" counter="true">
+			<position x="100" y="100"/>
+			<font id="1"/>
+			<color r="255" g="255" b="255" a="255"/>
+		</text>
   </menu>
 </config>
 
