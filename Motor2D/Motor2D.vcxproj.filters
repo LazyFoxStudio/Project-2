@@ -89,22 +89,22 @@
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClCompile>
     <ClCompile Include="UI_Button.cpp">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClCompile>
     <ClCompile Include="UI_Chrono.cpp">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClCompile>
     <ClCompile Include="UI_Image.cpp">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClCompile>
     <ClCompile Include="UI_ProgressBar.cpp">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClCompile>
     <ClCompile Include="UI_Text.cpp">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClCompile>
     <ClCompile Include="UI_Window.cpp">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClCompile>
     <ClCompile Include="j1Gui.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
@@ -113,7 +113,7 @@
       <Filter>Desenvolupament  ========\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="UI_element.cpp">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,31 +217,34 @@
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClInclude>
     <ClInclude Include="UI_Button.h">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClInclude>
     <ClInclude Include="UI_Chrono.h">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClInclude>
     <ClInclude Include="UI_element.h">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClInclude>
     <ClInclude Include="UI_Image.h">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClInclude>
     <ClInclude Include="UI_ProgressBar.h">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClInclude>
     <ClInclude Include="UI_Text.h">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClInclude>
     <ClInclude Include="UI_Window.h">
-      <Filter>Desenvolupament  ========\UI elements</Filter>
+      <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClInclude>
     <ClInclude Include="j1Gui.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
     <ClInclude Include="j1UIScene.h">
       <Filter>Desenvolupament  ========\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_IngameMenu.h">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -269,7 +272,13 @@
     <Filter Include="Desenvolupament  ========\Entities">
       <UniqueIdentifier>{cb479061-eae6-44a1-acb6-29edb60003aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Desenvolupament  ========\UI elements">
+    <Filter Include="Desenvolupament  ========\GUI">
+      <UniqueIdentifier>{189cc345-0869-48d4-b5bb-24a02adad0ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\GUI\Compund Elements">
+      <UniqueIdentifier>{6b01f619-eb9c-4365-9f0a-28677c8ae1a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\GUI\Basic UI Elements">
       <UniqueIdentifier>{35e96c29-4c6f-4b2e-819c-81d75beb2966}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

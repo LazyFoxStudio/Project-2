@@ -4,6 +4,7 @@
         <Unit>
             <name value="Footman"/>
             <type value="3"/>
+			<iconData x="0" y="0" w="0" h="0"/>
             <texture value="Assets\Sprites\Alliance Sprites\Footman_Spritesheet.png"/>
             <Stats>
                 <life value="60"/>

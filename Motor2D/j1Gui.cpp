@@ -17,7 +17,6 @@
 #include "UI_Chrono.h"
 #include "UI_ProgressBar.h"
 
-
 j1Gui::j1Gui() : j1Module()
 {
 	name = "gui";
@@ -213,6 +212,13 @@ const SDL_Texture* j1Gui::GetAtlas() const
 	return atlas;
 }
 
+UI_element* j1Gui::GetElement(int id)
+{
+	std::list<UI_element*>::iterator it_e = std::next(UI_elements.begin(), id);
+
+	return (*it_e);
+}
+
 void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback, UI_element* parent)
 {
 	BROFILER_CATEGORY("Load UI elements", Profiler::Color::Chocolate);
@@ -259,6 +265,10 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 Text* j1Gui::createText(pugi::xml_node node, j1Module* callback)
 {
 	std::string text = node.attribute("text").as_string();
+	if (node.attribute("counter").as_bool())
+	{
+		text = "Element: " + std::to_string(UI_elements.size());
+	}
 	int x = node.child("position").attribute("x").as_int();
 	int y = node.child("position").attribute("y").as_int();
 	int font_id = node.child("font").attribute("id").as_int();
@@ -410,4 +420,16 @@ ProgressBar* j1Gui::createProgressBar(pugi::xml_node node, j1Module* callback)
 	UI_elements.push_back(ret);
 
 	return ret;
+}
+
+void j1Gui::AddIconData(unitType type, pugi::xml_node node)
+{
+	SDL_Rect rect = { node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() };
+	unitIconRect.insert(std::pair<unitType, SDL_Rect>(type, rect));
+}
+
+void j1Gui::AddIconData(buildingType type, pugi::xml_node node)
+{
+	SDL_Rect rect = { node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() };
+	buildingIconRect.insert(std::pair<buildingType, SDL_Rect>(type, rect));
 }
