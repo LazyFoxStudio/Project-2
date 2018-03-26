@@ -253,11 +253,11 @@ void j1Render::MouseCameraMovement(float dt)
 
 	App->input->GetMousePosition(mousePosX, mousePosY);
 
-	if (mousePosX < 10 && camera.x < 0)								mov_x = 1000;  //Move left
-	else if (mousePosX > camera.w - 10 && camera.x > -cam_limit_x)	 mov_x = -1000; //Move right
+	if ((mousePosX < 10 || App->input->GetKey(SDL_SCANCODE_LEFT)==KEY_REPEAT) && camera.x < 0)									mov_x = 1000;  //Move left
+	else if ((mousePosX > camera.w - 10 || App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) && camera.x > -cam_limit_x)	mov_x = -1000; //Move right
 		
-	if (mousePosY < 10 && camera.y < 0)								 mov_y = 1000;	 //Move up 
-	else if (mousePosY > camera.h - 10 && camera.y > -cam_limit_y)	 mov_y = -1000; //Move down
+	if ((mousePosY < 10 || App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) && camera.y < 0)									mov_y = 1000;	 //Move up 
+	else if ((mousePosY > camera.h - 10 || App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) && camera.y > -cam_limit_y)		mov_y = -1000; //Move down
 		
 	camera.x += mov_x * dt;
 	camera.y += mov_y * dt;
