@@ -58,6 +58,7 @@ public:
 	virtual Entity* findTarget() { return nullptr; };
 	virtual void attackEntity(Entity* target) {};
 
+	bool Update(float dt);
 	void Draw(float dt);
 	void animationController();
 	void Halt();

@@ -11,11 +11,6 @@ Enemy::~Enemy()
 
 }
 
-bool Enemy::Update(float dt)
-{
-	return true;
-}
-
 void Enemy::attackEntity(Entity* target)
 {
 

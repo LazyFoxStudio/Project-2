@@ -7,6 +7,7 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "j1Textures.h"
 #include "j1Audio.h"
+#include "Command.h"
 #include "j1Input.h"
 #include "Hero.h"
 
@@ -22,7 +23,7 @@ bool j1EntityController::Start()
 	gameData = App->LoadFile(doc, "GameData.xml");
 
 	loadEntitiesDB(gameData);
-	addUnit(iPoint(500, 500), FOOTMAN);
+	addUnit(iPoint(800, 800), FOOTMAN);
 	return true;
 }
 
@@ -42,6 +43,8 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE)
 		SelectionControl();
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		CommandControl();
 
 	return true;
 }
@@ -118,6 +121,54 @@ void j1EntityController::addBuilding(iPoint pos, buildingType type)
 void j1EntityController::addNature(iPoint pos, resourceType res_type, int amount)
 {
 	//Switch or like Units?
+}
+
+Entity* j1EntityController::CheckMouseHover(iPoint mouse_world)
+{
+	SDL_Point p = { mouse_world.x, mouse_world.y };
+
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)	
+		if (SDL_PointInRect(&p, &(*it)->collider))  
+			return (*it);
+
+	return nullptr;
+}
+
+void j1EntityController::CommandControl()
+{
+	int mouseX, mouseY;
+	App->input->GetMousePosition(mouseX, mouseY);
+	iPoint world_p = App->render->ScreenToWorld(mouseX, mouseY);
+	iPoint map_p = App->map->WorldToMap(world_p.x, world_p.y);
+
+	Entity* entity = CheckMouseHover(world_p);
+
+	if (!entity)   // clicked on ground
+	{
+		for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
+		{
+			Unit* unit = (Unit*)(*it);
+			(unit)->commands.push_back(new MoveTo(unit, map_p));
+		}
+	}
+	else
+	{
+		switch (entity->entity_type)
+		{
+		case UNIT:    //clicked on a unit
+			if (((Unit*)entity)->IsEnemy())
+			{
+				for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
+				{
+					Unit* unit = (Unit*)(*it);
+					unit->commands.push_back(new AttackingMoveTo(unit, map_p));
+				}
+			}
+			break;
+
+			// TODO: other cases
+		}
+	}
 }
 
 void j1EntityController::SelectionControl()

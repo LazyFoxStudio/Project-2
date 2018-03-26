@@ -36,6 +36,8 @@ public:
 
 	void placingBuilding(buildingType type);
 	void SelectionControl();
+	void CommandControl();
+	Entity* CheckMouseHover(iPoint mouse_world);
 
 public:
 

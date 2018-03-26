@@ -85,7 +85,7 @@ PathNode PathList::GetNodeLowestScore() const
 	{
 		if ((*it).Score() < min)
 		{
-			min = (*it).Score() < min;
+			min = (*it).Score();
 			node = &(*it);
 		}
 	}

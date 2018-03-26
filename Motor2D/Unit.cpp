@@ -36,6 +36,15 @@ void Unit::Draw(float dt)
 	App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt));
 }
 
+bool Unit::Update(float dt)
+{
+	if (!commands.empty())
+	{
+		commands.front()->Execute(dt);
+		if (commands.front()->state == FINISHED) commands.pop_front();
+	}
+	return true;
+}
 
 void Unit::animationController()
 {
