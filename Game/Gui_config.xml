@@ -57,7 +57,7 @@ The id of the fonts will be ordered as they are in the file, starting with 1
   <menu type="2" active="true">
 	<atlas_image icon_atlas="false">
 	  <position x="0" y="0"/>
-      <section x="414" y="168" w="225" h="68"/>
+      <section x="285" y="271" w="143" h="53"/>
       <draggable horizontal="true" vertical="true"/>
 	  <interactive value="true"/>
 	  <childs>
