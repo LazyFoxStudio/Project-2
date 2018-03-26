@@ -17,7 +17,8 @@ enum element_type
 	BUTTON,
 	WINDOW,
 	CHRONO,
-	PROGRESSBAR
+	PROGRESSBAR,
+	MENU
 };
 
 enum element_function

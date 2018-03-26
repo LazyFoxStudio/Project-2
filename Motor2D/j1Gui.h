@@ -70,7 +70,7 @@ public:
 	Chrono* createTimer(pugi::xml_node node, j1Module* callback = nullptr);
 	Chrono* createStopWatch(pugi::xml_node node, j1Module* callback = nullptr);
 	Image* createImage(pugi::xml_node node, j1Module* callback = nullptr);
-	Image* createImageFromAtlas(pugi::xml_node node, j1Module* callback = nullptr);
+	Image* createImageFromAtlas(pugi::xml_node node, j1Module* callback = nullptr, bool use_icon_atlas = false);
 	//NULL texture to use atlas
 	Button* createButton(pugi::xml_node node, j1Module* callback = nullptr);
 	Window* createWindow(pugi::xml_node node, j1Module* callback = nullptr);
@@ -89,7 +89,9 @@ public:
 private:
 
 	SDL_Texture* atlas;
+	SDL_Texture* icon_atlas;
 	std::string atlas_file_name;
+	std::string icon_atlas_file_name;
 	std::string	buttonFX;
 	std::list<UI_element*> UI_elements;
 	UI_element* draggingElement = nullptr;

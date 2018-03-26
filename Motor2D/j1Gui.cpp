@@ -34,6 +34,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 
 	buttonFX = conf.child("buttonFX").attribute("source").as_string("");
 	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
+	icon_atlas_file_name = conf.child("icon_atlas").attribute("file").as_string("");
 
 	return ret;
 }
@@ -42,6 +43,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 bool j1Gui::Start()
 {
 	atlas = App->tex->Load(atlas_file_name.c_str());
+	icon_atlas = App->tex->Load(icon_atlas_file_name.c_str());
 
 	button_click_fx = App->audio->LoadFx(buttonFX.c_str());
 
@@ -175,6 +177,17 @@ bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
 
+	if (atlas != nullptr)
+	{
+		App->tex->UnLoad(atlas);
+		atlas = nullptr;
+	}
+	if (icon_atlas != nullptr)
+	{
+		App->tex->UnLoad(icon_atlas);
+		icon_atlas = nullptr;
+	}
+
 	std::list<UI_element*>::iterator it;
 	it = UI_elements.begin();
 	while (it != UI_elements.end())
@@ -231,7 +244,7 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 	{
 		std::string type = tmp.name();
 		if(type == "atlas_image")
-			element = createImageFromAtlas(tmp, callback);
+			element = createImageFromAtlas(tmp, callback, tmp.attribute("icon_atlas").as_bool(false));
 		else if(type == "text")
 			element = createText(tmp, callback);
 		else if (type == "timer")
@@ -302,13 +315,14 @@ Image* j1Gui::createImage(pugi::xml_node node, j1Module* callback)
 	return ret;
 }
 
-Image* j1Gui::createImageFromAtlas(pugi::xml_node node, j1Module* callback)
+Image* j1Gui::createImageFromAtlas(pugi::xml_node node, j1Module* callback, bool use_icon_atlas)
 {
 	int x = node.child("position").attribute("x").as_int();
 	int y = node.child("position").attribute("y").as_int();
 	SDL_Rect section = { node.child("section").attribute("x").as_int(), node.child("section").attribute("y").as_int(), node.child("section").attribute("w").as_int(), node.child("section").attribute("h").as_int() };
 
-	Image* ret = new Image(atlas, x, y, section, callback);
+	SDL_Texture* usingAtlas = (use_icon_atlas) ? icon_atlas : atlas;
+	Image* ret = new Image(usingAtlas, x, y, section, callback);
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
@@ -432,4 +446,14 @@ void j1Gui::AddIconData(buildingType type, pugi::xml_node node)
 {
 	SDL_Rect rect = { node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() };
 	buildingIconRect.insert(std::pair<buildingType, SDL_Rect>(type, rect));
+}
+
+SDL_Rect j1Gui::GetIconRect(unitType type)
+{
+	return unitIconRect.at(type);
+}
+
+SDL_Rect j1Gui::GetIconRect(buildingType type)
+{
+	return buildingIconRect.at(type);
 }

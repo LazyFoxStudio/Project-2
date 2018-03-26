@@ -115,6 +115,7 @@
     <ClCompile Include="UI_element.cpp">
       <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClCompile>
+    <ClCompile Include="UI_IngameMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
