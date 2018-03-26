@@ -19,7 +19,8 @@ public:
 	int amount = 0;
 
 public:
-	Nature(iPoint pos, resourceType type = NONE_NATURE, int amount = 0);
+	Nature() { entity_type = NATURE; };
+	Nature(iPoint pos, Nature& nature, int amount = 0);
 	~Nature();
 
 	void Draw();

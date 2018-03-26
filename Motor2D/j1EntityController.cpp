@@ -105,6 +105,16 @@ void j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
 	// if(App->render->CullingCam(unit->position))  App->audio->PlayFx(UNIT_CREATED_FX);
 }
 
+void addBuilding(iPoint pos, buildingType type)
+{
+	//Building* building = new Building(pos, *(buildingDB[type]));
+	//Switch or like Units?
+}
+void addNature(iPoint pos, resourceType res_type, int amount = 0)
+{
+	//Switch or like Units?
+}
+
 bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 {
 	pugi::xml_node NodeInfo;

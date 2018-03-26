@@ -25,7 +25,8 @@ public:
 	j1Timer cooldown;
 
 public:
-	Building(iPoint pos, buildingType type);
+	Building() { entity_type = BUILDING; };
+	Building(iPoint pos, Building& building);
 	~Building();
 
 	bool Update(float dt);
