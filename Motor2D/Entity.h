@@ -19,7 +19,7 @@ class Entity
 {
 public:
 	fPoint position = { 0.0f, 0.0f };
-	//Collider* collider = nullptr;
+	SDL_Rect collider = { 0,0,0,0 };
 	SDL_Texture* texture = nullptr;
 	bool isActive = true;
 	std::string name;

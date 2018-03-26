@@ -35,6 +35,7 @@ public:
 
 
 	void placingBuilding(buildingType type);
+	void SelectionControl();
 
 public:
 
@@ -48,6 +49,7 @@ public:
 	std::map<uint, Nature*> natureDB;
 
 	bool godmode = false;
+	SDL_Rect selection_rect = { 0,0,0,0 };
 };
 
 

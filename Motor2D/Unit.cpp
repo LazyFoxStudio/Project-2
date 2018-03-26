@@ -12,6 +12,7 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	type					= unit.type;
 	flying					= unit.flying;
 	animations				= unit.animations;
+	collider				= unit.collider;
 
 	attack					= unit.attack;
 	current_HP = max_HP		= unit.max_HP;
@@ -23,7 +24,11 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 
 	current_anim			= animations[0];
 	entity_type				= UNIT;
+
 	position.x = pos.x, position.y = pos.y;
+	collider.w = collider.h = 36;
+	collider.x = position.x - (collider.w / 2);
+	collider.y = position.y - (collider.h / 2);
 }
 
 void Unit::Draw(float dt)

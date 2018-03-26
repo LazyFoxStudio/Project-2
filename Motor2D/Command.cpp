@@ -58,6 +58,9 @@ bool MoveTo::OnUpdate(float dt)
 	fPoint velocity = (direction * unit->speed * dt * SPEED_CONSTANT);
 	unit->position += velocity;
 
+	unit->collider.x = unit->position.x - (unit->collider.w / 2);
+	unit->collider.y = unit->position.y - (unit->collider.h / 2);
+
 	return true;
 }
 
@@ -121,6 +124,9 @@ bool AttackingMoveTo::OnUpdate(float dt)
 
 	fPoint velocity = (direction * unit->speed * dt * SPEED_CONSTANT);
 	unit->position += velocity;
+
+	unit->collider.x = unit->position.x - (unit->collider.w / 2);
+	unit->collider.y = unit->position.y - (unit->collider.h / 2);
 
 	return true;
 }

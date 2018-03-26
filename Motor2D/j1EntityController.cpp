@@ -7,6 +7,7 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "j1Textures.h"
 #include "j1Audio.h"
+#include "j1Input.h"
 #include "Hero.h"
 
 j1EntityController::j1EntityController() { name = "entitycontroller"; }
@@ -21,7 +22,7 @@ bool j1EntityController::Start()
 	gameData = App->LoadFile(doc, "GameData.xml");
 
 	loadEntitiesDB(gameData);
-	addUnit(iPoint(50, 50), FOOTMAN);
+	addUnit(iPoint(500, 500), FOOTMAN);
 	return true;
 }
 
@@ -38,6 +39,9 @@ bool j1EntityController::Update(float dt)
 			if (!(*it)->Update(dt))							return false;
 		}
 	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE)
+		SelectionControl();
 
 	return true;
 }
@@ -106,14 +110,56 @@ void j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
 	// if(App->render->CullingCam(unit->position))  App->audio->PlayFx(UNIT_CREATED_FX);
 }
 
-void addBuilding(iPoint pos, buildingType type)
+void j1EntityController::addBuilding(iPoint pos, buildingType type)
 {
 	//Building* building = new Building(pos, *(buildingDB[type]));
 	//Switch or like Units?
 }
-void addNature(iPoint pos, resourceType res_type, int amount = 0)
+void j1EntityController::addNature(iPoint pos, resourceType res_type, int amount)
 {
 	//Switch or like Units?
+}
+
+void j1EntityController::SelectionControl()
+{
+	int mouseX, mouseY;
+	App->input->GetMousePosition(mouseX, mouseY);
+
+	switch (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
+	{
+	case KEY_DOWN:
+		selection_rect.x = mouseX; selection_rect.y = mouseY;
+		break;
+	case KEY_REPEAT:
+		selection_rect.w = mouseX - selection_rect.x;
+		selection_rect.h = mouseY - selection_rect.y;
+		App->render->DrawQuad(selection_rect, White, false, false);
+		break;
+	case KEY_UP:
+
+		selected_entities.clear();
+
+		iPoint selection_to_world = App->render->ScreenToWorld(selection_rect.x, selection_rect.y);
+		selection_rect.x = selection_to_world.x; selection_rect.y = selection_to_world.y;
+
+		if (selection_rect.w == 0 || selection_rect.h == 0) selection_rect.w = selection_rect.h = 1;  // for single clicks
+		else {
+			if (selection_rect.w < 0) { selection_rect.w = -selection_rect.w; selection_rect.x -= selection_rect.w; }
+			if (selection_rect.h < 0) { selection_rect.h = -selection_rect.h; selection_rect.y -= selection_rect.h; }
+		}
+
+		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			if ((*it)->entity_type == UNIT)
+			{
+				Unit* unit = (Unit*)*it;
+				if (!unit->IsEnemy() && SDL_HasIntersection(&unit->collider, &selection_rect))
+					selected_entities.push_back(unit);
+			}
+		}
+		selection_rect = { 0,0,0,0 };
+		break;
+	}
 }
 
 bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
