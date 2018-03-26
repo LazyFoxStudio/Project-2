@@ -111,6 +111,7 @@
     <ClCompile Include="UI_Chrono.cpp" />
     <ClCompile Include="UI_element.cpp" />
     <ClCompile Include="UI_Image.cpp" />
+    <ClCompile Include="UI_IngameMenu.cpp" />
     <ClCompile Include="UI_ProgressBar.cpp" />
     <ClCompile Include="UI_Text.cpp" />
     <ClCompile Include="UI_Window.cpp" />

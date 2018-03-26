@@ -55,7 +55,7 @@ The id of the fonts will be ordered as they are in the file, starting with 1
 	<font path="fonts/Old School Adventures.ttf" size="10"/>
   </fonts>
   <menu type="2" active="true">
-	<atlas_image>
+	<atlas_image icon_atlas="false">
 	  <position x="0" y="0"/>
       <section x="414" y="168" w="225" h="68"/>
       <draggable horizontal="true" vertical="true"/>
