@@ -109,6 +109,7 @@ void j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
 {
 	Unit* unit = new Unit(pos, *(unitDB[type]), squad);
 	entities.push_back(unit);
+	App->gui->createLifeBar(unit);
 	
 	// if(App->render->CullingCam(unit->position))  App->audio->PlayFx(UNIT_CREATED_FX);
 }

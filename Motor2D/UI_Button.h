@@ -25,7 +25,7 @@ public:
 	~Button()
 	{}
 
-	void BlitElement();
+	void BlitElement(bool use_camera = false);
 
 public:
 

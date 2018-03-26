@@ -23,7 +23,7 @@ public:
 
 	void newSelection();
 
-	void BlitElement();
+	void BlitElement(bool use_camera = false);
 
 public:
 

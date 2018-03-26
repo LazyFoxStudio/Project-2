@@ -32,7 +32,7 @@ bool j1UIScene::Start()
 
 	LoadUI(guiconfig);
 	
-	Text* text = (Text*)App->gui->GetElement(1);
+	Text* text = (Text*)App->gui->GetElement(TEXT, 0);
 	text->convertIntoCounter(&text->parent->localPosition.x);
 
 	return true;

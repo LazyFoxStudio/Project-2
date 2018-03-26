@@ -7,13 +7,13 @@
 #include "j1Render.h"
 #include "Brofiler\Brofiler.h"
 
-void Window::BlitElement()
+void Window::BlitElement(bool use_camera)
 {
 	BROFILER_CATEGORY("Window Blit", Profiler::Color::MediumPurple) ;
 
 	SDL_SetTextureAlphaMod(texture, App->gui->alpha_value);
 	iPoint globalPos = calculateAbsolutePosition();
-	App->render->Blit(texture, globalPos.x, globalPos.y, &section, false);
+	App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera);
 
 	BlitChilds();
 }

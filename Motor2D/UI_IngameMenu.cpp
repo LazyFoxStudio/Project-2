@@ -7,7 +7,7 @@ void IngameMenu::newSelection()
 {
 }
 
-void IngameMenu::BlitElement()
+void IngameMenu::BlitElement(bool use_camera)
 {
 	BROFILER_CATEGORY("In-game Menu Blit", Profiler::Color::Beige);
 
@@ -15,7 +15,7 @@ void IngameMenu::BlitElement()
 	//update health bars
 
 	iPoint globalPos = calculateAbsolutePosition();
-	App->render->Blit(texture, globalPos.x, globalPos.y, &section, false);
+	App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera);
 
 	//Blit icons
 	//Blit health bars

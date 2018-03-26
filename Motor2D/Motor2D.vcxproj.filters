@@ -115,7 +115,12 @@
     <ClCompile Include="UI_element.cpp">
       <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClCompile>
-    <ClCompile Include="UI_IngameMenu.cpp" />
+    <ClCompile Include="UI_IngameMenu.cpp">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_LifeBar.cpp">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -245,6 +250,9 @@
       <Filter>Desenvolupament  ========\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="UI_IngameMenu.h">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_LifeBar.h">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClInclude>
   </ItemGroup>

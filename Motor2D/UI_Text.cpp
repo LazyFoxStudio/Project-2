@@ -64,7 +64,7 @@ void Text::setOutlineColor(SDL_Color newColor)
 		createTexture();
 }
 
-void Text::BlitElement()
+void Text::BlitElement(bool use_camera)
 {
 	BROFILER_CATEGORY("Text Blit", Profiler::Color::Fuchsia);
 
@@ -93,9 +93,9 @@ void Text::BlitElement()
 		if (outlined)
 		{
 			SDL_SetTextureAlphaMod(outline, App->gui->alpha_value);
-			App->render->Blit(outline, globalPos.x + outline_offset.x, globalPos.y + outline_offset.y, NULL, false);
+			App->render->Blit(outline, globalPos.x + outline_offset.x, globalPos.y + outline_offset.y, NULL, use_camera);
 		}
-		App->render->Blit(texture, globalPos.x, globalPos.y, NULL, false);
+		App->render->Blit(texture, globalPos.x, globalPos.y, NULL, use_camera);
 	}
 
 	BlitChilds();

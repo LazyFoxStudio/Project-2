@@ -71,10 +71,10 @@ The id of the fonts will be ordered as they are in the file, starting with 1
 	  </childs>
 	</atlas_image>
 	<text text="Hello World!" counter="true">
-			<position x="100" y="100"/>
-			<font id="1"/>
-			<color r="255" g="255" b="255" a="255"/>
-		</text>
+		<position x="100" y="100"/>
+		<font id="1"/>
+		<color r="255" g="255" b="255" a="255"/>
+	</text>
   </menu>
 </config>
 

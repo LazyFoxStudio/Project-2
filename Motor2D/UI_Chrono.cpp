@@ -27,7 +27,7 @@ void Chrono::restartChrono()
 	}
 }
 
-void Chrono::BlitElement()
+void Chrono::BlitElement(bool use_camera)
 {
 	BROFILER_CATEGORY("Chrono Blit", Profiler::Color::AntiqueWhite);
 	time_elapsed = counter.ReadSec();

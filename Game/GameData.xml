@@ -25,4 +25,18 @@
             </Animations>
         </Unit>
     </Units>
+	<LifeBars>
+		<LifeBarG>
+			<empty tag="G_empty" x="285" y="399" w="109" h="14"/>
+			<full tag="G_full" x="285" y="418" w="109" h="14"/>
+		</LifeBarG>
+		<LifeBarR>
+			<empty tag="R_empty" x="418" y="399" w="109" h="14"/>
+			<full tag="R_full" x="418" y="418" w="109" h="14"/>
+		</LifeBarR>
+		<LifeBarY>
+			<empty tag="Y_empty" x="553" y="399" w="109" h="14"/>
+			<full tag="Y_full" x="553" y="418" w="109" h="14"/>
+		</LifeBarY>
+	</LifeBars>
 </GameData>

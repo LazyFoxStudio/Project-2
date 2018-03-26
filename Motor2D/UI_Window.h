@@ -16,7 +16,7 @@ public:
 	~Window()
 	{}
 
-	void BlitElement();
+	void BlitElement(bool use_camera = false);
 
 };
 
