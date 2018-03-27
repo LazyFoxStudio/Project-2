@@ -1,4 +1,3 @@
-//This is a comment just to test the appveyor. Hugo should be doing this but is too busy watching k-pop stars
 
 #include <iostream> 
 #include <sstream>
@@ -20,6 +19,7 @@
 #include "j1Pathfinding.h"
 #include "j1Fonts.h"
 #include "j1Gui.h"
+#include "j1Console.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -31,6 +31,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	render				= new j1Render();
 	tex					= new j1Textures();
 	audio				= new j1Audio();
+	console				= new j1Console();
 	uiscene			    = new j1UIScene();
 	scene				= new j1Scene();
 	sceneswitch			= new j1SceneSwitch();
@@ -46,6 +47,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(console);
 	AddModule(map);
 	AddModule(font);
 	AddModule(gui);

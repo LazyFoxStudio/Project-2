@@ -25,6 +25,7 @@ class j1EntityController;
 class j1PathFinding;
 class j1Fonts;
 class j1Gui;
+class j1Console;
 
 class j1App
 {
@@ -96,6 +97,7 @@ public:
 	j1Textures*			tex;
 	j1Audio*			audio;
 	j1UIScene*		    uiscene;
+	j1Console*			console;
 	j1Scene*			scene;
 	j1SceneSwitch*		sceneswitch;
 	j1Map*				map;
