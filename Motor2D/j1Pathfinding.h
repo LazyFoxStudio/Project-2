@@ -8,6 +8,7 @@
 
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
+#define MAX_ADJACENT_DIST 10
 
 
 class j1PathFinding : public j1Module
@@ -26,7 +27,7 @@ public:
 	void SetMap(uint width, uint height, uchar* data);
 
 	// Main function to request a path from A to B
-	int CreatePath(const iPoint& origin, const iPoint& destination);
+	int CreatePath(const iPoint& origin, iPoint& destination);
 
 	// To request all tiles involved in the last generated path
 	const std::list<iPoint>* GetLastPath() const;
@@ -39,7 +40,8 @@ public:
 
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
-
+	bool GatherWalkableAdjacents(iPoint map_pos, int count, std::vector<iPoint>& adjacents, int max_distance = 0);
+	iPoint FirstWalkableAdjacent(iPoint map_pos, int max_distance = 0);
 private:
 
 	// size of the map
