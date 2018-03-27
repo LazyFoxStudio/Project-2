@@ -112,27 +112,67 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill, PathNode* parent)
 {
 	iPoint cell;
 
-	// north
-	cell.create(pos.x, pos.y + 1);
-	if(App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.push_back(PathNode(-1, -1, cell, parent));
-
-	// south
-	cell.create(pos.x, pos.y - 1);
-	if(App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.push_back(PathNode(-1, -1, cell, parent));
-
-	// east
-	cell.create(pos.x + 1, pos.y);
-	if(App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.push_back(PathNode(-1, -1, cell, parent));
-
-	// west
-	cell.create(pos.x - 1, pos.y);
-	if(App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.push_back(PathNode(-1, -1, cell, parent));
+	for(int i = -1;  i <= 1; i++)
+		for (int j = -1; j <= 1; j++)
+		{
+			if (i != 0 || j != 0)
+			{
+				cell.create(pos.x + i, pos.y + j);
+				if (App->pathfinding->IsWalkable(cell))
+					list_to_fill.list.push_back(PathNode(-1, -1, cell, parent));
+			}
+		}
 
 	return list_to_fill.list.size();
+}
+
+bool j1PathFinding::GatherWalkableAdjacents(iPoint map_pos, int count, std::vector<iPoint>& adjacents, int max_distance)
+{
+	if (!max_distance) max_distance = MAX_ADJACENT_DIST;
+
+	iPoint cell;
+	int radius = 1;
+	uint found = 0;
+
+	while (radius < max_distance)
+	{
+		for (int i = -radius; i <= radius; i++)
+			for (int j = -radius; j <= radius; j++)
+				if (std::abs(i) == radius || j == std::abs(j))
+				{
+					cell.create(map_pos.x + i, map_pos.y + j);
+					if (App->pathfinding->IsWalkable(cell))
+					{
+						adjacents.push_back(cell);
+						found++;
+						if (found == count) return true;
+					}
+				}
+		radius++;
+	}
+	return false;
+}
+
+iPoint j1PathFinding::FirstWalkableAdjacent(iPoint map_pos, int max_distance)
+{
+	if (!max_distance) max_distance = MAX_ADJACENT_DIST;
+
+	iPoint ret;
+	int radius = 1;
+
+	while (radius < max_distance)
+	{
+		for (int i = -radius; i <= radius; i++)
+			for (int j = -radius; j <= radius; j++)
+				if (std::abs(i) == radius || j == std::abs(j))
+				{
+					ret.create(map_pos.x + i, map_pos.y + j);
+					if (App->pathfinding->IsWalkable(ret))
+						return ret;
+				}
+		radius++;
+	}
+	return { -1,-1 };
 }
 
 // PathNode -------------------------------------------------------------------------
@@ -157,13 +197,19 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
+int j1PathFinding::CreatePath(const iPoint& origin, iPoint& destination)
 {
 	BROFILER_CATEGORY("Pathfinding", Profiler::Color::Magenta);
 	last_path.clear();
 	int ret = -1;
 
-	if (IsWalkable(origin) && IsWalkable(destination))
+	if (!IsWalkable(destination))
+	{
+		destination = FirstWalkableAdjacent(destination);
+		if (destination.x == -1) return ret;
+	}
+
+	if (IsWalkable(origin))
 	{
 		PathList open;
 		PathList closed;

@@ -8,6 +8,7 @@
 
 #include <string>
 #include "PugiXml\src\pugixml.hpp"
+#include <vector>
 
 class UI_element;
 enum event_type;
@@ -48,6 +49,12 @@ public:
 			CleanUp();
 		}
 	}
+
+	virtual bool Console_Interaction(std::string& function, std::vector<int>& arguments)
+	{
+		return true;
+	}
+
 
 
 public:

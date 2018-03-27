@@ -6,6 +6,7 @@
 #include "SDL/include/SDL_rect.h"
 #include "Unit.h"
 #include "Building.h"
+#include "Nature.h"
 #include <map>
 #include <string>
 #include <list>
@@ -90,8 +91,10 @@ public:
 
 	void AddIconData(unitType type, pugi::xml_node node);
 	void AddIconData(buildingType type, pugi::xml_node node);
+	void AddIconData(resourceType type, pugi::xml_node node);
 	SDL_Rect GetIconRect(unitType type);
 	SDL_Rect GetIconRect(buildingType type);
+	SDL_Rect GetIconRect(resourceType type);
 	SDL_Rect GetLifeBarRect(std::string tag);
 
 public:
@@ -116,6 +119,7 @@ private:
 	UI_element* draggingElement = nullptr;
 	std::map<unitType, SDL_Rect> unitIconRect;
 	std::map<buildingType, SDL_Rect> buildingIconRect;
+	std::map<resourceType, SDL_Rect> resourceIconRect;
 	std::map<std::string, SDL_Rect> LifeBarRect;
 };
 
