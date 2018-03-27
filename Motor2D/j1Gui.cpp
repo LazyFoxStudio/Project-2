@@ -7,15 +7,18 @@
 #include "j1Fonts.h"
 #include "j1Input.h"
 #include "j1Gui.h"
+#include "Entity.h"
 #include "UI_element.h"
 #include "UI_Image.h"
 #include "UI_Text.h"
 #include "UI_Button.h"
 #include "UI_Window.h"
+#include "UI_LifeBar.h"
 #include "j1Window.h"
 #include "j1UIScene.h"
 #include "UI_Chrono.h"
 #include "UI_ProgressBar.h"
+#include "j1EntityController.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -46,6 +49,13 @@ bool j1Gui::Start()
 	icon_atlas = App->tex->Load(icon_atlas_file_name.c_str());
 
 	button_click_fx = App->audio->LoadFx(buttonFX.c_str());
+
+	pugi::xml_document doc;
+	pugi::xml_node gameData;
+
+	gameData = App->LoadFile(doc, "GameData.xml");
+
+	LoadDB(gameData);
 
 	return true;
 }
@@ -150,6 +160,13 @@ bool j1Gui::Update(float dt)
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
+	//Draw selection quads
+	for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
+	{
+		SDL_Rect quad = { (*it_e)->position.x, (*it_e)->position.y, 70, 70 };
+		App->render->DrawQuad(quad, Green, false);
+	}
+	//Draw elements of active menus
 	for (std::list<menu*>::iterator it_m = App->uiscene->menus.begin(); it_m != App->uiscene->menus.end(); it_m++)
 	{
 		if ((*it_m) == nullptr) break;
@@ -166,6 +183,12 @@ bool j1Gui::PostUpdate()
 				(*it_e)->BlitElement();
 		}
 	}
+	//Draw LifeBars
+	for (std::list<LifeBar*>::iterator it_l = LifeBars.begin(); it_l != LifeBars.end(); it_l++)
+	{
+		(*it_l)->BlitElement();
+	}
+	//Draw Debug
 	if (UI_Debug)
 		UIDebugDraw();
 	
@@ -188,14 +211,69 @@ bool j1Gui::CleanUp()
 		icon_atlas = nullptr;
 	}
 
-	std::list<UI_element*>::iterator it;
-	it = UI_elements.begin();
-	while (it != UI_elements.end())
+	//Texts
+	std::list<Text*>::iterator it_t;
+	it_t = Texts.begin();
+	while (it_t != Texts.end())
 	{
-		RELEASE((*it));
-		it++;
+		RELEASE((*it_t));
+		it_t++;
 	}
-	UI_elements.clear();
+	Texts.clear();
+	//Images
+	std::list<Image*>::iterator it_i;
+	it_i = Images.begin();
+	while (it_i != Images.end())
+	{
+		RELEASE((*it_i));
+		it_i++;
+	}
+	Images.clear();
+	//Buttons
+	std::list<Button*>::iterator it_b;
+	it_b = Buttons.begin();
+	while (it_b != Buttons.end())
+	{
+		RELEASE((*it_b));
+		it_b++;
+	}
+	Buttons.clear();
+	//Windows
+	std::list<Window*>::iterator it_w;
+	it_w = Windows.begin();
+	while (it_w != Windows.end())
+	{
+		RELEASE((*it_w));
+		it_w++;
+	}
+	Windows.clear();
+	//Chronos
+	std::list<Chrono*>::iterator it_c;
+	it_c = Chronos.begin();
+	while (it_c != Chronos.end())
+	{
+		RELEASE((*it_c));
+		it_c++;
+	}
+	Chronos.clear();
+	//ProgressBars
+	std::list<ProgressBar*>::iterator it_p;
+	it_p = ProgressBars.begin();
+	while (it_p != ProgressBars.end())
+	{
+		RELEASE((*it_p));
+		it_p++;
+	}
+	ProgressBars.clear();
+	//LifeBars
+	std::list<LifeBar*>::iterator it_l;
+	it_l = LifeBars.begin();
+	while (it_l != LifeBars.end())
+	{
+		RELEASE((*it_l));
+		it_l++;
+	}
+	LifeBars.clear();
 
 	return true;
 }
@@ -225,11 +303,32 @@ const SDL_Texture* j1Gui::GetAtlas() const
 	return atlas;
 }
 
-UI_element* j1Gui::GetElement(int id)
+UI_element* j1Gui::GetElement(int type, int id)
 {
-	std::list<UI_element*>::iterator it_e = std::next(UI_elements.begin(), id);
+	UI_element* ret = nullptr;
+	switch (type)
+	{
+	case TEXT:
+		ret = (*std::next(Texts.begin(), id));
+		break;
+	case IMAGE:
+		ret = (*std::next(Images.begin(), id));
+		break;
+	case BUTTON:
+		ret = (*std::next(Buttons.begin(), id));
+		break;
+	case WINDOW:
+		ret = (*std::next(Windows.begin(), id));
+		break;
+	case CHRONO:
+		ret = (*std::next(Chronos.begin(), id));
+		break;
+	case PROGRESSBAR:
+		ret = (*std::next(ProgressBars.begin(), id));
+		break;
+	}
 
-	return (*it_e);
+	return ret;
 }
 
 void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback, UI_element* parent)
@@ -280,7 +379,7 @@ Text* j1Gui::createText(pugi::xml_node node, j1Module* callback)
 	std::string text = node.attribute("text").as_string();
 	if (node.attribute("counter").as_bool())
 	{
-		text = "Element: " + std::to_string(UI_elements.size());
+		text = "Element: " + std::to_string(Texts.size());
 	}
 	int x = node.child("position").attribute("x").as_int();
 	int y = node.child("position").attribute("y").as_int();
@@ -292,7 +391,7 @@ Text* j1Gui::createText(pugi::xml_node node, j1Module* callback)
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	UI_elements.push_back(ret);
+	Texts.push_back(ret);
 
 	return ret;
 }
@@ -310,7 +409,7 @@ Image* j1Gui::createImage(pugi::xml_node node, j1Module* callback)
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	UI_elements.push_back(ret);
+	Images.push_back(ret);
 
 	return ret;
 }
@@ -326,7 +425,7 @@ Image* j1Gui::createImageFromAtlas(pugi::xml_node node, j1Module* callback, bool
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	UI_elements.push_back(ret);
+	Images.push_back(ret);
 
 	return ret;
 }
@@ -347,7 +446,7 @@ Window* j1Gui::createWindow(pugi::xml_node node, j1Module * callback)
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	UI_elements.push_back(ret);
+	Windows.push_back(ret);
 
 	return ret;
 }
@@ -370,7 +469,7 @@ Button* j1Gui::createButton(pugi::xml_node node, j1Module* callback)
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	UI_elements.push_back(ret);
+	Buttons.push_back(ret);
 
 	return ret;
 }
@@ -389,7 +488,7 @@ Chrono * j1Gui::createTimer(pugi::xml_node node, j1Module * callback)
 	ret->setStartValue(node.attribute("initial_value").as_int());
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	UI_elements.push_back(ret);
+	Chronos.push_back(ret);
 
 	return ret;
 }
@@ -407,7 +506,7 @@ Chrono * j1Gui::createStopWatch(pugi::xml_node node, j1Module * callback)
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	UI_elements.push_back(ret);
+	Chronos.push_back(ret);
 
 	return ret;
 }
@@ -425,15 +524,41 @@ ProgressBar* j1Gui::createProgressBar(pugi::xml_node node, j1Module* callback)
 
 	SDL_Rect empty = { node.child("empty").attribute("x").as_int(), node.child("empty").attribute("y").as_int(), node.child("empty").attribute("w").as_int(), node.child("empty").attribute("h").as_int() };
 	SDL_Rect full = { node.child("full").attribute("x").as_int(), node.child("full").attribute("y").as_int(), node.child("full").attribute("w").as_int(), node.child("full").attribute("h").as_int() };
-	SDL_Rect head = { node.child("head").attribute("x").as_int(), node.child("head").attribute("y").as_int(), node.child("head").attribute("w").as_int(), node.child("head").attribute("h").as_int() };
+	SDL_Rect head = { node.child("head").attribute("x").as_int(0), node.child("head").attribute("y").as_int(0), node.child("head").attribute("w").as_int(0), node.child("head").attribute("h").as_int(0) };
 
-	ProgressBar* ret = new ProgressBar(x, y, texture, empty, full, head, callback);
+	float max_value = node.attribute("max_value").as_float(0);
+
+	ProgressBar* ret = new ProgressBar(x, y, texture, empty, full, head, max_value, callback);
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	UI_elements.push_back(ret);
+	ProgressBars.push_back(ret);
 
 	return ret;
+}
+
+void j1Gui::createLifeBar(Entity* entity)
+{
+	LifeBar* ret = new LifeBar(entity, atlas);
+
+	LifeBars.push_back(ret);
+}
+
+void j1Gui::LoadDB(pugi::xml_node node)
+{
+	pugi::xml_node lifebar;
+	pugi::xml_node rect;
+
+	for (lifebar = node.child("LifeBars").first_child(); lifebar; lifebar = lifebar.next_sibling())
+	{
+		for (rect = lifebar.first_child(); rect; rect = rect.next_sibling())
+		{
+			SDL_Rect section = { rect.attribute("x").as_int(0), rect.attribute("y").as_int(0) , rect.attribute("w").as_int(0) , rect.attribute("h").as_int(0) };
+			std::string tag = rect.attribute("tag").as_string();
+
+			LifeBarRect.insert(std::pair<std::string, SDL_Rect>(tag, section));
+		}
+	}
 }
 
 void j1Gui::AddIconData(unitType type, pugi::xml_node node)
@@ -456,4 +581,9 @@ SDL_Rect j1Gui::GetIconRect(unitType type)
 SDL_Rect j1Gui::GetIconRect(buildingType type)
 {
 	return buildingIconRect.at(type);
+}
+
+SDL_Rect j1Gui::GetLifeBarRect(std::string tag)
+{
+	return LifeBarRect.at(tag);
 }

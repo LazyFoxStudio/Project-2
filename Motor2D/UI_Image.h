@@ -17,7 +17,7 @@ public:
 	~Image()
 	{}
 
-	void BlitElement();
+	void BlitElement(bool use_camera = false);
 };
 
 #endif // !__UI_IMAGE__

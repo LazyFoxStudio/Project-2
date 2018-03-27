@@ -34,7 +34,7 @@ public:
 	void setText(std::string string);
 	int getLength() const;
 
-	void BlitElement();
+	void BlitElement(bool use_camera = false);
 
 public:
 

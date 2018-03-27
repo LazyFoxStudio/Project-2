@@ -19,7 +19,9 @@ class Button;
 class Window;
 class Chrono;
 class ProgressBar;
+class LifeBar;
 class menu;
+class Entity;
 
 enum event_type
 {
@@ -63,7 +65,14 @@ public:
 	void UIDebugDraw();
 	// Gui creation functions
 	const SDL_Texture* GetAtlas() const;
-	UI_element* GetElement(int id);
+	//Type:
+	//TEXT - 0
+	//IMAGE - 1
+	//BUTON - 2
+	//WINDOW - 3
+	//CHRONO - 4
+	//PROGRESSBAR - 5
+	UI_element* GetElement(int type, int id);
 
 	void Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback = nullptr, UI_element* parent = nullptr);
 	Text* createText(pugi::xml_node node, j1Module* callback = nullptr);
@@ -75,11 +84,15 @@ public:
 	Button* createButton(pugi::xml_node node, j1Module* callback = nullptr);
 	Window* createWindow(pugi::xml_node node, j1Module* callback = nullptr);
 	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr);
+	void createLifeBar(Entity* entity);
+
+	void LoadDB(pugi::xml_node node);
 
 	void AddIconData(unitType type, pugi::xml_node node);
 	void AddIconData(buildingType type, pugi::xml_node node);
 	SDL_Rect GetIconRect(unitType type);
 	SDL_Rect GetIconRect(buildingType type);
+	SDL_Rect GetLifeBarRect(std::string tag);
 
 public:
 	bool UI_Debug = false;
@@ -93,10 +106,17 @@ private:
 	std::string atlas_file_name;
 	std::string icon_atlas_file_name;
 	std::string	buttonFX;
-	std::list<UI_element*> UI_elements;
+	std::list<Image*> Images;
+	std::list<Text*> Texts;
+	std::list<Button*> Buttons;
+	std::list<Chrono*> Chronos;
+	std::list<ProgressBar*> ProgressBars;
+	std::list<LifeBar*> LifeBars;
+	std::list<Window*> Windows;
 	UI_element* draggingElement = nullptr;
 	std::map<unitType, SDL_Rect> unitIconRect;
 	std::map<buildingType, SDL_Rect> buildingIconRect;
+	std::map<std::string, SDL_Rect> LifeBarRect;
 };
 
 #endif // __j1GUI_H__

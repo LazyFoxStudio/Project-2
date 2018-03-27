@@ -72,7 +72,7 @@ public:
 
 	void appendChild(UI_element* child, bool center = false);
 
-	virtual void BlitElement()
+	virtual void BlitElement(bool use_camera = false)
 	{}
 
 	void BlitChilds();
