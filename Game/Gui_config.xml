@@ -55,26 +55,43 @@ The id of the fonts will be ordered as they are in the file, starting with 1
 	<font path="fonts/Old School Adventures.ttf" size="10"/>
   </fonts>
   <menu type="2" active="true">
-	<atlas_image icon_atlas="false">
+      <atlas_image icon_atlas="false">
 	  <position x="0" y="0"/>
       <section x="285" y="271" w="143" h="53"/>
       <draggable horizontal="true" vertical="true"/>
 	  <interactive value="true"/>
 	  <childs>
-		<text text="Hello World!" center="true" counter="true">
-			<position x="10" y="10"/>
+		<text text="text_position_x" center="false" counter="true">
+			<position x="10" y="50"/>
 			<font id="1"/>
 			<color r="255" g="255" b="255" a="255"/>
 			<draggable horizontal="false" vertical="false"/>
 			<interactive value="false"/>
 		</text>
+		<text text="text_position_y" center="false" counter="true">
+			<position x="100" y="50"/>
+			<font id="1"/>
+			<color r="255" g="255" b="255" a="255"/>
+			<draggable horizontal="false" vertical="false"/>
+			<interactive value="false"/>
+		</text>
+
 	  </childs>
-	</atlas_image>
-	<text text="Hello World!" counter="true">
-		<position x="100" y="100"/>
+      	</atlas_image>
+
+	<window icon_atlas="false">
+	  <position x="0" y="795"/>
+	<section x="0" y="0" w="1678" h="255"/>
+	<draggable horizontal="true" vertical="true"/>
+	  <interactive value="true"/>
+
+	</window>
+	<text text="Total Elements" counter="true">
+		<position x="0" y="0"/>
 		<font id="1"/>
 		<color r="255" g="255" b="255" a="255"/>
 	</text>
+
   </menu>
 </config>
 

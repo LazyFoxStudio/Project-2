@@ -28,12 +28,16 @@ bool j1UIScene::Start()
 
 	guiconfig = App->LoadFile(Gui_config_file, "Gui_config.xml");
 
-	// App->audio->PlayMusic("MainTheme.ogg");
+	//App->audio->PlayMusic("Main_Theme.mp3");
 
 	LoadUI(guiconfig);
 	
-	Text* text = (Text*)App->gui->GetElement(TEXT, 0);
-	text->convertIntoCounter(&text->parent->localPosition.x);
+	Text* text_position_x = (Text*)App->gui->GetElement(TEXT, 0);
+	text_position_x->convertIntoCounter(&text_position_x->parent->localPosition.x);
+
+	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 1);
+	text_position_y->convertIntoCounter(&text_position_y->parent->localPosition.y);
+
 
 	return true;
 }
