@@ -116,12 +116,15 @@ void j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
 
 void j1EntityController::addBuilding(iPoint pos, buildingType type)
 {
-	//Building* building = new Building(pos, *(buildingDB[type]));
-	//Switch or like Units?
+	Building* building = new Building(pos, *(buildingDB[type]));
+	entities.push_back(building);
+	App->gui->createLifeBar(building);
 }
+
 void j1EntityController::addNature(iPoint pos, resourceType res_type, int amount)
 {
-	//Switch or like Units?
+	Nature* resource = new Nature(pos, *(natureDB[res_type]));
+	entities.push_back(resource);
 }
 
 Entity* j1EntityController::CheckMouseHover(iPoint mouse_world)
@@ -259,7 +262,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitDB.insert(std::pair<int, Unit*>(unitTemplate->type, unitTemplate));
 	}
 
-	for (NodeInfo = data.child("Units").child("Building"); NodeInfo; NodeInfo = NodeInfo.next_sibling("Building")) {
+	for (NodeInfo = data.child("Buildings").child("Building"); NodeInfo; NodeInfo = NodeInfo.next_sibling("Building")) {
 
 		Building* buildingTemplate = new Building();
 		buildingTemplate->type = (buildingType)NodeInfo.child("type").attribute("value").as_int(0);
@@ -279,6 +282,22 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 			App->gui->AddIconData(buildingTemplate->type, NodeInfo.child("iconData"));
 
 		buildingDB.insert(std::pair<int, Building*>(buildingTemplate->type, buildingTemplate));
+	}
+
+	for (NodeInfo = data.child("Nature").child("Resource"); NodeInfo; NodeInfo = NodeInfo.next_sibling("Resource")) {
+
+		Nature* natureTemplate = new Nature();
+		natureTemplate->type = (resourceType)NodeInfo.child("type").attribute("value").as_int(0);
+
+		natureTemplate->name = NodeInfo.child("name").attribute("value").as_string("error");
+		natureTemplate->texture = App->tex->Load(NodeInfo.child("texture").attribute("value").as_string("error"));
+
+		// TODO IconData for mines
+		pugi::xml_node IconData;
+		if (NodeInfo.child("iconData") && natureTemplate->type == GOLD)
+			App->gui->AddIconData(natureTemplate->type, NodeInfo.child("iconData"));
+
+		natureDB.insert(std::pair<int, Nature*>(natureTemplate->type, natureTemplate));
 	}
 
 	return true;

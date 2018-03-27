@@ -573,6 +573,12 @@ void j1Gui::AddIconData(buildingType type, pugi::xml_node node)
 	buildingIconRect.insert(std::pair<buildingType, SDL_Rect>(type, rect));
 }
 
+void j1Gui::AddIconData(resourceType type, pugi::xml_node node)
+{
+	SDL_Rect rect = { node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() };
+	resourceIconRect.insert(std::pair<resourceType, SDL_Rect>(type, rect));
+}
+
 SDL_Rect j1Gui::GetIconRect(unitType type)
 {
 	return unitIconRect.at(type);
@@ -581,6 +587,11 @@ SDL_Rect j1Gui::GetIconRect(unitType type)
 SDL_Rect j1Gui::GetIconRect(buildingType type)
 {
 	return buildingIconRect.at(type);
+}
+
+SDL_Rect j1Gui::GetIconRect(resourceType type)
+{
+	return resourceIconRect.at(type);
 }
 
 SDL_Rect j1Gui::GetLifeBarRect(std::string tag)
