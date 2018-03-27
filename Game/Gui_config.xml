@@ -56,10 +56,10 @@ The id of the fonts will be ordered as they are in the file, starting with 1
   </fonts>
   <menu type="2" active="true">
       <atlas_image icon_atlas="false">
-	  <position x="0" y="0"/>
+      <position x="0" y="0"/>
       <section x="285" y="271" w="143" h="53"/>
       <draggable horizontal="true" vertical="true"/>
-	  <interactive value="true"/>
+      <interactive value="true"/>
 	  <childs>
 		<text text="text_position_x" center="false" counter="true">
 			<position x="10" y="50"/>
@@ -80,11 +80,13 @@ The id of the fonts will be ordered as they are in the file, starting with 1
       	</atlas_image>
 
 	<window icon_atlas="false">
-	  <position x="0" y="795"/>
+	 <position x="0" y="795"/>
 	<section x="0" y="0" w="1678" h="255"/>
 	<draggable horizontal="true" vertical="true"/>
 	  <interactive value="true"/>
+	  <childs>
 
+	  </childs>
 	</window>
 	<text text="Total Elements" counter="true">
 		<position x="0" y="0"/>
