@@ -16,7 +16,7 @@ enum unitType
 	HERO_1, /* ... */ HERO_X,
 	
 	// Allies
-	FOOTMAN, /* ... */ ALLY_X,
+	FOOTMAN, /* ... */ ARCHER, ALLY_X,
 
 	//Enemies
 	ENEMY_1, /* ... */ ENEMY_X,

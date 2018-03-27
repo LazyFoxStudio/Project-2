@@ -32,9 +32,11 @@ bool Animation::LoadAnimation(pugi::xml_node& data)
 	int height = data.child("height").attribute("value").as_int(0);
 	int rows = data.child("rows").attribute("value").as_int(0);
 	int columns = data.child("columns").attribute("value").as_int(0);
+	int StartingRow = data.child("StartingRow").attribute("value").as_int(0);
+	int StartingColumn = data.child("StartingColumn").attribute("value").as_int(0);
 
-	for (int i = 0; i < rows; i++) 
-		for (int j = 0; j < columns; j++) 
+	for (int i = StartingRow; i <= StartingRow + rows; i++) 
+		for (int j = StartingColumn; j <= StartingColumn + columns; j++) 
 			PushBack({ width*j,height*i,width,height });
 		
 	speed = 0.2f;
