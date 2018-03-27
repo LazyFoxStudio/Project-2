@@ -259,5 +259,27 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitDB.insert(std::pair<int, Unit*>(unitTemplate->type, unitTemplate));
 	}
 
+	for (NodeInfo = data.child("Units").child("Building"); NodeInfo; NodeInfo = NodeInfo.next_sibling("Building")) {
+
+		Building* buildingTemplate = new Building();
+		buildingTemplate->type = (buildingType)NodeInfo.child("type").attribute("value").as_int(0);
+
+		buildingTemplate->name = NodeInfo.child("name").attribute("value").as_string("error");
+		buildingTemplate->texture = App->tex->Load(NodeInfo.child("texture").attribute("value").as_string("error"));
+
+		buildingTemplate->current_HP = buildingTemplate->max_HP = NodeInfo.child("Stats").child("life").attribute("value").as_int(0);
+		buildingTemplate->villagers_inside = NodeInfo.child("Stats").child("villagers").attribute("value").as_int(0);
+		buildingTemplate->cooldown_time = NodeInfo.child("Stats").child("cooldown").attribute("value").as_int(0);
+		buildingTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
+		
+		// TODO building cost outside the DB so it's not unnecessarily repeated on every unit
+
+		pugi::xml_node IconData;
+		if (NodeInfo.child("iconData"))
+			App->gui->AddIconData(buildingTemplate->type, NodeInfo.child("iconData"));
+
+		buildingDB.insert(std::pair<int, Building*>(buildingTemplate->type, buildingTemplate));
+	}
+
 	return true;
 }

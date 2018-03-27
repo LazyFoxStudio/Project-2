@@ -19,6 +19,8 @@ public:
 	buildingType type = NONE_BUILDING;
 	int current_HP = 0;
 	int max_HP = 0;
+	int cooldown_time = 0;
+	int defense = 0;
 	//(...)
 
 	int villagers_inside = 0;
