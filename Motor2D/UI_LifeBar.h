@@ -5,6 +5,7 @@
 
 class progressBar;
 class Entity;
+class Text;
 
 class LifeBar : public UI_element
 {
@@ -18,7 +19,10 @@ public:
 	LifeBar(Entity* entity, SDL_Texture* texture, int x, int y);
 
 	~LifeBar()
-	{	}
+	{	
+		RELEASE(display);
+		RELEASE(bar);
+	}
 
 	void BlitElement(bool use_camera = false);
 
@@ -26,6 +30,7 @@ public:
 
 	ProgressBar* bar;
 	Entity* entity;
+	Text* display;
 	iPoint offset;
 	bool inMenu;
 

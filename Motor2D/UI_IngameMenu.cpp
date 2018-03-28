@@ -4,10 +4,11 @@
 #include "Brofiler\Brofiler.h"
 #include "UI_Window.h"
 #include "UI_Image.h"
-#include "UI_Text.h"
 #include "UI_Button.h"
 #include "Entity.h"
 #include "UI_LifeBar.h"
+#include "j1Fonts.h"
+#include "UI_ProgressBar.h"
 #include "j1EntityController.h"
 
 IngameMenu::IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int lifeBars_offsetX, int lifeBars_offsetY, int stats_posX, int stats_posY, int firstButton_posX, int firstButton_posY, int buttons_offsetX, int buttons_offsetY, j1Module * callback) : UI_element(x, y, element_type::MENU, section, callback, atlas),
@@ -21,6 +22,13 @@ icon_atlas(icon_atlas)
 {
 	window = new Window(texture, x, y, section, callback);
 	//Create minimap
+}
+
+IngameMenu::~IngameMenu()
+{
+	cleanLists();
+	//RELEASE(minimap);
+	RELEASE(window);
 }
 
 void IngameMenu::newSelection()
