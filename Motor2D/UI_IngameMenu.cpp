@@ -6,13 +6,16 @@
 #include "UI_Image.h"
 #include "UI_Text.h"
 #include "UI_Button.h"
+#include "Entity.h"
+#include "j1EntityController.h"
 
-IngameMenu::IngameMenu(SDL_Texture * texture, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int stats_posX, int stats_posY, int firstButton_posX, int firstButton_posY, int buttons_offsetX, int buttons_offsetY, j1Module * callback) : UI_element(x, y, element_type::MENU, section, callback, texture),
+IngameMenu::IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int stats_posX, int stats_posY, int firstButton_posX, int firstButton_posY, int buttons_offsetX, int buttons_offsetY, j1Module * callback) : UI_element(x, y, element_type::MENU, section, callback, atlas),
 firstIcon_pos({firstIcon_posX, firstIcon_posY}),
 icons_offset({icons_offsetX, icons_offsetY}),
 stats_pos({stats_posX, stats_posY}),
 firstButton_pos({firstButton_posX, firstButton_posY}),
-buttons_offset({buttons_offsetX, buttons_offsetY})
+buttons_offset({buttons_offsetX, buttons_offsetY}),
+icon_atlas(icon_atlas)
 {
 	window = new Window(texture, x, y, section, callback);
 	//Create minimap
@@ -28,7 +31,18 @@ void IngameMenu::BlitElement(bool use_camera)
 
 	//update minimap
 	//update health bars
+	if (App->entitycontroller->newSelection)
+	{
+		for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
+		{
+			troopsIcons.push_back(new Image(icon_atlas, 0, 0, App->gui->GetIconRect((*it_e)), callback));
+		}
+	}
 
+	for (std::list<Image*>::iterator it_i = troopsIcons.begin(); it_i != troopsIcons.end(); it_i++)
+	{
+		(*it_i)->BlitElement(use_camera);
+	}
 
 	//Blit window
 	window->BlitElement(use_camera);

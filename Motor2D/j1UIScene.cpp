@@ -33,6 +33,7 @@ bool j1UIScene::Start()
 
 	LoadUI(guiconfig);
 	
+	//Set resource counters
 	Text* text_position_x = (Text*)App->gui->GetElement(TEXT, 0);
 	text_position_x->convertIntoCounter(&x);
 
@@ -47,7 +48,6 @@ bool j1UIScene::Start()
 bool j1UIScene::Update(float dt)
 {
 	App->input->GetMousePosition(x, y);
-	LOG("X: %d | Y: %d", x, y);
 
 	return true;
 }

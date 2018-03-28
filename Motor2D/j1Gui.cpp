@@ -571,7 +571,7 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 	int buttons_offsetX = node.child("buttons").attribute("offsetX").as_int();
 	int buttons_offsetY = node.child("buttons").attribute("offsetY").as_int();
 
-	IngameMenu* ret = new IngameMenu(texture, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, stats_posX, stats_posY, firstButton_posX, firstButton_posY, buttons_offsetX, buttons_offsetY, callback);
+	IngameMenu* ret = new IngameMenu(texture, icon_atlas, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, stats_posX, stats_posY, firstButton_posX, firstButton_posY, buttons_offsetX, buttons_offsetY, callback);
 
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
@@ -623,19 +623,23 @@ void j1Gui::AddIconData(resourceType type, pugi::xml_node node)
 	resourceIconRect.insert(std::pair<resourceType, SDL_Rect>(type, rect));
 }
 
-SDL_Rect j1Gui::GetIconRect(unitType type)
+SDL_Rect j1Gui::GetIconRect(Entity* entity)
 {
-	return unitIconRect.at(type);
-}
-
-SDL_Rect j1Gui::GetIconRect(buildingType type)
-{
-	return buildingIconRect.at(type);
-}
-
-SDL_Rect j1Gui::GetIconRect(resourceType type)
-{
-	return resourceIconRect.at(type);
+	switch (entity->entity_type)
+	{
+	case UNIT:
+		return unitIconRect.at(((Unit*)entity)->type);
+		break;
+	case BUILDING:
+		return buildingIconRect.at(((Building*)entity)->type);
+		break;
+	case NATURE:
+		return resourceIconRect.at(((Nature*)entity)->type);
+		break;
+	default:
+		return { 0,0,0,0 };
+		break;
+	}
 }
 
 SDL_Rect j1Gui::GetLifeBarRect(std::string tag)

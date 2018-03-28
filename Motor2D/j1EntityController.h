@@ -41,6 +41,7 @@ public:
 
 public:
 
+	bool newSelection = false;
 	std::list<Entity*> entities;
 	std::list<Entity*> selected_entities;
 

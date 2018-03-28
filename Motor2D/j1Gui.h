@@ -94,7 +94,7 @@ public:
 	void AddIconData(unitType type, pugi::xml_node node);
 	void AddIconData(buildingType type, pugi::xml_node node);
 	void AddIconData(resourceType type, pugi::xml_node node);
-	SDL_Rect GetIconRect(unitType type);
+	SDL_Rect GetIconRect(Entity* entity);
 	SDL_Rect GetIconRect(buildingType type);
 	SDL_Rect GetIconRect(resourceType type);
 	SDL_Rect GetLifeBarRect(std::string tag);

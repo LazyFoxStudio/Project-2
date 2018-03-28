@@ -41,6 +41,8 @@ bool j1EntityController::Update(float dt)
 		}
 	}
 
+	newSelection = false;
+
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE)
 		SelectionControl();
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -193,6 +195,7 @@ void j1EntityController::SelectionControl()
 	case KEY_UP:
 
 		selected_entities.clear();
+		newSelection = true;
 
 		iPoint selection_to_world = App->render->ScreenToWorld(selection_rect.x, selection_rect.y);
 		selection_rect.x = selection_to_world.x; selection_rect.y = selection_to_world.y;

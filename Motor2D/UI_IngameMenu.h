@@ -16,7 +16,7 @@ public:
 	IngameMenu()
 	{}
 
-	IngameMenu(SDL_Texture* texture, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int stats_posX, int stats_posY, int firstButton_posX, int firstButton_posY, int buttons_offsetX, int buttons_offsetY, j1Module* callback);
+	IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int stats_posX, int stats_posY, int firstButton_posX, int firstButton_posY, int buttons_offsetX, int buttons_offsetY, j1Module* callback);
 
 	~IngameMenu()
 	{}
@@ -27,8 +27,9 @@ public:
 
 public:
 
-	Minimap* minimap;
-	Window* window;
+	SDL_Texture* icon_atlas = nullptr;
+	Minimap* minimap = nullptr;
+	Window* window = nullptr;
 	iPoint firstIcon_pos;
 	iPoint icons_offset;
 	iPoint stats_pos;
