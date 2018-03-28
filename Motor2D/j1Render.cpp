@@ -173,7 +173,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	return true;
 }
 
-bool j1Render::DrawQuad(SDL_Rect& rect, Color& color, bool filled, bool use_camera) const
+bool j1Render::DrawQuad(SDL_Rect rect, Color& color, bool filled, bool use_camera) const
 {
 	uint scale = App->win->GetScale();
 
@@ -189,7 +189,7 @@ bool j1Render::DrawQuad(SDL_Rect& rect, Color& color, bool filled, bool use_came
 
 	if((filled) ? SDL_RenderFillRect(renderer, &rect) : SDL_RenderDrawRect(renderer, &rect))
 	{
-		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
+		LOG("Cannot draw quad to screen. DrawQuad error: %s", SDL_GetError());
 		return false;
 	}
 

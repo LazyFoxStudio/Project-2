@@ -34,23 +34,28 @@ bool j1EntityController::Start()
 bool j1EntityController::Update(float dt)
 {
 	BROFILER_CATEGORY("Entites update", Profiler::Color::Maroon);
-	if (App->map->debug) DebugDraw();
+
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) debug = !debug;
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
 		if ((*it)->isActive)
 		{
-			if (App->render->CullingCam((*it)->position))	(*it)->Draw(dt);
-			if (!(*it)->Update(dt))							return false;
+			if (App->render->CullingCam((*it)->position))
+			{
+				(*it)->Draw(dt);
+				if (debug) App->render->DrawQuad((*it)->collider, Green);
+			}
+			if (!(*it)->Update(dt))	return false;
 		}
 	}
 
 	newSelection = false;
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE)
-		SelectionControl();
+		selectionControl();
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
-		CommandControl();
+		commandControl();
 
 	return true;
 }
@@ -99,12 +104,6 @@ bool j1EntityController::Load(pugi::xml_node& file)
 }
 
 
-bool j1EntityController::DebugDraw()
-{
-	// TODO
-	return true;
-}
-
 void j1EntityController::DeleteEntity(Entity* entity)
 {
 	entities.remove(entity);
@@ -144,7 +143,7 @@ Entity* j1EntityController::CheckMouseHover(iPoint mouse_world)
 	return nullptr;
 }
 
-void j1EntityController::CommandControl()
+void j1EntityController::commandControl()
 {
 	int mouseX, mouseY;
 	App->input->GetMousePosition(mouseX, mouseY);
@@ -157,8 +156,11 @@ void j1EntityController::CommandControl()
 	{
 		for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
 		{
-			Unit* unit = (Unit*)(*it);
-			(unit)->commands.push_back(new MoveTo(unit, map_p));
+			if ((*it)->entity_type == UNIT)
+			{
+				Unit* unit = (Unit*)(*it);
+				(unit)->commands.push_back(new MoveTo(unit, map_p));
+			}
 		}
 	}
 	else
@@ -170,8 +172,11 @@ void j1EntityController::CommandControl()
 			{
 				for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
 				{
-					Unit* unit = (Unit*)(*it);
-					unit->commands.push_back(new AttackingMoveTo(unit, map_p));
+					if ((*it)->entity_type == UNIT)
+					{
+						Unit* unit = (Unit*)(*it);
+						unit->commands.push_back(new AttackingMoveTo(unit, map_p));
+					}
 				}
 			}
 			break;
@@ -181,7 +186,7 @@ void j1EntityController::CommandControl()
 	}
 }
 
-void j1EntityController::SelectionControl()
+void j1EntityController::selectionControl()
 {
 	int mouseX, mouseY;
 	App->input->GetMousePosition(mouseX, mouseY);
@@ -212,16 +217,47 @@ void j1EntityController::SelectionControl()
 
 		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 		{
-			if ((*it)->entity_type == UNIT)
+			if (SDL_HasIntersection(&(*it)->collider, &selection_rect))
 			{
-				Unit* unit = (Unit*)*it;
-				if (!unit->IsEnemy() && SDL_HasIntersection(&unit->collider, &selection_rect))
-					selected_entities.push_back(unit);
+				if ((*it)->entity_type == UNIT)
+				{
+					if (!((Unit*)*it)->IsEnemy())
+						selected_entities.push_back(*it);
+				}
+				else selected_entities.push_back(*it);
 			}
 		}
+
+		// ChangeUI()   <-- Adri
+			
 		selection_rect = { 0,0,0,0 };
 		break;
 	}
+}
+
+entityType j1EntityController::getSelectedType()
+{
+	entityType ret = NONE_ENTITY;
+
+	for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
+	{
+		switch ((*it)->entity_type) 
+		{
+		case UNIT: 
+			if (ret == NONE_ENTITY) ret = UNIT;
+			else if (ret == BUILDING) ret = UNIT_AND_BUILDING;
+			break;
+		case BUILDING:
+			if (ret == NONE_ENTITY) ret = BUILDING;
+			else if (ret == UNIT) ret = UNIT_AND_BUILDING;
+			break;
+			//...
+		default:
+			break;
+		}
+	}
+
+	return ret;
 }
 
 bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)

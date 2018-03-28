@@ -12,7 +12,10 @@ enum entityType
 	NONE_ENTITY,
 	UNIT,
 	BUILDING,
-	NATURE
+	NATURE,
+
+	// IMPORTANT: this MUST be used only inside j1EntityController::getSelectedType
+	UNIT_AND_BUILDING
 };
 
 class Entity

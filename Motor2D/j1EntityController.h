@@ -22,7 +22,6 @@ public:
 
 	bool Save(pugi::xml_node&) const;
 	bool Load(pugi::xml_node&);
-	bool DebugDraw();
 
 	bool loadEntitiesDB(pugi::xml_node& data);
 	
@@ -35,8 +34,9 @@ public:
 
 
 	void placingBuilding(buildingType type);
-	void SelectionControl();
-	void CommandControl();
+	void selectionControl();
+	entityType getSelectedType();
+	void commandControl();
 	Entity* CheckMouseHover(iPoint mouse_world);
 
 public:
@@ -51,7 +51,7 @@ public:
 	std::map<uint, Building*> buildingDB;
 	std::map<uint, Nature*> natureDB;
 
-	bool godmode = false;
+	bool debug = false;
 	SDL_Rect selection_rect = { 0,0,0,0 };
 };
 

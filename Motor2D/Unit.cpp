@@ -26,9 +26,10 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	entity_type				= UNIT;
 
 	position.x = pos.x, position.y = pos.y;
-	collider.w = collider.h = 36;
-	collider.x = position.x - (collider.w / 2);
-	collider.y = position.y - (collider.h / 2);
+
+	collider.w = current_anim->frames[0].w;
+	collider.h = current_anim->frames[0].h;
+	collider.x = position.x, collider.y = position.y;
 }
 
 void Unit::Draw(float dt)

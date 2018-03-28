@@ -163,10 +163,8 @@ bool j1Gui::PostUpdate()
 {
 	//Draw selection quads
 	for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
-	{
-		SDL_Rect quad = { (*it_e)->position.x, (*it_e)->position.y, 70, 70 };
-		App->render->DrawQuad(quad, Green, false);
-	}
+		App->render->DrawQuad((*it_e)->collider, Green, false);
+	
 	//Draw LifeBars
 	for (std::list<LifeBar*>::iterator it_l = LifeBars.begin(); it_l != LifeBars.end(); it_l++)
 	{
