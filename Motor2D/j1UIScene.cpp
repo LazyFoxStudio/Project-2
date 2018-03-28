@@ -15,6 +15,7 @@
 #include "UI_Chrono.h"
 #include "UI_Text.h"
 #include "j1Fonts.h"
+#include "j1Input.h"
 
 j1UIScene::j1UIScene() { name = "introscene";}
 
@@ -33,10 +34,10 @@ bool j1UIScene::Start()
 	LoadUI(guiconfig);
 	
 	Text* text_position_x = (Text*)App->gui->GetElement(TEXT, 0);
-	text_position_x->convertIntoCounter(&text_position_x->parent->localPosition.x);
+	text_position_x->convertIntoCounter(&x);
 
 	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 1);
-	text_position_y->convertIntoCounter(&text_position_y->parent->localPosition.y);
+	text_position_y->convertIntoCounter(&y);
 
 
 	return true;
@@ -45,6 +46,8 @@ bool j1UIScene::Start()
 
 bool j1UIScene::Update(float dt)
 {
+	App->input->GetMousePosition(x, y);
+	LOG("X: %d | Y: %d", x, y);
 
 	return true;
 }
@@ -64,13 +67,8 @@ void j1UIScene::LoadUI(pugi::xml_node node)
 	pugi::xml_node menuconfig;
 	for (menuconfig = node.child("menu"); menuconfig; menuconfig = menuconfig.next_sibling("menu"))
 	{
-		menu* newMenu = nullptr;
-		switch (menuconfig.attribute("type").as_int())
-		{
-		case 2:
-			newMenu = new menu(INGAME_MENU);
-			break;
-		}
+		menu* newMenu = new menu((menu_id)menuconfig.attribute("type").as_int(0));
+
 		App->gui->Load_UIElements(menuconfig, newMenu, this);
 		newMenu->active = menuconfig.attribute("active").as_bool();
 		menus.push_back(newMenu);

@@ -66,39 +66,42 @@ void Text::setOutlineColor(SDL_Color newColor)
 
 void Text::BlitElement(bool use_camera)
 {
-	BROFILER_CATEGORY("Text Blit", Profiler::Color::Fuchsia);
-
-	if (counting)
+	if (active)
 	{
-		if (counter != nullptr)
+		BROFILER_CATEGORY("Text Blit", Profiler::Color::Fuchsia);
+
+		if (counting)
 		{
-			std::string newValue = std::to_string(*counter);
-			if (newValue != text)
+			if (counter != nullptr)
 			{
-				setText(newValue);
+				std::string newValue = std::to_string(*counter);
+				if (newValue != text)
+				{
+					setText(newValue);
+				}
+			}
+			else
+			{
+				if (text != "No counter assigned")
+					setText("No counter assigned");
 			}
 		}
-		else
+
+		if (texture != nullptr)
 		{
-			if (text != "No counter assigned")
-				setText("No counter assigned");
+			SDL_SetTextureAlphaMod(texture, App->gui->alpha_value);
+			iPoint globalPos = calculateAbsolutePosition();
+
+			if (outlined)
+			{
+				SDL_SetTextureAlphaMod(outline, App->gui->alpha_value);
+				App->render->Blit(outline, globalPos.x + outline_offset.x, globalPos.y + outline_offset.y, NULL, use_camera);
+			}
+			App->render->Blit(texture, globalPos.x, globalPos.y, NULL, use_camera);
 		}
+
+		BlitChilds();
 	}
-
-	if (texture != nullptr)
-	{
-		SDL_SetTextureAlphaMod(texture, App->gui->alpha_value);
-		iPoint globalPos = calculateAbsolutePosition();
-
-		if (outlined)
-		{
-			SDL_SetTextureAlphaMod(outline, App->gui->alpha_value);
-			App->render->Blit(outline, globalPos.x + outline_offset.x, globalPos.y + outline_offset.y, NULL, use_camera);
-		}
-		App->render->Blit(texture, globalPos.x, globalPos.y, NULL, use_camera);
-	}
-
-	BlitChilds();
 }
 
 void Text::setOutlined(bool isOutlined)

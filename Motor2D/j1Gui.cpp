@@ -19,6 +19,7 @@
 #include "UI_Chrono.h"
 #include "UI_ProgressBar.h"
 #include "j1EntityController.h"
+#include "UI_IngameMenu.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -166,6 +167,11 @@ bool j1Gui::PostUpdate()
 		SDL_Rect quad = { (*it_e)->position.x, (*it_e)->position.y, 70, 70 };
 		App->render->DrawQuad(quad, Green, false);
 	}
+	//Draw LifeBars
+	for (std::list<LifeBar*>::iterator it_l = LifeBars.begin(); it_l != LifeBars.end(); it_l++)
+	{
+		(*it_l)->BlitElement();
+	}
 	//Draw elements of active menus
 	for (std::list<menu*>::iterator it_m = App->uiscene->menus.begin(); it_m != App->uiscene->menus.end(); it_m++)
 	{
@@ -183,11 +189,9 @@ bool j1Gui::PostUpdate()
 				(*it_e)->BlitElement();
 		}
 	}
-	//Draw LifeBars
-	for (std::list<LifeBar*>::iterator it_l = LifeBars.begin(); it_l != LifeBars.end(); it_l++)
-	{
-		(*it_l)->BlitElement();
-	}
+	//Draw in-game menu
+	if (inGameMenu != nullptr)
+		inGameMenu->BlitElement();
 	//Draw Debug
 	if (UI_Debug)
 		UIDebugDraw();
@@ -342,22 +346,24 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 	for (; tmp; tmp = tmp.next_sibling())
 	{
 		std::string type = tmp.name();
-		if(type == "atlas_image")
+		if (type == "atlas_image")
 			element = createImageFromAtlas(tmp, callback, tmp.attribute("icon_atlas").as_bool(false));
-		else if(type == "text")
+		else if (type == "text")
 			element = createText(tmp, callback);
 		else if (type == "timer")
 			element = createTimer(tmp, callback);
-		else if(type == "stopwatch")
+		else if (type == "stopwatch")
 			element = createStopWatch(tmp, callback);
-		else if(type == "image")
+		else if (type == "image")
 			element = createImage(tmp, callback);
-		else if(type == "button")
+		else if (type == "button")
 			element = createButton(tmp, callback);
-		else if(type == "window")
+		else if (type == "window")
 			element = createWindow(tmp, callback);
-		else if(type == "progressbar")
+		else if (type == "progressbar")
 			element = createProgressBar(tmp, callback);
+		else if (type == "ingamemenu")
+			element = createIngameMenu(tmp, callback);
 
 		pugi::xml_node childs = tmp.child("childs");
 		if(childs)
@@ -533,6 +539,44 @@ ProgressBar* j1Gui::createProgressBar(pugi::xml_node node, j1Module* callback)
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
 	ProgressBars.push_back(ret);
+
+	return ret;
+}
+
+IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
+{
+	SDL_Texture* texture = nullptr;
+	if (node.attribute("path"))
+		texture = App->tex->Load(node.attribute("path").as_string());
+	else
+		texture = atlas;
+
+	int x = node.child("position").attribute("x").as_int();
+	int y = node.child("position").attribute("y").as_int();
+	SDL_Rect section = { node.child("section").attribute("x").as_int(), node.child("section").attribute("y").as_int(), node.child("section").attribute("w").as_int(), node.child("section").attribute("h").as_int() };
+
+	int minimap_posX = node.child("minimap").attribute("x").as_int();
+	int minimap_posY = node.child("minimap").attribute("y").as_int();
+
+	int firstIcon_posX = node.child("icons").attribute("x").as_int();
+	int firstIcon_posY = node.child("icons").attribute("y").as_int();
+	int icons_offsetX = node.child("icons").attribute("offsetX").as_int();
+	int icons_offsetY = node.child("icons").attribute("offsetY").as_int();
+
+	int stats_posX = node.child("stats").attribute("x").as_int();
+	int stats_posY = node.child("stats").attribute("y").as_int();
+
+	int firstButton_posX = node.child("buttons").attribute("x").as_int();
+	int firstButton_posY = node.child("buttons").attribute("y").as_int();
+	int buttons_offsetX = node.child("buttons").attribute("offsetX").as_int();
+	int buttons_offsetY = node.child("buttons").attribute("offsetY").as_int();
+
+	IngameMenu* ret = new IngameMenu(texture, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, stats_posX, stats_posY, firstButton_posX, firstButton_posY, buttons_offsetX, buttons_offsetY, callback);
+
+	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
+	ret->interactive = node.child("interactive").attribute("value").as_bool();
+
+	inGameMenu = ret;
 
 	return ret;
 }

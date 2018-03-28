@@ -29,52 +29,55 @@ void Chrono::restartChrono()
 
 void Chrono::BlitElement(bool use_camera)
 {
-	BROFILER_CATEGORY("Chrono Blit", Profiler::Color::AntiqueWhite);
-	time_elapsed = counter.ReadSec();
-
-	switch (type)
+	if (active)
 	{
-	case STOPWATCH:
-		if (time != time_elapsed)
+		BROFILER_CATEGORY("Chrono Blit", Profiler::Color::AntiqueWhite);
+		time_elapsed = counter.ReadSec();
+
+		switch (type)
 		{
-			time = time_elapsed;
-			
-			if (callback != nullptr) //If has callback send event
+		case STOPWATCH:
+			if (time != time_elapsed)
 			{
-				for (int i = 0; i < alarms.size(); i++)
+				time = time_elapsed;
+
+				if (callback != nullptr) //If has callback send event
 				{
-					/*if (time == (int)*alarms.At(i))
-						callback->OnUIEvent(this, STOPWATCH_ALARM);*/
+					for (int i = 0; i < alarms.size(); i++)
+					{
+						/*if (time == (int)*alarms.At(i))
+							callback->OnUIEvent(this, STOPWATCH_ALARM);*/
+					}
 				}
+
+				std::string secs("%05d", time);
+				if (last_secs != secs)
+					text->setText(secs);
+
+				section = text->section;
+				last_secs = ("%05d", time);
 			}
-			
-			std::string secs("%05d", time);
-			if (last_secs != secs)
-				text->setText(secs);
+			break;
+		case TIMER:
+			if (start_value - time_elapsed != time && time != 0)
+			{
+				time = start_value - time_elapsed;
 
-			section = text->section;
-			last_secs = ("%05d", time);
+				if (time == 0 && callback != nullptr) //If has callback send event
+					callback->OnUIEvent(this, TIMER_ZERO);
+
+				std::string secs("%d", time);
+				if (last_secs != secs)
+					text->setText(secs);
+
+				section = text->section;
+				last_secs = ("%05d", time);
+			}
+			break;
 		}
-		break;
-	case TIMER:
-		if (start_value - time_elapsed != time && time != 0)
-		{
-			time = start_value - time_elapsed;
 
-			if (time == 0 && callback != nullptr) //If has callback send event
-				callback->OnUIEvent(this, TIMER_ZERO);
+		text->BlitElement();
 
-			std::string secs("%d", time);
-			if (last_secs != secs)
-			text->setText(secs);
-
-			section = text->section;
-			last_secs = ("%05d", time);
-		}
-		break;
+		BlitChilds();
 	}
-
-	text->BlitElement();
-
-	BlitChilds();
 }

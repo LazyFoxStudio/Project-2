@@ -105,6 +105,7 @@ public:
 	bool moving = false;
 	bool dragable = false;
 	bool interactive = true;
+	bool active = true;
 
 protected:
 	iPoint Click_Pos{ 0,0 };

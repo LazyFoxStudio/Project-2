@@ -21,6 +21,7 @@ class Window;
 class Chrono;
 class ProgressBar;
 class LifeBar;
+class IngameMenu;
 class menu;
 class Entity;
 
@@ -85,6 +86,7 @@ public:
 	Button* createButton(pugi::xml_node node, j1Module* callback = nullptr);
 	Window* createWindow(pugi::xml_node node, j1Module* callback = nullptr);
 	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr);
+	IngameMenu* createIngameMenu(pugi::xml_node node, j1Module* callback = nullptr);
 	void createLifeBar(Entity* entity);
 
 	void LoadDB(pugi::xml_node node);
@@ -116,6 +118,7 @@ private:
 	std::list<ProgressBar*> ProgressBars;
 	std::list<LifeBar*> LifeBars;
 	std::list<Window*> Windows;
+	IngameMenu* inGameMenu = nullptr;
 	UI_element* draggingElement = nullptr;
 	std::map<unitType, SDL_Rect> unitIconRect;
 	std::map<buildingType, SDL_Rect> buildingIconRect;

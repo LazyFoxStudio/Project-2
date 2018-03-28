@@ -115,15 +115,18 @@
     <ClCompile Include="UI_element.cpp">
       <Filter>Desenvolupament  ========\GUI\Basic UI Elements</Filter>
     </ClCompile>
-    <ClCompile Include="UI_IngameMenu.cpp" />
     <ClCompile Include="j1Console.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
-</ClCompile>
+    </ClCompile>
     <ClCompile Include="UI_IngameMenu.cpp">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClCompile>
     <ClCompile Include="UI_LifeBar.cpp">
-      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>    </ClCompile>
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_IngameMenu.cpp">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -257,7 +260,7 @@
     </ClInclude>
     <ClInclude Include="j1Console.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
-	</ClInclude >
+    </ClInclude>
     <ClInclude Include="UI_LifeBar.h">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClInclude>
