@@ -63,6 +63,12 @@ LifeBar::LifeBar(Entity * entity, SDL_Texture * texture, int x, int y)
 	this->inMenu = true;
 }
 
+LifeBar::~LifeBar()
+{
+	RELEASE(display);
+	RELEASE(bar);
+}
+
 void LifeBar::BlitElement(bool use_camera)
 {
 	int life = 100;

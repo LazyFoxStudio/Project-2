@@ -18,11 +18,7 @@ public:
 
 	LifeBar(Entity* entity, SDL_Texture* texture, int x, int y);
 
-	~LifeBar()
-	{	
-		RELEASE(display);
-		RELEASE(bar);
-	}
+	~LifeBar();
 
 	void BlitElement(bool use_camera = false);
 
