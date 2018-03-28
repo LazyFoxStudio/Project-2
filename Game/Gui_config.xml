@@ -48,28 +48,45 @@ non-constant elements:
 To use a different texture than atlas add path attribute to an element ex. <button path="path.png" />
 
 The id of the fonts will be ordered as they are in the file, starting with 1
-		
+Resolution of the screen: 1680x 1050y
 -->
 <config>
 	<fonts>
 		<font path="fonts/Old School Adventures.ttf" size="10"/>
 	</fonts>
 	<menu type="2" active="true">
+	<!-- Mouse Position-->
+		<text text="text_position_x" center="false" counter="true">
+			<position x="1500" y="50"/>
+			<font id="1"/>
+			<color r="255" g="255" b="255" a="255"/>
+			<draggable horizontal="false" vertical="false"/>
+			<interactive value="false"/>
+		</text>
+		<text text="text_position_y" center="false" counter="true">
+			<position x="1600" y="50"/>
+			<font id="1"/>
+			<color r="255" g="255" b="255" a="255"/>
+			<draggable horizontal="false" vertical="false"/>
+			<interactive value="false"/>
+		</text>
+	
+	<!-- Resources Display -->
 		<atlas_image icon_atlas="false">
-			<position x="0" y="0"/>
-			<section x="285" y="271" w="143" h="53"/>
+			<position x="10" y="10"/>
+			<section x="285" y="332" w="874" h="54"/>
 			<draggable horizontal="true" vertical="true"/>
 			<interactive value="true"/>
 			<childs>
-				<text text="text_position_x" center="false" counter="true">
-					<position x="10" y="50"/>
+				<text text="gold" center="false" counter="false">
+					<position x="220" y="10"/>
 					<font id="1"/>
 					<color r="255" g="255" b="255" a="255"/>
 					<draggable horizontal="false" vertical="false"/>
 					<interactive value="false"/>
 				</text>
-				<text text="text_position_y" center="false" counter="true">
-					<position x="100" y="50"/>
+				<text text="gold" center="false" counter="false">
+					<position x="220" y="10"/>
 					<font id="1"/>
 					<color r="255" g="255" b="255" a="255"/>
 					<draggable horizontal="false" vertical="false"/>
@@ -77,14 +94,52 @@ The id of the fonts will be ordered as they are in the file, starting with 1
 				</text>
 			</childs>
 		</atlas_image>
+	
+	<!-- Options Button -->
+		<atlas_image icon_atlas="false">
+			<position x="10" y="10"/>
+			<section x="285" y="271" w="143" h="53"/>
+			<draggable horizontal="true" vertical="true"/>
+			<interactive value="true"/>
+			<childs>
+
+			</childs>
+		</atlas_image>
+	<!-- Wave Window -->
+		<atlas_image icon_atlas="false">
+			<position x="1408" y="462"/>
+			<section x="0" y="271" w="272" h="336"/>
+			<draggable horizontal="true" vertical="true"/>
+			<interactive value="true"/>
+		</atlas_image>
+
+	<!-- in-game menu -->
 		<ingamemenu>
 			<position x="0" y="795"/>
 			<section x="0" y="0" w="1678" h="255"/>
-			<minimap x="" y=""/>
-			<icons x="" y="" offsetX="" offsetY=""/>
-			<stats x="" y=""/>
-			<buttons x="" y="" offsetX="" offsetY=""/>
+			<minimap x="5" y="795"/>
+			<icons x="275" y="815" offsetX="100" offsetY="100"/>
+			<stats x="1100" y="835"/>
+			<buttons x="1365" y="815" offsetX="80" offsetY="80"/>
+			<childs>
+		<!-- move button-->
+			<!--
+			<image icon_atlas="false">
+				<section x="285" y="437" w="66" h="66"/>
+				<position x="100" y="100"/>
+			</image>
+			
+			<atlas_image icon_atlas="false">
+				<position x="-500" y="-500"/>
+				<section x="285" y="437" w="66" h="66"/>
+				<draggable horizontal="true" vertical="true"/>
+				<interactive value="true"/>
+			</atlas_image>
+			-->
+			</childs>
 		</ingamemenu>
+
+
 	</menu>
 </config>
 
