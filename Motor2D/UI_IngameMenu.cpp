@@ -36,6 +36,14 @@ void IngameMenu::cleanLists()
 		it_i++;
 	}
 	troopsIcons.clear();
+
+	std::list<LifeBar*>::iterator it_l = lifeBars.begin();
+	while (it_l != lifeBars.end())
+	{
+		RELEASE(*it_l);
+		it_l++;
+	}
+	lifeBars.clear();
 }
 
 void IngameMenu::BlitElement(bool use_camera)
