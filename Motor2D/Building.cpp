@@ -1,4 +1,5 @@
 #include "Building.h"
+#include "j1Render.h"
 
 Building::Building(iPoint pos, Building& building)
 {
@@ -23,6 +24,7 @@ Building::~Building()
 
 bool Building::Update(float dt)
 {
+	App->render->Blit(texture, position.x, position.y, section);
 	return true;
 }
 

@@ -172,6 +172,20 @@
             </Animations>
       </Unit>
     </Units>
+  <Buildings>
+    <Building>
+      <name value="Barracks"/>
+      <type value="1"/>
+      <texture value="Assets\Sprites\Alliance Sprites\PC Computer - Warcraft 2 - Human Buildings Summer.png"/>
+      <Stats>
+        <life value="100"/>
+        <villagers value="1"/>
+        <cooldown value="60"/>
+        <defense value="100"/>
+      </Stats>
+      <iconData x="104" y="169" w="46" h="38"/>
+    </Building>
+  </Buildings>
 	<LifeBars>
 		<LifeBarG>
 			<empty tag="G_empty" x="285" y="399" w="109" h="14"/>

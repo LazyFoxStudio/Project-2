@@ -24,6 +24,7 @@ bool j1EntityController::Start()
 
 	loadEntitiesDB(gameData);
 	addUnit(iPoint(800, 800), FOOTMAN);
+	addBuilding(iPoint(700, 700), BARRACKS);
 	return true;
 }
 

@@ -26,6 +26,8 @@ public:
 	int villagers_inside = 0;
 	j1Timer cooldown;
 
+	SDL_Rect* section = new SDL_Rect({ 307,458,96,95 });
+
 public:
 	Building() { entity_type = BUILDING; };
 	Building(iPoint pos, Building& building);
