@@ -67,6 +67,7 @@ public:
 	void UIDebugDraw();
 	// Gui creation functions
 	const SDL_Texture* GetAtlas() const;
+	const SDL_Texture* GetIconAtlas() const;
 	//Type:
 	//TEXT - 0
 	//IMAGE - 1
@@ -95,8 +96,6 @@ public:
 	void AddIconData(buildingType type, pugi::xml_node node);
 	void AddIconData(resourceType type, pugi::xml_node node);
 	SDL_Rect GetIconRect(Entity* entity);
-	SDL_Rect GetIconRect(buildingType type);
-	SDL_Rect GetIconRect(resourceType type);
 	SDL_Rect GetLifeBarRect(std::string tag);
 
 public:

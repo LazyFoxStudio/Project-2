@@ -25,6 +25,17 @@ void IngameMenu::newSelection()
 {
 }
 
+void IngameMenu::cleanLists()
+{
+	std::list<Image*>::iterator it_i = troopsIcons.begin();
+	while (it_i != troopsIcons.end())
+	{
+		RELEASE(*it_i);
+		it_i++;
+	}
+	troopsIcons.clear();
+}
+
 void IngameMenu::BlitElement(bool use_camera)
 {
 	BROFILER_CATEGORY("In-game Menu Blit", Profiler::Color::Beige);
@@ -33,21 +44,23 @@ void IngameMenu::BlitElement(bool use_camera)
 	//update health bars
 	if (App->entitycontroller->newSelection)
 	{
+		int counter = 0;
+		cleanLists();
 		for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
 		{
-			troopsIcons.push_back(new Image(icon_atlas, 0, 0, App->gui->GetIconRect((*it_e)), callback));
+			troopsIcons.push_back(new Image(icon_atlas, firstIcon_pos.x + icons_offset.x*counter, firstIcon_pos.y + icons_offset.y*counter, App->gui->GetIconRect((*it_e)), callback));
+			counter++;
 		}
-	}
-
-	for (std::list<Image*>::iterator it_i = troopsIcons.begin(); it_i != troopsIcons.end(); it_i++)
-	{
-		(*it_i)->BlitElement(use_camera);
-	}
+	}	
 
 	//Blit window
 	window->BlitElement(use_camera);
 	//Blit minimap
 	//Blit icons
+	for (std::list<Image*>::iterator it_i = troopsIcons.begin(); it_i != troopsIcons.end(); it_i++)
+	{
+		(*it_i)->BlitElement(use_camera);
+	}
 	//Blit health bars
 	//Blit action butons
 }

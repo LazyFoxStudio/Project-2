@@ -307,6 +307,11 @@ const SDL_Texture* j1Gui::GetAtlas() const
 	return atlas;
 }
 
+const SDL_Texture* j1Gui::GetIconAtlas() const
+{
+	return icon_atlas;
+}
+
 UI_element* j1Gui::GetElement(int type, int id)
 {
 	UI_element* ret = nullptr;

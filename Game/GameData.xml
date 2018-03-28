@@ -193,16 +193,16 @@
   </Nature>
 	<LifeBars>
 		<LifeBarG>
-			<empty tag="G_empty" x="285" y="399" w="109" h="14"/>
-			<full tag="G_full" x="285" y="418" w="109" h="14"/>
+			<empty tag="G_empty" x="285" y="399" w="69" h="11"/>
+			<full tag="G_full" x="285" y="421" w="69" h="11"/>
 		</LifeBarG>
 		<LifeBarR>
-			<empty tag="R_empty" x="418" y="399" w="109" h="14"/>
-			<full tag="R_full" x="418" y="418" w="109" h="14"/>
+			<empty tag="R_empty" x="365" y="399" w="69" h="11"/>
+			<full tag="R_full" x="365" y="421" w="69" h="11"/>
 		</LifeBarR>
 		<LifeBarY>
-			<empty tag="Y_empty" x="553" y="399" w="109" h="14"/>
-			<full tag="Y_full" x="553" y="418" w="109" h="14"/>
+			<empty tag="Y_empty" x="444" y="399" w="69" h="11"/>
+			<full tag="Y_full" x="444" y="421" w="69" h="11"/>
 		</LifeBarY>
 	</LifeBars>
 </GameData>

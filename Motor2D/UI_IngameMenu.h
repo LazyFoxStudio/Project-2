@@ -23,6 +23,8 @@ public:
 
 	void newSelection();
 
+	void cleanLists();
+
 	void BlitElement(bool use_camera = false);
 
 public:
