@@ -119,6 +119,7 @@ Resolution of the screen: 1680x 1050y
 			<section x="0" y="0" w="1678" h="255"/>
 			<minimap x="5" y="795"/>
 			<icons x="296" y="816" offsetX="398" offsetY="78"/>
+			<lifeBars offsetX="82" offsetY="6"/>
 			<stats x="1100" y="835"/>
 			<buttons x="1365" y="815" offsetX="80" offsetY="80"/>
 			<childs>

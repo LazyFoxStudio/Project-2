@@ -29,14 +29,14 @@ void Text::createTexture()
 
 	uint outline_width = 0;
 	uint outline_height = 0;
-	/*if (outlined)
+	if (outlined)
 	{
 		App->font->setFontOutline(font, 2);
-		outline = App->font->Print(text.c_str(), outline_color, font); //Outlined texture
+		outline = App->font->Print(text.c_str(), &outline_color, font); //Outlined texture
 		App->tex->GetSize(outline, outline_width, outline_height);
 	}
 
-	App->font->setFontOutline(font, 0);*/
+	App->font->setFontOutline(font, 0);
 	texture = App->font->Print(text.c_str(), &color, font); //Normal texture
 	App->tex->GetSize(texture, tex_width, tex_height);
 	section.w = tex_width;
@@ -126,8 +126,11 @@ std::string Text::getText() const
 
 void Text::setText(std::string string)
 {
-	text = string;
-	createTexture();
+	if (text != string)
+	{
+		text = string;
+		createTexture();
+	}
 }
 
 int Text::getLength() const
