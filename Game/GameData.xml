@@ -183,9 +183,14 @@
         <cooldown value="60"/>
         <defense value="100"/>
       </Stats>
-      <iconData x="104" y="169" w="46" h="38"/>
+      <iconData x="162" y="264" w="72" h="59"/>
     </Building>
   </Buildings>
+  <Nature>
+    <Resource>
+        
+    </Resource>
+  </Nature>
 	<LifeBars>
 		<LifeBarG>
 			<empty tag="G_empty" x="285" y="399" w="109" h="14"/>
