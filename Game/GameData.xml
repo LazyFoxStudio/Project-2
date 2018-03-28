@@ -192,17 +192,33 @@
     </Resource>
   </Nature>
 	<LifeBars>
-		<LifeBarG>
-			<empty tag="G_empty" x="285" y="399" w="69" h="11"/>
-			<full tag="G_full" x="285" y="421" w="69" h="11"/>
-		</LifeBarG>
-		<LifeBarR>
-			<empty tag="R_empty" x="365" y="399" w="69" h="11"/>
-			<full tag="R_full" x="365" y="421" w="69" h="11"/>
-		</LifeBarR>
-		<LifeBarY>
-			<empty tag="Y_empty" x="444" y="399" w="69" h="11"/>
-			<full tag="Y_full" x="444" y="421" w="69" h="11"/>
-		</LifeBarY>
+		<in-game>
+			<LifeBarG>
+				<empty tag="G_empty" x="285" y="399" w="69" h="11"/>
+				<full tag="G_full" x="285" y="421" w="69" h="11"/>
+			</LifeBarG>
+			<LifeBarR>
+				<empty tag="R_empty" x="365" y="399" w="69" h="11"/>
+				<full tag="R_full" x="365" y="421" w="69" h="11"/>
+			</LifeBarR>
+			<LifeBarY>
+				<empty tag="Y_empty" x="444" y="399" w="69" h="11"/>
+				<full tag="Y_full" x="444" y="421" w="69" h="11"/>
+			</LifeBarY>
+		</in-game>
+		<menu>
+			<LifeBarG>
+				<empty tag="mG_empty" x="285" y="588" w="248" h="49"/>
+				<full tag="mG_full" x="285" y="641" w="248" h="49"/>
+			</LifeBarG>
+			<LifeBarR>
+				<empty tag="mR_empty" x="541" y="588" w="248" h="49"/>
+				<full tag="mR_full" x="541" y="641" w="248" h="49"/>
+			</LifeBarR>
+			<LifeBarY>
+				<empty tag="mY_empty" x="800" y="588" w="248" h="49"/>
+				<full tag="mY_full" x="800" y="641" w="248" h="49"/>
+			</LifeBarY>
+		</menu>
 	</LifeBars>
 </GameData>

@@ -568,6 +568,9 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 	int icons_offsetX = node.child("icons").attribute("offsetX").as_int();
 	int icons_offsetY = node.child("icons").attribute("offsetY").as_int();
 
+	int lifeBars_offsetX = node.child("lifeBars").attribute("offsetX").as_int();
+	int lifeBars_offsetY = node.child("lifeBars").attribute("offsetY").as_int();
+
 	int stats_posX = node.child("stats").attribute("x").as_int();
 	int stats_posY = node.child("stats").attribute("y").as_int();
 
@@ -576,7 +579,7 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 	int buttons_offsetX = node.child("buttons").attribute("offsetX").as_int();
 	int buttons_offsetY = node.child("buttons").attribute("offsetY").as_int();
 
-	IngameMenu* ret = new IngameMenu(texture, icon_atlas, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, stats_posX, stats_posY, firstButton_posX, firstButton_posY, buttons_offsetX, buttons_offsetY, callback);
+	IngameMenu* ret = new IngameMenu(texture, icon_atlas, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, lifeBars_offsetX, lifeBars_offsetY, stats_posX, stats_posY, firstButton_posX, firstButton_posY, buttons_offsetX, buttons_offsetY, callback);
 
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
@@ -598,7 +601,17 @@ void j1Gui::LoadDB(pugi::xml_node node)
 	pugi::xml_node lifebar;
 	pugi::xml_node rect;
 
-	for (lifebar = node.child("LifeBars").first_child(); lifebar; lifebar = lifebar.next_sibling())
+	for (lifebar = node.child("LifeBars").child("in-game").first_child(); lifebar; lifebar = lifebar.next_sibling())
+	{
+		for (rect = lifebar.first_child(); rect; rect = rect.next_sibling())
+		{
+			SDL_Rect section = { rect.attribute("x").as_int(0), rect.attribute("y").as_int(0) , rect.attribute("w").as_int(0) , rect.attribute("h").as_int(0) };
+			std::string tag = rect.attribute("tag").as_string();
+
+			LifeBarRect.insert(std::pair<std::string, SDL_Rect>(tag, section));
+		}
+	}
+	for (lifebar = node.child("LifeBars").child("menu").first_child(); lifebar; lifebar = lifebar.next_sibling())
 	{
 		for (rect = lifebar.first_child(); rect; rect = rect.next_sibling())
 		{

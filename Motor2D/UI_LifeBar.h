@@ -15,6 +15,8 @@ public:
 
 	LifeBar(Entity* entity, SDL_Texture* texture);
 
+	LifeBar(Entity* entity, SDL_Texture* texture, int x, int y);
+
 	~LifeBar()
 	{	}
 
@@ -25,6 +27,7 @@ public:
 	ProgressBar* bar;
 	Entity* entity;
 	iPoint offset;
+	bool inMenu;
 
 };
 
