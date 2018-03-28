@@ -73,7 +73,7 @@ Resolution of the screen: 1680x 1050y
 	
 	<!-- Resources Display -->
 		<atlas_image icon_atlas="false">
-			<position x="10" y="10"/>
+			<position x="0" y="0"/>
 			<section x="285" y="332" w="874" h="54"/>
 			<draggable horizontal="true" vertical="true"/>
 			<interactive value="true"/>
@@ -97,7 +97,7 @@ Resolution of the screen: 1680x 1050y
 	
 	<!-- Options Button -->
 		<atlas_image icon_atlas="false">
-			<position x="10" y="10"/>
+			<position x="0" y="0"/>
 			<section x="285" y="271" w="143" h="53"/>
 			<draggable horizontal="true" vertical="true"/>
 			<interactive value="true"/>

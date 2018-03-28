@@ -12,8 +12,23 @@ void Image::BlitElement(bool use_camera)
 		if (texture != App->gui->GetAtlas())
 			SDL_SetTextureAlphaMod(texture, App->gui->alpha_value);
 		iPoint globalPos = calculateAbsolutePosition();
+		if (border)
+		{
+			SDL_Rect border_rect = { globalPos.x - border_thickness / 2, globalPos.y - border_thickness / 2, section.w + border_thickness, section.h + border_thickness };
+			App->render->DrawQuad(border_rect, border_color, true, use_camera);
+		}
 		App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera);
 
 		BlitChilds();
+	}
+}
+
+void Image::setBorder(bool border, Color color, int thickness)
+{
+	this->border = border;
+	if (border)
+	{
+		border_color = color;
+		border_thickness = thickness;
 	}
 }

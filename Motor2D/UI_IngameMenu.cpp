@@ -44,12 +44,19 @@ void IngameMenu::BlitElement(bool use_camera)
 	//update health bars
 	if (App->entitycontroller->newSelection)
 	{
-		int counter = 0;
+		int counterX = 0;
+		int counterY = 0;
 		cleanLists();
 		for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
 		{
-			troopsIcons.push_back(new Image(icon_atlas, firstIcon_pos.x + icons_offset.x*counter, firstIcon_pos.y + icons_offset.y*counter, App->gui->GetIconRect((*it_e)), callback));
-			counter++;
+			troopsIcons.push_back(new Image(icon_atlas, firstIcon_pos.x + icons_offset.x*counterX, firstIcon_pos.y + icons_offset.y*counterY, App->gui->GetIconRect((*it_e)), callback));
+			(*troopsIcons.rbegin())->setBorder(true, White, 4);
+			counterY++;
+			if (counterY == 3)
+			{
+				counterX++;
+				counterY = 0;
+			}
 		}
 	}	
 

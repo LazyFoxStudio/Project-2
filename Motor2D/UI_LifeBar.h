@@ -24,6 +24,7 @@ public:
 
 	ProgressBar* bar;
 	Entity* entity;
+	iPoint offset;
 
 };
 

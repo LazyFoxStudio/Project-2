@@ -23,7 +23,10 @@ bool j1EntityController::Start()
 	gameData = App->LoadFile(doc, "GameData.xml");
 
 	loadEntitiesDB(gameData);
+	addUnit(iPoint(700, 800), FOOTMAN);
 	addUnit(iPoint(800, 800), FOOTMAN);
+	addUnit(iPoint(900, 800), FOOTMAN);
+	addUnit(iPoint(1000, 800), FOOTMAN);
 	addBuilding(iPoint(700, 700), BARRACKS);
 	return true;
 }
