@@ -60,51 +60,39 @@ Resolution of the screen: 1680x 1050y
 			<position x="1500" y="50"/>
 			<font id="1"/>
 			<color r="255" g="255" b="255" a="255"/>
-			<draggable horizontal="false" vertical="false"/>
-			<interactive value="false"/>
 		</text>
 		<text text="text_position_y" center="false" counter="true">
 			<position x="1600" y="50"/>
 			<font id="1"/>
 			<color r="255" g="255" b="255" a="255"/>
-			<draggable horizontal="false" vertical="false"/>
-			<interactive value="false"/>
 		</text>
 	
 	<!-- Resources Display -->
 		<atlas_image icon_atlas="false">
 			<position x="0" y="0"/>
 			<section x="285" y="332" w="874" h="54"/>
-			<draggable horizontal="true" vertical="true"/>
-			<interactive value="true"/>
 			<childs>
-				<text text="gold" center="false" counter="false">
+				<text text="wood" center="false" counter="false">
 					<position x="220" y="10"/>
 					<font id="1"/>
 					<color r="255" g="255" b="255" a="255"/>
-					<draggable horizontal="false" vertical="false"/>
-					<interactive value="false"/>
 				</text>
 				<text text="gold" center="false" counter="false">
-					<position x="220" y="10"/>
+					<position x="320" y="10"/>
 					<font id="1"/>
 					<color r="255" g="255" b="255" a="255"/>
-					<draggable horizontal="false" vertical="false"/>
-					<interactive value="false"/>
 				</text>
 			</childs>
 		</atlas_image>
 	
 	<!-- Options Button -->
-		<atlas_image icon_atlas="false">
+		<button>
 			<position x="0" y="0"/>
-			<section x="285" y="271" w="143" h="53"/>
-			<draggable horizontal="true" vertical="true"/>
+			<standby x="285" y="271" w="143" h="53"/>
+			<OnMouse x="437" y="271" w="143" h="53"/>
+			<OnClick x="589" y="271" w="143" h="53"/>
 			<interactive value="true"/>
-			<childs>
-
-			</childs>
-		</atlas_image>
+		</button>
 	<!-- Wave Window -->
 		<atlas_image icon_atlas="false">
 			<position x="1408" y="462"/>
@@ -121,26 +109,72 @@ Resolution of the screen: 1680x 1050y
 			<icons x="296" y="816" offsetX="398" offsetY="78"/>
 			<lifeBars offsetX="82" offsetY="6"/>
 			<stats x="1100" y="835"/>
-			<buttons x="1365" y="815" offsetX="80" offsetY="80"/>
-			<childs>
-		<!-- move button-->
-			<!--
-			<image icon_atlas="false">
-				<section x="285" y="437" w="66" h="66"/>
-				<position x="100" y="100"/>
-			</image>
-			
-			<atlas_image icon_atlas="false">
-				<position x="-500" y="-500"/>
-				<section x="285" y="437" w="66" h="66"/>
-				<draggable horizontal="true" vertical="true"/>
-				<interactive value="true"/>
-			</atlas_image>
-			-->
-			</childs>
+			<buttons>
+				<move>
+					<position x="1399" y="809"/>
+					<standby x="285" y="437" w="66" h="66"/>
+					<OnMouse x="353" y="437" w="66" h="66"/>
+					<OnClick x="421" y="437" w="66" h="66"/>
+					<interactive value="true"/>
+				</move>
+				<stop>
+					<position x="1480" y="809"/>
+					<standby x="489" y="437" w="66" h="66"/>
+					<OnMouse x="557" y="437" w="66" h="66"/>
+					<OnClick x="625" y="437" w="66" h="66"/>
+					<interactive value="true"/>
+				</stop>
+				<attack>
+					<position x="1558" y="809"/>
+					<standby x="693" y="437" w="66" h="66"/>
+					<OnMouse x="761" y="437" w="66" h="66"/>
+					<OnClick x="829" y="437" w="66" h="66"/>
+					<interactive value="true"/>
+				</attack>
+				<patrol>
+					<position x="1399" y="889"/>
+					<standby x="897" y="437" w="66" h="66"/>
+					<OnMouse x="965" y="437" w="66" h="66"/>
+					<OnClick x="1033" y="437" w="66" h="66"/>
+					<interactive value="true"/>
+				</patrol>
+				<action5>
+					<position x="1480" y="889"/>
+					<standby x="1101" y="437" w="66" h="66"/>
+					<OnMouse x="1169" y="437" w="66" h="66"/>
+					<OnClick x="1237" y="437" w="66" h="66"/>
+					<interactive value="true"/>
+				</action5>
+				<action6>
+					<position x="1558" y="889"/>
+					<standby x="1305" y="437" w="66" h="66"/>
+					<OnMouse x="1373" y="437" w="66" h="66"/>
+					<OnClick x="1441" y="437" w="66" h="66"/>
+					<interactive value="true"/>
+				</action6>
+				<action7>
+					<position x="1399" y="969"/>
+					<standby x="285" y="507" w="66" h="66"/>
+					<OnMouse x="353" y="507" w="66" h="66"/>
+					<OnClick x="421" y="507" w="66" h="66"/>
+					<interactive value="true"/>
+				</action7>
+				<action8>
+					<position x="1480" y="969"/>
+					<standby x="489" y="507" w="66" h="66"/>
+					<OnMouse x="557" y="507" w="66" h="66"/>
+					<OnClick x="625" y="507" w="66" h="66"/>
+					<interactive value="true"/>
+				</action8>
+				<action9>
+					<position x="1558" y="969"/>
+					<standby x="693" y="507" w="66" h="66"/>
+					<OnMouse x="761" y="507" w="66" h="66"/>
+					<OnClick x="829" y="507" w="66" h="66"/>
+					<interactive value="true"/>
+				</action9>
+			</buttons>
 		</ingamemenu>
-
-
 	</menu>
 </config>
 

@@ -12,13 +12,11 @@
 #include "UI_ProgressBar.h"
 #include "j1EntityController.h"
 
-IngameMenu::IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int lifeBars_offsetX, int lifeBars_offsetY, int stats_posX, int stats_posY, int firstButton_posX, int firstButton_posY, int buttons_offsetX, int buttons_offsetY, j1Module * callback) : UI_element(x, y, element_type::MENU, section, callback, atlas),
+IngameMenu::IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int lifeBars_offsetX, int lifeBars_offsetY, int stats_posX, int stats_posY, j1Module * callback) : UI_element(x, y, element_type::MENU, section, callback, atlas),
 firstIcon_pos({firstIcon_posX, firstIcon_posY}),
 icons_offset({icons_offsetX, icons_offsetY}),
 lifeBars_offset({lifeBars_offsetX, lifeBars_offsetY}),
 stats_pos({stats_posX, stats_posY}),
-firstButton_pos({firstButton_posX, firstButton_posY}),
-buttons_offset({buttons_offsetX, buttons_offsetY}),
 icon_atlas(icon_atlas)
 {
 	window = new Window(texture, x, y, section, callback);
@@ -27,7 +25,7 @@ icon_atlas(icon_atlas)
 
 IngameMenu::~IngameMenu()
 {
-	cleanLists();
+	cleanLists(true);
 	//RELEASE(minimap);
 	RELEASE(window);
 }
@@ -58,7 +56,17 @@ void IngameMenu::createSelectionBasicInfo()
 	}
 }
 
-void IngameMenu::cleanLists()
+void IngameMenu::createActionButtons(pugi::xml_node node)
+{
+	for (pugi::xml_node tmp = node.first_child(); tmp; tmp = tmp.next_sibling())
+	{
+		Button* button = App->gui->createButton(tmp, callback, false);
+		actionButtons.push_back(button);
+		childs.push_back(button);
+	}
+}
+
+void IngameMenu::cleanLists(bool destructor)
 {
 	//Clean troops icons
 	std::list<Image*>::iterator it_i = troopsIcons.begin();
@@ -76,14 +84,17 @@ void IngameMenu::cleanLists()
 		it_l++;
 	}
 	lifeBars.clear();
-	//Clean action buttons
-	std::list<Button*>::iterator it_b = actionButtons.begin();
-	while (it_b != actionButtons.end())
+	if (destructor)
 	{
-		RELEASE(*it_b);
-		it_b++;
+		//Clean action buttons
+		std::list<Button*>::iterator it_b = actionButtons.begin();
+		while (it_b != actionButtons.end())
+		{
+			RELEASE(*it_b);
+			it_b++;
+		}
+		actionButtons.clear();
 	}
-	actionButtons.clear();
 }
 
 void IngameMenu::BlitElement(bool use_camera)
@@ -107,9 +118,9 @@ void IngameMenu::BlitElement(bool use_camera)
 		(*it_l)->BlitElement(use_camera);
 	}
 	//Blit action butons
-	/*for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
+	for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
 	{
 		if ((*it_b)->active)
 			(*it_b)->BlitElement(use_camera);
-	}*/
+	}
 }

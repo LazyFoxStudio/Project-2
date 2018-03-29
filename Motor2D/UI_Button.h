@@ -30,10 +30,7 @@ public:
 public:
 
 	SDL_Rect OnMouse;
-	SDL_Rect sectionActive;
-	SDL_Rect OnMouseActive;
 	SDL_Rect OnClick;
-	bool active = false;
 	bool clicked = false;
 };
 

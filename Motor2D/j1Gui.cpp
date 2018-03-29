@@ -68,9 +68,6 @@ bool j1Gui::PreUpdate()
 	
 	//SDL_SetTextureAlphaMod(atlas, alpha_value);
 
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	int scale = App->win->GetScale();
 	UI_element* element = nullptr;
 
 	//Get element to interact with
@@ -78,23 +75,17 @@ bool j1Gui::PreUpdate()
 		element = draggingElement;
 	else
 	{
-		for (std::list<menu*>::reverse_iterator it_m = App->uiscene->menus.rbegin(); it_m != App->uiscene->menus.rend(); it_m++)
+		for (std::list<menu*>::reverse_iterator it_m = App->uiscene->menus.rbegin(); it_m != App->uiscene->menus.rend(); it_m++) //Go through menus
 		{
 			if ((*it_m) == nullptr) break;
 			if ((*it_m)->active == false) continue;
-			for (std::list<UI_element*>::reverse_iterator it_e = (*it_m)->elements.rbegin()--; it_e != (*it_m)->elements.rend(); it_e++)
+			for (std::list<UI_element*>::reverse_iterator it_e = (*it_m)->elements.rbegin(); it_e != (*it_m)->elements.rend(); it_e++) //Go through elements
 			{
-				iPoint globalPos = (*it_e)->calculateAbsolutePosition();
-				if (x > globalPos.x && x < globalPos.x + (*it_e)->section.w / scale && y > globalPos.y && y < globalPos.y + (*it_e)->section.h / scale && element == nullptr && (*it_e)->interactive)
-				{
+				if (checkMouseHovering((*it_e)))
 					element = (*it_e);
-				}
-				else if ((*it_e)->hovering)
-				{
-					(*it_e)->hovering = false;
-					if ((*it_e)->callback != nullptr)
-						(*it_e)->callback->OnUIEvent((*it_e), MOUSE_LEAVE);
-				}
+				for (std::list<UI_element*>::reverse_iterator it_c = (*it_e)->childs.rbegin(); it_c != (*it_e)->childs.rend(); it_c++)
+					if (checkMouseHovering((*it_c)))
+						element = (*it_c);
 			}
 		}
 	}
@@ -187,9 +178,6 @@ bool j1Gui::PostUpdate()
 				(*it_e)->BlitElement();
 		}
 	}
-	//Draw in-game menu
-	if (inGameMenu != nullptr)
-		inGameMenu->BlitElement();
 	//Draw Debug
 	if (UI_Debug)
 		UIDebugDraw();
@@ -278,6 +266,28 @@ bool j1Gui::CleanUp()
 	LifeBars.clear();
 
 	return true;
+}
+
+bool j1Gui::checkMouseHovering(UI_element* element)
+{
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	int scale = App->win->GetScale();
+	bool ret = false;
+
+	iPoint globalPos = element->calculateAbsolutePosition();
+	if (x >= globalPos.x && x <= globalPos.x + element->section.w / scale && y >= globalPos.y && y <= globalPos.y + element->section.h / scale && element->interactive)
+	{
+		ret = true;
+	}
+	else if (element->hovering)
+	{
+		element->hovering = false;
+		if (element->callback != nullptr)
+			element->callback->OnUIEvent(element, MOUSE_LEAVE);
+	}
+
+	return ret;
 }
 
 void j1Gui::UIDebugDraw()
@@ -371,7 +381,7 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		pugi::xml_node childs = tmp.child("childs");
 		if(childs)
 		{ 
-			Load_UIElements(childs, menu, callback, element);
+			Load_UIElements(childs, nullptr, callback, element);
 		}
 		
 		if (parent != nullptr)
@@ -379,11 +389,12 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 			parent->appendChild(element, tmp.attribute("center").as_bool());
 		}
 
-		menu->elements.push_back(element);
+		if (menu != nullptr)
+			menu->elements.push_back(element);
 	}
 }
 
-Text* j1Gui::createText(pugi::xml_node node, j1Module* callback)
+Text* j1Gui::createText(pugi::xml_node node, j1Module* callback, bool saveIntoGUI)
 {
 	std::string text = node.attribute("text").as_string();
 	if (node.attribute("counter").as_bool())
@@ -400,12 +411,13 @@ Text* j1Gui::createText(pugi::xml_node node, j1Module* callback)
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	Texts.push_back(ret);
+	if (saveIntoGUI)
+		Texts.push_back(ret);
 
 	return ret;
 }
 
-Image* j1Gui::createImage(pugi::xml_node node, j1Module* callback)
+Image* j1Gui::createImage(pugi::xml_node node, j1Module* callback, bool saveIntoGUI)
 {
 	SDL_Texture* texture = App->tex->Load(node.attribute("path").as_string());
 	uint tex_width, tex_height;
@@ -418,12 +430,13 @@ Image* j1Gui::createImage(pugi::xml_node node, j1Module* callback)
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	Images.push_back(ret);
+	if (saveIntoGUI)
+		Images.push_back(ret);
 
 	return ret;
 }
 
-Image* j1Gui::createImageFromAtlas(pugi::xml_node node, j1Module* callback, bool use_icon_atlas)
+Image* j1Gui::createImageFromAtlas(pugi::xml_node node, j1Module* callback, bool use_icon_atlas, bool saveIntoGUI)
 {
 	int x = node.child("position").attribute("x").as_int();
 	int y = node.child("position").attribute("y").as_int();
@@ -434,12 +447,13 @@ Image* j1Gui::createImageFromAtlas(pugi::xml_node node, j1Module* callback, bool
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	Images.push_back(ret);
+	if (saveIntoGUI)
+		Images.push_back(ret);
 
 	return ret;
 }
 
-Window* j1Gui::createWindow(pugi::xml_node node, j1Module * callback)
+Window* j1Gui::createWindow(pugi::xml_node node, j1Module * callback, bool saveIntoGUI)
 {
 	SDL_Texture* texture = nullptr;
 	if (node.attribute("path"))
@@ -455,12 +469,13 @@ Window* j1Gui::createWindow(pugi::xml_node node, j1Module * callback)
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	Windows.push_back(ret);
+	if (saveIntoGUI)
+		Windows.push_back(ret);
 
 	return ret;
 }
 
-Button* j1Gui::createButton(pugi::xml_node node, j1Module* callback)
+Button* j1Gui::createButton(pugi::xml_node node, j1Module* callback, bool saveIntoGUI)
 {
 	SDL_Texture* texture = nullptr;
 	if (node.attribute("path"))
@@ -478,12 +493,13 @@ Button* j1Gui::createButton(pugi::xml_node node, j1Module* callback)
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	Buttons.push_back(ret);
+	if (saveIntoGUI)
+		Buttons.push_back(ret);
 
 	return ret;
 }
 
-Chrono * j1Gui::createTimer(pugi::xml_node node, j1Module * callback)
+Chrono * j1Gui::createTimer(pugi::xml_node node, j1Module * callback, bool saveIntoGUI)
 {
 	int x = node.child("position").attribute("x").as_int();
 	int y = node.child("position").attribute("y").as_int();
@@ -497,12 +513,13 @@ Chrono * j1Gui::createTimer(pugi::xml_node node, j1Module * callback)
 	ret->setStartValue(node.attribute("initial_value").as_int());
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	Chronos.push_back(ret);
+	if (saveIntoGUI)
+		Chronos.push_back(ret);
 
 	return ret;
 }
 
-Chrono * j1Gui::createStopWatch(pugi::xml_node node, j1Module * callback)
+Chrono * j1Gui::createStopWatch(pugi::xml_node node, j1Module * callback, bool saveIntoGUI)
 {
 	int x = node.child("position").attribute("x").as_int();
 	int y = node.child("position").attribute("y").as_int();
@@ -515,12 +532,13 @@ Chrono * j1Gui::createStopWatch(pugi::xml_node node, j1Module * callback)
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	Chronos.push_back(ret);
+	if (saveIntoGUI)
+		Chronos.push_back(ret);
 
 	return ret;
 }
 
-ProgressBar* j1Gui::createProgressBar(pugi::xml_node node, j1Module* callback)
+ProgressBar* j1Gui::createProgressBar(pugi::xml_node node, j1Module* callback, bool saveIntoGUI)
 {
 	SDL_Texture* texture = nullptr;
 	if (node.attribute("path"))
@@ -541,7 +559,8 @@ ProgressBar* j1Gui::createProgressBar(pugi::xml_node node, j1Module* callback)
 	
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();
-	ProgressBars.push_back(ret);
+	if (saveIntoGUI)
+		ProgressBars.push_back(ret);
 
 	return ret;
 }
@@ -572,12 +591,9 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 	int stats_posX = node.child("stats").attribute("x").as_int();
 	int stats_posY = node.child("stats").attribute("y").as_int();
 
-	int firstButton_posX = node.child("buttons").attribute("x").as_int();
-	int firstButton_posY = node.child("buttons").attribute("y").as_int();
-	int buttons_offsetX = node.child("buttons").attribute("offsetX").as_int();
-	int buttons_offsetY = node.child("buttons").attribute("offsetY").as_int();
+	IngameMenu* ret = new IngameMenu(texture, icon_atlas, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, lifeBars_offsetX, lifeBars_offsetY, stats_posX, stats_posY, callback);
 
-	IngameMenu* ret = new IngameMenu(texture, icon_atlas, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, lifeBars_offsetX, lifeBars_offsetY, stats_posX, stats_posY, firstButton_posX, firstButton_posY, buttons_offsetX, buttons_offsetY, callback);
+	ret->createActionButtons(node.child("buttons"));
 
 	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
 	ret->interactive = node.child("interactive").attribute("value").as_bool();

@@ -64,6 +64,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool checkMouseHovering(UI_element* element);
+
 	void UIDebugDraw();
 	// Gui creation functions
 	const SDL_Texture* GetAtlas() const;
@@ -78,15 +80,15 @@ public:
 	UI_element* GetElement(int type, int id);
 
 	void Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback = nullptr, UI_element* parent = nullptr);
-	Text* createText(pugi::xml_node node, j1Module* callback = nullptr);
-	Chrono* createTimer(pugi::xml_node node, j1Module* callback = nullptr);
-	Chrono* createStopWatch(pugi::xml_node node, j1Module* callback = nullptr);
-	Image* createImage(pugi::xml_node node, j1Module* callback = nullptr);
-	Image* createImageFromAtlas(pugi::xml_node node, j1Module* callback = nullptr, bool use_icon_atlas = false);
+	Text* createText(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
+	Chrono* createTimer(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
+	Chrono* createStopWatch(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
+	Image* createImage(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
+	Image* createImageFromAtlas(pugi::xml_node node, j1Module* callback = nullptr, bool use_icon_atlas = false, bool saveIntoGUI = true);
 	//NULL texture to use atlas
-	Button* createButton(pugi::xml_node node, j1Module* callback = nullptr);
-	Window* createWindow(pugi::xml_node node, j1Module* callback = nullptr);
-	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr);
+	Button* createButton(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
+	Window* createWindow(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
+	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 	IngameMenu* createIngameMenu(pugi::xml_node node, j1Module* callback = nullptr);
 	void createLifeBar(Entity* entity);
 

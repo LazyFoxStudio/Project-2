@@ -16,7 +16,7 @@ public:
 	IngameMenu()
 	{}
 
-	IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int lifeBars_offsetX, int lifeBars_offsetY, int stats_posX, int stats_posY, int firstButton_posX, int firstButton_posY, int buttons_offsetX, int buttons_offsetY, j1Module* callback);
+	IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int lifeBars_offsetX, int lifeBars_offsetY, int stats_posX, int stats_posY, j1Module* callback);
 
 	~IngameMenu();
 
@@ -24,7 +24,8 @@ public:
 	//Troops icons
 	//Troops life bars
 	void createSelectionBasicInfo();
-	void cleanLists();
+	void createActionButtons(pugi::xml_node node);
+	void cleanLists(bool destructor = false);
 
 	void BlitElement(bool use_camera = false);
 
@@ -37,11 +38,9 @@ public:
 	iPoint icons_offset;
 	iPoint lifeBars_offset;
 	iPoint stats_pos;
-	iPoint firstButton_pos;
-	iPoint buttons_offset;
 	std::list<Image*> troopsIcons; //Being created/destroyed
 	std::list<LifeBar*> lifeBars; //Being created/destroyed
-	std::list<Button*> actionButtons; //Constant but unactive
+	std::list<Button*> actionButtons; //Constant but inactive
 
 };
 
