@@ -19,7 +19,7 @@ enum unitType
 	FOOTMAN, /* ... */ ARCHER, ALLY_X,
 
 	//Enemies
-	GRUNT, AXE_THROWER, /* ... */ ENEMY_X,
+	ENEMY_1, GRUNT, AXE_THROWER, /* ... */ ENEMY_X,
 };
 
 class Animation;
