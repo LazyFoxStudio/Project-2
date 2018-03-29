@@ -282,8 +282,11 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitTemplate->range			= NodeInfo.child("Stats").child("range").attribute("value").as_int(0);
 		unitTemplate->line_of_sight = NodeInfo.child("Stats").child("lineOfSight").attribute("value").as_int(0);
 		unitTemplate->flying		= NodeInfo.child("Stats").child("flying").attribute("value").as_bool(false);
-
-		// TODO unit cost & cooldown, outside the DB so it's not unnecessarily repeated on every unit
+		unitTemplate->wood_cost = NodeInfo.child("Stats").child("woodCost").attribute("value").as_int(0);
+		unitTemplate->gold_cost = NodeInfo.child("Stats").child("goldCost").attribute("value").as_int(0);
+		unitTemplate->worker_cost = NodeInfo.child("Stats").child("workerCost").attribute("value").as_int(0);
+		unitTemplate->training_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
+		unitTemplate->squad_members = NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
 
 		pugi::xml_node IconData;
 		if (NodeInfo.child("iconData"))

@@ -14,6 +14,11 @@
                 <movementSpeed value="1"/>
                 <range value="1"/>
                 <lineOfSight value="20"/>
+                <goldCost value="600"/>
+                <woodCost value="0"/>
+                <workerCost value="5"/>
+                <trainingTime value="10"/>
+                <squadMembers value="5"/>
             </Stats>
             <Animations>
               <Animation>
@@ -29,7 +34,7 @@
       <Unit>
          <name value="Archer"/>
             <type value="4"/> 
-			      <iconData x="225" y="24" w="46" h="38"/>
+			      <iconData x="315" y="24" w="72" h="60"/>
             <texture value="Assets\Sprites\Alliance Sprites\Elven archer_Spritesheet.png"/>
             <Stats>
                 <life value="40"/>
@@ -39,6 +44,11 @@
                 <movementSpeed value="1"/>
                 <range value="6"/>
                 <lineOfSight value="25"/>
+                <goldCost value="500"/>
+                <woodCost value="50"/>
+                <workerCost value="4"/>
+                <trainingTime value="10"/>
+                <squadMembers value="4"/>
             </Stats>
             <Animations>
               <StandingNorth>
@@ -171,6 +181,40 @@
               </Dying>
             </Animations>
       </Unit>
+      <Enemy>
+         <name value="Grunt"/>
+            <type value="6"/> 
+			      <iconData x="239" y="7" w="72" h="60"/>
+            <texture value="Assets\Sprites\Horde Sprites\Grunt_SpriteSheet.png"/>
+            <Stats>
+                <life value="60"/>
+                <attack value="6"/>
+                <defense value="2"/>
+                <piercingDamage value="3"/>
+                <movementSpeed value="1"/>
+                <range value="1"/>
+                <lineOfSight value="20"/>
+            </Stats>
+        <Animations>
+        </Animations>
+      </Enemy>
+     <Enemy>
+         <name value="Axe Thrower"/>
+            <type value="7"/> 
+			      <iconData x="392" y="7" w="72" h="60"/>
+            <texture value="Assets\Sprites\Horde Sprites\Troll Axethrower_SpriteSheet.png"/>
+            <Stats>
+                <life value="40"/>
+                <attack value="3"/>
+                <defense value="2"/>
+                <piercingDamage value="4"/>
+                <movementSpeed value="1"/>
+                <range value="6"/>
+                <lineOfSight value="25"/>
+            </Stats>
+        <Animations>
+        </Animations>
+      </Enemy>
     </Units>
   <Buildings>
     <Building>

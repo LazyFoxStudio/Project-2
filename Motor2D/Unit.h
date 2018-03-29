@@ -19,7 +19,7 @@ enum unitType
 	FOOTMAN, /* ... */ ARCHER, ALLY_X,
 
 	//Enemies
-	ENEMY_1, /* ... */ ENEMY_X,
+	GRUNT, AXE_THROWER, /* ... */ ENEMY_X,
 };
 
 class Animation;
@@ -40,6 +40,12 @@ public:
 	uint line_of_sight = 0;
 	uint range = 0;
 	float speed = 0.0f;
+	uint gold_cost = 0;
+	uint wood_cost = 0;
+	uint worker_cost = 0;
+	uint training_time = 0;
+	uint squad_members = 1;
+
 	//...
 
 	//Utilities
