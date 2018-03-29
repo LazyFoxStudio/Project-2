@@ -71,6 +71,7 @@ LifeBar::~LifeBar()
 
 void LifeBar::BlitElement(bool use_camera)
 {
+	//Update progressbar
 	int life = 100;
 	int max_life = 100;
 	switch (entity->entity_type)
@@ -86,6 +87,7 @@ void LifeBar::BlitElement(bool use_camera)
 		bar->enterCurrentValue(life);
 		break;
 	}
+	//If in menu update bar color
 	if (inMenu)
 	{
 		if (life / max_life != bar->progress)
@@ -112,7 +114,7 @@ void LifeBar::BlitElement(bool use_camera)
 
 		bar->BlitElement(false);
 	}
-	else if (bar->progress < 1.1f)
+	else if (bar->progress < 1.1f) //If "in-game" but 100% do not draw
 	{
 		bar->localPosition = { (int)entity->position.x+offset.x, (int)entity->position.y+offset.y };
 	

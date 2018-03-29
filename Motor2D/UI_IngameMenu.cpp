@@ -5,6 +5,7 @@
 #include "UI_Window.h"
 #include "UI_Image.h"
 #include "UI_Button.h"
+//#include "UI_Minimap.h"
 #include "Entity.h"
 #include "UI_LifeBar.h"
 #include "j1Fonts.h"
@@ -31,12 +32,35 @@ IngameMenu::~IngameMenu()
 	RELEASE(window);
 }
 
-void IngameMenu::newSelection()
+void IngameMenu::updateInfo()
 {
+	cleanLists();
+	createSelectionBasicInfo();
+	//createStatsDisplay();
+	//updateActionButtons();
+}
+
+void IngameMenu::createSelectionBasicInfo()
+{
+	int counterX = 0;
+	int counterY = 0;
+	for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
+	{
+		troopsIcons.push_back(new Image(icon_atlas, firstIcon_pos.x + icons_offset.x*counterX, firstIcon_pos.y + icons_offset.y*counterY, App->gui->GetIconRect((*it_e)), callback));
+		(*troopsIcons.rbegin())->setBorder(true, White, 4);
+		lifeBars.push_back(new LifeBar((*it_e), texture, firstIcon_pos.x + icons_offset.x*counterX + lifeBars_offset.x, firstIcon_pos.y + icons_offset.y*counterY + lifeBars_offset.y));
+		counterY++;
+		if (counterY == 3)
+		{
+			counterX++;
+			counterY = 0;
+		}
+	}
 }
 
 void IngameMenu::cleanLists()
 {
+	//Clean troops icons
 	std::list<Image*>::iterator it_i = troopsIcons.begin();
 	while (it_i != troopsIcons.end())
 	{
@@ -44,7 +68,7 @@ void IngameMenu::cleanLists()
 		it_i++;
 	}
 	troopsIcons.clear();
-
+	//Clean life bars
 	std::list<LifeBar*>::iterator it_l = lifeBars.begin();
 	while (it_l != lifeBars.end())
 	{
@@ -52,6 +76,14 @@ void IngameMenu::cleanLists()
 		it_l++;
 	}
 	lifeBars.clear();
+	//Clean action buttons
+	std::list<Button*>::iterator it_b = actionButtons.begin();
+	while (it_b != actionButtons.end())
+	{
+		RELEASE(*it_b);
+		it_b++;
+	}
+	actionButtons.clear();
 }
 
 void IngameMenu::BlitElement(bool use_camera)
@@ -59,29 +91,11 @@ void IngameMenu::BlitElement(bool use_camera)
 	BROFILER_CATEGORY("In-game Menu Blit", Profiler::Color::Beige);
 
 	//update minimap
-	//update icons and life bars
-	if (App->entitycontroller->newSelection)
-	{
-		int counterX = 0;
-		int counterY = 0;
-		cleanLists();
-		for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
-		{
-			troopsIcons.push_back(new Image(icon_atlas, firstIcon_pos.x + icons_offset.x*counterX, firstIcon_pos.y + icons_offset.y*counterY, App->gui->GetIconRect((*it_e)), callback));
-			(*troopsIcons.rbegin())->setBorder(true, White, 4);
-			lifeBars.push_back(new LifeBar((*it_e), texture, firstIcon_pos.x + icons_offset.x*counterX + lifeBars_offset.x, firstIcon_pos.y + icons_offset.y*counterY + lifeBars_offset.y));
-			counterY++;
-			if (counterY == 3)
-			{
-				counterX++;
-				counterY = 0;
-			}
-		}
-	}	
 
 	//Blit window
 	window->BlitElement(use_camera);
 	//Blit minimap
+	//minimap->BlitElement(use_camera);
 	//Blit icons
 	for (std::list<Image*>::iterator it_i = troopsIcons.begin(); it_i != troopsIcons.end(); it_i++)
 	{
@@ -93,4 +107,9 @@ void IngameMenu::BlitElement(bool use_camera)
 		(*it_l)->BlitElement(use_camera);
 	}
 	//Blit action butons
+	/*for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
+	{
+		if ((*it_b)->active)
+			(*it_b)->BlitElement(use_camera);
+	}*/
 }

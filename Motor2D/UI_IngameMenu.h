@@ -20,8 +20,10 @@ public:
 
 	~IngameMenu();
 
-	void newSelection();
-
+	void updateInfo();
+	//Troops icons
+	//Troops life bars
+	void createSelectionBasicInfo();
 	void cleanLists();
 
 	void BlitElement(bool use_camera = false);

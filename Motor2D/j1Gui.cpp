@@ -662,3 +662,9 @@ SDL_Rect j1Gui::GetLifeBarRect(std::string tag)
 {
 	return LifeBarRect.at(tag);
 }
+
+void j1Gui::newSelectionDone()
+{
+	if (inGameMenu != nullptr)
+		inGameMenu->updateInfo();
+}

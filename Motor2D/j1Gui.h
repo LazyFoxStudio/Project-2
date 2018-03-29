@@ -98,6 +98,8 @@ public:
 	SDL_Rect GetIconRect(Entity* entity);
 	SDL_Rect GetLifeBarRect(std::string tag);
 
+	void newSelectionDone();
+
 public:
 	bool UI_Debug = false;
 	int alpha_value = 255;
