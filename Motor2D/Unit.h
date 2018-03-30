@@ -19,7 +19,7 @@ enum unitType
 	FOOTMAN, /* ... */ ARCHER, ALLY_X,
 
 	//Enemies
-	ENEMY_1, GRUNT, AXE_THROWER, /* ... */ ENEMY_X,
+	 GRUNT, AXE_THROWER, /* ... */ ENEMY_X,
 };
 
 class Animation;
@@ -69,7 +69,7 @@ public:
 	void animationController();
 	void Halt();
 
-	bool IsEnemy() { return type >= ENEMY_1; };
+	bool IsEnemy() { return type >= GRUNT; };
 	Unit* SearchNearestEnemy();
 };
 

@@ -2,23 +2,18 @@
 <GameData>
     <Units>
       <Unit>
-            <name value="Hero_1"/>
+            <name value="Mage"/>
             <type value="1"/>
 			<iconData x="162" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Alliance Sprites\Footman_Spritesheet.png"/>
             <Stats>
-                <life value="60"/>
-                <attack value="6"/>
-                <defense value="2"/>
-                <piercingDamage value="3"/>
-                <movementSpeed value="1"/>
-                <range value="1"/>
-                <lineOfSight value="20"/>
-                <goldCost value="600"/>
-                <woodCost value="0"/>
-                <workerCost value="5"/>
-                <trainingTime value="10"/>
-                <squadMembers value="5"/>
+                <life value="250"/>
+                <attack value="1"/>
+                <defense value="6"/>
+                <piercingDamage value="15"/>
+                <movementSpeed value="1.5"/>
+                <range value="3"/>
+                <lineOfSight value="25"/>
             </Stats>
             <Animations>
               <Animation>
