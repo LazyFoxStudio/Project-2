@@ -1,6 +1,7 @@
 #ifndef __j1ENTITY_H__
 #define __j1ENTITY_H__
 
+#include "SDL/include/SDL.h"
 #include "p2Point.h"
 #include "p2Animation.h"
 #include "p2Log.h"
