@@ -1,4 +1,5 @@
 #include "Unit.h"
+#include "Hero.h"
 #include "Effects.h"
 #include "Squad.h"
 #include "j1Render.h"
@@ -34,7 +35,15 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 
 void Unit::Draw(float dt)
 {
-	App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt));
+	if (type < HERO_X)
+	{
+		//blit hero sprites
+		App->render->DrawQuad({ (int)position.x,(int)position.y,26,36 }, Blue, true);
+	}
+	else
+	{
+		App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt));
+	}
 }
 
 bool Unit::Update(float dt)
@@ -44,6 +53,13 @@ bool Unit::Update(float dt)
 		commands.front()->Execute(dt);
 		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
+
+	if (this->type == HERO_1)
+	{
+		((Hero*)this)->Hero::Update(dt);
+	}
+
+	
 	return true;
 }
 

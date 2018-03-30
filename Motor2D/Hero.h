@@ -20,6 +20,7 @@ public:
 	Skill* skill_two = nullptr;
 	j1Timer cooldown_two;
 
+
 public:
 	~Hero();
 

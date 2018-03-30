@@ -108,7 +108,7 @@ Resolution of the screen: 1680x 1050y
 			<minimap x="5" y="795"/>
 			<icons x="296" y="816" offsetX="398" offsetY="78"/>
 			<lifeBars offsetX="82" offsetY="6"/>
-			<stats x="1100" y="835"/>
+			<stats x="1111" y="805"/>
 			<buttons>
 				<move>
 					<position x="1399" y="809"/>

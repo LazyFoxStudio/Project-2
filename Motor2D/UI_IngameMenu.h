@@ -8,6 +8,7 @@ class Window;
 class Image;
 class LifeBar;
 class Button;
+class Text;
 
 class IngameMenu : public UI_element
 {
@@ -24,8 +25,11 @@ public:
 	//Troops icons
 	//Troops life bars
 	void createSelectionBasicInfo();
+	void createStatsDisplay();
+	void updateStatsDisplay();
 	void createActionButtons(pugi::xml_node node);
-	void cleanLists(bool destructor = false);
+	void updateActionButtons();
+	void cleanLists(bool icons = true, bool lifeBars = true, bool statsTitles = true, bool statsNumbers = true, bool buttons = true);
 
 	void BlitElement(bool use_camera = false);
 
@@ -40,6 +44,9 @@ public:
 	iPoint stats_pos;
 	std::list<Image*> troopsIcons; //Being created/destroyed
 	std::list<LifeBar*> lifeBars; //Being created/destroyed
+	std::list<Text*> statsTitles; //Constant but inactive
+	Text* title; //Constant but inactive
+	std::list<Text*> statsNumbers; //Constant but inactive
 	std::list<Button*> actionButtons; //Constant but inactive
 
 };

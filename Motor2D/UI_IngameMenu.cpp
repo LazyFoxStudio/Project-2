@@ -6,6 +6,7 @@
 #include "UI_Image.h"
 #include "UI_Button.h"
 //#include "UI_Minimap.h"
+#include "UI_Text.h"
 #include "Entity.h"
 #include "UI_LifeBar.h"
 #include "j1Fonts.h"
@@ -20,22 +21,23 @@ stats_pos({stats_posX, stats_posY}),
 icon_atlas(icon_atlas)
 {
 	window = new Window(texture, x, y, section, callback);
+	createStatsDisplay();
 	//Create minimap
 }
 
 IngameMenu::~IngameMenu()
 {
-	cleanLists(true);
+	cleanLists();
 	//RELEASE(minimap);
 	RELEASE(window);
 }
 
 void IngameMenu::updateInfo()
 {
-	cleanLists();
+	cleanLists(true, true, false, true, false);
 	createSelectionBasicInfo();
-	//createStatsDisplay();
-	//updateActionButtons();
+	updateStatsDisplay();
+	updateActionButtons();
 }
 
 void IngameMenu::createSelectionBasicInfo()
@@ -56,35 +58,129 @@ void IngameMenu::createSelectionBasicInfo()
 	}
 }
 
+void IngameMenu::createStatsDisplay()
+{
+	title = new Text("Squad Stats:", stats_pos.x, stats_pos.y, (*App->font->fonts.begin()), { 0,0,0,255 }, callback);
+	title->active = false;
+
+	statsTitles.push_back(new Text("Damage:", stats_pos.x + 20, stats_pos.y + 40, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+	(*statsTitles.rbegin())->active = false;
+	statsTitles.push_back(new Text("Armor:", stats_pos.x + 20, stats_pos.y + 80, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+	(*statsTitles.rbegin())->active = false;
+	statsTitles.push_back(new Text("Sight:", stats_pos.x + 20, stats_pos.y + 120, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+	(*statsTitles.rbegin())->active = false;
+	statsTitles.push_back(new Text("Range:", stats_pos.x + 20, stats_pos.y + 160, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+	(*statsTitles.rbegin())->active = false;
+	statsTitles.push_back(new Text("Speed:", stats_pos.x + 20, stats_pos.y + 200, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+	(*statsTitles.rbegin())->active = false;
+}
+
+void IngameMenu::updateStatsDisplay()
+{
+	if (App->entitycontroller->selected_entities.size() > 0)
+	{
+		Entity* entity = (*App->entitycontroller->selected_entities.begin());
+
+		for (std::list<Text*>::iterator it_t = statsTitles.begin(); it_t != statsTitles.end(); it_t++)
+		{
+			(*it_t)->active = true;
+		}
+		title->active = true;
+
+		statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->attack + (int)((Unit*)entity)->piercing_atk), stats_pos.x + 170, stats_pos.y + 40, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+		statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->defense), stats_pos.x + 170, stats_pos.y + 80, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+		statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->line_of_sight), stats_pos.x + 170, stats_pos.y + 120, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+		statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->range), stats_pos.x + 170, stats_pos.y + 160, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+		statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->speed), stats_pos.x + 170, stats_pos.y + 200, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+	}
+	else
+	{
+		for (std::list<Text*>::iterator it_t = statsTitles.begin(); it_t != statsTitles.end(); it_t++)
+		{
+			(*it_t)->active = false;
+		}
+		title->active = false;
+	}
+}
+
 void IngameMenu::createActionButtons(pugi::xml_node node)
 {
 	for (pugi::xml_node tmp = node.first_child(); tmp; tmp = tmp.next_sibling())
 	{
 		Button* button = App->gui->createButton(tmp, callback, false);
+		button->active = false;
 		actionButtons.push_back(button);
 		childs.push_back(button);
 	}
 }
 
-void IngameMenu::cleanLists(bool destructor)
+void IngameMenu::updateActionButtons()
 {
-	//Clean troops icons
-	std::list<Image*>::iterator it_i = troopsIcons.begin();
-	while (it_i != troopsIcons.end())
+	if (App->entitycontroller->selected_entities.size() > 0)
 	{
-		RELEASE(*it_i);
-		it_i++;
+		Entity* entity = (*App->entitycontroller->selected_entities.begin());
+
+		for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
+		{
+			(*it_b)->active = true;
+		}
 	}
-	troopsIcons.clear();
-	//Clean life bars
-	std::list<LifeBar*>::iterator it_l = lifeBars.begin();
-	while (it_l != lifeBars.end())
+	else
 	{
-		RELEASE(*it_l);
-		it_l++;
+		for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
+		{
+			(*it_b)->active = false;
+		}
 	}
-	lifeBars.clear();
-	if (destructor)
+}
+
+void IngameMenu::cleanLists(bool icons, bool lifebars, bool statstitles, bool statsnumbers, bool buttons)
+{
+	if (icons)
+	{
+		//Clean troops icons
+		std::list<Image*>::iterator it_i = troopsIcons.begin();
+		while (it_i != troopsIcons.end())
+		{
+			RELEASE(*it_i);
+			it_i++;
+		}
+		troopsIcons.clear();
+	}
+	if (lifebars)
+	{
+		//Clean life bars
+		std::list<LifeBar*>::iterator it_l = lifeBars.begin();
+		while (it_l != lifeBars.end())
+		{
+			RELEASE(*it_l);
+			it_l++;
+		}
+		lifeBars.clear();
+	}
+	if (statstitles)
+	{
+		//Clean stats titles
+		std::list<Text*>::iterator it_t = statsTitles.begin();
+		while (it_t != statsTitles.end())
+		{
+			RELEASE(*it_t);
+			it_t++;
+		}
+		statsTitles.clear();
+	}
+	if (statsnumbers)
+	{
+		//Clean stats numbers
+		std::list<Text*>::iterator it_t = statsNumbers.begin();
+		while (it_t != statsNumbers.end())
+		{
+			RELEASE(*it_t);
+			it_t++;
+		}
+		statsNumbers.clear();
+	}
+	if (buttons)
 	{
 		//Clean action buttons
 		std::list<Button*>::iterator it_b = actionButtons.begin();
@@ -122,5 +218,18 @@ void IngameMenu::BlitElement(bool use_camera)
 	{
 		if ((*it_b)->active)
 			(*it_b)->BlitElement(use_camera);
+	}
+	//Blit stats
+	if (title != nullptr && title->active)
+		title->BlitElement(use_camera);
+	for (std::list<Text*>::iterator it_t = statsTitles.begin(); it_t != statsTitles.end(); it_t++)
+	{
+		if ((*it_t)->active)
+			(*it_t)->BlitElement(use_camera);
+	}
+	for (std::list<Text*>::iterator it_t = statsNumbers.begin(); it_t != statsNumbers.end(); it_t++)
+	{
+		if ((*it_t)->active)
+			(*it_t)->BlitElement(use_camera);
 	}
 }

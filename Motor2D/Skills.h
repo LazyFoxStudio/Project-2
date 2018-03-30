@@ -3,7 +3,18 @@
 #define _SKILLS_H_
 
 #include "j1Timer.h"
+#include "p2Point.h"
+
+#include <list>
+
 class Hero;
+
+enum rangeType
+{
+	NONE_RANGE,
+	CIRCLE,
+	LINEAR
+};
 
 class Skill
 {
@@ -22,8 +33,10 @@ public:
 class Shockwave : public Skill
 {
 public:
-	int radius = 0;
-	int damage = 0;
+	int				radius = 0;
+	int				damage = 0;
+	iPoint			position = { 0,0 };
+	std::list<iPoint> toDraw;
 	
 public:
 	Shockwave(int radius, int damage) : radius(radius), damage(damage) {}
@@ -31,6 +44,9 @@ public:
 
 	void Activate(Hero* hero);
 	void DrawRange();
+	void BFS(int Area);
+
+	std::list<iPoint>::iterator Find(std::list<iPoint> list,const iPoint& point);
 };
 
 //(...)

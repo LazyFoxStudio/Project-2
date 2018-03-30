@@ -298,6 +298,7 @@ bool MoveToSquad::ProcessPath(const std::list<iPoint>& path)
 		squad->units[i]->commands.push_back(new_move_order);
 	}
 
+	return true;
 }
 
 // RESHAPE
@@ -317,7 +318,7 @@ bool ReshapeSquad::OnInit()
 			iPoint dest = adjacents.front();
 			iPoint target = commander_pos + squad->unit_offset[i];
 
-			for (int j = 1; i < adjacents.size(); i++)
+			for (int j = 1; j < adjacents.size(); j++)
 				if (adjacents[j].DistanceManhattan(target) < dest.DistanceManhattan(target)) dest = adjacents[j];
 
 			squad->units[i]->commands.push_front(new MoveTo(squad->units[i], dest));
@@ -333,7 +334,8 @@ bool ReshapeSquad::OnUpdate(float dt)
 	for (int i = 0; i < squad->units.size(); i++)
 		if (!squad->units[i]->commands.empty()) all_idle = false;
 
-	if (all_idle) Stop();
+	if (all_idle) 
+		Stop();
 
 	return true;
 }
