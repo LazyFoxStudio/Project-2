@@ -1,4 +1,5 @@
 #include "Unit.h"
+#include "Hero.h"
 #include "Effects.h"
 #include "Squad.h"
 #include "j1Render.h"
@@ -52,6 +53,13 @@ bool Unit::Update(float dt)
 		commands.front()->Execute(dt);
 		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
+
+	if (this->type == HERO_1)
+	{
+		((Hero*)this)->Hero::Update(dt);
+	}
+
+	
 	return true;
 }
 
