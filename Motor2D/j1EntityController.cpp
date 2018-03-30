@@ -27,6 +27,7 @@ bool j1EntityController::Start()
 	addUnit(iPoint(800, 800), FOOTMAN);
 	addUnit(iPoint(900, 800), FOOTMAN);
 	addUnit(iPoint(1000, 800), FOOTMAN);
+	addUnit(iPoint(600, 800), HERO_1);
 	addBuilding(iPoint(700, 700), BARRACKS);
 	return true;
 }
