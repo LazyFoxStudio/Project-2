@@ -9,6 +9,8 @@
 #include <list>
 #include <map>
 
+class Squad;
+
 class j1EntityController : public j1Module
 {
 public:
@@ -28,9 +30,9 @@ public:
 	void DeleteEntity(Entity* entity);
 	bool DeleteDB() { return true; };
 
-	void addUnit(iPoint pos, unitType type, Squad* squad = nullptr);
-	void addBuilding(iPoint pos, buildingType type );
-	void addNature(iPoint pos, resourceType res_type, int amount = 0);
+	Unit* addUnit(iPoint pos, unitType type, Squad* squad = nullptr);
+	Building* addBuilding(iPoint pos, buildingType type );
+	Nature* addNature(iPoint pos, resourceType res_type, int amount = 0);
 
 
 	void placingBuilding(buildingType type);
@@ -46,6 +48,9 @@ public:
 
 	std::list<Entity*> entities_to_destroy;
 	
+	std::vector<Unit*> squad_units_test;  // for testing purposes, will be deleted
+	Squad* squad_test = nullptr; // for testing purposes, will be deleted
+
 	std::map<uint, Unit*> unitDB;
 	std::map<uint, Building*> buildingDB;
 	std::map<uint, Nature*> natureDB;

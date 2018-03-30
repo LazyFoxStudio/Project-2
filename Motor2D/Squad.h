@@ -5,31 +5,32 @@
 
 class Unit;
 class Entity;
+class Command;
+
 #include "p2Point.h"
 #include <list>
 #include <vector>
+#include <deque>
 
 class Squad
 {
 public:
-	Unit* commander;
-	std::vector<Unit*>* units;
-
-	iPoint greatest_unit_size;
-	std::list<iPoint> path;
-	Entity* squad_target;
+	Unit* commander = nullptr;       // commander MUST be units[0]
+	std::vector<Unit*> units;
+	std::deque<Command*> commands;
+	std::vector<iPoint> unit_offset;
 
 public:
-	Squad(Unit* commander, std::vector<Unit*>* units);
+	Squad(std::vector<Unit*>& units);
 	~Squad();
 
 	int getTotalHP();
 	int getTotalMaxHP();
+	int getUnitPriority(Unit* unit);
 
-	bool nextStep(float dt);
 	void Halt();
-	void Reshape();
-	fPoint getCenter();
+	void generateOffsets();
+	bool Update(float dt);
 
 };
 

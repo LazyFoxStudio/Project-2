@@ -108,20 +108,26 @@ PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), 
 // PathNode -------------------------------------------------------------------------
 // Fills a list (PathList) of all valid adjacent pathnodes
 // ----------------------------------------------------------------------------------
-uint PathNode::FindWalkableAdjacents(PathList& list_to_fill, PathNode* parent) 
+uint PathNode::FindWalkableAdjacents(PathList& list_to_fill, PathNode* parent)
 {
 	iPoint cell;
 
-	for(int i = -1;  i <= 1; i++)
-		for (int j = -1; j <= 1; j++)
-		{
-			if (i != 0 || j != 0)
-			{
-				cell.create(pos.x + i, pos.y + j);
-				if (App->pathfinding->IsWalkable(cell))
-					list_to_fill.list.push_back(PathNode(-1, -1, cell, parent));
-			}
-		}
+	cell.create(pos.x + 1, pos.y);
+	if (App->pathfinding->IsWalkable(cell))
+		list_to_fill.list.push_back(PathNode(-1, -1, cell, parent));
+
+	cell.create(pos.x, pos.y + 1);
+	if (App->pathfinding->IsWalkable(cell))
+		list_to_fill.list.push_back(PathNode(-1, -1, cell, parent));
+
+	cell.create(pos.x - 1, pos.y);
+	if (App->pathfinding->IsWalkable(cell))
+		list_to_fill.list.push_back(PathNode(-1, -1, cell, parent));
+
+	cell.create(pos.x, pos.y - 1);
+	if (App->pathfinding->IsWalkable(cell))
+		list_to_fill.list.push_back(PathNode(-1, -1, cell, parent));
+
 
 	return list_to_fill.list.size();
 }
@@ -138,7 +144,7 @@ bool j1PathFinding::GatherWalkableAdjacents(iPoint map_pos, int count, std::vect
 	{
 		for (int i = -radius; i <= radius; i++)
 			for (int j = -radius; j <= radius; j++)
-				if (std::abs(i) == radius || j == std::abs(j))
+				if (std::abs(i) == radius || std::abs(j) == radius)
 				{
 					cell.create(map_pos.x + i, map_pos.y + j);
 					if (App->pathfinding->IsWalkable(cell))

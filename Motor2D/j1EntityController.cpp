@@ -9,6 +9,7 @@
 #include "j1Audio.h"
 #include "Command.h"
 #include "j1Input.h"
+#include "Squad.h"
 #include "Hero.h"
 
 j1EntityController::j1EntityController() { name = "entitycontroller"; }
@@ -23,11 +24,15 @@ bool j1EntityController::Start()
 	gameData = App->LoadFile(doc, "GameData.xml");
 
 	loadEntitiesDB(gameData);
-	addUnit(iPoint(700, 800), FOOTMAN);
-	addUnit(iPoint(800, 800), FOOTMAN);
-	addUnit(iPoint(900, 800), FOOTMAN);
-	addUnit(iPoint(1000, 800), FOOTMAN);
+
+	squad_units_test.push_back(addUnit(iPoint(700, 800), FOOTMAN));
+	squad_units_test.push_back(addUnit(iPoint(800, 800), FOOTMAN));
+	squad_units_test.push_back(addUnit(iPoint(900, 800), FOOTMAN));
+	squad_units_test.push_back(addUnit(iPoint(1000, 800), FOOTMAN));
+
 	addBuilding(iPoint(700, 700), BARRACKS);
+
+	squad_test = new Squad(squad_units_test);
 	return true;
 }
 
@@ -36,6 +41,8 @@ bool j1EntityController::Update(float dt)
 	BROFILER_CATEGORY("Entites update", Profiler::Color::Maroon);
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) debug = !debug;
+
+	squad_test->Update(dt);
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
@@ -108,26 +115,29 @@ void j1EntityController::DeleteEntity(Entity* entity)
 	selected_entities.remove(entity);
 }
 
-void j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
+Unit* j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
 {
 	Unit* unit = new Unit(pos, *(unitDB[type]), squad);
 	entities.push_back(unit);
 	App->gui->createLifeBar(unit);
 	
 	// if(App->render->CullingCam(unit->position))  App->audio->PlayFx(UNIT_CREATED_FX);
+	return unit;
 }
 
-void j1EntityController::addBuilding(iPoint pos, buildingType type)
+Building* j1EntityController::addBuilding(iPoint pos, buildingType type)
 {
 	Building* building = new Building(pos, *(buildingDB[type]));
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
+	return building;
 }
 
-void j1EntityController::addNature(iPoint pos, resourceType res_type, int amount)
+Nature* j1EntityController::addNature(iPoint pos, resourceType res_type, int amount)
 {
 	Nature* resource = new Nature(pos, *(natureDB[res_type]));
 	entities.push_back(resource);
+	return resource;
 }
 
 Entity* j1EntityController::CheckMouseHover(iPoint mouse_world)
@@ -152,14 +162,16 @@ void j1EntityController::commandControl()
 
 	if (!entity)   // clicked on ground
 	{
-		for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
+		squad_test->commands.push_back(new MoveToSquad(squad_test->commander, map_p));
+		/*for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
 		{
 			if ((*it)->entity_type == UNIT)
 			{
 				Unit* unit = (Unit*)(*it);
+				unit->commands.clear();
 				(unit)->commands.push_back(new MoveTo(unit, map_p));
 			}
-		}
+		}*/
 	}
 	else
 	{
@@ -173,6 +185,7 @@ void j1EntityController::commandControl()
 					if ((*it)->entity_type == UNIT)
 					{
 						Unit* unit = (Unit*)(*it);
+						unit->commands.clear();
 						unit->commands.push_back(new AttackingMoveTo(unit, map_p));
 					}
 				}
@@ -223,6 +236,12 @@ void j1EntityController::selectionControl()
 				}
 				else selected_entities.push_back(*it);
 			}
+		}
+
+		if (getSelectedType() == UNIT_AND_BUILDING)
+		{
+			for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+				if ((*it)->entity_type == BUILDING) entities.remove(*it);
 		}
 
 		App->gui->newSelectionDone();

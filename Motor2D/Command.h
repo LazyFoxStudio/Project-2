@@ -8,10 +8,12 @@
 #include "p2Point.h"
 
 class Unit;
+class Squad;
 
 enum Command_State { TO_INIT, UPDATE, TO_STOP, FINISHED };
-enum Command_Type { NONE, MOVETO, ATTACKING_MOVETO, ATTACK, PATROL, HOLD};
+enum Command_Type { NONE, MOVETO, ATTACKING_MOVETO, ATTACK, PATROL, HOLD, MOVETOSQUAD, RESHAPE_SQUAD};
 
+//  BASE CLASSES: =======================
 
 class Command
 {
@@ -35,10 +37,14 @@ private:
 };
 
 
+//		UNITS:  ===================================
+
 class MoveTo : public Command
 {
 public:
 	iPoint dest = { 0,0 };
+	fPoint next_step = { 0.0f, 0.0f };
+	bool waiting = false;
 	std::list<iPoint> path;
 
 public:
@@ -118,5 +124,44 @@ private:
 	bool OnUpdate(float dt);
 	bool OnStop() { return true; };
 };
+
+
+//		SQUADS: =======================
+
+
+class MoveToSquad : public Command
+{
+public: 
+	Squad* squad = nullptr;
+	iPoint destination = { -1,-1 };
+
+public:
+
+	MoveToSquad(Unit* commander, iPoint map_dest) : Command(commander, MOVETOSQUAD), destination(map_dest) {};
+
+private:
+
+	bool ProcessPath(const std::list<iPoint>& path);
+	bool OnInit();
+	bool OnUpdate(float dt);
+	bool OnStop() { return true; };
+};
+
+
+class ReshapeSquad : public Command
+{
+public:
+	Squad * squad = nullptr;
+public:
+
+	ReshapeSquad(Unit* commander) : Command(commander, RESHAPE_SQUAD) {};
+
+private:
+
+	bool OnInit();
+	bool OnUpdate(float dt);
+	bool OnStop() { return true; };
+};
+
 
 #endif

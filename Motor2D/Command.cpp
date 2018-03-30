@@ -1,11 +1,14 @@
 #include "Command.h"
 #include "Unit.h"
+#include "Squad.h"
 #include "p2Log.h"
 #include "j1Pathfinding.h"
+#include "j1Map.h"
 
 #define SPEED_CONSTANT 100
 
-// COMMAND
+
+// BASE CLASSES: =========================
 
 void Command::Execute(float dt)
 {
@@ -26,6 +29,7 @@ void Command::Stop()	{ state = TO_STOP; }
 void Command::Restart() { OnStop(); state = TO_INIT; }
 
 
+//		UNITS: =============================
 // MOVETO
 
 bool MoveTo::OnInit()
@@ -44,6 +48,9 @@ bool MoveTo::OnInit()
 
 bool MoveTo::OnUpdate(float dt)
 {
+	unit->position += next_step;
+	unit->collider.x += next_step.x; unit->collider.y += next_step.y;
+
 	iPoint unit_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
 
 	if (unit_pos == path.front())
@@ -56,10 +63,7 @@ bool MoveTo::OnUpdate(float dt)
 	direction.Normalize();
 
 	fPoint velocity = (direction * unit->speed * dt * SPEED_CONSTANT);
-	unit->position += velocity;
-
-	unit->collider.x = unit->position.x - (unit->collider.w / 2);
-	unit->collider.y = unit->position.y - (unit->collider.h / 2);
+	next_step = velocity;
 
 	return true;
 }
@@ -221,6 +225,115 @@ bool Patrol::OnUpdate(float dt)
 
 	AttackingMoveTo* new_a_moveto_command = new AttackingMoveTo(unit, patrol_points[current_point]);
 	unit->commands.push_front(new_a_moveto_command);
+
+	return true;
+}
+
+
+//		SQUADS: =============================
+// MOVETOSQUAD
+
+bool MoveToSquad::OnInit()
+{
+	if (!unit->squad) { Stop(); return true; }
+	else squad = unit->squad;
+
+	iPoint map_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
+
+	if(App->pathfinding->CreatePath(map_pos, destination) <= 0)  Stop();  
+	else if(!ProcessPath(*App->pathfinding->GetLastPath()))		 Stop(); 
+
+	squad->commands.push_front(new ReshapeSquad(squad->commander));
+
+	return true;
+}
+
+bool MoveToSquad::OnUpdate(float dt)
+{
+	bool all_idle = true;
+
+	for (int i = 0; i < squad->units.size(); i++)
+		if (!squad->units[i]->commands.empty()) all_idle = false;
+	
+	if (all_idle) { squad->commands.push_front(new ReshapeSquad(squad->commander)); Stop(); }
+
+	return true;
+}
+
+
+bool MoveToSquad::ProcessPath(const std::list<iPoint>& path)
+{
+	std::vector<std::list<iPoint>> paths_list;
+
+	for (int i = 0; i < squad->units.size(); i++)
+	{
+		std::list<iPoint> new_path;
+		for (std::list<iPoint>::const_iterator it = path.begin(); it != path.end(); it++)
+		{
+			iPoint offset_pos = (*it) + squad->unit_offset[i];
+			if (App->pathfinding->IsWalkable(offset_pos)) new_path.push_back(offset_pos);
+			else
+			{
+				if ((*it).DistanceManhattan(new_path.back()) == 1) new_path.push_back(*it);
+				else
+				{
+					iPoint new_point = *it;
+					if (App->pathfinding->CreatePath(new_path.back(), new_point) <= 0) { Stop(); return true; }
+					else {
+						const std::list<iPoint>* repathing = App->pathfinding->GetLastPath();
+						for (std::list<iPoint>::const_iterator it2 = repathing->begin(); it2 != repathing->end(); it2++)
+							paths_list[i].push_back(*it2);
+					}
+				}
+			}
+		}
+		paths_list.push_back(new_path);
+	}
+
+	for (int i = 0; i < squad->units.size(); i++)
+	{
+		MoveTo* new_move_order = new MoveTo(squad->units[i], destination);
+		new_move_order->path = paths_list[i];
+		new_move_order->state = UPDATE;
+		squad->units[i]->commands.push_back(new_move_order);
+	}
+
+}
+
+// RESHAPE
+
+bool ReshapeSquad::OnInit()
+{
+	if (!unit->squad) { Stop(); return true; }
+	else squad = unit->squad;
+
+	iPoint commander_pos = App->map->WorldToMap(squad->commander->position.x, squad->commander->position.y);
+	std::vector<iPoint> adjacents;
+
+	if (App->pathfinding->GatherWalkableAdjacents(commander_pos, squad->units.size() - 1, adjacents))
+	{
+		for (int i = 1; i < squad->units.size(); i++)
+		{
+			iPoint dest = adjacents.front();
+			iPoint target = commander_pos + squad->unit_offset[i];
+
+			for (int j = 1; i < adjacents.size(); i++)
+				if (adjacents[j].DistanceManhattan(target) < dest.DistanceManhattan(target)) dest = adjacents[j];
+
+			squad->units[i]->commands.push_front(new MoveTo(squad->units[i], dest));
+		}
+	}
+	else Stop();
+}
+
+bool ReshapeSquad::OnUpdate(float dt)
+{
+	bool all_idle = true;
+
+	for (int i = 0; i < squad->units.size(); i++)
+		if (!squad->units[i]->commands.empty()) all_idle = false;
+
+	if (all_idle) Stop();
 
 	return true;
 }
