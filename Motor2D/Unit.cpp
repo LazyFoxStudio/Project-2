@@ -5,6 +5,7 @@
 #include "j1Render.h"
 #include "Command.h"
 #include "p2Animation.h"
+#include "Skills.h"
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
@@ -31,6 +32,11 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	collider.w = current_anim->frames[0].w;
 	collider.h = current_anim->frames[0].h;
 	collider.x = position.x, collider.y = position.y;
+
+	if (type < HERO_X)
+	{
+		((Hero*)this)->Hero::skill_one = new Shockwave(3,5);
+	}
 }
 
 void Unit::Draw(float dt)

@@ -31,6 +31,36 @@
               </Animation>
             </Animations>
         </Unit>
+       <Unit>
+            <name value="Hero"/>
+            <type value="1"/>
+			<iconData x="162" y="200" w="72" h="59"/>
+            <texture value="Assets\Sprites\Alliance Sprites\Footman_Spritesheet.png"/>
+            <Stats>
+                <life value="60"/>
+                <attack value="6"/>
+                <defense value="2"/>
+                <piercingDamage value="3"/>
+                <movementSpeed value="1"/>
+                <range value="1"/>
+                <lineOfSight value="20"/>
+                <goldCost value="600"/>
+                <woodCost value="0"/>
+                <workerCost value="5"/>
+                <trainingTime value="10"/>
+                <squadMembers value="5"/>
+            </Stats>
+            <Animations>
+              <Animation>
+                <width value="48"/>
+                <height value="48"/>
+                <rows value="0"/>
+                <columns value="0"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="0"/>
+              </Animation>
+            </Animations>
+        </Unit>
       <Unit>
          <name value="Archer"/>
             <type value="4"/> 

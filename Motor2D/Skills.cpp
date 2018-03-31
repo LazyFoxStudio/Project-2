@@ -12,7 +12,7 @@ Shockwave::~Shockwave()
 void Shockwave::Activate(Hero* hero)
 {
 	position = App->map->WorldToMap(hero->position.x,hero->position.y);
-	position = App->map->MapToWorld(position.x, position.y);
+	//position = App->map->MapToWorld(position.x, position.y);
 
 	DrawRange();
 }
@@ -26,7 +26,7 @@ void Shockwave::DrawRange()
 
 	for (int i = 0; i <= radius; i++)
 	{
-		num_tiles = num_tiles + 4 * radius;
+		num_tiles = num_tiles + 4 * i;
 	}
 	num_tiles = num_tiles + 1;
 
@@ -56,8 +56,9 @@ void Shockwave::BFS(int Area)
 	std::list<iPoint> frontier;
 	
 	frontier.push_back(origin);
+	toDraw.push_back(origin);
 
-	while (frontier.size() != 0)
+	while (frontier.size() != 0 && radius>0)
 	{
 		origin = frontier.front();
 		frontier.remove(origin);
@@ -69,23 +70,23 @@ void Shockwave::BFS(int Area)
 
 		for (std::list<iPoint>::iterator item = neighbors.begin(); item!=neighbors.end();item++)
 		{
-			if (Find(toDraw,*item) == toDraw.end())
+			if (Find(toDraw,*item) == false)
 			{
 				frontier.push_back(*item);
 				toDraw.push_back(*item);
 			}
 		}
-		if (toDraw.size() == Area)
+		if (toDraw.size() >= Area)
 		{
 			break;
 		}
 	}
 }
 
-std::list<iPoint>::iterator Shockwave::Find(std::list<iPoint> list,const iPoint& point)
+bool Shockwave::Find(std::list<iPoint> list,const iPoint& point)
 {
 	for (std::list<iPoint>::iterator it = list.begin(); it != list.end(); it++)
-		if ((*it) == point) return it;
+		if ((*it) == point) return true;
 
-	return list.end();
+	return false;
 }
