@@ -69,23 +69,24 @@ bool MoveTo::OnUpdate(float dt)
 		else				next_step = (direction * unit->speed * dt * SPEED_CONSTANT);
 	}
 
-	std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(unit);
+	// TODO
+	//std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(unit);
 
-	if (collisions.empty()) waiting = false;
-	else if (collisions.size() == 1)
-	{
-		if (collisions.front()->entity_type != UNIT)
-		{
-			if (unit->squad) { unit->squad->Halt(); unit->squad->commands.push_back(new MoveToSquad(unit->squad->commander, dest)); }
-			else			 { unit->Halt(); unit->commands.push_back(new MoveTo(unit, dest)); }
-		}
-		else {
-			
-		}
-	}
-	else {   // collisions.size() > 1
-		//TODO;
-	}
+	//if (collisions.empty()) waiting = false;
+	//else if (collisions.size() == 1)
+	//{
+	//	if (collisions.front()->entity_type != UNIT)
+	//	{
+	//		if (unit->squad) { unit->squad->Halt(); unit->squad->commands.push_back(new MoveToSquad(unit->squad->commander, dest)); }
+	//		else			 { unit->Halt(); unit->commands.push_back(new MoveTo(unit, dest)); }
+	//	}
+	//	else {
+	//		
+	//	}
+	//}
+	//else {   // collisions.size() > 1
+	//	//TODO;
+	//}
 
 	return true;
 }
@@ -310,16 +311,20 @@ bool MoveToSquad::ProcessPath(const std::list<iPoint>& path)
 			if (App->pathfinding->IsWalkable(*offset_pos)) new_path->push_back(offset_pos);
 			else
 			{
-				if ((*it).DistanceManhattan(*new_path->back()) == 1) new_path->push_back(new iPoint(*it));
+				if(new_path->empty()) new_path->push_back(new iPoint(*it));
 				else
 				{
-					iPoint new_point = *it;
-					if (App->pathfinding->CreatePath(*new_path->back(), new_point) < 0) 
-						return false;
-					else {
-						const std::list<iPoint>* repathing = App->pathfinding->GetLastPath();
-						for (std::list<iPoint>::const_iterator it2 = repathing->begin(); it2 != repathing->end(); it2++)
-							new_path->push_back(new iPoint(*it2));
+					if ((*it).DistanceManhattan(*new_path->back()) == 1) new_path->push_back(new iPoint(*it));
+					else
+					{
+						iPoint new_point = *it;
+						if (App->pathfinding->CreatePath(*new_path->back(), new_point) < 0)
+							return false;
+						else {
+							const std::list<iPoint>* repathing = App->pathfinding->GetLastPath();
+							for (std::list<iPoint>::const_iterator it2 = repathing->begin(); it2 != repathing->end(); it2++)
+								new_path->push_back(new iPoint(*it2));
+						}
 					}
 				}
 			}
