@@ -79,11 +79,11 @@ bool j1Gui::PreUpdate()
 		{
 			if ((*it_m) == nullptr) break;
 			if ((*it_m)->active == false) continue;
-			for (std::list<UI_element*>::reverse_iterator it_e = (*it_m)->elements.rbegin(); it_e != (*it_m)->elements.rend(); it_e++) //Go through elements
+			for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++) //Go through elements
 			{
 				if (checkMouseHovering((*it_e)))
 					element = (*it_e);
-				for (std::list<UI_element*>::reverse_iterator it_c = (*it_e)->childs.rbegin(); it_c != (*it_e)->childs.rend(); it_c++)
+				for (std::list<UI_element*>::iterator it_c = (*it_e)->childs.begin(); it_c != (*it_e)->childs.end(); it_c++)
 					if (checkMouseHovering((*it_c)))
 						element = (*it_c);
 			}
@@ -101,6 +101,7 @@ bool j1Gui::PreUpdate()
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
+			clickedOnUI = true;
 			if (element->callback != nullptr)
 			{
 				ret = element->callback->OnUIEvent(element, MOUSE_LEFT_CLICK);
@@ -152,6 +153,9 @@ bool j1Gui::Update(float dt)
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+		clickedOnUI = false;
+
 	//Draw selection quads
 	for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
 		App->render->DrawQuad((*it_e)->collider, Green, false);
@@ -378,6 +382,9 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		else if (type == "ingamemenu")
 			element = createIngameMenu(tmp, callback);
 
+		element->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
+		element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
+
 		pugi::xml_node childs = tmp.child("childs");
 		if(childs)
 		{ 
@@ -408,9 +415,7 @@ Text* j1Gui::createText(pugi::xml_node node, j1Module* callback, bool saveIntoGU
 	SDL_Color color = { node.child("color").attribute("r").as_int(), node.child("color").attribute("g").as_int(), node.child("color").attribute("b").as_int(), node.child("color").attribute("a").as_int() };
 
 	Text* ret = new Text(text, x, y, (*font), color, callback);
-	
-	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
-	ret->interactive = node.child("interactive").attribute("value").as_bool();
+
 	if (saveIntoGUI)
 		Texts.push_back(ret);
 
@@ -427,9 +432,7 @@ Image* j1Gui::createImage(pugi::xml_node node, j1Module* callback, bool saveInto
 	int y = node.child("position").attribute("y").as_int();
 
 	Image* ret = new Image(texture, x, y, {0, 0, (int)tex_width, (int)tex_height }, callback);
-	
-	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
-	ret->interactive = node.child("interactive").attribute("value").as_bool();
+
 	if (saveIntoGUI)
 		Images.push_back(ret);
 
@@ -444,9 +447,7 @@ Image* j1Gui::createImageFromAtlas(pugi::xml_node node, j1Module* callback, bool
 
 	SDL_Texture* usingAtlas = (use_icon_atlas) ? icon_atlas : atlas;
 	Image* ret = new Image(usingAtlas, x, y, section, callback);
-	
-	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
-	ret->interactive = node.child("interactive").attribute("value").as_bool();
+
 	if (saveIntoGUI)
 		Images.push_back(ret);
 
@@ -466,9 +467,7 @@ Window* j1Gui::createWindow(pugi::xml_node node, j1Module * callback, bool saveI
 	SDL_Rect section = { node.child("section").attribute("x").as_int(), node.child("section").attribute("y").as_int(), node.child("section").attribute("w").as_int(), node.child("section").attribute("h").as_int() };
 
 	Window* ret = new Window(texture, x, y, section, callback);
-	
-	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
-	ret->interactive = node.child("interactive").attribute("value").as_bool();
+
 	if (saveIntoGUI)
 		Windows.push_back(ret);
 
@@ -490,9 +489,7 @@ Button* j1Gui::createButton(pugi::xml_node node, j1Module* callback, bool saveIn
 	SDL_Rect OnClick = { node.child("OnClick").attribute("x").as_int(), node.child("OnClick").attribute("y").as_int(), node.child("OnClick").attribute("w").as_int(), node.child("OnClick").attribute("h").as_int() };
 
 	Button* ret = new Button(x, y, texture, standby, OnMouse, OnClick, callback);
-	
-	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
-	ret->interactive = node.child("interactive").attribute("value").as_bool();
+
 	if (saveIntoGUI)
 		Buttons.push_back(ret);
 
@@ -511,8 +508,6 @@ Chrono * j1Gui::createTimer(pugi::xml_node node, j1Module * callback, bool saveI
 	Chrono* ret = new Chrono(x, y, TIMER, (*font), color, callback);
 	
 	ret->setStartValue(node.attribute("initial_value").as_int());
-	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
-	ret->interactive = node.child("interactive").attribute("value").as_bool();
 	if (saveIntoGUI)
 		Chronos.push_back(ret);
 
@@ -529,9 +524,7 @@ Chrono * j1Gui::createStopWatch(pugi::xml_node node, j1Module * callback, bool s
 	SDL_Color color = { node.child("color").attribute("r").as_int(), node.child("color").attribute("g").as_int(), node.child("color").attribute("b").as_int(), node.child("color").attribute("a").as_int() };
 
 	Chrono* ret = new Chrono(x, y, STOPWATCH, (*font), color, callback);
-	
-	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
-	ret->interactive = node.child("interactive").attribute("value").as_bool();
+
 	if (saveIntoGUI)
 		Chronos.push_back(ret);
 
@@ -556,9 +549,7 @@ ProgressBar* j1Gui::createProgressBar(pugi::xml_node node, j1Module* callback, b
 	float max_value = node.attribute("max_value").as_float(0);
 
 	ProgressBar* ret = new ProgressBar(x, y, texture, empty, full, head, max_value, callback);
-	
-	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
-	ret->interactive = node.child("interactive").attribute("value").as_bool();
+
 	if (saveIntoGUI)
 		ProgressBars.push_back(ret);
 
@@ -594,9 +585,6 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 	IngameMenu* ret = new IngameMenu(texture, icon_atlas, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, lifeBars_offsetX, lifeBars_offsetY, stats_posX, stats_posY, callback);
 
 	ret->createActionButtons(node.child("buttons"));
-
-	ret->setDragable(node.child("draggable").attribute("horizontal").as_bool(), node.child("draggable").attribute("vertical").as_bool());
-	ret->interactive = node.child("interactive").attribute("value").as_bool();
 
 	inGameMenu = ret;
 

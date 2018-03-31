@@ -108,6 +108,8 @@ void IngameMenu::createActionButtons(pugi::xml_node node)
 	for (pugi::xml_node tmp = node.first_child(); tmp; tmp = tmp.next_sibling())
 	{
 		Button* button = App->gui->createButton(tmp, callback, false);
+		button->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
+		button->interactive = tmp.child("interactive").attribute("value").as_bool(true);
 		button->active = false;
 		actionButtons.push_back(button);
 		childs.push_back(button);
