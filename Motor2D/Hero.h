@@ -22,6 +22,7 @@ public:
 
 
 public:
+
 	~Hero();
 
 	bool Update(float dt);

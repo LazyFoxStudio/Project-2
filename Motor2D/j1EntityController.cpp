@@ -30,6 +30,8 @@ bool j1EntityController::Start()
 	squad_units_test.push_back(addUnit(iPoint(900, 800), FOOTMAN));
 	squad_units_test.push_back(addUnit(iPoint(1000, 800), FOOTMAN));
 
+	addUnit(iPoint(600, 700), HERO_1);
+
 	addBuilding(iPoint(700, 700), BARRACKS);
 
 	squad_test = new Squad(squad_units_test);

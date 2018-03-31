@@ -24,6 +24,7 @@ public:
 	bool ready = true;
 
 public:
+	Skill() {};
 	virtual ~Skill() {};
 	virtual void Activate(Hero* hero) {};
 	virtual void DrawRange() {};
@@ -46,7 +47,7 @@ public:
 	void DrawRange();
 	void BFS(int Area);
 
-	std::list<iPoint>::iterator Find(std::list<iPoint> list,const iPoint& point);
+	bool Find(std::list<iPoint> list,const iPoint& point);
 };
 
 //(...)
