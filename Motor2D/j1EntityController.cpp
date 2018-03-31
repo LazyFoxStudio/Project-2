@@ -57,7 +57,7 @@ bool j1EntityController::Update(float dt)
 		}
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI)
 		selectionControl();
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		commandControl();

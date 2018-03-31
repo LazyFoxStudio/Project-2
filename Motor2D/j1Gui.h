@@ -106,6 +106,7 @@ public:
 	bool UI_Debug = false;
 	int alpha_value = 255;
 	uint button_click_fx = 0;
+	bool clickedOnUI = false;
 
 private:
 
