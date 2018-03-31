@@ -49,7 +49,6 @@ public:
 
 	std::list<menu*> menus;
 	int x, y;
-	int display_gold, display_wood;
 };
 
 #endif
