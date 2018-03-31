@@ -3,6 +3,7 @@
 #include "Squad.h"
 #include "p2Log.h"
 #include "j1Pathfinding.h"
+#include "j1EntityController.h"
 #include "j1Map.h"
 
 #define SPEED_CONSTANT 100
@@ -48,22 +49,43 @@ bool MoveTo::OnInit()
 
 bool MoveTo::OnUpdate(float dt)
 {
-	unit->position += next_step;
-	unit->collider.x = unit->position.x; unit->collider.y = unit->position.y;
-
-	iPoint unit_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
-
-	if (unit_pos == path.front())
+	if (!waiting)
 	{
-		path.pop_front();
-		if (path.empty()) { Stop(); return true; }
+		unit->position += next_step;
+		unit->collider.x = unit->position.x; unit->collider.y = unit->position.y;
+
+		iPoint unit_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
+
+		if (unit_pos == path.front())
+		{
+			path.pop_front();
+			if (path.empty()) { Stop(); return true; }
+		}
+
+		iPoint direction = path.front() - unit_pos;
+		direction.Normalize();
+
+		if (unit->squad)	next_step = (direction * unit->squad->max_speed * dt * SPEED_CONSTANT);
+		else				next_step = (direction * unit->speed * dt * SPEED_CONSTANT);
 	}
 
-	iPoint direction = path.front() - unit_pos;
-	direction.Normalize();
+	std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(unit);
 
-	fPoint velocity = (direction * unit->speed * dt * SPEED_CONSTANT);
-	next_step = velocity;
+	if (collisions.empty()) waiting = false;
+	else if (collisions.size() == 1)
+	{
+		if (collisions.front()->entity_type != UNIT)
+		{
+			if (unit->squad) { unit->squad->Halt(); unit->squad->commands.push_back(new MoveToSquad(unit->squad->commander, dest)); }
+			else			 { unit->Halt(); unit->commands.push_back(new MoveTo(unit, dest)); }
+		}
+		else {
+			
+		}
+	}
+	else {   // collisions.size() > 1
+		//TODO;
+	}
 
 	return true;
 }

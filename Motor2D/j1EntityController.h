@@ -35,11 +35,13 @@ public:
 	Nature* addNature(iPoint pos, resourceType res_type, int amount = 0);
 
 
-	void placingBuilding(buildingType type);
 	void selectionControl();
-	entityType getSelectedType();
 	void commandControl();
+	entityType getSelectedType();
+
+	void placingBuilding(buildingType type);
 	Entity* CheckMouseHover(iPoint mouse_world);
+	std::vector<Entity*> CheckCollidingWith(Entity* entity);
 
 public:
 

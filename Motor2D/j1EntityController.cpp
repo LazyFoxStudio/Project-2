@@ -162,6 +162,7 @@ void j1EntityController::commandControl()
 
 	if (!entity)   // clicked on ground
 	{
+		squad_test->Halt();
 		squad_test->commands.push_back(new MoveToSquad(squad_test->commander, map_p));
 		/*for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
 		{
@@ -185,7 +186,7 @@ void j1EntityController::commandControl()
 					if ((*it)->entity_type == UNIT)
 					{
 						Unit* unit = (Unit*)(*it);
-						unit->commands.clear();
+						unit->Halt();
 						unit->commands.push_back(new AttackingMoveTo(unit, map_p));
 					}
 				}
@@ -249,6 +250,19 @@ void j1EntityController::selectionControl()
 		selection_rect = { 0,0,0,0 };
 		break;
 	}
+}
+
+std::vector<Entity*> j1EntityController::CheckCollidingWith(Entity* entity)
+{
+	std::vector<Entity*> ret;
+
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		if (*it != entity)
+			if (SDL_HasIntersection(&entity->collider, &(*it)->collider)) ret.push_back(*it);
+	}
+
+	return ret;
 }
 
 entityType j1EntityController::getSelectedType()

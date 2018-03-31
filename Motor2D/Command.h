@@ -134,6 +134,7 @@ class MoveToSquad : public Command
 public: 
 	Squad* squad = nullptr;
 	bool reshaping_done = false;
+	bool waiting = false;
 	iPoint destination = { -1,-1 };
 
 public:

@@ -20,6 +20,8 @@ public:
 	std::deque<Command*> commands;
 	std::vector<iPoint> unit_offset;
 
+	float max_speed = 0.0f;
+
 public:
 	Squad(std::vector<Unit*>& units);
 	~Squad();

@@ -7,8 +7,13 @@ Squad::Squad(std::vector<Unit*>& units) : units(units)
 	generateOffsets();
 	commander = units[0];
 
+	max_speed = units[0]->speed;
+
 	for (int i = 0; i < units.size(); i++)
+	{
 		units[i]->squad = this;
+		if (units[i]->speed < max_speed) max_speed = units[i]->speed < max_speed;
+	}
 }
 
 Squad::~Squad()
