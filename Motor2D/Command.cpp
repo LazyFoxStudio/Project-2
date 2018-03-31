@@ -35,38 +35,38 @@ void Command::Restart() { OnStop(); state = TO_INIT; }
 
 bool MoveTo::OnInit()
 {
-	if (!path.empty()) Repath();    // if we have been already initalized and possess a path, repath
-	else
+	if (path.empty()) 
 	{
 		iPoint pos = App->map->WorldToMap(unit->position.x, unit->position.y);
 
 		if (App->pathfinding->CreatePath(pos, dest) > 0)	path = *App->pathfinding->GetLastPath();
 		else												Stop();
 	}
+	else Repath();    // if we have been already initalized and possess a path, repath
 
 	return true;
 }
 
 bool MoveTo::OnUpdate(float dt)
 {
-	if (!waiting)
-	{
-		unit->position += next_step;
-		unit->collider.x = unit->position.x; unit->collider.y = unit->position.y;
-
-		iPoint unit_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
-
-		if (unit_pos == path.front())
+	if (path.empty()) { Stop(); return true; }
+	else {
+		if (!waiting)
 		{
-			path.pop_front();
-			if (path.empty()) { Stop(); return true; }
+			unit->position += next_step;
+			unit->collider.x = unit->position.x; unit->collider.y = unit->position.y;
+
+			iPoint unit_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
+
+			iPoint direction = path.front() - unit_pos;
+			direction.Normalize();
+
+			if (unit->squad)	next_step = (direction * unit->squad->max_speed * dt * SPEED_CONSTANT);
+			else				next_step = (direction * unit->speed * dt * SPEED_CONSTANT);
+
+			if (unit_pos == path.front())
+				path.pop_front();
 		}
-
-		iPoint direction = path.front() - unit_pos;
-		direction.Normalize();
-
-		if (unit->squad)	next_step = (direction * unit->squad->max_speed * dt * SPEED_CONSTANT);
-		else				next_step = (direction * unit->speed * dt * SPEED_CONSTANT);
 	}
 
 	// TODO
