@@ -49,7 +49,7 @@ bool MoveTo::OnInit()
 bool MoveTo::OnUpdate(float dt)
 {
 	unit->position += next_step;
-	unit->collider.x += next_step.x; unit->collider.y += next_step.y;
+	unit->collider.x = unit->position.x; unit->collider.y = unit->position.y;
 
 	iPoint unit_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
 
@@ -115,6 +115,9 @@ bool AttackingMoveTo::OnUpdate(float dt)
 		}
 	}
 
+	unit->position += next_step;
+	unit->collider.x = unit->position.x; unit->collider.y = unit->position.y;
+
 	iPoint unit_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
 
 	if (unit_pos == path.front())
@@ -127,10 +130,7 @@ bool AttackingMoveTo::OnUpdate(float dt)
 	direction.Normalize();
 
 	fPoint velocity = (direction * unit->speed * dt * SPEED_CONSTANT);
-	unit->position += velocity;
-
-	unit->collider.x = unit->position.x - (unit->collider.w / 2);
-	unit->collider.y = unit->position.y - (unit->collider.h / 2);
+	next_step = velocity;
 
 	return true;
 }
@@ -238,12 +238,23 @@ bool MoveToSquad::OnInit()
 	if (!unit->squad) { Stop(); return true; }
 	else squad = unit->squad;
 
+	if (!reshaping_done)
+	{
+		squad->commands.push_front(new ReshapeSquad(squad->commander));
+		state = TO_INIT;
+		reshaping_done = true;
+		return true;
+	}
+
 	iPoint map_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
 
 	if(App->pathfinding->CreatePath(map_pos, destination) <= 0)  Stop();  
-	else if(!ProcessPath(*App->pathfinding->GetLastPath()))		 Stop(); 
+	else
+	{
+		const std::list<iPoint> commander_path = *App->pathfinding->GetLastPath();
+		if (!ProcessPath(commander_path)) Stop(); 
+	}
 
-	squad->commands.push_front(new ReshapeSquad(squad->commander));
 
 	return true;
 }
@@ -263,26 +274,30 @@ bool MoveToSquad::OnUpdate(float dt)
 
 bool MoveToSquad::ProcessPath(const std::list<iPoint>& path)
 {
-	std::vector<std::list<iPoint>> paths_list;
+	std::vector<std::list<iPoint*>*> paths_list;
 
 	for (int i = 0; i < squad->units.size(); i++)
 	{
-		std::list<iPoint> new_path;
+		std::list<iPoint*>* new_path = new std::list<iPoint*>();
 		for (std::list<iPoint>::const_iterator it = path.begin(); it != path.end(); it++)
 		{
-			iPoint offset_pos = (*it) + squad->unit_offset[i];
-			if (App->pathfinding->IsWalkable(offset_pos)) new_path.push_back(offset_pos);
+			if (*it - *std::prev(it) == *std::next(it) - *it)
+				continue;
+
+			iPoint* offset_pos = new iPoint((*it) + squad->unit_offset[i]);
+			if (App->pathfinding->IsWalkable(*offset_pos)) new_path->push_back(offset_pos);
 			else
 			{
-				if ((*it).DistanceManhattan(new_path.back()) == 1) new_path.push_back(*it);
+				if ((*it).DistanceManhattan(*new_path->back()) == 1) new_path->push_back(new iPoint(*it));
 				else
 				{
 					iPoint new_point = *it;
-					if (App->pathfinding->CreatePath(new_path.back(), new_point) <= 0) { Stop(); return true; }
+					if (App->pathfinding->CreatePath(*new_path->back(), new_point) < 0) 
+						return false;
 					else {
 						const std::list<iPoint>* repathing = App->pathfinding->GetLastPath();
 						for (std::list<iPoint>::const_iterator it2 = repathing->begin(); it2 != repathing->end(); it2++)
-							paths_list[i].push_back(*it2);
+							new_path->push_back(new iPoint(*it2));
 					}
 				}
 			}
@@ -293,7 +308,10 @@ bool MoveToSquad::ProcessPath(const std::list<iPoint>& path)
 	for (int i = 0; i < squad->units.size(); i++)
 	{
 		MoveTo* new_move_order = new MoveTo(squad->units[i], destination);
-		new_move_order->path = paths_list[i];
+
+		for (std::list<iPoint*>::iterator it = paths_list[i]->begin(); it != paths_list[i]->end(); it++)
+			new_move_order->path.push_back(*(*it));
+
 		new_move_order->state = UPDATE;
 		squad->units[i]->commands.push_back(new_move_order);
 	}
@@ -309,7 +327,7 @@ bool ReshapeSquad::OnInit()
 	else squad = unit->squad;
 
 	iPoint commander_pos = App->map->WorldToMap(squad->commander->position.x, squad->commander->position.y);
-	std::vector<iPoint> adjacents;
+	std::list<iPoint> adjacents;
 
 	if (App->pathfinding->GatherWalkableAdjacents(commander_pos, squad->units.size() - 1, adjacents))
 	{
@@ -318,10 +336,11 @@ bool ReshapeSquad::OnInit()
 			iPoint dest = adjacents.front();
 			iPoint target = commander_pos + squad->unit_offset[i];
 
-			for (int j = 1; j < adjacents.size(); j++)
-				if (adjacents[j].DistanceManhattan(target) < dest.DistanceManhattan(target)) dest = adjacents[j];
+			for (std::list<iPoint>::iterator it = adjacents.begin(); it != adjacents.end(); it++)
+				if ((*it).DistanceManhattan(target) < dest.DistanceManhattan(target)) dest = (*it);
 
 			squad->units[i]->commands.push_front(new MoveTo(squad->units[i], dest));
+			adjacents.remove(dest);
 		}
 	}
 	else Stop();

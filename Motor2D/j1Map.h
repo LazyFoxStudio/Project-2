@@ -122,6 +122,7 @@ private:
 public:
 
 	MapData				data;
+	bool debug			= false;
 
 private:
 

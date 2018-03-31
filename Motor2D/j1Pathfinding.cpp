@@ -132,7 +132,7 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill, PathNode* parent)
 	return list_to_fill.list.size();
 }
 
-bool j1PathFinding::GatherWalkableAdjacents(iPoint map_pos, int count, std::vector<iPoint>& adjacents, int max_distance)
+bool j1PathFinding::GatherWalkableAdjacents(iPoint map_pos, int count, std::list<iPoint>& adjacents, int max_distance)
 {
 	if (!max_distance) max_distance = MAX_ADJACENT_DIST;
 
