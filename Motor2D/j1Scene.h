@@ -38,6 +38,8 @@ public:
 
 public:
 	SDL_Texture* debug_tex;
+	int wood;
+	int gold;
 };
 
 #endif // __j1SCENE_H__

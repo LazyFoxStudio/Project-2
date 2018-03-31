@@ -45,7 +45,10 @@ bool j1Scene::Start()
 
 	guiconfig = App->LoadFile(Gui_config_file, "Gui_config.xml");
 	guiconfig = guiconfig.child("scene");
-	
+
+	wood = 200;
+	gold = 400;
+
 	return true;
 }
 
@@ -58,6 +61,8 @@ bool j1Scene::Update(float dt)
 
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
+
+
 
 	return true;
 }
