@@ -93,6 +93,29 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	return ret;
 }
 
+bool j1Map::CheckWalkabilityArea(int x, int y, int rows, int columns) const
+{
+	bool ret = true;
+	iPoint currentTile = { x,y };
+	for (int j = 0; j < columns; j++)
+	{
+		for (int i = 0; i < rows; i++)
+		{
+			iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
+			if (!App->pathfinding->IsWalkable(currentMapTile))
+			{
+				ret = false;
+				break;
+			}
+		}
+
+		if (!ret)
+			break;
+	}
+	
+	return ret;
+}
+
 //Returns the rect of the specified tile.
 SDL_Rect TileSet::GetTileRect(int id) const
 {

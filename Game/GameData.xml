@@ -143,7 +143,7 @@
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="0"/>
-             <speed value="0.5"/>
+                <speed value="0.5"/>
               </AttackingNorth>
              <AttackingNorthEast>
                  <width value="73"/>

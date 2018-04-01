@@ -107,6 +107,8 @@ public:
 
 	iPoint j1Map::WorldToMap(int x, int y) const;
 
+	bool CheckWalkabilityArea(int x, int y, int rows, int columns) const;
+
 	bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 private:
 

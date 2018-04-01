@@ -66,12 +66,16 @@ bool j1EntityController::Update(float dt)
 
 	else if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && building)
 	{
-		building = false;
+		
 		int x, y;
 		App->input->GetMousePosition(x, y);
 		iPoint pos1 = App->map->WorldToMap(x, y);
 		iPoint pos2 = App->map->MapToWorld(pos1.x, pos1.y);
-		addBuilding(pos2, BARRACKS);
+		if (App->map->CheckWalkabilityArea(pos2.x, pos2.y, 3, 3))
+		{
+			addBuilding(pos2, BARRACKS);
+			building = false;
+		}
 	}
 
 	if (building)
@@ -80,7 +84,15 @@ bool j1EntityController::Update(float dt)
 		App->input->GetMousePosition(x, y);
 		iPoint pos1 = App->map->WorldToMap(x, y);
 		iPoint pos2 = App->map->MapToWorld(pos1.x, pos1.y);
-		App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->section->w,buildingDB[1]->section->h }, Green);
+		if (App->map->CheckWalkabilityArea(pos2.x, pos2.y, 3, 3))
+		{
+			App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->section->w,buildingDB[1]->section->h }, Green);
+		}
+		else
+		{
+			App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->section->w,buildingDB[1]->section->h }, Red);
+		}
+		
 	}
 
 
