@@ -43,6 +43,8 @@ public:
 	Entity* CheckMouseHover(iPoint mouse_world);
 	std::vector<Entity*> CheckCollidingWith(Entity* entity);
 
+	iPoint CameraToWorld(int x, int y);
+
 public:
 
 	std::list<Entity*> entities;

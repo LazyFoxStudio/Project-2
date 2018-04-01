@@ -1,6 +1,31 @@
 <?xml version="1.0"?>
 <GameData>
     <Units>
+      <Unit>
+            <name value="Hero"/>
+            <type value="1"/>
+			<iconData x="162" y="200" w="72" h="59"/>
+            <texture value="Assets\Sprites\Alliance Sprites\Footman_Spritesheet.png"/>
+            <Stats>
+                <life value="250"/>
+                <attack value="1"/>
+                <defense value="6"/>
+                <piercingDamage value="15"/>
+                <movementSpeed value="1.5"/>
+                <range value="3"/>
+                <lineOfSight value="50"/>
+            </Stats>
+            <Animations>
+              <Animation>
+                <width value="48"/>
+                <height value="48"/>
+                <rows value="0"/>
+                <columns value="0"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="0"/>
+              </Animation>
+            </Animations>
+        </Unit>
         <Unit>
             <name value="Footman"/>
             <type value="3"/>
@@ -22,43 +47,133 @@
             </Stats>
             <Animations>
               <Animation>
-                <width value="48"/>
-                <height value="48"/>
+                <width value="73"/>
+                <height value="65"/>
                 <rows value="0"/>
                 <columns value="0"/>
                 <StartingRow value="0"/>
                 <StartingColumn value="0"/>
               </Animation>
-            </Animations>
-        </Unit>
-       <Unit>
-            <name value="Hero"/>
-            <type value="1"/>
-			<iconData x="162" y="200" w="72" h="59"/>
-            <texture value="Assets\Sprites\Alliance Sprites\Footman_Spritesheet.png"/>
-            <Stats>
-                <life value="60"/>
-                <attack value="6"/>
-                <defense value="2"/>
-                <piercingDamage value="3"/>
-                <movementSpeed value="1"/>
-                <range value="1"/>
-                <lineOfSight value="20"/>
-                <goldCost value="600"/>
-                <woodCost value="0"/>
-                <workerCost value="5"/>
-                <trainingTime value="10"/>
-                <squadMembers value="5"/>
-            </Stats>
-            <Animations>
-              <Animation>
-                <width value="48"/>
-                <height value="48"/>
+              <StandingNorthEast>
+                <width value="73"/>
+                <height value="65"/>
                 <rows value="0"/>
-                <columns value="0"/>
+                <columns value="1"/>
                 <StartingRow value="0"/>
+                <StartingColumn value="1"/>
+              </StandingNorthEast>
+            <StandingEast>
+                  <width value="73"/>
+                <height value="65"/>
+                <rows value="0"/>
+                <columns value="2"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="2"/>
+              </StandingEast>
+             <StandingSouthEast>
+                  <width value="73"/>
+                <height value="65"/>
+                <rows value="0"/>
+                <columns value="3"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="3"/>
+              </StandingSouthEast>
+             <StandingSouth>
+                 <width value="73"/>
+                <height value="65"/>
+                <rows value="0"/>
+                <columns value="4"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="4"/>
+              </StandingSouth>
+             <WalkingNorth>
+                  <width value="73"/>
+                <height value="65"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
                 <StartingColumn value="0"/>
-              </Animation>
+              </WalkingNorth>
+             <WalkingNorthEast>
+                  <width value="73"/>
+                <height value="65"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="1"/>
+              </WalkingNorthEast>
+             <WalkingEast>
+                 <width value="73"/>
+                <height value="65"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="2"/>
+              </WalkingEast>
+             <WalkingSouthEast>
+                   <width value="73"/>
+                <height value="65"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="3"/>
+              </WalkingSouthEast>
+            <WalkingSouth>
+                 <width value="73"/>
+                <height value="65"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="4"/>
+              </WalkingSouth>
+             <AttackingNorth>
+                <width value="73"/>
+                <height value="65"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="0"/>
+              </AttackingNorth>
+             <AttackingNorthEast>
+                 <width value="73"/>
+                <height value="65"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="1"/>
+              </AttackingNorthEast>
+             <AttackingEast>
+                <width value="73"/>
+                <height value="65"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="2"/>
+              </AttackingEast>
+             <AttackingSouthEast>
+                <width value="73"/>
+                <height value="65"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="3"/>
+              </AttackingSouthEast>
+             <AttackingSouth>
+                  <width value="73"/>
+                <height value="65"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="4"/>
+              </AttackingSouth>
+             <Dying>
+                <width value="73"/>
+                <height value="65"/>
+                <rows value="0"/>
+                <columns value="5"/>
+                <StartingRow value="8"/>
+                <StartingColumn value="0"/>
+              </Dying>
             </Animations>
         </Unit>
       <Unit>
@@ -226,6 +341,134 @@
                 <lineOfSight value="20"/>
             </Stats>
         <Animations>
+                                  <StandingNorth>
+                <width value="73"/>
+                <height value="66"/>
+                <rows value="0"/>
+                <columns value="0"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="0"/>
+              </StandingNorth>
+             <StandingNorthEast>
+                <width value="73"/>
+                <height value="66"/>
+                <rows value="0"/>
+                <columns value="1"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="1"/>
+              </StandingNorthEast>
+            <StandingEast>
+                  <width value="73"/>
+                <height value="66"/>
+                <rows value="0"/>
+                <columns value="2"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="2"/>
+              </StandingEast>
+             <StandingSouthEast>
+                  <width value="73"/>
+                <height value="66"/>
+                <rows value="0"/>
+                <columns value="3"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="3"/>
+              </StandingSouthEast>
+             <StandingSouth>
+                 <width value="73"/>
+                <height value="66"/>
+                <rows value="0"/>
+                <columns value="4"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="4"/>
+              </StandingSouth>
+             <WalkingNorth>
+                  <width value="73"/>
+                <height value="66"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="0"/>
+              </WalkingNorth>
+             <WalkingNorthEast>
+                  <width value="73"/>
+                <height value="66"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="1"/>
+              </WalkingNorthEast>
+             <WalkingEast>
+                 <width value="73"/>
+                <height value="66"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="2"/>
+              </WalkingEast>
+             <WalkingSouthEast>
+                   <width value="73"/>
+                <height value="66"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="3"/>
+              </WalkingSouthEast>
+            <WalkingSouth>
+                 <width value="73"/>
+                <height value="66"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="4"/>
+              </WalkingSouth>
+             <AttackingNorth>
+                <width value="73"/>
+                <height value="66"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="0"/>
+              </AttackingNorth>
+             <AttackingNorthEast>
+                 <width value="73"/>
+                <height value="66"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="1"/>
+              </AttackingNorthEast>
+             <AttackingEast>
+                <width value="73"/>
+                <height value="66"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="2"/>
+              </AttackingEast>
+             <AttackingSouthEast>
+                <width value="73"/>
+                <height value="66"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="3"/>
+              </AttackingSouthEast>
+             <AttackingSouth>
+                  <width value="73"/>
+                <height value="66"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="4"/>
+              </AttackingSouth>
+             <Dying>
+                <width value="73"/>
+                <height value="66"/>
+                <rows value="0"/>
+                <columns value="5"/>
+                <StartingRow value="8"/>
+                <StartingColumn value="0"/>
+              </Dying>
         </Animations>
       </Enemy>
      <Enemy>
@@ -243,6 +486,134 @@
                 <lineOfSight value="25"/>
             </Stats>
         <Animations>
+            <StandingNorth>
+                <width value="59"/>
+                <height value="57"/>
+                <rows value="0"/>
+                <columns value="0"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="0"/>
+              </StandingNorth>
+             <StandingNorthEast>
+                  <width value="59"/>
+                <height value="57"/>
+                <rows value="0"/>
+                <columns value="1"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="1"/>
+              </StandingNorthEast>
+            <StandingEast>
+                   <width value="59"/>
+                <height value="57"/>
+                <rows value="0"/>
+                <columns value="2"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="2"/>
+              </StandingEast>
+             <StandingSouthEast>
+                    <width value="59"/>
+                <height value="57"/>
+                <rows value="0"/>
+                <columns value="3"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="3"/>
+              </StandingSouthEast>
+             <StandingSouth>
+                  <width value="59"/>
+                <height value="57"/>
+                <rows value="0"/>
+                <columns value="4"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="4"/>
+              </StandingSouth>
+             <WalkingNorth>
+                  <width value="59"/>
+                <height value="57"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="0"/>
+              </WalkingNorth>
+             <WalkingNorthEast>
+                <width value="59"/>
+                <height value="57"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="1"/>
+              </WalkingNorthEast>
+             <WalkingEast>
+                 <width value="59"/>
+                <height value="57"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="2"/>
+              </WalkingEast>
+             <WalkingSouthEast>
+                <width value="59"/>
+                <height value="57"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="3"/>
+              </WalkingSouthEast>
+            <WalkingSouth>
+                 <width value="59"/>
+                <height value="57"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="4"/>
+              </WalkingSouth>
+             <AttackingNorth>
+               <width value="59"/>
+                <height value="57"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="0"/>
+              </AttackingNorth>
+             <AttackingNorthEast>
+               <width value="59"/>
+                <height value="57"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="1"/>
+              </AttackingNorthEast>
+             <AttackingEast>
+                 <width value="59"/>
+                <height value="57"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="2"/>
+              </AttackingEast>
+             <AttackingSouthEast>
+               <width value="59"/>
+                <height value="57"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="3"/>
+              </AttackingSouthEast>
+             <AttackingSouth>
+               <width value="59"/>
+                <height value="57"/>
+                <rows value="4"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="4"/>
+              </AttackingSouth>
+             <Dying>
+                <width value="59"/>
+                <height value="57"/>
+                <rows value="0"/>
+                <columns value="5"/>
+                <StartingRow value="8"/>
+                <StartingColumn value="0"/>
+              </Dying>
         </Animations>
       </Enemy>
     </Units>

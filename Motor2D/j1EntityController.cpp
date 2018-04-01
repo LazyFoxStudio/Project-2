@@ -59,10 +59,20 @@ bool j1EntityController::Update(float dt)
 		}
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+	{
+		int x, y;
+		App->input->GetMousePosition(x, y);
+		iPoint pos = CameraToWorld(x, y);
+		addBuilding(pos, BARRACKS);
+	}
+
+
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI)
 		selectionControl();
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		commandControl();
+
 
 	return true;
 }
@@ -263,6 +273,16 @@ std::vector<Entity*> j1EntityController::CheckCollidingWith(Entity* entity)
 		if (*it != entity)
 			if (SDL_HasIntersection(&entity->collider, &(*it)->collider)) ret.push_back(*it);
 	}
+
+	return ret;
+}
+
+iPoint j1EntityController::CameraToWorld(int x, int y)
+{
+	iPoint ret;
+
+	ret.x = x - App->render->camera.x;
+	ret.y = y - App->render->camera.y;
 
 	return ret;
 }
