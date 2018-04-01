@@ -25,7 +25,15 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	line_of_sight			= unit.line_of_sight;
 	range					= unit.range;
 
-	current_anim			= animations[0];
+	if (name == "Footman")
+	{
+		current_anim = animations[4];
+	}
+	else
+	{
+		current_anim = animations[0];
+	}
+
 	entity_type				= UNIT;
 
 	position.x = pos.x, position.y = pos.y;
@@ -86,22 +94,47 @@ void Unit::animationController()
 			MoveTo* move_command = (MoveTo*)commands.front();
 			if (move_command->next_step.x > 0)
 			{
-				if (move_command->next_step.y < 0)
+				if (move_command->next_step.y < 0) //NOTH-WEST
+				{
+					
+				}
+				if (move_command->next_step.y > 0) //WEST
 				{
 
 				}
-				if (move_command->next_step.y > 0)
+				if (move_command->next_step.y == 0) //SOUTH-WEST
 				{
 
 				}
 			}
 			if (move_command->next_step.x < 0)
 			{
-				if (move_command->next_step.y > 0)
+				if (move_command->next_step.y < 0) //NORTH-EAST
 				{
 
 				}
-				if (move_command->next_step.y < 0)
+				if (move_command->next_step.y == 0) //EAST
+				{
+					animations[2]->Reset();
+					current_anim = animations[7];
+				}
+				if (move_command->next_step.y > 0) //SOUTH-EAST
+				{
+
+				}
+			}
+			if (move_command->next_step.x == 0)
+			{
+				if (move_command->next_step.y < 0) //NORTH
+				{
+
+				}
+				if (move_command->next_step.y == 0) //IDLE
+				{
+					animations[7]->Reset();
+					current_anim = animations[2];
+				}
+				if (move_command->next_step.y > 0) //SOUTH
 				{
 
 				}
