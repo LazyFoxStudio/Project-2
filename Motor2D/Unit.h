@@ -23,6 +23,8 @@ enum unitType
 };
 enum animationType
 {
+	IDLE,
+
 	ATTACKN,
 };
 
@@ -53,13 +55,15 @@ public:
 	//...
 
 	//Utilities
+
 	Squad* squad = nullptr;
 	bool flying = false;
-
+	
 	std::vector<Animation*> animations;
 	std::vector<Effect*> effects;
 	std::deque<Command*> commands;
 	Animation* current_anim = nullptr;
+	animationType new_animation;
 
 
 public:

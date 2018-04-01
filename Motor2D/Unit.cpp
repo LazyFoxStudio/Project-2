@@ -75,9 +75,41 @@ void Unit::animationController()
 {
 	if (commands.empty())
 	{
+		new_animation = IDLE;
+	}
+	else
+	{
+		switch (commands.front()->type)
+		{
+		case MOVETO:
+			MoveTo* move_command = (MoveTo*)commands.front();
+			if (move_command->next_step.x > 0)
+			{
+				if (move_command->next_step.y < 0)
+				{
+
+				}
+				if (move_command->next_step.y > 0)
+				{
+
+				}
+			}
+			if (move_command->next_step.x < 0)
+			{
+				if (move_command->next_step.y > 0)
+				{
+
+				}
+				if (move_command->next_step.y < 0)
+				{
+
+				}
+			}
+			break;
+		}
 
 	}
-
+	
 }
 
 void Unit::Halt()
