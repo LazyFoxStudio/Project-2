@@ -25,10 +25,10 @@ bool j1EntityController::Start()
 
 	loadEntitiesDB(gameData);
 
-	squad_units_test.push_back(addUnit(iPoint(700, 800), FOOTMAN));
-	squad_units_test.push_back(addUnit(iPoint(800, 800), FOOTMAN));
-	squad_units_test.push_back(addUnit(iPoint(900, 800), FOOTMAN));
+	squad_units_test.push_back(addUnit(iPoint(900, 1000), FOOTMAN));
 	squad_units_test.push_back(addUnit(iPoint(1000, 800), FOOTMAN));
+	squad_units_test.push_back(addUnit(iPoint(1000, 1000), FOOTMAN));
+	squad_units_test.push_back(addUnit(iPoint(900, 800), FOOTMAN));
 
 	addUnit(iPoint(600, 700), HERO_1);
 
@@ -62,6 +62,25 @@ bool j1EntityController::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && !building)
 	{
 		building = true;
+	}
+
+	else if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && building)
+	{
+		building = false;
+		int x, y;
+		App->input->GetMousePosition(x, y);
+		iPoint pos1 = App->map->WorldToMap(x, y);
+		iPoint pos2 = App->map->MapToWorld(pos1.x, pos1.y);
+		addBuilding(pos2, BARRACKS);
+	}
+
+	if (building)
+	{
+		int x, y;
+		App->input->GetMousePosition(x, y);
+		iPoint pos1 = App->map->WorldToMap(x, y);
+		iPoint pos2 = App->map->MapToWorld(pos1.x, pos1.y);
+		App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->section->w,buildingDB[1]->section->h }, Green);
 	}
 
 

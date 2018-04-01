@@ -44,7 +44,7 @@ class MoveTo : public Command
 public:
 	iPoint dest = { 0,0 };
 	fPoint next_step = { 0.0f, 0.0f };
-	bool waiting = false;
+	Unit* waiting_for = nullptr;
 	std::list<iPoint> path;
 
 public:
@@ -57,6 +57,7 @@ private:
 
 protected:
 	void Repath();
+	bool CheckCollisions();
 
 };
 

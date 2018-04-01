@@ -2,6 +2,7 @@
 #include "Hero.h"
 #include "Effects.h"
 #include "Squad.h"
+#include "j1Pathfinding.h"
 #include "j1Render.h"
 #include "Command.h"
 #include "p2Animation.h"
@@ -151,6 +152,25 @@ void Unit::Halt()
 		(*it)->Restart();  // Restarting the order calls onStop(), which would be otherwise unaccesible
 
 	commands.clear();
+}
+
+bool Unit::Pushed(fPoint direction)
+{
+	iPoint perpendicular_A = { 0,0 };
+	iPoint new_dest = { 0,0 };
+
+	if (direction.x == 0) perpendicular_A.x = 1;
+	else				  perpendicular_A.y = 1;
+
+	iPoint perpendicular_B = { -perpendicular_A.x, -perpendicular_A.y };
+	iPoint map_pos = App->map->WorldToMap(position.x, position.y);
+
+	if (App->pathfinding->IsWalkable(map_pos + perpendicular_A))		new_dest = map_pos + perpendicular_A;
+	else if(App->pathfinding->IsWalkable(map_pos + perpendicular_B))	new_dest = map_pos + perpendicular_B;
+	else																return false;
+
+	commands.push_front(new MoveTo(this, new_dest));
+	return true;
 }
 
 Unit* Unit::SearchNearestEnemy()

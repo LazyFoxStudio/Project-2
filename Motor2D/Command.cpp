@@ -35,6 +35,7 @@ void Command::Restart() { OnStop(); state = TO_INIT; }
 
 bool MoveTo::OnInit()
 {
+	next_step = { 0.0f,0.0f };
 	if (path.empty()) 
 	{
 		iPoint pos = App->map->WorldToMap(unit->position.x, unit->position.y);
@@ -51,7 +52,7 @@ bool MoveTo::OnUpdate(float dt)
 {
 	if (path.empty()) { Stop(); return true; }
 	else {
-		if (!waiting)
+		if (!waiting_for)
 		{
 			unit->position += next_step;
 			unit->collider.x = unit->position.x; unit->collider.y = unit->position.y;
@@ -69,24 +70,7 @@ bool MoveTo::OnUpdate(float dt)
 		}
 	}
 
-	// TODO
-	//std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(unit);
-
-	//if (collisions.empty()) waiting = false;
-	//else if (collisions.size() == 1)
-	//{
-	//	if (collisions.front()->entity_type != UNIT)
-	//	{
-	//		if (unit->squad) { unit->squad->Halt(); unit->squad->commands.push_back(new MoveToSquad(unit->squad->commander, dest)); }
-	//		else			 { unit->Halt(); unit->commands.push_back(new MoveTo(unit, dest)); }
-	//	}
-	//	else {
-	//		
-	//	}
-	//}
-	//else {   // collisions.size() > 1
-	//	//TODO;
-	//}
+	if (!CheckCollisions()) Stop();
 
 	return true;
 }
@@ -94,6 +78,63 @@ bool MoveTo::OnUpdate(float dt)
 bool MoveTo::OnStop()
 {
 	if (!path.empty())	path.clear();
+	return true;
+}
+
+bool MoveTo::CheckCollisions()
+{
+	waiting_for = nullptr;
+	std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(unit);
+
+	if (!collisions.empty())
+	{
+		if (collisions.size() == 1)
+		{
+			if (collisions.front()->entity_type != UNIT)
+			{
+				if (unit->squad) { unit->squad->Halt(); unit->squad->commands.push_back(new MoveToSquad(unit->squad->commander, dest)); }
+				else { unit->Halt(); unit->commands.push_back(new MoveTo(unit, dest)); }
+			}
+			else {
+				Unit* colliding_unit = (Unit*)collisions.front();
+				if (colliding_unit->commands.empty())  return colliding_unit->Pushed(next_step);
+				else
+				{
+					MoveTo * colliding_moveTo = nullptr;
+					switch (colliding_unit->commands.front()->type)
+					{
+					case MOVETO:
+						colliding_moveTo = (MoveTo*)colliding_unit->commands.front();
+						if (!colliding_moveTo->waiting_for)
+							if(colliding_moveTo->waiting_for != unit) waiting_for = colliding_unit;
+						else {
+							if (colliding_moveTo->next_step.Normalized() == next_step.Normalized().Negate())
+							{
+								if (colliding_unit->Pushed(next_step)) { colliding_unit->commands[1]->state = TO_INIT; return true; }
+								else {
+									if (unit->Pushed(colliding_moveTo->next_step)) { state = TO_INIT; return true; }
+									else										   return false;
+								}
+							}
+							else waiting_for = colliding_unit;
+						}
+						break;
+					case ATTACK:
+						state = TO_INIT;
+						return unit->Pushed(next_step.Negate());
+						break;
+					default:
+						return colliding_unit->Pushed(next_step);
+						break;
+					}
+				}
+			}
+		}
+		else {   // collisions.size() > 1
+			//TODO;
+		}
+	}
+
 	return true;
 }
 
