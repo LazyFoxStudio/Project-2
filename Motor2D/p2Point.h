@@ -146,12 +146,24 @@ public:
 	//Normalize
 	void Normalize()
 	{
-		float _module = GetModule();
-		if (_module != 0)
+		if(!IsZero())
 		{
+			float _module = GetModule();
 			x = (x / (TYPE)_module);
 			y = (y / (TYPE)_module);
 		}
+	}
+
+	p2Point<float> Normalized()
+	{
+		p2Point<float> Normalized = { 0.0f,0.0f };
+		if (!IsZero())
+		{
+			float _module = GetModule();
+			Normalized.x = (x / (TYPE)_module);
+			Normalized.y = (y / (TYPE)_module);
+		}
+		return Normalized;
 	}
 	// Distances ---------------------------------------------
 	TYPE DistanceTo(const p2Point& v) const

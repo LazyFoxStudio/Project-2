@@ -68,6 +68,7 @@ public:
 	void Draw(float dt);
 	void animationController();
 	void Halt();
+	bool Pushed(fPoint direction);
 
 	bool IsEnemy() { return type >= GRUNT; };
 	Unit* SearchNearestEnemy();
