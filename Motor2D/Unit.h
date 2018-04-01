@@ -64,7 +64,7 @@ public:
 	std::deque<Command*> commands;
 	Animation* current_anim = nullptr;
 	animationType new_animation;
-
+	
 
 public:
 	Unit() { entity_type = UNIT; };					// this constructor should only be used when loading unit Database

@@ -345,7 +345,8 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 			App->gui->AddIconData(unitTemplate->type, NodeInfo.child("iconData"));
 
 		pugi::xml_node AnimInfo;
-		for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"))
+		int i = 0;
+		for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"),i++)
 		{
 			Animation* animation = new Animation();
 			if (animation->LoadAnimation(AnimInfo))

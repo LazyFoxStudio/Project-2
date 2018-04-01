@@ -46,7 +46,7 @@
                 <squadMembers value="5"/>
             </Stats>
             <Animations>
-              <Animation>
+              <Animation> <!-- 0- StandingNorth -->
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="0"/>
@@ -54,78 +54,78 @@
                 <StartingRow value="0"/>
                 <StartingColumn value="0"/>
               </Animation>
-              <StandingNorthEast>
+              <Animation> <!-- 1- StandingNorthEast-->
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="0"/>
                 <columns value="0"/>
                 <StartingRow value="0"/>
                 <StartingColumn value="1"/>
-              </StandingNorthEast>
-            <StandingEast>
+              </Animation>
+              <Animation> <!-- 2- StandingEast-->
                   <width value="73"/>
                 <height value="65"/>
                 <rows value="0"/>
                 <columns value="0"/>
                 <StartingRow value="0"/>
                 <StartingColumn value="2"/>
-              </StandingEast>
-             <StandingSouthEast>
+              </Animation>
+              <Animation> <!-- 3- StandingSouthEast-->
                   <width value="73"/>
                 <height value="65"/>
                 <rows value="0"/>
                 <columns value="0"/>
                 <StartingRow value="0"/>
                 <StartingColumn value="3"/>
-              </StandingSouthEast>
-             <StandingSouth>
+              </Animation>
+              <Animation> <!-- 4- StandingSouth-->
                  <width value="73"/>
                 <height value="65"/>
                 <rows value="0"/>
                 <columns value="4"/>
                 <StartingRow value="0"/>
                 <StartingColumn value="4"/>
-              </StandingSouth>
-             <WalkingNorth>
+              </Animation>
+              <Animation> <!-- 5- WalkingNorth--2
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="1"/>
                 <StartingColumn value="0"/>
-              </WalkingNorth>
-             <WalkingNorthEast>
+              </Animation>
+              <Animation> <!-- 6- WalkingNorthEast-->
                   <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="1"/>
                 <StartingColumn value="1"/>
-              </WalkingNorthEast>
-             <WalkingEast>
+              </Animation>
+              <Animation> <!-- 7- WalkingEast-->
                  <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="1"/>
                 <StartingColumn value="2"/>
-              </WalkingEast>
-             <WalkingSouthEast>
+              </Animation>
+              <Animation> <!-- 8- WalkingSouthEast-->
                    <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="1"/>
                 <StartingColumn value="3"/>
-              </WalkingSouthEast>
-            <WalkingSouth>
+              </Animation>
+              <Animation> <!-- 9- WalkingSouth-->
                  <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="1"/>
                 <StartingColumn value="4"/>
-              </WalkingSouth>
+              </Animation>
              <AttackingNorth>
                 <width value="73"/>
                 <height value="65"/>
@@ -182,7 +182,8 @@
                 <StartingRow value="10"/>
                 <StartingColumn value="0"/>
               </Dying2>
-            </Animations>
+            
+          </Animations>
         </Unit>
       <Unit>
          <name value="Archer"/>

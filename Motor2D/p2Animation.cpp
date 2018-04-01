@@ -39,7 +39,7 @@ bool Animation::LoadAnimation(pugi::xml_node& data)
 		for (int j = StartingColumn; j <= StartingColumn + columns; j++) 
 			PushBack({ width*j,height*i,width,height });
 		
-	speed = 0.2f;
+	speed = 0.03f;
 
 	return true;
 }
