@@ -37,6 +37,8 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	{
 		((Hero*)this)->Hero::skill_one = new Shockwave(3,5);
 	}
+
+	
 }
 
 void Unit::Draw(float dt)
@@ -64,13 +66,17 @@ bool Unit::Update(float dt)
 	{
 		((Hero*)this)->Hero::Update(dt);
 	}
-
+	animationController();
 	
 	return true;
 }
 
 void Unit::animationController()
 {
+	if (commands.empty())
+	{
+
+	}
 
 }
 

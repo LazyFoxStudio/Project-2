@@ -21,6 +21,10 @@ enum unitType
 	//Enemies
 	 GRUNT, AXE_THROWER, /* ... */ ENEMY_X,
 };
+enum animationType
+{
+	ATTACKN,
+};
 
 class Animation;
 class Squad;
@@ -56,6 +60,7 @@ public:
 	std::vector<Effect*> effects;
 	std::deque<Command*> commands;
 	Animation* current_anim = nullptr;
+
 
 public:
 	Unit() { entity_type = UNIT; };					// this constructor should only be used when loading unit Database
