@@ -60,6 +60,7 @@ public:
 	std::map<uint, Nature*> natureDB;
 
 	bool debug = false;
+	bool building = false;
 	SDL_Rect selection_rect = { 0,0,0,0 };
 };
 
