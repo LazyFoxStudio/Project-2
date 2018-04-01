@@ -34,12 +34,13 @@ bool Animation::LoadAnimation(pugi::xml_node& data)
 	int columns = data.child("columns").attribute("value").as_int(0);
 	int StartingRow = data.child("StartingRow").attribute("value").as_int(0);
 	int StartingColumn = data.child("StartingColumn").attribute("value").as_int(0);
+	speed = data.child("speed").attribute("value").as_float(0.2f);
 
 	for (int i = StartingRow; i <= StartingRow + rows; i++) 
 		for (int j = StartingColumn; j <= StartingColumn + columns; j++) 
 			PushBack({ width*j,height*i,width,height });
 		
-	speed = 0.2f;
+
 
 	return true;
 }
