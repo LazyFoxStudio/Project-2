@@ -38,6 +38,8 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	{
 		((Hero*)this)->Hero::skill_one = new Shockwave(3,5);
 	}
+
+	
 }
 
 void Unit::Draw(float dt)
@@ -65,14 +67,50 @@ bool Unit::Update(float dt)
 	{
 		((Hero*)this)->Hero::Update(dt);
 	}
-
+	animationController();
 	
 	return true;
 }
 
 void Unit::animationController()
 {
+	if (commands.empty())
+	{
+		new_animation = IDLE;
+	}
+	else
+	{
+		switch (commands.front()->type)
+		{
+		case MOVETO:
+			MoveTo* move_command = (MoveTo*)commands.front();
+			if (move_command->next_step.x > 0)
+			{
+				if (move_command->next_step.y < 0)
+				{
 
+				}
+				if (move_command->next_step.y > 0)
+				{
+
+				}
+			}
+			if (move_command->next_step.x < 0)
+			{
+				if (move_command->next_step.y > 0)
+				{
+
+				}
+				if (move_command->next_step.y < 0)
+				{
+
+				}
+			}
+			break;
+		}
+
+	}
+	
 }
 
 void Unit::Halt()

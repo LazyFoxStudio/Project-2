@@ -59,12 +59,9 @@ bool j1EntityController::Update(float dt)
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && !building)
 	{
-		int x, y;
-		App->input->GetMousePosition(x, y);
-		iPoint pos = CameraToWorld(x, y);
-		addBuilding(pos, BARRACKS);
+		building = true;
 	}
 
 
