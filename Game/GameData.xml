@@ -661,6 +661,7 @@
         <defense value="100"/>
       </Stats>
       <iconData x="162" y="264" w="72" h="59"/>
+      <size x="3" y="3"/>
     </Building>
   </Buildings>
   <Nature>
