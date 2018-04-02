@@ -6,6 +6,15 @@
 
 #define MAX_FRAMES 50
 
+
+enum animationType
+{
+	IDLE,
+	MOV_E, MOV_S, MOV_W, MOV_N,
+	ATK_E, ATK_S, ATK_W, ATK_N,
+	DEAD
+};
+
 class Animation
 {
 public:
@@ -33,7 +42,6 @@ public:
 	float GetCurrentFrameinFloat();
 	int GetLastFrameinInt();
 	void ChangeCurrentFrame(float frame);
-
 };
 
 #endif
