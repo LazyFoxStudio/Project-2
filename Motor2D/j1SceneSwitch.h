@@ -35,7 +35,7 @@ public:
 private:
 
 	float fadetime = 3.0f;
-	SDL_Rect screen;
+	SDL_Rect screen = { 0,0,0,0 };
 	j1Module* to_enable = nullptr;
 	j1Module* to_disable = nullptr;
 	j1Timer switchtimer;

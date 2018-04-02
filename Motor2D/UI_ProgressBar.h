@@ -25,11 +25,11 @@ public:
 
 public:
 
-	SDL_Rect full;
+	SDL_Rect full = { 0,0,0,0 };
 	float max_value = 0.0f;
 	float progress = 1.0f;
-	SDL_Rect head;
-	iPoint head_pos;
+	SDL_Rect head = { 0,0,0,0 };
+	iPoint head_pos = { 0,0};
 	bar_type type;
 };
 

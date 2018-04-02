@@ -26,7 +26,7 @@ public:
 
 	bool border = false;
 	Color border_color;
-	int border_thickness;
+	int border_thickness=0;
 };
 
 #endif // !__UI_IMAGE__

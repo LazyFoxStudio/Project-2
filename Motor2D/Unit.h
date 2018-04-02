@@ -63,7 +63,7 @@ public:
 	std::vector<Effect*> effects;
 	std::deque<Command*> commands;
 	Animation* current_anim = nullptr;
-	animationType new_animation;
+	animationType new_animation=IDLE;
 	
 
 public:

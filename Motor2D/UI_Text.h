@@ -39,8 +39,8 @@ public:
 public:
 
 	SDL_Color color;
-	uint tex_width;
-	uint tex_height;
+	uint tex_width=0;
+	uint tex_height=0;
 
 private:
 
@@ -49,7 +49,7 @@ private:
 	bool outlined = false;
 	SDL_Texture* outline = nullptr;
 	SDL_Color outline_color = { 0, 0, 0, 255 };
-	iPoint outline_offset;
+	iPoint outline_offset = { 0,0 };
 	bool counting = false;
 	const int* counter = nullptr;
 };
