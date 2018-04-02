@@ -86,11 +86,11 @@ bool j1EntityController::Update(float dt)
 		iPoint pos2 = App->map->MapToWorld(pos1.x, pos1.y);
 		if (App->map->CheckWalkabilityArea(pos2.x, pos2.y, 3, 3))
 		{
-			App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->section->w,buildingDB[1]->section->h }, Green);
+			App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->current_sprite.w,buildingDB[1]->current_sprite.h }, Green);
 		}
 		else
 		{
-			App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->section->w,buildingDB[1]->section->h }, Red);
+			App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->current_sprite.w,buildingDB[1]->current_sprite.h }, Red);
 		}
 		
 	}

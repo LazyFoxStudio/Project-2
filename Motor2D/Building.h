@@ -8,7 +8,9 @@
 
 enum buildingType {
 	NONE_BUILDING,
+	TOWN_HALL,
 	BARRACKS,
+	LUMBER_MILL,
 	//...
 };
 
@@ -22,11 +24,13 @@ public:
 	int cooldown_time = 0;
 	int defense = 0;
 	//(...)
-
+	
+	bool being_built = false;
 	int villagers_inside = 0;
 	j1Timer cooldown;
 
-	SDL_Rect* section = new SDL_Rect({ 307,458,96,95 });
+	std::vector<SDL_Rect> sprites;
+	SDL_Rect current_sprite;
 
 public:
 	Building() { entity_type = BUILDING; };

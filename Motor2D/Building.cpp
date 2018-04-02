@@ -24,11 +24,18 @@ Building::~Building()
 
 bool Building::Update(float dt)
 {
-	App->render->Blit(texture, position.x, position.y, section);
+	if (!being_built)
+	{
+		current_sprite = sprites[0];
+	}
+	if (being_built && type != TOWN_HALL)
+	{
+		current_sprite = sprites[1];
+	}
 	return true;
 }
 
 void Building::Draw()
 {
-
+	App->render->Blit(texture, position.x, position.y, &current_sprite);
 }

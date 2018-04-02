@@ -717,20 +717,65 @@
         </Animations>
       </Enemy>
     </Units>
+  
   <Buildings>
     <Building>
-      <name value="Barracks"/>
+      <name value="TownHall"/>
       <type value="1"/>
-      <texture value="Assets\Sprites\Alliance Sprites\PC Computer - Warcraft 2 - Human Buildings Summer.png"/>
+      <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
+       <sprites>
+        <sprite x="266" y="137" w="132" h="136"/>
+        <sprite x="266" y="0" w="132" h="136"/>
+        <sprite x="0" y="0" w="132" h="136"/>
+        <sprite x="133" y="0" w="132" h="136"/>
+      </sprites>
       <Stats>
         <life value="100"/>
         <villagers value="1"/>
         <cooldown value="60"/>
         <defense value="100"/>
       </Stats>
-      <iconData x="162" y="264" w="72" h="59"/>
+      <iconData x="6" y="169" w="46" h="38"/>
       <size x="3" y="3"/>
     </Building>
+  
+     <Building>
+      <name value="Barracks"/>
+      <type value="2"/>
+      <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
+      <sprites>
+        <sprite x="306" y="523" w="101" h="109"/>
+        <sprite x="306" y="633" w="101" h="109"/>
+      </sprites>
+      <Stats>
+        <life value="100"/>
+        <villagers value="1"/>
+        <cooldown value="60"/>
+        <defense value="100"/>
+      </Stats>
+      <iconData x="104" y="169" w="46" h="38"/>
+      <size x="3" y="3"/>
+    </Building>
+    
+     <Building>
+      <name value="Lumber Mill"/>
+      <type value="3"/>
+      <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
+      <sprites>
+        <sprite x="102" y="413" w="101" h="109"/>
+        <sprite x="102" y="303" w="101" h="109"/>
+      </sprites>
+      <Stats>
+        <life value="100"/>
+        <villagers value="1"/>
+        <cooldown value="60"/>
+        <defense value="100"/>
+      </Stats>
+      <iconData x="202" y="169" w="46" h="38"/>
+      <size x="3" y="3"/>
+    </Building>
+    
+   
   </Buildings>
   <Nature>
     <Resource>
