@@ -351,7 +351,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 
 		if (unitTemplate->type < HERO_X)  // HERO_X should the last hero in the type enum
 		{
-			((Hero*)unitTemplate)->skill_one = new Shockwave(3, 5); //Icicle Crash
+			//((Hero*)unitTemplate)->skill_one = new Shockwave(3, 5); //Icicle Crash
 		}
 
 		unitTemplate->name		= NodeInfo.child("name").attribute("value").as_string("error");

@@ -45,7 +45,7 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	if (type < HERO_X)
 	{
 		//TODO check why it returns a different data instead of the assigned
-		((Hero*)(this))->skill_one= ((Hero*)(&unit))->skill_one;
+		//((Hero*)(this))->skill_one= ((Hero*)(&unit))->skill_one;
 	}
 }
 

@@ -110,8 +110,8 @@ public:
 
 private:
 
-	SDL_Texture* atlas;
-	SDL_Texture* icon_atlas;
+	SDL_Texture* atlas=nullptr;
+	SDL_Texture* icon_atlas = nullptr;
 	std::string atlas_file_name;
 	std::string icon_atlas_file_name;
 	std::string	buttonFX;
