@@ -91,7 +91,7 @@
                 <StartingColumn value="4"/>
               </Animation>
               <Animation> <!-- 5- WalkingNorth-->
-                <speed value="0.5"/>
+                <speed value="0.05"/>
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>
@@ -109,7 +109,7 @@
                 <StartingColumn value="1"/>
               </Animation>
               <Animation> <!-- 7- WalkingEast-->
-                <speed value="0.5"/>
+                <speed value="0.05"/>
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>
@@ -127,7 +127,7 @@
                 <StartingColumn value="3"/>
               </Animation>
               <Animation> <!-- 9- WalkingSouth-->
-                <speed value="0.5"/>
+                <speed value="0.05"/>
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>

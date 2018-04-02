@@ -94,7 +94,9 @@ void Unit::animationController()
 				}
 				if (move_command->next_step.y == 0) //EAST
 				{
-					animations[2]->Reset();
+					animations[5]->Reset();
+					animations[4]->Reset();
+					animations[9]->Reset();
 					current_anim = animations[7];
 				}
 				if (move_command->next_step.y > 0) //SOUTH-EAST
@@ -121,16 +123,24 @@ void Unit::animationController()
 			{
 				if (move_command->next_step.y < 0) //NORTH
 				{
-
+					animations[4]->Reset();
+					animations[7]->Reset();
+					animations[9]->Reset();
+					current_anim = animations[5];
 				}
 				if (move_command->next_step.y == 0) //IDLE
 				{
+					animations[5]->Reset();
 					animations[7]->Reset();
-					current_anim = animations[2];
+					animations[9]->Reset();
+					current_anim = animations[4];
 				}
 				if (move_command->next_step.y > 0) //SOUTH
 				{
-
+					animations[5]->Reset();
+					animations[7]->Reset();
+					animations[4]->Reset();
+					current_anim = animations[9];
 				}
 			}
 			break;
