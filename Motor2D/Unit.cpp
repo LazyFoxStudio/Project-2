@@ -76,7 +76,7 @@ bool Unit::Update(float dt)
 
 void Unit::animationController()
 {
-	animationType new_animation = IDLE;
+	animationType new_animation = IDLES;
 
 	if (!commands.empty())
 	{
@@ -85,12 +85,16 @@ void Unit::animationController()
 		{
 		case MOVETO:
 			move_command = (MoveTo*)commands.front();
-			if (move_command->next_step.x > 0)			new_animation = MOV_E;
-			else if(move_command->next_step.x < 0)		new_animation = MOV_W;
+			if (move_command->next_step.x > 0)			
+				new_animation = MOV_E;
+			else if(move_command->next_step.x < 0)		
+				new_animation = MOV_E;
 			else 
 			{
-				if (move_command->next_step.y > 0)		new_animation = MOV_N;
-				else if(move_command->next_step.y < 0)	new_animation = MOV_S;
+				if (move_command->next_step.y > 0)		
+					new_animation = MOV_S;
+				else if(move_command->next_step.y < 0)	
+					new_animation = MOV_N;
 			}
 			break;
 		case ATTACK:

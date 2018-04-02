@@ -9,8 +9,8 @@
 
 enum animationType
 {
-	IDLE,
-	MOV_E, MOV_S, MOV_W, MOV_N,
+	IDLEN, IDLENE, IDLEE, IDLESE, IDLES,
+	MOV_N, MOVE_NE, MOV_E, MOV_SE, MOV_S,
 	ATK_E, ATK_S, ATK_W, ATK_N,
 	DEAD
 };
