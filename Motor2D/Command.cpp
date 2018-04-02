@@ -70,7 +70,7 @@ bool MoveTo::OnUpdate(float dt)
 		}
 	}
 
-	if (!CheckCollisions()) Stop();
+	//if (!CheckCollisions()) Stop();
 
 	return true;
 }
