@@ -371,13 +371,11 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitTemplate->training_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
 		unitTemplate->squad_members = NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
 
-		pugi::xml_node IconData;
 		if (NodeInfo.child("iconData"))
 			App->gui->AddIconData(unitTemplate->type, NodeInfo.child("iconData"));
 
 		pugi::xml_node AnimInfo;
-		int i = 0;
-		for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"),i++)
+		for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"))
 		{
 			Animation* animation = new Animation();
 			if (animation->LoadAnimation(AnimInfo))

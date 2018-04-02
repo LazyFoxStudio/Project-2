@@ -14,7 +14,6 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	texture					= unit.texture;
 	type					= unit.type;
 	flying					= unit.flying;
-	animations				= unit.animations;
 	collider				= unit.collider;
 
 	attack					= unit.attack;
@@ -25,14 +24,10 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	line_of_sight			= unit.line_of_sight;
 	range					= unit.range;
 
-	if (name == "Footman")
-	{
-		current_anim = animations[4];
-	}
-	else
-	{
-		current_anim = animations[0];
-	}
+	for (int i = 0; i < unit.animations.size(); i++)
+		animations.push_back(new Animation(*unit.animations[i]));
+
+	current_anim = animations[0];
 
 	entity_type				= UNIT;
 

@@ -1,5 +1,14 @@
 #include "p2Animation.h"
 
+Animation::Animation(Animation& anim)
+{
+	speed = anim.speed;
+	loop = anim.loop;
+
+	for (int i = 0; i < anim.last_frame; i++)
+		PushBack(anim.frames[i]);
+}
+
 void Animation::PushBack(const SDL_Rect& rect)
 {
 	if (last_frame < MAX_FRAMES)
