@@ -93,8 +93,8 @@ public:
 public:
 
 	SDL_Texture* texture = nullptr;
-	iPoint localPosition;
-	SDL_Rect section;
+	iPoint localPosition = { 0,0 };
+	SDL_Rect section = { 0, 0, 0, 0 };
 	element_type element_type;
 	element_state state = STANDBY;
 	element_function function = NONE;

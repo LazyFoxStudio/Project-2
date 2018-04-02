@@ -24,11 +24,11 @@ public:
 
 public:
 
-	ProgressBar* bar;
-	Entity* entity;
-	Text* display;
-	iPoint offset;
-	bool inMenu;
+	ProgressBar* bar = nullptr;
+	Entity* entity = nullptr;
+	Text* display = nullptr;
+	iPoint offset = { 0,0 };
+	bool inMenu=false;
 
 };
 

@@ -59,8 +59,8 @@ public:
 
 public:
 
-	std::string	name;
-	bool		active;
+	std::string	name="";
+	bool		active=false;
 
 };
 
