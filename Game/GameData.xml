@@ -744,8 +744,8 @@
       <type value="2"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <sprites>
+         <sprite x="306" y="633" w="101" h="109"/>
         <sprite x="306" y="523" w="101" h="109"/>
-        <sprite x="306" y="633" w="101" h="109"/>
       </sprites>
       <Stats>
         <life value="100"/>

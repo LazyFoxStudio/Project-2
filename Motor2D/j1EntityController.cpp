@@ -86,11 +86,11 @@ bool j1EntityController::Update(float dt)
 		iPoint pos2 = App->map->MapToWorld(pos1.x, pos1.y);
 		if (App->map->CheckWalkabilityArea(pos2.x, pos2.y, 3, 3))
 		{
-			App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->current_sprite.w,buildingDB[1]->current_sprite.h }, Green);
+			App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->size.x*App->map->data.tile_width,buildingDB[1]->size.y*App->map->data.tile_height }, Green);
 		}
 		else
 		{
-			App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->current_sprite.w,buildingDB[1]->current_sprite.h }, Red);
+			App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->size.x*App->map->data.tile_width,buildingDB[1]->size.y*App->map->data.tile_height }, Red);
 		}
 		
 	}
@@ -399,12 +399,25 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		buildingTemplate->villagers_inside = NodeInfo.child("Stats").child("villagers").attribute("value").as_int(0);
 		buildingTemplate->cooldown_time = NodeInfo.child("Stats").child("cooldown").attribute("value").as_int(0);
 		buildingTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
-		
+		buildingTemplate->size.x = NodeInfo.child("size").attribute("x").as_int(0);
+		buildingTemplate->size.y = NodeInfo.child("size").attribute("y").as_int(0);
 		// TODO building cost outside the DB so it's not unnecessarily repeated on every unit
 
 		pugi::xml_node IconData;
 		if (NodeInfo.child("iconData"))
 			App->gui->AddIconData(buildingTemplate->type, NodeInfo.child("iconData"));
+
+		pugi::xml_node SpriteInfo;
+		for (SpriteInfo = NodeInfo.child("sprites").child("sprite"); SpriteInfo; SpriteInfo = SpriteInfo.next_sibling("sprite"))
+		{
+			SDL_Rect tmp;
+			tmp.x = SpriteInfo.attribute("x").as_int(0);
+			tmp.y = SpriteInfo.attribute("y").as_int(0);
+			tmp.w = SpriteInfo.attribute("w").as_int(0);
+			tmp.h = SpriteInfo.attribute("h").as_int(0);
+
+			buildingTemplate->sprites.push_back(tmp);
+		}
 
 		buildingDB.insert(std::pair<int, Building*>(buildingTemplate->type, buildingTemplate));
 	}

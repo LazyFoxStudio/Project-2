@@ -23,6 +23,7 @@ public:
 	int max_HP = 0;
 	int cooldown_time = 0;
 	int defense = 0;
+	iPoint size = { 0,0 };
 	//(...)
 	
 	bool being_built = false;
@@ -38,7 +39,7 @@ public:
 	~Building();
 
 	bool Update(float dt);
-	void Draw();
+	void Draw(float dt);
 };
 
 #endif

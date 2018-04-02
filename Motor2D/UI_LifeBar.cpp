@@ -19,7 +19,7 @@ LifeBar::LifeBar(Entity * entity, SDL_Texture* texture) : UI_element(0, 0, PROGR
 		break;
 	case BUILDING:
 		bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("Y_empty"), App->gui->GetLifeBarRect("Y_full"), { 0,0,0,0 }, ((Building*)entity)->max_HP, callback);
-		offset.x = ((Building*)entity)->current_sprite.w / 2 - bar->section.w / 2;
+		offset.x = ((Building*)entity)->sprites[0].w / 2 - bar->section.w / 2;
 		break;
 	}
 	offset.y = -(5 + bar->section.h);
