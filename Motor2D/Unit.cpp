@@ -44,10 +44,9 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 
 	if (type < HERO_X)
 	{
-		((Hero*)this)->Hero::skill_one = new Shockwave(3,5);
+		//TODO check why it returns a different data instead of the assigned
+		((Hero*)(this))->skill_one= ((Hero*)(&unit))->skill_one;
 	}
-
-	
 }
 
 void Unit::Draw(float dt)

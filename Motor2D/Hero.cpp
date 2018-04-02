@@ -3,7 +3,7 @@
 
 Hero::~Hero()
 {
-
+	RELEASE(skill_one);
 }
 
 bool Hero::Update(float dt)
@@ -13,6 +13,11 @@ bool Hero::Update(float dt)
 		//TODO pot ser que skill_one sigui nullptr i fa crash
 		//skill_one->Activate(this);
 		LOG("skill one");
+	}
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_UP)
+	{
+		//skill_one->ready = true;
+		LOG("restart");
 	}
 	return true;
 }

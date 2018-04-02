@@ -30,7 +30,7 @@ bool j1EntityController::Start()
 	squad_units_test.push_back(addUnit(iPoint(1000, 1000), FOOTMAN));
 	squad_units_test.push_back(addUnit(iPoint(900, 800), FOOTMAN));
 
-	addUnit(iPoint(600, 700), HERO_1);
+	addUnit(iPoint(900, 700), HERO_1);
 
 	addBuilding(iPoint(700, 700), BARRACKS);
 
@@ -351,7 +351,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 
 		if (unitTemplate->type < HERO_X)  // HERO_X should the last hero in the type enum
 		{
-			// TODO: hero specific functions
+			((Hero*)unitTemplate)->skill_one = new Shockwave(3, 5); //Icicle Crash
 		}
 
 		unitTemplate->name		= NodeInfo.child("name").attribute("value").as_string("error");

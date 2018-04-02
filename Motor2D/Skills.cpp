@@ -1,5 +1,6 @@
 #include "Skills.h"
 #include "j1Render.h"
+#include "j1EntityController.h"
 #include "Hero.h"
 #include "j1Map.h"
 #include "Color.h"
@@ -15,6 +16,13 @@ void Shockwave::Activate(Hero* hero)
 	//position = App->map->MapToWorld(position.x, position.y);
 
 	DrawRange();
+
+	if (ready)
+	{
+		LOG("damage");
+		MakeDamage();
+		ready=false;
+	}
 }
 
 void Shockwave::DrawRange()
@@ -89,4 +97,25 @@ bool Shockwave::Find(std::list<iPoint> list,const iPoint& point)
 		if ((*it) == point) return true;
 
 	return false;
+}
+
+void Shockwave::MakeDamage()
+{
+	for (std::list<Entity*>::iterator item = App->entitycontroller->entities.begin(); item != App->entitycontroller->entities.end(); item++)
+	{
+		if ((*item)->entity_type == UNIT)
+		{
+			if (((Unit*)(*item))->type > HERO_X)
+			{
+				iPoint enemy_pos;
+				enemy_pos = App->map->WorldToMap(((Unit*)(*item))->position.x, ((Unit*)(*item))->position.y);
+
+				if (enemy_pos.DistanceManhattan(position) <= radius+1)
+				{
+					((Unit*)(*item))->current_HP -= damage;
+				}
+			}
+		}
+	}
+
 }

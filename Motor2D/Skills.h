@@ -46,6 +46,7 @@ public:
 	void Activate(Hero* hero);
 	void DrawRange();
 	void BFS(int Area);
+	void MakeDamage();
 
 	bool Find(std::list<iPoint> list,const iPoint& point);
 };
