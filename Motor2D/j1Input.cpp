@@ -11,6 +11,11 @@ j1Input::j1Input() : j1Module()
 {
 	name = "input";
 
+	windowEvents[WE_QUIT] = false;
+	windowEvents[WE_HIDE] = false;
+	windowEvents[WE_SHOW] = false;
+	windowEvents[WE_COUNT] = false;
+
 	keyboard = new j1KeyState[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(j1KeyState) * MAX_KEYS);
 	memset(mouse_buttons, KEY_IDLE, sizeof(j1KeyState) * NUM_MOUSE_BUTTONS);
