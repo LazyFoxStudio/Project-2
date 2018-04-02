@@ -93,24 +93,9 @@ void Unit::animationController()
 			MoveTo* move_command = (MoveTo*)commands.front();
 			if (move_command->next_step.x > 0)
 			{
-				if (move_command->next_step.y < 0) //NOTH-WEST
+				if (move_command->next_step.y < 0) //NOTH-EAST
 				{
 					
-				}
-				if (move_command->next_step.y > 0) //WEST
-				{
-
-				}
-				if (move_command->next_step.y == 0) //SOUTH-WEST
-				{
-
-				}
-			}
-			if (move_command->next_step.x < 0)
-			{
-				if (move_command->next_step.y < 0) //NORTH-EAST
-				{
-
 				}
 				if (move_command->next_step.y == 0) //EAST
 				{
@@ -118,6 +103,21 @@ void Unit::animationController()
 					current_anim = animations[7];
 				}
 				if (move_command->next_step.y > 0) //SOUTH-EAST
+				{
+
+				}
+			}
+			if (move_command->next_step.x < 0)
+			{
+				if (move_command->next_step.y < 0) //NORTH-WEST
+				{
+
+				}
+				if (move_command->next_step.y == 0) //WEST
+				{
+
+				}
+				if (move_command->next_step.y > 0) //SOUTH-WEST
 				{
 
 				}
