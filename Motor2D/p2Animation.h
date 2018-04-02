@@ -20,6 +20,8 @@ private:
 	int loops = 0;
 
 public:
+	Animation() {};
+	Animation(Animation& anim);
 	bool LoadAnimation(pugi::xml_node& data);
 
 	void PushBack(const SDL_Rect& rect);

@@ -351,7 +351,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 
 		if (unitTemplate->type < HERO_X)  // HERO_X should the last hero in the type enum
 		{
-			((Hero*)unitTemplate)->skill_one = new Shockwave(3, 5); //Icicle Crash
+			//((Hero*)unitTemplate)->skill_one = new Shockwave(3, 5); //Icicle Crash
 		}
 
 		unitTemplate->name		= NodeInfo.child("name").attribute("value").as_string("error");
@@ -371,13 +371,11 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitTemplate->training_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
 		unitTemplate->squad_members = NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
 
-		pugi::xml_node IconData;
 		if (NodeInfo.child("iconData"))
 			App->gui->AddIconData(unitTemplate->type, NodeInfo.child("iconData"));
 
 		pugi::xml_node AnimInfo;
-		int i = 0;
-		for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"),i++)
+		for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"))
 		{
 			Animation* animation = new Animation();
 			if (animation->LoadAnimation(AnimInfo))

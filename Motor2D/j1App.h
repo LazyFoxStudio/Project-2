@@ -91,31 +91,31 @@ private:
 public:
 
 	// Modules
-	j1Window*			win;
-	j1Input*			input;
-	j1Render*			render;
-	j1Textures*			tex;
-	j1Audio*			audio;
-	j1UIScene*		    uiscene;
-	j1Console*			console;
-	j1Scene*			scene;
-	j1SceneSwitch*		sceneswitch;
-	j1Map*				map;
-	j1EntityController* entitycontroller;
-	j1PathFinding*		pathfinding;
-	j1Fonts*			font;
-	j1Gui*				gui;
+	j1Window*			win = nullptr;
+	j1Input*			input = nullptr;
+	j1Render*			render = nullptr;
+	j1Textures*			tex = nullptr;
+	j1Audio*			audio = nullptr;
+	j1UIScene*		    uiscene = nullptr;
+	j1Console*			console = nullptr;
+	j1Scene*			scene = nullptr;
+	j1SceneSwitch*		sceneswitch = nullptr;
+	j1Map*				map = nullptr;
+	j1EntityController* entitycontroller = nullptr;
+	j1PathFinding*		pathfinding = nullptr;
+	j1Fonts*			font = nullptr;
+	j1Gui*				gui = nullptr;
 	bool fpsCapON = true;
 	std::string			load_game;
 
 private:
 
 	std::list<j1Module*>	modules;
-	int						argc;
+	int						argc=0;
 	char**					args = nullptr;
 
-	std::string			title;
-	std::string			organization;
+	std::string			title="";
+	std::string			organization="";
 
 	mutable bool		want_to_save = false;
 	bool				want_to_load = false;

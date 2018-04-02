@@ -412,6 +412,8 @@ bool ReshapeSquad::OnInit()
 		}
 	}
 	else Stop();
+
+	return true;
 }
 
 bool ReshapeSquad::OnUpdate(float dt)

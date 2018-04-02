@@ -128,6 +128,8 @@ bool j1App::Update()
 	BROFILER_CATEGORY("Update", Profiler::Color::Fuchsia);
 	bool ret = true;
 	PrepareUpdate();
+	int test = (int)input->GetWindowEvent(WE_QUIT);
+	LOG("TEST: %d", test);
 
 	if(!input->GetWindowEvent(WE_QUIT))
 		if(PreUpdate())

@@ -37,9 +37,9 @@ public:
 	bool Save(pugi::xml_node& data) const;
 
 public:
-	SDL_Texture* debug_tex;
-	int wood;
-	int gold;
+	SDL_Texture* debug_tex = nullptr;
+	int wood=0;
+	int gold=0;
 };
 
 #endif // __j1SCENE_H__

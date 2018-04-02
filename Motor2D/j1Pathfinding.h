@@ -45,10 +45,10 @@ public:
 private:
 
 	// size of the map
-	uint width;
-	uint height;
+	uint width=0;
+	uint height=0;
 	// all map walkability values [0..255]
-	uchar* map;
+	uchar* map=nullptr;
 	// we store the created path here
 	std::list<iPoint> last_path;
 };
@@ -77,10 +77,10 @@ struct PathNode
 		return(this->h == other.h && this->g == other.g && this->parent == other.parent && this->pos == other.pos);
 	}
 	// -----------
-	int g;
-	int h;
-	iPoint pos;
-	PathNode* parent; // needed to reconstruct the path in the end
+	int g=0;
+	int h=0;
+	iPoint pos={ 0,0 };
+	PathNode* parent=nullptr; // needed to reconstruct the path in the end
 };
 
 // ---------------------------------------------------------------------

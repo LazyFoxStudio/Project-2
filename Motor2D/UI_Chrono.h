@@ -43,7 +43,7 @@ public:
 	uint start_value = 0;
 	std::list<uint> alarms;
 	j1Timer counter;
-	Text* text;
+	Text* text = nullptr;
 	chrono_type type;
 	std::string last_secs;
 };

@@ -29,8 +29,8 @@ public:
 
 public:
 
-	SDL_Rect OnMouse;
-	SDL_Rect OnClick;
+	SDL_Rect OnMouse = { 0,0,0,0 };
+	SDL_Rect OnClick = { 0,0,0,0 };
 	bool clicked = false;
 };
 

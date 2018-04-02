@@ -38,14 +38,14 @@ public:
 	SDL_Texture* icon_atlas = nullptr;
 	Minimap* minimap = nullptr;
 	Window* window = nullptr;
-	iPoint firstIcon_pos;
-	iPoint icons_offset;
-	iPoint lifeBars_offset;
-	iPoint stats_pos;
+	iPoint firstIcon_pos = { 0,0};
+	iPoint icons_offset = { 0,0};
+	iPoint lifeBars_offset = { 0,0};
+	iPoint stats_pos = { 0,0};
 	std::list<Image*> troopsIcons; //Being created/destroyed
 	std::list<LifeBar*> lifeBars; //Being created/destroyed
 	std::list<Text*> statsTitles; //Constant but inactive
-	Text* title; //Constant but inactive
+	Text* title=nullptr; //Constant but inactive
 	std::list<Text*> statsNumbers; //Constant but inactive
 	std::list<Button*> actionButtons; //Constant but inactive
 

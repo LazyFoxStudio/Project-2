@@ -65,7 +65,7 @@ LifeBar::LifeBar(Entity * entity, SDL_Texture * texture, int x, int y)
 
 LifeBar::~LifeBar()
 {
-	RELEASE(display);
+	//RELEASE(display);
 	RELEASE(bar);
 }
 

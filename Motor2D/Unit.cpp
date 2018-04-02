@@ -14,7 +14,6 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	texture					= unit.texture;
 	type					= unit.type;
 	flying					= unit.flying;
-	animations				= unit.animations;
 	collider				= unit.collider;
 
 	attack					= unit.attack;
@@ -25,14 +24,10 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	line_of_sight			= unit.line_of_sight;
 	range					= unit.range;
 
-	if (name == "Footman")
-	{
-		current_anim = animations[4];
-	}
-	else
-	{
-		current_anim = animations[0];
-	}
+	for (int i = 0; i < unit.animations.size(); i++)
+		animations.push_back(new Animation(*unit.animations[i]));
+
+	current_anim = animations[0];
 
 	entity_type				= UNIT;
 
@@ -45,7 +40,7 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	if (type < HERO_X)
 	{
 		//TODO check why it returns a different data instead of the assigned
-		((Hero*)(this))->skill_one= ((Hero*)(&unit))->skill_one;
+		//((Hero*)(this))->skill_one= ((Hero*)(&unit))->skill_one;
 	}
 }
 
@@ -93,31 +88,33 @@ void Unit::animationController()
 			MoveTo* move_command = (MoveTo*)commands.front();
 			if (move_command->next_step.x > 0)
 			{
-				if (move_command->next_step.y < 0) //NOTH-WEST
+				if (move_command->next_step.y < 0) //NOTH-EAST
 				{
 					
 				}
-				if (move_command->next_step.y > 0) //WEST
+				if (move_command->next_step.y == 0) //EAST
 				{
-
+					animations[5]->Reset();
+					animations[4]->Reset();
+					animations[9]->Reset();
+					current_anim = animations[7];
 				}
-				if (move_command->next_step.y == 0) //SOUTH-WEST
+				if (move_command->next_step.y > 0) //SOUTH-EAST
 				{
 
 				}
 			}
 			if (move_command->next_step.x < 0)
 			{
-				if (move_command->next_step.y < 0) //NORTH-EAST
+				if (move_command->next_step.y < 0) //NORTH-WEST
 				{
 
 				}
-				if (move_command->next_step.y == 0) //EAST
+				if (move_command->next_step.y == 0) //WEST
 				{
-					animations[2]->Reset();
-					current_anim = animations[7];
+
 				}
-				if (move_command->next_step.y > 0) //SOUTH-EAST
+				if (move_command->next_step.y > 0) //SOUTH-WEST
 				{
 
 				}
@@ -126,16 +123,24 @@ void Unit::animationController()
 			{
 				if (move_command->next_step.y < 0) //NORTH
 				{
-
+					animations[4]->Reset();
+					animations[7]->Reset();
+					animations[9]->Reset();
+					current_anim = animations[5];
 				}
 				if (move_command->next_step.y == 0) //IDLE
 				{
+					animations[5]->Reset();
 					animations[7]->Reset();
-					current_anim = animations[2];
+					animations[9]->Reset();
+					current_anim = animations[4];
 				}
 				if (move_command->next_step.y > 0) //SOUTH
 				{
-
+					animations[5]->Reset();
+					animations[7]->Reset();
+					animations[4]->Reset();
+					current_anim = animations[9];
 				}
 			}
 			break;
