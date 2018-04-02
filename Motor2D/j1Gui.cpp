@@ -208,7 +208,7 @@ bool j1Gui::CleanUp()
 	//Texts
 	std::list<Text*>::iterator it_t;
 	it_t = Texts.begin();
-	while (it_t != Texts.end())
+	while ((*it_t) != nullptr && it_t != Texts.end())
 	{
 		RELEASE((*it_t));
 		it_t++;
@@ -217,7 +217,7 @@ bool j1Gui::CleanUp()
 	//Images
 	std::list<Image*>::iterator it_i;
 	it_i = Images.begin();
-	while (it_i != Images.end())
+	while ((*it_i) != nullptr && it_i != Images.end())
 	{
 		RELEASE((*it_i));
 		it_i++;
@@ -226,7 +226,7 @@ bool j1Gui::CleanUp()
 	//Buttons
 	std::list<Button*>::iterator it_b;
 	it_b = Buttons.begin();
-	while (it_b != Buttons.end())
+	while ((*it_b) != nullptr && it_b != Buttons.end())
 	{
 		RELEASE((*it_b));
 		it_b++;
@@ -235,7 +235,7 @@ bool j1Gui::CleanUp()
 	//Windows
 	std::list<Window*>::iterator it_w;
 	it_w = Windows.begin();
-	while (it_w != Windows.end())
+	while ((*it_w) != nullptr && it_w != Windows.end())
 	{
 		RELEASE((*it_w));
 		it_w++;
@@ -244,7 +244,7 @@ bool j1Gui::CleanUp()
 	//Chronos
 	std::list<Chrono*>::iterator it_c;
 	it_c = Chronos.begin();
-	while (it_c != Chronos.end())
+	while ((*it_c) != nullptr && it_c != Chronos.end())
 	{
 		RELEASE((*it_c));
 		it_c++;
@@ -253,7 +253,7 @@ bool j1Gui::CleanUp()
 	//ProgressBars
 	std::list<ProgressBar*>::iterator it_p;
 	it_p = ProgressBars.begin();
-	while (it_p != ProgressBars.end())
+	while ((*it_p) != nullptr && it_p != ProgressBars.end())
 	{
 		RELEASE((*it_p));
 		it_p++;
@@ -262,7 +262,7 @@ bool j1Gui::CleanUp()
 	//LifeBars
 	std::list<LifeBar*>::iterator it_l;
 	it_l = LifeBars.begin();
-	while (it_l != LifeBars.end())
+	while ((*it_l) != nullptr && it_l != LifeBars.end())
 	{
 		RELEASE((*it_l));
 		it_l++;
