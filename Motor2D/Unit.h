@@ -21,12 +21,6 @@ enum unitType
 	//Enemies
 	 GRUNT, AXE_THROWER, /* ... */ ENEMY_X,
 };
-enum animationType
-{
-	IDLE,
-
-	ATTACKN,
-};
 
 class Animation;
 class Squad;
@@ -63,7 +57,8 @@ public:
 	std::vector<Effect*> effects;
 	std::deque<Command*> commands;
 	Animation* current_anim = nullptr;
-	animationType new_animation=IDLE;
+
+	animationType new_animation=IDLES;
 	
 
 public:

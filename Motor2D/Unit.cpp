@@ -76,78 +76,40 @@ bool Unit::Update(float dt)
 
 void Unit::animationController()
 {
-	if (commands.empty())
+	animationType new_animation = IDLES;
+
+	if (!commands.empty())
 	{
-		new_animation = IDLE;
-	}
-	else
-	{
+		MoveTo* move_command = nullptr;
 		switch (commands.front()->type)
 		{
 		case MOVETO:
-			MoveTo* move_command = (MoveTo*)commands.front();
-			if (move_command->next_step.x > 0)
+			move_command = (MoveTo*)commands.front();
+			if (move_command->next_step.x > 0)			
+				new_animation = MOV_E;
+			else if(move_command->next_step.x < 0)		
+				new_animation = MOV_E;
+			else 
 			{
-				if (move_command->next_step.y < 0) //NOTH-EAST
-				{
-					
-				}
-				if (move_command->next_step.y == 0) //EAST
-				{
-					animations[5]->Reset();
-					animations[4]->Reset();
-					animations[9]->Reset();
-					current_anim = animations[7];
-				}
-				if (move_command->next_step.y > 0) //SOUTH-EAST
-				{
-
-				}
-			}
-			if (move_command->next_step.x < 0)
-			{
-				if (move_command->next_step.y < 0) //NORTH-WEST
-				{
-
-				}
-				if (move_command->next_step.y == 0) //WEST
-				{
-
-				}
-				if (move_command->next_step.y > 0) //SOUTH-WEST
-				{
-
-				}
-			}
-			if (move_command->next_step.x == 0)
-			{
-				if (move_command->next_step.y < 0) //NORTH
-				{
-					animations[4]->Reset();
-					animations[7]->Reset();
-					animations[9]->Reset();
-					current_anim = animations[5];
-				}
-				if (move_command->next_step.y == 0) //IDLE
-				{
-					animations[5]->Reset();
-					animations[7]->Reset();
-					animations[9]->Reset();
-					current_anim = animations[4];
-				}
-				if (move_command->next_step.y > 0) //SOUTH
-				{
-					animations[5]->Reset();
-					animations[7]->Reset();
-					animations[4]->Reset();
-					current_anim = animations[9];
-				}
+				if (move_command->next_step.y > 0)		
+					new_animation = MOV_S;
+				else if(move_command->next_step.y < 0)	
+					new_animation = MOV_N;
 			}
 			break;
+		case ATTACK:
+			break;
+		default: 
+			break;
 		}
-
 	}
-	
+
+	if (animations[new_animation] != current_anim)
+	{
+		current_anim = animations[new_animation];
+		current_anim->Reset();
+	}
+
 }
 
 void Unit::Halt()
