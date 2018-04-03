@@ -53,7 +53,14 @@ void Unit::Draw(float dt)
 	}
 	else
 	{
-		App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt));
+		if (new_animation == MOVE_W || new_animation == IDLE_W)
+		{
+			App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt),true,SDL_FLIP_HORIZONTAL);
+		}
+		else
+		{
+			App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt));
+		}
 	}
 }
 
@@ -90,7 +97,7 @@ void Unit::animationController()
 			}
 			if (move_command->next_step.x < 0) //MOVE W
 			{
-				new_animation = MOVE_E;
+				new_animation = MOVE_W;
 				break;
 			}
 			if (move_command->next_step.y > 0) //MOVE S
@@ -116,6 +123,8 @@ void Unit::animationController()
 				case MOVE_S:
 					new_animation = IDLE_S;
 					break;
+				case MOVE_W:
+					new_animation = IDLE_W;
 				}
 			}
 			break; //just in case...
@@ -128,6 +137,7 @@ void Unit::animationController()
 	{
 		current_anim->Reset();
 		current_anim = animations[new_animation];
+		current_anim->Reset();
 	}
 
 }
