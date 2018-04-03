@@ -76,7 +76,7 @@ bool Unit::Update(float dt)
 
 void Unit::animationController()
 {
-	animationType new_animation = IDLES;
+	animationType new_animation = MOV_E;
 
 	if (!commands.empty())
 	{
@@ -89,6 +89,7 @@ void Unit::animationController()
 				new_animation = MOV_E;
 			else if(move_command->next_step.x < 0)		
 				new_animation = MOV_E;
+				
 			else 
 			{
 				if (move_command->next_step.y > 0)		
@@ -104,9 +105,10 @@ void Unit::animationController()
 		}
 	}
 
-	if (animations[new_animation] != current_anim)
+	if (animations[new_animation] != current_anim && type != HERO_1)
 	{
 		current_anim = animations[new_animation];
+		current_anim->speed;
 		current_anim->Reset();
 	}
 
