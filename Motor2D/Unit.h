@@ -58,7 +58,7 @@ public:
 	std::deque<Command*> commands;
 	Animation* current_anim = nullptr;
 
-	animationType new_animation=IDLES;
+	animationType new_animation=IDLE_S;
 	
 
 public:

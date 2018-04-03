@@ -76,8 +76,6 @@ bool Unit::Update(float dt)
 
 void Unit::animationController()
 {
-	animationType new_animation = IDLES;
-
 	if (!commands.empty())
 	{
 		MoveTo* move_command = nullptr;
@@ -85,30 +83,51 @@ void Unit::animationController()
 		{
 		case MOVETO:
 			move_command = (MoveTo*)commands.front();
-			if (move_command->next_step.x > 0)			
-				new_animation = MOV_E;
-			else if(move_command->next_step.x < 0)		
-				new_animation = MOV_E;
-				
-			else 
+			if (move_command->next_step.x > 0) //MOVE E
 			{
-				if (move_command->next_step.y > 0)		
-					new_animation = MOV_S;
-				else if(move_command->next_step.y < 0)	
-					new_animation = MOV_N;
+				new_animation = MOVE_E;
+				break;
 			}
-			break;
+			if (move_command->next_step.x < 0) //MOVE W
+			{
+				new_animation = MOVE_E;
+				break;
+			}
+			if (move_command->next_step.y > 0) //MOVE S
+			{
+				new_animation = MOVE_S;
+				break;
+			}
+			if (move_command->next_step.y < 0) //MOVE N
+			{
+				new_animation = MOVE_N;
+				break;
+			}
+			if (move_command->next_step.y + move_command->next_step.x == 0)
+			{
+				switch (new_animation)
+				{
+				case MOVE_E:
+					new_animation = IDLE_E;
+					break;
+				case MOVE_N:
+					new_animation = IDLE_N;
+					break;
+				case MOVE_S:
+					new_animation = IDLE_S;
+					break;
+				}
+			}
+			break; //just in case...
 		case ATTACK:
-			break;
-		default: 
 			break;
 		}
 	}
 
 	if (animations[new_animation] != current_anim && type != HERO_1)
 	{
-		current_anim = animations[new_animation];
 		current_anim->Reset();
+		current_anim = animations[new_animation];
 	}
 
 }
