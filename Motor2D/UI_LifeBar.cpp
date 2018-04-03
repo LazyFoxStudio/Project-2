@@ -104,6 +104,7 @@ void LifeBar::BlitElement(bool use_camera)
 			}
 			else
 			{
+				LOG("Character is dead");
 				bar->section = App->gui->GetLifeBarRect("mR_empty");
 				bar->full = App->gui->GetLifeBarRect("mR_full");
 			}

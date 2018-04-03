@@ -69,7 +69,7 @@ bool Unit::Update(float dt)
 	{
 		((Hero*)this)->Hero::Update(dt);
 	}
-	animationController();
+	//animationController();
 	
 	return true;
 }

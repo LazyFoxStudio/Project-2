@@ -30,7 +30,7 @@ public:
 	float progress = 1.0f;
 	SDL_Rect head = { 0,0,0,0 };
 	iPoint head_pos = { 0,0};
-	bar_type type;
+	bar_type type = INCREASING;
 };
 
 #endif // !__UI_PROGRESSBAR__

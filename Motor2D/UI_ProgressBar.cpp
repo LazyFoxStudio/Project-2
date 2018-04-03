@@ -60,6 +60,7 @@ void ProgressBar::BlitElement(bool use_camera)
 			}
 			break;
 		case DECREASING:
+			LOG("ProgressBar progress: %f", progress);
 			full.w = section.w*(1.0f - progress);
 			full.x = section.w - full.w;
 			bar_start = (section.w) - (full.w);
