@@ -71,6 +71,7 @@ bool j1EntityController::Update(float dt)
 		App->input->GetMousePosition(x, y);
 		iPoint pos1 = App->map->WorldToMap(x, y);
 		iPoint pos2 = App->map->MapToWorld(pos1.x, pos1.y);
+		pos2 = CameraToWorld(pos2.x, pos2.y);
 		if (App->map->CheckWalkabilityArea(pos2.x, pos2.y, 3, 3))
 		{
 			addBuilding(pos2, BARRACKS);
@@ -84,6 +85,7 @@ bool j1EntityController::Update(float dt)
 		App->input->GetMousePosition(x, y);
 		iPoint pos1 = App->map->WorldToMap(x, y);
 		iPoint pos2 = App->map->MapToWorld(pos1.x, pos1.y);
+		pos2 = CameraToWorld(pos2.x, pos2.y);
 		if (App->map->CheckWalkabilityArea(pos2.x, pos2.y, 3, 3))
 		{
 			App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->size.x*App->map->data.tile_width,buildingDB[1]->size.y*App->map->data.tile_height }, Green);
