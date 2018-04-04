@@ -86,62 +86,49 @@ bool Unit::Update(float dt)
 
 void Unit::animationController()
 {
-	if (!commands.empty())
+	if (type == HERO_1) return;
+
+	if (!next_step.IsZero())
 	{
-		MoveTo* move_command = nullptr;
 		switch (commands.front()->type)
 		{
 		case MOVETO:
-			move_command = (MoveTo*)commands.front();
-			if (move_command->next_step.x > 0) //MOVE E
-			{
+			if (next_step.x > 0) //MOVE E
 				new_animation = MOVE_E;
-				break;
-			}
-			if (move_command->next_step.x < 0) //MOVE W
-			{
+			else if (next_step.x < 0) //MOVE W
 				new_animation = MOVE_W;
-				break;
-			}
-			if (move_command->next_step.y > 0) //MOVE S
-			{
+			else if (next_step.y > 0) //MOVE S
 				new_animation = MOVE_S;
-				break;
-			}
-			if (move_command->next_step.y < 0) //MOVE N
-			{
+			else if (next_step.y < 0) //MOVE N
 				new_animation = MOVE_N;
-				break;
-			}
-			if (move_command->next_step.y + move_command->next_step.x == 0)
-			{
-				/*
-				switch (new_animation)
-				{
-				case MOVE_E:
-					new_animation = IDLE_E;
-					break;
-				case MOVE_N:
-					new_animation = IDLE_N;
-					break;
-				case MOVE_S:
-					new_animation = IDLE_S;
-					break;
-				case MOVE_W:
-					new_animation = IDLE_W;
-				}
-				*/
-				new_animation = MOVE_E;
-			}
+
 			break; //just in case...
 		case ATTACK:
 			break;
 		}
 	}
+	else {
+		/*
+		switch (new_animation)
+		{
+		case MOVE_E:
+		new_animation = IDLE_E;
+		break;
+		case MOVE_N:
+		new_animation = IDLE_N;
+		break;
+		case MOVE_S:
+		new_animation = IDLE_S;
+		break;
+		case MOVE_W:
+		new_animation = IDLE_W;
+		}
+		*/
+		new_animation = IDLE_S;
+	}
 
-	if (animations[new_animation] != current_anim && type != HERO_1)
+	if (animations[new_animation] != current_anim)
 	{
-		current_anim->Reset();
 		current_anim = animations[new_animation];
 		current_anim->Reset();
 	}
@@ -156,23 +143,25 @@ void Unit::Halt()
 	commands.clear();
 }
 
-bool Unit::Pushed(fPoint direction)
+bool Unit::Pushed()
 {
-	iPoint perpendicular_A = { 0,0 };
-	iPoint new_dest = { 0,0 };
+	if (!commands.empty())
+	{
+		if (commands.front()->type == MOVETO)
+		{
+			iPoint map_p = App->map->WorldToMap(position.x, position.y);
+			MoveTo* current_moveto_order = (MoveTo*)commands.front();
+			iPoint target = current_moveto_order->flow_field->getNodeAt(map_p)->parent->position;
 
-	if (direction.x == 0) perpendicular_A.x = 1;
-	else				  perpendicular_A.y = 1;
+			iPoint new_target = App->pathfinding->WalkableAdjacentCloserTo(map_p, target, this);
+			if (new_target.x == -1) return false;
 
-	iPoint perpendicular_B = { -perpendicular_A.x, -perpendicular_A.y };
-	iPoint map_pos = App->map->WorldToMap(position.x, position.y);
-
-	if (App->pathfinding->IsWalkable(map_pos + perpendicular_A))		new_dest = map_pos + perpendicular_A;
-	else if(App->pathfinding->IsWalkable(map_pos + perpendicular_B))	new_dest = map_pos + perpendicular_B;
-	else																return false;
-
-	commands.push_front(new MoveTo(this, new_dest));
-	return true;
+			current_moveto_order->flow_field->getNodeAt(map_p)->parent = current_moveto_order->flow_field->getNodeAt(target);
+			return true;
+		}
+	}
+		
+	return false;
 }
 
 Unit* Unit::SearchNearestEnemy()

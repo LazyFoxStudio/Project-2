@@ -34,14 +34,13 @@ public:
 	Building* addBuilding(iPoint pos, buildingType type );
 	Nature* addNature(iPoint pos, resourceType res_type, int amount = 0);
 
-
 	void selectionControl();
 	void commandControl();
 	entityType getSelectedType();
 
 	void placingBuilding(buildingType type);
 	Entity* CheckMouseHover(iPoint mouse_world);
-	std::vector<Entity*> CheckCollidingWith(Entity* entity);
+	std::vector<Entity*> CheckCollidingWith(SDL_Rect collider, Entity* entity_to_ignore = nullptr);
 
 	iPoint CameraToWorld(int x, int y);
 

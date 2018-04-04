@@ -9,6 +9,7 @@
 
 class Unit;
 class Squad;
+class FlowField;
 
 enum Command_State { TO_INIT, UPDATE, TO_STOP, FINISHED };
 enum Command_Type { NONE, MOVETO, ATTACKING_MOVETO, ATTACK, PATROL, HOLD, MOVETOSQUAD, RESHAPE_SQUAD};
@@ -43,9 +44,10 @@ class MoveTo : public Command
 {
 public:
 	iPoint dest = { 0,0 };
-	fPoint next_step = { 0.0f, 0.0f };
+	iPoint map_p = { 0,0 };
 	Unit* waiting_for = nullptr;
-	std::list<iPoint> path;
+	FlowField* flow_field = nullptr;
+	bool unique_field = false;
 
 public:
 	MoveTo(Unit* unit, iPoint destination) : Command(unit, MOVETO), dest(destination) {};
@@ -56,7 +58,7 @@ private:
 	bool OnStop();
 
 protected:
-	void Repath();
+	bool checkCollisionsAlongPath(iPoint origin);
 	bool CheckCollisions();
 
 };
@@ -136,18 +138,19 @@ public:
 	Squad* squad = nullptr;
 	bool reshaping_done = false;
 	bool waiting = false;
-	iPoint destination = { -1,-1 };
+	iPoint dest = { -1,-1 };
+	FlowField* flow_field = nullptr;
 
 public:
 
-	MoveToSquad(Unit* commander, iPoint map_dest) : Command(commander, MOVETOSQUAD), destination(map_dest) {};
+	MoveToSquad(Unit* commander, iPoint map_dest) : Command(commander, MOVETOSQUAD), dest(map_dest) {};
 
 private:
 
 	bool ProcessPath(const std::list<iPoint>& path);
 	bool OnInit();
 	bool OnUpdate(float dt);
-	bool OnStop() { return true; };
+	bool OnStop();
 };
 
 

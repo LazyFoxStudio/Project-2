@@ -301,14 +301,14 @@ void j1EntityController::selectionControl()
 	}
 }
 
-std::vector<Entity*> j1EntityController::CheckCollidingWith(Entity* entity)
+std::vector<Entity*> j1EntityController::CheckCollidingWith(SDL_Rect collider, Entity* entity_to_ignore)
 {
 	std::vector<Entity*> ret;
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
-		if (*it != entity)
-			if (SDL_HasIntersection(&entity->collider, &(*it)->collider)) ret.push_back(*it);
+		if (*it != entity_to_ignore)
+			if (SDL_HasIntersection(&collider, &(*it)->collider)) ret.push_back(*it);
 	}
 
 	return ret;

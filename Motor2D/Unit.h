@@ -52,6 +52,7 @@ public:
 
 	Squad* squad = nullptr;
 	bool flying = false;
+	fPoint next_step = { 0.0f,0.0f };
 	
 	std::vector<Animation*> animations;
 	std::vector<Effect*> effects;
@@ -73,7 +74,7 @@ public:
 	void Draw(float dt);
 	void animationController();
 	void Halt();
-	bool Pushed(fPoint direction);
+	bool Pushed();
 
 	bool IsEnemy() { return type >= GRUNT; };
 	Unit* SearchNearestEnemy();

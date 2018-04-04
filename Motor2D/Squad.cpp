@@ -92,3 +92,20 @@ int Squad::getTotalHP()
 
 	return ret;
 }
+
+Unit* Squad::getClosestUnitTo(iPoint p)
+{
+	Unit* ret = units[0];
+	iPoint closest_map_p = App->map->WorldToMap(units[0]->position.x, units[0]->position.y);
+
+	for (int i = 1; i < units.size(); i++)
+	{
+		iPoint map_p = App->map->WorldToMap(units[i]->position.x, units[i]->position.y);
+		if (map_p.DistanceTo(p) < closest_map_p.DistanceTo(p))
+		{
+			ret = units[i];
+			closest_map_p = map_p;
+		}
+	}
+	return ret;
+}

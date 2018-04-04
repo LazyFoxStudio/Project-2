@@ -15,7 +15,7 @@ class Command;
 class Squad
 {
 public:
-	Unit* commander = nullptr;       // commander MUST be units[0]
+	Unit* commander = nullptr;     
 	std::vector<Unit*> units;
 	std::deque<Command*> commands;
 	std::vector<iPoint> unit_offset;
@@ -29,6 +29,7 @@ public:
 	int getTotalHP();
 	int getTotalMaxHP();
 	int getUnitPriority(Unit* unit);
+	Unit* getClosestUnitTo(iPoint map_p);
 
 	void Halt();
 	void generateOffsets();
