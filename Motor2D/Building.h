@@ -29,6 +29,7 @@ public:
 	bool being_built = false;
 	int villagers_inside = 0;
 	j1Timer building_timer;
+	int last_frame_time = 0;
 
 	std::vector<SDL_Rect> sprites;
 	SDL_Rect current_sprite;
@@ -39,6 +40,7 @@ public:
 	~Building();
 
 	bool Update(float dt);
+	void HandleSprite();
 	void Draw(float dt);
 };
 

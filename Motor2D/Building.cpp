@@ -28,11 +28,37 @@ Building::~Building()
 
 bool Building::Update(float dt)
 {
-	if (building_timer.ReadSec() > building_time && being_built)
+	if (being_built && type != TOWN_HALL)
 	{
-		being_built = false;
+		int current_time = building_timer.ReadSec();
+		if (current_time >= building_time)
+		{
+			int hp_unit = max_HP / building_time;
+			current_HP += hp_unit -1;
+			being_built = false;
+			last_frame_time = 0;
+		}
+		else if( current_time > last_frame_time)
+		{
+			last_frame_time = current_time;
+			int hp_unit = max_HP / building_time;
+			current_HP += hp_unit;
+		}
 	}
 
+	else if (being_built && type == TOWN_HALL)
+	{
+		being_built = false;
+		current_HP = max_HP;
+	}
+
+	HandleSprite();
+	
+	return true;
+}
+
+void Building::HandleSprite()
+{
 	if (being_built)
 	{
 		current_sprite = sprites[0];
@@ -58,7 +84,6 @@ bool Building::Update(float dt)
 			break;
 		}
 	}
-	return true;
 }
 
 void Building::Draw(float dt)
