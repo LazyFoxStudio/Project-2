@@ -48,6 +48,7 @@ bool j1Scene::Start()
 
 	wood = 200;
 	gold = 400;
+	town_hall_lvl = 2;
 
 	return true;
 }

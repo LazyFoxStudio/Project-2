@@ -40,6 +40,7 @@ public:
 	SDL_Texture* debug_tex = nullptr;
 	int wood=0;
 	int gold=0;
+	int town_hall_lvl = 0;
 };
 
 #endif // __j1SCENE_H__
