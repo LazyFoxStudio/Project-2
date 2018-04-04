@@ -42,13 +42,16 @@ public:
 	uchar GetTileAt(const iPoint& pos) const;
 	bool GatherWalkableAdjacents(iPoint map_pos, int count, std::list<iPoint>& adjacents, int max_distance = 0);
 	iPoint FirstWalkableAdjacent(iPoint map_pos, int max_distance = 0);
+
+public:
+	uchar * map = nullptr;
 private:
 
 	// size of the map
 	uint width=0;
 	uint height=0;
 	// all map walkability values [0..255]
-	uchar* map=nullptr;
+	
 	// we store the created path here
 	std::list<iPoint> last_path;
 };

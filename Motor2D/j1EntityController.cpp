@@ -11,6 +11,7 @@
 #include "j1Input.h"
 #include "Squad.h"
 #include "Hero.h"
+#include "j1Pathfinding.h"
 
 j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
@@ -66,33 +67,24 @@ bool j1EntityController::Update(float dt)
 
 	else if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && building)
 	{
-		
-		int x, y;
-		App->input->GetMousePosition(x, y);
-		iPoint pos1 = App->map->WorldToMap(x, y);
-		iPoint pos2 = App->map->MapToWorld(pos1.x, pos1.y);
-		pos2 = CameraToWorld(pos2.x, pos2.y);
-		if (App->map->CheckWalkabilityArea(pos2.x, pos2.y, 3, 3))
-		{
-			addBuilding(pos2, BARRACKS);
-			building = false;
-		}
+		placingBuilding(BARRACKS);
 	}
 
 	if (building)
 	{
 		int x, y;
 		App->input->GetMousePosition(x, y);
-		iPoint pos1 = App->map->WorldToMap(x, y);
-		iPoint pos2 = App->map->MapToWorld(pos1.x, pos1.y);
-		pos2 = CameraToWorld(pos2.x, pos2.y);
-		if (App->map->CheckWalkabilityArea(pos2.x, pos2.y, 3, 3))
+		iPoint pos = CameraToWorld(x, y);
+		pos = App->map->WorldToMap(pos.x, pos.y);
+		pos = App->map->MapToWorld(pos.x, pos.y);
+		
+		if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[1]->size.x, buildingDB[1]->size.y))
 		{
-			App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->size.x*App->map->data.tile_width,buildingDB[1]->size.y*App->map->data.tile_height }, Green);
+			App->render->DrawQuad({ pos.x,pos.y,buildingDB[1]->size.x*App->map->data.tile_width,buildingDB[1]->size.y*App->map->data.tile_height }, Green);
 		}
 		else
 		{
-			App->render->DrawQuad({ pos2.x,pos2.y,buildingDB[1]->size.x*App->map->data.tile_width,buildingDB[1]->size.y*App->map->data.tile_height }, Red);
+			App->render->DrawQuad({ pos.x,pos.y,buildingDB[1]->size.x*App->map->data.tile_width,buildingDB[1]->size.y*App->map->data.tile_height }, Red);
 		}
 		
 	}
@@ -180,6 +172,21 @@ Nature* j1EntityController::addNature(iPoint pos, resourceType res_type, int amo
 	Nature* resource = new Nature(pos, *(natureDB[res_type]));
 	entities.push_back(resource);
 	return resource;
+}
+
+void j1EntityController::placingBuilding(buildingType type)
+{
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint pos = CameraToWorld(x, y);
+	pos = App->map->WorldToMap(pos.x, pos.y);
+	pos = App->map->MapToWorld(pos.x, pos.y);
+	if (App->map->WalkabilityArea(pos.x, pos.y, 3, 3))
+	{
+		addBuilding(pos, BARRACKS);
+		App->map->WalkabilityArea(pos.x, pos.y, 3, 3, true);
+		building = false;
+	}
 }
 
 Entity* j1EntityController::CheckMouseHover(iPoint mouse_world)

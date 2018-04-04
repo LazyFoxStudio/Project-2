@@ -93,7 +93,7 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	return ret;
 }
 
-bool j1Map::CheckWalkabilityArea(int x, int y, int rows, int columns) const
+bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify) const
 {
 	bool ret = true;
 	iPoint currentTile = { x,y };
@@ -102,10 +102,18 @@ bool j1Map::CheckWalkabilityArea(int x, int y, int rows, int columns) const
 		for (int i = 0; i < rows; i++)
 		{
 			iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
-			if (!App->pathfinding->IsWalkable(currentMapTile))
+			if (!modify)
 			{
-				ret = false;
-				break;
+				if (!App->pathfinding->IsWalkable(currentMapTile))
+				{
+					ret = false;
+					break;
+				}
+			}
+			else
+			{
+				int tile = (currentMapTile.y*App->map->data.width) + currentMapTile.x;
+				App->pathfinding->map[tile] = INVALID_WALK_CODE;
 			}
 		}
 
