@@ -61,6 +61,8 @@ public:
 
 	bool debug = false;
 	bool building = false;
+	
+	buildingType structure_beingbuilt = NONE_BUILDING;
 	SDL_Rect selection_rect = { 0,0,0,0 };
 };
 

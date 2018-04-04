@@ -33,6 +33,7 @@ bool j1EntityController::Start()
 
 	addUnit(iPoint(900, 700), HERO_1);
 
+	structure_beingbuilt = TOWN_HALL;
 	placingBuilding(TOWN_HALL, { 600,600 });
 
 	squad_test = new Squad(squad_units_test);
@@ -62,8 +63,11 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && !building)
 	{
+		structure_beingbuilt = BARRACKS;
 		building = true;
 	}
+
+
 
 	else if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && building)
 	{
@@ -71,6 +75,12 @@ bool j1EntityController::Update(float dt)
 		App->input->GetMousePosition(position.x, position.y);
 	
 		placingBuilding(BARRACKS,position);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && !building)
+	{
+		structure_beingbuilt = LUMBER_MILL;
+		building = true;
 	}
 
 	else if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && building)
@@ -89,13 +99,13 @@ bool j1EntityController::Update(float dt)
 		pos = App->map->WorldToMap(pos.x, pos.y);
 		pos = App->map->MapToWorld(pos.x, pos.y);
 		
-		if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[1]->size.x, buildingDB[1]->size.y))
+		if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y))
 		{
-			App->render->DrawQuad({ pos.x,pos.y,buildingDB[1]->size.x*App->map->data.tile_width,buildingDB[1]->size.y*App->map->data.tile_height }, Green);
+			App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, Green);
 		}
 		else
 		{
-			App->render->DrawQuad({ pos.x,pos.y,buildingDB[1]->size.x*App->map->data.tile_width,buildingDB[1]->size.y*App->map->data.tile_height }, Red);
+			App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, Red);
 		}
 		
 	}
@@ -195,10 +205,10 @@ void j1EntityController::placingBuilding(buildingType type, iPoint position)
 	iPoint pos = CameraToWorld(position.x, position.y);
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	pos = App->map->MapToWorld(pos.x, pos.y);
-	if (App->map->WalkabilityArea(pos.x, pos.y, 3, 3))
+	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y))
 	{
 		addBuilding(pos, type);
-		App->map->WalkabilityArea(pos.x, pos.y, 3, 3, true);
+		App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y, true);
 		building = false;
 	}
 }
