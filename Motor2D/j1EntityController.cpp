@@ -33,7 +33,7 @@ bool j1EntityController::Start()
 
 	addUnit(iPoint(900, 700), HERO_1);
 
-	addBuilding(iPoint(700, 700), BARRACKS);
+	placingBuilding(TOWN_HALL, { 600,600 });
 
 	squad_test = new Squad(squad_units_test);
 	return true;
@@ -67,7 +67,18 @@ bool j1EntityController::Update(float dt)
 
 	else if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && building)
 	{
-		placingBuilding(BARRACKS);
+		iPoint position;
+		App->input->GetMousePosition(position.x, position.y);
+	
+		placingBuilding(BARRACKS,position);
+	}
+
+	else if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && building)
+	{
+		iPoint position;
+		App->input->GetMousePosition(position.x, position.y);
+
+		placingBuilding(LUMBER_MILL, position);
 	}
 
 	if (building)
@@ -164,6 +175,8 @@ Building* j1EntityController::addBuilding(iPoint pos, buildingType type)
 	Building* building = new Building(pos, *(buildingDB[type]));
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
+	building->building_timer.Start();
+	building->being_built = true;
 	return building;
 }
 
@@ -174,16 +187,15 @@ Nature* j1EntityController::addNature(iPoint pos, resourceType res_type, int amo
 	return resource;
 }
 
-void j1EntityController::placingBuilding(buildingType type)
+void j1EntityController::placingBuilding(buildingType type, iPoint position)
 {
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint pos = CameraToWorld(x, y);
+
+	iPoint pos = CameraToWorld(position.x, position.y);
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	pos = App->map->MapToWorld(pos.x, pos.y);
 	if (App->map->WalkabilityArea(pos.x, pos.y, 3, 3))
 	{
-		addBuilding(pos, BARRACKS);
+		addBuilding(pos, type);
 		App->map->WalkabilityArea(pos.x, pos.y, 3, 3, true);
 		building = false;
 	}
@@ -406,7 +418,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 
 		buildingTemplate->current_HP = buildingTemplate->max_HP = NodeInfo.child("Stats").child("life").attribute("value").as_int(0);
 		buildingTemplate->villagers_inside = NodeInfo.child("Stats").child("villagers").attribute("value").as_int(0);
-		buildingTemplate->cooldown_time = NodeInfo.child("Stats").child("cooldown").attribute("value").as_int(0);
+		buildingTemplate->building_time = NodeInfo.child("Stats").child("buildingTime").attribute("value").as_int(0);
 		buildingTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
 		buildingTemplate->size.x = NodeInfo.child("size").attribute("x").as_int(0);
 		buildingTemplate->size.y = NodeInfo.child("size").attribute("y").as_int(0);

@@ -39,7 +39,7 @@ public:
 	void commandControl();
 	entityType getSelectedType();
 
-	void placingBuilding(buildingType type);
+	void placingBuilding(buildingType type, iPoint position);
 	Entity* CheckMouseHover(iPoint mouse_world);
 	std::vector<Entity*> CheckCollidingWith(Entity* entity);
 

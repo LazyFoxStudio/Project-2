@@ -787,7 +787,7 @@
       <Stats>
         <life value="100"/>
         <villagers value="1"/>
-        <cooldown value="60"/>
+        <buildingTime value="0"/>
         <defense value="100"/>
       </Stats>
       <iconData x="6" y="169" w="46" h="38"/>
@@ -805,7 +805,7 @@
       <Stats>
         <life value="100"/>
         <villagers value="1"/>
-        <cooldown value="60"/>
+        <buildingTime value="10"/>
         <defense value="100"/>
       </Stats>
       <iconData x="104" y="169" w="46" h="38"/>
@@ -823,7 +823,7 @@
       <Stats>
         <life value="100"/>
         <villagers value="1"/>
-        <cooldown value="60"/>
+        <buildingTime value="60"/>
         <defense value="100"/>
       </Stats>
       <iconData x="202" y="169" w="46" h="38"/>
