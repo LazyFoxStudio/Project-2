@@ -77,21 +77,39 @@ void IngameMenu::createStatsDisplay()
 
 void IngameMenu::updateStatsDisplay()
 {
+	
 	if (App->entitycontroller->selected_entities.size() > 0)
 	{
-		Entity* entity = (*App->entitycontroller->selected_entities.begin());
-
-		for (std::list<Text*>::iterator it_t = statsTitles.begin(); it_t != statsTitles.end(); it_t++)
+		Entity* entity = App->entitycontroller->selected_entities.front();
+		if (entity->entity_type == entityType::UNIT)
 		{
-			(*it_t)->active = true;
-		}
-		title->active = true;
+			for (std::list<Text*>::iterator it_t = statsTitles.begin(); it_t != statsTitles.end(); it_t++)
+			{
+				(*it_t)->active = true;
+			}
+			title->active = true;
 
-		statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->attack + (int)((Unit*)entity)->piercing_atk), stats_pos.x + 170, stats_pos.y + 40, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
-		statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->defense), stats_pos.x + 170, stats_pos.y + 80, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
-		statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->line_of_sight), stats_pos.x + 170, stats_pos.y + 120, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
-		statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->range), stats_pos.x + 170, stats_pos.y + 160, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
-		statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->speed), stats_pos.x + 170, stats_pos.y + 200, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+			statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->attack + (int)((Unit*)entity)->piercing_atk), stats_pos.x + 170, stats_pos.y + 40, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+			statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->defense), stats_pos.x + 170, stats_pos.y + 80, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+			statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->line_of_sight), stats_pos.x + 170, stats_pos.y + 120, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+			statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->range), stats_pos.x + 170, stats_pos.y + 160, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+			statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->speed), stats_pos.x + 170, stats_pos.y + 200, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+		}
+		else if (entity->entity_type == entityType::HERO)
+		{
+			for (std::list<Text*>::iterator it_t = statsTitles.begin(); it_t != statsTitles.end(); it_t++)
+			{
+				(*it_t)->active = true;
+			}
+			title->active = true;
+
+			statsNumbers.push_back(new Text(std::to_string((int)((Hero*)entity)->attack + (int)((Hero*)entity)->piercing_atk), stats_pos.x + 170, stats_pos.y + 40, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+			statsNumbers.push_back(new Text(std::to_string((int)((Hero*)entity)->defense), stats_pos.x + 170, stats_pos.y + 80, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+			statsNumbers.push_back(new Text(std::to_string((int)((Hero*)entity)->line_of_sight), stats_pos.x + 170, stats_pos.y + 120, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+			statsNumbers.push_back(new Text(std::to_string((int)((Hero*)entity)->range), stats_pos.x + 170, stats_pos.y + 160, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+			statsNumbers.push_back(new Text(std::to_string((int)((Hero*)entity)->speed), stats_pos.x + 170, stats_pos.y + 200, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
+
+		}
 	}
 	else
 	{

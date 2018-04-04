@@ -24,14 +24,14 @@ Hero::Hero(iPoint pos, Hero& hero)
 
 	current_anim = animations[0];
 
-	entity_type = UNIT;
+	entity_type = HERO;
 
 	position.x = pos.x, position.y = pos.y;
 
 	collider.w = current_anim->frames[0].w;
 	collider.h = current_anim->frames[0].h;
 	collider.x = position.x, collider.y = position.y;
-
+	
 	skill_one = hero.skill_one;
 }
 Hero::~Hero()

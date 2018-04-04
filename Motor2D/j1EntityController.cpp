@@ -460,8 +460,8 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		heroTemplate->training_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
 		heroTemplate->squad_members = NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
 
-		/*if (NodeInfo.child("iconData"))
-			App->gui->AddIconData(heroTemplate->type, NodeInfo.child("iconData"));*/
+		if (NodeInfo.child("iconData"))
+			App->gui->AddIconData(heroTemplate->type, NodeInfo.child("iconData"));
 
 		pugi::xml_node AnimInfo;
 		for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"))
