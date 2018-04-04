@@ -69,7 +69,7 @@ bool j1EntityController::Update(float dt)
 
 
 
-	else if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && building)
+	else if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && building && structure_beingbuilt == BARRACKS)
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
@@ -83,7 +83,7 @@ bool j1EntityController::Update(float dt)
 		building = true;
 	}
 
-	else if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && building)
+	else if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && building && structure_beingbuilt == LUMBER_MILL)
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
@@ -101,11 +101,16 @@ bool j1EntityController::Update(float dt)
 		
 		if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y))
 		{
-			App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, Green);
+			Color green = { 0,255,0,100 };
+			App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
+			App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, green);
 		}
 		else
 		{
-			App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, Red);
+			Color red = { 255,0,0,100 };
+		
+			App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
+			App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, red);
 		}
 		
 	}
