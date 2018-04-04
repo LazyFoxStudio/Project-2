@@ -61,6 +61,10 @@ bool j1EntityController::Update(float dt)
 		}
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && App->entitycontroller->building)
+	{
+		building = false;
+	}
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && !building)
 	{
 		structure_beingbuilt = BARRACKS;
