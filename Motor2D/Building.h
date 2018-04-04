@@ -21,14 +21,15 @@ public:
 	buildingType type = NONE_BUILDING;
 	int current_HP = 0;
 	int max_HP = 0;
-	int cooldown_time = 0;
+	int building_time = 0;
 	int defense = 0;
 	iPoint size = { 0,0 };
 	//(...)
 	
 	bool being_built = false;
 	int villagers_inside = 0;
-	j1Timer cooldown;
+	j1Timer building_timer;
+	int last_frame_time = 0;
 
 	std::vector<SDL_Rect> sprites;
 	SDL_Rect current_sprite;
@@ -39,6 +40,7 @@ public:
 	~Building();
 
 	bool Update(float dt);
+	void HandleSprite();
 	void Draw(float dt);
 };
 

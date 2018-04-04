@@ -1,6 +1,7 @@
 #include "UI_LifeBar.h"
 #include "Entity.h"
 #include "Unit.h"
+#include "Hero.h"
 #include "Building.h"
 #include "UI_ProgressBar.h"
 #include "UI_Text.h"
@@ -20,6 +21,10 @@ LifeBar::LifeBar(Entity * entity, SDL_Texture* texture) : UI_element(0, 0, PROGR
 	case BUILDING:
 		bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("Y_empty"), App->gui->GetLifeBarRect("Y_full"), { 0,0,0,0 }, ((Building*)entity)->max_HP, callback);
 		offset.x = ((Building*)entity)->sprites[0].w / 2 - bar->section.w / 2;
+		break;
+	case HERO:
+			bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("G_empty"), App->gui->GetLifeBarRect("G_full"), { 0,0,0,0 }, ((Hero*)entity)->max_HP, callback);
+		offset.x = entity->collider.w / 2 - bar->section.w / 2;
 		break;
 	}
 	offset.y = -(5 + bar->section.h);
@@ -43,6 +48,11 @@ LifeBar::LifeBar(Entity * entity, SDL_Texture * texture, int x, int y)
 	case BUILDING:
 		life = ((Building*)entity)->current_HP;
 		max_value = ((Building*)entity)->max_HP;
+		progress = life / max_value;
+		break;
+	case HERO:
+		life = ((Hero*)entity)->current_HP;
+		max_value = ((Hero*)entity)->max_HP;
 		progress = life / max_value;
 		break;
 	}
@@ -84,6 +94,11 @@ void LifeBar::BlitElement(bool use_camera)
 	case BUILDING:
 		life = ((Building*)entity)->current_HP;
 		max_life = ((Building*)entity)->max_HP;
+		bar->enterCurrentValue(life);
+		break;
+	case HERO:
+		life = ((Hero*)entity)->current_HP;
+		max_life = ((Hero*)entity)->max_HP;
 		bar->enterCurrentValue(life);
 		break;
 	}

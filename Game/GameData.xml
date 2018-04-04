@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <GameData>
     <Units>
-      <Unit>
+      <Hero>
             <name value="Hero"/>
             <type value="1"/>
 			<iconData x="162" y="200" w="72" h="59"/>
@@ -25,7 +25,7 @@
                 <StartingColumn value="0"/>
               </Animation>
             </Animations>
-        </Unit>
+        </Hero>
         <Unit>
             <name value="Footman"/>
             <type value="3"/>
@@ -276,7 +276,7 @@
                 <squadMembers value="4"/>
             </Stats>
             <Animations>
-              <StandingNorth>
+              <Animation> <!--Idle North-->
                 <width value="26"/>
                 <height value="36"/>
                 <rows value="0"/>
@@ -284,8 +284,8 @@
                 <StartingRow value="0"/>
                 <StartingColumn value="0"/>
                 <speed value="0.5"/>
-              </StandingNorth>
-            <StandingNorthEast>
+              </Animation>
+            <Animation> <!--Idle NorthEast-->
                 <width value="26"/>
                 <height value="36"/>
                 <rows value="0"/>
@@ -293,8 +293,8 @@
                 <StartingRow value="0"/>
                 <StartingColumn value="1"/>
                 <speed value="0.5"/>
-              </StandingNorthEast>
-            <StandingEast>
+              </Animation>
+            <Animation> <!--Idle East-->
                 <width value="26"/>
                 <height value="36"/>
                 <rows value="0"/>
@@ -302,8 +302,8 @@
                 <StartingRow value="0"/>
                 <StartingColumn value="2"/>
                 <speed value="0.5"/>
-              </StandingEast>
-             <StandingSouthEast>
+              </Animation>
+             <Animation> <!--Idle SouthEast-->
                 <width value="26"/>
                 <height value="36"/>
                 <rows value="0"/>
@@ -311,8 +311,8 @@
                 <StartingRow value="0"/>
                 <StartingColumn value="3"/>
                 <speed value="0.5"/>
-              </StandingSouthEast>
-             <StandingSouth>
+              </Animation>
+             <Animation> <!--Idle South-->
                 <width value="26"/>
                 <height value="36"/>
                 <rows value="0"/>
@@ -320,8 +320,8 @@
                 <StartingRow value="0"/>
                 <StartingColumn value="4"/>
                 <speed value="0.5"/>
-              </StandingSouth>
-             <WalkingNorth>
+              </Animation>
+             <Animation> <!--Walking North-->
                 <width value="26"/>
                 <height value="36"/>
                 <rows value="3"/>
@@ -329,8 +329,8 @@
                 <StartingRow value="1"/>
                 <StartingColumn value="0"/>
                 <speed value="0.5"/>
-              </WalkingNorth>
-             <WalkingNorthEast>
+              </Animation>
+             <Animation> <!--Walking NorthEast-->
                 <width value="26"/>
                 <height value="36"/>
                 <rows value="3"/>
@@ -338,8 +338,8 @@
                 <StartingRow value="1"/>
                 <StartingColumn value="1"/>
                 <speed value="0.5"/>
-              </WalkingNorthEast>
-             <WalkingEast>
+              </Animation>
+             <Animation> <!--Walking East-->
                 <width value="26"/>
                 <height value="36"/>
                 <rows value="3"/>
@@ -347,8 +347,8 @@
                 <StartingRow value="1"/>
                 <StartingColumn value="2"/>
                 <speed value="0.5"/>
-              </WalkingEast>
-             <WalkingSouthEast>
+              </Animation>
+             <Animation> <!--Walking SouthEast-->
                 <width value="26"/>
                 <height value="36"/>
                 <rows value="3"/>
@@ -356,8 +356,8 @@
                 <StartingRow value="1"/>
                 <StartingColumn value="3"/>
                 <speed value="0.5"/>
-              </WalkingSouthEast>
-            <WalkingSouth>
+              </Animation>
+            <Animation> <!--Walking South-->
                 <width value="26"/>
                 <height value="36"/>
                 <rows value="3"/>
@@ -365,7 +365,7 @@
                 <StartingRow value="1"/>
                 <StartingColumn value="4"/>
                 <speed value="0.5"/>
-              </WalkingSouth>
+              </Animation>
              <AttackingNorth>
                 <width value="26"/>
                 <height value="36"/>
@@ -787,7 +787,7 @@
       <Stats>
         <life value="100"/>
         <villagers value="1"/>
-        <cooldown value="60"/>
+        <buildingTime value="0"/>
         <defense value="100"/>
       </Stats>
       <iconData x="6" y="169" w="46" h="38"/>
@@ -805,7 +805,7 @@
       <Stats>
         <life value="100"/>
         <villagers value="1"/>
-        <cooldown value="60"/>
+        <buildingTime value="5"/>
         <defense value="100"/>
       </Stats>
       <iconData x="104" y="169" w="46" h="38"/>
@@ -823,7 +823,7 @@
       <Stats>
         <life value="100"/>
         <villagers value="1"/>
-        <cooldown value="60"/>
+        <buildingTime value="10"/>
         <defense value="100"/>
       </Stats>
       <iconData x="202" y="169" w="46" h="38"/>

@@ -40,28 +40,21 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	if (type < HERO_X)
 	{
 		//TODO check why it returns a different data instead of the assigned
-		//((Hero*)(this))->skill_one= ((Hero*)(&unit))->skill_one;
 	}
 }
 
 void Unit::Draw(float dt)
 {
-	if (type < HERO_X)
+	
+	if (new_animation == MOVE_W || new_animation == IDLE_W)
 	{
-		//blit hero sprites
-		App->render->DrawQuad({ (int)position.x,(int)position.y,26,36 }, Blue, true);
+		App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt),true,SDL_FLIP_HORIZONTAL);
 	}
 	else
 	{
-		if (new_animation == MOVE_W || new_animation == IDLE_W)
-		{
-			App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt),true,SDL_FLIP_HORIZONTAL);
-		}
-		else
-		{
-			App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt));
-		}
+		App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt));
 	}
+	
 }
 
 bool Unit::Update(float dt)
@@ -101,7 +94,6 @@ void Unit::animationController()
 				new_animation = MOVE_S;
 			else if (next_step.y < 0) //MOVE N
 				new_animation = MOVE_N;
-
 			break; //just in case...
 		case ATTACK:
 			break;

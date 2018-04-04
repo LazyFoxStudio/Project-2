@@ -48,6 +48,7 @@ bool j1Scene::Start()
 
 	wood = 200;
 	gold = 400;
+	town_hall_lvl = 2;
 
 	return true;
 }
@@ -57,8 +58,10 @@ bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene update", Profiler::Color::Black);
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
-
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !App->entitycontroller->building)
+	{
+		return false;
+	}
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
 
