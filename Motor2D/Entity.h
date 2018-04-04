@@ -14,6 +14,7 @@ enum entityType
 	UNIT,
 	BUILDING,
 	NATURE,
+	HERO,
 
 	// IMPORTANT: this MUST be used only inside j1EntityController::getSelectedType
 	UNIT_AND_BUILDING

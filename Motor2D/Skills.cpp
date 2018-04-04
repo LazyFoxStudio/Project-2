@@ -5,12 +5,7 @@
 #include "j1Map.h"
 #include "Color.h"
 
-Shockwave::~Shockwave()
-{
-
-}
-
-void Shockwave::Activate(Hero* hero)
+void Skill::Activate(Hero* hero)
 {
 	position = App->map->WorldToMap(hero->position.x,hero->position.y);
 	//position = App->map->MapToWorld(position.x, position.y);
@@ -25,7 +20,7 @@ void Shockwave::Activate(Hero* hero)
 	}
 }
 
-void Shockwave::DrawRange()
+void Skill::DrawRange()
 {
 
 	iPoint point;
@@ -53,7 +48,7 @@ void Shockwave::DrawRange()
 	}
 }
 
-void Shockwave::BFS(int Area)
+void Skill::BFS(int Area)
 {
 	toDraw.clear();
 
@@ -91,7 +86,7 @@ void Shockwave::BFS(int Area)
 	}
 }
 
-bool Shockwave::Find(std::list<iPoint> list,const iPoint& point)
+bool Skill::Find(std::list<iPoint> list,const iPoint& point)
 {
 	for (std::list<iPoint>::iterator it = list.begin(); it != list.end(); it++)
 		if ((*it) == point) return true;
@@ -99,7 +94,7 @@ bool Shockwave::Find(std::list<iPoint> list,const iPoint& point)
 	return false;
 }
 
-void Shockwave::MakeDamage()
+void Skill::MakeDamage()
 {
 	for (std::list<Entity*>::iterator item = App->entitycontroller->entities.begin(); item != App->entitycontroller->entities.end(); item++)
 	{
