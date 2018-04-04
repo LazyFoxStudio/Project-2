@@ -31,7 +31,7 @@ bool j1EntityController::Start()
 	squad_units_test.push_back(addUnit(iPoint(1000, 1000), FOOTMAN));
 	squad_units_test.push_back(addUnit(iPoint(900, 800), FOOTMAN));
 
-	addUnit(iPoint(900, 700), HERO_1);
+	addHero(iPoint(900, 700), MAGE);
 
 	addBuilding(iPoint(700, 700), BARRACKS);
 
@@ -157,6 +157,15 @@ Unit* j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
 	
 	// if(App->render->CullingCam(unit->position))  App->audio->PlayFx(UNIT_CREATED_FX);
 	return unit;
+}
+
+Hero* j1EntityController::addHero(iPoint pos, heroType type)
+{
+	Hero* hero = new Hero(pos, *(heroDB[type]));
+	entities.push_back(hero);
+	App->gui->createLifeBar(hero);
+
+	return hero;
 }
 
 Building* j1EntityController::addBuilding(iPoint pos, buildingType type)
@@ -358,11 +367,6 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		Unit* unitTemplate = new Unit();
 		unitTemplate->type = (unitType)NodeInfo.child("type").attribute("value").as_int(0);
 
-		if (unitTemplate->type < HERO_X)  // HERO_X should the last hero in the type enum
-		{
-			//((Hero*)unitTemplate)->skill_one = new Shockwave(3, 5); //Icicle Crash
-		}
-
 		unitTemplate->name		= NodeInfo.child("name").attribute("value").as_string("error");
 		unitTemplate->texture	= App->tex->Load(NodeInfo.child("texture").attribute("value").as_string("error"));
 
@@ -394,6 +398,49 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		if (!unitTemplate->animations.empty()) unitTemplate->current_anim = unitTemplate->animations.front();
 
 		unitDB.insert(std::pair<int, Unit*>(unitTemplate->type, unitTemplate));
+	}
+
+	for (NodeInfo = data.child("Units").child("Hero"); NodeInfo; NodeInfo = NodeInfo.next_sibling("Hero")) {
+
+		Hero* heroTemplate = new Hero();
+
+		heroTemplate->type = (heroType)NodeInfo.child("type").attribute("value").as_int(0);
+
+		if (heroTemplate->type == MAGE)  // HERO_X should the last hero in the type enum
+		{
+			heroTemplate->skill_one = new Skill(3, 5); //Icicle Crash
+		}
+
+		heroTemplate->name = NodeInfo.child("name").attribute("value").as_string("error");
+		heroTemplate->texture = App->tex->Load(NodeInfo.child("texture").attribute("value").as_string("error"));
+
+		heroTemplate->current_HP = heroTemplate->max_HP = NodeInfo.child("Stats").child("life").attribute("value").as_int(0);
+		heroTemplate->attack = NodeInfo.child("Stats").child("attack").attribute("value").as_int(0);
+		heroTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
+		heroTemplate->piercing_atk = NodeInfo.child("Stats").child("piercingDamage").attribute("value").as_int(0);
+		heroTemplate->speed = NodeInfo.child("Stats").child("movementSpeed").attribute("value").as_int(0);
+		heroTemplate->range = NodeInfo.child("Stats").child("range").attribute("value").as_int(0);
+		heroTemplate->line_of_sight = NodeInfo.child("Stats").child("lineOfSight").attribute("value").as_int(0);
+		heroTemplate->wood_cost = NodeInfo.child("Stats").child("woodCost").attribute("value").as_int(0);
+		heroTemplate->gold_cost = NodeInfo.child("Stats").child("goldCost").attribute("value").as_int(0);
+		heroTemplate->worker_cost = NodeInfo.child("Stats").child("workerCost").attribute("value").as_int(0);
+		heroTemplate->training_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
+		heroTemplate->squad_members = NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
+
+		/*if (NodeInfo.child("iconData"))
+			App->gui->AddIconData(heroTemplate->type, NodeInfo.child("iconData"));*/
+
+		pugi::xml_node AnimInfo;
+		for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"))
+		{
+			Animation* animation = new Animation();
+			if (animation->LoadAnimation(AnimInfo))
+				heroTemplate->animations.push_back(animation);
+		}
+
+		if (!heroTemplate->animations.empty()) heroTemplate->current_anim = heroTemplate->animations.front();
+
+		heroDB.insert(std::pair<int, Hero*>(heroTemplate->type, heroTemplate));
 	}
 
 	for (NodeInfo = data.child("Buildings").child("Building"); NodeInfo; NodeInfo = NodeInfo.next_sibling("Building")) {

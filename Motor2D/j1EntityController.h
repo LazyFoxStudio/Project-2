@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "Building.h"
 #include "Unit.h"
+#include "Hero.h"
 #include "Nature.h"
 
 #include <list>
@@ -31,6 +32,7 @@ public:
 	bool DeleteDB() { return true; };
 
 	Unit* addUnit(iPoint pos, unitType type, Squad* squad = nullptr);
+	Hero* addHero(iPoint pos, heroType type);
 	Building* addBuilding(iPoint pos, buildingType type );
 	Nature* addNature(iPoint pos, resourceType res_type, int amount = 0);
 
@@ -56,6 +58,7 @@ public:
 	Squad* squad_test = nullptr; // for testing purposes, will be deleted
 
 	std::map<uint, Unit*> unitDB;
+	std::map<uint, Hero*> heroDB;
 	std::map<uint, Building*> buildingDB;
 	std::map<uint, Nature*> natureDB;
 
