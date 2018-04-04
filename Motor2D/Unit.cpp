@@ -69,7 +69,10 @@ bool Unit::Update(float dt)
 	if (!commands.empty())
 	{
 		commands.front()->Execute(dt);
-		if (commands.front()->state == FINISHED) commands.pop_front();
+		if (commands.front()->state == FINISHED) 
+		{
+			commands.pop_front();
+		}
 	}
 
 	if (this->type == HERO_1)
@@ -112,6 +115,7 @@ void Unit::animationController()
 			}
 			if (move_command->next_step.y + move_command->next_step.x == 0)
 			{
+				/*
 				switch (new_animation)
 				{
 				case MOVE_E:
@@ -126,6 +130,8 @@ void Unit::animationController()
 				case MOVE_W:
 					new_animation = IDLE_W;
 				}
+				*/
+				new_animation = MOVE_E;
 			}
 			break; //just in case...
 		case ATTACK:

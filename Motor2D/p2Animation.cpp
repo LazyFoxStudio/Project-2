@@ -6,7 +6,13 @@ Animation::Animation(Animation& anim)
 	loop = anim.loop;
 
 	for (int i = 0; i < anim.last_frame; i++)
+	{
 		PushBack(anim.frames[i]);
+	}
+	for (int i = anim.last_frame-2; i >= 0; i--)
+	{
+		PushBack(anim.frames[i]);
+	}
 }
 
 void Animation::PushBack(const SDL_Rect& rect)
