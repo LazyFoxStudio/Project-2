@@ -108,7 +108,7 @@ void Unit::animationController()
 			}
 			if (move_command->next_step.y + move_command->next_step.x == 0)
 			{
-				/*
+				
 				switch (new_animation)
 				{
 				case MOVE_E:
@@ -123,8 +123,8 @@ void Unit::animationController()
 				case MOVE_W:
 					new_animation = IDLE_W;
 				}
-				*/
-				new_animation = MOVE_E;
+				
+				//new_animation = MOVE_E;
 			}
 			break; //just in case...
 		case ATTACK:
