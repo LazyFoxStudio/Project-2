@@ -1,7 +1,9 @@
 #pragma once
-
 #ifndef _COMMAND_H_
 #define _COMMAND_H_
+
+#define STEERING_FACTOR 7.0f    // the higher the stiffer
+#define PROXIMITY_FACTOR 3  // the higher the sooner units will stop moving
 
 #include <list>
 #include <vector>
@@ -57,7 +59,6 @@ private:
 	bool OnStop();
 
 	bool checkCollisionsAlongPath(iPoint origin);
-	fPoint calculateSeparationVector();
 
 };
 
@@ -145,7 +146,6 @@ public:
 
 private:
 
-	bool ProcessPath(const std::list<iPoint>& path);
 	bool OnInit();
 	bool OnUpdate(float dt);
 	bool OnStop();

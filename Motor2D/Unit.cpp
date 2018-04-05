@@ -6,7 +6,15 @@
 #include "j1Render.h"
 #include "Command.h"
 #include "p2Animation.h"
+#include "j1EntityController.h"
 #include "Skills.h"
+
+#define COLLIDER_MARGIN 20
+#define MAX_NEXT_STEP_MODULE 25
+
+#define SEPARATION_STRENGTH 4.0f   // the higher the stronger
+#define SPEED_CONSTANT 100   // applied to all units
+#define STOP_TRESHOLD 1.0f
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
@@ -30,7 +38,7 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 
 	current_anim = animations[0];
 
-	position.x =  pos.x; position.y = pos.y;
+	position.x = pos.x; position.y = pos.y;
 
 	collider.x = pos.x - (collider.w / 2);
 	collider.y = pos.y - (collider.h / 2);
@@ -59,8 +67,36 @@ bool Unit::Update(float dt)
 		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
 
+	Move(dt);
 	animationController();
+
 	return true;
+}
+
+void Unit::Move(float dt)
+{
+	fPoint separation_v = calculateSeparationVector() * STEERING_FACTOR;
+
+	if (!commands.empty() || separation_v.GetModule() > STOP_TRESHOLD)
+	{
+		next_step = next_step + (calculateSeparationVector() * STEERING_FACTOR);
+
+		if (next_step.GetModule() > MAX_NEXT_STEP_MODULE)
+			next_step = next_step.Normalized() * MAX_NEXT_STEP_MODULE;
+
+		fPoint last_pos = position;
+
+		if (squad)	position += (next_step.Normalized() * squad->max_speed * dt * SPEED_CONSTANT);
+		else		position += (next_step.Normalized() * speed * dt * SPEED_CONSTANT);
+
+		if (!App->pathfinding->IsWalkable(App->map->WorldToMap(position.x, position.y))) position = last_pos;
+		else
+		{
+			collider.x = position.x - (collider.w / 2);
+			collider.y = position.y - (collider.h / 2);
+		}
+	}
+	else if (!next_step.IsZero()) next_step.SetToZero();
 }
 
 void Unit::animationController()
@@ -119,29 +155,27 @@ void Unit::Halt()
 	commands.clear();
 }
 
-bool Unit::Pushed()
-{
-	if (!commands.empty())
-	{
-		if (commands.front()->type == MOVETO)
-		{
-			iPoint map_p = App->map->WorldToMap(position.x, position.y);
-			MoveTo* current_moveto_order = (MoveTo*)commands.front();
-			iPoint target = current_moveto_order->flow_field->getNodeAt(map_p)->parent->position;
-
-			iPoint new_target = App->pathfinding->WalkableAdjacentCloserTo(map_p, target, this);
-			if (new_target.x == -1) return false;
-
-			current_moveto_order->flow_field->getNodeAt(map_p)->parent = current_moveto_order->flow_field->getNodeAt(target);
-			return true;
-		}
-	}
-		
-	return false;
-}
-
 Unit* Unit::SearchNearestEnemy()
 {
 	//TODO
 	return nullptr;
+}
+
+
+fPoint Unit::calculateSeparationVector()
+{
+	SDL_Rect r = { collider.x - COLLIDER_MARGIN, collider.y - COLLIDER_MARGIN , collider.w + COLLIDER_MARGIN , collider.h + COLLIDER_MARGIN };
+	std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(r, this);
+
+	fPoint separation_v = { 0,0 };
+	for (int i = 0; i < collisions.size(); i++)
+	{
+		if (collisions[i]->entity_type == UNIT)
+		{
+			fPoint current_separation = (position - collisions[i]->position);
+			separation_v += current_separation.Normalized() * (1 / current_separation.GetModule());
+		}
+	}
+
+	return separation_v * SEPARATION_STRENGTH;
 }

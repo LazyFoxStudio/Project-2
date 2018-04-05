@@ -6,13 +6,6 @@
 #include "j1EntityController.h"
 #include "j1Map.h"
 
-#define SPEED_CONSTANT 100   // applied to all units
-#define STEERING_FACTOR 7.0f    // the higher the stiffer
-#define SEPARATION_STRENGTH 5.0f   // the higher the stronger
-#define PROXIMITY_FACTOR 3  // the higher the sooner units will stop moving
-
-#define MAX_NEXT_STEP_MODULE 25
-#define COLLIDER_MARGIN 25
 
 // BASE CLASSES: =========================
 
@@ -40,49 +33,33 @@ void Command::Restart() { OnStop(); state = TO_INIT; }
 
 bool MoveTo::OnInit()
 {
+	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 	if (!flow_field)
 	{
-		map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 		flow_field = App->pathfinding->CreateFlowField(map_p, dest);
 		unique_field = true;
 
 		if (!flow_field) Stop();
 	}
-	
 
 	return true;
 }
 
 bool MoveTo::OnUpdate(float dt)
 {
-	fPoint last_pos = unit->position;
-
-	if (unit->squad)	unit->position += (unit->next_step.Normalized() * unit->squad->max_speed * dt * SPEED_CONSTANT);
-	else				unit->position += (unit->next_step.Normalized() * unit->speed * dt * SPEED_CONSTANT);
-
 	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
-	if(!App->pathfinding->IsWalkable(map_p)) unit->position = last_pos;
-	else
-	{
-		unit->collider.x = unit->position.x - (unit->collider.w / 2);
-		unit->collider.y = unit->position.y - (unit->collider.h / 2);
-	}
-
-	if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR)
-	{
-		if (!checkCollisionsAlongPath(map_p)) Stop();
-	}
+	if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR) Stop();
+	//{
+	//	if (!checkCollisionsAlongPath(map_p)) Stop();
+	//}
 	else
 	{
 		if (!flow_field->getNodeAt(map_p)->parent) Stop();
 		else
 		{
 			fPoint direction	= (flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized();
-			unit->next_step		= unit->next_step + ((direction + calculateSeparationVector()) * STEERING_FACTOR);
-
-			if (unit->next_step.GetModule() > MAX_NEXT_STEP_MODULE)
-				unit->next_step = unit->next_step.Normalized() * MAX_NEXT_STEP_MODULE;
+			unit->next_step		= unit->next_step + (direction * STEERING_FACTOR);
 		}
 	}
 
@@ -96,24 +73,6 @@ bool MoveTo::OnStop()
 	unit->next_step = { 0,0 };
 
 	return true;
-}
-
-fPoint MoveTo::calculateSeparationVector()
-{
-	SDL_Rect r = { unit->collider.x - COLLIDER_MARGIN, unit->collider.y - COLLIDER_MARGIN , unit->collider.w + COLLIDER_MARGIN , unit->collider.h + COLLIDER_MARGIN };
-	std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(r, unit);
-
-	fPoint separation_v = { 0,0 };
-	for (int i = 0; i < collisions.size(); i++)
-	{
-		if (collisions[i]->entity_type == UNIT)
-		{
-			fPoint current_separation = (unit->position - collisions[i]->position);
-			separation_v += current_separation.Normalized() * (1 / current_separation.GetModule());
-		}
-	}
-	
-	return separation_v * SEPARATION_STRENGTH;
 }
 
 bool MoveTo::checkCollisionsAlongPath(iPoint origin)
@@ -145,7 +104,7 @@ bool MoveTo::checkCollisionsAlongPath(iPoint origin)
 // ATTACKING MOVE TO
 
 bool AttackingMoveTo::OnUpdate(float dt) 
-{
+{/*
 	Unit* enemy = unit->SearchNearestEnemy();
 	if (enemy)
 	{
@@ -180,7 +139,7 @@ bool AttackingMoveTo::OnUpdate(float dt)
 
 	fPoint velocity = (direction * unit->speed * dt * SPEED_CONSTANT);
 	unit->next_step = velocity;
-
+*/
 	return true;
 }
 

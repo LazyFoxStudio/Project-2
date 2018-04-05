@@ -74,10 +74,11 @@ public:
 	void Draw(float dt);
 	void animationController();
 	void Halt();
-	bool Pushed();
 
+	fPoint calculateSeparationVector();
 	bool IsEnemy() { return type >= GRUNT; };
 	Unit* SearchNearestEnemy();
+	void Move(float dt);
 };
 
 #endif
