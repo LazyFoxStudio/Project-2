@@ -110,6 +110,14 @@ void IngameMenu::updateStatsDisplay()
 			statsNumbers.push_back(new Text(std::to_string((int)((Hero*)entity)->speed), stats_pos.x + 170, stats_pos.y + 200, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
 
 		}
+		else if(entity->entity_type == entityType::BUILDING)
+		{
+			for (std::list<Text*>::iterator it_t = statsTitles.begin(); it_t != statsTitles.end(); it_t++)
+			{
+				(*it_t)->active = false;
+			}
+			title->active = false;
+		}
 	}
 	else
 	{
@@ -132,6 +140,7 @@ void IngameMenu::createActionButtons(pugi::xml_node node)
 		actionButtons.push_back(button);
 		childs.push_back(button);
 	}
+	actionButtons.front()->function = MOVE_FUNCTION;
 }
 
 void IngameMenu::updateActionButtons()

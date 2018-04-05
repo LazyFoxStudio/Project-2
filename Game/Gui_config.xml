@@ -97,7 +97,7 @@ Resolution of the screen: 1680x 1050y
 			<OnClick x="589" y="271" w="143" h="53"/>
 		</button>
 	<!-- Wave Window -->
-		<atlas_image icon_atlas="false">
+		<atlas_image icon_atlas="false" active ="false">
 			<position x="1408" y="462"/>
 			<section x="0" y="271" w="272" h="336"/>
 			<draggable horizontal="false" vertical="false"/>

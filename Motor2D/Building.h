@@ -11,6 +11,7 @@ enum buildingType {
 	TOWN_HALL,
 	BARRACKS,
 	LUMBER_MILL,
+	FARM,
 	//...
 };
 
@@ -24,11 +25,12 @@ public:
 	int building_time = 0;
 	int defense = 0;
 	iPoint size = { 0,0 };
+	iPoint additional_size = { 0,0 };
 	//(...)
 	
 	bool being_built = false;
 	int villagers_inside = 0;
-	j1Timer building_timer;
+	j1Timer timer;
 	int last_frame_time = 0;
 
 	std::vector<SDL_Rect> sprites;
@@ -38,6 +40,8 @@ public:
 	Building() { entity_type = BUILDING; };
 	Building(iPoint pos, Building& building);
 	~Building();
+
+	void GetColliderFromSize();
 
 	bool Update(float dt);
 	void HandleSprite();

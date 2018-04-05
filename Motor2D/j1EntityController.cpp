@@ -13,6 +13,8 @@
 #include "Hero.h"
 #include "j1Map.h"
 #include "j1Pathfinding.h"
+#include "j1Map.h"
+#include "j1ActionsController.h"
 
 j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
@@ -31,6 +33,8 @@ bool j1EntityController::Start()
 	squad_units_test.push_back(addUnit(iPoint(1000, 800), FOOTMAN));
 	squad_units_test.push_back(addUnit(iPoint(1000, 1000), FOOTMAN));
 	squad_units_test.push_back(addUnit(iPoint(900, 800), FOOTMAN));
+	squad_units_test.push_back(addUnit(iPoint(800, 800), ARCHER));
+	squad_units_test.push_back(addUnit(iPoint(1100, 1000), GRUNT));
 
 	addHero(iPoint(900, 700), MAGE);
 
@@ -96,6 +100,20 @@ bool j1EntityController::Update(float dt)
 		placingBuilding(LUMBER_MILL, position);
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && !building)
+	{
+		structure_beingbuilt = FARM;
+		building = true;
+	}
+
+	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && building && structure_beingbuilt == FARM)
+	{
+		iPoint position;
+		App->input->GetMousePosition(position.x, position.y);
+
+		placingBuilding(FARM, position);
+	}
+
 	if (building)
 	{
 		int x, y;
@@ -106,14 +124,24 @@ bool j1EntityController::Update(float dt)
 		
 		if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y))
 		{
+			if (structure_beingbuilt == 3)
+			{
+				Color green2 = { 0,255,0,75 };
+				App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height }, green2);
+			}
 			Color green = { 0,255,0,100 };
 			App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
 			App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, green);
+
 		}
 		else
 		{
+			if (structure_beingbuilt == 3)
+			{
+				Color red2 = { 255,0,0,75 };
+				App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height }, red2);
+			}
 			Color red = { 255,0,0,100 };
-		
 			App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
 			App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, red);
 		}
@@ -121,7 +149,7 @@ bool j1EntityController::Update(float dt)
 	}
 
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI && !App->actionscontroller->doingAction)
 		selectionControl();
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		commandControl();
@@ -204,7 +232,7 @@ Building* j1EntityController::addBuilding(iPoint pos, buildingType type)
 	Building* building = new Building(pos, *(buildingDB[type]));
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
-	building->building_timer.Start();
+	building->timer.Start();
 	building->being_built = true;
 	building->current_HP = 1;
 	building->last_frame_time = 0;
@@ -501,6 +529,9 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		buildingTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
 		buildingTemplate->size.x = NodeInfo.child("size").attribute("x").as_int(0);
 		buildingTemplate->size.y = NodeInfo.child("size").attribute("y").as_int(0);
+		buildingTemplate->additional_size.x = NodeInfo.child("additionalSize").attribute("x").as_int(0);
+		buildingTemplate->additional_size.y = NodeInfo.child("additionalSize").attribute("y").as_int(0);
+		buildingTemplate->GetColliderFromSize();
 		// TODO building cost outside the DB so it's not unnecessarily repeated on every unit
 
 		pugi::xml_node IconData;

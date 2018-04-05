@@ -47,7 +47,8 @@ bool j1Scene::Start()
 	guiconfig = guiconfig.child("scene");
 
 	wood = 200;
-	gold = 400;
+	workers = 2;
+	
 	town_hall_lvl = 2;
 
 	return true;

@@ -22,6 +22,7 @@ class j1Scene;
 class j1SceneSwitch;
 class j1Map;
 class j1EntityController;
+class j1ActionsController;
 class j1PathFinding;
 class j1Fonts;
 class j1Gui;
@@ -91,20 +92,21 @@ private:
 public:
 
 	// Modules
-	j1Window*			win = nullptr;
-	j1Input*			input = nullptr;
-	j1Render*			render = nullptr;
-	j1Textures*			tex = nullptr;
-	j1Audio*			audio = nullptr;
-	j1UIScene*		    uiscene = nullptr;
-	j1Console*			console = nullptr;
-	j1Scene*			scene = nullptr;
-	j1SceneSwitch*		sceneswitch = nullptr;
-	j1Map*				map = nullptr;
-	j1EntityController* entitycontroller = nullptr;
-	j1PathFinding*		pathfinding = nullptr;
-	j1Fonts*			font = nullptr;
-	j1Gui*				gui = nullptr;
+	j1Window*				win = nullptr;
+	j1Input*				input = nullptr;
+	j1Render*				render = nullptr;
+	j1Textures*				tex = nullptr;
+	j1Audio*				audio = nullptr;
+	j1UIScene*				uiscene = nullptr;
+	j1Console*				console = nullptr;
+	j1Scene*				scene = nullptr;
+	j1SceneSwitch*			sceneswitch = nullptr;
+	j1Map*					map = nullptr;
+	j1EntityController*		entitycontroller = nullptr;
+	j1ActionsController*	actionscontroller = nullptr;
+	j1PathFinding*			pathfinding = nullptr;
+	j1Fonts*				font = nullptr;
+	j1Gui*					gui = nullptr;
 	bool fpsCapON = true;
 	std::string			load_game;
 

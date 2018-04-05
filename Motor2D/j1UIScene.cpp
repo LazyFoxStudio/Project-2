@@ -16,6 +16,7 @@
 #include "UI_Text.h"
 #include "j1Fonts.h"
 #include "j1Input.h"
+#include "j1ActionsController.h"
 
 j1UIScene::j1UIScene() { name = "introscene";}
 
@@ -42,7 +43,7 @@ bool j1UIScene::Start()
 
 	//Set resource counters
 	Text* gold_display = (Text*)App->gui->GetElement(TEXT, 2);
-	gold_display->convertIntoCounter(&App->scene->gold);
+	gold_display->convertIntoCounter(&App->scene->workers);
 
 	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 3);
 	wood_display->convertIntoCounter(&App->scene->wood);
@@ -140,6 +141,15 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 	{
 		if (element->state == CLICKED)
 			element->state = MOUSEOVER;
+
+		switch (element->function)
+		{
+		case MOVE_FUNCTION:
+			App->actionscontroller->activateAction(MOVE);
+			break;
+		case BUILD_FUNCTION:
+			break;
+		}
 	}
 	else if (event_type == MOUSE_RIGHT_CLICK)
 	{

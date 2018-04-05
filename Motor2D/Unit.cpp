@@ -86,23 +86,21 @@ void Unit::animationController()
 		}
 	}
 	else {
-		/*
 		switch (new_animation)
 		{
 		case MOVE_E:
-		new_animation = IDLE_E;
-		break;
+			new_animation = IDLE_E;
+			break;
 		case MOVE_N:
-		new_animation = IDLE_N;
-		break;
+			new_animation = IDLE_N;
+			break;
 		case MOVE_S:
-		new_animation = IDLE_S;
-		break;
+			new_animation = IDLE_S;
+			break;
 		case MOVE_W:
-		new_animation = IDLE_W;
+			new_animation = IDLE_W;
+			break;
 		}
-		*/
-		new_animation = IDLE_S;
 	}
 
 	if (animations[new_animation] != current_anim)
