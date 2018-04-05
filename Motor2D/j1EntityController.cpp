@@ -444,6 +444,14 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitTemplate->worker_cost = NodeInfo.child("Stats").child("workerCost").attribute("value").as_int(0);
 		unitTemplate->training_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
 		unitTemplate->squad_members = NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
+		int i = 0;
+		for (pugi::xml_node action = NodeInfo.child("Actions").child("action"); action; action = action.next_sibling("action"))
+		{
+			if (i >= 9)
+				break;
+
+			unitTemplate->available_actions[i++] = action.attribute("id").as_uint();
+		}
 
 		if (NodeInfo.child("iconData"))
 			App->gui->AddIconData(unitTemplate->type, NodeInfo.child("iconData"));
@@ -487,6 +495,14 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		heroTemplate->worker_cost = NodeInfo.child("Stats").child("workerCost").attribute("value").as_int(0);
 		heroTemplate->training_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
 		heroTemplate->squad_members = NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
+		int i = 0;
+		for (pugi::xml_node action = NodeInfo.child("Actions").child("action"); action; action = action.next_sibling("action"))
+		{
+			if (i >= 9)
+				break;
+
+			heroTemplate->available_actions[i++] = action.attribute("id").as_uint();
+		}
 
 		if (NodeInfo.child("iconData"))
 			App->gui->AddIconData(heroTemplate->type, NodeInfo.child("iconData"));
@@ -522,6 +538,14 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		buildingTemplate->additional_size.y = NodeInfo.child("additionalSize").attribute("y").as_int(0);
 		buildingTemplate->GetColliderFromSize();
 		// TODO building cost outside the DB so it's not unnecessarily repeated on every unit
+		int i = 0;
+		for (pugi::xml_node action = NodeInfo.child("Actions").child("action"); action; action = action.next_sibling("action"))
+		{
+			if (i >= 9)
+				break;
+
+			buildingTemplate->available_actions[i++] = action.attribute("id").as_uint();
+		}
 
 		pugi::xml_node IconData;
 		if (NodeInfo.child("iconData"))

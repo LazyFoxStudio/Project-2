@@ -27,7 +27,7 @@ public:
 	void createSelectionBasicInfo();
 	void createStatsDisplay();
 	void updateStatsDisplay();
-	void createActionButtons(pugi::xml_node node);
+	//void createActionButtons(pugi::xml_node node);
 	void updateActionButtons();
 	void cleanLists(bool icons = true, bool lifeBars = true, bool statsTitles = true, bool statsNumbers = true, bool buttons = true);
 

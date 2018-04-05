@@ -129,7 +129,7 @@ void IngameMenu::updateStatsDisplay()
 	}
 }
 
-void IngameMenu::createActionButtons(pugi::xml_node node)
+/*void IngameMenu::createActionButtons(pugi::xml_node node)
 {
 	for (pugi::xml_node tmp = node.first_child(); tmp; tmp = tmp.next_sibling())
 	{
@@ -141,11 +141,26 @@ void IngameMenu::createActionButtons(pugi::xml_node node)
 		childs.push_back(button);
 	}
 	actionButtons.front()->function = MOVE_FUNCTION;
-}
+}*/
 
 void IngameMenu::updateActionButtons()
 {
 	if (App->entitycontroller->selected_entities.size() > 0)
+	{
+		Entity* entity = App->entitycontroller->selected_entities.front();
+		actionButtons = App->gui->activateActionButtons(entity->available_actions);
+	}
+	else
+	{
+		uint a[9] = {};
+		App->gui->activateActionButtons(a);
+	}
+
+	//need to load from xml first button pos and offset, then change position of the buttons to be in order
+	//missing a system to receive feedback
+
+
+	/*if (App->entitycontroller->selected_entities.size() > 0)
 	{
 		Entity* entity = (*App->entitycontroller->selected_entities.begin());
 
@@ -160,7 +175,7 @@ void IngameMenu::updateActionButtons()
 		{
 			(*it_b)->active = false;
 		}
-	}
+	}*/
 }
 
 void IngameMenu::cleanLists(bool icons, bool lifebars, bool statstitles, bool statsnumbers, bool buttons)
@@ -209,7 +224,7 @@ void IngameMenu::cleanLists(bool icons, bool lifebars, bool statstitles, bool st
 		}
 		statsNumbers.clear();
 	}
-	if (buttons)
+	/*if (buttons)
 	{
 		//Clean action buttons
 		std::list<Button*>::iterator it_b = actionButtons.begin();
@@ -219,7 +234,7 @@ void IngameMenu::cleanLists(bool icons, bool lifebars, bool statstitles, bool st
 			it_b++;
 		}
 		actionButtons.clear();
-	}
+	}*/
 }
 
 void IngameMenu::BlitElement(bool use_camera)
@@ -243,11 +258,11 @@ void IngameMenu::BlitElement(bool use_camera)
 		(*it_l)->BlitElement(use_camera);
 	}
 	//Blit action butons
-	for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
+	/*for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
 	{
 		if ((*it_b)->active)
 			(*it_b)->BlitElement(use_camera);
-	}
+	}*/
 	//Blit stats
 	if (title != nullptr && title->active)
 		title->BlitElement(use_camera);

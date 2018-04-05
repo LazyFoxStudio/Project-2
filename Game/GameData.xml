@@ -25,8 +25,10 @@
                 <StartingColumn value="0"/>
               </Animation>
             </Animations>
+			<Actions>
+			</Actions>
         </Hero>
-        <Unit>
+      <Unit>
             <name value="Footman"/>
             <type value="3"/>
 			      <iconData x="162" y="7" w="72" h="60"/>
@@ -255,7 +257,10 @@
               </Dying2>
             
           </Animations>
-        </Unit>
+			<Actions>
+				<action id="1"/>
+			</Actions>
+		</Unit>
       <Unit>
             <name value="Archer"/>
             <type value="4"/> 
@@ -484,7 +489,10 @@
                 <speed value="0.5"/>
               </Dying2>
             </Animations>
-      </Unit>
+			<Actions>
+				<action1 id="1"/>
+			</Actions>
+	  </Unit>
       <Unit>
             <name value="Grunt"/>
             <type value="6"/> 
@@ -980,7 +988,7 @@
         
     </Resource>
   </Nature>
-	<LifeBars>
+	<LifeBars>	
 		<in-game>
 			<LifeBarG>
 				<empty tag="G_empty" x="285" y="399" w="69" h="11"/>
@@ -1010,4 +1018,12 @@
 			</LifeBarY>
 		</menu>
 	</LifeBars>
+	<ActionButtons>
+		<move id="1">
+			<position x="1399" y="809"/>
+			<standby x="285" y="437" w="66" h="66"/>
+			<OnMouse x="353" y="437" w="66" h="66"/>
+			<OnClick x="421" y="437" w="66" h="66"/>
+		</move>
+	</ActionButtons>
 </GameData>

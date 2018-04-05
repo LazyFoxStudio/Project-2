@@ -585,7 +585,7 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 
 	IngameMenu* ret = new IngameMenu(texture, icon_atlas, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, lifeBars_offsetX, lifeBars_offsetY, stats_posX, stats_posY, callback);
 
-	ret->createActionButtons(node.child("buttons"));
+	//ret->createActionButtons(node.child("buttons"));
 
 	inGameMenu = ret;
 
@@ -623,6 +623,15 @@ void j1Gui::LoadDB(pugi::xml_node node)
 
 			LifeBarRect.insert(std::pair<std::string, SDL_Rect>(tag, section));
 		}
+	}
+
+	pugi::xml_node actionButton;
+	for (actionButton = node.child("ActionButtons").first_child(); actionButton; actionButton = actionButton.next_sibling())
+	{
+		uint id = actionButton.attribute("id").as_uint();
+		Button* button = createButton(actionButton, App->uiscene);
+		button->active = false;
+		actionButtons.insert(std::pair<uint, Button*>(id, button));
 	}
 }
 
@@ -675,6 +684,33 @@ SDL_Rect j1Gui::GetIconRect(Entity* entity)
 SDL_Rect j1Gui::GetLifeBarRect(std::string tag)
 {
 	return LifeBarRect.at(tag);
+}
+
+Button * j1Gui::GetActionButton(uint id)
+{
+	return actionButtons.at(id);
+}
+
+std::list<Button*> j1Gui::activateActionButtons(uint ids[9])
+{
+	std::list<Button*> list;
+
+	int i = 0;
+	for (std::map<uint, Button*>::iterator test = actionButtons.begin(); test != actionButtons.end(); test++)
+	{
+		if (i < 9 && ids[i] == (*test).first)
+		{
+			(*test).second->active = true;
+			list.push_back((*test).second);
+		}
+		else
+		{
+			(*test).second->active = false;
+		}
+		i++;
+	}
+
+	return list;
 }
 
 void j1Gui::newSelectionDone()
