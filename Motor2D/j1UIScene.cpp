@@ -47,6 +47,9 @@ bool j1UIScene::Start()
 	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 3);
 	wood_display->convertIntoCounter(&App->scene->wood);
 
+	Text* villagers_display = (Text*)App->gui->GetElement(TEXT, 4);
+	wood_display->convertIntoCounter(&App->scene->workers);
+
 	return true;
 }
 

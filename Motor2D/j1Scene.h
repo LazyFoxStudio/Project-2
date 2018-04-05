@@ -38,8 +38,9 @@ public:
 
 public:
 	SDL_Texture* debug_tex = nullptr;
-	int wood=0;
-	int gold=0;
+	int wood = 0;
+	int gold = 0;
+	int workers = 2;
 	int town_hall_lvl = 0;
 };
 
