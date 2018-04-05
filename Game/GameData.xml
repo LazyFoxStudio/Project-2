@@ -276,99 +276,153 @@
                 <squadMembers value="4"/>
             </Stats>
             <Animations>
-              <Animation> <!--Idle North-->
-                <width value="26"/>
-                <height value="36"/>
+              <Animation> <!--0- Idle North-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="0"/>
                 <columns value="0"/>
                 <StartingRow value="0"/>
                 <StartingColumn value="0"/>
-                <speed value="0.5"/>
+                <speed value="10"/>
               </Animation>
-            <Animation> <!--Idle NorthEast-->
-                <width value="26"/>
-                <height value="36"/>
+            <Animation> <!--1- Idle NorthEast-->
+               <width value="59"/>
+               <height value="73"/>
                 <rows value="0"/>
                 <columns value="0"/>
                 <StartingRow value="0"/>
                 <StartingColumn value="1"/>
-                <speed value="0.5"/>
+                <speed value="10"/>
               </Animation>
-            <Animation> <!--Idle East-->
-                <width value="26"/>
-                <height value="36"/>
+            <Animation> <!--2- Idle East-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="0"/>
                 <columns value="0"/>
                 <StartingRow value="0"/>
                 <StartingColumn value="2"/>
-                <speed value="0.5"/>
+                <speed value="10"/>
               </Animation>
-             <Animation> <!--Idle SouthEast-->
-                <width value="26"/>
-                <height value="36"/>
+             <Animation> <!--3- Idle SouthEast-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="0"/>
                 <columns value="0"/>
                 <StartingRow value="0"/>
                 <StartingColumn value="3"/>
-                <speed value="0.5"/>
+                <speed value="10"/>
               </Animation>
-             <Animation> <!--Idle South-->
-                <width value="26"/>
-                <height value="36"/>
+             <Animation> <!--4- Idle South-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="0"/>
                 <columns value="0"/>
                 <StartingRow value="0"/>
                 <StartingColumn value="4"/>
-                <speed value="0.5"/>
+                <speed value="10"/>
               </Animation>
-             <Animation> <!--Walking North-->
-                <width value="26"/>
-                <height value="36"/>
+              <Animation> <!--5- Idle SouthWest-->
+                <width value="59"/>
+                <height value="73"/>
+                <rows value="0"/>
+                <columns value="0"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="3"/>
+                <speed value="10"/>
+              </Animation>
+              <Animation>  <!--6- Idle West-->
+                <width value="59"/>
+                <height value="73"/>
+                <rows value="0"/>
+                <columns value="0"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="2"/>
+                <speed value="10"/>
+              </Animation>
+              <Animation> <!--7- Idle NorthWest-->
+                <width value="59"/>
+                <height value="73"/>
+                <rows value="0"/>
+                <columns value="0"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="1"/>
+                <speed value="10"/>
+              </Animation>
+             <Animation> <!--8- Walking North-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="1"/>
                 <StartingColumn value="0"/>
-                <speed value="0.5"/>
+                <speed value="10"/>
               </Animation>
-             <Animation> <!--Walking NorthEast-->
-                <width value="26"/>
-                <height value="36"/>
+             <Animation> <!--9- Walking NorthEast-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="1"/>
                 <StartingColumn value="1"/>
-                <speed value="0.5"/>
+                <speed value="10"/>
               </Animation>
-             <Animation> <!--Walking East-->
-                <width value="26"/>
-                <height value="36"/>
+             <Animation> <!--10- Walking East-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="1"/>
                 <StartingColumn value="2"/>
-                <speed value="0.5"/>
+                <speed value="10"/>
               </Animation>
-             <Animation> <!--Walking SouthEast-->
-                <width value="26"/>
-                <height value="36"/>
+             <Animation> <!--11- Walking SouthEast-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="1"/>
                 <StartingColumn value="3"/>
-                <speed value="0.5"/>
+                <speed value="10"/>
               </Animation>
-            <Animation> <!--Walking South-->
-                <width value="26"/>
-                <height value="36"/>
+            <Animation> <!--12- Walking South-->
+              <width value="59"/>
+              <height value="73"/>
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="1"/>
                 <StartingColumn value="4"/>
-                <speed value="0.5"/>
+                <speed value="10"/>
+              </Animation>
+              <Animation>  <!--13- Walking SouthWest-->
+                <width value="59"/>
+                <height value="73"/>
+                <rows value="3"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="3"/>
+                <speed value="10"/>
+              </Animation>
+              <Animation> <!--14- Walking West-->
+                <width value="59"/>
+                <height value="73"/>
+                <rows value="3"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="2"/>
+                <speed value="10"/>
+              </Animation>
+              <Animation>  <!--15- Walking NorthWest-->
+                <width value="59"/>
+                <height value="73"/>
+                <rows value="3"/>
+                <columns value="0"/>
+                <StartingRow value="1"/>
+                <StartingColumn value="1"/>
+                <speed value="10"/>
               </Animation>
              <AttackingNorth>
-                <width value="26"/>
-                <height value="36"/>
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
