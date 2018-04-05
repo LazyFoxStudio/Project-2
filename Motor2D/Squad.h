@@ -31,7 +31,6 @@ public:
 	Unit* getClosestUnitTo(iPoint map_p);
 
 	void Halt();
-	void generateOffsets();
 	bool Update(float dt);
 
 };

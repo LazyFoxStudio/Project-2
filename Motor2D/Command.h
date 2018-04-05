@@ -3,7 +3,7 @@
 #define _COMMAND_H_
 
 #define STEERING_FACTOR 7.0f    // the higher the stiffer      // 4.0f ~ 10.0f//
-#define PROXIMITY_FACTOR 3  // the higher the sooner units will reach destination  // 1 ~ 5//
+#define PROXIMITY_FACTOR 2  // the higher the sooner units will reach destination  // 1 ~ 5//
 
 #include <list>
 #include <vector>

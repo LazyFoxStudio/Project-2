@@ -4,7 +4,6 @@
 
 Squad::Squad(std::vector<Unit*>& units) : units(units)
 {
-	generateOffsets();
 	commander = units[0];
 
 	max_speed = units[0]->speed;
@@ -18,7 +17,6 @@ Squad::Squad(std::vector<Unit*>& units) : units(units)
 
 Squad::~Squad()
 {
-	unit_offset.clear();
 	commands.clear();
 }
 
@@ -32,27 +30,6 @@ bool Squad::Update(float dt)
 	return true;
 }
 
-void Squad::generateOffsets()
-{
-	int count = 1;
-	int radius = 1;
-
-	unit_offset.push_back(iPoint{ 0,0 });
-
-	while (radius < 4)
-	{
-		for (int i = -radius; i <= radius; i++)
-			for (int j = -radius; j <= radius; j++)
-				if (std::abs(i) == radius || std::abs(j) == radius)
-				{
-					unit_offset.push_back(iPoint(i, j));
-					count++;
-					if (count == units.size()) return;
-				}
-		radius++;
-	}
-
-}
 
 int Squad::getUnitPriority(Unit* unit)
 {
