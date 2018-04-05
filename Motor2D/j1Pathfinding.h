@@ -9,6 +9,34 @@
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
 #define MAX_ADJACENT_DIST 10
+#define FLOWFIELD_MAX 65535
+
+class Entity;
+
+struct FieldNode
+{
+	int score = FLOWFIELD_MAX;
+	FieldNode* parent = nullptr;
+	iPoint position = { 0,0 };
+	int g = 0;
+	int h = 0;
+
+	int CalculateScore(iPoint goal);
+	void getWalkableAdjacents(std::vector<FieldNode>& list_to_fill, FieldNode* parent);
+};
+
+struct FlowField
+{
+	uint width, height;
+	FieldNode** field;
+
+	FlowField(uint width, uint height, int init_to = FLOWFIELD_MAX);
+	~FlowField();
+
+	bool updateFromPath(std::vector<iPoint>& path) {};
+	FieldNode* getNodeAt(iPoint p) { return &field[p.x][p.y]; };
+
+};
 
 
 class j1PathFinding : public j1Module
@@ -42,6 +70,9 @@ public:
 	uchar GetTileAt(const iPoint& pos) const;
 	bool GatherWalkableAdjacents(iPoint map_pos, int count, std::list<iPoint>& adjacents, int max_distance = 0);
 	iPoint FirstWalkableAdjacent(iPoint map_pos, int max_distance = 0);
+	iPoint WalkableAdjacentCloserTo(iPoint map_pos, iPoint target, Entity* entity_to_ignore = nullptr);    // this method checks collisions
+
+	FlowField* CreateFlowField(iPoint origin, iPoint destination);
 
 public:
 	uchar * map = nullptr;

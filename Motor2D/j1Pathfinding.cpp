@@ -1,6 +1,9 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1PathFinding.h"
+#include "j1EntityController.h"
+#include "j1Map.h"
+#include "SDL/include/SDL.h"
 
 j1PathFinding::j1PathFinding() : j1Module(), map(nullptr),width(0), height(0)
 {
@@ -37,8 +40,8 @@ void j1PathFinding::SetMap(uint width, uint height, uchar* data)
 // Utility: return true if pos is inside the map boundaries
 bool j1PathFinding::CheckBoundaries(const iPoint& pos) const
 {
-	return (pos.x >= 0 && pos.x <= (int)width &&
-			pos.y >= 0 && pos.y <= (int)height);
+	return (pos.x >= 0 && pos.x < (int)width &&
+			pos.y >= 0 && pos.y < (int)height);
 }
 
 // Utility: returns true is the tile is walkable
@@ -181,6 +184,38 @@ iPoint j1PathFinding::FirstWalkableAdjacent(iPoint map_pos, int max_distance)
 	return { -1,-1 };
 }
 
+iPoint j1PathFinding::WalkableAdjacentCloserTo(iPoint map_pos, iPoint target, Entity* entity_to_ignore)
+{
+	iPoint ret = { -1,-1 };
+	iPoint p = { -1,-1 };
+	int dist = 65535;
+
+	SDL_Rect r = { 0,0, App->map->data.tile_width, App->map->data.tile_height };
+
+	for (int i = -1; i <= 1; i++)
+		for (int j = -1; j <= 1; j++)
+			if (i != 0 || j != 0)
+			{
+				p.create(map_pos.x + i, map_pos.y + j);
+
+				if (App->pathfinding->IsWalkable(p))
+				{
+					iPoint world_p = App->map->MapToWorld(p.x, p.y);
+					r.x = world_p.x; r.y = world_p.y;
+
+					std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(r, entity_to_ignore);
+
+					if (p.DistanceManhattan(target) < dist && collisions.empty())
+					{
+						ret = p;
+						dist = p.DistanceManhattan(target);
+					}
+				}
+			}
+
+	return ret;
+}
+
 // PathNode -------------------------------------------------------------------------
 // Calculates this tile score
 // ----------------------------------------------------------------------------------
@@ -270,3 +305,108 @@ int j1PathFinding::CreatePath(const iPoint& origin, iPoint& destination)
 	return ret;
 }
 
+
+
+int FieldNode::CalculateScore(iPoint goal)
+{
+	h = position.DistanceManhattan(goal);
+	g = parent->g + 1;
+	return (score = h + g);
+}
+
+void FieldNode::getWalkableAdjacents(std::vector<FieldNode>& list_to_fill, FieldNode* parent)
+{
+	FieldNode new_adjacent;
+	new_adjacent.parent = parent;
+
+	new_adjacent.position.create(position.x + 1, position.y);
+	if (App->pathfinding->IsWalkable(new_adjacent.position))
+		list_to_fill.push_back(new_adjacent);
+
+	new_adjacent.position.create(position.x, position.y + 1);
+	if (App->pathfinding->IsWalkable(new_adjacent.position))
+		list_to_fill.push_back(new_adjacent);
+
+	new_adjacent.position.create(position.x - 1, position.y);
+	if (App->pathfinding->IsWalkable(new_adjacent.position))
+		list_to_fill.push_back(new_adjacent);
+
+	new_adjacent.position.create(position.x, position.y - 1);
+	if (App->pathfinding->IsWalkable(new_adjacent.position))
+		list_to_fill.push_back(new_adjacent);
+}
+
+FlowField::FlowField(uint width, uint height, int init_to)
+{
+	field = new FieldNode*[width];
+	this->width = width;
+	this->height = height;
+
+	for (int x = 0; x < width; x++)
+	{
+		field[x] = new FieldNode[height];
+		for (int y = 0; y < height; y++)
+		{
+			field[x][y].position = iPoint{ x, y };
+			field[x][y].score = init_to;
+		}
+	}
+}
+
+FlowField::~FlowField()
+{
+	for (int x = 0; x < width; x++)
+		delete[] field[x];
+
+	delete[] field;
+}
+
+FlowField* j1PathFinding::CreateFlowField(iPoint origin, iPoint destination)
+{
+	if (App->pathfinding->IsWalkable(destination))
+		destination = App->pathfinding->FirstWalkableAdjacent(destination);
+
+	if (App->pathfinding->IsWalkable(origin))
+		origin = App->pathfinding->FirstWalkableAdjacent(origin);
+
+	if (App->pathfinding->IsWalkable(destination) && App->pathfinding->IsWalkable(origin))
+	{
+		FlowField* flow_field = new FlowField(width, height);
+		bool origin_reached = false;
+
+		std::list<FieldNode> open;
+		std::vector<FieldNode> adjacents;
+
+		flow_field->getNodeAt(destination)->score = 0;
+		open.push_back(*flow_field->getNodeAt(destination));
+
+		while (!open.empty())
+		{
+			FieldNode current_tile = open.front();
+			open.pop_front();
+
+			current_tile.getWalkableAdjacents(adjacents, &current_tile);
+
+			for (int i = 0; i < adjacents.size(); i++)
+			{
+				adjacents[i].CalculateScore(destination);
+				FieldNode* flow_field_node = flow_field->getNodeAt(adjacents[i].position);
+
+				if (adjacents[i].score < flow_field_node->score)
+				{
+					*flow_field_node = adjacents[i];
+					flow_field_node->parent = flow_field->getNodeAt(current_tile.position);
+					open.push_back(*flow_field_node);
+
+					if (adjacents[i].position == origin) origin_reached = true;
+				}
+			}
+			adjacents.clear();
+		}
+
+		if (origin_reached) return flow_field;
+		else { delete flow_field; return nullptr; }
+	}
+
+	return nullptr;
+}

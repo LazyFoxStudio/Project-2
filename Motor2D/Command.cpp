@@ -35,56 +35,57 @@ void Command::Restart() { OnStop(); state = TO_INIT; }
 
 bool MoveTo::OnInit()
 {
-	next_step = { 0.0f,0.0f };
-	if (path.empty()) 
+	if (!flow_field)
 	{
-		iPoint pos = App->map->WorldToMap(unit->position.x, unit->position.y);
+		map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
+		flow_field = App->pathfinding->CreateFlowField(map_p, dest);
+		unique_field = true;
 
-		if (App->pathfinding->CreatePath(pos, dest) > 0)	path = *App->pathfinding->GetLastPath();
-		else												Stop();
+		if (!flow_field) Stop();
 	}
-	else Repath();    // if we have been already initalized and possess a path, repath
+	
 
 	return true;
 }
 
 bool MoveTo::OnUpdate(float dt)
 {
-	if (path.empty()) { Stop(); return true; }
-	else {
-		if (!waiting_for)
+	if (!waiting_for)
+	{
+		unit->position += unit->next_step;
+		unit->collider.x = unit->position.x; unit->collider.y = unit->position.y;
+
+		map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
+
+		if (!checkCollisionsAlongPath(map_p)) { Stop(); return true; }
+		else
 		{
-			unit->position += next_step;
-			unit->collider.x = unit->position.x; unit->collider.y = unit->position.y;
+			iPoint direction = (flow_field->getNodeAt(map_p)->parent->position - map_p);
 
-			iPoint unit_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
-
-			iPoint direction = path.front() - unit_pos;
-			direction.Normalize();
-
-			if (unit->squad)	next_step = (direction * unit->squad->max_speed * dt * SPEED_CONSTANT);
-			else				next_step = (direction * unit->speed * dt * SPEED_CONSTANT);
-
-			if (unit_pos == path.front())
-				path.pop_front();
+			if (unit->squad)	unit->next_step = (direction.Normalized() * unit->squad->max_speed * dt * SPEED_CONSTANT);
+			else				unit->next_step = (direction.Normalized() * unit->speed * dt * SPEED_CONSTANT);
 		}
-	}
 
-	//if (!CheckCollisions()) Stop();
+	}
 
 	return true;
 }
 
 bool MoveTo::OnStop()
 {
-	if (!path.empty())	path.clear();
+	if (flow_field && unique_field) delete flow_field;
+
+	unit->next_step = { 0,0 };
+	waiting_for = nullptr;
+
 	return true;
 }
+
 
 bool MoveTo::CheckCollisions()
 {
 	waiting_for = nullptr;
-	std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(unit);
+	std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(unit->collider, unit);
 
 	if (!collisions.empty())
 	{
@@ -97,7 +98,7 @@ bool MoveTo::CheckCollisions()
 			}
 			else {
 				Unit* colliding_unit = (Unit*)collisions.front();
-				if (colliding_unit->commands.empty())  return colliding_unit->Pushed(next_step);
+				if (colliding_unit->commands.empty())  return unit->Pushed();
 				else
 				{
 					MoveTo * colliding_moveTo = nullptr;
@@ -105,26 +106,26 @@ bool MoveTo::CheckCollisions()
 					{
 					case MOVETO:
 						colliding_moveTo = (MoveTo*)colliding_unit->commands.front();
+
 						if (!colliding_moveTo->waiting_for)
 							if(colliding_moveTo->waiting_for != unit) waiting_for = colliding_unit;
 						else {
-							if (colliding_moveTo->next_step.Normalized() == next_step.Normalized().Negate())
+							if (colliding_unit->next_step.Normalized() == unit->next_step.Normalized().Negate())
 							{
-								if (colliding_unit->Pushed(next_step)) { colliding_unit->commands[1]->state = TO_INIT; return true; }
-								else {
-									if (unit->Pushed(colliding_moveTo->next_step)) { state = TO_INIT; return true; }
-									else										   return false;
-								}
+								if (!colliding_unit->Pushed())
+									return unit->Pushed();
+								else 
+									return true;
 							}
 							else waiting_for = colliding_unit;
 						}
 						break;
 					case ATTACK:
 						state = TO_INIT;
-						return unit->Pushed(next_step.Negate());
+						return unit->Pushed();
 						break;
 					default:
-						return colliding_unit->Pushed(next_step);
+						return unit->Pushed();
 						break;
 					}
 				}
@@ -138,23 +139,151 @@ bool MoveTo::CheckCollisions()
 	return true;
 }
 
-void MoveTo::Repath()
+bool MoveTo::checkCollisionsAlongPath(iPoint origin)
 {
-	iPoint pos = App->map->WorldToMap(unit->position.x, unit->position.y);
-
-	std::list<iPoint> new_path;
-	if (App->pathfinding->CreatePath(pos, path.front()) > 0)
+	if (flow_field)
 	{
-		new_path = *App->pathfinding->GetLastPath();
+		FieldNode* fn = flow_field->getNodeAt(origin);
+		SDL_Rect r = { 0,0, App->map->data.tile_width, App->map->data.tile_height };
 
-		for (std::list<iPoint>::reverse_iterator it = new_path.rbegin(); it != new_path.rend(); it++)
-			path.push_front(*it);
+		while (fn->parent)
+		{
+			fn = fn->parent;
+			iPoint world_p = App->map->MapToWorld(fn->position.x, fn->position.y);
+			r.x = world_p.x; r.y = world_p.y;
+
+			std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(r, unit);
+
+			if (collisions.empty()) return true;
+		}
 	}
-	else if (App->pathfinding->CreatePath(pos, dest) > 0)
-		path = *App->pathfinding->GetLastPath();
-	else
-		Stop();
+
+	return false;
 }
+
+//
+//bool MoveTo::OnInit()
+//{
+//	next_step = { 0.0f,0.0f };
+//	if (path.empty()) 
+//	{
+//		iPoint pos = App->map->WorldToMap(unit->position.x, unit->position.y);
+//
+//		if (App->pathfinding->CreatePath(pos, dest) > 0)	path = *App->pathfinding->GetLastPath();
+//		else												Stop();
+//	}
+//	else Repath();    // if we have been already initalized and possess a path, repath
+//
+//	return true;
+//}
+//
+//bool MoveTo::OnUpdate(float dt)
+//{
+//	if (path.empty()) { Stop(); return true; }
+//	else {
+//		if (!waiting_for)
+//		{
+//			unit->position += next_step;
+//			unit->collider.x = unit->position.x; unit->collider.y = unit->position.y;
+//
+//			iPoint unit_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
+//
+//			iPoint direction = path.front() - unit_pos;
+//			direction.Normalize();
+//
+//			if (unit->squad)	next_step = (direction * unit->squad->max_speed * dt * SPEED_CONSTANT);
+//			else				next_step = (direction * unit->speed * dt * SPEED_CONSTANT);
+//
+//			if (unit_pos == path.front())
+//				path.pop_front();
+//		}
+//	}
+//
+//	//if (!CheckCollisions()) Stop();
+//
+//	return true;
+//}
+//
+//bool MoveTo::OnStop()
+//{
+//	if (!path.empty())	path.clear();
+//	return true;
+//}
+//
+//bool MoveTo::CheckCollisions()
+//{
+//	waiting_for = nullptr;
+//	std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(unit);
+//
+//	if (!collisions.empty())
+//	{
+//		if (collisions.size() == 1)
+//		{
+//			if (collisions.front()->entity_type != UNIT)
+//			{
+//				if (unit->squad) { unit->squad->Halt(); unit->squad->commands.push_back(new MoveToSquad(unit->squad->commander, dest)); }
+//				else { unit->Halt(); unit->commands.push_back(new MoveTo(unit, dest)); }
+//			}
+//			else {
+//				Unit* colliding_unit = (Unit*)collisions.front();
+//				if (colliding_unit->commands.empty())  return colliding_unit->Pushed(next_step);
+//				else
+//				{
+//					MoveTo * colliding_moveTo = nullptr;
+//					switch (colliding_unit->commands.front()->type)
+//					{
+//					case MOVETO:
+//						colliding_moveTo = (MoveTo*)colliding_unit->commands.front();
+//						if (!colliding_moveTo->waiting_for)
+//							if(colliding_moveTo->waiting_for != unit) waiting_for = colliding_unit;
+//						else {
+//							if (colliding_moveTo->next_step.Normalized() == next_step.Normalized().Negate())
+//							{
+//								if (colliding_unit->Pushed(next_step)) { colliding_unit->commands[1]->state = TO_INIT; return true; }
+//								else {
+//									if (unit->Pushed(colliding_moveTo->next_step)) { state = TO_INIT; return true; }
+//									else										   return false;
+//								}
+//							}
+//							else waiting_for = colliding_unit;
+//						}
+//						break;
+//					case ATTACK:
+//						state = TO_INIT;
+//						return unit->Pushed(next_step.Negate());
+//						break;
+//					default:
+//						return colliding_unit->Pushed(next_step);
+//						break;
+//					}
+//				}
+//			}
+//		}
+//		else {   // collisions.size() > 1
+//			//TODO;
+//		}
+//	}
+//
+//	return true;
+//}
+//
+//void MoveTo::Repath()
+//{
+//	iPoint pos = App->map->WorldToMap(unit->position.x, unit->position.y);
+//
+//	std::list<iPoint> new_path;
+//	if (App->pathfinding->CreatePath(pos, path.front()) > 0)
+//	{
+//		new_path = *App->pathfinding->GetLastPath();
+//
+//		for (std::list<iPoint>::reverse_iterator it = new_path.rbegin(); it != new_path.rend(); it++)
+//			path.push_front(*it);
+//	}
+//	else if (App->pathfinding->CreatePath(pos, dest) > 0)
+//		path = *App->pathfinding->GetLastPath();
+//	else
+//		Stop();
+//}
 
 
 // ATTACKING MOVE TO
@@ -179,7 +308,7 @@ bool AttackingMoveTo::OnUpdate(float dt)
 		}
 	}
 
-	unit->position += next_step;
+	unit->position += unit->next_step;
 	unit->collider.x = unit->position.x; unit->collider.y = unit->position.y;
 
 	iPoint unit_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
@@ -194,7 +323,7 @@ bool AttackingMoveTo::OnUpdate(float dt)
 	direction.Normalize();
 
 	fPoint velocity = (direction * unit->speed * dt * SPEED_CONSTANT);
-	next_step = velocity;
+	unit->next_step = velocity;
 
 	return true;
 }
@@ -295,31 +424,30 @@ bool Patrol::OnUpdate(float dt)
 
 
 //		SQUADS: =============================
-// MOVETOSQUAD
+//// MOVETOSQUAD
 
 bool MoveToSquad::OnInit()
 {
 	if (!unit->squad) { Stop(); return true; }
 	else squad = unit->squad;
+	
+	squad->commander = squad->getClosestUnitTo(dest);
+	if(!squad->commander) { Stop(); return true; }
 
-	if (!reshaping_done)
-	{
-		squad->commands.push_front(new ReshapeSquad(squad->commander));
-		state = TO_INIT;
-		reshaping_done = true;
-		return true;
-	}
+	iPoint commander_map_p = App->map->WorldToMap(squad->commander->position.x, squad->commander->position.y);
+	flow_field = App->pathfinding->CreateFlowField(commander_map_p, dest);
 
-	iPoint map_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
-
-	if(App->pathfinding->CreatePath(map_pos, destination) <= 0)  Stop();  
+	if(!flow_field)  Stop();
 	else
 	{
-		const std::list<iPoint> commander_path = *App->pathfinding->GetLastPath();
-		if (!ProcessPath(commander_path)) Stop(); 
+		for (int i = 0; i < squad->units.size(); i++)
+			{
+				MoveTo* new_move_order = new MoveTo(squad->units[i], dest);
+				new_move_order->flow_field = flow_field;
+				squad->units[i]->commands.push_back(new_move_order);
+			}
 	}
-
-
+	
 	return true;
 }
 
@@ -330,62 +458,107 @@ bool MoveToSquad::OnUpdate(float dt)
 	for (int i = 0; i < squad->units.size(); i++)
 		if (!squad->units[i]->commands.empty()) all_idle = false;
 	
-	if (all_idle) { squad->commands.push_front(new ReshapeSquad(squad->commander)); Stop(); }
+	if (all_idle) Stop(); 
 
 	return true;
 }
 
-
-bool MoveToSquad::ProcessPath(const std::list<iPoint>& path)
+bool MoveToSquad::OnStop()
 {
-	std::vector<std::list<iPoint*>*> paths_list;
-
-	for (int i = 0; i < squad->units.size(); i++)
-	{
-		std::list<iPoint*>* new_path = new std::list<iPoint*>();
-		for (std::list<iPoint>::const_iterator it = path.begin(); it != path.end(); it++)
-		{
-			if (*it - *std::prev(it) == *std::next(it) - *it)
-				continue;
-
-			iPoint* offset_pos = new iPoint((*it) + squad->unit_offset[i]);
-			if (App->pathfinding->IsWalkable(*offset_pos)) new_path->push_back(offset_pos);
-			else
-			{
-				if(new_path->empty()) new_path->push_back(new iPoint(*it));
-				else
-				{
-					if ((*it).DistanceManhattan(*new_path->back()) == 1) new_path->push_back(new iPoint(*it));
-					else
-					{
-						iPoint new_point = *it;
-						if (App->pathfinding->CreatePath(*new_path->back(), new_point) < 0)
-							return false;
-						else {
-							const std::list<iPoint>* repathing = App->pathfinding->GetLastPath();
-							for (std::list<iPoint>::const_iterator it2 = repathing->begin(); it2 != repathing->end(); it2++)
-								new_path->push_back(new iPoint(*it2));
-						}
-					}
-				}
-			}
-		}
-		paths_list.push_back(new_path);
-	}
-
-	for (int i = 0; i < squad->units.size(); i++)
-	{
-		MoveTo* new_move_order = new MoveTo(squad->units[i], destination);
-
-		for (std::list<iPoint*>::iterator it = paths_list[i]->begin(); it != paths_list[i]->end(); it++)
-			new_move_order->path.push_back(*(*it));
-
-		new_move_order->state = UPDATE;
-		squad->units[i]->commands.push_back(new_move_order);
-	}
-
+	if (flow_field) delete flow_field;
 	return true;
 }
+
+//
+//bool MoveToSquad::OnInit()
+//{
+//	if (!unit->squad) { Stop(); return true; }
+//	else squad = unit->squad;
+//
+//	if (!reshaping_done)
+//	{
+//		squad->commands.push_front(new ReshapeSquad(squad->commander));
+//		state = TO_INIT;
+//		reshaping_done = true;
+//		return true;
+//	}
+//
+//	iPoint map_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
+//
+//	if(App->pathfinding->CreatePath(map_pos, destination) <= 0)  Stop();  
+//	else
+//	{
+//		const std::list<iPoint> commander_path = *App->pathfinding->GetLastPath();
+//		if (!ProcessPath(commander_path)) Stop(); 
+//	}
+//
+//
+//	return true;
+//}
+//
+//bool MoveToSquad::OnUpdate(float dt)
+//{
+//	bool all_idle = true;
+//
+//	for (int i = 0; i < squad->units.size(); i++)
+//		if (!squad->units[i]->commands.empty()) all_idle = false;
+//	
+//	if (all_idle) { squad->commands.push_front(new ReshapeSquad(squad->commander)); Stop(); }
+//
+//	return true;
+//}
+//
+//
+//bool MoveToSquad::ProcessPath(const std::list<iPoint>& path)
+//{
+//	std::vector<std::list<iPoint*>*> paths_list;
+//
+//	for (int i = 0; i < squad->units.size(); i++)
+//	{
+//		std::list<iPoint*>* new_path = new std::list<iPoint*>();
+//		for (std::list<iPoint>::const_iterator it = path.begin(); it != path.end(); it++)
+//		{
+//			if (*it - *std::prev(it) == *std::next(it) - *it)
+//				continue;
+//
+//			iPoint* offset_pos = new iPoint((*it) + squad->unit_offset[i]);
+//			if (App->pathfinding->IsWalkable(*offset_pos)) new_path->push_back(offset_pos);
+//			else
+//			{
+//				if(new_path->empty()) new_path->push_back(new iPoint(*it));
+//				else
+//				{
+//					if ((*it).DistanceManhattan(*new_path->back()) == 1) new_path->push_back(new iPoint(*it));
+//					else
+//					{
+//						iPoint new_point = *it;
+//						if (App->pathfinding->CreatePath(*new_path->back(), new_point) < 0)
+//							return false;
+//						else {
+//							const std::list<iPoint>* repathing = App->pathfinding->GetLastPath();
+//							for (std::list<iPoint>::const_iterator it2 = repathing->begin(); it2 != repathing->end(); it2++)
+//								new_path->push_back(new iPoint(*it2));
+//						}
+//					}
+//				}
+//			}
+//		}
+//		paths_list.push_back(new_path);
+//	}
+//
+//	for (int i = 0; i < squad->units.size(); i++)
+//	{
+//		MoveTo* new_move_order = new MoveTo(squad->units[i], destination);
+//
+//		for (std::list<iPoint*>::iterator it = paths_list[i]->begin(); it != paths_list[i]->end(); it++)
+//			new_move_order->path.push_back(*(*it));
+//
+//		new_move_order->state = UPDATE;
+//		squad->units[i]->commands.push_back(new_move_order);
+//	}
+//
+//	return true;
+//}
 
 // RESHAPE
 
