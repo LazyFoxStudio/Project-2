@@ -18,7 +18,6 @@ public:
 	Unit* commander = nullptr;     
 	std::vector<Unit*> units;
 	std::deque<Command*> commands;
-	std::vector<iPoint> unit_offset;
 
 	float max_speed = 0.0f;
 
@@ -32,7 +31,6 @@ public:
 	Unit* getClosestUnitTo(iPoint map_p);
 
 	void Halt();
-	void generateOffsets();
 	bool Update(float dt);
 
 };

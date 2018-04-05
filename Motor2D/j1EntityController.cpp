@@ -11,6 +11,7 @@
 #include "j1Input.h"
 #include "Squad.h"
 #include "Hero.h"
+#include "j1Map.h"
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 #include "j1ActionsController.h"
@@ -453,6 +454,11 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 			unitTemplate->available_actions[i++] = action.attribute("id").as_uint();
 		}
 
+		int size_x = NodeInfo.child("Stats").child("size").attribute("x").as_int(1);
+		int size_y = NodeInfo.child("Stats").child("size").attribute("y").as_int(1);
+
+		unitTemplate->collider = { 0,0, App->map->data.tile_width * size_x, App->map->data.tile_height * size_y };
+
 		if (NodeInfo.child("iconData"))
 			App->gui->AddIconData(unitTemplate->type, NodeInfo.child("iconData"));
 
@@ -503,6 +509,11 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 
 			heroTemplate->available_actions[i++] = action.attribute("id").as_uint();
 		}
+
+		int size_x = NodeInfo.child("Stats").child("size").attribute("x").as_int(1);
+		int size_y = NodeInfo.child("Stats").child("size").attribute("y").as_int(1);
+
+		heroTemplate->collider = { 0,0, App->map->data.tile_width * size_x, App->map->data.tile_height * size_y };
 
 		if (NodeInfo.child("iconData"))
 			App->gui->AddIconData(heroTemplate->type, NodeInfo.child("iconData"));

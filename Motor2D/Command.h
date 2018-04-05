@@ -1,7 +1,9 @@
 #pragma once
-
 #ifndef _COMMAND_H_
 #define _COMMAND_H_
+
+#define STEERING_FACTOR 7.0f    // the higher the stiffer      // 4.0f ~ 10.0f//
+#define PROXIMITY_FACTOR 2  // the higher the sooner units will reach destination  // 1 ~ 5//
 
 #include <list>
 #include <vector>
@@ -45,7 +47,6 @@ class MoveTo : public Command
 public:
 	iPoint dest = { 0,0 };
 	iPoint map_p = { 0,0 };
-	Unit* waiting_for = nullptr;
 	FlowField* flow_field = nullptr;
 	bool unique_field = false;
 
@@ -56,10 +57,6 @@ private:
 	bool OnInit();
 	virtual bool OnUpdate(float dt);
 	bool OnStop();
-
-protected:
-	bool checkCollisionsAlongPath(iPoint origin);
-	bool CheckCollisions();
 
 };
 
@@ -147,27 +144,11 @@ public:
 
 private:
 
-	bool ProcessPath(const std::list<iPoint>& path);
 	bool OnInit();
 	bool OnUpdate(float dt);
 	bool OnStop();
 };
 
-
-class ReshapeSquad : public Command
-{
-public:
-	Squad * squad = nullptr;
-public:
-
-	ReshapeSquad(Unit* commander) : Command(commander, RESHAPE_SQUAD) {};
-
-private:
-
-	bool OnInit();
-	bool OnUpdate(float dt);
-	bool OnStop() { return true; };
-};
 
 
 #endif

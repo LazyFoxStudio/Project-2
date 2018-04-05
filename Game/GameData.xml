@@ -14,6 +14,7 @@
                 <movementSpeed value="1.5"/>
                 <range value="3"/>
                 <lineOfSight value="50"/>
+                <size x="1" y="1"/>
             </Stats>
             <Animations>
               <Animation>
@@ -46,6 +47,7 @@
                 <workerCost value="5"/>
                 <trainingTime value="10"/>
                 <squadMembers value="5"/>
+                <size x="1" y="1"/>
             </Stats>
             <Animations>
               <Animation> <!-- 0- IdleNorth -->
@@ -279,6 +281,7 @@
                 <workerCost value="4"/>
                 <trainingTime value="10"/>
                 <squadMembers value="4"/>
+                <size x="1" y="1"/>
             </Stats>
             <Animations>
               <Animation> <!--0- Idle North-->
@@ -506,6 +509,7 @@
                 <movementSpeed value="1"/>
                 <range value="1"/>
                 <lineOfSight value="20"/>
+                <size x="1" y="1"/>
             </Stats>
             <Animations>
               <Animation>
@@ -746,6 +750,7 @@
                 <movementSpeed value="1"/>
                 <range value="6"/>
                 <lineOfSight value="25"/>
+                <size x="1" y="1"/>
             </Stats>
         <Animations>
             <StandingNorth>

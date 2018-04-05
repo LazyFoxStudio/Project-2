@@ -6,10 +6,19 @@
 #include "j1Render.h"
 #include "Command.h"
 #include "p2Animation.h"
+#include "j1EntityController.h"
 #include "Skills.h"
+
+#define COLLIDER_MARGIN 20  // extra margin for separation calculations  // 10 ~ 30//
+#define MAX_NEXT_STEP_MODULE 25   // max value for the next_step vector, for steering calculations  // 10 ~ 50//
+
+#define SEPARATION_STRENGTH 4.0f   // the higher the stronger   // 1.0f ~ 10.0f//
+#define SPEED_CONSTANT 100   // applied to all units            // 60 ~ 140 //
+#define STOP_TRESHOLD 1.0f										// 0.5f ~ 1.5f//
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
+	entity_type				= UNIT;
 	name					= unit.name;
 	texture					= unit.texture;
 	type					= unit.type;
@@ -32,30 +41,23 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	for(int i = 0; i < 9; i++)
 	 available_actions[i] = unit.available_actions[i];
 
-	entity_type				= UNIT;
+	position.x = pos.x; position.y = pos.y;
 
-	position.x = pos.x, position.y = pos.y;
-
-	collider.w = current_anim->frames[0].w;
-	collider.h = current_anim->frames[0].h;
-	collider.x = position.x, collider.y = position.y;
-
-	if (type < HERO_X)
-	{
-		//TODO check why it returns a different data instead of the assigned
-	}
+	collider.x = pos.x - (collider.w / 2);
+	collider.y = pos.y - (collider.h / 2);
 }
 
 void Unit::Draw(float dt)
 {
-	
+	SDL_Rect r = current_anim->GetCurrentFrame(dt);
+
 	if (new_animation == MOVE_W || new_animation == IDLE_W)
 	{
-		App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt),true,SDL_FLIP_HORIZONTAL);
+		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r, true,SDL_FLIP_HORIZONTAL);
 	}
 	else
 	{
-		App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt));
+		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r);
 	}
 	
 }
@@ -65,19 +67,39 @@ bool Unit::Update(float dt)
 	if (!commands.empty())
 	{
 		commands.front()->Execute(dt);
-		if (commands.front()->state == FINISHED) 
-		{
-			commands.pop_front();
-		}
+		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
 
-	if (this->type == HERO_1)
-	{
-		((Hero*)this)->Hero::Update(dt);
-	}
+	Move(dt);
 	animationController();
-	
+
 	return true;
+}
+
+void Unit::Move(float dt)
+{
+	fPoint separation_v = calculateSeparationVector() * STEERING_FACTOR;
+
+	if (!commands.empty() || separation_v.GetModule() > STOP_TRESHOLD)
+	{
+		next_step = next_step + (calculateSeparationVector() * STEERING_FACTOR);
+
+		if (next_step.GetModule() > MAX_NEXT_STEP_MODULE)
+			next_step = next_step.Normalized() * MAX_NEXT_STEP_MODULE;
+
+		fPoint last_pos = position;
+
+		if (squad)	position += (next_step.Normalized() * squad->max_speed * dt * SPEED_CONSTANT);
+		else		position += (next_step.Normalized() * speed * dt * SPEED_CONSTANT);
+
+		if (!App->pathfinding->IsWalkable(App->map->WorldToMap(position.x, position.y))) position = last_pos;
+		else
+		{
+			collider.x = position.x - (collider.w / 2);
+			collider.y = position.y - (collider.h / 2);
+		}
+	}
+	else if (!next_step.IsZero()) next_step.SetToZero();
 }
 
 void Unit::animationController()
@@ -136,29 +158,27 @@ void Unit::Halt()
 	commands.clear();
 }
 
-bool Unit::Pushed()
-{
-	if (!commands.empty())
-	{
-		if (commands.front()->type == MOVETO)
-		{
-			iPoint map_p = App->map->WorldToMap(position.x, position.y);
-			MoveTo* current_moveto_order = (MoveTo*)commands.front();
-			iPoint target = current_moveto_order->flow_field->getNodeAt(map_p)->parent->position;
-
-			iPoint new_target = App->pathfinding->WalkableAdjacentCloserTo(map_p, target, this);
-			if (new_target.x == -1) return false;
-
-			current_moveto_order->flow_field->getNodeAt(map_p)->parent = current_moveto_order->flow_field->getNodeAt(target);
-			return true;
-		}
-	}
-		
-	return false;
-}
-
 Unit* Unit::SearchNearestEnemy()
 {
 	//TODO
 	return nullptr;
+}
+
+
+fPoint Unit::calculateSeparationVector()
+{
+	SDL_Rect r = { collider.x - COLLIDER_MARGIN, collider.y - COLLIDER_MARGIN , collider.w + COLLIDER_MARGIN , collider.h + COLLIDER_MARGIN };
+	std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(r, this);
+
+	fPoint separation_v = { 0,0 };
+	for (int i = 0; i < collisions.size(); i++)
+	{
+		if (collisions[i]->entity_type == UNIT)
+		{
+			fPoint current_separation = (position - collisions[i]->position);
+			separation_v += current_separation.Normalized() * (1 / current_separation.GetModule());
+		}
+	}
+
+	return separation_v * SEPARATION_STRENGTH;
 }
