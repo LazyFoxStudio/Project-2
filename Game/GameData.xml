@@ -828,6 +828,7 @@
       </Stats>
       <iconData x="315" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
+      <additionalSize x="10" y="10"/>
     </Building>
     
     <Building>

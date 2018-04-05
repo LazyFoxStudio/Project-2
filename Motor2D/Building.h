@@ -25,11 +25,12 @@ public:
 	int building_time = 0;
 	int defense = 0;
 	iPoint size = { 0,0 };
+	iPoint additional_size = { 0,0 };
 	//(...)
 	
 	bool being_built = false;
 	int villagers_inside = 0;
-	j1Timer building_timer;
+	j1Timer timer;
 	int last_frame_time = 0;
 
 	std::vector<SDL_Rect> sprites;

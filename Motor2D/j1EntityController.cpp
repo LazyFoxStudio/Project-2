@@ -12,6 +12,7 @@
 #include "Squad.h"
 #include "Hero.h"
 #include "j1Pathfinding.h"
+#include "j1Map.h"
 
 j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
@@ -119,14 +120,24 @@ bool j1EntityController::Update(float dt)
 		
 		if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y))
 		{
+			if (structure_beingbuilt == 3)
+			{
+				Color green2 = { 0,255,0,75 };
+				App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height }, green2);
+			}
 			Color green = { 0,255,0,100 };
 			App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
 			App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, green);
+
 		}
 		else
 		{
+			if (structure_beingbuilt == 3)
+			{
+				Color red2 = { 255,0,0,75 };
+				App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height }, red2);
+			}
 			Color red = { 255,0,0,100 };
-		
 			App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
 			App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, red);
 		}
@@ -217,7 +228,7 @@ Building* j1EntityController::addBuilding(iPoint pos, buildingType type)
 	Building* building = new Building(pos, *(buildingDB[type]));
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
-	building->building_timer.Start();
+	building->timer.Start();
 	building->being_built = true;
 	building->current_HP = 1;
 	building->last_frame_time = 0;
@@ -504,6 +515,9 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		buildingTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
 		buildingTemplate->size.x = NodeInfo.child("size").attribute("x").as_int(0);
 		buildingTemplate->size.y = NodeInfo.child("size").attribute("y").as_int(0);
+		buildingTemplate->additional_size.x = NodeInfo.child("additionalSize").attribute("x").as_int(0);
+		buildingTemplate->additional_size.y = NodeInfo.child("additionalSize").attribute("y").as_int(0);
+		buildingTemplate->GetColliderFromSize();
 		// TODO building cost outside the DB so it's not unnecessarily repeated on every unit
 
 		pugi::xml_node IconData;

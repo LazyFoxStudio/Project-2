@@ -19,7 +19,6 @@ Building::Building(iPoint pos, Building& building)
 	size.x = building.size.x;
 	size.y = building.size.y;
 
-	GetColliderFromSize();
 
 	sprites = building.sprites;
 
@@ -43,7 +42,7 @@ bool Building::Update(float dt)
 {
 	if (being_built && type != TOWN_HALL)
 	{
-		int current_time = building_timer.ReadSec();
+		int current_time = timer.ReadSec();
 		if (current_time >= building_time)
 		{
 			int hp_unit = max_HP / building_time;
