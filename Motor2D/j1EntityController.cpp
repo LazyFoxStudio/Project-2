@@ -95,6 +95,20 @@ bool j1EntityController::Update(float dt)
 		placingBuilding(LUMBER_MILL, position);
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && !building)
+	{
+		structure_beingbuilt = FARM;
+		building = true;
+	}
+
+	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && building && structure_beingbuilt == FARM)
+	{
+		iPoint position;
+		App->input->GetMousePosition(position.x, position.y);
+
+		placingBuilding(FARM, position);
+	}
+
 	if (building)
 	{
 		int x, y;

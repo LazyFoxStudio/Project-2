@@ -11,6 +11,7 @@ enum buildingType {
 	TOWN_HALL,
 	BARRACKS,
 	LUMBER_MILL,
+	FARM,
 	//...
 };
 
