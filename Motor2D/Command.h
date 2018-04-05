@@ -2,8 +2,8 @@
 #ifndef _COMMAND_H_
 #define _COMMAND_H_
 
-#define STEERING_FACTOR 7.0f    // the higher the stiffer
-#define PROXIMITY_FACTOR 3  // the higher the sooner units will stop moving
+#define STEERING_FACTOR 7.0f    // the higher the stiffer      // 4.0f ~ 10.0f//
+#define PROXIMITY_FACTOR 3  // the higher the sooner units will reach destination  // 1 ~ 5//
 
 #include <list>
 #include <vector>
@@ -57,8 +57,6 @@ private:
 	bool OnInit();
 	virtual bool OnUpdate(float dt);
 	bool OnStop();
-
-	bool checkCollisionsAlongPath(iPoint origin);
 
 };
 
@@ -151,21 +149,6 @@ private:
 	bool OnStop();
 };
 
-
-class ReshapeSquad : public Command
-{
-public:
-	Squad * squad = nullptr;
-public:
-
-	ReshapeSquad(Unit* commander) : Command(commander, RESHAPE_SQUAD) {};
-
-private:
-
-	bool OnInit();
-	bool OnUpdate(float dt);
-	bool OnStop() { return true; };
-};
 
 
 #endif

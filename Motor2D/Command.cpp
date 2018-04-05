@@ -6,7 +6,6 @@
 #include "j1EntityController.h"
 #include "j1Map.h"
 
-
 // BASE CLASSES: =========================
 
 void Command::Execute(float dt)
@@ -50,9 +49,6 @@ bool MoveTo::OnUpdate(float dt)
 	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
 	if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR) Stop();
-	//{
-	//	if (!checkCollisionsAlongPath(map_p)) Stop();
-	//}
 	else
 	{
 		if (!flow_field->getNodeAt(map_p)->parent) Stop();
@@ -75,36 +71,10 @@ bool MoveTo::OnStop()
 	return true;
 }
 
-bool MoveTo::checkCollisionsAlongPath(iPoint origin)
-{
-	if (flow_field)
-	{
-		FieldNode* fn = flow_field->getNodeAt(origin);
-		SDL_Rect r = { 0,0, App->map->data.tile_width, App->map->data.tile_height};
-
-		if (fn)
-		{
-			while (fn->parent)
-			{
-				fn = fn->parent;
-				iPoint world_p = App->map->MapToWorld(fn->position.x, fn->position.y);
-				r.x = world_p.x; r.y = world_p.y;
-
-				std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(r, unit);
-
-				if (collisions.empty()) return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-
 // ATTACKING MOVE TO
 
 bool AttackingMoveTo::OnUpdate(float dt) 
-{/*
+{
 	Unit* enemy = unit->SearchNearestEnemy();
 	if (enemy)
 	{
@@ -123,23 +93,20 @@ bool AttackingMoveTo::OnUpdate(float dt)
 		}
 	}
 
-	unit->position += unit->next_step;
-	unit->collider.x = unit->position.x; unit->collider.y = unit->position.y;
+	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
-	iPoint unit_pos = App->map->WorldToMap(unit->position.x, unit->position.y);
-
-	if (unit_pos == path.front())
+	if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR) Stop();
+	else
 	{
-		path.pop_front();
-		if (path.empty()) { Stop(); return true; }
+		if (!flow_field->getNodeAt(map_p)->parent) Stop();
+		else
+		{
+			fPoint direction = (flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized();
+			unit->next_step = unit->next_step + (direction * STEERING_FACTOR);
+		}
 	}
 
-	iPoint direction = path.front() - unit_pos;
-	direction.Normalize();
 
-	fPoint velocity = (direction * unit->speed * dt * SPEED_CONSTANT);
-	unit->next_step = velocity;
-*/
 	return true;
 }
 
@@ -286,42 +253,3 @@ bool MoveToSquad::OnStop()
 
 // RESHAPE
 
-bool ReshapeSquad::OnInit()
-{
-	if (!unit->squad) { Stop(); return true; }
-	else squad = unit->squad;
-
-	iPoint commander_pos = App->map->WorldToMap(squad->commander->position.x, squad->commander->position.y);
-	std::list<iPoint> adjacents;
-
-	if (App->pathfinding->GatherWalkableAdjacents(commander_pos, squad->units.size() - 1, adjacents))
-	{
-		for (int i = 1; i < squad->units.size(); i++)
-		{
-			iPoint dest = adjacents.front();
-			iPoint target = commander_pos + squad->unit_offset[i];
-
-			for (std::list<iPoint>::iterator it = adjacents.begin(); it != adjacents.end(); it++)
-				if ((*it).DistanceManhattan(target) < dest.DistanceManhattan(target)) dest = (*it);
-
-			squad->units[i]->commands.push_front(new MoveTo(squad->units[i], dest));
-			adjacents.remove(dest);
-		}
-	}
-	else Stop();
-
-	return true;
-}
-
-bool ReshapeSquad::OnUpdate(float dt)
-{
-	bool all_idle = true;
-
-	for (int i = 0; i < squad->units.size(); i++)
-		if (!squad->units[i]->commands.empty()) all_idle = false;
-
-	if (all_idle) 
-		Stop();
-
-	return true;
-}
