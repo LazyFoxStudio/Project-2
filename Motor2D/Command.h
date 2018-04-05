@@ -45,7 +45,6 @@ class MoveTo : public Command
 public:
 	iPoint dest = { 0,0 };
 	iPoint map_p = { 0,0 };
-	Unit* waiting_for = nullptr;
 	FlowField* flow_field = nullptr;
 	bool unique_field = false;
 
@@ -57,9 +56,8 @@ private:
 	virtual bool OnUpdate(float dt);
 	bool OnStop();
 
-protected:
 	bool checkCollisionsAlongPath(iPoint origin);
-	bool CheckCollisions();
+	fPoint calculateSeparationVector();
 
 };
 

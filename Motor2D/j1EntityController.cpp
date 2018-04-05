@@ -11,6 +11,7 @@
 #include "j1Input.h"
 #include "Squad.h"
 #include "Hero.h"
+#include "j1Map.h"
 #include "j1Pathfinding.h"
 
 j1EntityController::j1EntityController() { name = "entitycontroller"; }
@@ -417,6 +418,11 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitTemplate->training_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
 		unitTemplate->squad_members = NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
 
+		int size_x = NodeInfo.child("Stats").child("size").attribute("x").as_int(1);
+		int size_y = NodeInfo.child("Stats").child("size").attribute("y").as_int(1);
+
+		unitTemplate->collider = { 0,0, App->map->data.tile_width * size_x, App->map->data.tile_height * size_y };
+
 		if (NodeInfo.child("iconData"))
 			App->gui->AddIconData(unitTemplate->type, NodeInfo.child("iconData"));
 
@@ -459,6 +465,11 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		heroTemplate->worker_cost = NodeInfo.child("Stats").child("workerCost").attribute("value").as_int(0);
 		heroTemplate->training_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
 		heroTemplate->squad_members = NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
+
+		int size_x = NodeInfo.child("Stats").child("size").attribute("x").as_int(1);
+		int size_y = NodeInfo.child("Stats").child("size").attribute("y").as_int(1);
+
+		heroTemplate->collider = { 0,0, App->map->data.tile_width * size_x, App->map->data.tile_height * size_y };
 
 		if (NodeInfo.child("iconData"))
 			App->gui->AddIconData(heroTemplate->type, NodeInfo.child("iconData"));

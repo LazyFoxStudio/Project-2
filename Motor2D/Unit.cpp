@@ -10,6 +10,7 @@
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
+	entity_type				= UNIT;
 	name					= unit.name;
 	texture					= unit.texture;
 	type					= unit.type;
@@ -29,30 +30,23 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 
 	current_anim = animations[0];
 
-	entity_type				= UNIT;
+	position.x =  pos.x; position.y = pos.y;
 
-	position.x = pos.x, position.y = pos.y;
-
-	collider.w = current_anim->frames[0].w;
-	collider.h = current_anim->frames[0].h;
-	collider.x = position.x, collider.y = position.y;
-
-	if (type < HERO_X)
-	{
-		//TODO check why it returns a different data instead of the assigned
-	}
+	collider.x = pos.x - (collider.w / 2);
+	collider.y = pos.y - (collider.h / 2);
 }
 
 void Unit::Draw(float dt)
 {
-	
+	SDL_Rect r = current_anim->GetCurrentFrame(dt);
+
 	if (new_animation == MOVE_W || new_animation == IDLE_W)
 	{
-		App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt),true,SDL_FLIP_HORIZONTAL);
+		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r, true,SDL_FLIP_HORIZONTAL);
 	}
 	else
 	{
-		App->render->Blit(texture, position.x, position.y, &current_anim->GetCurrentFrame(dt));
+		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r);
 	}
 	
 }
@@ -62,18 +56,10 @@ bool Unit::Update(float dt)
 	if (!commands.empty())
 	{
 		commands.front()->Execute(dt);
-		if (commands.front()->state == FINISHED) 
-		{
-			commands.pop_front();
-		}
+		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
 
-	if (this->type == HERO_1)
-	{
-		((Hero*)this)->Hero::Update(dt);
-	}
 	animationController();
-	
 	return true;
 }
 
