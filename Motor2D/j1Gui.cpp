@@ -384,6 +384,7 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 
 		element->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
 		element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
+		element->active = tmp.attribute("active").as_bool(true);
 
 		pugi::xml_node childs = tmp.child("childs");
 		if(childs)

@@ -140,6 +140,7 @@ void IngameMenu::createActionButtons(pugi::xml_node node)
 		actionButtons.push_back(button);
 		childs.push_back(button);
 	}
+	actionButtons.front()->function = MOVE_FUNCTION;
 }
 
 void IngameMenu::updateActionButtons()

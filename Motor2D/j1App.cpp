@@ -16,6 +16,7 @@
 #include "j1Map.h"
 #include "j1App.h"
 #include "j1EntityController.h"
+#include "j1ActionsController.h"
 #include "j1Pathfinding.h"
 #include "j1Fonts.h"
 #include "j1Gui.h"
@@ -37,6 +38,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	sceneswitch			= new j1SceneSwitch();
 	map					= new j1Map();
 	entitycontroller	= new j1EntityController();
+	actionscontroller	= new j1ActionsController();
 	pathfinding			= new j1PathFinding();
 	font				= new j1Fonts();
 	gui					= new j1Gui();
@@ -55,6 +57,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(uiscene);
 	AddModule(sceneswitch);
 	AddModule(entitycontroller);
+	AddModule(actionscontroller);
 	AddModule(pathfinding);
 
 	// render last to swap buffer

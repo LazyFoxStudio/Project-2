@@ -37,7 +37,10 @@ enum element_function
 	CANCEL,
 	APPLY,
 	HOME,
-	WEB
+	WEB,
+
+	MOVE_FUNCTION,
+	BUILD_FUNCTION
 };
 
 enum element_state

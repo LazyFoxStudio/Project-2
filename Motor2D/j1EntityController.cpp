@@ -13,6 +13,7 @@
 #include "Hero.h"
 #include "j1Pathfinding.h"
 #include "j1Map.h"
+#include "j1ActionsController.h"
 
 j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
@@ -147,7 +148,7 @@ bool j1EntityController::Update(float dt)
 	}
 
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI && !App->actionscontroller->doingAction)
 		selectionControl();
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		commandControl();
