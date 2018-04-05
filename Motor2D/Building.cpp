@@ -19,6 +19,7 @@ Building::Building(iPoint pos, Building& building)
 	size.x = building.size.x;
 	size.y = building.size.y;
 
+	GetColliderFromSize();
 
 	sprites = building.sprites;
 
