@@ -16,6 +16,10 @@ Building::Building(iPoint pos, Building& building)
 	
 	entity_type						= BUILDING;
 	position.x = pos.x, position.y	= pos.y;
+	size.x = building.size.x;
+	size.y = building.size.y;
+
+	GetColliderFromSize();
 
 	sprites = building.sprites;
 
@@ -24,6 +28,15 @@ Building::Building(iPoint pos, Building& building)
 Building::~Building()
 {
 
+}
+
+void Building::GetColliderFromSize()
+{
+	collider.x = position.x;
+	collider.y = position.y;
+	collider.w = size.x*App->map->data.tile_width;
+	collider.h = size.y*App->map->data.tile_height;
+	
 }
 
 bool Building::Update(float dt)

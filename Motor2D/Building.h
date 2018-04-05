@@ -39,6 +39,8 @@ public:
 	Building(iPoint pos, Building& building);
 	~Building();
 
+	void GetColliderFromSize();
+
 	bool Update(float dt);
 	void HandleSprite();
 	void Draw(float dt);
