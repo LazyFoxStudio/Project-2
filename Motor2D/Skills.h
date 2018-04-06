@@ -12,7 +12,7 @@ class Hero;
 enum rangeType
 {
 	NONE_RANGE,
-	CIRCLE,
+	AREA,
 	LINEAR
 };
 
@@ -33,16 +33,19 @@ public:
 	iPoint				position = { 0,0 };
 	iPoint				mouse_position = { 0,0 };
 	iPoint				position_hero = { 0,0 };
+
+	rangeType			type=NONE_RANGE;
 	
 	std::list<iPoint>	toDraw;
 
 public:
 	
-	Skill(uint _radius, int _damage,uint _range) 
+	Skill(uint _radius, int _damage,uint _range,rangeType _type) 
 	{
 		radius = _radius;
 		damage = _damage;
 		range = _range;
+		type = _type;
 	};
 	
 	~Skill() {};

@@ -30,6 +30,7 @@ Hero::Hero(iPoint pos, Hero& hero)
 	position.y = collider.y = pos.y;
 	
 	skill_one = hero.skill_one;
+	skill_two = hero.skill_two;
 }
 Hero::~Hero()
 {
@@ -51,6 +52,16 @@ bool Hero::Update(float dt)
 	if (doSkill_1)
 	{
 		skill_one->Activate(this);
+	}
+
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	{
+		doSkill_2 = !doSkill_2;
+	}
+	if (doSkill_2)
+	{
+		skill_two->Activate(this);
 	}
 	
 	return true;

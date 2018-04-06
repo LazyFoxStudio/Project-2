@@ -52,6 +52,7 @@ public:
 private:
 
 	bool	doSkill_1 = false;
+	bool	doSkill_2 = false;
 
 public:
 
