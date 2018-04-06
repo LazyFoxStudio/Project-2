@@ -84,7 +84,6 @@ bool AttackingMoveTo::OnUpdate(float dt)
 		if (pos.DistanceTo(enemy_position) < unit->line_of_sight)
 		{
 			Attack* new_attack_command = new Attack(unit);
-			new_attack_command->enemy_position = enemy_position;
 			new_attack_command->state = UPDATE;
 			unit->commands.push_front(new_attack_command);
 
@@ -118,10 +117,8 @@ bool Attack::OnInit()
 	Unit* enemy = unit->SearchNearestEnemy();
 	if (enemy)
 	{
-		enemy_position = App->map->WorldToMap(enemy->position.x, enemy->position.y);
 		iPoint pos     = App->map->WorldToMap(unit->position.x, unit->position.y);
 
-		if (pos.DistanceTo(enemy_position) > unit->line_of_sight)	Stop();
 	}
 	else Stop();
 
@@ -132,11 +129,6 @@ bool Attack::OnUpdate(float dt)
 {
 	iPoint pos = App->map->WorldToMap(unit->position.x, unit->position.y);
 
-	if (pos.DistanceTo(enemy_position) <= unit->range)
-	{
-		// if(unit->current_animation = unit->animations[ATTACK_ANIMATION])
-		//TODO
-	}
 	return true;
 }
 
@@ -173,7 +165,6 @@ bool Hold::OnUpdate(float dt)
 		if (pos.DistanceTo(enemy_position) < unit->line_of_sight)
 		{
 			Attack* new_attack_command = new Attack(unit);
-			new_attack_command->enemy_position = enemy_position;
 			new_attack_command->state = UPDATE;
 			unit->commands.push_front(new_attack_command);
 

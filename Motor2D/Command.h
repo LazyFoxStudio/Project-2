@@ -64,10 +64,6 @@ private:
 class AttackingMoveTo : public MoveTo
 {
 public:
-	iPoint dest = { 0,0 };
-	std::list<iPoint> path;
-
-public:
 	AttackingMoveTo(Unit* unit, iPoint destination) : MoveTo(unit, destination) { type = ATTACKING_MOVETO; };
 
 private:
@@ -78,11 +74,9 @@ private:
 class Attack : public Command
 {
 public:
-	bool keep_attacking = true;
-	iPoint enemy_position = { 0,0 };
 
 public:
-	Attack(Unit* unit, bool keep_attacking = true) : Command(unit, ATTACK), keep_attacking(keep_attacking) {};
+	Attack(Unit* unit, bool keep_attacking = true) : Command(unit, ATTACK) {};
 
 private:
 	bool OnInit();
