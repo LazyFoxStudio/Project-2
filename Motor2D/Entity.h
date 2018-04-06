@@ -29,6 +29,7 @@ public:
 	bool isActive = true;
 	std::string name;
 	entityType entity_type = NONE_ENTITY;
+	uint available_actions[9] = {};
 
 public:
 	virtual ~Entity();

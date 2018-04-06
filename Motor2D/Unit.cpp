@@ -38,6 +38,9 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 
 	current_anim = animations[0];
 
+	for(int i = 0; i < 9; i++)
+	 available_actions[i] = unit.available_actions[i];
+
 	position.x = pos.x; position.y = pos.y;
 
 	collider.x = pos.x - (collider.w / 2);

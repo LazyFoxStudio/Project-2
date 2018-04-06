@@ -148,6 +148,7 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 			App->actionscontroller->activateAction(MOVE);
 			break;
 		case BUILD_FUNCTION:
+			App->actionscontroller->activateAction(BUILD);
 			break;
 		}
 	}

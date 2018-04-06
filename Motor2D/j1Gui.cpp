@@ -81,11 +81,8 @@ bool j1Gui::PreUpdate()
 			if ((*it_m)->active == false) continue;
 			for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++) //Go through elements
 			{
-				if (checkMouseHovering((*it_e)))
-					element = (*it_e);
-				for (std::list<UI_element*>::iterator it_c = (*it_e)->childs.begin(); it_c != (*it_e)->childs.end(); it_c++)
-					if (checkMouseHovering((*it_c)))
-						element = (*it_c);
+				if (checkMouseHovering((*it_e)) && (*it_e)->interactive)
+					element = (*it_e)->getMouseHoveringElement();			
 			}
 		}
 	}
@@ -385,6 +382,7 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		element->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
 		element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
 		element->active = tmp.attribute("active").as_bool(true);
+		element->function = (element_function)tmp.attribute("function").as_int(0);
 
 		pugi::xml_node childs = tmp.child("childs");
 		if(childs)
@@ -585,7 +583,7 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 
 	IngameMenu* ret = new IngameMenu(texture, icon_atlas, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, lifeBars_offsetX, lifeBars_offsetY, stats_posX, stats_posY, callback);
 
-	ret->createActionButtons(node.child("buttons"));
+	//ret->createActionButtons(node.child("buttons"));
 
 	inGameMenu = ret;
 
@@ -623,6 +621,16 @@ void j1Gui::LoadDB(pugi::xml_node node)
 
 			LifeBarRect.insert(std::pair<std::string, SDL_Rect>(tag, section));
 		}
+	}
+
+	pugi::xml_node actionButton;
+	for (actionButton = node.child("ActionButtons").first_child(); actionButton; actionButton = actionButton.next_sibling())
+	{
+		uint id = actionButton.attribute("id").as_uint();
+		Button* button = createButton(actionButton, App->uiscene);
+		button->active = false;
+		button->function = (element_function)actionButton.attribute("function").as_int(0);
+		actionButtons.insert(std::pair<uint, Button*>(id, button));
 	}
 }
 
@@ -675,6 +683,38 @@ SDL_Rect j1Gui::GetIconRect(Entity* entity)
 SDL_Rect j1Gui::GetLifeBarRect(std::string tag)
 {
 	return LifeBarRect.at(tag);
+}
+
+Button * j1Gui::GetActionButton(uint id)
+{
+	return actionButtons.at(id);
+}
+
+std::list<Button*> j1Gui::activateActionButtons(uint ids[9])
+{
+	std::list<Button*> list;
+
+	for (int i = 0; i < 9; i++)
+	{
+		if (ids[i] == 0)
+			break;
+		for (std::map<uint, Button*>::iterator test = actionButtons.begin(); test != actionButtons.end(); test++)
+		{
+			if (ids[i] == (*test).first)
+			{
+				(*test).second->active = true;
+				list.push_back((*test).second);
+				break;
+				//it won't deactivate buttons not reached
+			}
+			else
+			{
+				(*test).second->active = false;
+			}
+		}
+	}
+
+	return list;
 }
 
 void j1Gui::newSelectionDone()

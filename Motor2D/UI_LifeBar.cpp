@@ -123,10 +123,9 @@ void LifeBar::BlitElement(bool use_camera)
 				bar->section = App->gui->GetLifeBarRect("mR_empty");
 				bar->full = App->gui->GetLifeBarRect("mR_full");
 			}
-
-			std::string text = std::to_string((int)(bar->max_value*bar->progress)) + "/" + std::to_string((int)bar->max_value);
-			display->setText(text);
 		}
+		std::string text = std::to_string((int)(bar->max_value*bar->progress)) + "/" + std::to_string((int)bar->max_value); //PERFORMANCE ISSUE? (creating string each frame)
+		display->setText(text);
 
 		bar->BlitElement(false);
 	}

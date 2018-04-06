@@ -101,6 +101,8 @@ public:
 	void AddIconData(resourceType type, pugi::xml_node node);
 	SDL_Rect GetIconRect(Entity* entity);
 	SDL_Rect GetLifeBarRect(std::string tag);
+	Button* GetActionButton(uint id);
+	std::list<Button*> activateActionButtons(uint ids[9]);
 
 	void newSelectionDone();
 
@@ -131,6 +133,7 @@ private:
 	std::map<buildingType, SDL_Rect> buildingIconRect;
 	std::map<resourceType, SDL_Rect> resourceIconRect;
 	std::map<std::string, SDL_Rect> LifeBarRect;
+	std::map<uint, Button*> actionButtons;
 };
 
 #endif // __j1GUI_H__

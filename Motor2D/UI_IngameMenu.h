@@ -27,11 +27,13 @@ public:
 	void createSelectionBasicInfo();
 	void createStatsDisplay();
 	void updateStatsDisplay();
-	void createActionButtons(pugi::xml_node node);
+	//void createActionButtons(pugi::xml_node node);
 	void updateActionButtons();
 	void cleanLists(bool icons = true, bool lifeBars = true, bool statsTitles = true, bool statsNumbers = true, bool buttons = true);
 
 	void BlitElement(bool use_camera = false);
+
+	UI_element* getMouseHoveringElement();
 
 public:
 
@@ -47,7 +49,7 @@ public:
 	std::list<Text*> statsTitles; //Constant but inactive
 	Text* title=nullptr; //Constant but inactive
 	std::list<Text*> statsNumbers; //Constant but inactive
-	std::list<Button*> actionButtons; //Constant but inactive
+	std::list<Button*> actionButtons; //Loading the activated buttons
 
 };
 

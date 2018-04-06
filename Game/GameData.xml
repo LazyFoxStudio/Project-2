@@ -26,8 +26,10 @@
                 <StartingColumn value="0"/>
               </Animation>
             </Animations>
+			<Actions>
+			</Actions>
         </Hero>
-        <Unit>
+      <Unit>
             <name value="Footman"/>
             <type value="3"/>
 			      <iconData x="162" y="7" w="72" h="60"/>
@@ -257,11 +259,14 @@
               </Dying2>
             
           </Animations>
-        </Unit>
+			<Actions>
+				<action id="1"/>
+			</Actions>
+		</Unit>
       <Unit>
             <name value="Archer"/>
             <type value="4"/> 
-			      <iconData x="315" y="24" w="72" h="60"/>
+			      <iconData x="315" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Alliance Sprites\Elven archer_Spritesheet.png"/>
             <Stats>
                 <life value="40"/>
@@ -487,7 +492,10 @@
                 <speed value="0.5"/>
               </Dying2>
             </Animations>
-      </Unit>
+			<Actions>
+				<action1 id="1"/>
+			</Actions>
+	  </Unit>
       <Unit>
             <name value="Grunt"/>
             <type value="6"/> 
@@ -919,6 +927,9 @@
         <buildingTime value="0"/>
         <defense value="100"/>
       </Stats>
+	  <Actions>
+		  <action id="2"/>
+	  </Actions>
       <iconData x="9" y="264" w="72" h="59"/>
       <size x="4" y="4"/>
     </Building>
@@ -985,7 +996,7 @@
         
     </Resource>
   </Nature>
-	<LifeBars>
+	<LifeBars>	
 		<in-game>
 			<LifeBarG>
 				<empty tag="G_empty" x="285" y="399" w="69" h="11"/>
@@ -1015,4 +1026,18 @@
 			</LifeBarY>
 		</menu>
 	</LifeBars>
+	<ActionButtons>
+		<move id="1" function="14">
+			<position x="1399" y="809"/>
+			<standby x="285" y="437" w="66" h="66"/>
+			<OnMouse x="353" y="437" w="66" h="66"/>
+			<OnClick x="421" y="437" w="66" h="66"/>
+		</move>
+		<buildBarrack id="2" function="15">
+			<position x="1399" y="809"/>
+			<standby x="1101" y="437" w="66" h="66"/>
+			<OnMouse x="1169" y="437" w="66" h="66"/>
+			<OnClick x="1237" y="437" w="66" h="66"/>
+		</buildBarrack>
+	</ActionButtons>
 </GameData>
