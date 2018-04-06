@@ -40,7 +40,8 @@ enum element_function
 	WEB,
 
 	MOVE_FUNCTION,
-	BUILD_FUNCTION
+	BUILD_BARRACKS_FUNCTION,
+	BUILD_LUMBER_MILL_FUNCTION
 };
 
 enum element_state

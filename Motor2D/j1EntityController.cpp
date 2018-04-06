@@ -84,7 +84,7 @@ bool j1EntityController::Update(float dt)
 		App->input->GetMousePosition(position.x, position.y);
 	
 		placingBuilding(BARRACKS,position);
-		if (App->actionscontroller->action_type == BUILD)
+		if (App->actionscontroller->action_type == BUILD_BARRACKS)
 			App->actionscontroller->doingAction = false;
 	}
 
@@ -94,12 +94,14 @@ bool j1EntityController::Update(float dt)
 		building = true;
 	}
 
-	else if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && building && structure_beingbuilt == LUMBER_MILL)
+	else if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) && building && structure_beingbuilt == LUMBER_MILL)
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
 
 		placingBuilding(LUMBER_MILL, position);
+		if (App->actionscontroller->action_type == BUILD_LUMBER_MILL)
+			App->actionscontroller->doingAction = false;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && !building)

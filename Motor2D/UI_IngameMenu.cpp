@@ -13,11 +13,13 @@
 #include "UI_ProgressBar.h"
 #include "j1EntityController.h"
 
-IngameMenu::IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int lifeBars_offsetX, int lifeBars_offsetY, int stats_posX, int stats_posY, j1Module * callback) : UI_element(x, y, element_type::MENU, section, callback, atlas),
+IngameMenu::IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int lifeBars_offsetX, int lifeBars_offsetY, int stats_posX, int stats_posY, int firstButton_posX, int firstButton_posY, int buttons_offsetX, int buttons_offsetY, j1Module * callback) : UI_element(x, y, element_type::MENU, section, callback, atlas),
 firstIcon_pos({firstIcon_posX, firstIcon_posY}),
 icons_offset({icons_offsetX, icons_offsetY}),
 lifeBars_offset({lifeBars_offsetX, lifeBars_offsetY}),
 stats_pos({stats_posX, stats_posY}),
+firstButton_pos({firstButton_posX, firstButton_posY}),
+buttons_offset({buttons_offsetX, buttons_offsetY}),
 icon_atlas(icon_atlas)
 {
 	window = new Window(texture, x, y, section, callback);
@@ -131,16 +133,27 @@ void IngameMenu::updateStatsDisplay()
 
 void IngameMenu::updateActionButtons()
 {
+	actionButtons.clear();
 
 	if (App->entitycontroller->selected_entities.size() > 0)
 	{
 		Entity* entity = App->entitycontroller->selected_entities.front();
 		actionButtons = App->gui->activateActionButtons(entity->available_actions);
 	}
-	else
+
+	int counterX = 0;
+	int counterY = 0;
+	for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
 	{
-		uint a[9] = {};
-		actionButtons = App->gui->activateActionButtons(a);
+		(*it_b)->localPosition.x = firstButton_pos.x + (buttons_offset.x*counterX);
+		(*it_b)->localPosition.y = firstButton_pos.y + (buttons_offset.y*counterY);
+		(*it_b)->active = true;
+		counterX++;
+		if (counterX == 3)
+		{
+			counterY++;
+			counterX = 0;
+		}
 	}
 }
 
