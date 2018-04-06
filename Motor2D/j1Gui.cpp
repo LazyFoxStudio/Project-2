@@ -81,7 +81,7 @@ bool j1Gui::PreUpdate()
 			if ((*it_m)->active == false) continue;
 			for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++) //Go through elements
 			{
-				if (checkMouseHovering((*it_e)))
+				if (checkMouseHovering((*it_e)) && (*it_e)->interactive)
 					element = (*it_e)->getMouseHoveringElement();			
 			}
 		}

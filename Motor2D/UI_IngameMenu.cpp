@@ -129,20 +129,6 @@ void IngameMenu::updateStatsDisplay()
 	}
 }
 
-/*void IngameMenu::createActionButtons(pugi::xml_node node)
-{
-	for (pugi::xml_node tmp = node.first_child(); tmp; tmp = tmp.next_sibling())
-	{
-		Button* button = App->gui->createButton(tmp, callback, false);
-		button->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
-		button->interactive = tmp.child("interactive").attribute("value").as_bool(true);
-		button->active = false;
-		actionButtons.push_back(button);
-		childs.push_back(button);
-	}
-	actionButtons.front()->function = MOVE_FUNCTION;
-}*/
-
 void IngameMenu::updateActionButtons()
 {
 
@@ -156,26 +142,6 @@ void IngameMenu::updateActionButtons()
 		uint a[9] = {};
 		actionButtons = App->gui->activateActionButtons(a);
 	}
-
-	//need to load from xml first button pos and offset, then change position of the buttons to be in order
-	//missing a system to receive feedback
-
-	/*if (App->entitycontroller->selected_entities.size() > 0)
-	{
-		Entity* entity = (*App->entitycontroller->selected_entities.begin());
-
-		for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
-		{
-			(*it_b)->active = true;
-		}
-	}
-	else
-	{
-		for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
-		{
-			(*it_b)->active = false;
-		}
-	}*/
 }
 
 void IngameMenu::cleanLists(bool icons, bool lifebars, bool statstitles, bool statsnumbers, bool buttons)
@@ -224,17 +190,6 @@ void IngameMenu::cleanLists(bool icons, bool lifebars, bool statstitles, bool st
 		}
 		statsNumbers.clear();
 	}
-	/*if (buttons)
-	{
-		//Clean action buttons
-		std::list<Button*>::iterator it_b = actionButtons.begin();
-		while (it_b != actionButtons.end())
-		{
-			RELEASE(*it_b);
-			it_b++;
-		}
-		actionButtons.clear();
-	}*/
 }
 
 void IngameMenu::BlitElement(bool use_camera)
@@ -284,7 +239,7 @@ UI_element* IngameMenu::getMouseHoveringElement()
 
 	for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
 	{
-		if (App->gui->checkMouseHovering((*it_b)))
+		if (App->gui->checkMouseHovering((*it_b)) && (*it_b)->interactive)
 		{
 			ret = (*it_b);
 		}

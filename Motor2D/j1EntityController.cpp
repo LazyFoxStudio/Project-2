@@ -84,6 +84,8 @@ bool j1EntityController::Update(float dt)
 		App->input->GetMousePosition(position.x, position.y);
 	
 		placingBuilding(BARRACKS,position);
+		if (App->actionscontroller->action_type == BUILD)
+			App->actionscontroller->doingAction = false;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && !building)

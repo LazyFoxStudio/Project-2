@@ -86,7 +86,7 @@ public:
 		if (childs.size() > 0)
 		{
 			for (std::list<UI_element*>::iterator it_c = childs.begin(); it_c != childs.end(); it_c++)
-				if (App->gui->checkMouseHovering((*it_c)))
+				if (App->gui->checkMouseHovering((*it_c)) && (*it_c)->interactive)
 					ret = (*it_c)->getMouseHoveringElement();
 		}
 
