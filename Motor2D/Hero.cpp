@@ -44,17 +44,15 @@ bool Hero::Update(float dt)
 		App->render->DrawQuad({ (int)position.x,(int)position.y,26,36 }, Blue, true);
 	}
 	
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
 	{
-		//TODO pot ser que skill_one sigui nullptr i fa crash
+		doSkill_1 = !doSkill_1;
+	}
+	if (doSkill_1)
+	{
 		skill_one->Activate(this);
-		LOG("skill one");
 	}
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_UP)
-	{
-		skill_one->ready = true;
-		LOG("restart");
-	}
+	
 	return true;
 }
 

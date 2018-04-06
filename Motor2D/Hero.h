@@ -49,6 +49,9 @@ public:
 
 	animationType new_animation = IDLE_S;
 
+private:
+
+	bool	doSkill_1 = false;
 
 public:
 

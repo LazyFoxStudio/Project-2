@@ -25,19 +25,24 @@ public:
 	bool				ready = true;
 	
 	int					cooldown = 0; 
-	int					radius = 0;
 	int					damage = 0;
 	
+	uint				radius = 0;
+	uint				range = 0;
+	
 	iPoint				position = { 0,0 };
+	iPoint				mouse_position = { 0,0 };
+	iPoint				position_hero = { 0,0 };
 	
 	std::list<iPoint>	toDraw;
 
 public:
 	
-	Skill(int _radius, int _damage) 
+	Skill(uint _radius, int _damage,uint _range) 
 	{
 		radius = _radius;
 		damage = _damage;
+		range = _range;
 	};
 	
 	~Skill() {};
@@ -51,6 +56,7 @@ public:
 	void MakeDamage();
 	
 	bool Find(std::list<iPoint> list,const iPoint& point);
+	bool inCircle(int pos_x,int pos_y);
 };
 
 

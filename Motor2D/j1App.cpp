@@ -132,7 +132,7 @@ bool j1App::Update()
 	bool ret = true;
 	PrepareUpdate();
 	int test = (int)input->GetWindowEvent(WE_QUIT);
-	LOG("TEST: %d", test);
+//	LOG("TEST: %d", test);
 
 	if(!input->GetWindowEvent(WE_QUIT))
 		if(PreUpdate())

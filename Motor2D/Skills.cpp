@@ -1,5 +1,6 @@
 #include "Skills.h"
 #include "j1Render.h"
+#include "j1Input.h"
 #include "j1EntityController.h"
 #include "Hero.h"
 #include "j1Map.h"
@@ -7,17 +8,24 @@
 
 void Skill::Activate(Hero* hero)
 {
-	position = App->map->WorldToMap(hero->position.x,hero->position.y);
-	//position = App->map->MapToWorld(position.x, position.y);
+	position_hero = { (int)hero->position.x,(int)hero->position.y };
 
-	DrawRange();
+	position = App->map->WorldToMap(position_hero.x, position_hero.y);
+	App->input->GetMousePosition(mouse_position.x, mouse_position.y);
 
-	if (ready)
+	if (inCircle(mouse_position.x , mouse_position.y))
 	{
-		LOG("damage");
-		MakeDamage();
-		ready=false;
+		mouse_position = App->map->WorldToMap(mouse_position.x - App->render->camera.x, mouse_position.y - App->render->camera.y);
+		DrawRange();
+		
+		if (App->input->GetMouseButtonDown(1)==KEY_DOWN)
+		{
+			MakeDamage();
+		}
 	}
+
+	App->render->DrawCircle((position.x*App->map->data.tile_width) + App->render->camera.x, (position.y*App->map->data.tile_width)+App->render->camera.y, range*App->map->data.tile_width, Red);
+	
 }
 
 void Skill::DrawRange()
@@ -53,7 +61,7 @@ void Skill::BFS(int Area)
 	toDraw.clear();
 
 	iPoint Goal;
-	iPoint origin=position;
+	iPoint origin=mouse_position;
 	
 	std::list<iPoint> neighbors;
 	std::list<iPoint> frontier;
@@ -105,7 +113,7 @@ void Skill::MakeDamage()
 				iPoint enemy_pos;
 				enemy_pos = App->map->WorldToMap(((Unit*)(*item))->position.x, ((Unit*)(*item))->position.y);
 
-				if (enemy_pos.DistanceManhattan(position) <= radius+1)
+				if (enemy_pos.DistanceManhattan(mouse_position) <= radius+1)
 				{
 					((Unit*)(*item))->current_HP -= damage;
 				}
@@ -113,4 +121,22 @@ void Skill::MakeDamage()
 		}
 	}
 
+}
+
+bool Skill::inCircle(int pos_x, int pos_y)
+{
+	bool ret = false;
+
+	iPoint center = { pos_x - position_hero.x+App->render->camera.x,pos_y - position_hero.y - App->render->camera.y };
+	LOG("%d and %d", center.x, center.y);
+
+	int circle_radius = (range*App->map->data.tile_width)*(range*App->map->data.tile_width);
+	int circle_position = (center.x*center.x) + (center.y*center.y);
+
+	if (circle_position<=(circle_radius))
+	{
+		ret = true;
+	}
+
+	return ret;
 }

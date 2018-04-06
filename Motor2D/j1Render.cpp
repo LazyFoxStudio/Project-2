@@ -224,17 +224,17 @@ bool j1Render::DrawCircle(int x, int y, int radius, Color& color, bool use_camer
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
-	SDL_Point points[360];
+	SDL_Point points[5760];
 
-	float factor = (float)M_PI / 180.0f;
+	float factor = (float)M_PI / 2880;
 
-	for(uint i = 0; i < 360; ++i)
+	for(uint i = 0; i < 5760; ++i)
 	{
 		points[i].x = (int)(x + radius * cos(i * factor));
 		points[i].y = (int)(y + radius * sin(i * factor));
 	}
 
-	int result = SDL_RenderDrawPoints(renderer, points, 360);
+	int result = SDL_RenderDrawPoints(renderer, points, 5760);
 
 	if(result)
 	{
