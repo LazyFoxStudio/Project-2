@@ -48,16 +48,10 @@ bool MoveTo::OnUpdate(float dt)
 {
 	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
-	if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR) Stop();
+	if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR || !flow_field->getNodeAt(map_p)->parent)
+		Stop();
 	else
-	{
-		if (!flow_field->getNodeAt(map_p)->parent) Stop();
-		else
-		{
-			fPoint direction	= (flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized();
-			unit->next_step		= unit->next_step + (direction * STEERING_FACTOR);
-		}
-	}
+		unit->next_step += ((flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized() * STEERING_FACTOR);
 
 	return true; 
 }
@@ -94,17 +88,10 @@ bool AttackingMoveTo::OnUpdate(float dt)
 
 	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
-	if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR) Stop();
+	if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR || !flow_field->getNodeAt(map_p)->parent) 
+		Stop();
 	else
-	{
-		if (!flow_field->getNodeAt(map_p)->parent) Stop();
-		else
-		{
-			fPoint direction = (flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized();
-			unit->next_step = unit->next_step + (direction * STEERING_FACTOR);
-		}
-	}
-
+		unit->next_step += ((flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized() * STEERING_FACTOR);
 
 	return true;
 }

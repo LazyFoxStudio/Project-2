@@ -364,7 +364,7 @@ void j1EntityController::selectionControl()
 		if (getSelectedType() == UNIT_AND_BUILDING)
 		{
 			for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
-				if ((*it)->entity_type == BUILDING) selected_entities.remove(*it);
+				if ((*it)->entity_type == BUILDING) { selected_entities.erase(it); it--; }
 		}
 
 		App->gui->newSelectionDone();
