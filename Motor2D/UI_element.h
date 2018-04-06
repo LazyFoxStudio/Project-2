@@ -80,6 +80,19 @@ public:
 
 	void BlitChilds();
 
+	virtual UI_element* getMouseHoveringElement()
+	{
+		UI_element* ret = this;
+		if (childs.size() > 0)
+		{
+			for (std::list<UI_element*>::iterator it_c = childs.begin(); it_c != childs.end(); it_c++)
+				if (App->gui->checkMouseHovering((*it_c)))
+					ret = (*it_c)->getMouseHoveringElement();
+		}
+
+		return ret;
+	}
+
 	void setDragable(bool horizontally, bool vertically);
 
 	void setOriginalPos(int x, int y);

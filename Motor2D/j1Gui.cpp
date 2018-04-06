@@ -82,10 +82,7 @@ bool j1Gui::PreUpdate()
 			for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++) //Go through elements
 			{
 				if (checkMouseHovering((*it_e)))
-					element = (*it_e);
-				for (std::list<UI_element*>::iterator it_c = (*it_e)->childs.begin(); it_c != (*it_e)->childs.end(); it_c++)
-					if (checkMouseHovering((*it_c)))
-						element = (*it_c);
+					element = (*it_e)->getMouseHoveringElement();			
 			}
 		}
 	}

@@ -145,6 +145,7 @@ void IngameMenu::updateStatsDisplay()
 
 void IngameMenu::updateActionButtons()
 {
+
 	if (App->entitycontroller->selected_entities.size() > 0)
 	{
 		Entity* entity = App->entitycontroller->selected_entities.front();
@@ -153,12 +154,11 @@ void IngameMenu::updateActionButtons()
 	else
 	{
 		uint a[9] = {};
-		App->gui->activateActionButtons(a);
+		actionButtons = App->gui->activateActionButtons(a);
 	}
 
 	//need to load from xml first button pos and offset, then change position of the buttons to be in order
 	//missing a system to receive feedback
-
 
 	/*if (App->entitycontroller->selected_entities.size() > 0)
 	{
@@ -258,11 +258,11 @@ void IngameMenu::BlitElement(bool use_camera)
 		(*it_l)->BlitElement(use_camera);
 	}
 	//Blit action butons
-	/*for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
+	for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
 	{
 		if ((*it_b)->active)
 			(*it_b)->BlitElement(use_camera);
-	}*/
+	}
 	//Blit stats
 	if (title != nullptr && title->active)
 		title->BlitElement(use_camera);
@@ -276,4 +276,19 @@ void IngameMenu::BlitElement(bool use_camera)
 		if ((*it_t)->active)
 			(*it_t)->BlitElement(use_camera);
 	}
+}
+
+UI_element* IngameMenu::getMouseHoveringElement()
+{
+	UI_element* ret = (UI_element*)this;
+
+	for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
+	{
+		if (App->gui->checkMouseHovering((*it_b)))
+		{
+			ret = (*it_b);
+		}
+	}
+
+	return ret;
 }

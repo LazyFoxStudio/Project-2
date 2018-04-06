@@ -33,6 +33,8 @@ public:
 
 	void BlitElement(bool use_camera = false);
 
+	UI_element* getMouseHoveringElement();
+
 public:
 
 	SDL_Texture* icon_atlas = nullptr;
