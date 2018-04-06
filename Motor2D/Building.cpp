@@ -19,6 +19,9 @@ Building::Building(iPoint pos, Building& building)
 	size.x = building.size.x;
 	size.y = building.size.y;
 
+	for (int i = 0; i < 9; i++)
+		available_actions[i] = building.available_actions[i];
+
 	GetColliderFromSize();
 
 	sprites = building.sprites;

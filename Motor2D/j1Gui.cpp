@@ -382,6 +382,7 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		element->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
 		element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
 		element->active = tmp.attribute("active").as_bool(true);
+		element->function = (element_function)tmp.attribute("function").as_int(0);
 
 		pugi::xml_node childs = tmp.child("childs");
 		if(childs)
@@ -628,6 +629,7 @@ void j1Gui::LoadDB(pugi::xml_node node)
 		uint id = actionButton.attribute("id").as_uint();
 		Button* button = createButton(actionButton, App->uiscene);
 		button->active = false;
+		button->function = (element_function)actionButton.attribute("function").as_int(0);
 		actionButtons.insert(std::pair<uint, Button*>(id, button));
 	}
 }
@@ -692,19 +694,24 @@ std::list<Button*> j1Gui::activateActionButtons(uint ids[9])
 {
 	std::list<Button*> list;
 
-	int i = 0;
-	for (std::map<uint, Button*>::iterator test = actionButtons.begin(); test != actionButtons.end(); test++)
+	for (int i = 0; i < 9; i++)
 	{
-		if (i < 9 && ids[i] == (*test).first)
+		if (ids[i] == 0)
+			break;
+		for (std::map<uint, Button*>::iterator test = actionButtons.begin(); test != actionButtons.end(); test++)
 		{
-			(*test).second->active = true;
-			list.push_back((*test).second);
+			if (ids[i] == (*test).first)
+			{
+				(*test).second->active = true;
+				list.push_back((*test).second);
+				break;
+				//it won't deactivate buttons not reached
+			}
+			else
+			{
+				(*test).second->active = false;
+			}
 		}
-		else
-		{
-			(*test).second->active = false;
-		}
-		i++;
 	}
 
 	return list;

@@ -927,6 +927,9 @@
         <buildingTime value="0"/>
         <defense value="100"/>
       </Stats>
+	  <Actions>
+		  <action id="2"/>
+	  </Actions>
       <iconData x="9" y="264" w="72" h="59"/>
       <size x="4" y="4"/>
     </Building>
@@ -1024,11 +1027,17 @@
 		</menu>
 	</LifeBars>
 	<ActionButtons>
-		<move id="1">
+		<move id="1" function="14">
 			<position x="1399" y="809"/>
 			<standby x="285" y="437" w="66" h="66"/>
 			<OnMouse x="353" y="437" w="66" h="66"/>
 			<OnClick x="421" y="437" w="66" h="66"/>
 		</move>
+		<build id="2" function="15">
+			<position x="1399" y="809"/>
+			<standby x="285" y="437" w="66" h="66"/>
+			<OnMouse x="353" y="437" w="66" h="66"/>
+			<OnClick x="421" y="437" w="66" h="66"/>
+		</build>
 	</ActionButtons>
 </GameData>

@@ -78,7 +78,7 @@ bool j1EntityController::Update(float dt)
 
 
 
-	else if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && building && structure_beingbuilt == BARRACKS)
+	else if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) && building && structure_beingbuilt == BARRACKS)
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
