@@ -69,19 +69,13 @@ bool MoveTo::OnStop()
 
 bool AttackingMoveTo::OnUpdate(float dt) 
 {
-	Unit* enemy = unit->SearchNearestEnemy();
+	Unit* enemy = App->entitycontroller->getNearestEnemyUnit(unit->position, unit->IsEnemy());
 	if (enemy)
 	{
-		iPoint enemy_position = App->map->WorldToMap(enemy->position.x, enemy->position.y);
-		iPoint pos = App->map->WorldToMap(unit->position.x, unit->position.y);
-
-		if (pos.DistanceTo(enemy_position) < unit->line_of_sight)
+		if (unit->position.DistanceTo(enemy->position) < unit->line_of_sight)
 		{
 			Attack* new_attack_command = new Attack(unit);
-			new_attack_command->state = UPDATE;
 			unit->commands.push_front(new_attack_command);
-
-			state = TO_INIT;
 			return true;
 		}
 	}
@@ -101,27 +95,58 @@ bool AttackingMoveTo::OnUpdate(float dt)
 
 bool Attack::OnInit()
 {
-	Unit* enemy = unit->SearchNearestEnemy();
-	if (enemy)
+	if (!flow_field)
 	{
-		iPoint pos     = App->map->WorldToMap(unit->position.x, unit->position.y);
-
+		flow_field = new FlowField(App->map->data.width, App->map->data.height);
+		unique_field = true;
 	}
-	else Stop();
 
 	return true;
 }
 
 bool Attack::OnUpdate(float dt)
 {
-	iPoint pos = App->map->WorldToMap(unit->position.x, unit->position.y);
+	Unit* enemy = App->entitycontroller->getNearestEnemyUnit(unit->position, unit->IsEnemy());
+	if (enemy)
+	{
+		if (enemy->position.DistanceTo(unit->position) < unit->range)
+		{
+			if (!timer) timer = new j1Timer();
+			else if (timer->ReadSec() > 0.5f)
+			{
+				enemy->current_HP -= unit->piercing_atk + (MIN(unit->attack - enemy->defense, 0));
+				RELEASE(timer);
+			}
+		}
+		else if(enemy->position.DistanceTo(unit->position) < unit->line_of_sight)
+		{
+			RELEASE(timer);
+			map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
+			if (!flow_field->getNodeAt(map_p)->parent)
+			{
+				enemy_map_p = App->map->WorldToMap(enemy->position.x, enemy->position.y);
+
+				if (App->pathfinding->CreatePath(map_p, enemy_map_p) < 0)		
+					{ Stop(); return true; }
+				else
+					flow_field->updateFromPath(*App->pathfinding->GetLastPath());
+			}
+			else
+				unit->next_step += ((flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized() * STEERING_FACTOR);
+		}
+		else Stop();
+	}
+	else Stop();
+	
 	return true;
 }
 
 bool Attack::OnStop()
 {
-	// TODO
+	if (flow_field && unique_field) delete flow_field;
+	RELEASE(timer);
+	unit->next_step = { 0,0 };
 	return true;
 }
 
@@ -143,7 +168,7 @@ bool Hold::OnInit()
 
 bool Hold::OnUpdate(float dt)
 {
-	Unit* enemy = unit->SearchNearestEnemy();
+	Unit* enemy = nullptr; // unit->SearchNearestEnemy();
 	if (enemy)
 	{
 		iPoint enemy_position = App->map->WorldToMap(enemy->position.x, enemy->position.y);

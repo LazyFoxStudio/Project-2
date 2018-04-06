@@ -47,6 +47,13 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	collider.y = pos.y - (collider.h / 2);
 }
 
+Unit::~Unit()
+{
+	Halt();
+	animations.clear();
+	effects.clear();
+}
+
 void Unit::Draw(float dt)
 {
 	SDL_Rect r = current_anim->GetCurrentFrame(dt);
@@ -158,12 +165,6 @@ void Unit::Halt()
 	commands.clear();
 }
 
-Unit* Unit::SearchNearestEnemy()
-{
-	//TODO
-	return nullptr;
-}
-
 
 fPoint Unit::calculateSeparationVector()
 {
@@ -173,11 +174,8 @@ fPoint Unit::calculateSeparationVector()
 	fPoint separation_v = { 0,0 };
 	for (int i = 0; i < collisions.size(); i++)
 	{
-		if (collisions[i]->entity_type == UNIT)
-		{
-			fPoint current_separation = (position - collisions[i]->position);
-			separation_v += current_separation.Normalized() * (1 / current_separation.GetModule());
-		}
+		fPoint current_separation = (position - collisions[i]->position);
+		separation_v += current_separation.Normalized() * (1 / current_separation.GetModule());
 	}
 
 	return separation_v * SEPARATION_STRENGTH;

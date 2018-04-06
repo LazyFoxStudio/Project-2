@@ -77,11 +77,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Ally.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Effects.cpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="j1ActionsController.cpp" />
@@ -121,12 +119,10 @@
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ally.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Effects.h" />
-    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="j1ActionsController.h" />

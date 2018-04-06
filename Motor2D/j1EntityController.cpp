@@ -168,8 +168,6 @@ bool j1EntityController::PostUpdate()
 	{
 		entities.remove(*it);
 		selected_entities.remove(*it);
-		
-		//if((*it)->collider)  DestroyCollider
 
 		delete *it;
 	}
@@ -374,6 +372,24 @@ void j1EntityController::selectionControl()
 		selection_rect = { 0,0,0,0 };
 		break;
 	}
+}
+
+Unit* j1EntityController::getNearestEnemyUnit(fPoint position, bool isEnemy)
+{
+	Unit* ret = nullptr;
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		if ((*it)->entity_type == UNIT)
+		{
+			Unit* enemy = (Unit*)(*it);
+			if (enemy->IsEnemy() != isEnemy)
+			{
+				if (!ret) { ret = enemy; continue; }
+				else if (enemy->position.DistanceTo(position) < ret->position.DistanceTo(position)) ret = enemy;
+			}
+		}
+	}
+	return ret;
 }
 
 std::vector<Entity*> j1EntityController::CheckCollidingWith(SDL_Rect collider, Entity* entity_to_ignore)

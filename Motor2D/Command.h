@@ -8,6 +8,7 @@
 #include <list>
 #include <vector>
 #include "p2Point.h"
+#include "j1Timer.h"
 
 class Unit;
 class Squad;
@@ -75,6 +76,12 @@ class Attack : public Command
 {
 public:
 
+	iPoint enemy_map_p = { 0,0 };
+	iPoint map_p = { 0,0 };
+	FlowField* flow_field = nullptr;
+	bool unique_field = false;
+	j1Timer* timer;
+
 public:
 	Attack(Unit* unit, bool keep_attacking = true) : Command(unit, ATTACK) {};
 
@@ -127,8 +134,6 @@ class MoveToSquad : public Command
 {
 public: 
 	Squad* squad = nullptr;
-	bool reshaping_done = false;
-	bool waiting = false;
 	iPoint dest = { -1,-1 };
 	FlowField* flow_field = nullptr;
 

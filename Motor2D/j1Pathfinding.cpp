@@ -361,6 +361,15 @@ FlowField::~FlowField()
 	delete[] field;
 }
 
+void FlowField::updateFromPath(const std::list<iPoint>& path)
+{
+	for (std::list<iPoint>::const_iterator it = path.begin(); it != path.end();)
+	{
+		iPoint prev = *it++;
+		getNodeAt(prev)->parent = getNodeAt(*it);
+	}
+}
+
 FlowField* j1PathFinding::CreateFlowField(iPoint origin, iPoint destination)
 {
 	if (App->pathfinding->IsWalkable(destination))

@@ -65,10 +65,7 @@ public:
 public:
 	Unit() { entity_type = UNIT; };					// this constructor should only be used when loading unit Database
 	Unit(iPoint pos, Unit& unit, Squad* squad = nullptr);
-	virtual ~Unit() {};
-	
-	virtual Entity* findTarget() { return nullptr; };
-	virtual void attackEntity(Entity* target) {};
+	~Unit();
 
 	bool Update(float dt);
 	void Draw(float dt);
@@ -77,7 +74,6 @@ public:
 
 	fPoint calculateSeparationVector();
 	bool IsEnemy() { return type >= GRUNT; };
-	Unit* SearchNearestEnemy();
 	void Move(float dt);
 };
 
