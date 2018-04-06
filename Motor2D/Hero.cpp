@@ -48,6 +48,10 @@ bool Hero::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
 	{
 		doSkill_1 = !doSkill_1;
+		if (doSkill_2)
+		{
+			doSkill_2 = false;
+		}
 	}
 	if (doSkill_1)
 	{
@@ -58,6 +62,10 @@ bool Hero::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 	{
 		doSkill_2 = !doSkill_2;
+		if (doSkill_1)
+		{
+			doSkill_1 = false;
+		}
 	}
 	if (doSkill_2)
 	{

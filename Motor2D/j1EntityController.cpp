@@ -504,7 +504,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		if (heroTemplate->type == MAGE)  // HERO_X should the last hero in the type enum
 		{
 			heroTemplate->skill_one = new Skill(3, 5, 20, AREA); //Icicle Crash
-			heroTemplate->skill_two = new Skill(0, 10, 10,NONE_RANGE);
+			heroTemplate->skill_two = new Skill(0, 10, 10,AREA);
 		}
 
 		heroTemplate->name = NodeInfo.child("name").attribute("value").as_string("error");
