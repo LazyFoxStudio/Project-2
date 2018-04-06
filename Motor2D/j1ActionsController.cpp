@@ -32,13 +32,19 @@ bool j1ActionsController::Update(float dt)
 				doingAction = false;
 			}
 			break;
-		case BUILD:
+		case BUILD_BARRACKS:
 			if (doingAction && !App->entitycontroller->building)
 			{
 				App->entitycontroller->structure_beingbuilt = BARRACKS;
 				App->entitycontroller->building = true;
 			}
-
+			break;
+		case BUILD_LUMBER_MILL:
+			if (doingAction && !App->entitycontroller->building)
+			{
+				App->entitycontroller->structure_beingbuilt = LUMBER_MILL;
+				App->entitycontroller->building = true;
+			}
 			break;
 		}
 		

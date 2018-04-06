@@ -8,7 +8,8 @@ enum actionType
 	NO_ACTION = 0,
 
 	MOVE,
-	BUILD
+	BUILD_BARRACKS,
+	BUILD_LUMBER_MILL
 };
 
 class j1ActionsController : public j1Module

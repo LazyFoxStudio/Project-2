@@ -147,8 +147,11 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 		case MOVE_FUNCTION:
 			App->actionscontroller->activateAction(MOVE);
 			break;
-		case BUILD_FUNCTION:
-			App->actionscontroller->activateAction(BUILD);
+		case BUILD_BARRACKS_FUNCTION:
+			App->actionscontroller->activateAction(BUILD_BARRACKS);
+			break;
+		case BUILD_LUMBER_MILL_FUNCTION:
+			App->actionscontroller->activateAction(BUILD_LUMBER_MILL);
 			break;
 		}
 	}

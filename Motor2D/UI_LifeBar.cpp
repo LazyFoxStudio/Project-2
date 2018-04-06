@@ -129,7 +129,7 @@ void LifeBar::BlitElement(bool use_camera)
 
 		bar->BlitElement(false);
 	}
-	else if (bar->progress < 1.1f) //If "in-game" but 100% do not draw
+	else if (bar->progress < 1.0f) //If "in-game" but 100% do not draw
 	{
 		bar->localPosition = { (int)entity->position.x+offset.x, (int)entity->position.y+offset.y };
 	

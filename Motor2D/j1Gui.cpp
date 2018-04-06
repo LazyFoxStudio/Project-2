@@ -581,9 +581,12 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 	int stats_posX = node.child("stats").attribute("x").as_int();
 	int stats_posY = node.child("stats").attribute("y").as_int();
 
-	IngameMenu* ret = new IngameMenu(texture, icon_atlas, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, lifeBars_offsetX, lifeBars_offsetY, stats_posX, stats_posY, callback);
+	int actionButtons_posX = node.child("buttons").attribute("x").as_int();
+	int actionButtons_posY = node.child("buttons").attribute("y").as_int();
+	int actionButtons_offsetX = node.child("buttons").attribute("offsetX").as_int();
+	int actionButtons_offsetY = node.child("buttons").attribute("offsetY").as_int();
 
-	//ret->createActionButtons(node.child("buttons"));
+	IngameMenu* ret = new IngameMenu(texture, icon_atlas, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, lifeBars_offsetX, lifeBars_offsetY, stats_posX, stats_posY, actionButtons_posX, actionButtons_posY, actionButtons_offsetX, actionButtons_offsetY, callback);
 
 	inGameMenu = ret;
 
@@ -700,19 +703,15 @@ std::list<Button*> j1Gui::activateActionButtons(uint ids[9])
 			break;
 		for (std::map<uint, Button*>::iterator test = actionButtons.begin(); test != actionButtons.end(); test++)
 		{
+			(*test).second->active = false;
 			if (ids[i] == (*test).first)
 			{
-				(*test).second->active = true;
 				list.push_back((*test).second);
 				break;
-				//it won't deactivate buttons not reached
-			}
-			else
-			{
-				(*test).second->active = false;
 			}
 		}
 	}
+	//need to make sure all actionButtons are unactive
 
 	return list;
 }

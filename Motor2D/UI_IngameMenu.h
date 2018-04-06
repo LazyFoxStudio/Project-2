@@ -17,7 +17,7 @@ public:
 	IngameMenu()
 	{}
 
-	IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int lifeBars_offsetX, int lifeBars_offsetY, int stats_posX, int stats_posY, j1Module* callback);
+	IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int lifeBars_offsetX, int lifeBars_offsetY, int stats_posX, int stats_posY, int firstButton_posX, int firstButton_posY, int buttons_offsetX, int buttons_offsetY, j1Module* callback);
 
 	~IngameMenu();
 
@@ -44,6 +44,8 @@ public:
 	iPoint icons_offset = { 0,0};
 	iPoint lifeBars_offset = { 0,0};
 	iPoint stats_pos = { 0,0};
+	iPoint firstButton_pos = { 0,0 };
+	iPoint buttons_offset = { 0,0 };
 	std::list<Image*> troopsIcons; //Being created/destroyed
 	std::list<LifeBar*> lifeBars; //Being created/destroyed
 	std::list<Text*> statsTitles; //Constant but inactive
