@@ -266,7 +266,7 @@
       <Unit>
             <name value="Archer"/>
             <type value="4"/> 
-			      <iconData x="315" y="24" w="72" h="60"/>
+			      <iconData x="315" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Alliance Sprites\Elven archer_Spritesheet.png"/>
             <Stats>
                 <life value="40"/>
