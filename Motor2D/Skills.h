@@ -13,7 +13,7 @@ enum rangeType
 {
 	NONE_RANGE,
 	AREA,
-	LINEAR
+	LINE
 };
 
 class Skill
@@ -58,6 +58,7 @@ public:
 	void Activate(Hero* hero);
 	void DrawRange();
 	void BFS(int Area);
+	void Line();
 	void MakeDamage();
 	
 	bool Find(std::list<iPoint> list,const iPoint& point);
