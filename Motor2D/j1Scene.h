@@ -36,11 +36,14 @@ public:
 	bool Load(pugi::xml_node& data);
 	bool Save(pugi::xml_node& data) const;
 
+	bool workerAvalible();
+
 public:
 	SDL_Texture* debug_tex = nullptr;
 
 	int wood = 0;
 	int workers = 0;
+	int inactive_workers = 0;
 	int town_hall_lvl = 0;
 };
 

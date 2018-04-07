@@ -41,6 +41,8 @@ public:
 	entityType getSelectedType();
 
 	void placingBuilding(buildingType type, iPoint position);
+	void buildingProcessDraw();
+
 	Entity* CheckMouseHover(iPoint mouse_world);
 
 	std::vector<Entity*> CheckCollidingWith(SDL_Rect collider, Entity* entity_to_ignore = nullptr);

@@ -72,13 +72,13 @@ bool j1EntityController::Update(float dt)
 		structure_beingbuilt = NONE_BUILDING;
 		App->actionscontroller->action_type = NO_ACTION;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && !building)
+
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && !building && App->scene->workerAvalible())
 	{
 		structure_beingbuilt = BARRACKS;
 		building = true;
+		App->scene->inactive_workers -= 1;
 	}
-
-
 
 	else if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) && building && structure_beingbuilt == BARRACKS)
 	{
@@ -90,10 +90,11 @@ bool j1EntityController::Update(float dt)
 			App->actionscontroller->doingAction = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && !building)
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && !building && App->scene->workerAvalible())
 	{
 		structure_beingbuilt = LUMBER_MILL;
 		building = true;
+		App->scene->inactive_workers -= 1;
 	}
 
 	else if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) && building && structure_beingbuilt == LUMBER_MILL)
@@ -106,10 +107,11 @@ bool j1EntityController::Update(float dt)
 			App->actionscontroller->doingAction = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && !building)
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && !building && App->scene->workerAvalible())
 	{
 		structure_beingbuilt = FARM;
 		building = true;
+		App->scene->inactive_workers -= 1;
 	}
 
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && building && structure_beingbuilt == FARM)
@@ -118,43 +120,13 @@ bool j1EntityController::Update(float dt)
 		App->input->GetMousePosition(position.x, position.y);
 
 		placingBuilding(FARM, position);
+		if (App->actionscontroller->action_type == BUILD_FARM)
+			App->actionscontroller->doingAction = false;
 	}
 
 	if (building)
 	{
-		int x, y;
-		App->input->GetMousePosition(x, y);
-		iPoint pos = CameraToWorld(x, y);
-		pos = App->map->WorldToMap(pos.x, pos.y);
-		pos = App->map->MapToWorld(pos.x, pos.y);
-		
-		if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y))
-		{
-			Color green = { 0,255,0,100 };
-			App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
-			App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, green);
-
-		}
-		else
-		{
-			Color red = { 255,0,0,100 };
-			App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
-			App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, red);
-		}
-		if (structure_beingbuilt == 3)
-		{
-			if (!App->map->WalkabilityArea((pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2), (pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2), buildingDB[structure_beingbuilt]->additional_size.x, buildingDB[structure_beingbuilt]->additional_size.y,false,true))
-			{
-				Color green2 = { 0,255,0,75 };
-				App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height }, green2);
-			}
-			else
-			{
-				Color red2 = { 255,0,0,75 };
-				App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height }, red2);
-			}
-		}
-		
+		buildingProcessDraw();
 	}
 
 
@@ -265,6 +237,44 @@ void j1EntityController::placingBuilding(buildingType type, iPoint position)
 		App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y, true);
 		building = false;
 	}
+}
+
+void j1EntityController::buildingProcessDraw()
+{
+
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint pos = CameraToWorld(x, y);
+	pos = App->map->WorldToMap(pos.x, pos.y);
+	pos = App->map->MapToWorld(pos.x, pos.y);
+
+	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y))
+	{
+		Color green = { 0,255,0,100 };
+		App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
+		App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, green);
+
+	}
+	else
+	{
+		Color red = { 255,0,0,100 };
+		App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
+		App->render->DrawQuad({ pos.x,pos.y,buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height }, red);
+	}
+	if (structure_beingbuilt == 3)
+	{
+		if (!App->map->WalkabilityArea((pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2), (pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2), buildingDB[structure_beingbuilt]->additional_size.x, buildingDB[structure_beingbuilt]->additional_size.y, false, true))
+		{
+			Color green2 = { 0,255,0,75 };
+			App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height }, green2);
+		}
+		else
+		{
+			Color red2 = { 255,0,0,75 };
+			App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height }, red2);
+		}
+	}
+
 }
 
 Entity* j1EntityController::CheckMouseHover(iPoint mouse_world)
@@ -570,6 +580,8 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		buildingTemplate->villagers_inside = NodeInfo.child("Stats").child("villagers").attribute("value").as_int(0);
 		buildingTemplate->building_time = NodeInfo.child("Stats").child("buildingTime").attribute("value").as_int(0);
 		buildingTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
+		buildingTemplate->wood_cost = NodeInfo.child("Stats").child("woodCost").attribute("value").as_int(0);
+		buildingTemplate->gold_cost = NodeInfo.child("Stats").child("goldCost").attribute("value").as_int(0);
 		buildingTemplate->size.x = NodeInfo.child("size").attribute("x").as_int(0);
 		buildingTemplate->size.y = NodeInfo.child("size").attribute("y").as_int(0);
 		buildingTemplate->additional_size.x = NodeInfo.child("additionalSize").attribute("x").as_int(0);

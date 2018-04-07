@@ -26,6 +26,8 @@ public:
 	int defense = 0;
 	iPoint size = { 0,0 };
 	iPoint additional_size = { 0,0 };
+	uint wood_cost = 0;
+	uint gold_cost = 0;
 	//(...)
 	
 	bool being_built = false;
