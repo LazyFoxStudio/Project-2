@@ -9,7 +9,8 @@ enum actionType
 
 	MOVE,
 	BUILD_BARRACKS,
-	BUILD_LUMBER_MILL
+	BUILD_LUMBER_MILL,
+	BUILD_FARM
 };
 
 class j1ActionsController : public j1Module

@@ -53,6 +53,10 @@ bool Building::Update(float dt)
 			current_HP += hp_unit -1;
 			being_built = false;
 			last_frame_time = 0;
+			if (type == FARM)
+			{
+				App->scene->workers += 5;
+			}
 		}
 		else if( current_time > last_frame_time)
 		{

@@ -93,16 +93,30 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	return ret;
 }
 
-bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify) const
+bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bool check_trees)
 {
 	bool ret = true;
 	iPoint currentTile = { x,y };
+	MapLayer* tree_layer = data.layers[0];
+	if (check_trees)
+	{
+		for (int i = 0; i < data.layers.size(); i++)
+		{
+			MapLayer* layer = data.layers[i];
+
+			if (layer->name == "Resources")
+			{
+				tree_layer = layer;
+				break;
+			}
+		}
+	}
 	for (int j = 0; j < columns; j++)
 	{
 		for (int i = 0; i < rows; i++)
 		{
 			iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
-			if (!modify)
+			if (!modify &&  !check_trees)
 			{
 				if (!App->pathfinding->IsWalkable(currentMapTile))
 				{
@@ -110,10 +124,18 @@ bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify) co
 					break;
 				}
 			}
-			else
+			else if(modify)
 			{
 				int tile = (currentMapTile.y*App->map->data.width) + currentMapTile.x;
 				App->pathfinding->map[tile] = INVALID_WALK_CODE;
+			}
+			else if(check_trees)
+			{
+				if (tree_layer->GetID(currentMapTile.x, currentMapTile.y) != 0)
+				{
+					ret = false;
+					break;
+				}
 			}
 		}
 

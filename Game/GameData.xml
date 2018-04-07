@@ -984,6 +984,7 @@
 	  <Actions>
 		  <action id="5"/>
 		  <action id="6"/>
+      <action id="7"/>
 	  </Actions>
       <iconData x="9" y="264" w="72" h="59"/>
       <size x="4" y="4"/>
@@ -1023,7 +1024,7 @@
       </Stats>
       <iconData x="315" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
-      <additionalSize x="10" y="10"/>
+      <additionalSize x="11" y="11"/>
     </Building>
     
     <Building>
@@ -1118,12 +1119,13 @@
 			<OnMouse x="1373" y="437" w="66" h="66"/>
 			<OnClick x="1441" y="437" w="66" h="66"/>
 		</buildMill>
-		<action7 id="7">
-			<position x="1399" y="969"/>
-			<standby x="285" y="507" w="66" h="66"/>
-			<OnMouse x="353" y="507" w="66" h="66"/>
-			<OnClick x="421" y="507" w="66" h="66"/>
-		</action7>
+    <buildFarm id="7" function="17">
+			<position x="1717" y="969"/>
+			<standby x="1101" y="507" w="66" h="66"/>
+			<OnMouse x="1169" y="507" w="66" h="66"/>
+			<OnClick x="1270" y="507" w="66" h="66"/>
+		</buildFarm>
+	
 		<action8 id="8">
 			<position x="1480" y="969"/>
 			<standby x="489" y="507" w="66" h="66"/>
