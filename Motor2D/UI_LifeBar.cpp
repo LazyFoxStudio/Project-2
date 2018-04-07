@@ -136,5 +136,5 @@ void LifeBar::BlitElement(bool use_camera)
 		bar->BlitElement(true);
 	}
 
-	BlitChilds();
+	UI_element::BlitElement(use_camera);
 }

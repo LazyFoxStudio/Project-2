@@ -9,9 +9,10 @@
 void Skill::Activate(Hero* hero)
 {
 	position_hero = { (int)hero->position.x,(int)hero->position.y };
-
 	position = App->map->WorldToMap(position_hero.x, position_hero.y);
+	position.y += 1;
 	App->input->GetMousePosition(mouse_position.x, mouse_position.y);
+
 
 	if (inCircle(mouse_position.x , mouse_position.y))
 	{
@@ -35,16 +36,18 @@ void Skill::DrawRange()
 
 	iPoint point;
 
-	int num_tiles = 0;
+	
 
-	for (int i = 0; i <= radius; i++)
+	if (type == AREA)
 	{
-		num_tiles = num_tiles + 4 * i;
+		BFS();
 	}
-	num_tiles = num_tiles + 1;
 
-	BFS(num_tiles);
-
+	if (type == LINE)
+	{
+		Line();
+	}
+	
 
 	// Draw 	
 	for(std::list<iPoint>::iterator item = toDraw.begin();item!=toDraw.end();item++)
@@ -58,9 +61,18 @@ void Skill::DrawRange()
 	}
 }
 
-void Skill::BFS(int Area)
+void Skill::BFS()
 {
 	toDraw.clear();
+
+	int Area = 0;
+
+	for (int i = 0; i <= radius; i++)
+	{
+		Area = Area + 4 * i;
+	}
+	
+	Area = Area + 1;
 
 	iPoint Goal;
 	iPoint origin=mouse_position;
@@ -92,6 +104,57 @@ void Skill::BFS(int Area)
 		if (toDraw.size() >= Area)
 		{
 			break;
+		}
+	}
+}
+
+void Skill::Line()
+{
+	toDraw.clear();
+
+	iPoint auxPoint = mouse_position;
+
+	if (mouse_position.x == position.x)
+	{
+		toDraw.push_back(auxPoint);
+
+		if (mouse_position.y < position.y)
+		{
+			while (auxPoint.y != position.y)
+			{
+				auxPoint.y += 1;
+				toDraw.push_back(auxPoint);
+			}
+		}
+		else
+		{
+			while (auxPoint.y != position.y)
+			{
+				auxPoint.y -= 1;
+				toDraw.push_back(auxPoint);
+			}
+		}
+	}
+
+	else if (mouse_position.y == position.y)
+	{
+		toDraw.push_back(auxPoint);
+
+		if (mouse_position.x < position.x)
+		{
+			while (auxPoint.x != position.x)
+			{
+				auxPoint.x += 1;
+				toDraw.push_back(auxPoint);
+			}
+		}
+		else
+		{
+			while (auxPoint.x != position.x)
+			{
+				auxPoint.x -= 1;
+				toDraw.push_back(auxPoint);
+			}
 		}
 	}
 }
@@ -129,13 +192,13 @@ bool Skill::inCircle(int pos_x, int pos_y)
 {
 	bool ret = false;
 
-	iPoint center = { pos_x - position_hero.x+App->render->camera.x,pos_y - position_hero.y - App->render->camera.y };
+	iPoint center = { pos_x - position_hero.x-App->render->camera.x,pos_y - position_hero.y - App->render->camera.y };
 	LOG("%d and %d", center.x, center.y);
 
 	int circle_radius = (range*App->map->data.tile_width)*(range*App->map->data.tile_width);
 	int circle_position = (center.x*center.x) + (center.y*center.y);
 
-	if (circle_position<=(circle_radius))
+	if (circle_position<(circle_radius))
 	{
 		ret = true;
 	}

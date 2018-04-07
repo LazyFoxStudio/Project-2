@@ -27,6 +27,9 @@ public:
 	Skill* skill_two = nullptr;
 	j1Timer cooldown_two;
 
+	Skill* skill_three = nullptr;
+	j1Timer cooldown_three;
+
 	heroType type = NONE_TYPE;
 	uint current_HP = 0;
 	uint max_HP = 0;
@@ -53,6 +56,7 @@ private:
 
 	bool	doSkill_1 = false;
 	bool	doSkill_2 = false;
+	bool	doSkill_3 = false;
 
 public:
 

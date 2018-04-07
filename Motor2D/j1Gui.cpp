@@ -179,6 +179,10 @@ bool j1Gui::PostUpdate()
 				(*it_e)->BlitElement();
 		}
 	}
+	//Draw PopUp
+	if (current_hovering_element != nullptr && current_hovering_element->blitPopUpInfo && current_hovering_element->popUp != nullptr)
+		current_hovering_element->popUp->BlitElement();
+
 	//Draw Debug
 	if (UI_Debug)
 		UIDebugDraw();
@@ -383,6 +387,11 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
 		element->active = tmp.attribute("active").as_bool(true);
 		element->function = (element_function)tmp.attribute("function").as_int(0);
+		pugi::xml_attribute info = tmp.attribute("popupInfo");
+		if (info)
+		{
+			createPopUpInfo(element, info.as_string());
+		}
 
 		pugi::xml_node childs = tmp.child("childs");
 		if(childs)
@@ -414,6 +423,13 @@ Text* j1Gui::createText(pugi::xml_node node, j1Module* callback, bool saveIntoGU
 	SDL_Color color = { node.child("color").attribute("r").as_int(), node.child("color").attribute("g").as_int(), node.child("color").attribute("b").as_int(), node.child("color").attribute("a").as_int() };
 
 	Text* ret = new Text(text, x, y, (*font), color, callback);
+
+	pugi::xml_node background = node.child("background");
+	if (background)
+	{
+		SDL_Color background_color = { background.attribute("r").as_int(), background.attribute("g").as_int(), background.attribute("b").as_int(), background.attribute("a").as_int() };
+		ret->setBackground(true, background_color);
+	}
 
 	if (saveIntoGUI)
 		Texts.push_back(ret);
@@ -600,6 +616,13 @@ void j1Gui::createLifeBar(Entity* entity)
 	LifeBars.push_back(ret);
 }
 
+void j1Gui::createPopUpInfo(UI_element* element, std::string info)
+{
+	Text* text = new Text(info, element->localPosition.x, element->localPosition.y - 10, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
+	text->setBackground(true, { 75, 75, 75, 185 });
+	element->popUp = text;
+}
+
 void j1Gui::LoadDB(pugi::xml_node node)
 {
 	pugi::xml_node lifebar;
@@ -633,6 +656,11 @@ void j1Gui::LoadDB(pugi::xml_node node)
 		Button* button = createButton(actionButton, App->uiscene);
 		button->active = false;
 		button->function = (element_function)actionButton.attribute("function").as_int(0);
+		pugi::xml_attribute info = actionButton.attribute("popupInfo");
+		if (info)
+		{
+			createPopUpInfo(button, info.as_string());
+		}
 		actionButtons.insert(std::pair<uint, Button*>(id, button));
 	}
 }

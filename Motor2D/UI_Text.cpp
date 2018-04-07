@@ -92,6 +92,12 @@ void Text::BlitElement(bool use_camera)
 			SDL_SetTextureAlphaMod(texture, App->gui->alpha_value);
 			iPoint globalPos = calculateAbsolutePosition();
 
+			if (hasBackground)
+			{
+				SDL_Rect rect = { globalPos.x -4 , globalPos.y - 1, section.w + 5, section.h +5};
+				Color bckg_color = { (float)background_color.r, (float)background_color.g, (float)background_color.b, (float)background_color.a };
+				App->render->DrawQuad(rect, bckg_color, true, use_camera);
+			}
 			if (outlined)
 			{
 				SDL_SetTextureAlphaMod(outline, App->gui->alpha_value);
@@ -100,7 +106,7 @@ void Text::BlitElement(bool use_camera)
 			App->render->Blit(texture, globalPos.x, globalPos.y, NULL, use_camera);
 		}
 
-		BlitChilds();
+		UI_element::BlitElement(use_camera);
 	}
 }
 
@@ -111,6 +117,13 @@ void Text::setOutlined(bool isOutlined)
 		outlined = isOutlined;
 		createTexture();
 	}
+}
+
+void Text::setBackground(bool hasBackground, SDL_Color color)
+{
+	this->hasBackground = hasBackground;
+	if (hasBackground)
+		background_color = color;
 }
 
 void Text::convertIntoCounter(int* variableCounting)

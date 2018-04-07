@@ -93,6 +93,8 @@ public:
 	IngameMenu* createIngameMenu(pugi::xml_node node, j1Module* callback = nullptr);
 	void createLifeBar(Entity* entity);
 
+	void createPopUpInfo(UI_element* element, std::string info);
+
 	void LoadDB(pugi::xml_node node);
 
 	void AddIconData(unitType type, pugi::xml_node node);
@@ -111,6 +113,8 @@ public:
 	int alpha_value = 255;
 	uint button_click_fx = 0;
 	bool clickedOnUI = false;
+	j1PerfTimer hovering_element;
+	UI_element* current_hovering_element = nullptr;
 
 private:
 

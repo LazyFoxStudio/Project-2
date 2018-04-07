@@ -78,6 +78,6 @@ void Chrono::BlitElement(bool use_camera)
 
 		text->BlitElement();
 
-		BlitChilds();
+		UI_element::BlitElement(use_camera);
 	}
 }

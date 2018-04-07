@@ -31,6 +31,7 @@ Hero::Hero(iPoint pos, Hero& hero)
 	
 	skill_one = hero.skill_one;
 	skill_two = hero.skill_two;
+	skill_three = hero.skill_three;
 }
 Hero::~Hero()
 {
@@ -49,9 +50,10 @@ bool Hero::Update(float dt)
 	{
 		doSkill_1 = !doSkill_1;
 
-		if (doSkill_2)
+		if (doSkill_2 || doSkill_3)
 		{
 			doSkill_2 = false;
+			doSkill_3 = false;
 		}
 	}
 	
@@ -59,9 +61,21 @@ bool Hero::Update(float dt)
 	{
 		doSkill_2 = !doSkill_2;
 
-		if (doSkill_1)
+		if (doSkill_1 || doSkill_3)
 		{
 			doSkill_1 = false;
+			doSkill_3 = false;
+		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && (doSkill_3 || skill_three->ready))
+	{
+		doSkill_3 = !doSkill_3;
+
+		if (doSkill_1 || doSkill_2)
+		{
+			doSkill_1 = false;
+			doSkill_2 = false;
 		}
 	}
 
@@ -73,26 +87,24 @@ bool Hero::Update(float dt)
 	{
 		skill_two->Activate(this);
 	}
+	if (doSkill_3 && skill_three->ready)
+	{
+		skill_three->Activate(this);
+	}
 
 	if (skill_one->timer.ReadSec()>= skill_one->cooldown && !skill_one->ready)
 	{
 		skill_one->ready = true;
-		LOG("---------------------------Skill_1 ready!!!");
 	}
-	if (!skill_one->ready)
-	{
-		LOG("seconds to restart %f", skill_one->timer.ReadSec());
-	}
-
 	if (skill_two->timer.ReadSec() >= skill_two->cooldown && !skill_two->ready)
 	{
 		skill_two->ready = true;
-		LOG("---------------------------Skill_2 ready!!!");
 	}
-	if (!skill_two->ready)
+	if (skill_three->timer.ReadSec() >= skill_three->cooldown && !skill_three->ready)
 	{
-		LOG("seconds to restart %f", skill_two->timer.ReadSec());
+		skill_three->ready = true;
 	}
+	
 	
 	return true;
 }
