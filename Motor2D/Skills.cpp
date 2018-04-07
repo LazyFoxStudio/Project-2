@@ -129,7 +129,7 @@ bool Skill::inCircle(int pos_x, int pos_y)
 {
 	bool ret = false;
 
-	iPoint center = { pos_x - position_hero.x+App->render->camera.x,pos_y - position_hero.y - App->render->camera.y };
+	iPoint center = { pos_x - position_hero.x-App->render->camera.x,pos_y - position_hero.y - App->render->camera.y };
 	LOG("%d and %d", center.x, center.y);
 
 	int circle_radius = (range*App->map->data.tile_width)*(range*App->map->data.tile_width);
