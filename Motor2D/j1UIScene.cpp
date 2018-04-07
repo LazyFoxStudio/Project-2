@@ -156,6 +156,9 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 		case BUILD_LUMBER_MILL_FUNCTION:
 			App->actionscontroller->activateAction(BUILD_LUMBER_MILL);
 			break;
+		case BUILD_FARM_FUNCTION:
+			App->actionscontroller->activateAction(BUILD_FARM);
+			break;
 		}
 	}
 	else if (event_type == MOUSE_RIGHT_CLICK)

@@ -4,6 +4,7 @@
 #include "Command.h"
 #include "j1Render.h"
 #include "j1EntityController.h"
+#include "j1Scene.h"
 
 bool j1ActionsController::Update(float dt)
 {
@@ -33,17 +34,26 @@ bool j1ActionsController::Update(float dt)
 			}
 			break;
 		case BUILD_BARRACKS:
-			if (doingAction && !App->entitycontroller->building)
+			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible() && App->scene->workerAvalible())
 			{
 				App->entitycontroller->structure_beingbuilt = BARRACKS;
 				App->entitycontroller->building = true;
+				App->scene->inactive_workers -= 1;
 			}
 			break;
 		case BUILD_LUMBER_MILL:
-			if (doingAction && !App->entitycontroller->building)
+			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible())
 			{
 				App->entitycontroller->structure_beingbuilt = LUMBER_MILL;
 				App->entitycontroller->building = true;
+				App->scene->inactive_workers -= 1;
+			}
+		case BUILD_FARM:
+			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible())
+			{
+				App->entitycontroller->structure_beingbuilt = FARM;
+				App->entitycontroller->building = true;
+				App->scene->inactive_workers -= 1;
 			}
 			break;
 		}

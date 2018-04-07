@@ -95,9 +95,12 @@
 
 
   <scene>
-    <map_name name="MaidInAbyss.tmx"></map_name>
-    <map_name name="DepthsOfTheAbyss.tmx"></map_name>
-    <fade_time value="1"/>
+    <starting_resources>
+      <wood value="300"/>
+      <gold value="0"/>
+      <workers value="2"/>
+      <townHallLvl value ="0"/>
+    </starting_resources>
   </scene>
 
 </config>

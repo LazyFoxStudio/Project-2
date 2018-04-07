@@ -23,7 +23,10 @@ j1Scene::~j1Scene() {}
 bool j1Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
-
+	wood = config.child("starting_resources").child("wood").attribute("value").as_int(0);
+	workers = config.child("starting_resources").child("workers").attribute("value").as_int(0);
+	inactive_workers = workers;
+	town_hall_lvl = config.child("starting_resources").child("townHallLvl").attribute("value").as_int(0);
 	return true;
 }
 
@@ -46,10 +49,7 @@ bool j1Scene::Start()
 	guiconfig = App->LoadFile(Gui_config_file, "Gui_config.xml");
 	guiconfig = guiconfig.child("scene");
 
-	wood = 200;
-	workers = 2;
 	
-	town_hall_lvl = 2;
 
 	return true;
 }
@@ -94,4 +94,19 @@ bool j1Scene::Load(pugi::xml_node& data)
 bool j1Scene::Save(pugi::xml_node& data) const
 {
 	return true;
+}
+
+bool j1Scene::workerAvalible()
+{
+	bool ret;
+	if (inactive_workers == 0)
+	{
+		ret = false;
+	}
+	else if (inactive_workers > 0)
+	{
+		ret = true;
+	}
+
+	return ret;
 }
