@@ -36,17 +36,11 @@ void Skill::DrawRange()
 
 	iPoint point;
 
-	int num_tiles = 0;
+	
 
 	if (type == AREA)
 	{
-		for (int i = 0; i <= radius; i++)
-		{
-			num_tiles = num_tiles + 4 * i;
-		}
-		num_tiles = num_tiles + 1;
-
-		BFS(num_tiles);
+		BFS();
 	}
 
 	if (type == LINE)
@@ -67,9 +61,18 @@ void Skill::DrawRange()
 	}
 }
 
-void Skill::BFS(int Area)
+void Skill::BFS()
 {
 	toDraw.clear();
+
+	int Area = 0;
+
+	for (int i = 0; i <= radius; i++)
+	{
+		Area = Area + 4 * i;
+	}
+	
+	Area = Area + 1;
 
 	iPoint Goal;
 	iPoint origin=mouse_position;
@@ -195,7 +198,7 @@ bool Skill::inCircle(int pos_x, int pos_y)
 	int circle_radius = (range*App->map->data.tile_width)*(range*App->map->data.tile_width);
 	int circle_position = (center.x*center.x) + (center.y*center.y);
 
-	if (circle_position<=(circle_radius))
+	if (circle_position<(circle_radius))
 	{
 		ret = true;
 	}

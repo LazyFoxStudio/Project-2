@@ -57,7 +57,7 @@ public:
 
 	void Activate(Hero* hero);
 	void DrawRange();
-	void BFS(int Area);
+	void BFS();
 	void Line();
 	void MakeDamage();
 	
