@@ -45,31 +45,53 @@ bool Hero::Update(float dt)
 		App->render->DrawQuad({ (int)position.x,(int)position.y,26,36 }, Blue, true);
 	}
 	
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && (doSkill_1 || skill_one->ready))
 	{
 		doSkill_1 = !doSkill_1;
+
 		if (doSkill_2)
 		{
 			doSkill_2 = false;
 		}
 	}
-	if (doSkill_1)
-	{
-		skill_one->Activate(this);
-	}
-
-
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && (doSkill_2 || skill_two->ready))
 	{
 		doSkill_2 = !doSkill_2;
+
 		if (doSkill_1)
 		{
 			doSkill_1 = false;
 		}
 	}
-	if (doSkill_2)
+
+	if (doSkill_1 && skill_one->ready)
+	{
+		skill_one->Activate(this);
+	}
+	if (doSkill_2 && skill_two->ready)
 	{
 		skill_two->Activate(this);
+	}
+
+	if (skill_one->timer.ReadSec()>= skill_one->cooldown && !skill_one->ready)
+	{
+		skill_one->ready = true;
+		LOG("---------------------------Skill_1 ready!!!");
+	}
+	if (!skill_one->ready)
+	{
+		LOG("seconds to restart %f", skill_one->timer.ReadSec());
+	}
+
+	if (skill_two->timer.ReadSec() >= skill_two->cooldown && !skill_two->ready)
+	{
+		skill_two->ready = true;
+		LOG("---------------------------Skill_2 ready!!!");
+	}
+	if (!skill_two->ready)
+	{
+		LOG("seconds to restart %f", skill_two->timer.ReadSec());
 	}
 	
 	return true;

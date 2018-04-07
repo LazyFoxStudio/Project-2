@@ -20,6 +20,8 @@ void Skill::Activate(Hero* hero)
 		
 		if (App->input->GetMouseButtonDown(1)==KEY_DOWN)
 		{
+			timer.Start();
+			ready = false;
 			MakeDamage();
 		}
 	}

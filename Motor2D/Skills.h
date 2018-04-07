@@ -46,6 +46,8 @@ public:
 		damage = _damage;
 		range = _range;
 		type = _type;
+
+		cooldown = 5;
 	};
 	
 	~Skill() {};
