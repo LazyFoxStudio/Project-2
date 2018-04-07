@@ -98,7 +98,7 @@ public:
 	void LoadDB(pugi::xml_node node);
 
 	void AddIconData(unitType type, pugi::xml_node node);
-	void AddIconData(heroType type, pugi::xml_node node);
+	/*void AddIconData(heroType type, pugi::xml_node node);*/
 	void AddIconData(buildingType type, pugi::xml_node node);
 	void AddIconData(resourceType type, pugi::xml_node node);
 	SDL_Rect GetIconRect(Entity* entity);
@@ -133,7 +133,7 @@ private:
 	IngameMenu* inGameMenu = nullptr;
 	UI_element* draggingElement = nullptr;
 	std::map<unitType, SDL_Rect> unitIconRect;
-	std::map<heroType, SDL_Rect> heroIconRect;
+	/*std::map<heroType, SDL_Rect> heroIconRect;*/
 	std::map<buildingType, SDL_Rect> buildingIconRect;
 	std::map<resourceType, SDL_Rect> resourceIconRect;
 	std::map<std::string, SDL_Rect> LifeBarRect;

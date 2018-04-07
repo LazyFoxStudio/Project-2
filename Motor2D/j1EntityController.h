@@ -31,8 +31,10 @@ public:
 	void DeleteEntity(Entity* entity);
 	bool DeleteDB() { return true; };
 
+	void StartHero(iPoint pos);
+
 	Unit* addUnit(iPoint pos, unitType type, Squad* squad = nullptr);
-	Hero* addHero(iPoint pos, heroType type);
+	/*Hero* addHero(iPoint pos, heroType type);*/
 	Building* addBuilding(iPoint pos, buildingType type );
 	Nature* addNature(iPoint pos, resourceType res_type, int amount = 0);
 
@@ -68,6 +70,8 @@ public:
 	
 	buildingType structure_beingbuilt = NONE_BUILDING;
 	SDL_Rect selection_rect = { 0,0,0,0 };
+
+	Hero* hero=nullptr;
 };
 
 

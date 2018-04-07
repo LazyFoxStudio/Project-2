@@ -671,11 +671,11 @@ void j1Gui::AddIconData(unitType type, pugi::xml_node node)
 	unitIconRect.insert(std::pair<unitType, SDL_Rect>(type, rect));
 }
 
-void j1Gui::AddIconData(heroType type, pugi::xml_node node)
-{
-	SDL_Rect rect = { node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() };
-	heroIconRect.insert(std::pair<heroType, SDL_Rect>(type, rect));
-}
+//void j1Gui::AddIconData(heroType type, pugi::xml_node node)
+//{
+//	SDL_Rect rect = { node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() };
+//	heroIconRect.insert(std::pair<heroType, SDL_Rect>(type, rect));
+//}
 
 void j1Gui::AddIconData(buildingType type, pugi::xml_node node)
 {
@@ -699,9 +699,9 @@ SDL_Rect j1Gui::GetIconRect(Entity* entity)
 	case BUILDING:
 		return buildingIconRect.at(((Building*)entity)->type);
 		break;
-	case HERO:
+	/*case HERO:
 		return heroIconRect.at(((Hero*)entity)->type);
-		break;
+		break;*/
 	case NATURE:
 		return resourceIconRect.at(((Nature*)entity)->type);
 		break;

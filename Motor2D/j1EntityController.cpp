@@ -36,7 +36,9 @@ bool j1EntityController::Start()
 	squad_units_test.push_back(addUnit(iPoint(800, 800), ARCHER));
 	squad_units_test.push_back(addUnit(iPoint(1100, 1000), GRUNT));
 
-	addHero(iPoint(900, 700), MAGE);
+	//addHero(iPoint(900, 700), MAGE);
+
+	StartHero(iPoint(900, 700));
 
 	structure_beingbuilt = TOWN_HALL;
 	placingBuilding(TOWN_HALL, { 600,600 });
@@ -220,14 +222,14 @@ Unit* j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
 	return unit;
 }
 
-Hero* j1EntityController::addHero(iPoint pos, heroType type)
-{
-	Hero* hero = new Hero(pos, *(heroDB[type]));
-	entities.push_back(hero);
-	App->gui->createLifeBar(hero);
-
-	return hero;
-}
+//Hero* j1EntityController::addHero(iPoint pos, heroType type)
+//{
+//	Hero* hero = new Hero(pos, *(heroDB[type]));
+//	entities.push_back(hero);
+//	App->gui->createLifeBar(hero);
+//
+//	return hero;
+//}
 
 Building* j1EntityController::addBuilding(iPoint pos, buildingType type)
 {
@@ -495,63 +497,63 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitDB.insert(std::pair<int, Unit*>(unitTemplate->type, unitTemplate));
 	}
 
-	for (NodeInfo = data.child("Units").child("Hero"); NodeInfo; NodeInfo = NodeInfo.next_sibling("Hero")) {
+	//for (NodeInfo = data.child("Units").child("Hero"); NodeInfo; NodeInfo = NodeInfo.next_sibling("Hero")) {
 
-		Hero* heroTemplate = new Hero();
+	//	Hero* heroTemplate = new Hero();
 
-		heroTemplate->type = (heroType)NodeInfo.child("type").attribute("value").as_int(0);
+	//	heroTemplate->type = (heroType)NodeInfo.child("type").attribute("value").as_int(0);
 
-		if (heroTemplate->type == MAGE)  // HERO_X should the last hero in the type enum
-		{
-			heroTemplate->skill_one = new Skill(3, 5, 20, AREA); //Icicle Crash
-			heroTemplate->skill_two = new Skill(0, 10, 10, AREA);
-			heroTemplate->skill_three = new Skill(0, 10, 10, LINE);
-		}
+	//	if (heroTemplate->type == MAGE)  // HERO_X should the last hero in the type enum
+	//	{
+	//		heroTemplate->skill_one = new Skill(3, 5, 20, AREA); //Icicle Crash
+	//		heroTemplate->skill_two = new Skill(0, 10, 10, AREA);
+	//		heroTemplate->skill_three = new Skill(0, 10, 10, LINE);
+	//	}
 
-		heroTemplate->name = NodeInfo.child("name").attribute("value").as_string("error");
-		heroTemplate->texture = App->tex->Load(NodeInfo.child("texture").attribute("value").as_string("error"));
+	//	heroTemplate->name = NodeInfo.child("name").attribute("value").as_string("error");
+	//	heroTemplate->texture = App->tex->Load(NodeInfo.child("texture").attribute("value").as_string("error"));
 
-		heroTemplate->current_HP = heroTemplate->max_HP = NodeInfo.child("Stats").child("life").attribute("value").as_int(0);
-		heroTemplate->attack = NodeInfo.child("Stats").child("attack").attribute("value").as_int(0);
-		heroTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
-		heroTemplate->piercing_atk = NodeInfo.child("Stats").child("piercingDamage").attribute("value").as_int(0);
-		heroTemplate->speed = NodeInfo.child("Stats").child("movementSpeed").attribute("value").as_int(0);
-		heroTemplate->range = NodeInfo.child("Stats").child("range").attribute("value").as_int(0);
-		heroTemplate->line_of_sight = NodeInfo.child("Stats").child("lineOfSight").attribute("value").as_int(0);
-		heroTemplate->wood_cost = NodeInfo.child("Stats").child("woodCost").attribute("value").as_int(0);
-		heroTemplate->gold_cost = NodeInfo.child("Stats").child("goldCost").attribute("value").as_int(0);
-		heroTemplate->worker_cost = NodeInfo.child("Stats").child("workerCost").attribute("value").as_int(0);
-		heroTemplate->training_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
-		heroTemplate->squad_members = NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
-		int i = 0;
-		for (pugi::xml_node action = NodeInfo.child("Actions").child("action"); action; action = action.next_sibling("action"))
-		{
-			if (i >= 9)
-				break;
+	//	heroTemplate->current_HP = heroTemplate->max_HP = NodeInfo.child("Stats").child("life").attribute("value").as_int(0);
+	//	heroTemplate->attack = NodeInfo.child("Stats").child("attack").attribute("value").as_int(0);
+	//	heroTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
+	//	heroTemplate->piercing_atk = NodeInfo.child("Stats").child("piercingDamage").attribute("value").as_int(0);
+	//	heroTemplate->speed = NodeInfo.child("Stats").child("movementSpeed").attribute("value").as_int(0);
+	//	heroTemplate->range = NodeInfo.child("Stats").child("range").attribute("value").as_int(0);
+	//	heroTemplate->line_of_sight = NodeInfo.child("Stats").child("lineOfSight").attribute("value").as_int(0);
+	//	heroTemplate->wood_cost = NodeInfo.child("Stats").child("woodCost").attribute("value").as_int(0);
+	//	heroTemplate->gold_cost = NodeInfo.child("Stats").child("goldCost").attribute("value").as_int(0);
+	//	heroTemplate->worker_cost = NodeInfo.child("Stats").child("workerCost").attribute("value").as_int(0);
+	//	heroTemplate->training_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
+	//	heroTemplate->squad_members = NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
+	//	int i = 0;
+	//	for (pugi::xml_node action = NodeInfo.child("Actions").child("action"); action; action = action.next_sibling("action"))
+	//	{
+	//		if (i >= 9)
+	//			break;
 
-			heroTemplate->available_actions[i++] = action.attribute("id").as_uint();
-		}
+	//		heroTemplate->available_actions[i++] = action.attribute("id").as_uint();
+	//	}
 
-		int size_x = NodeInfo.child("Stats").child("size").attribute("x").as_int(1);
-		int size_y = NodeInfo.child("Stats").child("size").attribute("y").as_int(1);
+	//	int size_x = NodeInfo.child("Stats").child("size").attribute("x").as_int(1);
+	//	int size_y = NodeInfo.child("Stats").child("size").attribute("y").as_int(1);
 
-		heroTemplate->collider = { 0,0, App->map->data.tile_width * size_x, App->map->data.tile_height * size_y };
+	//	heroTemplate->collider = { 0,0, App->map->data.tile_width * size_x, App->map->data.tile_height * size_y };
 
-		if (NodeInfo.child("iconData"))
-			App->gui->AddIconData(heroTemplate->type, NodeInfo.child("iconData"));
+	//	if (NodeInfo.child("iconData"))
+	//		App->gui->AddIconData(heroTemplate->type, NodeInfo.child("iconData"));
 
-		pugi::xml_node AnimInfo;
-		for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"))
-		{
-			Animation* animation = new Animation();
-			if (animation->LoadAnimation(AnimInfo))
-				heroTemplate->animations.push_back(animation);
-		}
+	//	pugi::xml_node AnimInfo;
+	//	for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"))
+	//	{
+	//		Animation* animation = new Animation();
+	//		if (animation->LoadAnimation(AnimInfo))
+	//			heroTemplate->animations.push_back(animation);
+	//	}
 
-		if (!heroTemplate->animations.empty()) heroTemplate->current_anim = heroTemplate->animations.front();
+	//	if (!heroTemplate->animations.empty()) heroTemplate->current_anim = heroTemplate->animations.front();
 
-		heroDB.insert(std::pair<int, Hero*>(heroTemplate->type, heroTemplate));
-	}
+	//	heroDB.insert(std::pair<int, Hero*>(heroTemplate->type, heroTemplate));
+	//}
 
 	for (NodeInfo = data.child("Buildings").child("Building"); NodeInfo; NodeInfo = NodeInfo.next_sibling("Building")) {
 
@@ -616,4 +618,38 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 	}
 
 	return true;
+}
+
+void j1EntityController::StartHero(iPoint pos)
+{
+	hero = new Hero();
+
+	hero->name = (unitDB[HERO_1])->name;
+	hero->texture = (unitDB[HERO_1])->texture;
+	hero->collider = (unitDB[HERO_1])->collider;
+	hero->type = (unitDB[HERO_1])->type;
+	
+	hero->attack = (unitDB[HERO_1])->attack;
+	hero->current_HP = hero->max_HP = (unitDB[HERO_1])->max_HP;
+	hero->defense = (unitDB[HERO_1])->defense;
+	hero->piercing_atk = (unitDB[HERO_1])->piercing_atk;
+	hero->speed = (unitDB[HERO_1])->speed;
+	hero->line_of_sight = (unitDB[HERO_1])->line_of_sight;
+	hero->range = (unitDB[HERO_1])->range;
+
+	for (int i = 0; i < (unitDB[HERO_1])->animations.size(); i++)
+		hero->animations.push_back(new Animation(*(unitDB[HERO_1])->animations[i]));
+
+	hero->current_anim = hero->animations[0];
+
+	hero->entity_type = UNIT;
+
+	hero->position.x = hero->collider.x = pos.x;
+	hero->position.y = hero->collider.y = pos.y;
+
+	hero->skill_one = new Skill(3, 5, 20, AREA); //Icicle Crash
+	hero->skill_two = new Skill(0, 10, 10, AREA);
+	hero->skill_three = new Skill(0, 10, 10, LINE);
+
+	entities.push_back(hero);
 }

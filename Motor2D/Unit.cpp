@@ -76,7 +76,8 @@ bool Unit::Update(float dt)
 		commands.front()->Execute(dt);
 		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
-
+	
+	
 	Move(dt);
 	animationController();
 

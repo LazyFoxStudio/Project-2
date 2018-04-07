@@ -22,10 +22,10 @@ LifeBar::LifeBar(Entity * entity, SDL_Texture* texture) : UI_element(0, 0, PROGR
 		bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("Y_empty"), App->gui->GetLifeBarRect("Y_full"), { 0,0,0,0 }, ((Building*)entity)->max_HP, callback);
 		offset.x = ((Building*)entity)->sprites[0].w / 2 - bar->section.w / 2;
 		break;
-	case HERO:
+	/*case HERO:
 			bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("G_empty"), App->gui->GetLifeBarRect("G_full"), { 0,0,0,0 }, ((Hero*)entity)->max_HP, callback);
 		offset.x = entity->collider.w / 2 - bar->section.w / 2;
-		break;
+		break;*/
 	}
 	offset.y = -(5 + bar->section.h);
 
@@ -50,11 +50,11 @@ LifeBar::LifeBar(Entity * entity, SDL_Texture * texture, int x, int y)
 		max_value = ((Building*)entity)->max_HP;
 		progress = life / max_value;
 		break;
-	case HERO:
+	/*case HERO:
 		life = ((Hero*)entity)->current_HP;
 		max_value = ((Hero*)entity)->max_HP;
 		progress = life / max_value;
-		break;
+		break;*/
 	}
 	if (progress >= 0.5)
 		bar = new ProgressBar(x, y, texture, App->gui->GetLifeBarRect("mG_empty"), App->gui->GetLifeBarRect("mG_full"), { 0,0,0,0 }, max_value, callback);
@@ -96,11 +96,11 @@ void LifeBar::BlitElement(bool use_camera)
 		max_life = ((Building*)entity)->max_HP;
 		bar->enterCurrentValue(life);
 		break;
-	case HERO:
+	/*case HERO:
 		life = ((Hero*)entity)->current_HP;
 		max_life = ((Hero*)entity)->max_HP;
 		bar->enterCurrentValue(life);
-		break;
+		break;*/
 	}
 	//If in menu update bar color
 	if (inMenu)

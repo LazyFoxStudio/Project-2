@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <GameData>
     <Units>
-      <Hero>
+      <Unit>
             <name value="Hero"/>
             <type value="1"/>
 			<iconData x="162" y="200" w="72" h="59"/>
@@ -18,17 +18,29 @@
             </Stats>
             <Animations>
               <Animation>
-                <width value="48"/>
-                <height value="48"/>
+                <!-- 0- IdleNorth -->
+                <width value="73"/>
+                <height value="65"/>
                 <rows value="0"/>
                 <columns value="0"/>
                 <StartingRow value="0"/>
                 <StartingColumn value="0"/>
+                <speed value="0"/>
+              </Animation>
+              <Animation>
+                <!-- 1- IdleNorthEast-->
+                <width value="73"/>
+                <height value="65"/>
+                <rows value="0"/>
+                <columns value="0"/>
+                <StartingRow value="0"/>
+                <StartingColumn value="1"/>
+                <speed value="0"/>
               </Animation>
             </Animations>
 			<Actions>
 			</Actions>
-        </Hero>
+        </Unit>
       <Unit>
             <name value="Footman"/>
             <type value="3"/>
