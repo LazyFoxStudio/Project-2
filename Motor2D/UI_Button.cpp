@@ -22,6 +22,6 @@ void Button::BlitElement(bool use_camera)
 			break;
 		}
 
-		BlitChilds();
+		UI_element::BlitElement(use_camera);
 	}
 }

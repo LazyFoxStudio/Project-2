@@ -28,6 +28,7 @@ public:
 	void setColor(SDL_Color newColor);
 	void setOutlineColor(SDL_Color newColor);
 	void setOutlined(bool isOutlined);
+	void setBackground(bool hasBackground, SDL_Color color = { 0, 0, 0, 255 });
 	void convertIntoCounter(int* variableCounting);
 
 	std::string getText() const;
@@ -50,6 +51,8 @@ private:
 	SDL_Texture* outline = nullptr;
 	SDL_Color outline_color = { 0, 0, 0, 255 };
 	iPoint outline_offset = { 0,0 };
+	bool hasBackground = false;
+	SDL_Color background_color = { 0, 0, 0, 255 };
 	bool counting = false;
 	const int* counter = nullptr;
 };

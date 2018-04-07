@@ -19,7 +19,7 @@ void Image::BlitElement(bool use_camera)
 		}
 		App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera);
 
-		BlitChilds();
+		UI_element::BlitElement(use_camera);
 	}
 }
 

@@ -7,6 +7,8 @@
 #include "j1Textures.h"
 #include "j1Gui.h"
 #include "j1Input.h"
+#include "j1Window.h"
+#include "j1App.h"
 
 struct SDL_Texture;
 
@@ -58,9 +60,9 @@ public:
 	UI_element()
 	{}
 
-	UI_element(int x, int y, element_type type, SDL_Rect section, j1Module* callback, SDL_Texture* texture = nullptr):
+	UI_element(int x, int y, element_type type, SDL_Rect section, j1Module* callback, SDL_Texture* texture = nullptr) :
 		localPosition({ x, y }),
-		Original_Pos({x, y}),
+		Original_Pos({ x, y }),
 		element_type(type),
 		section(section),
 		callback(callback),
@@ -77,6 +79,41 @@ public:
 	void appendChild(UI_element* child, bool center = false);
 
 	virtual void BlitElement(bool use_camera = false)
+	{
+		BlitChilds();
+		if (state == MOUSEOVER)
+		{
+			if (!blitPopUpInfo)
+			{
+				if (App->gui->hovering_element.ReadMs() > 600)
+				{
+					if (popUp != nullptr)
+					{
+						int x, y;
+						App->input->GetMousePosition(x, y);
+						int win_w = App->win->width;
+						int win_h = App->win->height;
+						if (x + popUp->section.w > win_w)
+						{
+							x -= ((x + popUp->section.w) - win_w);
+						}
+						x = x;
+						y -= popUp->section.h;
+						if (y + popUp->section.y > win_h)
+						{
+							y -= ((y + popUp->section.h) - win_h);
+						}
+						popUp->localPosition = { x, y };
+					}
+					blitPopUpInfo = true;
+				}
+			}
+			else
+				BlitHoverExtraEffect();
+		}
+	}
+
+	virtual void BlitHoverExtraEffect()
 	{}
 
 	void BlitChilds();
@@ -118,11 +155,14 @@ public:
 	j1Module* callback = nullptr;
 	UI_element* parent = nullptr;
 	std::list<UI_element*> childs;
+	UI_element* popUp = nullptr;
 	bool hovering = false;
 	bool moving = false;
 	bool dragable = false;
 	bool interactive = true;
 	bool active = true;
+	bool blitPopUpInfo = false;
+	std::string PopUpInfo;
 
 protected:
 	iPoint Click_Pos{ 0,0 };

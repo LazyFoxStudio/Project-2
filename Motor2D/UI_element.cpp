@@ -1,4 +1,5 @@
 #include "UI_element.h"
+#include "j1Render.h"
 
 UI_element::~UI_element()
 {
@@ -7,6 +8,8 @@ UI_element::~UI_element()
 		App->tex->UnLoad(texture);
 		texture = nullptr;
 	}
+
+	RELEASE(popUp);
 }
 
 iPoint UI_element::calculateAbsolutePosition() const

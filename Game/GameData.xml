@@ -1082,7 +1082,7 @@
 		</menu>
 	</LifeBars>
 	<ActionButtons>
-		<move id="1" function="14">
+		<move id="1" function="14" popupInfo="Move troops">
 			<position x="1399" y="809"/>
 			<standby x="285" y="437" w="66" h="66"/>
 			<OnMouse x="353" y="437" w="66" h="66"/>
@@ -1106,13 +1106,13 @@
 			<OnMouse x="965" y="437" w="66" h="66"/>
 			<OnClick x="1033" y="437" w="66" h="66"/>
 		</patrol>
-		<buildBarrack id="5" function="15">
+		<buildBarrack id="5" function="15" popupInfo="Build Barracks">
 			<position x="1399" y="809"/>
 			<standby x="1101" y="437" w="66" h="66"/>
 			<OnMouse x="1169" y="437" w="66" h="66"/>
 			<OnClick x="1237" y="437" w="66" h="66"/>
 		</buildBarrack>
-		<buildMill id="6" function="16">
+		<buildMill id="6" function="16" popupInfo="Build Lumber Mill">
 			<position x="1558" y="889"/>
 			<standby x="1305" y="437" w="66" h="66"/>
 			<OnMouse x="1373" y="437" w="66" h="66"/>

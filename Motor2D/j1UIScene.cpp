@@ -95,13 +95,16 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 
 	if (event_type == MOUSE_ENTER)
 	{
+		App->gui->hovering_element.Start();
+		App->gui->current_hovering_element = element;
 		element->state = MOUSEOVER;
 
 	}
 	else if (event_type == MOUSE_LEAVE)
 	{
 		element->state = STANDBY;
-
+		element->blitPopUpInfo = false;
+		App->gui->current_hovering_element = nullptr;
 	}
 	else if (event_type == MOUSE_LEFT_CLICK)
 	{
