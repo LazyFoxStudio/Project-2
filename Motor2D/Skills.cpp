@@ -28,7 +28,6 @@ void Skill::Activate(Hero* hero)
 	}
 
 	App->render->DrawCircle((position.x*App->map->data.tile_width) + App->render->camera.x, (position.y*App->map->data.tile_width)+App->render->camera.y, range*App->map->data.tile_width, Red);
-	
 }
 
 void Skill::DrawRange()
@@ -36,9 +35,7 @@ void Skill::DrawRange()
 
 	iPoint point;
 
-	
-
-	if (type == AREA)
+	if (type == AREA || type == NONE_RANGE)
 	{
 		BFS();
 	}
@@ -47,15 +44,31 @@ void Skill::DrawRange()
 	{
 		Line();
 	}
-	
 
+	Color tile_color;
+
+	switch (type)
+	{
+	case NONE_RANGE:
+		tile_color = { 255,255,0,100 };//YELLOW
+		break;
+	case AREA:
+		tile_color = { 0,255,100,100 };//GREEN
+		break;
+	case LINE:
+		tile_color = { 100,0,255,100 };//BLUE
+		break;
+	default:
+		tile_color = { 0,0,0,100 };//BLACK
+		break;
+	}
+	
 	// Draw 	
 	for(std::list<iPoint>::iterator item = toDraw.begin();item!=toDraw.end();item++)
 	{
 		point = App->map->MapToWorld((*item).x,(*item).y);
 
 		SDL_Rect r = { point.x,point.y,32,32 };
-		Color tile_color = { 255,100,100,100 };
 
 		App->render->DrawQuad(r, tile_color,point.x, point.y);
 	}
@@ -175,12 +188,18 @@ void Skill::MakeDamage()
 		{
 			if (((Unit*)(*item))->type > HERO_X)
 			{
-				iPoint enemy_pos;
-				enemy_pos = App->map->WorldToMap(((Unit*)(*item))->position.x, ((Unit*)(*item))->position.y);
+				SDL_Point enemy_pos = { ((Unit*)(*item))->position.x, ((Unit*)(*item))->position.y };
 
-				if (enemy_pos.DistanceManhattan(mouse_position) <= radius+1)
+				for (std::list<iPoint>::iterator it = toDraw.begin(); it != toDraw.end(); it++)
 				{
-					((Unit*)(*item))->current_HP -= damage;
+					
+					iPoint rect_point = App->map->MapToWorld((*it).x, (*it).y);
+					SDL_Rect r = { rect_point.x,rect_point.y,32,32 };
+
+					if (SDL_PointInRect(&enemy_pos,&r))
+					{
+						((Unit*)(*item))->current_HP -= damage;
+					}
 				}
 			}
 		}

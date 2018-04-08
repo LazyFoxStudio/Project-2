@@ -665,7 +665,7 @@ void j1EntityController::StartHero(iPoint pos)
 	hero->position.y = hero->collider.y = pos.y;
 
 	hero->skill_one = new Skill(3, 5, 20, AREA); //Icicle Crash
-	hero->skill_two = new Skill(0, 10, 10, AREA);
+	hero->skill_two = new Skill(0, 10, 10, NONE_RANGE);
 	hero->skill_three = new Skill(0, 10, 10, LINE);
 
 	entities.push_back(hero);
