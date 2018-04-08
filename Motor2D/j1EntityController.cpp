@@ -41,7 +41,7 @@ bool j1EntityController::Start()
 	StartHero(iPoint(900, 700));
 
 	structure_beingbuilt = TOWN_HALL;
-	placingBuilding(TOWN_HALL, { 600,600 });
+	placingBuilding(TOWN_HALL, {600, 600});
 
 	squad_test = new Squad(squad_units_test);
 	return true;

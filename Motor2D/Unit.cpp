@@ -119,14 +119,44 @@ void Unit::animationController()
 		switch (commands.front()->type)
 		{
 		case MOVETO:
-			if (next_step.x > 0) //MOVE E
+			if (next_step.x > 0 && next_step.y < 13 && next_step.y > -13) //MOVE E
+			{
 				new_animation = MOVE_E;
-			else if (next_step.x < 0) //MOVE W
+			}
+			else if (next_step.x < 0 && next_step.y < 13 && next_step.y > -13) //MOVE W
+			{
 				new_animation = MOVE_W;
+			}
 			else if (next_step.y > 0) //MOVE S
-				new_animation = MOVE_S;
+			{
+				if (next_step.x < 3 && next_step.x > -3)
+				{
+					new_animation = MOVE_S;
+				}
+				else if (next_step.x < 13)
+				{
+					new_animation = MOVE_SE;
+				}
+				else if (next_step.x < -13)
+				{
+					new_animation = MOVE_SW;
+				}
+			}
 			else if (next_step.y < 0) //MOVE N
-				new_animation = MOVE_N;
+			{
+				if (next_step.x < 3 && next_step.x > -3)
+				{
+					new_animation = MOVE_N;
+				}
+				if (next_step.x > 13)
+				{
+					new_animation = MOVE_NW;
+				}
+				else if (next_step.x < -13)
+				{
+					new_animation = MOVE_NE;
+				}				
+			}
 			break; //just in case...
 		case ATTACK:
 			break;
@@ -135,17 +165,29 @@ void Unit::animationController()
 	else {
 		switch (new_animation)
 		{
+		case MOVE_N:
+			new_animation = IDLE_N;
+			break;
+		case MOVE_NE:
+			new_animation = IDLE_NE;
+			break;
 		case MOVE_E:
 			new_animation = IDLE_E;
 			break;
-		case MOVE_N:
-			new_animation = IDLE_N;
+		case MOVE_SE:
+			new_animation = IDLE_SE;
 			break;
 		case MOVE_S:
 			new_animation = IDLE_S;
 			break;
+		case MOVE_SW:
+			new_animation = IDLE_SE;
+			break;
 		case MOVE_W:
 			new_animation = IDLE_W;
+			break;
+		case MOVE_NW:
+			new_animation = IDLE_NW;
 			break;
 		}
 	}
