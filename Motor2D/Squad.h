@@ -22,6 +22,7 @@ public:
 	float max_speed = 0.0f;
 
 public:
+	Squad() {};
 	Squad(std::vector<Unit*>& units);
 	~Squad();
 

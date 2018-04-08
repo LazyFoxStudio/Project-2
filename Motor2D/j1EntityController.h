@@ -39,15 +39,20 @@ public:
 	Building* addBuilding(iPoint pos, buildingType type );
 	Nature* addNature(iPoint pos, resourceType res_type, int amount = 0);
 
+	void AddSquad(unitType type);
+
 	void selectionControl();
 	void commandControl();
 	entityType getSelectedType();
 
 	void placingBuilding(buildingType type, iPoint position);
 	void buildingProcessDraw();
+
 	void HandleWorkerAssignment(bool to_assign, Building* building);
 	bool CheckCostBuiding(buildingType target);
 	void HandleBuildingResources(buildingType target);
+	void debugDrawEntity(Entity* entity);
+
 
 	Entity* CheckMouseHover(iPoint mouse_world);
 
@@ -60,6 +65,8 @@ public:
 
 	std::list<Entity*> entities;
 	std::list<Entity*> selected_entities;
+
+	std::list<Squad*> all_squads;
 
 	std::list<Entity*> entities_to_destroy;
 	

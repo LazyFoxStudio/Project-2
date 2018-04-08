@@ -89,7 +89,8 @@ void Unit::Move(float dt)
 
 	if (!commands.empty() || separation_v.GetModule() > STOP_TRESHOLD)
 	{
-		next_step = next_step + (calculateSeparationVector() * STEERING_FACTOR);
+		if(!commands.empty() && commands.front()->type != ATTACK)
+			next_step = next_step + (separation_v * STEERING_FACTOR);
 
 		if (next_step.GetModule() > MAX_NEXT_STEP_MODULE)
 			next_step = next_step.Normalized() * MAX_NEXT_STEP_MODULE;

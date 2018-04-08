@@ -15,7 +15,7 @@ class Squad;
 class FlowField;
 
 enum Command_State { TO_INIT, UPDATE, TO_STOP, FINISHED };
-enum Command_Type { NONE, MOVETO, ATTACKING_MOVETO, ATTACK, PATROL, HOLD, MOVETOSQUAD, RESHAPE_SQUAD};
+enum Command_Type { NONE, MOVETO, ATTACKING_MOVETO, ATTACK, PATROL, HOLD, MOVETOSQUAD, ATTACKING_MOVETO_SQUAD};
 
 //  BASE CLASSES: =======================
 
@@ -144,10 +144,19 @@ public:
 private:
 
 	bool OnInit();
-	bool OnUpdate(float dt);
+	virtual bool OnUpdate(float dt);
 	bool OnStop();
+
 };
 
+class AttackingMoveToSquad : public MoveToSquad
+{
+public:
+	AttackingMoveToSquad(Unit* commander, iPoint map_dest) : MoveToSquad(commander, map_dest) { type = ATTACKING_MOVETO_SQUAD; };
 
+private:
+
+	bool OnUpdate(float dt);
+};
 
 #endif

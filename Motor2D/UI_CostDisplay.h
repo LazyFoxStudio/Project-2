@@ -18,7 +18,13 @@ public:
 	~CostDisplay();
 
 public:
-	
+	SDL_Texture * icon_atlas = nullptr;
+	Text* entity_name = nullptr;
+	Text* cost_text = nullptr;
+	void BlitElement(bool use_camera = true);
+	std::list<Text*> TextList; //Constant but inactive
+	std::list<Text*> Number; //Constant but inactive
+	std::list<Image*> ResourceIcons;
 };
 
 

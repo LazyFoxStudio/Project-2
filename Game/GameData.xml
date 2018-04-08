@@ -12,8 +12,8 @@
                 <defense value="6"/>
                 <piercingDamage value="15"/>
                 <movementSpeed value="1.5"/>
-                <range value="3"/>
-                <lineOfSight value="50"/>
+                <range value="70"/>
+                <lineOfSight value="500"/>
                 <size x="1" y="1"/>
             </Stats>
             <Animations>
@@ -52,8 +52,8 @@
                 <defense value="2"/>
                 <piercingDamage value="3"/>
                 <movementSpeed value="1"/>
-                <range value="1"/>
-                <lineOfSight value="20"/>
+                <range value="40"/>
+                <lineOfSight value="200"/>
                 <goldCost value="600"/>
                 <woodCost value="0"/>
                 <workerCost value="5"/>
@@ -286,8 +286,8 @@
                 <defense value="2"/>
                 <piercingDamage value="4"/>
                 <movementSpeed value="1"/>
-                <range value="6"/>
-                <lineOfSight value="25"/>
+                <range value="100"/>
+                <lineOfSight value="250"/>
                 <goldCost value="500"/>
                 <woodCost value="50"/>
                 <workerCost value="4"/>
@@ -519,8 +519,8 @@
                 <defense value="2"/>
                 <piercingDamage value="3"/>
                 <movementSpeed value="1"/>
-                <range value="1"/>
-                <lineOfSight value="20"/>
+                <range value="40"/>
+                <lineOfSight value="200"/>
                 <size x="1" y="1"/>
             </Stats>
             <Animations>
@@ -760,8 +760,8 @@
                 <defense value="2"/>
                 <piercingDamage value="4"/>
                 <movementSpeed value="1"/>
-                <range value="6"/>
-                <lineOfSight value="25"/>
+                <range value="100"/>
+                <lineOfSight value="250"/>
                 <size x="1" y="1"/>
             </Stats>
         <Animations>
@@ -1141,7 +1141,7 @@
 			<OnMouse x="1373" y="437" w="66" h="66"/>
 			<OnClick x="1441" y="437" w="66" h="66"/>
 		</buildMill>
-    <buildFarm id="7" function="17">
+    <buildFarm id="7" function="17" popupInfo ="Build Farm">
 			<position x="1717" y="969"/>
 			<standby x="1101" y="507" w="66" h="66"/>
 			<OnMouse x="1169" y="507" w="66" h="66"/>

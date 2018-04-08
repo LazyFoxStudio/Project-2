@@ -44,6 +44,8 @@ bool j1EntityController::Start()
 	squad_units_test.push_back(addUnit(iPoint(800, 800), ARCHER));
 	squad_units_test.push_back(addUnit(iPoint(1100, 1000), GRUNT));
 
+	AddSquad(FOOTMAN);
+
 	//addHero(iPoint(900, 700), MAGE);
 
 	StartHero(iPoint(900, 700));
@@ -70,7 +72,7 @@ bool j1EntityController::Update(float dt)
 			if (App->render->CullingCam((*it)->position))
 			{
 				(*it)->Draw(dt);
-				if (debug) App->render->DrawQuad((*it)->collider, Green);
+				if (debug) debugDrawEntity(*it);
 			}
 			if (!(*it)->Update(dt))	return false;
 		}
@@ -139,7 +141,6 @@ bool j1EntityController::Update(float dt)
 		buildingProcessDraw();
 	}
 
-
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI && !App->actionscontroller->doingAction)
 		selectionControl();
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -147,6 +148,17 @@ bool j1EntityController::Update(float dt)
 
 
 	return true;
+}
+
+void j1EntityController::debugDrawEntity(Entity* entity)
+{
+	App->render->DrawQuad(entity->collider, Green);
+	if (entity->entity_type == UNIT)
+	{
+		Unit* unit = (Unit*)entity;
+		App->render->DrawCircle(unit->position.x, unit->position.y, unit->range, Green);
+		App->render->DrawCircle(unit->position.x, unit->position.y, unit->line_of_sight, Blue);
+	}
 }
 
 bool j1EntityController::PostUpdate()
@@ -233,6 +245,18 @@ Nature* j1EntityController::addNature(iPoint pos, resourceType res_type, int amo
 	Nature* resource = new Nature(pos, *(natureDB[res_type]));
 	entities.push_back(resource);
 	return resource;
+}
+
+void j1EntityController::AddSquad(unitType type)
+{
+	std::vector<Unit*> squad_vector;
+
+	for (int i = 0; i < (unitDB[type])->squad_members; ++i)
+	{
+		squad_vector.push_back(addUnit(iPoint((i *50) + 1000, 900), type));
+	}
+
+	all_squads.push_back(new Squad(squad_vector));
 }
 
 void j1EntityController::placingBuilding(buildingType type, iPoint position)
