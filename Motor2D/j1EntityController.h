@@ -39,6 +39,8 @@ public:
 	Building* addBuilding(iPoint pos, buildingType type );
 	Nature* addNature(iPoint pos, resourceType res_type, int amount = 0);
 
+	void AddSquad(unitType type);
+
 	void selectionControl();
 	void commandControl();
 	entityType getSelectedType();
@@ -57,6 +59,8 @@ public:
 
 	std::list<Entity*> entities;
 	std::list<Entity*> selected_entities;
+
+	std::list<Squad*> all_squads;
 
 	std::list<Entity*> entities_to_destroy;
 	
