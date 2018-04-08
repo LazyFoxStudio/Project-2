@@ -18,6 +18,7 @@ public:
 	j1EntityController();
 	~j1EntityController();
 
+	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool Update(float dt);
 	bool PostUpdate();
@@ -69,6 +70,7 @@ public:
 
 	bool debug = false;
 	bool building = false;
+	int death_time = 0;
 	
 	buildingType structure_beingbuilt = NONE_BUILDING;
 	SDL_Rect selection_rect = { 0,0,0,0 };

@@ -20,6 +20,12 @@ j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
 j1EntityController::~j1EntityController() {}
 
+bool j1EntityController::Awake(pugi::xml_node &config)
+{
+	death_time = config.child("deathTime").attribute("value").as_int(0);
+	return true;
+}
+
 bool j1EntityController::Start()
 {
 	pugi::xml_document doc;
