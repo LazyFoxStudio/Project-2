@@ -118,11 +118,11 @@ void Unit::animationController()
 		switch (commands.front()->type)
 		{
 		case MOVETO:
-			if (next_step.x > 0 && next_step.y < 13 && next_step.y > -13) //MOVE E
+			if (next_step.x > 0 && next_step.y < MAX_NEXT_STEP_MODULE/2 && next_step.y > -MAX_NEXT_STEP_MODULE/2) //MOVE E
 			{
 				new_animation = MOVE_E;
 			}
-			else if (next_step.x < 0 && next_step.y < 13 && next_step.y > -13) //MOVE W
+			else if (next_step.x < 0 && next_step.y < MAX_NEXT_STEP_MODULE/2 && next_step.y > -MAX_NEXT_STEP_MODULE/2) //MOVE W
 			{
 				new_animation = MOVE_W;
 			}
@@ -132,11 +132,11 @@ void Unit::animationController()
 				{
 					new_animation = MOVE_S;
 				}
-				else if (next_step.x < 13)
+				else if (next_step.x < MAX_NEXT_STEP_MODULE/2)
 				{
 					new_animation = MOVE_SE;
 				}
-				else if (next_step.x < -13)
+				else if (next_step.x < -MAX_NEXT_STEP_MODULE/2)
 				{
 					new_animation = MOVE_SW;
 				}
@@ -147,11 +147,11 @@ void Unit::animationController()
 				{
 					new_animation = MOVE_N;
 				}
-				if (next_step.x > 13)
+				if (next_step.x > MAX_NEXT_STEP_MODULE/2)
 				{
 					new_animation = MOVE_NW;
 				}
-				else if (next_step.x < -13)
+				else if (next_step.x < -MAX_NEXT_STEP_MODULE/2)
 				{
 					new_animation = MOVE_NE;
 				}				
