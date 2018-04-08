@@ -62,7 +62,7 @@ bool j1EntityController::Update(float dt)
 			if (App->render->CullingCam((*it)->position))
 			{
 				(*it)->Draw(dt);
-				if (debug) App->render->DrawQuad((*it)->collider, Green);
+				if (debug) debugDrawEntity(*it);
 			}
 			if (!(*it)->Update(dt))	return false;
 		}
@@ -139,6 +139,17 @@ bool j1EntityController::Update(float dt)
 
 
 	return true;
+}
+
+void j1EntityController::debugDrawEntity(Entity* entity)
+{
+	App->render->DrawQuad(entity->collider, Green);
+	if (entity->entity_type == UNIT)
+	{
+		Unit* unit = (Unit*)entity;
+		App->render->DrawCircle(unit->position.x, unit->position.y, unit->range, Green);
+		App->render->DrawCircle(unit->position.x, unit->position.y, unit->line_of_sight, Blue);
+	}
 }
 
 bool j1EntityController::PostUpdate()

@@ -2,6 +2,8 @@
 #include "Unit.h"
 #include "Command.h"
 
+#include "j1Input.h"
+
 Squad::Squad(std::vector<Unit*>& units) : units(units)
 {
 	commander = units[0];
@@ -26,6 +28,12 @@ bool Squad::Update(float dt)
 	{
 		commands.front()->Execute(dt);
 		if (commands.front()->state == FINISHED) commands.pop_front();
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+	{
+		for (int i = 0; i < units.size(); i++)
+			units[i]->commands.push_front(new Attack(units[i]));
 	}
 	return true;
 }

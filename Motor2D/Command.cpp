@@ -111,6 +111,7 @@ bool Attack::OnUpdate(float dt)
 	{
 		if (enemy->position.DistanceTo(unit->position) < unit->range)
 		{
+			unit->next_step.SetToZero();
 			if (!timer) timer = new j1Timer();
 			else if (timer->ReadSec() > 0.5f)
 			{
@@ -135,9 +136,11 @@ bool Attack::OnUpdate(float dt)
 			else
 				unit->next_step += ((flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized() * STEERING_FACTOR);
 		}
-		else Stop();
+		else 
+			Stop();
 	}
-	else Stop();
+	else 
+		Stop();
 	
 	return true;
 }

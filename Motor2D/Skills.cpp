@@ -12,7 +12,7 @@ Skill::Skill(Hero* hero, uint _radius, int _damage, uint _range, uint _cooldown,
 	{
 	case AREA: tile_color = { 0,255,100,100 };	break; //GREEN
 	case LINE: tile_color = { 0,255,255,100 };	break; //YELLOW
-	default:   tile_color = { 0,100,255,100 };	break; //BLUE100
+	default:   tile_color = { 0,100,255,100 };	break; //BLUE
 	}
 
 	timer.Start();
@@ -33,6 +33,7 @@ void Skill::DrawRange()
 		else if (type == LINE)
 			Line();
 
+		Color black = { 0,0,0,100 };
 		// Draw 	
 		for (std::list<iPoint>::iterator item = toDraw.begin(); item != toDraw.end(); item++)
 		{
@@ -41,7 +42,6 @@ void Skill::DrawRange()
 				App->render->DrawQuad(r, tile_color);
 			else 
 			{
-				Color black = { 0,0,0,100 };
 				App->render->DrawQuad(r, black);
 			}
 		}

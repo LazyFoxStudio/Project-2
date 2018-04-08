@@ -44,6 +44,7 @@ public:
 
 	void placingBuilding(buildingType type, iPoint position);
 	void buildingProcessDraw();
+	void debugDrawEntity(Entity* entity);
 
 	Entity* CheckMouseHover(iPoint mouse_world);
 

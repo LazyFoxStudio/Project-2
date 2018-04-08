@@ -275,6 +275,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, iPoint& destination)
  				for (current = lowestScoreNode; current.parent; current = *current.parent)
 					last_path.push_front(current.pos);
 
+				last_path.push_front(origin);
 				break;
 			}
 
