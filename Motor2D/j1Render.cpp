@@ -228,6 +228,14 @@ bool j1Render::DrawCircle(int x, int y, int radius, Color& color, bool use_camer
 
 	float factor = (float)M_PI / 2880;
 
+	if (use_camera)
+	{
+		x *= scale;
+		y *= scale;
+		x += camera.x;
+		y += camera.y;
+	}
+
 	for(uint i = 0; i < 5760; ++i)
 	{
 		points[i].x = (int)(x + radius * cos(i * factor));

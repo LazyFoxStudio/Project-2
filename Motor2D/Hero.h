@@ -15,20 +15,13 @@ public:
 	uint XP_to_levelup = 0;
 
 	Skill* skill_one = nullptr;
-	j1Timer cooldown_one;
-
 	Skill* skill_two = nullptr;
-	j1Timer cooldown_two;
-
 	Skill* skill_three = nullptr;
-	j1Timer cooldown_three;
 
 
 private:
 
-	bool	doSkill_1 = false;
-	bool	doSkill_2 = false;
-	bool	doSkill_3 = false;
+	uint current_skill = 0;
 
 public:
 

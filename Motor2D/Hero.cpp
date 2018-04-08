@@ -20,73 +20,36 @@ bool Hero::Update(float dt)
 	//	//blit hero sprites
 	//	App->render->DrawQuad({ (int)position.x,(int)position.y,26,36 }, Blue, true);
 	//}
-	
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && (doSkill_1 || skill_one->ready))
+
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)			current_skill != 1 ? current_skill = 1 : current_skill = 0;
+	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)	current_skill != 2 ? current_skill = 2 : current_skill = 0;
+	else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)	current_skill != 3 ? current_skill = 3 : current_skill = 0;
+
+	switch (current_skill)
 	{
-		doSkill_1 = !doSkill_1;
-
-		if (doSkill_2 || doSkill_3)
-		{
-			doSkill_2 = false;
-			doSkill_3 = false;
-		}
-	}
-	
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && (doSkill_2 || skill_two->ready))
-	{
-		doSkill_2 = !doSkill_2;
-
-		if (doSkill_1 || doSkill_3)
-		{
-			doSkill_1 = false;
-			doSkill_3 = false;
-		}
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && (doSkill_3 || skill_three->ready))
-	{
-		doSkill_3 = !doSkill_3;
-
-		if (doSkill_1 || doSkill_2)
-		{
-			doSkill_1 = false;
-			doSkill_2 = false;
-		}
+	case 1: 
+		skill_one->DrawRange(); 
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_one->Ready())  skill_one->Activate();
+		break;
+	case 2:
+		skill_two->DrawRange();
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready())  skill_two->Activate();
+		break;
+	case 3:
+		skill_three->DrawRange();
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready())  skill_three->Activate();
+		break;
+	default: 
+		break;
 	}
 
-	if (doSkill_1 && skill_one->ready)
+	if (!commands.empty())
 	{
-		skill_one->Activate(this);
-	}
-	if (doSkill_2 && skill_two->ready)
-	{
-		skill_two->Activate(this);
-	}
-	if (doSkill_3 && skill_three->ready)
-	{
-		skill_three->Activate(this);
+		commands.front()->Execute(dt);
+		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
 
-	if (skill_one->timer.ReadSec()>= skill_one->cooldown && !skill_one->ready)
-	{
-		skill_one->ready = true;
-	}
-	if (skill_two->timer.ReadSec() >= skill_two->cooldown && !skill_two->ready)
-	{
-		skill_two->ready = true;
-	}
-	if (skill_three->timer.ReadSec() >= skill_three->cooldown && !skill_three->ready)
-	{
-		skill_three->ready = true;
-	}
-	
-	if (!((Unit*)(this))->commands.empty())
-	{
-		((Unit*)(this))->commands.front()->Execute(dt);
-		if (((Unit*)(this))->commands.front()->state == FINISHED) commands.pop_front();
-	}
-
-	((Unit*)(this))->Move(dt);
+	Move(dt);
 
 	return true;
 }

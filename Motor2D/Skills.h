@@ -4,6 +4,7 @@
 
 #include "j1Timer.h"
 #include "p2Point.h"
+#include "Color.h"
 
 #include <list>
 
@@ -21,49 +22,31 @@ class Skill
 public:
 	
 	j1Timer				timer;
-	
-	bool				ready = true;
-	
-	int					cooldown = 0; 
-	int					damage = 0;
-	
+	uint				cooldown = 0; 
+
 	uint				radius = 0;
+	int					damage = 0;
 	uint				range = 0;
-	
-	iPoint				position = { 0,0 };
-	iPoint				mouse_position = { 0,0 };
-	iPoint				position_hero = { 0,0 };
+	iPoint				cast_pos = { 0,0 };
 
 	rangeType			type=NONE_RANGE;
+	Color				tile_color;
+	Hero*				hero = nullptr;
 	
 	std::list<iPoint>	toDraw;
 
 public:
 	
-	Skill(uint _radius, int _damage,uint _range,uint _cooldown,rangeType _type) 
-	{
-		radius = _radius;
-		damage = _damage;
-		range = _range;
-		type = _type;
-		cooldown = _cooldown;
-	};
-	
+	Skill(Hero* hero, uint _radius, int _damage, uint _range, uint _cooldown, rangeType	type);
 	~Skill() {};
 
-	/*virtual void Activate(Hero* hero) {};
-	virtual void DrawRange() {};*/
-
-	void Activate(Hero* hero);
+	void Activate();
 	void DrawRange();
 	void BFS();
 	void Line();
-	void MakeDamage();
-	
-	bool Find(std::list<iPoint> list,const iPoint& point);
-	bool inCircle(int pos_x,int pos_y);
-};
 
+	bool Ready() { return timer.ReadSec() >= cooldown; };
+};
 
 //class Shockwave : public Skill
 //{
