@@ -2,6 +2,7 @@
 #include "j1Render.h"
 #include "j1Input.h"
 #include "Color.h"
+#include "Command.h"
 
 Hero::Hero(iPoint pos, Hero& hero)
 {
@@ -79,7 +80,14 @@ bool Hero::Update(float dt)
 		skill_three->ready = true;
 	}
 	
-	
+	if (!((Unit*)(this))->commands.empty())
+	{
+		((Unit*)(this))->commands.front()->Execute(dt);
+		if (((Unit*)(this))->commands.front()->state == FINISHED) commands.pop_front();
+	}
+
+	((Unit*)(this))->Move(dt);
+
 	return true;
 }
 

@@ -512,64 +512,6 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitDB.insert(std::pair<int, Unit*>(unitTemplate->type, unitTemplate));
 	}
 
-	//for (NodeInfo = data.child("Units").child("Hero"); NodeInfo; NodeInfo = NodeInfo.next_sibling("Hero")) {
-
-	//	Hero* heroTemplate = new Hero();
-
-	//	heroTemplate->type = (heroType)NodeInfo.child("type").attribute("value").as_int(0);
-
-	//	if (heroTemplate->type == MAGE)  // HERO_X should the last hero in the type enum
-	//	{
-	//		heroTemplate->skill_one = new Skill(3, 5, 20, AREA); //Icicle Crash
-	//		heroTemplate->skill_two = new Skill(0, 10, 10, AREA);
-	//		heroTemplate->skill_three = new Skill(0, 10, 10, LINE);
-	//	}
-
-	//	heroTemplate->name = NodeInfo.child("name").attribute("value").as_string("error");
-	//	heroTemplate->texture = App->tex->Load(NodeInfo.child("texture").attribute("value").as_string("error"));
-
-	//	heroTemplate->current_HP = heroTemplate->max_HP = NodeInfo.child("Stats").child("life").attribute("value").as_int(0);
-	//	heroTemplate->attack = NodeInfo.child("Stats").child("attack").attribute("value").as_int(0);
-	//	heroTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
-	//	heroTemplate->piercing_atk = NodeInfo.child("Stats").child("piercingDamage").attribute("value").as_int(0);
-	//	heroTemplate->speed = NodeInfo.child("Stats").child("movementSpeed").attribute("value").as_int(0);
-	//	heroTemplate->range = NodeInfo.child("Stats").child("range").attribute("value").as_int(0);
-	//	heroTemplate->line_of_sight = NodeInfo.child("Stats").child("lineOfSight").attribute("value").as_int(0);
-	//	heroTemplate->wood_cost = NodeInfo.child("Stats").child("woodCost").attribute("value").as_int(0);
-	//	heroTemplate->gold_cost = NodeInfo.child("Stats").child("goldCost").attribute("value").as_int(0);
-	//	heroTemplate->worker_cost = NodeInfo.child("Stats").child("workerCost").attribute("value").as_int(0);
-	//	heroTemplate->training_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
-	//	heroTemplate->squad_members = NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
-	//	int i = 0;
-	//	for (pugi::xml_node action = NodeInfo.child("Actions").child("action"); action; action = action.next_sibling("action"))
-	//	{
-	//		if (i >= 9)
-	//			break;
-
-	//		heroTemplate->available_actions[i++] = action.attribute("id").as_uint();
-	//	}
-
-	//	int size_x = NodeInfo.child("Stats").child("size").attribute("x").as_int(1);
-	//	int size_y = NodeInfo.child("Stats").child("size").attribute("y").as_int(1);
-
-	//	heroTemplate->collider = { 0,0, App->map->data.tile_width * size_x, App->map->data.tile_height * size_y };
-
-	//	if (NodeInfo.child("iconData"))
-	//		App->gui->AddIconData(heroTemplate->type, NodeInfo.child("iconData"));
-
-	//	pugi::xml_node AnimInfo;
-	//	for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"))
-	//	{
-	//		Animation* animation = new Animation();
-	//		if (animation->LoadAnimation(AnimInfo))
-	//			heroTemplate->animations.push_back(animation);
-	//	}
-
-	//	if (!heroTemplate->animations.empty()) heroTemplate->current_anim = heroTemplate->animations.front();
-
-	//	heroDB.insert(std::pair<int, Hero*>(heroTemplate->type, heroTemplate));
-	//}
-
 	for (NodeInfo = data.child("Buildings").child("Building"); NodeInfo; NodeInfo = NodeInfo.next_sibling("Building")) {
 
 		Building* buildingTemplate = new Building();
@@ -664,9 +606,9 @@ void j1EntityController::StartHero(iPoint pos)
 	hero->position.x = hero->collider.x = pos.x;
 	hero->position.y = hero->collider.y = pos.y;
 
-	hero->skill_one = new Skill(3, 5, 20, AREA); //Icicle Crash
-	hero->skill_two = new Skill(0, 10, 10, NONE_RANGE);
-	hero->skill_three = new Skill(0, 10, 10, LINE);
+	hero->skill_three = new Skill(0, 50, 10, 10, LINE);		//Dragon Breath
+	hero->skill_one = new Skill(3, 60, 20,20, AREA);		//Icicle Crash
+	hero->skill_two = new Skill(0, 200, 10,20, NONE_RANGE);	//Overflow
 
 	entities.push_back(hero);
 }

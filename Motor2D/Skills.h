@@ -40,14 +40,13 @@ public:
 
 public:
 	
-	Skill(uint _radius, int _damage,uint _range,rangeType _type) 
+	Skill(uint _radius, int _damage,uint _range,uint _cooldown,rangeType _type) 
 	{
 		radius = _radius;
 		damage = _damage;
 		range = _range;
 		type = _type;
-
-		cooldown = 5;
+		cooldown = _cooldown;
 	};
 	
 	~Skill() {};
