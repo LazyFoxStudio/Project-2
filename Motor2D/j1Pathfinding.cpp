@@ -357,17 +357,20 @@ FlowField::FlowField(uint width, uint height, int init_to)
 FlowField::~FlowField()
 {
 	for (int x = 0; x < width; x++)
-		delete[] field[x];
+		RELEASE_ARRAY(field[x]);
 
-	delete[] field;
+	RELEASE_ARRAY(field);
 }
 
 void FlowField::updateFromPath(const std::list<iPoint>& path)
 {
-	for (std::list<iPoint>::const_iterator it = path.begin(); it != path.end();)
+	if (path.size() > 1)
 	{
-		iPoint prev = *it++;
-		getNodeAt(prev)->parent = getNodeAt(*it);
+		for (std::list<iPoint>::const_iterator it = path.begin(); it != path.end();)
+		{
+			iPoint prev = *it++;
+			getNodeAt(prev)->parent = getNodeAt(*it);
+		}
 	}
 }
 

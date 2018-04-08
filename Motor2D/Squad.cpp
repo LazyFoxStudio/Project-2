@@ -3,6 +3,7 @@
 #include "Command.h"
 
 #include "j1Input.h"
+#include "j1Render.h"
 
 Squad::Squad(std::vector<Unit*>& units) : units(units)
 {
@@ -32,20 +33,24 @@ bool Squad::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
 	{
-		for (int i = 0; i < units.size(); i++)
-			units[i]->commands.push_front(new Attack(units[i]));
+		int x = 0; int y = 0;
+		App->input->GetMousePosition(x, y);
+		iPoint p = App->render->ScreenToWorld(x, y);
+		p = App->map->WorldToMap(p.x, p.y);
+		Halt();
+ 		commands.push_back(new AttackingMoveToSquad(commander, p));
 	}
 	return true;
 }
 
-
-int Squad::getUnitPriority(Unit* unit)
+bool Squad::isInSquadSight(fPoint position)
 {
 	for (int i = 0; i < units.size(); i++)
-		if (unit = units[i]) return i;
+		if (position.DistanceTo(units[i]->position) < units[i]->line_of_sight) return true;
 
-	return -1;
+	return false;
 }
+
 
 void Squad::Halt()
 {

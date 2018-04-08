@@ -50,11 +50,6 @@ bool j1Scene::Start()
 	guiconfig = App->LoadFile(Gui_config_file, "Gui_config.xml");
 	guiconfig = guiconfig.child("scene");
 
-	//pollas = new CostDisplay("barracks", 100, WOOD);
-	//App->uiscene->menus.font()->elements.push_back(pollas);
-
-	
-
 	return true;
 }
 

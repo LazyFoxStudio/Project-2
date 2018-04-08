@@ -15,7 +15,7 @@ class Squad;
 class FlowField;
 
 enum Command_State { TO_INIT, UPDATE, TO_STOP, FINISHED };
-enum Command_Type { NONE, MOVETO, ATTACKING_MOVETO, ATTACK, PATROL, HOLD, MOVETOSQUAD, ATTACKING_MOVETO_SQUAD};
+enum Command_Type { NONE, MOVETO, ATTACKING_MOVETO, ATTACK, PATROL, HOLD, MOVETOSQUAD, ATTACKING_MOVETO_SQUAD, ATTACK_SQUAD};
 
 //  BASE CLASSES: =======================
 
@@ -76,14 +76,13 @@ class Attack : public Command
 {
 public:
 
-	iPoint enemy_map_p = { 0,0 };
 	iPoint map_p = { 0,0 };
 	FlowField* flow_field = nullptr;
 	bool unique_field = false;
 	j1Timer* timer;
 
 public:
-	Attack(Unit* unit, bool keep_attacking = true) : Command(unit, ATTACK) {};
+	Attack(Unit* unit) : Command(unit, ATTACK) {};
 
 private:
 	bool OnInit();
@@ -151,11 +150,11 @@ private:
 
 class AttackingMoveToSquad : public MoveToSquad
 {
+
 public:
 	AttackingMoveToSquad(Unit* commander, iPoint map_dest) : MoveToSquad(commander, map_dest) { type = ATTACKING_MOVETO_SQUAD; };
 
 private:
-
 	bool OnUpdate(float dt);
 };
 

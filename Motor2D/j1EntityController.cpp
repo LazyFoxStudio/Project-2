@@ -35,14 +35,13 @@ bool j1EntityController::Start()
 
 	loadEntitiesDB(gameData);
 
-	squad_units_test.push_back(addUnit(iPoint(900, 1000), FOOTMAN));
-	squad_units_test.push_back(addUnit(iPoint(1000, 800), FOOTMAN));
-	squad_units_test.push_back(addUnit(iPoint(1000, 1000), FOOTMAN));
-	squad_units_test.push_back(addUnit(iPoint(900, 800), AXE_THROWER));
-	squad_units_test.push_back(addUnit(iPoint(800, 800), ARCHER));
-	squad_units_test.push_back(addUnit(iPoint(1100, 1000), GRUNT));
 
-	AddSquad(FOOTMAN);
+	addUnit(iPoint(1100, 1000), GRUNT);
+	addUnit(iPoint(1150, 1000), GRUNT);
+	addUnit(iPoint(1200, 1000), GRUNT);
+	addUnit(iPoint(1150, 1000), GRUNT);
+
+	squad_test = AddSquad(FOOTMAN);
 
 	//addHero(iPoint(900, 700), MAGE);
 
@@ -51,7 +50,6 @@ bool j1EntityController::Start()
 	structure_beingbuilt = TOWN_HALL;
 	placingBuilding(TOWN_HALL, {600, 600});
 
-	squad_test = new Squad(squad_units_test);
 	return true;
 }
 
@@ -245,7 +243,7 @@ Nature* j1EntityController::addNature(iPoint pos, resourceType res_type, int amo
 	return resource;
 }
 
-void j1EntityController::AddSquad(unitType type)
+Squad* j1EntityController::AddSquad(unitType type)
 {
 	std::vector<Unit*> squad_vector;
 
@@ -254,7 +252,9 @@ void j1EntityController::AddSquad(unitType type)
 		squad_vector.push_back(addUnit(iPoint((i *50) + 1000, 900), type));
 	}
 
-	all_squads.push_back(new Squad(squad_vector));
+	Squad* new_squad = new Squad(squad_vector);
+	all_squads.push_back(new_squad);
+	return new_squad;
 }
 
 void j1EntityController::placingBuilding(buildingType type, iPoint position)

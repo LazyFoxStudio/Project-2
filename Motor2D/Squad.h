@@ -28,8 +28,8 @@ public:
 
 	int getTotalHP();
 	int getTotalMaxHP();
-	int getUnitPriority(Unit* unit);
 	Unit* getClosestUnitTo(iPoint map_p);
+	bool isInSquadSight(fPoint position);
 
 	void Halt();
 	bool Update(float dt);

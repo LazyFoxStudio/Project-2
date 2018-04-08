@@ -10,7 +10,7 @@
 #include "Skills.h"
 
 #define COLLIDER_MARGIN 20  // extra margin for separation calculations  // 10 ~ 30//
-#define MAX_NEXT_STEP_MODULE 25   // max value for the next_step vector, for steering calculations  // 10 ~ 50//
+#define MAX_NEXT_STEP_MODULE 20   // max value for the next_step vector, for steering calculations  // 10 ~ 50//
 
 #define SEPARATION_STRENGTH 4.0f   // the higher the stronger   // 1.0f ~ 10.0f//
 #define SPEED_CONSTANT 100   // applied to all units            // 60 ~ 140 //
@@ -89,7 +89,7 @@ void Unit::Move(float dt)
 
 	if (!commands.empty() || separation_v.GetModule() > STOP_TRESHOLD)
 	{
-		if(!commands.empty() && commands.front()->type != ATTACK)
+		if(commands.empty() || commands.front()->type != ATTACK)
 			next_step = next_step + (separation_v * STEERING_FACTOR);
 
 		if (next_step.GetModule() > MAX_NEXT_STEP_MODULE)
@@ -116,7 +116,7 @@ void Unit::animationController()
 
 	if (!next_step.IsZero())
 	{
-		switch (commands.front()->type)
+		switch (commands.empty() ? MOVETO : commands.front()->type)
 		{
 		case MOVETO:
 			if (next_step.x > 0 && next_step.y < MAX_NEXT_STEP_MODULE/2 && next_step.y > -MAX_NEXT_STEP_MODULE/2) //MOVE E

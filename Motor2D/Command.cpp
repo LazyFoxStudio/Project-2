@@ -119,14 +119,14 @@ bool Attack::OnUpdate(float dt)
 				RELEASE(timer);
 			}
 		}
-		else if(enemy->position.DistanceTo(unit->position) < unit->line_of_sight)
+		else if((unit->squad ? unit->squad->isInSquadSight(enemy->position) : enemy->position.DistanceTo(unit->position) < unit->line_of_sight))
 		{
 			RELEASE(timer);
 			map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
 			if (!flow_field->getNodeAt(map_p)->parent)
 			{
-				enemy_map_p = App->map->WorldToMap(enemy->position.x, enemy->position.y);
+				iPoint enemy_map_p = App->map->WorldToMap(enemy->position.x, enemy->position.y);
 
 				if (App->pathfinding->CreatePath(map_p, enemy_map_p) < 0)		
 					{ Stop(); return true; }
@@ -229,11 +229,11 @@ bool MoveToSquad::OnInit()
 	else
 	{
 		for (int i = 0; i < squad->units.size(); i++)
-			{
-				MoveTo* new_move_order = new MoveTo(squad->units[i], dest);
-				new_move_order->flow_field = flow_field;
-				squad->units[i]->commands.push_back(new_move_order);
-			}
+		{
+			MoveTo* new_move_order = new MoveTo(squad->units[i], dest);
+			new_move_order->flow_field = flow_field;
+			squad->units[i]->commands.push_back(new_move_order);
+		}
 	}
 	
 	return true;
@@ -257,5 +257,33 @@ bool MoveToSquad::OnStop()
 	return true;
 }
 
-// RESHAPE
+bool AttackingMoveToSquad::OnUpdate(float dt)
+{
+	for (int i = 0; i < squad->units.size(); i++)
+	{
+		Unit* current_unit = squad->units[i];
+		Unit* enemy = App->entitycontroller->getNearestEnemyUnit(current_unit->position, unit->IsEnemy());
+		if (enemy)
+		{
+			if (squad->isInSquadSight(enemy->position))
+			{
+				for (int j = 0; j < squad->units.size(); j++)
+				{
+					if (squad->units[j]->commands.empty() ? true : squad->units[j]->commands.front()->type != ATTACK)
+						squad->units[j]->commands.push_front(new Attack(squad->units[j]));
+				}
+				Restart();
+				return true;
+			}
+		}
+	}
+
+	bool all_idle = true;
+
+	for (int i = 0; i < squad->units.size(); i++)
+		if (!squad->units[i]->commands.empty()) all_idle = false;
+
+	if (all_idle) Stop();
+
+}
 

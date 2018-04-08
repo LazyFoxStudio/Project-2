@@ -39,7 +39,7 @@ public:
 	Building* addBuilding(iPoint pos, buildingType type );
 	Nature* addNature(iPoint pos, resourceType res_type, int amount = 0);
 
-	void AddSquad(unitType type);
+	Squad* AddSquad(unitType type);
 
 	void selectionControl();
 	void commandControl();
