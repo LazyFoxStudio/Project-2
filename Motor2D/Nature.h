@@ -4,13 +4,7 @@
 
 #include "Entity.h"
 
-enum resourceType
-{
-	NONE_NATURE,
-	WOOD,
-	GOLD,
-	STONE
-};
+
 
 class Nature : public Entity
 {

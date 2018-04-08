@@ -20,6 +20,14 @@ enum entityType
 	UNIT_AND_BUILDING
 };
 
+enum resourceType
+{
+	NONE_NATURE,
+	WOOD,
+	GOLD,
+	STONE
+};
+
 class Entity
 {
 public:
