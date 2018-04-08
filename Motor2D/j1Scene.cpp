@@ -25,6 +25,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
 	wood = config.child("starting_resources").child("wood").attribute("value").as_int(0);
+	gold = config.child("starting_resources").child("gold").attribute("value").as_int(0);
 	workers = config.child("starting_resources").child("workers").attribute("value").as_int(0);
 	inactive_workers = workers;
 	town_hall_lvl = config.child("starting_resources").child("townHallLvl").attribute("value").as_int(0);

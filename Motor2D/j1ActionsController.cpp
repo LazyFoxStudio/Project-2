@@ -34,7 +34,7 @@ bool j1ActionsController::Update(float dt)
 			}
 			break;
 		case BUILD_BARRACKS:
-			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible() && App->scene->workerAvalible())
+			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible())
 			{
 				App->entitycontroller->structure_beingbuilt = BARRACKS;
 				App->entitycontroller->building = true;
@@ -48,6 +48,7 @@ bool j1ActionsController::Update(float dt)
 				App->entitycontroller->building = true;
 				App->scene->inactive_workers -= 1;
 			}
+			break;
 		case BUILD_FARM:
 			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible())
 			{
@@ -55,6 +56,14 @@ bool j1ActionsController::Update(float dt)
 				App->entitycontroller->building = true;
 				App->scene->inactive_workers -= 1;
 			}
+			break;
+		case UNASSIGN_WORKER:
+			App->entitycontroller->HandleWorkerAssignment(false, (Building*)*App->entitycontroller->selected_entities.begin());
+			doingAction = false;
+			break;
+		case ASSIGN_WORKER:
+			App->entitycontroller->HandleWorkerAssignment(true, (Building*)*App->entitycontroller->selected_entities.begin());
+			doingAction = false;
 			break;
 		}
 		

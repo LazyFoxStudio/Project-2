@@ -989,7 +989,7 @@
       </sprites>
       <Stats>
         <life value="100"/>
-        <villagers value="1"/>
+        <villagers value="0"/>
         <buildingTime value="0"/>
         <defense value="100"/>
       </Stats>
@@ -1026,13 +1026,17 @@
       <name value="Lumber Mill"/>
       <type value="3"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
+       <Actions>
+         <action id="8"/>
+         <action id="9"/>
+       </Actions>
       <sprites>
         <sprite x="102" y="413" w="101" h="109"/>
         <sprite x="102" y="303" w="101" h="109"/>
       </sprites>
       <Stats>
         <life value="100"/>
-        <villagers value="1"/>
+        <villagers value="0"/>
         <buildingTime value="10"/>
         <defense value="20"/>
         <woodCost value="300"/>
@@ -1053,7 +1057,7 @@
       </sprites>
       <Stats>
         <life value="100"/>
-        <villagers value="1"/>
+        <villagers value="0"/>
         <buildingTime value="10"/>
         <defense value="20"/>
         <woodCost value="200"/>
@@ -1137,20 +1141,31 @@
 			<OnMouse x="1373" y="437" w="66" h="66"/>
 			<OnClick x="1441" y="437" w="66" h="66"/>
 		</buildMill>
-    <buildFarm id="7" function="17">
+    <buildFarm id="7" function="17" popupInfo ="Build Farm">
 			<position x="1717" y="969"/>
 			<standby x="1101" y="507" w="66" h="66"/>
 			<OnMouse x="1169" y="507" w="66" h="66"/>
 			<OnClick x="1270" y="507" w="66" h="66"/>
 		</buildFarm>
-	
-		<action8 id="8">
+    <unassignWorker id="8" function="18">
+      <position x="1399" y="809"/>
+      <standby x="1305" y="507" w="66" h="66"/>
+      <OnMouse x="1373" y="507" w="66" h="66"/>
+      <OnClick x="1441" y="507" w="66" h="66"/>
+    </unassignWorker>
+    <assignWorker id="9" function="19 ">
+      <position x="1717" y="889"/>
+      <standby x="1305" y="577" w="66" h="66"/>
+      <OnMouse x="1373" y="577" w="66" h="66"/>
+      <OnClick x="1441" y="577" w="66" h="66"/>
+    </assignWorker>
+		<action8 id="11">
 			<position x="1480" y="969"/>
 			<standby x="489" y="507" w="66" h="66"/>
 			<OnMouse x="557" y="507" w="66" h="66"/>
 			<OnClick x="625" y="507" w="66" h="66"/>
 		</action8>
-		<action9 id="9">
+		<action9 id="12">
 			<position x="1558" y="969"/>
 			<standby x="693" y="507" w="66" h="66"/>
 			<OnMouse x="761" y="507" w="66" h="66"/>
