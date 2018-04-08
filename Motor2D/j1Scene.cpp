@@ -13,6 +13,7 @@
 #include "j1Pathfinding.h"
 #include "j1EntityController.h"
 #include "j1Gui.h"
+#include "UI_CostDisplay.h"
 
 j1Scene::j1Scene() : j1Module() { name = "scene"; }
 
@@ -48,6 +49,9 @@ bool j1Scene::Start()
 
 	guiconfig = App->LoadFile(Gui_config_file, "Gui_config.xml");
 	guiconfig = guiconfig.child("scene");
+
+	//pollas = new CostDisplay("barracks", 100, WOOD);
+	//App->uiscene->menus.font()->elements.push_back(pollas);
 
 	
 

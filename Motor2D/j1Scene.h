@@ -45,6 +45,7 @@ public:
 	int workers = 0;
 	int inactive_workers = 0;
 	int town_hall_lvl = 0;
+	UI_element* pollas;
 };
 
 #endif // __j1SCENE_H__

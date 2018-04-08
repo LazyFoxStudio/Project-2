@@ -20,6 +20,12 @@ j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
 j1EntityController::~j1EntityController() {}
 
+bool j1EntityController::Awake(pugi::xml_node &config)
+{
+	death_time = config.child("deathTime").attribute("value").as_int(0);
+	return true;
+}
+
 bool j1EntityController::Start()
 {
 	pugi::xml_document doc;
@@ -35,6 +41,8 @@ bool j1EntityController::Start()
 	squad_units_test.push_back(addUnit(iPoint(900, 800), AXE_THROWER));
 	squad_units_test.push_back(addUnit(iPoint(800, 800), ARCHER));
 	squad_units_test.push_back(addUnit(iPoint(1100, 1000), GRUNT));
+
+	AddSquad(FOOTMAN);
 
 	//addHero(iPoint(900, 700), MAGE);
 
@@ -130,7 +138,6 @@ bool j1EntityController::Update(float dt)
 	{
 		buildingProcessDraw();
 	}
-
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI && !App->actionscontroller->doingAction)
 		selectionControl();
@@ -236,6 +243,18 @@ Nature* j1EntityController::addNature(iPoint pos, resourceType res_type, int amo
 	Nature* resource = new Nature(pos, *(natureDB[res_type]));
 	entities.push_back(resource);
 	return resource;
+}
+
+void j1EntityController::AddSquad(unitType type)
+{
+	std::vector<Unit*> squad_vector;
+
+	for (int i = 0; i < (unitDB[type])->squad_members; ++i)
+	{
+		squad_vector.push_back(addUnit(iPoint((i *50) + 1000, 900), type));
+	}
+
+	all_squads.push_back(new Squad(squad_vector));
 }
 
 void j1EntityController::placingBuilding(buildingType type, iPoint position)

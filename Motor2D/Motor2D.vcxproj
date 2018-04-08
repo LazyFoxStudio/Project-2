@@ -109,6 +109,7 @@
     <ClCompile Include="Squad.cpp" />
     <ClCompile Include="UI_Button.cpp" />
     <ClCompile Include="UI_Chrono.cpp" />
+    <ClCompile Include="UI_CostDisplay.cpp" />
     <ClCompile Include="UI_element.cpp" />
     <ClCompile Include="UI_Image.cpp" />
     <ClCompile Include="UI_IngameMenu.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Squad.h" />
     <ClInclude Include="UI_Button.h" />
     <ClInclude Include="UI_Chrono.h" />
+    <ClInclude Include="UI_CostDisplay.h" />
     <ClInclude Include="UI_element.h" />
     <ClInclude Include="UI_Image.h" />
     <ClInclude Include="UI_IngameMenu.h" />

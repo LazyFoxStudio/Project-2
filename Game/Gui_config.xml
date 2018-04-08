@@ -113,6 +113,12 @@ Resolution of the screen: 1680x 1050y
 			<stats x="1111" y="805"/>
 			<buttons x="1399" y="809" offsetX="81" offsetY="81"/>
 		</ingamemenu>
+    
+   <!-- Cost Display-->
+    <costdisplay>
+      
+    </costdisplay>
+   
 	</menu>
 </config>
 

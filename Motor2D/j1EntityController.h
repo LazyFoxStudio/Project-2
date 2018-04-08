@@ -18,6 +18,7 @@ public:
 	j1EntityController();
 	~j1EntityController();
 
+	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool Update(float dt);
 	bool PostUpdate();
@@ -37,6 +38,8 @@ public:
 	/*Hero* addHero(iPoint pos, heroType type);*/
 	Building* addBuilding(iPoint pos, buildingType type );
 	Nature* addNature(iPoint pos, resourceType res_type, int amount = 0);
+
+	void AddSquad(unitType type);
 
 	void selectionControl();
 	void commandControl();
@@ -58,6 +61,8 @@ public:
 	std::list<Entity*> entities;
 	std::list<Entity*> selected_entities;
 
+	std::list<Squad*> all_squads;
+
 	std::list<Entity*> entities_to_destroy;
 	
 	std::vector<Unit*> squad_units_test;  // for testing purposes, will be deleted
@@ -70,6 +75,7 @@ public:
 
 	bool debug = false;
 	bool building = false;
+	int death_time = 0;
 	
 	buildingType structure_beingbuilt = NONE_BUILDING;
 	SDL_Rect selection_rect = { 0,0,0,0 };

@@ -1,6 +1,7 @@
 #include "Building.h"
 #include "j1Render.h"
 #include "j1Scene.h"
+#include "j1EntityController.h"
 
 Building::Building(iPoint pos, Building& building)
 {
@@ -44,34 +45,20 @@ void Building::GetColliderFromSize()
 
 bool Building::Update(float dt)
 {
-	if (being_built && type != TOWN_HALL)
+	if (being_built)
 	{
-		int current_time = timer.ReadSec();
-		if (current_time >= building_time)
-		{
-			int hp_unit = max_HP / building_time;
-			current_HP += hp_unit -1;
-			being_built = false;
-			last_frame_time = 0;
-			App->scene->inactive_workers += 1;
-			if (type == FARM)
-			{
-				App->scene->workers += 5;
-				App->scene->inactive_workers += 5;
-			}
-		}
-		else if( current_time > last_frame_time)
-		{
-			last_frame_time = current_time;
-			int hp_unit = max_HP / building_time;
-			current_HP += hp_unit;
-		}
+		HandleConstruction();
 	}
 
-	else if (being_built && type == TOWN_HALL)
+	if (!destroyed && current_HP <= 0)
 	{
-		being_built = false;
-		current_HP = max_HP;
+		destroyed = true;
+		timer.Start();
+	}
+
+	if (destroyed)
+	{
+		HandleDestruction();
 	}
 
 	HandleSprite();
@@ -91,6 +78,12 @@ void Building::HandleSprite()
 		current_sprite = sprites[1];
 	}
 
+	else if (destroyed)
+	{
+		//TODO add the sprites of the destroyed buildings to the spritesheet.
+		current_sprite = sprites[0];
+	}
+
 	else if (type == TOWN_HALL)
 	{
 		switch (App->scene->town_hall_lvl)
@@ -105,6 +98,49 @@ void Building::HandleSprite()
 			current_sprite = sprites[3];
 			break;
 		}
+	}
+}
+
+void Building::HandleConstruction()
+{
+	if (type != TOWN_HALL)
+	{
+		int current_time = timer.ReadSec();
+		if (current_time >= building_time)
+		{
+			int hp_unit = max_HP / building_time;
+			current_HP += hp_unit - 1;
+			being_built = false;
+			last_frame_time = 0;
+			App->scene->inactive_workers += 1;
+			if (type == FARM)
+			{
+				App->scene->workers += 5;
+				App->scene->inactive_workers += 5;
+			}
+		}
+		else if (current_time > last_frame_time)
+		{
+			last_frame_time = current_time;
+			int hp_unit = max_HP / building_time;
+			current_HP += hp_unit;
+		}
+	}
+
+	else if (type == TOWN_HALL)
+	{
+		being_built = false;
+		current_HP = max_HP;
+	}
+}
+
+void Building::HandleDestruction()
+{
+	if (timer.ReadSec() > App->entitycontroller->death_time)
+	{
+		App->map->WalkabilityArea(position.x, position.y, size.x, size.y,true);
+		
+		delete this;
 	}
 }
 
