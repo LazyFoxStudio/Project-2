@@ -115,7 +115,7 @@ bool Attack::OnUpdate(float dt)
 			if (!timer) timer = new j1Timer();
 			else if (timer->ReadSec() > 0.5f)
 			{
-				enemy->current_HP -= unit->piercing_atk + (MIN(unit->attack - enemy->defense, 0));
+				enemy->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy->defense, 0));
 				RELEASE(timer);
 			}
 		}

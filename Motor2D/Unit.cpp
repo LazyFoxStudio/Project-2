@@ -89,7 +89,7 @@ void Unit::Move(float dt)
 
 	if (!commands.empty() || separation_v.GetModule() > STOP_TRESHOLD)
 	{
-		if(commands.front()->type != ATTACK)
+		if(!commands.empty() && commands.front()->type != ATTACK)
 			next_step = next_step + (separation_v * STEERING_FACTOR);
 
 		if (next_step.GetModule() > MAX_NEXT_STEP_MODULE)
