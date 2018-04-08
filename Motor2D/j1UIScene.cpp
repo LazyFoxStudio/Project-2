@@ -159,6 +159,12 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 		case BUILD_FARM_FUNCTION:
 			App->actionscontroller->activateAction(BUILD_FARM);
 			break;
+		case UNASSIGN_WORKER_FUNCTION:
+			App->actionscontroller->activateAction(UNASSIGN_WORKER);
+			break;
+		case ASSIGN_WORKER_FUNCTION:
+			App->actionscontroller->activateAction(ASSIGN_WORKER);
+			break;
 		}
 	}
 	else if (event_type == MOUSE_RIGHT_CLICK)

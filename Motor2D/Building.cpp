@@ -19,6 +19,8 @@ Building::Building(iPoint pos, Building& building)
 	position.x = pos.x, position.y	= pos.y;
 	size.x = building.size.x;
 	size.y = building.size.y;
+	additional_size.x = building.additional_size.x;
+	additional_size.y = building.additional_size.y;
 
 	for (int i = 0; i < 9; i++)
 		available_actions[i] = building.available_actions[i];
@@ -61,6 +63,10 @@ bool Building::Update(float dt)
 		HandleDestruction();
 	}
 
+	if (!being_built && !destroyed && type == LUMBER_MILL)
+	{
+		HandleResourceProduction();
+	}
 	HandleSprite();
 	
 	return true;
@@ -113,6 +119,7 @@ void Building::HandleConstruction()
 			being_built = false;
 			last_frame_time = 0;
 			App->scene->inactive_workers += 1;
+			timer.Start();
 			if (type == FARM)
 			{
 				App->scene->workers += 5;
@@ -141,6 +148,15 @@ void Building::HandleDestruction()
 		App->map->WalkabilityArea(position.x, position.y, size.x, size.y,true);
 		
 		delete this;
+	}
+}
+
+void Building::HandleResourceProduction()
+{
+	if (timer.ReadSec() >= 5 && !App->map->WalkabilityArea(position.x - (additional_size.x * App->map->data.tile_width / 2) + collider.w / 2, (position.y - (additional_size.x * App->map->data.tile_width / 2)) + collider.h / 2, additional_size.x, additional_size.y, false, true))
+	{
+		timer.Start();
+		App->scene->wood += 5*villagers_inside * App->entitycontroller->worker_wood_production;
 	}
 }
 

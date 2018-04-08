@@ -45,6 +45,9 @@ public:
 
 	void placingBuilding(buildingType type, iPoint position);
 	void buildingProcessDraw();
+	void HandleWorkerAssignment(bool to_assign, Building* building);
+	bool CheckCostBuiding(buildingType target);
+	void HandleBuildingResources(buildingType target);
 
 	Entity* CheckMouseHover(iPoint mouse_world);
 
@@ -71,6 +74,8 @@ public:
 	bool debug = false;
 	bool building = false;
 	int death_time = 0;
+	int mill_max_villagers = 0;
+	int worker_wood_production = 0;
 	
 	buildingType structure_beingbuilt = NONE_BUILDING;
 	SDL_Rect selection_rect = { 0,0,0,0 };

@@ -23,6 +23,8 @@ j1EntityController::~j1EntityController() {}
 bool j1EntityController::Awake(pugi::xml_node &config)
 {
 	death_time = config.child("deathTime").attribute("value").as_int(0);
+	mill_max_villagers = config.child("millMaxVillagers").attribute("value").as_int(0);
+	worker_wood_production = config.child("workerWoodProduction").attribute("value").as_int(0);
 	return true;
 }
 
@@ -283,6 +285,51 @@ void j1EntityController::buildingProcessDraw()
 		}
 	}
 
+}
+
+void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * building)
+{
+	if (building->type == LUMBER_MILL)
+	{
+		if (to_assign)
+		{
+			if (building->villagers_inside < mill_max_villagers && App->scene->workerAvalible())
+			{
+				building->villagers_inside += 1;
+				App->scene->inactive_workers -= 1;
+			}
+			else
+			{
+				//send sfx
+			}
+		}
+		else
+		{
+			if (building->villagers_inside > 0)
+			{
+				building->villagers_inside -= 1;
+				App->scene->inactive_workers += 1;
+			}
+		}
+	}
+}
+
+bool j1EntityController::CheckCostBuiding(buildingType target)
+{
+	bool ret = false;
+
+		if (App->scene->wood >= buildingDB[target]->wood_cost && App->scene->gold >= buildingDB[target]->gold_cost)
+		{
+			ret = true;
+		}
+
+	return ret;
+}
+
+void j1EntityController::HandleBuildingResources(buildingType target)
+{
+	App->scene->wood -= buildingDB[target]->wood_cost;
+	App->scene->gold -= buildingDB[target]->gold_cost;
 }
 
 Entity* j1EntityController::CheckMouseHover(iPoint mouse_world)

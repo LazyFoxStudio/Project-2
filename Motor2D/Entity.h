@@ -39,6 +39,10 @@ public:
 	entityType entity_type = NONE_ENTITY;
 	uint available_actions[9] = {};
 
+	//building bools. Ask Lorién
+	bool to_unassign = false;
+	bool to_assign = false;
+
 public:
 	virtual ~Entity();
 
