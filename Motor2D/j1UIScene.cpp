@@ -17,6 +17,7 @@
 #include "j1Fonts.h"
 #include "j1Input.h"
 #include "j1ActionsController.h"
+#include "UI_CostDisplay.h"
 
 j1UIScene::j1UIScene() { name = "introscene";}
 
@@ -48,6 +49,9 @@ bool j1UIScene::Start()
 	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 3);
 	wood_display->convertIntoCounter(&App->scene->wood);
 
+	CostDisplay* hola = new CostDisplay("aaaaaaaaaaaaaa", 200, WOOD);
+	
+
 	return true;
 }
 
@@ -55,7 +59,7 @@ bool j1UIScene::Start()
 bool j1UIScene::Update(float dt)
 {
 	App->input->GetMousePosition(x, y);
-
+	
 
 	return true;
 }
