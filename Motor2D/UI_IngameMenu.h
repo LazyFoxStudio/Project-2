@@ -10,6 +10,13 @@ class LifeBar;
 class Button;
 class Text;
 
+struct squadTroopIcon
+{
+	Image* image;
+	const uint* HP = nullptr;
+	const uint* max_HP = nullptr;
+};
+
 class IngameMenu : public UI_element
 {
 public:
@@ -17,7 +24,7 @@ public:
 	IngameMenu()
 	{}
 
-	IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int lifeBars_offsetX, int lifeBars_offsetY, int stats_posX, int stats_posY, int firstButton_posX, int firstButton_posY, int buttons_offsetX, int buttons_offsetY, j1Module* callback);
+	IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int squadIcon_offsetX, int lifeBars_offsetX, int lifeBars_offsetY, int stats_posX, int stats_posY, int firstButton_posX, int firstButton_posY, int buttons_offsetX, int buttons_offsetY, j1Module* callback);
 
 	~IngameMenu();
 
@@ -29,7 +36,8 @@ public:
 	void updateStatsDisplay();
 	//void createActionButtons(pugi::xml_node node);
 	void updateActionButtons();
-	void cleanLists(bool icons = true, bool lifeBars = true, bool statsTitles = true, bool statsNumbers = true, bool buttons = true);
+	void updateSquadIcons();
+	void cleanLists(bool icons = true, bool squadIcons = true, bool lifeBars = true, bool statsTitles = true, bool statsNumbers = true, bool buttons = true);
 
 	void BlitElement(bool use_camera = false);
 
@@ -42,16 +50,19 @@ public:
 	Window* window = nullptr;
 	iPoint firstIcon_pos = { 0,0};
 	iPoint icons_offset = { 0,0};
+	int squadIcon_offsetX = 0;
 	iPoint lifeBars_offset = { 0,0};
 	iPoint stats_pos = { 0,0};
 	iPoint firstButton_pos = { 0,0 };
 	iPoint buttons_offset = { 0,0 };
 	std::list<Image*> troopsIcons; //Being created/destroyed
+	std::list<squadTroopIcon*> squadTroopsIcons; //Being created/destroyed
 	std::list<LifeBar*> lifeBars; //Being created/destroyed
 	std::list<Text*> statsTitles; //Constant but inactive
 	Text* title=nullptr; //Constant but inactive
 	std::list<Text*> statsNumbers; //Constant but inactive
 	std::list<Button*> actionButtons; //Loading the activated buttons
+	bool severalSquads = true;
 
 };
 

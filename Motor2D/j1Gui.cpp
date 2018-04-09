@@ -591,6 +591,7 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 	int firstIcon_posY = node.child("icons").attribute("y").as_int();
 	int icons_offsetX = node.child("icons").attribute("offsetX").as_int();
 	int icons_offsetY = node.child("icons").attribute("offsetY").as_int();
+	int squad_offsetX = node.child("icons").attribute("squad_offsetX").as_int();
 
 	int lifeBars_offsetX = node.child("lifeBars").attribute("offsetX").as_int();
 	int lifeBars_offsetY = node.child("lifeBars").attribute("offsetY").as_int();
@@ -603,7 +604,7 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 	int actionButtons_offsetX = node.child("buttons").attribute("offsetX").as_int();
 	int actionButtons_offsetY = node.child("buttons").attribute("offsetY").as_int();
 
-	IngameMenu* ret = new IngameMenu(texture, icon_atlas, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, lifeBars_offsetX, lifeBars_offsetY, stats_posX, stats_posY, actionButtons_posX, actionButtons_posY, actionButtons_offsetX, actionButtons_offsetY, callback);
+	IngameMenu* ret = new IngameMenu(texture, icon_atlas, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, squad_offsetX, lifeBars_offsetX, lifeBars_offsetY, stats_posX, stats_posY, actionButtons_posX, actionButtons_posY, actionButtons_offsetX, actionButtons_offsetY, callback);
 
 	inGameMenu = ret;
 
