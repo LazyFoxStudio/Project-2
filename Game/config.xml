@@ -59,4 +59,8 @@
     </starting_resources>
   </scene>
 
+  <wavecontroller>
+    <initialWait value="180"/>
+    <waitBetweenWaves value="120"/>
+  </wavecontroller>
 </config>
