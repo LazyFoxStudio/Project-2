@@ -21,6 +21,7 @@
 #include "j1Fonts.h"
 #include "j1Gui.h"
 #include "j1Console.h"
+#include "j1WaveController.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -42,6 +43,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding			= new j1PathFinding();
 	font				= new j1Fonts();
 	gui					= new j1Gui();
+	wavecontroller = new j1WaveController();
 	
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -59,6 +61,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entitycontroller);
 	AddModule(actionscontroller);
 	AddModule(pathfinding);
+	AddModule(wavecontroller);
 
 	// render last to swap buffer
 	AddModule(render);

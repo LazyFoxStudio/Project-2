@@ -27,6 +27,7 @@ class j1PathFinding;
 class j1Fonts;
 class j1Gui;
 class j1Console;
+class j1WaveController;
 
 class j1App
 {
@@ -107,6 +108,8 @@ public:
 	j1PathFinding*			pathfinding = nullptr;
 	j1Fonts*				font = nullptr;
 	j1Gui*					gui = nullptr;
+	j1WaveController* wavecontroller = nullptr;
+
 	bool fpsCapON = true;
 	std::string			load_game;
 

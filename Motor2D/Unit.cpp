@@ -71,6 +71,8 @@ void Unit::Draw(float dt)
 
 bool Unit::Update(float dt)
 {
+	if (current_HP <= 0) return false;
+
 	if (!commands.empty())
 	{
 		commands.front()->Execute(dt);

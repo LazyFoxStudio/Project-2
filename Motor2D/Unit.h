@@ -32,7 +32,7 @@ class Unit : public Entity
 public:
 	//Stats
 	unitType type = NONE_UNIT;
-	uint current_HP = 0;
+	int current_HP = 0;
 	uint max_HP = 0;
 	uint attack = 0;
 	uint piercing_atk = 0;

@@ -127,6 +127,9 @@
     <ClCompile Include="UI_CostDisplay.cpp">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClCompile>
+    <ClCompile Include="j1WaveController.cpp">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -263,6 +266,9 @@
     </ClInclude>
     <ClInclude Include="UI_CostDisplay.h">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="j1WaveController.h">
+      <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
