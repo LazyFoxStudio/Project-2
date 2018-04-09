@@ -51,6 +51,9 @@ bool j1Scene::Start()
 	guiconfig = App->LoadFile(Gui_config_file, "Gui_config.xml");
 	guiconfig = guiconfig.child("scene");
 
+	App->render->camera.x = -1200;
+	App->render->camera.y = -1600;
+
 	return true;
 }
 
