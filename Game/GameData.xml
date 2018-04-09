@@ -206,7 +206,7 @@
                 <StartingColumn value="1"/>
                 <speed value="10"/>
               </Animation>
-             <AttackingNorth>
+              <Animation> <!-- 16- AttackingNorth-->
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>
@@ -214,8 +214,8 @@
                 <StartingRow value="5"/>
                 <StartingColumn value="0"/>
                 <speed value="0.5"/>
-              </AttackingNorth>
-             <AttackingNorthEast>
+              </Animation>
+              <Animation> <!-- 17- WalkingNorthEast-->
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>
@@ -223,17 +223,17 @@
                 <StartingRow value="5"/>
                 <StartingColumn value="1"/>
                 <speed value="0.5"/>
-              </AttackingNorthEast>
-             <AttackingEast>
+              </Animation>
+              <Animation> <!-- 18- AttackingEast-->
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="2"/>
-             <speed value="0.5"/>
-              </AttackingEast>
-             <AttackingSouthEast>
+                <speed value="0.5"/>
+              </Animation>
+              <Animation> <!-- 19- AttackingSouthEast-->
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>
@@ -241,8 +241,8 @@
                 <StartingRow value="5"/>
                 <StartingColumn value="3"/>
                 <speed value="0.5"/>
-              </AttackingSouthEast>
-             <AttackingSouth>
+              </Animation>
+              <Animation> <!-- 20- AttackingSouth-->
                   <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>
@@ -250,8 +250,36 @@
                 <StartingRow value="5"/>
                 <StartingColumn value="4"/>
                 <speed value="0.5"/>
-              </AttackingSouth>
-             <Dying1>
+              </Animation>
+              <Animation>  <!-- 21- AttackingSouthWest-->
+                <width value="73"/>
+                <height value="65"/>
+                <rows value="3"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="3"/>
+                <speed value="0.5"/>
+              </Animation>
+              <Animation> <!-- 22- AttackingWest-->
+                <width value="73"/>
+                <height value="65"/>
+                <rows value="3"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="2"/>
+                <speed value="0.5"/>
+              </Animation>
+              <Animation> <!-- 23- WalkingNorthWest-->
+                <width value="73"/>
+                <height value="65"/>
+                <rows value="3"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="1"/>
+                <speed value="0.5"/>
+              </Animation>
+             <Dying1> <!-- 24- DyingNorthEast-->
+               
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="0"/>
@@ -260,7 +288,7 @@
                 <StartingColumn value="0"/>
                 <speed value="0.5"/>
               </Dying1>
-              <Dying2>
+              <Dying2> <!-- 25- DyingSouthEast-->
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="0"/>
@@ -269,6 +297,24 @@
                 <StartingColumn value="0"/>
                 <speed value="0.5"/>
               </Dying2>
+              <Dying2> <!-- 26- DyingSouthWest-->
+                <width value="73"/>
+                <height value="65"/>
+                <rows value="0"/>
+                <columns value="2"/>
+                <StartingRow value="10"/>
+                <StartingColumn value="0"/>
+                <speed value="0.5"/>
+              </Dying2>
+              <Dying1> <!-- 27- DyingNorthWest-->
+                <width value="73"/>
+                <height value="65"/>
+                <rows value="0"/>
+                <columns value="2"/>
+                <StartingRow value="9"/>
+                <StartingColumn value="0"/>
+                <speed value="0.5"/>
+              </Dying1>
             
           </Animations>
 			<Actions>
@@ -996,7 +1042,7 @@
 	  <Actions>
 		  <action id="5"/>
 		  <action id="6"/>
-      <action id="7"/>
+		  <action id="7"/>
 	  </Actions>
       <iconData x="9" y="264" w="72" h="59"/>
       <size x="4" y="4"/>
@@ -1105,11 +1151,14 @@
 		</menu>
 	</LifeBars>
 	<ActionButtons>
-		<move id="1" function="14" popupInfo="Move troops">
+		<move id="1" function="14">
 			<position x="1399" y="809"/>
 			<standby x="285" y="437" w="66" h="66"/>
 			<OnMouse x="353" y="437" w="66" h="66"/>
 			<OnClick x="421" y="437" w="66" h="66"/>
+			<popUp>
+				<Info text="Move troops"/>
+			</popUp>
 		</move>
 		<stop id="2">
 			<position x="1480" y="809"/>
@@ -1129,36 +1178,48 @@
 			<OnMouse x="965" y="437" w="66" h="66"/>
 			<OnClick x="1033" y="437" w="66" h="66"/>
 		</patrol>
-		<buildBarrack id="5" function="15" popupInfo="Build Barracks">
+		<buildBarrack id="5" function="15">
 			<position x="1399" y="809"/>
 			<standby x="1101" y="437" w="66" h="66"/>
 			<OnMouse x="1169" y="437" w="66" h="66"/>
 			<OnClick x="1237" y="437" w="66" h="66"/>
+			<popUp>
+				<Info text="Build Barracks"/>
+				<Cost wood="400" gold="" oil=""/>
+			</popUp>
 		</buildBarrack>
-		<buildMill id="6" function="16" popupInfo="Build Lumber Mill">
+		<buildMill id="6" function="16">
 			<position x="1558" y="889"/>
 			<standby x="1305" y="437" w="66" h="66"/>
 			<OnMouse x="1373" y="437" w="66" h="66"/>
 			<OnClick x="1441" y="437" w="66" h="66"/>
+			<popUp>
+				<Info text="Build Lumber Mill"/>
+				<Cost wood="300" gold="" oil=""/>
+			</popUp>
 		</buildMill>
-    <buildFarm id="7" function="17" popupInfo ="Build Farm">
+		<buildFarm id="7" function="17">
 			<position x="1717" y="969"/>
-			<standby x="1101" y="507" w="66" h="66"/>
-			<OnMouse x="1169" y="507" w="66" h="66"/>
-			<OnClick x="1270" y="507" w="66" h="66"/>
+			<standby x="285" y="507" w="66" h="66"/>
+			<OnMouse x="353" y="507" w="66" h="66"/>
+			<OnClick x="421" y="507" w="66" h="66"/>
+			<popUp>
+				<Info text="Build Farm"/>
+				<Cost wood="200" gold="" oil=""/>
+			</popUp>
 		</buildFarm>
-    <unassignWorker id="8" function="18">
-      <position x="1399" y="809"/>
-      <standby x="1305" y="507" w="66" h="66"/>
-      <OnMouse x="1373" y="507" w="66" h="66"/>
-      <OnClick x="1441" y="507" w="66" h="66"/>
-    </unassignWorker>
-    <assignWorker id="9" function="19 ">
-      <position x="1717" y="889"/>
-      <standby x="1305" y="577" w="66" h="66"/>
-      <OnMouse x="1373" y="577" w="66" h="66"/>
-      <OnClick x="1441" y="577" w="66" h="66"/>
-    </assignWorker>
+		<unassignWorker id="8" function="18">
+			<position x="1399" y="809"/>
+			<standby x="1305" y="507" w="66" h="66"/>
+			<OnMouse x="1373" y="507" w="66" h="66"/>
+			<OnClick x="1441" y="507" w="66" h="66"/>
+		</unassignWorker>
+		<assignWorker id="9" function="19 ">
+			<position x="1717" y="889"/>
+			<standby x="1305" y="577" w="66" h="66"/>
+			<OnMouse x="1373" y="577" w="66" h="66"/>
+			<OnClick x="1441" y="577" w="66" h="66"/>
+		</assignWorker>
 		<action8 id="11">
 			<position x="1480" y="969"/>
 			<standby x="489" y="507" w="66" h="66"/>

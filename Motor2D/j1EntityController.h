@@ -67,6 +67,7 @@ public:
 	std::list<Entity*> selected_entities;
 
 	std::list<Squad*> all_squads;
+	std::list<Squad*> selected_squad;
 
 	std::list<Entity*> entities_to_destroy;
 	

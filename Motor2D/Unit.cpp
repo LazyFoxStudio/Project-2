@@ -58,7 +58,7 @@ void Unit::Draw(float dt)
 {
 	SDL_Rect r = current_anim->GetCurrentFrame(dt);
 
-	if (new_animation == MOVE_W || new_animation == IDLE_W)
+	if (new_animation == MOVE_W || new_animation == IDLE_W || new_animation == ATK_W || new_animation == ATK_NW || new_animation == ATK_SW)
 	{
 		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r, true,SDL_FLIP_HORIZONTAL);
 	}
@@ -156,12 +156,81 @@ void Unit::animationController()
 					new_animation = MOVE_NE;
 				}				
 			}
-			break; //just in case...
-		case ATTACK:
 			break;
+		case ATTACK:
+			if (next_step.x > 0 && next_step.y < MAX_NEXT_STEP_MODULE / 2 && next_step.y > -MAX_NEXT_STEP_MODULE / 2) //MOVE E
+			{
+				new_animation = MOVE_E;
+			}
+			else if (next_step.x < 0 && next_step.y < MAX_NEXT_STEP_MODULE / 2 && next_step.y > -MAX_NEXT_STEP_MODULE / 2) //MOVE W
+			{
+				new_animation = MOVE_W;
+			}
+			else if (next_step.y > 0) //MOVE S
+			{
+				if (next_step.x < 3 && next_step.x > -3)
+				{
+					new_animation = MOVE_S;
+				}
+				else if (next_step.x < MAX_NEXT_STEP_MODULE / 2)
+				{
+					new_animation = MOVE_SE;
+				}
+				else if (next_step.x < -MAX_NEXT_STEP_MODULE / 2)
+				{
+					new_animation = MOVE_SW;
+				}
+			}
+			else if (next_step.y < 0) //MOVE N
+			{
+				if (next_step.x < 3 && next_step.x > -3)
+				{
+					new_animation = MOVE_N;
+				}
+				if (next_step.x > MAX_NEXT_STEP_MODULE / 2)
+				{
+					new_animation = MOVE_NW;
+				}
+				else if (next_step.x < -MAX_NEXT_STEP_MODULE / 2)
+				{
+					new_animation = MOVE_NE;
+				}
+			}
+			else if (next_step.x + next_step.y == 0)
+			{
+				switch (new_animation)
+				{
+				case IDLE_N:
+					new_animation = ATK_N;
+					break;
+				case IDLE_NE:
+					new_animation = ATK_NE;
+					break;
+				case IDLE_E:
+					new_animation = ATK_E;
+					break;
+				case IDLE_SE:
+					new_animation = ATK_SE;
+					break;
+				case IDLE_S:
+					new_animation = ATK_S;
+					break;
+				case IDLE_SW:
+					new_animation = ATK_SW;
+					break;
+				case IDLE_W:
+					new_animation = ATK_W;
+					break;
+				case IDLE_NW:
+					new_animation = ATK_NW;
+					break;
+				}
+			}	
 		}
+		//Attack* atk_order = (Attack*)commands.front();
 	}
-	else {
+	else 
+	{
 		switch (new_animation)
 		{
 		case MOVE_N:
@@ -180,7 +249,7 @@ void Unit::animationController()
 			new_animation = IDLE_S;
 			break;
 		case MOVE_SW:
-			new_animation = IDLE_SE;
+			new_animation = IDLE_SW;
 			break;
 		case MOVE_W:
 			new_animation = IDLE_W;

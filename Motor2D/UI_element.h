@@ -90,23 +90,41 @@ public:
 			{
 				if (App->gui->hovering_element.ReadMs() > 600)
 				{
-					if (popUp != nullptr)
+					if (costDisplay != nullptr)
 					{
 						int x, y;
 						App->input->GetMousePosition(x, y);
 						int win_w = App->win->width;
 						int win_h = App->win->height;
-						if (x + popUp->section.w > win_w)
+						if (x + costDisplay->section.w > win_w)
 						{
-							x -= ((x + popUp->section.w) - win_w);
+							x -= ((x + costDisplay->section.w) - win_w);
 						}
 						x = x;
-						y -= popUp->section.h;
-						if (y + popUp->section.y > win_h)
+						y -= costDisplay->section.h;
+						if (y + costDisplay->section.y > win_h)
 						{
-							y -= ((y + popUp->section.h) - win_h);
+							y -= ((y + costDisplay->section.h) - win_h);
 						}
-						popUp->localPosition = { x, y };
+						costDisplay->localPosition = { x, y };
+					}
+					else if (popUpInfo != nullptr)
+					{
+						int x, y;
+						App->input->GetMousePosition(x, y);
+						int win_w = App->win->width;
+						int win_h = App->win->height;
+						if (x + popUpInfo->section.w > win_w)
+						{
+							x -= ((x + popUpInfo->section.w) - win_w);
+						}
+						x = x;
+						y -= popUpInfo->section.h;
+						if (y + popUpInfo->section.y > win_h)
+						{
+							y -= ((y + popUpInfo->section.h) - win_h);
+						}
+						popUpInfo->localPosition = { x, y };
 					}
 					blitPopUpInfo = true;
 				}
@@ -158,7 +176,8 @@ public:
 	j1Module* callback = nullptr;
 	UI_element* parent = nullptr;
 	std::list<UI_element*> childs;
-	UI_element* popUp = nullptr;
+	UI_element* popUpInfo = nullptr;
+	UI_element* costDisplay = nullptr;
 	bool hovering = false;
 	bool moving = false;
 	bool dragable = false;

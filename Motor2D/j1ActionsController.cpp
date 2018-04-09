@@ -34,37 +34,37 @@ bool j1ActionsController::Update(float dt)
 			}
 			break;
 		case BUILD_BARRACKS:
-			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible())
+			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible() && App->entitycontroller->CheckCostBuiding(BARRACKS))
 			{
 				App->entitycontroller->structure_beingbuilt = BARRACKS;
 				App->entitycontroller->building = true;
 				App->scene->inactive_workers -= 1;
 			}
-			else if (!App->scene->workerAvalible())
+			else if (!App->scene->workerAvalible() || !App->entitycontroller->CheckCostBuiding(BARRACKS))
 			{
 				doingAction = false;
 			}
 			break;
 		case BUILD_LUMBER_MILL:
-			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible())
+			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible() && App->entitycontroller->CheckCostBuiding(LUMBER_MILL))
 			{
 				App->entitycontroller->structure_beingbuilt = LUMBER_MILL;
 				App->entitycontroller->building = true;
 				App->scene->inactive_workers -= 1;
 			}
-			else if (!App->scene->workerAvalible())
+			else if (!App->scene->workerAvalible() || !App->entitycontroller->CheckCostBuiding(LUMBER_MILL))
 			{
 				doingAction = false;
 			}
 			break;
 		case BUILD_FARM:
-			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible())
+			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible() && App->entitycontroller->CheckCostBuiding(FARM))
 			{
 				App->entitycontroller->structure_beingbuilt = FARM;
 				App->entitycontroller->building = true;
 				App->scene->inactive_workers -= 1;
 			}
-			else if (!App->scene->workerAvalible())
+			else if (!App->scene->workerAvalible() || !App->entitycontroller->CheckCostBuiding(FARM))
 			{
 				doingAction = false;
 			}

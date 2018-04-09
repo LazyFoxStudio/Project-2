@@ -4,8 +4,8 @@
 #include "j1Module.h"
 #include <list>
 
-#define DEFAULT_FONT "fonts/Old School Adventures.ttf"
-#define DEFAULT_FONT_SIZE 18
+#define DEFAULT_FONT "fonts/BebasNeue-Regular.ttf"
+#define DEFAULT_FONT_SIZE 27
 #define FONTS_FOLDER "fonts/"
 
 struct SDL_Texture;

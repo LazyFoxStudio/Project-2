@@ -106,9 +106,9 @@ Resolution of the screen: 1680x 1050y
 	<!-- in-game menu -->
 		<ingamemenu>
 			<position x="0" y="795"/>
-			<section x="0" y="0" w="1678" h="255"/>
+			<section x="0" y="0" w="1680" h="255"/>
 			<minimap x="5" y="795"/>
-			<icons x="296" y="816" offsetX="398" offsetY="78"/>
+			<icons x="296" y="816" offsetX="398" offsetY="78" squad_offsetX="26"/>
 			<lifeBars offsetX="82" offsetY="6"/>
 			<stats x="1111" y="805"/>
 			<buttons x="1399" y="809" offsetX="81" offsetY="81"/>

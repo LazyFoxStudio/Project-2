@@ -79,65 +79,14 @@ bool j1EntityController::Update(float dt)
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && App->entitycontroller->building)
-	{
-		building = false;
-		structure_beingbuilt = NONE_BUILDING;
-		App->actionscontroller->action_type = NO_ACTION;
-		App->actionscontroller->doingAction = false;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && !building && App->scene->workerAvalible())
-	{
-		structure_beingbuilt = BARRACKS;
-		building = true;
-		App->scene->inactive_workers -= 1;
-	}
-
-	else if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building && structure_beingbuilt == BARRACKS && CheckCostBuiding(BARRACKS))
+	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building)
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
 	
-		HandleBuildingResources(BARRACKS);
-		placingBuilding(BARRACKS,position);
-		if (App->actionscontroller->action_type == BUILD_BARRACKS)
-			App->actionscontroller->doingAction = false;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && !building && App->scene->workerAvalible())
-	{
-		structure_beingbuilt = LUMBER_MILL;
-		building = true;
-		App->scene->inactive_workers -= 1;
-	}
-
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && building && structure_beingbuilt == LUMBER_MILL && CheckCostBuiding(LUMBER_MILL))
-	{
-		iPoint position;
-		App->input->GetMousePosition(position.x, position.y);
-
-		HandleBuildingResources(LUMBER_MILL);
-		placingBuilding(LUMBER_MILL, position);
-		if (App->actionscontroller->action_type == BUILD_LUMBER_MILL)
-			App->actionscontroller->doingAction = false;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && !building && App->scene->workerAvalible())
-	{
-		structure_beingbuilt = FARM;
-		building = true;
-		App->scene->inactive_workers -= 1;
-	}
-
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && building && structure_beingbuilt == FARM && CheckCostBuiding(FARM))
-	{
-		iPoint position;
-		App->input->GetMousePosition(position.x, position.y);
-
-		HandleBuildingResources(FARM);
-		placingBuilding(FARM, position);
-		if (App->actionscontroller->action_type == BUILD_FARM)
+		HandleBuildingResources(structure_beingbuilt);
+		placingBuilding(structure_beingbuilt,position);
+		if (App->actionscontroller->action_type == structure_beingbuilt)
 			App->actionscontroller->doingAction = false;
 	}
 
@@ -148,9 +97,16 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI && !App->actionscontroller->doingAction)
 		selectionControl();
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction)
 		commandControl();
 
+	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && App->entitycontroller->building)
+	{
+		building = false;
+		structure_beingbuilt = NONE_BUILDING;
+		App->actionscontroller->action_type = NO_ACTION;
+		App->actionscontroller->doingAction = false;
+	}
 
 	return true;
 }
@@ -289,7 +245,7 @@ void j1EntityController::buildingProcessDraw()
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	pos = App->map->MapToWorld(pos.x, pos.y);
 
-	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y))
+	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y) && CheckCostBuiding(structure_beingbuilt))
 	{
 		Color green = { 0,255,0,100 };
 		App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
@@ -304,7 +260,7 @@ void j1EntityController::buildingProcessDraw()
 	}
 	if (structure_beingbuilt == 3)
 	{
-		if (!App->map->WalkabilityArea((pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2), (pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2), buildingDB[structure_beingbuilt]->additional_size.x, buildingDB[structure_beingbuilt]->additional_size.y, false, true))
+		if (!App->map->WalkabilityArea((pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2), (pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2), buildingDB[structure_beingbuilt]->additional_size.x, buildingDB[structure_beingbuilt]->additional_size.y, false, true) && CheckCostBuiding(structure_beingbuilt))
 		{
 			Color green2 = { 0,255,0,75 };
 			App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height }, green2);
@@ -421,6 +377,11 @@ void j1EntityController::commandControl()
 	}
 }
 
+bool CompareSquad(Squad* s1, Squad* s2)
+{
+	return s1 == s2;
+}
+
 void j1EntityController::selectionControl()
 {
 	int mouseX, mouseY;
@@ -439,6 +400,7 @@ void j1EntityController::selectionControl()
 	case KEY_UP:
 
 		selected_entities.clear();
+		selected_squad.clear();
 
 		iPoint selection_to_world = App->render->ScreenToWorld(selection_rect.x, selection_rect.y);
 		selection_rect.x = selection_to_world.x; selection_rect.y = selection_to_world.y;
@@ -457,22 +419,18 @@ void j1EntityController::selectionControl()
 				{
 					if (!((Unit*)*it)->IsEnemy())
 					{	
-						if (((Unit*)*it)->squad_members>1)
+						selected_squad.push_back(((Unit*)*it)->squad);
+						for (int i = 0; i<((Unit*)*it)->squad->units.size(); i++)
 						{
-							for (int i = 0; i<((Unit*)*it)->squad->units.size(); i++)
-							{
-								selected_entities.push_back(((Unit*)*it)->squad->units[i]);
-							}
-						}
-						else
-						{
-							selected_entities.push_back(*it);
+							selected_entities.push_back(((Unit*)*it)->squad->units[i]);
 						}
 					}
 				}
 				else selected_entities.push_back(*it);
 			}
 		}
+
+		selected_squad.unique(CompareSquad);
 
 		if (getSelectedType() == UNIT_AND_BUILDING)
 		{
@@ -485,6 +443,8 @@ void j1EntityController::selectionControl()
 		selection_rect = { 0,0,0,0 };
 		break;
 	}
+
+	LOG("%d", selected_squad.size());
 }
 
 Unit* j1EntityController::getNearestEnemyUnit(fPoint position, bool isEnemy)
@@ -702,9 +662,15 @@ void j1EntityController::StartHero(iPoint pos)
 	hero->position.x = hero->collider.x = pos.x;
 	hero->position.y = hero->collider.y = pos.y;
 
-	hero->skill_one = new Skill(hero, 40, 60, 400,20, AREA);		//Icicle Crash
-	hero->skill_two = new Skill(hero, 0, 200, 200,20, NONE_RANGE);	//Overflow
+	hero->skill_one = new Skill(hero, 40, 60, 400, 20, AREA);		//Icicle Crash
+	hero->skill_two = new Skill(hero, 0, 200, 200, 20, NONE_RANGE);	//Overflow
 	hero->skill_three = new Skill(hero, 0, 50, 200, 10, LINE);		//Dragon Breath
+
+	std::vector<Unit*>aux_vector;
+	aux_vector.push_back(hero);
+
+	Squad* new_squad = new Squad(aux_vector);
+	all_squads.push_back(new_squad);
 
 	entities.push_back(hero);
 }
