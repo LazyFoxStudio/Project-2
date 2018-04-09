@@ -32,6 +32,8 @@ public:
 	bool isInSquadSight(fPoint position);
 	bool getEnemiesInSight(std::list<fPoint>& list_to_fill);
 
+	void removeUnit(Unit* unit);
+
 	void Halt();
 	bool Update(float dt);
 

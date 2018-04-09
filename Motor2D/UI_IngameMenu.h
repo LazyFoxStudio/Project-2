@@ -13,7 +13,7 @@ class Text;
 struct squadTroopIcon
 {
 	Image* image;
-	const uint* HP = nullptr;
+	const int* HP = nullptr;
 	const uint* max_HP = nullptr;
 };
 
