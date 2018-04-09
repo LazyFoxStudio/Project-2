@@ -81,58 +81,7 @@ public:
 
 	void appendChild(UI_element* child, bool center = false);
 
-	virtual void BlitElement(bool use_camera = false)
-	{
-		BlitChilds();
-		if (state == MOUSEOVER)
-		{
-			if (!blitPopUpInfo)
-			{
-				if (App->gui->hovering_element.ReadMs() > 600)
-				{
-					if (costDisplay != nullptr)
-					{
-						int x, y;
-						App->input->GetMousePosition(x, y);
-						int win_w = App->win->width;
-						int win_h = App->win->height;
-						if (x + costDisplay->section.w > win_w)
-						{
-							x -= ((x + costDisplay->section.w) - win_w);
-						}
-						x = x;
-						y -= costDisplay->section.h;
-						if (y + costDisplay->section.y > win_h)
-						{
-							y -= ((y + costDisplay->section.h) - win_h);
-						}
-						costDisplay->localPosition = { x, y };
-					}
-					else if (popUpInfo != nullptr)
-					{
-						int x, y;
-						App->input->GetMousePosition(x, y);
-						int win_w = App->win->width;
-						int win_h = App->win->height;
-						if (x + popUpInfo->section.w > win_w)
-						{
-							x -= ((x + popUpInfo->section.w) - win_w);
-						}
-						x = x;
-						y -= popUpInfo->section.h;
-						if (y + popUpInfo->section.y > win_h)
-						{
-							y -= ((y + popUpInfo->section.h) - win_h);
-						}
-						popUpInfo->localPosition = { x, y };
-					}
-					blitPopUpInfo = true;
-				}
-			}
-			else
-				BlitHoverExtraEffect();
-		}
-	}
+	virtual void BlitElement(bool use_camera = false);
 
 	virtual void BlitHoverExtraEffect()
 	{}

@@ -767,3 +767,25 @@ void j1Gui::newSelectionDone()
 	if (inGameMenu != nullptr)
 		inGameMenu->updateInfo();
 }
+
+void j1Gui::moveElementToMouse(UI_element* element)
+{
+	if (element != nullptr)
+	{
+		int x, y;
+		App->input->GetMousePosition(x, y);
+		int win_w = App->win->width;
+		int win_h = App->win->height;
+		if (x + element->section.w > win_w)
+		{
+			x -= ((x + element->section.w) - win_w);
+		}
+		x = x;
+		y -= element->section.h;
+		if (y + element->section.y > win_h)
+		{
+			y -= ((y + element->section.h) - win_h);
+		}
+		element->localPosition = { x, y };
+	}
+}

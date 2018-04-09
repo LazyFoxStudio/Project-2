@@ -110,6 +110,8 @@ public:
 
 	void newSelectionDone();
 
+	void moveElementToMouse(UI_element* element);
+
 public:
 	bool UI_Debug = false;
 	int alpha_value = 255;
