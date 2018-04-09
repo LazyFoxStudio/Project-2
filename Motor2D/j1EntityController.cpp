@@ -44,6 +44,7 @@ bool j1EntityController::Start()
 	addUnit(iPoint(1150, 1000), GRUNT);
 
 	squad_test = AddSquad(FOOTMAN);
+	AddSquad(FOOTMAN);
 
 	//addHero(iPoint(900, 700), MAGE);
 
@@ -51,6 +52,8 @@ bool j1EntityController::Start()
 
 	structure_beingbuilt = TOWN_HALL;
 	placingBuilding(TOWN_HALL, {600, 600});
+
+	test_counter = 1;
 
 	return true;
 }
@@ -255,9 +258,9 @@ Squad* j1EntityController::AddSquad(unitType type)
 
 	for (int i = 0; i < (unitDB[type])->squad_members; ++i)
 	{
-		squad_vector.push_back(addUnit(iPoint((i *50) + 1000, 900), type));
+		squad_vector.push_back(addUnit(iPoint((i *50) + 1000, 900+(50*test_counter)), type));
 	}
-
+	test_counter++;
 	Squad* new_squad = new Squad(squad_vector);
 	all_squads.push_back(new_squad);
 	return new_squad;
@@ -453,7 +456,19 @@ void j1EntityController::selectionControl()
 				if ((*it)->entity_type == UNIT)
 				{
 					if (!((Unit*)*it)->IsEnemy())
-						selected_entities.push_back(*it);
+					{	
+						if (((Unit*)*it)->squad_members>1)
+						{
+							for (int i = 0; i<((Unit*)*it)->squad->units.size(); i++)
+							{
+								selected_entities.push_back(((Unit*)*it)->squad->units[i]);
+							}
+						}
+						else
+						{
+							selected_entities.push_back(*it);
+						}
+					}
 				}
 				else selected_entities.push_back(*it);
 			}

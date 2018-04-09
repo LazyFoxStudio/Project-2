@@ -40,6 +40,10 @@ bool j1ActionsController::Update(float dt)
 				App->entitycontroller->building = true;
 				App->scene->inactive_workers -= 1;
 			}
+			else if (!App->scene->workerAvalible())
+			{
+				doingAction = false;
+			}
 			break;
 		case BUILD_LUMBER_MILL:
 			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible())
@@ -48,6 +52,10 @@ bool j1ActionsController::Update(float dt)
 				App->entitycontroller->building = true;
 				App->scene->inactive_workers -= 1;
 			}
+			else if (!App->scene->workerAvalible())
+			{
+				doingAction = false;
+			}
 			break;
 		case BUILD_FARM:
 			if (doingAction && !App->entitycontroller->building && App->scene->workerAvalible())
@@ -55,6 +63,10 @@ bool j1ActionsController::Update(float dt)
 				App->entitycontroller->structure_beingbuilt = FARM;
 				App->entitycontroller->building = true;
 				App->scene->inactive_workers -= 1;
+			}
+			else if (!App->scene->workerAvalible())
+			{
+				doingAction = false;
 			}
 			break;
 		case UNASSIGN_WORKER:

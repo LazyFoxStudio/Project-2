@@ -32,6 +32,7 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	speed					= unit.speed;
 	line_of_sight			= unit.line_of_sight;
 	range					= unit.range;
+	squad_members			= unit.squad_members;
 
 	for (int i = 0; i < unit.animations.size(); i++)
 		animations.push_back(new Animation(*unit.animations[i]));
