@@ -62,7 +62,7 @@ public:
 	Text* title=nullptr; //Constant but inactive
 	std::list<Text*> statsNumbers; //Constant but inactive
 	std::list<Button*> actionButtons; //Loading the activated buttons
-	bool severalSquads = true;
+	bool severalSquads = false;
 
 };
 

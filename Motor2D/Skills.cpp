@@ -88,7 +88,7 @@ void Skill::Activate()
 	{
 		if ((*item)->entity_type == UNIT)
 		{
-			if (!((Unit*)(*item))->IsEnemy())
+			if (((Unit*)(*item))->IsEnemy())
 			{
 				if((*item)->position.DistanceTo(fPoint(cast_pos.x, cast_pos.y)) < radius)
 					((Unit*)(*item))->current_HP -= damage;

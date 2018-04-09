@@ -12,6 +12,7 @@
 #include "j1Fonts.h"
 #include "UI_ProgressBar.h"
 #include "j1EntityController.h"
+#include "Squad.h"
 
 IngameMenu::IngameMenu(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int minimap_posX, int minimap_posY, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, int squadIcon_offsetX, int lifeBars_offsetX, int lifeBars_offsetY, int stats_posX, int stats_posY, int firstButton_posX, int firstButton_posY, int buttons_offsetX, int buttons_offsetY, j1Module * callback) : UI_element(x, y, element_type::MENU, section, callback, atlas),
 firstIcon_pos({firstIcon_posX, firstIcon_posY}),
@@ -37,12 +38,10 @@ IngameMenu::~IngameMenu()
 
 void IngameMenu::updateInfo()
 {
-	/*
-	if (App->entitycontroller->selected_squads.size() > 1)
+	if (App->entitycontroller->selected_squad.size() > 1)
 		severalSquads = true;
 	else
 		severalSquads = false;
-	*/
 	cleanLists(true, true, true, false, true, false);
 	createSelectionBasicInfo();
 	updateStatsDisplay();
@@ -70,36 +69,41 @@ void IngameMenu::createSelectionBasicInfo()
 	}
 	else
 	{
-		//for each squad
 		iPoint position = firstIcon_pos;
-		for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)//for each entity of the squad
+		for (std::list<Squad*>::iterator it_s = App->entitycontroller->selected_squad.begin(); it_s != App->entitycontroller->selected_squad.end(); it_s++)
 		{
-			squadTroopIcon* icon = new squadTroopIcon();
+			for (int i = 0; i < (*it_s)->units.size(); i++)//for each entity of the squad
+			{
+				Unit* unit = (*it_s)->units[i];
 
-			Image* img = new Image(icon_atlas, position.x + squadIcon_offsetX*counterX, position.y + icons_offset.y*counterY, App->gui->GetIconRect((*it_e)), callback);
-			Color borderColor = Green;
-			int current_HP = ((Unit*)(*it_e))->current_HP;
-			int HP_percentage = (((Unit*)(*it_e))->max_HP / 100);
-			if (current_HP < (HP_percentage*0.5))
-				borderColor = Yellow;
-			else if (current_HP < (HP_percentage*0.2))
-				borderColor = Red;
-			img->setBorder(true, borderColor, 4);
+				squadTroopIcon* icon = new squadTroopIcon();
 
-			icon->image = img;
-			icon->HP = &((Unit*)(*it_e))->current_HP;
-			icon->max_HP = &((Unit*)(*it_e))->max_HP;
+				Image* img = new Image(icon_atlas, position.x + squadIcon_offsetX*counterX, position.y + icons_offset.y*counterY, App->gui->GetIconRect(unit), callback);
+				Color borderColor = Green;
+				int current_HP = unit->current_HP;
+				int HP_percentage = unit->max_HP / 100;
+				if (current_HP < (HP_percentage*0.5))
+					borderColor = Yellow;
+				else if (current_HP < (HP_percentage*0.2))
+					borderColor = Red;
+				img->setBorder(true, borderColor, 4);
 
-			squadTroopsIcons.push_back(icon);
+				icon->image = img;
+				icon->HP = &unit->current_HP;
+				icon->max_HP = &unit->max_HP;
 
-			counterX++;
+				squadTroopsIcons.push_back(icon);
+
+				counterX++;
+			}
+			counterY++;
+			counterX = 0;
+			if (counterY == 3)
+			{
+				position.x += icons_offset.x;
+				counterY = 0;
+			}
 		}
-		/*counterY++;
-		if (counterY == 3)
-		{
-		position.x += icons_offset.x;
-		counterY = 0;
-		}*/
 	}
 }
 
