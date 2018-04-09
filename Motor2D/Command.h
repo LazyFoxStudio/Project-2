@@ -79,7 +79,7 @@ public:
 	iPoint map_p = { 0,0 };
 	FlowField* flow_field = nullptr;
 	bool unique_field = false;
-	j1Timer* timer;
+	j1Timer* timer = nullptr;
 
 public:
 	Attack(Unit* unit) : Command(unit, ATTACK) {};

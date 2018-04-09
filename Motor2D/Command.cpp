@@ -117,11 +117,13 @@ bool Attack::OnUpdate(float dt)
 			{
 				enemy->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy->defense, 0));
 				RELEASE(timer);
+				timer = nullptr;
 			}
 		}
 		else if((unit->squad ? unit->squad->isInSquadSight(enemy->position) : enemy->position.DistanceTo(unit->position) < unit->line_of_sight))
 		{
 			RELEASE(timer);
+			timer = nullptr;
 			map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
 			if (!flow_field->getNodeAt(map_p)->parent)
