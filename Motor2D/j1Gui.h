@@ -25,6 +25,7 @@ class LifeBar;
 class IngameMenu;
 class menu;
 class Entity;
+class CostDisplay;
 
 enum event_type
 {
@@ -92,6 +93,7 @@ public:
 	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 	IngameMenu* createIngameMenu(pugi::xml_node node, j1Module* callback = nullptr);
 	void createLifeBar(Entity* entity);
+	CostDisplay* createCostDisplay();
 
 	void createPopUpInfo(UI_element* element, std::string info);
 

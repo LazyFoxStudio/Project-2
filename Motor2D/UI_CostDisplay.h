@@ -13,18 +13,20 @@ class CostDisplay : public UI_element
 {
 public:
 
-	CostDisplay(std::string entityname, int cost, resourceType resource);
+	CostDisplay(SDL_Texture* icon_atlas, std::string entityname, int cost, resourceType resource);
 
 	~CostDisplay();
 
+	void BlitElement(bool use_camera = false);
+
 public:
-	SDL_Texture * icon_atlas = nullptr;
+	SDL_Texture* icon_atlas = nullptr;
 	Text* entity_name = nullptr;
-	Text* cost_text = nullptr;
-	void BlitElement(bool use_camera = true);
-	std::list<Text*> TextList; //Constant but inactive
-	std::list<Text*> Number; //Constant but inactive
-	std::list<Image*> ResourceIcons;
+
+	Text* text_name = nullptr;
+	Text* text_cost = nullptr;
+	Image* icon_image = nullptr; 
+	int display_cost = 0;
 };
 
 

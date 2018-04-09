@@ -20,6 +20,7 @@
 #include "UI_ProgressBar.h"
 #include "j1EntityController.h"
 #include "UI_IngameMenu.h"
+#include "UI_CostDisplay.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -614,6 +615,13 @@ void j1Gui::createLifeBar(Entity* entity)
 	LifeBar* ret = new LifeBar(entity, atlas);
 
 	LifeBars.push_back(ret);
+}
+
+CostDisplay* j1Gui::createCostDisplay()
+{
+	CostDisplay* ret = new CostDisplay(atlas, "Barracks", 200, WOOD);
+	return ret;
+
 }
 
 void j1Gui::createPopUpInfo(UI_element* element, std::string info)
