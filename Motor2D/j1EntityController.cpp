@@ -402,7 +402,7 @@ void j1EntityController::commandControl()
 		switch (entity->entity_type)
 		{
 		case UNIT:    //clicked on a unit
-			if (((Unit*)entity)->IsEnemy())
+			/*if (((Unit*)entity)->IsEnemy())
 			{
 				for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
 				{
@@ -413,7 +413,7 @@ void j1EntityController::commandControl()
 						unit->commands.push_back(new AttackingMoveTo(unit, map_p));
 					}
 				}
-			}
+			}*/
 			break;
 
 			// TODO: other cases

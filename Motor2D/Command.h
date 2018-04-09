@@ -49,10 +49,9 @@ public:
 	iPoint dest = { 0,0 };
 	iPoint map_p = { 0,0 };
 	FlowField* flow_field = nullptr;
-	bool unique_field = false;
 
 public:
-	MoveTo(Unit* unit, iPoint destination) : Command(unit, MOVETO), dest(destination) {};
+	MoveTo(Unit* unit, iPoint destination, FlowField* flow_field) : Command(unit, MOVETO), dest(destination), flow_field(flow_field) {};
 
 private:
 	bool OnInit();
@@ -61,28 +60,20 @@ private:
 
 };
 
-
-class AttackingMoveTo : public MoveTo
-{
-public:
-	AttackingMoveTo(Unit* unit, iPoint destination) : MoveTo(unit, destination) { type = ATTACKING_MOVETO; };
-
-private:
-	bool OnUpdate(float dt);
-};
-
-
 class Attack : public Command
 {
 public:
 
 	iPoint map_p = { 0,0 };
+	fPoint current_target = { 0.0f, 0.0f };
+	bool attacking = false;
+
+	j1Timer timer;
 	FlowField* flow_field = nullptr;
-	bool unique_field = false;
-	j1Timer* timer = nullptr;
+	std::list<fPoint>* enemy_positions = nullptr;
 
 public:
-	Attack(Unit* unit) : Command(unit, ATTACK) {};
+	Attack(Unit* unit, FlowField* flow_field, std::list<fPoint>* enemy_positions) : Command(unit, ATTACK), flow_field(flow_field), enemy_positions(enemy_positions) {};
 
 private:
 	bool OnInit();
@@ -91,39 +82,39 @@ private:
 
 };
 
-
-class Hold : public Command
-{
-public:
-	iPoint held_position = { 0,0 };
-
-public:
-	Hold(Unit* unit, iPoint position) : Command(unit, HOLD), held_position(position) {};
-
-private:
-
-	bool OnInit();
-	bool OnUpdate(float dt);
-	bool OnStop() { return true; };
-};
-
-
-class Patrol : public Command
-{
-public:
-	std::vector<iPoint> patrol_points;
-	uint current_point = 0;
-
-public:
-	Patrol(Unit* unit, std::vector<iPoint>& patrol_points) : Command(unit, PATROL), patrol_points(patrol_points) {};
-	~Patrol() { patrol_points.clear(); }
-	
-private:
-
-	bool OnInit();
-	bool OnUpdate(float dt);
-	bool OnStop() { return true; };
-};
+//
+//class Hold : public Command
+//{
+//public:
+//	iPoint held_position = { 0,0 };
+//
+//public:
+//	Hold(Unit* unit, iPoint position) : Command(unit, HOLD), held_position(position) {};
+//
+//private:
+//
+//	bool OnInit();
+//	bool OnUpdate(float dt);
+//	bool OnStop() { return true; };
+//};
+//
+//
+//class Patrol : public Command
+//{
+//public:
+//	std::vector<iPoint> patrol_points;
+//	uint current_point = 0;
+//
+//public:
+//	Patrol(Unit* unit, std::vector<iPoint>& patrol_points) : Command(unit, PATROL), patrol_points(patrol_points) {};
+//	~Patrol() { patrol_points.clear(); }
+//	
+//private:
+//
+//	bool OnInit();
+//	bool OnUpdate(float dt);
+//	bool OnStop() { return true; };
+//};
 
 
 //		SQUADS: =======================
@@ -144,18 +135,22 @@ private:
 
 	bool OnInit();
 	virtual bool OnUpdate(float dt);
-	bool OnStop();
+	virtual bool OnStop();
 
 };
 
 class AttackingMoveToSquad : public MoveToSquad
 {
+	FlowField* atk_flow_field = nullptr;
+	std::list<fPoint> enemy_positions;
+	bool enemies_in_sight = false;
 
 public:
 	AttackingMoveToSquad(Unit* commander, iPoint map_dest) : MoveToSquad(commander, map_dest) { type = ATTACKING_MOVETO_SQUAD; };
 
 private:
 	bool OnUpdate(float dt);
+	bool OnStop();
 };
 
 #endif

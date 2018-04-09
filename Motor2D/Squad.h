@@ -30,6 +30,7 @@ public:
 	int getTotalMaxHP();
 	Unit* getClosestUnitTo(iPoint map_p);
 	bool isInSquadSight(fPoint position);
+	bool getEnemiesInSight(std::list<fPoint>& list_to_fill);
 
 	void Halt();
 	bool Update(float dt);

@@ -9,12 +9,12 @@
 #include "j1EntityController.h"
 #include "Skills.h"
 
-#define COLLIDER_MARGIN 20  // extra margin for separation calculations  // 10 ~ 30//
+#define COLLIDER_MARGIN 25  // extra margin for separation calculations  // 10 ~ 30//
 #define MAX_NEXT_STEP_MODULE 20   // max value for the next_step vector, for steering calculations  // 10 ~ 50//
 
-#define SEPARATION_STRENGTH 4.0f   // the higher the stronger   // 1.0f ~ 10.0f//
+#define SEPARATION_STRENGTH 2.0f   // the higher the stronger   // 1.0f ~ 10.0f//
 #define SPEED_CONSTANT 100   // applied to all units            // 60 ~ 140 //
-#define STOP_TRESHOLD 1.0f										// 0.5f ~ 1.5f//
+#define STOP_TRESHOLD 0.75f										// 0.5f ~ 1.5f//
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
@@ -32,7 +32,6 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	speed					= unit.speed;
 	line_of_sight			= unit.line_of_sight;
 	range					= unit.range;
-	squad_members			= unit.squad_members;
 
 	for (int i = 0; i < unit.animations.size(); i++)
 		animations.push_back(new Animation(*unit.animations[i]));
@@ -90,8 +89,7 @@ void Unit::Move(float dt)
 
 	if (!commands.empty() || separation_v.GetModule() > STOP_TRESHOLD)
 	{
-		if(commands.empty() || commands.front()->type != ATTACK)
-			next_step = next_step + (separation_v * STEERING_FACTOR);
+		next_step = next_step + (separation_v * STEERING_FACTOR);
 
 		if (next_step.GetModule() > MAX_NEXT_STEP_MODULE)
 			next_step = next_step.Normalized() * MAX_NEXT_STEP_MODULE;
@@ -218,6 +216,9 @@ fPoint Unit::calculateSeparationVector()
 	fPoint separation_v = { 0,0 };
 	for (int i = 0; i < collisions.size(); i++)
 	{
+		if (collisions[i]->entity_type == UNIT)
+			if (((Unit*)collisions[i])->IsEnemy() != IsEnemy()) continue;
+
 		fPoint current_separation = (position - collisions[i]->position);
 		separation_v += current_separation.Normalized() * (1 / current_separation.GetModule());
 	}

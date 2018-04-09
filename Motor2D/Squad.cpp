@@ -1,6 +1,7 @@
 #include "Squad.h"
 #include "Unit.h"
 #include "Command.h"
+#include "j1EntityController.h"
 
 #include "j1Input.h"
 #include "j1Render.h"
@@ -49,6 +50,17 @@ bool Squad::isInSquadSight(fPoint position)
 		if (position.DistanceTo(units[i]->position) < units[i]->line_of_sight) return true;
 
 	return false;
+}
+
+bool Squad::getEnemiesInSight(std::list<fPoint>& list_to_fill)
+{
+	list_to_fill.clear();
+
+	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+		for (int i = 0; i < units.size(); i++)
+			if ((*it)->position.DistanceTo(units[i]->position) < units[i]->line_of_sight) list_to_fill.push_back((*it)->position);
+
+	return !list_to_fill.empty();
 }
 
 
