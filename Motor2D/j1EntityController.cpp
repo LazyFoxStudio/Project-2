@@ -79,65 +79,14 @@ bool j1EntityController::Update(float dt)
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && App->entitycontroller->building)
-	{
-		building = false;
-		structure_beingbuilt = NONE_BUILDING;
-		App->actionscontroller->action_type = NO_ACTION;
-		App->actionscontroller->doingAction = false;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && !building && App->scene->workerAvalible())
-	{
-		structure_beingbuilt = BARRACKS;
-		building = true;
-		App->scene->inactive_workers -= 1;
-	}
-
-	else if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building && structure_beingbuilt == BARRACKS && CheckCostBuiding(BARRACKS))
+	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building)
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
 	
-		HandleBuildingResources(BARRACKS);
-		placingBuilding(BARRACKS,position);
-		if (App->actionscontroller->action_type == BUILD_BARRACKS)
-			App->actionscontroller->doingAction = false;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && !building && App->scene->workerAvalible())
-	{
-		structure_beingbuilt = LUMBER_MILL;
-		building = true;
-		App->scene->inactive_workers -= 1;
-	}
-
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && building && structure_beingbuilt == LUMBER_MILL && CheckCostBuiding(LUMBER_MILL))
-	{
-		iPoint position;
-		App->input->GetMousePosition(position.x, position.y);
-
-		HandleBuildingResources(LUMBER_MILL);
-		placingBuilding(LUMBER_MILL, position);
-		if (App->actionscontroller->action_type == BUILD_LUMBER_MILL)
-			App->actionscontroller->doingAction = false;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && !building && App->scene->workerAvalible())
-	{
-		structure_beingbuilt = FARM;
-		building = true;
-		App->scene->inactive_workers -= 1;
-	}
-
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && building && structure_beingbuilt == FARM && CheckCostBuiding(FARM))
-	{
-		iPoint position;
-		App->input->GetMousePosition(position.x, position.y);
-
-		HandleBuildingResources(FARM);
-		placingBuilding(FARM, position);
-		if (App->actionscontroller->action_type == BUILD_FARM)
+		HandleBuildingResources(structure_beingbuilt);
+		placingBuilding(structure_beingbuilt,position);
+		if (App->actionscontroller->action_type == structure_beingbuilt)
 			App->actionscontroller->doingAction = false;
 	}
 
@@ -148,9 +97,16 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI && !App->actionscontroller->doingAction)
 		selectionControl();
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction)
 		commandControl();
 
+	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && App->entitycontroller->building)
+	{
+		building = false;
+		structure_beingbuilt = NONE_BUILDING;
+		App->actionscontroller->action_type = NO_ACTION;
+		App->actionscontroller->doingAction = false;
+	}
 
 	return true;
 }
@@ -289,7 +245,7 @@ void j1EntityController::buildingProcessDraw()
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	pos = App->map->MapToWorld(pos.x, pos.y);
 
-	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y))
+	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y) && CheckCostBuiding(structure_beingbuilt))
 	{
 		Color green = { 0,255,0,100 };
 		App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
@@ -304,7 +260,7 @@ void j1EntityController::buildingProcessDraw()
 	}
 	if (structure_beingbuilt == 3)
 	{
-		if (!App->map->WalkabilityArea((pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2), (pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2), buildingDB[structure_beingbuilt]->additional_size.x, buildingDB[structure_beingbuilt]->additional_size.y, false, true))
+		if (!App->map->WalkabilityArea((pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2), (pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2), buildingDB[structure_beingbuilt]->additional_size.x, buildingDB[structure_beingbuilt]->additional_size.y, false, true) && CheckCostBuiding(structure_beingbuilt))
 		{
 			Color green2 = { 0,255,0,75 };
 			App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height }, green2);

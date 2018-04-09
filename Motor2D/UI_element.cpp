@@ -9,7 +9,7 @@ UI_element::~UI_element()
 		texture = nullptr;
 	}
 
-	RELEASE(popUp);
+	RELEASE(popUpInfo);
 }
 
 iPoint UI_element::calculateAbsolutePosition() const

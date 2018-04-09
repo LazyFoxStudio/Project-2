@@ -49,7 +49,7 @@ bool j1UIScene::Start()
 	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 3);
 	wood_display->convertIntoCounter(&App->scene->wood);
 
-	menus.front()->elements.push_back(App->gui->createCostDisplay());
+	//menus.front()->elements.push_back(App->gui->createCostDisplay());
 
 	return true;
 }
