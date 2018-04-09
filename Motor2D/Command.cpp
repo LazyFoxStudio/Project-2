@@ -81,12 +81,14 @@ bool Attack::OnUpdate(float dt)
 	}
 
 	Unit* enemy = App->entitycontroller->getNearestEnemyUnit(unit->position, unit->IsEnemy());
+	if(!enemy) { Stop(); return true; }
+
 	if (enemy->position.DistanceTo(unit->position) < unit->range)
 	{
 		if (!attacking) 
 			{ attacking = true; timer.Start(); }
 		else if (timer.ReadSec() > 0.5f)
-			enemy->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy->defense, 0));
+			{ enemy->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy->defense, 0)); timer.Start();}
 
 		unit->next_step = { 0,0 };
 		return true;

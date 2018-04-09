@@ -70,7 +70,7 @@ bool j1EntityController::Update(float dt)
 				(*it)->Draw(dt);
 				if (debug) debugDrawEntity(*it);
 			}
-			if (!(*it)->Update(dt))	return false;
+			if (!(*it)->Update(dt))	DeleteEntity(*it);
 		}
 	}
 
@@ -120,12 +120,7 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 bool j1EntityController::PostUpdate()
 {
 	for (std::list<Entity*>::iterator it = entities_to_destroy.begin(); it != entities_to_destroy.end(); it++)
-	{
-		entities.remove(*it);
-		selected_entities.remove(*it);
-
-		delete *it;
-	}
+		DeleteEntity(*it);
 
 	entities_to_destroy.clear();
 
@@ -136,10 +131,14 @@ bool j1EntityController::CleanUp()
 {
 	if (!DeleteDB()) return false;
 
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)	RELEASE(*it);
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)	
+		DeleteEntity(*it);
 
 	entities.clear();
 	selected_entities.clear();
+
+	all_squads.clear();
+	selected_squads.clear();
 
 	return true;
 }
@@ -163,6 +162,24 @@ void j1EntityController::DeleteEntity(Entity* entity)
 {
 	entities.remove(entity);
 	selected_entities.remove(entity);
+
+	Unit * unit_to_remove = nullptr;
+	switch (entity->entity_type)
+	{
+	case UNIT:
+		unit_to_remove = (Unit*)(entity);
+		unit_to_remove->squad->removeUnit(unit_to_remove);
+		if ((unit_to_remove)->squad->units.empty())
+		{
+			all_squads.remove(unit_to_remove->squad);
+			selected_squads.remove(unit_to_remove->squad);
+			RELEASE(unit_to_remove->squad);
+		}
+		delete unit_to_remove;
+		break;
+	case BUILDING: delete ((Building*)(entity)); break;
+	case NATURE: delete ((Nature*)(entity)); break;
+	}
 }
 
 Unit* j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
