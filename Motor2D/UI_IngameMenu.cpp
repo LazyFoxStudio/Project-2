@@ -38,7 +38,7 @@ IngameMenu::~IngameMenu()
 
 void IngameMenu::updateInfo()
 {
-	if (App->entitycontroller->selected_squad.size() > 1)
+	if (App->entitycontroller->selected_squads.size() > 1)
 		severalSquads = true;
 	else
 		severalSquads = false;
@@ -70,7 +70,7 @@ void IngameMenu::createSelectionBasicInfo()
 	else
 	{
 		iPoint position = firstIcon_pos;
-		for (std::list<Squad*>::iterator it_s = App->entitycontroller->selected_squad.begin(); it_s != App->entitycontroller->selected_squad.end(); it_s++)
+		for (std::list<Squad*>::iterator it_s = App->entitycontroller->selected_squads.begin(); it_s != App->entitycontroller->selected_squads.end(); it_s++)
 		{
 			for (int i = 0; i < (*it_s)->units.size(); i++)//for each entity of the squad
 			{

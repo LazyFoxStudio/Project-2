@@ -32,15 +32,6 @@ bool Squad::Update(float dt)
 		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
-	{
-		int x = 0; int y = 0;
-		App->input->GetMousePosition(x, y);
-		iPoint p = App->render->ScreenToWorld(x, y);
-		p = App->map->WorldToMap(p.x, p.y);
-		Halt();
- 		commands.push_back(new AttackingMoveToSquad(commander, p));
-	}
 	return true;
 }
 
@@ -57,8 +48,8 @@ bool Squad::getEnemiesInSight(std::list<fPoint>& list_to_fill)
 	list_to_fill.clear();
 
 	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
-		for (int i = 0; i < units.size(); i++)
-			if ((*it)->position.DistanceTo(units[i]->position) < units[i]->line_of_sight) list_to_fill.push_back((*it)->position);
+		if((*it)->entity_type == UNIT)
+			if(isInSquadSight((*it)->position) && ((Unit*)(*it))->IsEnemy() != commander->IsEnemy()) list_to_fill.push_back((*it)->position);
 
 	return !list_to_fill.empty();
 }

@@ -39,7 +39,7 @@ public:
 	Building* addBuilding(iPoint pos, buildingType type );
 	Nature* addNature(iPoint pos, resourceType res_type, int amount = 0);
 
-	Squad* AddSquad(unitType type);
+	Squad* AddSquad(unitType type, fPoint position);
 
 	void selectionControl();
 	void commandControl();
@@ -67,12 +67,9 @@ public:
 	std::list<Entity*> selected_entities;
 
 	std::list<Squad*> all_squads;
-	std::list<Squad*> selected_squad;
+	std::list<Squad*> selected_squads;
 
 	std::list<Entity*> entities_to_destroy;
-	
-	std::vector<Unit*> squad_units_test;  // for testing purposes, will be deleted
-	Squad* squad_test = nullptr; // for testing purposes, will be deleted
 
 	std::map<uint, Unit*> unitDB;
 	std::map<uint, Hero*> heroDB;

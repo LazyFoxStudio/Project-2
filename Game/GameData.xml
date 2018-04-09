@@ -567,6 +567,7 @@
                 <movementSpeed value="1"/>
                 <range value="40"/>
                 <lineOfSight value="200"/>
+                <squadMembers value="5"/>
                 <size x="1" y="1"/>
             </Stats>
             <Animations>
@@ -808,6 +809,7 @@
                 <movementSpeed value="1"/>
                 <range value="100"/>
                 <lineOfSight value="250"/>
+                <squadMembers value="4"/>
                 <size x="1" y="1"/>
             </Stats>
         <Animations>

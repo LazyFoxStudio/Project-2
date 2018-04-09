@@ -37,14 +37,10 @@ bool j1EntityController::Start()
 
 	loadEntitiesDB(gameData);
 
+	AddSquad(FOOTMAN, fPoint(1000, 1000));
+	AddSquad(FOOTMAN, fPoint(1200, 1000));
 
-	addUnit(iPoint(1100, 1000), GRUNT);
-	addUnit(iPoint(1150, 1000), GRUNT);
-	addUnit(iPoint(1200, 1000), GRUNT);
-	addUnit(iPoint(1150, 1000), GRUNT);
-
-	squad_test = AddSquad(FOOTMAN);
-	AddSquad(FOOTMAN);
+	AddSquad(GRUNT, fPoint(1000, 1200));
 
 	//addHero(iPoint(900, 700), MAGE);
 
@@ -52,8 +48,6 @@ bool j1EntityController::Start()
 
 	structure_beingbuilt = TOWN_HALL;
 	placingBuilding(TOWN_HALL, {600, 600});
-
-	test_counter = 1;
 
 	return true;
 }
@@ -64,7 +58,8 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
-	squad_test->Update(dt);
+	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end(); it++)
+		if (!(*it)->Update(dt))	return false;
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
@@ -208,17 +203,23 @@ Nature* j1EntityController::addNature(iPoint pos, resourceType res_type, int amo
 	return resource;
 }
 
-Squad* j1EntityController::AddSquad(unitType type)
+Squad* j1EntityController::AddSquad(unitType type, fPoint position)
 {
 	std::vector<Unit*> squad_vector;
+	std::vector<iPoint> positions;
+	iPoint map_p = App->map->WorldToMap(position.x, position.y);
+	Squad* new_squad = nullptr;
 
-	for (int i = 0; i < (unitDB[type])->squad_members; ++i)
+	if (App->pathfinding->GatherWalkableAdjacents(map_p, (unitDB[type])->squad_members, positions))
 	{
-		squad_vector.push_back(addUnit(iPoint((i *50) + 1000, 900+(50*test_counter)), type));
+		for (int i = 0; i < (unitDB[type])->squad_members; ++i)
+		{
+			iPoint world_p = App->map->MapToWorld(positions[i].x, positions[i].y);
+			squad_vector.push_back(addUnit(world_p, type));
+		}
+		new_squad = new Squad(squad_vector);
+		all_squads.push_back(new_squad);
 	}
-	test_counter++;
-	Squad* new_squad = new Squad(squad_vector);
-	all_squads.push_back(new_squad);
 	return new_squad;
 }
 
@@ -341,35 +342,25 @@ void j1EntityController::commandControl()
 
 	if (!entity)   // clicked on ground
 	{
-		squad_test->Halt();
-		squad_test->commands.push_back(new MoveToSquad(squad_test->commander, map_p));
-		/*for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
+		for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 		{
-			if ((*it)->entity_type == UNIT)
-			{
-				Unit* unit = (Unit*)(*it);
-				unit->commands.clear();
-				(unit)->commands.push_back(new MoveTo(unit, map_p));
-			}
-		}*/
+			(*it)->Halt();
+			(*it)->commands.push_back(new MoveToSquad((*it)->commander, map_p));
+		}
 	}
 	else
 	{
 		switch (entity->entity_type)
 		{
 		case UNIT:    //clicked on a unit
-			/*if (((Unit*)entity)->IsEnemy())
+			if (((Unit*)entity)->IsEnemy())
 			{
-				for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
+				for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 				{
-					if ((*it)->entity_type == UNIT)
-					{
-						Unit* unit = (Unit*)(*it);
-						unit->Halt();
-						unit->commands.push_back(new AttackingMoveTo(unit, map_p));
-					}
+					(*it)->Halt();
+					(*it)->commands.push_back(new AttackingMoveToSquad((*it)->commander, map_p));
 				}
-			}*/
+			}
 			break;
 
 			// TODO: other cases
@@ -400,7 +391,7 @@ void j1EntityController::selectionControl()
 	case KEY_UP:
 
 		selected_entities.clear();
-		selected_squad.clear();
+		selected_squads.clear();
 
 		iPoint selection_to_world = App->render->ScreenToWorld(selection_rect.x, selection_rect.y);
 		selection_rect.x = selection_to_world.x; selection_rect.y = selection_to_world.y;
@@ -420,16 +411,16 @@ void j1EntityController::selectionControl()
 					if (!((Unit*)*it)->IsEnemy())
 					{	
 						if(((Unit*)*it)->squad)
-							selected_squad.push_back(((Unit*)*it)->squad);
+							selected_squads.push_back(((Unit*)*it)->squad);
 					}
 				}
 				else selected_entities.push_back(*it);
 			}
 		}
 
-		selected_squad.unique(CompareSquad);
+		selected_squads.unique(CompareSquad);
 
-		for (std::list<Squad*>::iterator it = selected_squad.begin(); it != selected_squad.end(); it++)
+		for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 			for(int i = 0; i < (*it)->units.size(); i++)
 				selected_entities.push_back((*it)->units[i]);
 		
@@ -444,8 +435,6 @@ void j1EntityController::selectionControl()
 		selection_rect = { 0,0,0,0 };
 		break;
 	}
-
-	LOG("%d", selected_squad.size());
 }
 
 Unit* j1EntityController::getNearestEnemyUnit(fPoint position, bool isEnemy)
