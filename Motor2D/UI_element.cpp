@@ -34,6 +34,31 @@ void UI_element::appendChild(UI_element * child, bool center)
 	childs.push_back(child);
 }
 
+void UI_element::BlitElement(bool use_camera)
+{
+	BlitChilds();
+	if (state == MOUSEOVER)
+	{
+		if (!blitPopUpInfo)
+		{
+			if (App->gui->hovering_element.ReadMs() > 600)
+			{
+				if (costDisplay != nullptr)
+				{
+					App->gui->moveElementToMouse(costDisplay);
+				}
+				else if (popUpInfo != nullptr)
+				{
+					App->gui->moveElementToMouse(popUpInfo);
+				}
+				blitPopUpInfo = true;
+			}
+		}
+		else
+			BlitHoverExtraEffect();
+	}
+}
+
 void UI_element::BlitChilds()
 {
 	for (std::list<UI_element*>::iterator it_e = childs.begin(); it_e != childs.end(); it_e++)
