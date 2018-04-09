@@ -419,11 +419,8 @@ void j1EntityController::selectionControl()
 				{
 					if (!((Unit*)*it)->IsEnemy())
 					{	
-						selected_squad.push_back(((Unit*)*it)->squad);
-						for (int i = 0; i<((Unit*)*it)->squad->units.size(); i++)
-						{
-							selected_entities.push_back(((Unit*)*it)->squad->units[i]);
-						}
+						if(((Unit*)*it)->squad)
+							selected_squad.push_back(((Unit*)*it)->squad);
 					}
 				}
 				else selected_entities.push_back(*it);
@@ -432,6 +429,10 @@ void j1EntityController::selectionControl()
 
 		selected_squad.unique(CompareSquad);
 
+		for (std::list<Squad*>::iterator it = selected_squad.begin(); it != selected_squad.end(); it++)
+			for(int i = 0; i < (*it)->units.size(); i++)
+				selected_entities.push_back((*it)->units[i]);
+		
 		if (getSelectedType() == UNIT_AND_BUILDING)
 		{
 			for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
