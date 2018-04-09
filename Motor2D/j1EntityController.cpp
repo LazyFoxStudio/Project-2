@@ -421,6 +421,11 @@ void j1EntityController::commandControl()
 	}
 }
 
+bool CompareSquad(Squad* s1, Squad* s2)
+{
+	return s1 == s2;
+}
+
 void j1EntityController::selectionControl()
 {
 	int mouseX, mouseY;
@@ -439,6 +444,7 @@ void j1EntityController::selectionControl()
 	case KEY_UP:
 
 		selected_entities.clear();
+		selected_squad.clear();
 
 		iPoint selection_to_world = App->render->ScreenToWorld(selection_rect.x, selection_rect.y);
 		selection_rect.x = selection_to_world.x; selection_rect.y = selection_to_world.y;
@@ -457,22 +463,18 @@ void j1EntityController::selectionControl()
 				{
 					if (!((Unit*)*it)->IsEnemy())
 					{	
-						if (((Unit*)*it)->squad_members>1)
+						selected_squad.push_back(((Unit*)*it)->squad);
+						for (int i = 0; i<((Unit*)*it)->squad->units.size(); i++)
 						{
-							for (int i = 0; i<((Unit*)*it)->squad->units.size(); i++)
-							{
-								selected_entities.push_back(((Unit*)*it)->squad->units[i]);
-							}
-						}
-						else
-						{
-							selected_entities.push_back(*it);
+							selected_entities.push_back(((Unit*)*it)->squad->units[i]);
 						}
 					}
 				}
 				else selected_entities.push_back(*it);
 			}
 		}
+
+		selected_squad.unique(CompareSquad);
 
 		if (getSelectedType() == UNIT_AND_BUILDING)
 		{
@@ -485,6 +487,8 @@ void j1EntityController::selectionControl()
 		selection_rect = { 0,0,0,0 };
 		break;
 	}
+
+	LOG("%d", selected_squad.size());
 }
 
 Unit* j1EntityController::getNearestEnemyUnit(fPoint position, bool isEnemy)
@@ -705,6 +709,12 @@ void j1EntityController::StartHero(iPoint pos)
 	hero->skill_one = new Skill(hero, 40, 60, 400,20, AREA);		//Icicle Crash
 	hero->skill_two = new Skill(hero, 0, 200, 200,20, NONE_RANGE);	//Overflow
 	hero->skill_three = new Skill(hero, 0, 50, 200, 10, LINE);		//Dragon Breath
+
+	std::vector<Unit*>aux_vector;
+	aux_vector.push_back(hero);
+
+	Squad* new_squad = new Squad(aux_vector);
+	all_squads.push_back(new_squad);
 
 	entities.push_back(hero);
 }
