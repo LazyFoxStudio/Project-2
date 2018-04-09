@@ -37,17 +37,15 @@ bool j1EntityController::Start()
 
 	loadEntitiesDB(gameData);
 
-	AddSquad(FOOTMAN, fPoint(1000, 1000));
-	AddSquad(FOOTMAN, fPoint(1200, 1000));
+	AddSquad(FOOTMAN, fPoint(1900, 2100));
+	AddSquad(FOOTMAN, fPoint(2200, 2100));
 
-	AddSquad(GRUNT, fPoint(1000, 1200));
+	AddSquad(GRUNT, fPoint(3000, 2100));
 
-	//addHero(iPoint(900, 700), MAGE);
-
-	StartHero(iPoint(900, 700));
+	StartHero(iPoint(2000, 1950));
 
 	structure_beingbuilt = TOWN_HALL;
-	placingBuilding(TOWN_HALL, {600, 600});
+	placingBuilding(TOWN_HALL, {2000, 2000});
 
 	return true;
 }
@@ -242,8 +240,17 @@ Squad* j1EntityController::AddSquad(unitType type, fPoint position)
 
 void j1EntityController::placingBuilding(buildingType type, iPoint position)
 {
+	iPoint pos;
 
-	iPoint pos = CameraToWorld(position.x, position.y);
+	if (building)
+	{
+		pos = App->render->ScreenToWorld(position.x, position.y);
+	}
+	else
+	{
+		pos = position;// = App->render->ScreenToWorld(position.x, position.y);
+	}
+
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	pos = App->map->MapToWorld(pos.x, pos.y);
 	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y))
