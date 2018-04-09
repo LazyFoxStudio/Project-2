@@ -84,6 +84,7 @@ bool j1EntityController::Update(float dt)
 		building = false;
 		structure_beingbuilt = NONE_BUILDING;
 		App->actionscontroller->action_type = NO_ACTION;
+		App->actionscontroller->doingAction = false;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && !building && App->scene->workerAvalible())
@@ -93,11 +94,12 @@ bool j1EntityController::Update(float dt)
 		App->scene->inactive_workers -= 1;
 	}
 
-	else if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) && building && structure_beingbuilt == BARRACKS)
+	else if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building && structure_beingbuilt == BARRACKS && CheckCostBuiding(BARRACKS))
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
 	
+		HandleBuildingResources(BARRACKS);
 		placingBuilding(BARRACKS,position);
 		if (App->actionscontroller->action_type == BUILD_BARRACKS)
 			App->actionscontroller->doingAction = false;
@@ -110,11 +112,12 @@ bool j1EntityController::Update(float dt)
 		App->scene->inactive_workers -= 1;
 	}
 
-	else if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) && building && structure_beingbuilt == LUMBER_MILL)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && building && structure_beingbuilt == LUMBER_MILL && CheckCostBuiding(LUMBER_MILL))
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
 
+		HandleBuildingResources(LUMBER_MILL);
 		placingBuilding(LUMBER_MILL, position);
 		if (App->actionscontroller->action_type == BUILD_LUMBER_MILL)
 			App->actionscontroller->doingAction = false;
@@ -127,11 +130,12 @@ bool j1EntityController::Update(float dt)
 		App->scene->inactive_workers -= 1;
 	}
 
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && building && structure_beingbuilt == FARM)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && building && structure_beingbuilt == FARM && CheckCostBuiding(FARM))
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
 
+		HandleBuildingResources(FARM);
 		placingBuilding(FARM, position);
 		if (App->actionscontroller->action_type == BUILD_FARM)
 			App->actionscontroller->doingAction = false;
