@@ -17,7 +17,7 @@
 #include "j1ActionsController.h"
 #include "UI_WarningMessages.h"
 
-#define SQUAD_MAX_FRAMETIME 0.2f
+#define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
 
 
@@ -67,10 +67,10 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
-	time_slicer.Start();
 	
 	int counter = 0;
-	while (time_slicer.Read() < ((100000.0f / ((float)App->framerate)) * SQUAD_MAX_FRAMETIME) && counter < all_squads.size())
+	time_slicer.Start();
+	while (time_slicer.Read() < ((float)App->framerate * SQUAD_MAX_FRAMETIME) && counter < all_squads.size())
 	{
 		counter++; squad_iterator++;
 		if(squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
@@ -79,21 +79,27 @@ bool j1EntityController::Update(float dt)
 
 	counter = 0;
 	time_slicer.Start();
-	while (time_slicer.Read() < ((1000000.0f / ((float)App->framerate)) * ENITITY_MAX_FRAMETIME) && counter < entities.size())
+	while (time_slicer.Read() < ((float)App->framerate * ENITITY_MAX_FRAMETIME) && counter < entities.size())
 	{
 		counter++; entity_iterator++;
 		if (entity_iterator == entities.end()) entity_iterator = entities.begin();
+
 		if ((*entity_iterator)->isActive)
-		{
-			if (App->render->CullingCam((*entity_iterator)->position))
-			{
-				(*entity_iterator)->Draw(dt);
-				if (debug) debugDrawEntity(*entity_iterator);
-			}
 			if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
-		}
+		
 	}
 
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		if ((*it)->isActive)
+		{
+			if (App->render->CullingCam((*it)->position))
+			{
+				(*it)->Draw(dt);
+				if (debug) debugDrawEntity(*it);
+			}
+		}
+	}
 
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building && App->scene->workerAvalible() && App->entitycontroller->CheckCostBuiding(structure_beingbuilt))
 	{
