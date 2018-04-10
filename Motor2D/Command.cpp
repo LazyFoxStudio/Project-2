@@ -233,8 +233,8 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 	{
 		if (squad->getEnemiesInSight(enemy_positions))
 		{
-			if (!atk_flow_field)
-				atk_flow_field = new FlowField(App->map->data.width, App->map->data.height);
+			if (!atk_flow_field) atk_flow_field = new FlowField(App->map->data.width, App->map->data.height);
+			else atk_flow_field->ClearTo();
 
 			for (int j = 0; j < squad->units.size(); j++)
 			{
@@ -249,7 +249,7 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 	}
 	else if (enemy_positions.empty())
 	{
-		if (enemies_in_sight)	{ enemies_in_sight = false; RELEASE(atk_flow_field); }
+		if (enemies_in_sight) enemies_in_sight = false;
 
 		bool all_idle = true;
 

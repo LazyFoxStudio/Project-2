@@ -364,6 +364,17 @@ FlowField::~FlowField()
 	RELEASE_ARRAY(field);
 }
 
+void FlowField::ClearTo(int value)
+{
+	for (int x = 0; x < width; x++)
+		for (int y = 0; y < height; y++)
+		{
+			field[x][y].parent = nullptr;
+			field[x][y].score = value;
+		}
+	
+}
+
 void FlowField::updateFromPath(const std::list<iPoint>& path)
 {
 

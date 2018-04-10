@@ -101,7 +101,7 @@ void Unit::Move(float dt)
 		if (squad)	position += (next_step.Normalized() * squad->max_speed * dt * SPEED_CONSTANT);
 		else		position += (next_step.Normalized() * speed * dt * SPEED_CONSTANT);
 
-		if (!App->pathfinding->IsWalkable(App->map->WorldToMap(position.x, position.y))) position = last_pos;
+		if (!App->pathfinding->IsWalkable(App->map->WorldToMap(position.x, position.y))) { position = last_pos; next_step.SetToZero(); }
 		else
 		{
 			collider.x = position.x - (collider.w / 2);
