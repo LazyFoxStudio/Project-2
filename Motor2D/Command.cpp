@@ -129,62 +129,6 @@ bool Attack::OnStop()
 	return true;
 }
 
-// HOLD
-//
-//bool Hold::OnInit()
-//{
-//	iPoint pos = App->map->WorldToMap(unit->position.x, unit->position.y);
-//
-//	if (pos != held_position)
-//	{
-//		MoveTo* new_moveto_command = new MoveTo(unit, held_position);
-//		unit->commands.push_front(new_moveto_command);
-//
-//		Restart();
-//	}
-//	return true;
-//}
-//
-//bool Hold::OnUpdate(float dt)
-//{
-//	Unit* enemy = nullptr; // unit->SearchNearestEnemy();
-//	if (enemy)
-//	{
-//		iPoint enemy_position = App->map->WorldToMap(enemy->position.x, enemy->position.y);
-//		iPoint pos = App->map->WorldToMap(unit->position.x, unit->position.y);
-//
-//		if (pos.DistanceTo(enemy_position) < unit->line_of_sight)
-//		{
-//			Attack* new_attack_command = new Attack(unit);
-//			new_attack_command->state = UPDATE;
-//			unit->commands.push_front(new_attack_command);
-//
-//			Restart();
-//		}
-//	}
-//	
-//	return true;
-//}
-//
-//
-//// PATROL
-//
-//bool Patrol::OnInit()
-//{
-//	// TODO  (Check if the paths between points are possible: here or before creating the Patrol command?
-//	return true;
-//}
-//
-//bool Patrol::OnUpdate(float dt) 
-//{
-//	current_point++;
-//	if (current_point == patrol_points.size()) current_point = 0;
-//
-//	AttackingMoveTo* new_a_moveto_command = new AttackingMoveTo(unit, patrol_points[current_point]);
-//	unit->commands.push_front(new_a_moveto_command);
-//
-//	return true;
-//}
 
 
 //		SQUADS: =============================
@@ -257,12 +201,15 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 	{
 		if (enemies_in_sight) enemies_in_sight = false;
 
-		bool all_idle = true;
+		if (!hold)
+		{
+			bool all_idle = true;
 
-		for (int i = 0; i < squad->units.size(); i++)
-			if (!squad->units[i]->commands.empty()) all_idle = false;
+			for (int i = 0; i < squad->units.size(); i++)
+				if (!squad->units[i]->commands.empty()) all_idle = false;
 
-		if (all_idle) Stop();
+			if (all_idle) Stop();
+		}
 	}
 
 	return true;
@@ -274,4 +221,33 @@ bool AttackingMoveToSquad::OnStop()
 	RELEASE(atk_flow_field);
 	return true;
 }
+
+
+bool PatrolSquad::OnUpdate(float dt)
+{
+	iPoint current_point = patrol_points.front();
+	patrol_points.pop_front();
+
+	if (!patrol_points.empty())
+	{
+		if (App->pathfinding->IsWalkable(current_point))
+		{
+			iPoint map_p = App->map->WorldToMap(squad->commander->position.x, squad->commander->position.y);
+			FlowField* flow_field = App->pathfinding->CreateFlowField(map_p, current_point);
+
+			if (flow_field)
+			{
+				AttackingMoveToSquad* new_a_moveto_command = new AttackingMoveToSquad(unit, current_point);
+				new_a_moveto_command->flow_field = flow_field;
+				squad->commands.push_front(new_a_moveto_command);
+				patrol_points.push_back(current_point);
+				return true;
+			}
+		}
+	}
+
+	Stop();
+	return true;
+}
+
 

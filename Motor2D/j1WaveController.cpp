@@ -2,6 +2,10 @@
 #include "j1EntityController.h"
 #include "Entity.h"
 #include "Squad.h"
+#include "Command.h"
+#include "j1Pathfinding.h"
+#include "j1Map.h"
+
 #include <time.h>
 
 
@@ -33,12 +37,25 @@ bool j1WaveController::Awake(pugi::xml_node &config)
 
 bool j1WaveController::Start()
 {
+	bool ret = true;
+
+	TownHall_pos = App->map->WorldToMap(2200, 2000);
+	iPoint map_org = App->map->WorldToMap(TownHall_pos.x+64, TownHall_pos.y);
+	iPoint map_dest = App->map->WorldToMap(TownHall_pos.x,TownHall_pos.y);
+	flow_field=App->pathfinding->CreateFlowField(map_org, map_dest);
+	
 	wave_timer.Start();
-	return true;
+
+	if (flow_field == nullptr)
+	{
+		ret = false;
+	}
+
+	return ret;
 }
 
 bool j1WaveController::Update(float dt)
-{
+{	
 	if (current_wave == 0 && wave_timer.ReadSec() > initial_wait)
 	{
 		current_wave += 1;
@@ -52,6 +69,7 @@ bool j1WaveController::Update(float dt)
 		wave_timer.Start();
 		GenerateWave();
 	}
+
 	return true;
 }
 
@@ -78,7 +96,7 @@ bool j1WaveController::Load(pugi::xml_node &)
 int j1WaveController::CalculateWaveScore()
 {
 	int ret = 0;
-	ret = current_wave * 10;
+	ret = current_wave * 2;
 
 	return ret;
 }
@@ -87,6 +105,7 @@ void j1WaveController::GenerateWave()
 {
 	srand(time(NULL));
 	int wave_score = CalculateWaveScore();
+	
 	for (int i = 0; i < wave_score; i++)
 	{
 		int enemy = rand() % 2 + 1;
@@ -100,7 +119,7 @@ void j1WaveController::GenerateWave()
 			case 1:
 				squad = App->entitycontroller->AddSquad(GRUNT, spawn_1);
 				wave.push_back(squad);
-			break;
+				break;
 			case 2:
 				squad = App->entitycontroller->AddSquad(GRUNT, spawn_2);
 				wave.push_back(squad);
@@ -139,4 +158,14 @@ void j1WaveController::GenerateWave()
 			}
 		}
 	}
+
+	for (std::list<Squad*>::iterator it = wave.begin(); it != wave.end(); it++)
+	{
+		//(*it)->commands.push_back(new AttackingMoveToSquad((*it)->commander, TownHall_pos));
+		AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad((*it)->commander, TownHall_pos);
+		new_atk_order->flow_field = flow_field;
+		(*it)->commands.push_back(new_atk_order);
+	}
+
+	LOG("Hola");
 }

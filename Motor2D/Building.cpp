@@ -2,6 +2,7 @@
 #include "j1Render.h"
 #include "j1Scene.h"
 #include "j1EntityController.h"
+#include "j1Input.h"
 
 Building::Building(iPoint pos, Building& building)
 {
@@ -62,7 +63,10 @@ bool Building::Update(float dt)
 	{
 		HandleConstruction();
 	}
-
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN && type != TOWN_HALL)
+	{
+		current_HP = 0;
+	}
 	if (!destroyed && current_HP <= 0)
 	{
 		destroyed = true;
@@ -85,12 +89,16 @@ bool Building::Update(float dt)
 
 void Building::HandleSprite()
 {
-	if (being_built)
+	if (being_built && building_time/2 < timer.ReadSec() && !destroyed)
 	{
 		current_sprite = sprites[0];
 	}
 
-	else if (!being_built && type != TOWN_HALL)
+	else if (being_built && building_time / 2 >= timer.ReadSec() && !destroyed)
+	{
+		current_sprite = sprites[2];
+	}
+	else if (!being_built && type != TOWN_HALL && !destroyed)
 	{
 		current_sprite = sprites[1];
 	}
@@ -98,7 +106,7 @@ void Building::HandleSprite()
 	else if (destroyed)
 	{
 		//TODO add the sprites of the destroyed buildings to the spritesheet.
-		current_sprite = sprites[0];
+		current_sprite = sprites[3];
 	}
 
 	else if (type == TOWN_HALL)
@@ -158,7 +166,7 @@ void Building::HandleDestruction()
 	{
 		App->map->WalkabilityArea(position.x, position.y, size.x, size.y,true);
 		
-		delete this;
+		App->entitycontroller->entities_to_destroy.push_back(this);
 	}
 }
 

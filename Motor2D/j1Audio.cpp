@@ -1,6 +1,7 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1Audio.h"
+#include "j1App.h"
 
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
@@ -17,6 +18,9 @@ bool j1Audio::Awake(pugi::xml_node& config)
 {
 	musicVolumeModifier = config.child("music").child("musicVolumeModifier").attribute("value").as_float();
 	sfxVolumeModifier = config.child("sfx").child("sfxVolumeModifier").attribute("value").as_float();
+
+	music_folder = config.child("music").child("folder").attribute("value").as_string(); 
+	sfx_folder = config.child("sfx").child("folder").attribute("value").as_string();
 
 	LOG("Loading Audio Mixer");
 	SDL_Init(0);
@@ -44,6 +48,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		return (active = false);
 	}
 
+	LoadFXFromXML();
 	return true;
 }
 
@@ -126,6 +131,18 @@ unsigned int j1Audio::LoadFx(const char* path)
 	}
 
 	return 0;
+}
+
+
+void j1Audio::LoadFXFromXML()
+{
+	pugi::xml_document SFXdoc;
+	pugi::xml_node node;
+
+	node = App->LoadFile(SFXdoc, "SFX_Paths.xml");
+
+	for (node = node.child("path"); node; node = node.next_sibling("path"))
+		LoadFx(node.attribute("sfx").as_string());
 }
 
 // Play WAV
