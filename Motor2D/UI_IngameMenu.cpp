@@ -8,6 +8,7 @@
 //#include "UI_Minimap.h"
 #include "UI_Text.h"
 #include "Entity.h"
+#include "Building.h"
 #include "UI_LifeBar.h"
 #include "j1Fonts.h"
 #include "UI_ProgressBar.h"
@@ -26,6 +27,8 @@ icon_atlas(icon_atlas)
 {
 	window = new Window(texture, x, y, section, callback);
 	createStatsDisplay();
+	workers = new Text("", 1495, 865, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
+	workers->active = false;
 	//Create minimap
 }
 
@@ -34,6 +37,7 @@ IngameMenu::~IngameMenu()
 	cleanLists();
 	//RELEASE(minimap);
 	RELEASE(window);
+	RELEASE(workers);
 }
 
 void IngameMenu::updateInfo()
@@ -136,7 +140,10 @@ void IngameMenu::updateStatsDisplay()
 			{
 				(*it_t)->active = true;
 			}
+			title->setText("Squad Stats:");
+			title->localPosition = { stats_pos.x, stats_pos.y };
 			title->active = true;
+			workers->active = false;
 
 			statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->attack + (int)((Unit*)entity)->piercing_atk), stats_pos.x + 170, stats_pos.y + 40, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
 			statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->defense), stats_pos.x + 170, stats_pos.y + 80, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
@@ -150,7 +157,10 @@ void IngameMenu::updateStatsDisplay()
 			{
 				(*it_t)->active = true;
 			}
+			title->setText("Hero Stats:");
+			title->localPosition = { stats_pos.x, stats_pos.y };
 			title->active = true;
+			workers->active = false;
 
 			statsNumbers.push_back(new Text(std::to_string((int)((Hero*)entity)->attack + (int)((Hero*)entity)->piercing_atk), stats_pos.x + 170, stats_pos.y + 40, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
 			statsNumbers.push_back(new Text(std::to_string((int)((Hero*)entity)->defense), stats_pos.x + 170, stats_pos.y + 80, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
@@ -165,7 +175,18 @@ void IngameMenu::updateStatsDisplay()
 			{
 				(*it_t)->active = false;
 			}
-			title->active = false;
+			if (((Building*)entity)->type == LUMBER_MILL)
+			{
+				title->setText("Workers:");
+				title->localPosition = { stats_pos.x + 365, stats_pos.y + 20 };
+				workers->active = true;
+				title->active = true;
+			}
+			else
+			{
+				title->active = false;
+				workers->active = false;
+			}
 		}
 	}
 	else
@@ -173,7 +194,7 @@ void IngameMenu::updateStatsDisplay()
 		for (std::list<Text*>::iterator it_t = statsTitles.begin(); it_t != statsTitles.end(); it_t++)
 		{
 			(*it_t)->active = false;
-		}
+		}	
 		title->active = false;
 	}
 }
@@ -190,10 +211,13 @@ void IngameMenu::updateActionButtons()
 
 	int counterX = 0;
 	int counterY = 0;
+	int extraYvalue = 0;
 	for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
 	{
+		if ((*it_b)->function == ASSIGN_WORKER_FUNCTION || (*it_b)->function == UNASSIGN_WORKER_FUNCTION)
+			extraYvalue = 50;
 		(*it_b)->localPosition.x = firstButton_pos.x + (buttons_offset.x*counterX);
-		(*it_b)->localPosition.y = firstButton_pos.y + (buttons_offset.y*counterY);
+		(*it_b)->localPosition.y = firstButton_pos.y + (buttons_offset.y*counterY) + extraYvalue;
 		(*it_b)->active = true;
 		counterX++;
 		if (counterX == 3)
@@ -316,6 +340,17 @@ void IngameMenu::BlitElement(bool use_camera)
 	//Blit stats
 	if (title != nullptr && title->active)
 		title->BlitElement(use_camera);
+	if (workers != nullptr && workers->active)
+	{
+		if (App->entitycontroller->selected_entities.size() > 0)
+		{
+			int workers_num = ((Building*)App->entitycontroller->selected_entities.front())->villagers_inside;
+			int max = App->entitycontroller->mill_max_villagers;
+			std::string text = std::to_string(workers_num) + '/' + std::to_string(max);
+			workers->setText(text);
+			workers->BlitElement(use_camera);
+		}
+	}
 	for (std::list<Text*>::iterator it_t = statsTitles.begin(); it_t != statsTitles.end(); it_t++)
 	{
 		if ((*it_t)->active)
