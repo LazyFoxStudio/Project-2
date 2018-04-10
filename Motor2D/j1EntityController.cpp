@@ -16,6 +16,10 @@
 #include "j1Map.h"
 #include "j1ActionsController.h"
 
+#define SQUAD_MAX_FRAMETIME 0.2f
+#define ENITITY_MAX_FRAMETIME 0.3f
+
+
 j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
 j1EntityController::~j1EntityController() {}
@@ -25,6 +29,9 @@ bool j1EntityController::Awake(pugi::xml_node &config)
 	death_time = config.child("deathTime").attribute("value").as_int(0);
 	mill_max_villagers = config.child("millMaxVillagers").attribute("value").as_int(0);
 	worker_wood_production = config.child("workerWoodProduction").attribute("value").as_int(0);
+
+	entity_iterator = entities.begin();
+	squad_iterator = all_squads.begin();
 	return true;
 }
 
@@ -56,21 +63,33 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
-	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end(); it++)
-		if (!(*it)->Update(dt))	return false;
-
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	time_slicer.Start();
+	
+	int counter = 0;
+	while (time_slicer.Read() < ((100000.0f / ((float)App->framerate)) * SQUAD_MAX_FRAMETIME) && counter < all_squads.size())
 	{
-		if ((*it)->isActive)
+		counter++; squad_iterator++;
+		if(squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
+		if (!(*squad_iterator)->Update(dt))							return false;
+	}
+
+	counter = 0;
+	time_slicer.Start();
+	while (time_slicer.Read() < ((1000000.0f / ((float)App->framerate)) * ENITITY_MAX_FRAMETIME) && counter < entities.size())
+	{
+		counter++; entity_iterator++;
+		if (entity_iterator == entities.end()) entity_iterator = entities.begin();
+		if ((*entity_iterator)->isActive)
 		{
-			if (App->render->CullingCam((*it)->position))
+			if (App->render->CullingCam((*entity_iterator)->position))
 			{
-				(*it)->Draw(dt);
-				if (debug) debugDrawEntity(*it);
+				(*entity_iterator)->Draw(dt);
+				if (debug) debugDrawEntity(*entity_iterator);
 			}
-			if (!(*it)->Update(dt))	DeleteEntity(*it);
+			if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
 		}
 	}
+
 
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building)
 	{
