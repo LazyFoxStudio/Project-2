@@ -36,7 +36,7 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	for (int i = 0; i < unit.animations.size(); i++)
 		animations.push_back(new Animation(*unit.animations[i]));
 
-	current_anim = animations[0];
+	current_anim = animations[1];
 
 	for(int i = 0; i < 9; i++)
 	 available_actions[i] = unit.available_actions[i];
@@ -119,7 +119,7 @@ void Unit::animationController()
 	{
 		switch (commands.empty() ? MOVETO : commands.front()->type)
 		{
-		case MOVETO:
+		case MOVETO || ATTACKING_MOVETO:
 			if (next_step.x > 0 && next_step.y < MAX_NEXT_STEP_MODULE/2 && next_step.y > -MAX_NEXT_STEP_MODULE/2) //MOVE E
 			{
 				new_animation = MOVE_E;
@@ -160,76 +160,34 @@ void Unit::animationController()
 			}
 			break;
 		case ATTACK:
-			if (next_step.x > 0 && next_step.y < MAX_NEXT_STEP_MODULE / 2 && next_step.y > -MAX_NEXT_STEP_MODULE / 2) //MOVE E
+			switch (new_animation)
 			{
-				new_animation = MOVE_E;
+			case IDLE_N:
+				new_animation = ATK_N;
+				break;
+			case IDLE_NE:
+				new_animation = ATK_NE;
+				break;
+			case IDLE_E:
+				new_animation = ATK_E;
+				break;
+			case IDLE_SE:
+				new_animation = ATK_SE;
+				break;
+			case IDLE_S:
+				new_animation = ATK_S;
+				break;
+			case IDLE_SW:
+				new_animation = ATK_SW;
+				break;
+			case IDLE_W:
+				new_animation = ATK_W;
+				break;
+			case IDLE_NW:
+				new_animation = ATK_NW;
+				break;
 			}
-			else if (next_step.x < 0 && next_step.y < MAX_NEXT_STEP_MODULE / 2 && next_step.y > -MAX_NEXT_STEP_MODULE / 2) //MOVE W
-			{
-				new_animation = MOVE_W;
-			}
-			else if (next_step.y > 0) //MOVE S
-			{
-				if (next_step.x < 3 && next_step.x > -3)
-				{
-					new_animation = MOVE_S;
-				}
-				else if (next_step.x < MAX_NEXT_STEP_MODULE / 2)
-				{
-					new_animation = MOVE_SE;
-				}
-				else if (next_step.x < -MAX_NEXT_STEP_MODULE / 2)
-				{
-					new_animation = MOVE_SW;
-				}
-			}
-			else if (next_step.y < 0) //MOVE N
-			{
-				if (next_step.x < 3 && next_step.x > -3)
-				{
-					new_animation = MOVE_N;
-				}
-				if (next_step.x > MAX_NEXT_STEP_MODULE / 2)
-				{
-					new_animation = MOVE_NW;
-				}
-				else if (next_step.x < -MAX_NEXT_STEP_MODULE / 2)
-				{
-					new_animation = MOVE_NE;
-				}
-			}
-			else if (next_step.x + next_step.y == 0)
-			{
-				switch (new_animation)
-				{
-				case IDLE_N:
-					new_animation = ATK_N;
-					break;
-				case IDLE_NE:
-					new_animation = ATK_NE;
-					break;
-				case IDLE_E:
-					new_animation = ATK_E;
-					break;
-				case IDLE_SE:
-					new_animation = ATK_SE;
-					break;
-				case IDLE_S:
-					new_animation = ATK_S;
-					break;
-				case IDLE_SW:
-					new_animation = ATK_SW;
-					break;
-				case IDLE_W:
-					new_animation = ATK_W;
-					break;
-				case IDLE_NW:
-					new_animation = ATK_NW;
-					break;
-				}
-			}	
 		}
-		//Attack* atk_order = (Attack*)commands.front();
 	}
 	else 
 	{
