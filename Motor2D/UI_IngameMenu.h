@@ -59,7 +59,8 @@ public:
 	std::list<squadTroopIcon*> squadTroopsIcons; //Being created/destroyed
 	std::list<LifeBar*> lifeBars; //Being created/destroyed
 	std::list<Text*> statsTitles; //Constant but inactive
-	Text* title=nullptr; //Constant but inactive
+	Text* title = nullptr; //Constant but inactive
+	Text* workers = nullptr;
 	std::list<Text*> statsNumbers; //Constant but inactive
 	std::list<Button*> actionButtons; //Loading the activated buttons
 	bool severalSquads = false;
