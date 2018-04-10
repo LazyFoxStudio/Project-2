@@ -194,7 +194,7 @@ void j1EntityController::DeleteEntity(Entity* entity)
 {
 	entities.remove(entity);
 	selected_entities.remove(entity);
-	App->gui->deleteLifeBar(entity);
+	App->gui->entityDeleted(entity);
 
 	Unit * unit_to_remove = nullptr;
 	switch (entity->entity_type)
