@@ -215,7 +215,7 @@
                 <StartingColumn value="0"/>
                 <speed value="10"/>
               </Animation>
-              <Animation> <!-- 17- WalkingNorthEast-->
+              <Animation> <!-- 17- AttackingNorthEast-->
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="3"/>
@@ -279,7 +279,6 @@
                 <speed value="10"/>
               </Animation>
              <Dying1> <!-- 24- DyingNorthEast-->
-               
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="0"/>

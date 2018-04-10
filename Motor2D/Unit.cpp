@@ -190,7 +190,37 @@ void Unit::animationController()
 			break;
 		}
 	}
-	else 
+	else if (commands.empty() == false)
+	{
+		switch (new_animation)
+		{
+		case MOVE_N:
+			new_animation = ATK_N;
+			break;
+		case MOVE_NE:
+			new_animation = ATK_NE;
+			break;
+		case MOVE_E:
+			new_animation = ATK_E;
+			break;
+		case MOVE_SE:
+			new_animation = ATK_SE;
+			break;
+		case MOVE_S:
+			new_animation = ATK_S;
+			break;
+		case MOVE_SW:
+			new_animation = ATK_SW;
+			break;
+		case MOVE_W:
+			new_animation = ATK_W;
+			break;
+		case MOVE_NW:
+			new_animation = ATK_NW;
+			break;
+		}
+	}
+	else
 	{
 		switch (new_animation)
 		{
