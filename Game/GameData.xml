@@ -278,7 +278,7 @@
                 <StartingColumn value="1"/>
                 <speed value="10"/>
               </Animation>
-             <Dying1> <!-- 24- DyingNorthEast-->
+              <Animation> <!-- 24- DyingNorthEast-->
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="0"/>
@@ -286,8 +286,8 @@
                 <StartingRow value="9"/>
                 <StartingColumn value="0"/>
                 <speed value="10"/>
-              </Dying1>
-              <Dying2> <!-- 25- DyingSouthEast-->
+              </Animation>
+                <Animation> <!-- 25- DyingSouthEast-->
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="0"/>
@@ -295,8 +295,8 @@
                 <StartingRow value="10"/>
                 <StartingColumn value="0"/>
                 <speed value="10"/>
-              </Dying2>
-              <Dying2> <!-- 26- DyingSouthWest-->
+              </Animation>
+              <Animation> <!-- 26- DyingSouthWest-->
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="0"/>
@@ -304,8 +304,8 @@
                 <StartingRow value="10"/>
                 <StartingColumn value="0"/>
                 <speed value="10"/>
-              </Dying2>
-              <Dying1> <!-- 27- DyingNorthWest-->
+              </Animation>
+              <Animation> <!-- 27- DyingNorthWest-->
                 <width value="73"/>
                 <height value="65"/>
                 <rows value="0"/>
@@ -313,7 +313,7 @@
                 <StartingRow value="9"/>
                 <StartingColumn value="0"/>
                 <speed value="10"/>
-              </Dying1>
+              </Animation>
           </Animations>
 			<Actions>
 				<action id="1"/>
