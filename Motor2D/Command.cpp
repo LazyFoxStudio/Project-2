@@ -85,8 +85,8 @@ bool Attack::OnUpdate(float dt)
 
 	if (enemy->position.DistanceTo(unit->position) < unit->range)
 	{
-		if (!attacking) 
-			{ attacking = true; timer.Start(); }
+		if (type == ATTACKING_MOVETO) 
+			{ type = ATTACK; timer.Start(); }
 		else if (timer.ReadSec() > 0.5f)
 			{ enemy->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy->defense, 0)); timer.Start();}
 
@@ -112,13 +112,13 @@ bool Attack::OnUpdate(float dt)
 	else
 	    { enemy_positions->remove(current_target); current_target.SetToZero(); }
 
-	attacking = false;
+	type = ATTACKING_MOVETO;
 	return true;
 }
 
 bool Attack::OnStop()
 {
-	attacking = false;
+	type = ATTACKING_MOVETO;
 	unit->next_step = { 0,0 };
 	return true;
 }
@@ -233,12 +233,13 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 	{
 		if (squad->getEnemiesInSight(enemy_positions))
 		{
-			if (!atk_flow_field)
-				atk_flow_field = new FlowField(App->map->data.width, App->map->data.height);
+			if (atk_flow_field)RELEASE(atk_flow_field);
+			
+			atk_flow_field = new FlowField(App->map->data.width, App->map->data.height);
 
 			for (int j = 0; j < squad->units.size(); j++)
 			{
-				if (squad->units[j]->commands.empty() ? true : squad->units[j]->commands.front()->type != ATTACK)
+				if (squad->units[j]->commands.empty() ? true : (squad->units[j]->commands.front()->type != ATTACK || squad->units[j]->commands.front()->type != ATTACKING_MOVETO))
 				{
 					Attack* new_atk_order = new Attack(squad->units[j], atk_flow_field, &enemy_positions);
 					squad->units[j]->commands.push_front(new_atk_order);
@@ -249,7 +250,7 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 	}
 	else if (enemy_positions.empty())
 	{
-		if (enemies_in_sight)	{ enemies_in_sight = false; RELEASE(atk_flow_field); }
+		if (enemies_in_sight) enemies_in_sight = false;
 
 		bool all_idle = true;
 

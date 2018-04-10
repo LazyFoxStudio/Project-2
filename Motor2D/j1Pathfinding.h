@@ -34,7 +34,10 @@ struct FlowField
 	~FlowField();
 
 	void updateFromPath(const std::list<iPoint>& path);
-	FieldNode* getNodeAt(iPoint p) { return &field[p.x][p.y]; };
+	FieldNode* getNodeAt(iPoint p) 
+	{ 
+		return &field[p.x][p.y]; 
+	};
 
 };
 
