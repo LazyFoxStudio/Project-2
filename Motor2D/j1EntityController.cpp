@@ -15,6 +15,11 @@
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 #include "j1ActionsController.h"
+#include "UI_WarningMessages.h"
+
+#define SQUAD_MAX_FRAMETIME 0.2f
+#define ENITITY_MAX_FRAMETIME 0.3f
+
 
 j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
@@ -25,6 +30,9 @@ bool j1EntityController::Awake(pugi::xml_node &config)
 	death_time = config.child("deathTime").attribute("value").as_int(0);
 	mill_max_villagers = config.child("millMaxVillagers").attribute("value").as_int(0);
 	worker_wood_production = config.child("workerWoodProduction").attribute("value").as_int(0);
+
+	entity_iterator = entities.begin();
+	squad_iterator = all_squads.begin();
 	return true;
 }
 
@@ -37,17 +45,15 @@ bool j1EntityController::Start()
 
 	loadEntitiesDB(gameData);
 
-	AddSquad(FOOTMAN, fPoint(1000, 1000));
-	AddSquad(FOOTMAN, fPoint(1200, 1000));
+	AddSquad(FOOTMAN, fPoint(1900, 2100));
+	AddSquad(FOOTMAN, fPoint(2200, 2100));
 
-	AddSquad(GRUNT, fPoint(1000, 1200));
+	AddSquad(GRUNT, fPoint(3000, 2100));
 
-	//addHero(iPoint(900, 700), MAGE);
-
-	StartHero(iPoint(900, 700));
+	StartHero(iPoint(2000, 1950));
 
 	structure_beingbuilt = TOWN_HALL;
-	placingBuilding(TOWN_HALL, {600, 600});
+	placingBuilding(TOWN_HALL, {2000, 2000});
 
 	return true;
 }
@@ -58,29 +64,42 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
-	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end(); it++)
-		if (!(*it)->Update(dt))	return false;
-
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	time_slicer.Start();
+	
+	int counter = 0;
+	while (time_slicer.Read() < ((100000.0f / ((float)App->framerate)) * SQUAD_MAX_FRAMETIME) && counter < all_squads.size())
 	{
-		if ((*it)->isActive)
+		counter++; squad_iterator++;
+		if(squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
+		if (!(*squad_iterator)->Update(dt))							return false;
+	}
+
+	counter = 0;
+	time_slicer.Start();
+	while (time_slicer.Read() < ((1000000.0f / ((float)App->framerate)) * ENITITY_MAX_FRAMETIME) && counter < entities.size())
+	{
+		counter++; entity_iterator++;
+		if (entity_iterator == entities.end()) entity_iterator = entities.begin();
+		if ((*entity_iterator)->isActive)
 		{
-			if (App->render->CullingCam((*it)->position))
+			if (App->render->CullingCam((*entity_iterator)->position))
 			{
-				(*it)->Draw(dt);
-				if (debug) debugDrawEntity(*it);
+				(*entity_iterator)->Draw(dt);
+				if (debug) debugDrawEntity(*entity_iterator);
 			}
-			if (!(*it)->Update(dt))	DeleteEntity(*it);
+			if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
 		}
 	}
 
-	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building)
+
+	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building && App->scene->workerAvalible() && App->entitycontroller->CheckCostBuiding(structure_beingbuilt))
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
 	
 		HandleBuildingResources(structure_beingbuilt);
 		placingBuilding(structure_beingbuilt,position);
+		App->scene->inactive_workers -= 1;
 		if (App->actionscontroller->action_type == structure_beingbuilt)
 			App->actionscontroller->doingAction = false;
 	}
@@ -101,6 +120,9 @@ bool j1EntityController::Update(float dt)
 		structure_beingbuilt = NONE_BUILDING;
 		App->actionscontroller->action_type = NO_ACTION;
 		App->actionscontroller->doingAction = false;
+		App->gui->warningMessages->hideMessage(NO_WORKERS);
+		App->gui->warningMessages->hideMessage(NO_RESOURCES);
+		App->gui->warningMessages->hideMessage(NO_TREES);
 	}
 
 	return true;
@@ -162,6 +184,7 @@ void j1EntityController::DeleteEntity(Entity* entity)
 {
 	entities.remove(entity);
 	selected_entities.remove(entity);
+	App->gui->deleteLifeBar(entity);
 
 	Unit * unit_to_remove = nullptr;
 	switch (entity->entity_type)
@@ -242,14 +265,23 @@ Squad* j1EntityController::AddSquad(unitType type, fPoint position)
 
 void j1EntityController::placingBuilding(buildingType type, iPoint position)
 {
+	iPoint pos;
 
-	iPoint pos = CameraToWorld(position.x, position.y);
+	if (building)
+	{
+		pos = App->render->ScreenToWorld(position.x, position.y);
+	}
+	else
+	{
+		pos = position;// = App->render->ScreenToWorld(position.x, position.y);
+	}
+
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	pos = App->map->MapToWorld(pos.x, pos.y);
 	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y))
 	{
 		addBuilding(pos, type);
-		App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y, true);
+		App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y, true,false);
 		building = false;
 	}
 }
@@ -263,7 +295,17 @@ void j1EntityController::buildingProcessDraw()
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	pos = App->map->MapToWorld(pos.x, pos.y);
 
-	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y) && CheckCostBuiding(structure_beingbuilt))
+	if (!App->scene->workerAvalible())
+		App->gui->warningMessages->showMessage(NO_WORKERS);
+	else
+		App->gui->warningMessages->hideMessage(NO_WORKERS);
+
+	if (!CheckCostBuiding(structure_beingbuilt))
+		App->gui->warningMessages->showMessage(NO_RESOURCES);
+	else
+		App->gui->warningMessages->hideMessage(NO_RESOURCES);
+
+	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y) && CheckCostBuiding(structure_beingbuilt) && App->scene->workerAvalible())
 	{
 		Color green = { 0,255,0,100 };
 		App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
@@ -278,7 +320,14 @@ void j1EntityController::buildingProcessDraw()
 	}
 	if (structure_beingbuilt == 3)
 	{
-		if (!App->map->WalkabilityArea((pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2), (pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2), buildingDB[structure_beingbuilt]->additional_size.x, buildingDB[structure_beingbuilt]->additional_size.y, false, true) && CheckCostBuiding(structure_beingbuilt))
+		bool treesAround = !App->map->WalkabilityArea((pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2), (pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2), buildingDB[structure_beingbuilt]->additional_size.x, buildingDB[structure_beingbuilt]->additional_size.y, false, true);
+		
+		if (!treesAround)
+			App->gui->warningMessages->showMessage(NO_TREES);
+		else
+			App->gui->warningMessages->hideMessage(NO_TREES);
+		
+		if (treesAround && CheckCostBuiding(structure_beingbuilt) && App->scene->workerAvalible())
 		{
 			Color green2 = { 0,255,0,75 };
 			App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height }, green2);

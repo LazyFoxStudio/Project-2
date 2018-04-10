@@ -124,16 +124,16 @@ bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bo
 					break;
 				}
 			}
-			else if(modify)
+			else if(modify && !check_trees)
 			{
 				int tile = (currentMapTile.y*App->map->data.width) + currentMapTile.x;
-				if(!App->pathfinding->map[tile] == INVALID_WALK_CODE)
+				if(App->pathfinding->map[tile] != INVALID_WALK_CODE)
 				{
-					App->pathfinding->map[tile] == INVALID_WALK_CODE;
+					App->pathfinding->map[tile] = INVALID_WALK_CODE;
 				}
-				else
+				else 
 				{
-					App->pathfinding->map[tile] == 0;
+					App->pathfinding->map[tile] = 0;
 				}
 			}
 			else if(check_trees)

@@ -76,6 +76,10 @@ public:
 	std::map<uint, Building*> buildingDB;
 	std::map<uint, Nature*> natureDB;
 
+	j1Timer time_slicer;
+	std::list<Entity*>::iterator entity_iterator;
+	std::list<Squad*>::iterator squad_iterator;
+
 	bool debug = false;
 	bool building = false;
 	int death_time = 0;

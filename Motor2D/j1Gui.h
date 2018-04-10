@@ -26,6 +26,7 @@ class IngameMenu;
 class menu;
 class Entity;
 class CostDisplay;
+class WarningMessages;
 
 enum event_type
 {
@@ -93,6 +94,7 @@ public:
 	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 	IngameMenu* createIngameMenu(pugi::xml_node node, j1Module* callback = nullptr);
 	void createLifeBar(Entity* entity);
+	void deleteLifeBar(Entity* entity);
 	CostDisplay* createCostDisplay(std::string name, int wood_cost = 0, int gold_cost = 0, int oil_cost = 0);
 
 	void createPopUpInfo(UI_element* element, std::string info);
@@ -119,6 +121,7 @@ public:
 	bool clickedOnUI = false;
 	j1PerfTimer hovering_element;
 	UI_element* current_hovering_element = nullptr;
+	WarningMessages* warningMessages = nullptr;
 
 private:
 
@@ -127,6 +130,7 @@ private:
 	std::string atlas_file_name = "";
 	std::string icon_atlas_file_name = "";
 	std::string	buttonFX = "";
+
 	std::list<Image*> Images;
 	std::list<Text*> Texts;
 	std::list<Button*> Buttons;
@@ -134,8 +138,10 @@ private:
 	std::list<ProgressBar*> ProgressBars;
 	std::list<LifeBar*> LifeBars;
 	std::list<Window*> Windows;
+
 	IngameMenu* inGameMenu = nullptr;
 	UI_element* draggingElement = nullptr;
+
 	std::map<unitType, SDL_Rect> unitIconRect;
 	/*std::map<heroType, SDL_Rect> heroIconRect;*/
 	std::map<buildingType, SDL_Rect> buildingIconRect;

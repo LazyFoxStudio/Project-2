@@ -35,14 +35,13 @@ bool j1UIScene::Start()
 
 	LoadUI(guiconfig);
 	
-	//Mouse Position counters
-	Text* text_position_x = (Text*)App->gui->GetElement(TEXT, 0);
-	text_position_x->convertIntoCounter(&x);
 
-	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 1);
-	text_position_y->convertIntoCounter(&y);
+	
 
 	//Set resource counters
+	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 0);
+	text_position_y->convertIntoCounter(&App->scene->inactive_workers);
+
 	Text* gold_display = (Text*)App->gui->GetElement(TEXT, 2);
 	gold_display->convertIntoCounter(&App->scene->workers);
 
@@ -57,8 +56,13 @@ bool j1UIScene::Start()
 
 bool j1UIScene::Update(float dt)
 {
-	App->input->GetMousePosition(x, y);
+	iPoint mouse_test;
+
+	App->input->GetMousePosition(mouse_test.x, mouse_test.y);
+	mouse_test=App->render->ScreenToWorld(mouse_test.x, mouse_test.y);
 	
+	x = mouse_test.x;
+	y = mouse_test.y;
 
 	return true;
 }

@@ -21,6 +21,7 @@
 #include "j1EntityController.h"
 #include "UI_IngameMenu.h"
 #include "UI_CostDisplay.h"
+#include "UI_WarningMessages.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -188,7 +189,8 @@ bool j1Gui::PostUpdate()
 		if (current_hovering_element->costDisplay != nullptr)
 			current_hovering_element->costDisplay->BlitElement();
 	}		
-
+	if (warningMessages != nullptr && warningMessages->active)
+		warningMessages->BlitElement();
 	//Draw Debug
 	if (UI_Debug)
 		UIDebugDraw();
@@ -275,6 +277,8 @@ bool j1Gui::CleanUp()
 		it_l++;
 	}
 	LifeBars.clear();
+
+	RELEASE(warningMessages);
 
 	return true;
 }
@@ -623,6 +627,18 @@ void j1Gui::createLifeBar(Entity* entity)
 	LifeBars.push_back(ret);
 }
 
+void j1Gui::deleteLifeBar(Entity* entity)
+{
+	for (std::list<LifeBar*>::iterator it_l = LifeBars.begin(); it_l != LifeBars.end(); it_l++)
+	{
+		if ((*it_l)->entity == entity)
+		{
+			LifeBars.erase(it_l);
+			RELEASE((*it_l));
+		}
+	}
+}
+
 CostDisplay* j1Gui::createCostDisplay(std::string name, int wood_cost, int gold_cost, int oil_cost)
 {
 	CostDisplay* ret = new CostDisplay(atlas, name, wood_cost, WOOD);
@@ -681,6 +697,12 @@ void j1Gui::LoadDB(pugi::xml_node node)
 		}
 		actionButtons.insert(std::pair<uint, Button*>(id, button));
 	}
+
+	warningMessages = new WarningMessages();
+	warningMessages->active = false;
+	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
+	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
+	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
 }
 
 void j1Gui::AddIconData(unitType type, pugi::xml_node node)
