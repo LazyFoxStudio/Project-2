@@ -38,7 +38,6 @@ bool j1ActionsController::Update(float dt)
 			{
 				App->entitycontroller->structure_beingbuilt = BARRACKS;
 				App->entitycontroller->building = true;
-				App->scene->inactive_workers -= 1;
 			}
 			else if (!App->scene->workerAvalible() || !App->entitycontroller->CheckCostBuiding(BARRACKS))
 			{
@@ -50,7 +49,6 @@ bool j1ActionsController::Update(float dt)
 			{
 				App->entitycontroller->structure_beingbuilt = LUMBER_MILL;
 				App->entitycontroller->building = true;
-				App->scene->inactive_workers -= 1;
 			}
 			else if (!App->scene->workerAvalible() || !App->entitycontroller->CheckCostBuiding(LUMBER_MILL))
 			{
@@ -62,7 +60,6 @@ bool j1ActionsController::Update(float dt)
 			{
 				App->entitycontroller->structure_beingbuilt = FARM;
 				App->entitycontroller->building = true;
-				App->scene->inactive_workers -= 1;
 			}
 			else if (!App->scene->workerAvalible() || !App->entitycontroller->CheckCostBuiding(FARM))
 			{

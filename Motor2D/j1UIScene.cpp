@@ -35,14 +35,13 @@ bool j1UIScene::Start()
 
 	LoadUI(guiconfig);
 	
-	//Mouse Position counters
-	Text* text_position_x = (Text*)App->gui->GetElement(TEXT, 0);
-	text_position_x->convertIntoCounter(&x);
 
-	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 1);
-	text_position_y->convertIntoCounter(&y);
+	
 
 	//Set resource counters
+	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 0);
+	text_position_y->convertIntoCounter(&App->scene->inactive_workers);
+
 	Text* gold_display = (Text*)App->gui->GetElement(TEXT, 2);
 	gold_display->convertIntoCounter(&App->scene->workers);
 

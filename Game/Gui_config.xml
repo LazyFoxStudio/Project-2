@@ -55,27 +55,25 @@ Resolution of the screen: 1680x 1050y
 		<font path="fonts/Old School Adventures.ttf" size="10"/>
 	</fonts>
 	<menu type="2" active="true">
-	<!-- Mouse Position-->
-		<text text="text_position_x" center="false" counter="true">
-			<position x="1500" y="50"/>
-			<font id="1"/>
-			<color r="255" g="255" b="255" a="255"/>
-			<interactive value="false"/>
-		</text>
-		<text text="text_position_y" center="false" counter="true">
-			<position x="1600" y="50"/>
-			<font id="1"/>
-			<color r="255" g="255" b="255" a="255"/>
-			<interactive value="false"/>
-		</text>
-	
 	<!-- Resources Display -->
 		<atlas_image icon_atlas="false">
 			<position x="0" y="0"/>
 			<section x="285" y="332" w="874" h="54"/>
 			<childs>
-				<text text="gold" center="false" counter="true">
+				<text text="inactive_workers" center="false" counter="true">
+					<position x="400" y="10"/>
+					<font id="1"/>
+					<color r="255" g="255" b="255" a="255"/>
+					<interactive value="false"/>
+				</text>
+				<text text="/" center="false" counter="false">
 					<position x="420" y="10"/>
+					<font id="1"/>
+					<color r="255" g="255" b="255" a="255"/>
+					<interactive value="false"/>
+				</text>
+				<text text="toatl_workers" center="false" counter="true">
+					<position x="440" y="10"/>
 					<font id="1"/>
 					<color r="255" g="255" b="255" a="255"/>
 					<interactive value="false"/>
