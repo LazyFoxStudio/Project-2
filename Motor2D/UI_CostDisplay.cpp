@@ -57,7 +57,7 @@ void CostDisplay::BlitElement(bool use_camera)
 	{
 		text_cost->setColor({ 255, 0, 0,255 }); //red
 	}
-	else if (display_cost < App->scene->wood)
+	else if (display_cost <= App->scene->wood)
 	{
 		text_cost->setColor({ 0, 255, 0,255 }); //green
 	}

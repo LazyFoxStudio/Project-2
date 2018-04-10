@@ -98,6 +98,7 @@ bool j1EntityController::Update(float dt)
 	
 		HandleBuildingResources(structure_beingbuilt);
 		placingBuilding(structure_beingbuilt,position);
+		App->scene->inactive_workers -= 1;
 		if (App->actionscontroller->action_type == structure_beingbuilt)
 			App->actionscontroller->doingAction = false;
 	}
@@ -179,6 +180,7 @@ void j1EntityController::DeleteEntity(Entity* entity)
 {
 	entities.remove(entity);
 	selected_entities.remove(entity);
+	App->gui->deleteLifeBar(entity);
 
 	Unit * unit_to_remove = nullptr;
 	switch (entity->entity_type)

@@ -93,6 +93,7 @@ public:
 	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 	IngameMenu* createIngameMenu(pugi::xml_node node, j1Module* callback = nullptr);
 	void createLifeBar(Entity* entity);
+	void deleteLifeBar(Entity* entity);
 	CostDisplay* createCostDisplay(std::string name, int wood_cost = 0, int gold_cost = 0, int oil_cost = 0);
 
 	void createPopUpInfo(UI_element* element, std::string info);
