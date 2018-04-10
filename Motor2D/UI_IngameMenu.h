@@ -9,12 +9,17 @@ class Image;
 class LifeBar;
 class Button;
 class Text;
+class Entity;
 
-struct squadTroopIcon
+struct TroopIcon
 {
-	Image* image;
-	const int* HP = nullptr;
-	const uint* max_HP = nullptr;
+	Image* image = nullptr;
+	const Entity* entity = nullptr;
+
+	~TroopIcon()
+	{
+		RELEASE(image);
+	}
 };
 
 class IngameMenu : public UI_element
@@ -39,6 +44,11 @@ public:
 	void updateSquadIcons();
 	void cleanLists(bool icons = true, bool squadIcons = true, bool lifeBars = true, bool statsTitles = true, bool statsNumbers = true, bool buttons = true);
 
+	void deleteMenuTroop(Entity* entity);
+	void deleteTroopIcon(Entity* entity, std::list<TroopIcon*>& list);
+
+	void OrderSelectionIcons();
+
 	void BlitElement(bool use_camera = false);
 
 	UI_element* getMouseHoveringElement();
@@ -55,8 +65,8 @@ public:
 	iPoint stats_pos = { 0,0};
 	iPoint firstButton_pos = { 0,0 };
 	iPoint buttons_offset = { 0,0 };
-	std::list<Image*> troopsIcons; //Being created/destroyed
-	std::list<squadTroopIcon*> squadTroopsIcons; //Being created/destroyed
+	std::list<TroopIcon*> troopsIcons; //Being created/destroyed
+	std::list<TroopIcon*> squadTroopsIcons; //Being created/destroyed
 	std::list<LifeBar*> lifeBars; //Being created/destroyed
 	std::list<Text*> statsTitles; //Constant but inactive
 	Text* title = nullptr; //Constant but inactive

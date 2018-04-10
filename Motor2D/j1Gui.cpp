@@ -627,16 +627,28 @@ void j1Gui::createLifeBar(Entity* entity)
 	LifeBars.push_back(ret);
 }
 
-void j1Gui::deleteLifeBar(Entity* entity)
+void j1Gui::deleteLifeBar(Entity* entity, std::list<LifeBar*>& list)
 {
-	for (std::list<LifeBar*>::iterator it_l = LifeBars.begin(); it_l != LifeBars.end(); it_l++)
+	std::list<LifeBar*>::iterator it_l = list.begin();
+	while (it_l != list.end())
 	{
 		if ((*it_l)->entity == entity)
 		{
-			LifeBars.erase(it_l);
+			list.erase(it_l);
 			RELEASE((*it_l));
+			break;
 		}
+		it_l++;
 	}
+}
+
+void j1Gui::entityDeleted(Entity* entity)
+{
+	//Delete in-game life bar
+	deleteLifeBar(entity, LifeBars);
+
+	//Delete information from the in-game menu
+	inGameMenu->deleteMenuTroop(entity);
 }
 
 CostDisplay* j1Gui::createCostDisplay(std::string name, int wood_cost, int gold_cost, int oil_cost)
