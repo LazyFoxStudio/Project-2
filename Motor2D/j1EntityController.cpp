@@ -507,9 +507,9 @@ void j1EntityController::selectionControl()
 	}
 }
 
-Unit* j1EntityController::getNearestEnemyUnit(fPoint position, bool isEnemy)
+Entity* j1EntityController::getNearestEnemy(fPoint position, bool isEnemy)
 {
-	Unit* ret = nullptr;
+	Entity* ret = nullptr;
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
 		if ((*it)->entity_type == UNIT)
@@ -520,6 +520,11 @@ Unit* j1EntityController::getNearestEnemyUnit(fPoint position, bool isEnemy)
 				if (!ret) { ret = enemy; continue; }
 				else if (enemy->position.DistanceTo(position) < ret->position.DistanceTo(position)) ret = enemy;
 			}
+		}
+		else if ((*it)->entity_type == BUILDING && isEnemy)
+		{
+			if (!ret) { ret = (*it); continue; }
+			else if ((*it)->position.DistanceTo(position) < ret->position.DistanceTo(position)) ret = (*it);
 		}
 	}
 	return ret;

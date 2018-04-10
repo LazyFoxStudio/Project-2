@@ -57,7 +57,7 @@ public:
 	Entity* CheckMouseHover(iPoint mouse_world);
 
 	std::vector<Entity*> CheckCollidingWith(SDL_Rect collider, Entity* entity_to_ignore = nullptr);
-	Unit* getNearestEnemyUnit(fPoint position, bool isEnemy);
+	Entity* getNearestEnemy(fPoint position, bool isEnemy);
 
 	iPoint CameraToWorld(int x, int y);
 

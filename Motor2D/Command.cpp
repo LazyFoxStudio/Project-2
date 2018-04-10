@@ -82,19 +82,31 @@ bool Attack::OnUpdate(float dt)
 		return true;
 	}
 
-	Unit* enemy = App->entitycontroller->getNearestEnemyUnit(unit->position, unit->IsEnemy());
+	Entity* enemy = App->entitycontroller->getNearestEnemy(unit->position, unit->IsEnemy());
 	if(!enemy) { Stop(); return true; }
 
 	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
-	if (enemy->position.DistanceTo(unit->position) < unit->range)
+	if (enemy->position.DistanceTo(unit->position) - enemy->collider.w < unit->range)
 	{
 		if (type == ATTACKING_MOVETO) 
 			{ type = ATTACK; timer.Start(); }
 		else if (timer.ReadSec() > 0.5f)
 		{ 
-			enemy->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy->defense, 0));
-			if (enemy->squad->commands.empty() ? true : enemy->squad->commands.front()->type != ATTACKING_MOVETO_SQUAD)
-				enemy->squad->commands.push_back(new AttackingMoveToSquad(enemy, map_p));
+			Unit* enemy_unit = (Unit*)enemy;
+			Building* enemy_building = (Building*)enemy;
+			switch (enemy->entity_type)
+			{
+			case UNIT:
+				enemy_unit = (Unit*)enemy;
+				enemy_unit->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy_unit->defense, 0));
+				if (enemy_unit->squad->commands.empty() ? true : enemy_unit->squad->commands.front()->type != ATTACKING_MOVETO_SQUAD)
+					enemy_unit->squad->commands.push_back(new AttackingMoveToSquad(enemy_unit, map_p));
+				break;
+
+			case BUILDING:
+				enemy_building = (Building*)enemy;
+				enemy_building->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy_building->defense, 0));
+			}
 			timer.Start();
 		}
 
