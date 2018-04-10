@@ -1212,15 +1212,15 @@
 		</buildFarm>
 		<unassignWorker id="8" function="18">
 			<position x="1399" y="809"/>
-			<standby x="1305" y="507" w="66" h="66"/>
-			<OnMouse x="1373" y="507" w="66" h="66"/>
-			<OnClick x="1441" y="507" w="66" h="66"/>
+			<standby x="576" y="704" w="82" h="82"/>
+			<OnMouse x="672" y="704" w="82" h="82"/>
+			<OnClick x="770" y="704" w="82" h="82"/>
 		</unassignWorker>
 		<assignWorker id="9" function="19 ">
 			<position x="1717" y="889"/>
-			<standby x="1305" y="577" w="66" h="66"/>
-			<OnMouse x="1373" y="577" w="66" h="66"/>
-			<OnClick x="1441" y="577" w="66" h="66"/>
+			<standby x="285" y="704" w="82" h="82"/>
+			<OnMouse x="384" y="704" w="82" h="82"/>
+			<OnClick x="481" y="704" w="82" h="82"/>
 		</assignWorker>
 		<action8 id="11">
 			<position x="1480" y="969"/>
