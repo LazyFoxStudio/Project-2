@@ -69,8 +69,14 @@ bool j1Scene::Update(float dt)
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
 
-
-
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT)
+	{
+		App->audio->PlayFx(listOfSFX::PEASANT_READY);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_REPEAT)
+	{
+		App->audio->PlayFx(listOfSFX::PEASANT_FOLLOW_ORDERS);
+	}
 	return true;
 }
 

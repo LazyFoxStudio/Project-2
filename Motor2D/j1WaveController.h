@@ -4,7 +4,9 @@
 #include "j1Timer.h"
 #include <list>
 #include "p2Point.h"
+
 class Squad;
+class FlowField;
 
 class j1WaveController :
 	public j1Module
@@ -28,7 +30,7 @@ public:
 
 public:
 
-	//FlowField*			flow_field = nullptr;
+	FlowField*			flow_field = nullptr;
 
 	int					initial_wait = 0;
 	int					wait_between_waves = 0;

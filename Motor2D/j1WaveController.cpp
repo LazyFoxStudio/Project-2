@@ -37,11 +37,21 @@ bool j1WaveController::Awake(pugi::xml_node &config)
 
 bool j1WaveController::Start()
 {
-	TownHall_pos = App->map->WorldToMap( 2200,2000);
+	bool ret = true;
+
+	TownHall_pos = App->map->WorldToMap(2200, 2000);
+	iPoint map_org = App->map->WorldToMap(TownHall_pos.x+64, TownHall_pos.y);
+	iPoint map_dest = App->map->WorldToMap(TownHall_pos.x,TownHall_pos.y);
+	flow_field=App->pathfinding->CreateFlowField(map_org, map_dest);
 	
 	wave_timer.Start();
 
-	return true;
+	if (flow_field == nullptr)
+	{
+		ret = false;
+	}
+
+	return ret;
 }
 
 bool j1WaveController::Update(float dt)
@@ -151,7 +161,10 @@ void j1WaveController::GenerateWave()
 
 	for (std::list<Squad*>::iterator it = wave.begin(); it != wave.end(); it++)
 	{
-		(*it)->commands.push_back(new AttackingMoveToSquad((*it)->commander, TownHall_pos));
+		//(*it)->commands.push_back(new AttackingMoveToSquad((*it)->commander, TownHall_pos));
+		AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad((*it)->commander, TownHall_pos);
+		new_atk_order->flow_field = flow_field;
+		(*it)->commands.push_back(new_atk_order);
 	}
 
 	LOG("Hola");
