@@ -10,7 +10,7 @@
 #include "Skills.h"
 
 #define COLLIDER_MARGIN 25  // extra margin for separation calculations  // 10 ~ 30//
-#define MAX_NEXT_STEP_MODULE 20   // max value for the next_step vector, for steering calculations  // 10 ~ 50//
+#define MAX_NEXT_STEP_MODULE 20.0f   // max value for the next_step vector, for steering calculations  // 10 ~ 50//
 
 #define SEPARATION_STRENGTH 2.0f   // the higher the stronger   // 1.0f ~ 10.0f//
 #define SPEED_CONSTANT 100   // applied to all units            // 60 ~ 140 //
@@ -101,7 +101,11 @@ void Unit::Move(float dt)
 		if (squad)	position += (next_step.Normalized() * squad->max_speed * dt * SPEED_CONSTANT);
 		else		position += (next_step.Normalized() * speed * dt * SPEED_CONSTANT);
 
-		if (!App->pathfinding->IsWalkable(App->map->WorldToMap(position.x, position.y))) { position = last_pos; next_step.SetToZero(); }
+		if (!App->pathfinding->IsWalkable(App->map->WorldToMap(position.x, position.y))) 
+		{ 
+			position = last_pos; 
+			next_step = next_step.Negate().Normalized() * (MAX_NEXT_STEP_MODULE * 0.25f);
+		}
 		else
 		{
 			collider.x = position.x - (collider.w / 2);

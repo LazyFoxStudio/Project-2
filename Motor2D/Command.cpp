@@ -93,8 +93,8 @@ bool Attack::OnUpdate(float dt)
 		else if (timer.ReadSec() > 0.5f)
 		{ 
 			enemy->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy->defense, 0));
-			if (enemy->squad->commands.empty() ? true : enemy->squad->commands.front()->type != ATTACKING_MOVETO_SQUAD)
-				enemy->squad->commands.push_back(new AttackingMoveToSquad(enemy, map_p));
+			/*if (enemy->squad->commands.empty() ? true : enemy->squad->commands.front()->type != ATTACKING_MOVETO_SQUAD)
+				enemy->squad->commands.push_back(new AttackingMoveToSquad(enemy, map_p));*/
 			timer.Start();
 		}
 
