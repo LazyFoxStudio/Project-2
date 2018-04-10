@@ -78,25 +78,31 @@ bool Attack::OnUpdate(float dt)
 		for (std::list<fPoint>::iterator it = enemy_positions->begin(); it != enemy_positions->end(); it++)
 			if ((*it).DistanceTo(unit->position) < current_target.DistanceTo(unit->position)) 
 				current_target = (*it);
+
+		return true;
 	}
 
 	Unit* enemy = App->entitycontroller->getNearestEnemyUnit(unit->position, unit->IsEnemy());
 	if(!enemy) { Stop(); return true; }
 
+	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 	if (enemy->position.DistanceTo(unit->position) < unit->range)
 	{
 		if (type == ATTACKING_MOVETO) 
 			{ type = ATTACK; timer.Start(); }
 		else if (timer.ReadSec() > 0.5f)
-			{ enemy->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy->defense, 0)); timer.Start();}
+		{ 
+			enemy->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy->defense, 0));
+			if (enemy->squad->commands.empty() ? true : enemy->squad->commands.front()->type != ATTACKING_MOVETO_SQUAD)
+				enemy->squad->commands.push_back(new AttackingMoveToSquad(enemy, map_p));
+			timer.Start();
+		}
 
 		unit->next_step = { 0,0 };
 		return true;
 	}
 	else if (current_target.DistanceTo(unit->position) > unit->range)
 	{
-		map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
-
 		if (!flow_field->getNodeAt(map_p)->parent)
 		{
 			iPoint target_map_p = App->map->WorldToMap(current_target.x, current_target.y);
