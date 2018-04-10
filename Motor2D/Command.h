@@ -66,7 +66,6 @@ public:
 
 	iPoint map_p = { 0,0 };
 	fPoint current_target = { 0.0f, 0.0f };
-	bool attacking = false;
 
 	j1Timer timer;
 	FlowField* flow_field = nullptr;

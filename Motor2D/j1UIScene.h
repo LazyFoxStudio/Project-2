@@ -48,7 +48,8 @@ public:
 public:
 
 	std::list<menu*> menus;
-	int x, y;
+	int x = 0;
+	int y = 0;
 };
 
 #endif
