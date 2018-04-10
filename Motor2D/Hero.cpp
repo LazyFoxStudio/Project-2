@@ -15,12 +15,6 @@ Hero::~Hero()
 
 bool Hero::Update(float dt)
 {
-	//if (type ==MAGE)
-	//{
-	//	//blit hero sprites
-	//	App->render->DrawQuad({ (int)position.x,(int)position.y,26,36 }, Blue, true);
-	//}
-
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)			current_skill != 1 ? current_skill = 1 : current_skill = 0;
 	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)	current_skill != 2 ? current_skill = 2 : current_skill = 0;
 	else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)	current_skill != 3 ? current_skill = 3 : current_skill = 0;
