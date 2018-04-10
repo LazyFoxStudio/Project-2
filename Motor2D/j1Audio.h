@@ -36,6 +36,8 @@ public:
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
 
+	void LoadFXFromXML();
+
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0, uint volume = 128);
 
@@ -57,4 +59,10 @@ public:
 	std::string			sfx_folder;
 };
 
+enum listOfSFX
+{
+	NO_FX,
+	PEASANT_READY,
+	PEASANT_FOLLOW_ORDERS,
+};
 #endif // __j1AUDIO_H__
