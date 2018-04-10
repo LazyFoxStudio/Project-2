@@ -96,7 +96,8 @@ bool j1EntityController::Update(float dt)
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
-	
+
+		App->gui->warningMessages->hideMessage(NO_TREES);
 		HandleBuildingResources(structure_beingbuilt);
 		placingBuilding(structure_beingbuilt,position);
 		App->scene->inactive_workers -= 1;
