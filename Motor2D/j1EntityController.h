@@ -45,7 +45,7 @@ public:
 	void commandControl();
 	entityType getSelectedType();
 
-	void placingBuilding(buildingType type, iPoint position);
+	bool placingBuilding(buildingType type, iPoint position);
 	void buildingProcessDraw();
 
 	void HandleWorkerAssignment(bool to_assign, Building* building);

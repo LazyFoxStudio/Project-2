@@ -105,13 +105,15 @@ bool j1EntityController::Update(float dt)
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
+		if (placingBuilding(structure_beingbuilt, position))
+		{
+			App->gui->warningMessages->hideMessage(NO_TREES);
+			HandleBuildingResources(structure_beingbuilt);
 
-		App->gui->warningMessages->hideMessage(NO_TREES);
-		HandleBuildingResources(structure_beingbuilt);
-		placingBuilding(structure_beingbuilt,position);
-		App->scene->inactive_workers -= 1;
-		if (App->actionscontroller->action_type == structure_beingbuilt)
-			App->actionscontroller->doingAction = false;
+			App->scene->inactive_workers -= 1;
+			if (App->actionscontroller->action_type == structure_beingbuilt)
+				App->actionscontroller->doingAction = false;
+		}
 	}
 
 	if (building)
@@ -273,10 +275,10 @@ Squad* j1EntityController::AddSquad(unitType type, fPoint position)
 	return new_squad;
 }
 
-void j1EntityController::placingBuilding(buildingType type, iPoint position)
+bool j1EntityController::placingBuilding(buildingType type, iPoint position)
 {
 	iPoint pos;
-
+	bool ret = false;
 	if (building)
 	{
 		pos = App->render->ScreenToWorld(position.x, position.y);
@@ -288,12 +290,17 @@ void j1EntityController::placingBuilding(buildingType type, iPoint position)
 
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	pos = App->map->MapToWorld(pos.x, pos.y);
-	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y))
+	SDL_Rect building_col = { pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width, buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height };
+
+	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y) && App->entitycontroller->CheckCollidingWith(building_col).empty())
 	{
 		addBuilding(pos, type);
 		App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y, true,false);
 		building = false;
+		ret = true;
 	}
+
+	return ret;
 }
 
 void j1EntityController::buildingProcessDraw()
