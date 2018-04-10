@@ -187,6 +187,7 @@ void Unit::animationController()
 				new_animation = ATK_NW;
 				break;
 			}
+			break;
 		}
 	}
 	else 
