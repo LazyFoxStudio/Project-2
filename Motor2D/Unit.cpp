@@ -12,9 +12,9 @@
 #define COLLIDER_MARGIN 25  // extra margin for separation calculations  // 10 ~ 30//
 #define MAX_NEXT_STEP_MODULE 20.0f   // max value for the next_step vector, for steering calculations  // 10 ~ 50//
 
-#define SEPARATION_STRENGTH 2.0f   // the higher the stronger   // 1.0f ~ 10.0f//
+#define SEPARATION_STRENGTH 1.25f   // the higher the stronger   // 1.0f ~ 10.0f//
 #define SPEED_CONSTANT 100   // applied to all units            // 60 ~ 140 //
-#define STOP_TRESHOLD 0.75f										// 0.5f ~ 1.5f//
+#define STOP_TRESHOLD 0.6f										// 0.5f ~ 1.5f//
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
