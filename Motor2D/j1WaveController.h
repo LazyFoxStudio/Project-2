@@ -25,17 +25,24 @@ public:
 	int CalculateWaveScore();
 
 	void GenerateWave();
-private:
+
 public:
 
-	int initial_wait = 0;
-	int wait_between_waves = 0;
-	int current_wave = 0;
-	j1Timer wave_timer;
-	std::list<Squad*> wave;
-	fPoint spawn_1;
-	fPoint spawn_2;
-	fPoint spawn_3;
-	fPoint spawn_4;
-};
+	//FlowField*			flow_field = nullptr;
+
+	int					initial_wait = 0;
+	int					wait_between_waves = 0;
+	int					current_wave = 0;
+	
+	j1Timer				wave_timer;
+	
+	std::list<Squad*>	wave;
+
+	iPoint TownHall_pos = { 2200,2000 };
+	
+	fPoint				spawn_1 = { 0.0f,0.0f };
+	fPoint				spawn_2= { 0.0f,0.0f };
+	fPoint				spawn_3= { 0.0f,0.0f };
+	fPoint				spawn_4= { 0.0f,0.0f };
+};	
 #endif
