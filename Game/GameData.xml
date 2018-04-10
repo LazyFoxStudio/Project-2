@@ -1056,6 +1056,8 @@
       <sprites>
          <sprite x="306" y="633" w="101" h="109"/>
         <sprite x="306" y="523" w="101" h="109"/>
+        <sprite x="0" y="633" w="101" h="109" />
+        <sprite x="545" y="71" w="101" h="109" /> 
       </sprites>
       <Stats>
         <life value="100"/>
