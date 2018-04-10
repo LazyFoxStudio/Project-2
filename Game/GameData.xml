@@ -475,7 +475,7 @@
                 <StartingColumn value="2"/>
                 <speed value="10"/>
               </Animation>
-              <Animation>  <!--15- Walking NorthWest-->
+              <Animation> <!--15- Walking NorthWest-->
                 <width value="59"/>
                 <height value="73"/>
                 <rows value="3"/>
@@ -484,69 +484,114 @@
                 <StartingColumn value="1"/>
                 <speed value="10"/>
               </Animation>
-             <AttackingNorth>
+              <Animation> <!-- 16- AttackingNorth-->
                 <width value="59"/>
                 <height value="73"/>
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="0"/>
-                <speed value="0.5"/>
-              </AttackingNorth>
-             <AttackingNorthEast>
-                <width value="26"/>
-                <height value="36"/>
+                <speed value="5"/>
+              </Animation>
+              <Animation> <!-- 17- AttackingNorthEast-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="1"/>
-                <speed value="0.5"/>
-              </AttackingNorthEast>
-             <AttackingEast>
-                <width value="26"/>
-                <height value="36"/>
+                <speed value="5"/>
+              </Animation>
+              <Animation> <!-- 18- AttackingEast-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="2"/>
-                <speed value="0.5"/>
-              </AttackingEast>
-             <AttackingSouthEast>
-                <width value="26"/>
-                <height value="36"/>
+                <speed value="5"/>
+              </Animation>
+              <Animation> <!-- 19- AttackingSouthEast-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="3"/>
-                <speed value="0.5"/>
-              </AttackingSouthEast>
-             <AttackingSouth>
-                <width value="26"/>
-                <height value="36"/>
+                <speed value="5"/>
+              </Animation>
+              <Animation> <!-- 20- AttackingSouth-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="4"/>
-                <speed value="0.5"/>
-              </AttackingSouth>
-             <Dying1>
-                <width value="26"/>
-                <height value="36"/>
+                <speed value="5"/>
+              </Animation>
+              <Animation> <!-- 21- AttackingSouthWest-->
+                <width value="59"/>
+                <height value="73"/>
+                <rows value="1"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="3"/>
+                <speed value="5"/>
+              </Animation>
+              <Animation> <!-- 22- AttackingWest-->
+                <width value="59"/>
+                <height value="73"/>
+                <rows value="1"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="2"/>
+                <speed value="5"/>
+              </Animation>
+              <Animation> <!-- 23- AttackingNorthWest-->
+                <width value="59"/>
+                <height value="73"/>
+                <rows value="1"/>
+                <columns value="0"/>
+                <StartingRow value="5"/>
+                <StartingColumn value="1"/>
+                <speed value="5"/>
+              </Animation>
+              <Animation> <!-- 24- DyingNorthEast-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="0"/>
                 <columns value="2"/>
-                <StartingRow value="7"/>
+                <StartingRow value="9"/>
                 <StartingColumn value="0"/>
-                <speed value="0.5"/>
-              </Dying1>
-              <Dying2>
-                <width value="26"/>
-                <height value="36"/>
+                <speed value="5"/>
+              </Animation>
+              <Animation> <!-- 25- DyingSouthEast-->
+                <width value="59"/>
+                <height value="73"/>
                 <rows value="0"/>
                 <columns value="2"/>
-                <StartingRow value="8"/>
+                <StartingRow value="10"/>
                 <StartingColumn value="0"/>
-                <speed value="0.5"/>
-              </Dying2>
+                <speed value="10"/>
+              </Animation>
+              <Animation> <!-- 26- DyingSouthWest-->
+                <width value="59"/>
+                <height value="73"/>
+                <rows value="0"/>
+                <columns value="2"/>
+                <StartingRow value="10"/>
+                <StartingColumn value="0"/>
+                <speed value="10"/>
+              </Animation>
+              <Animation> <!-- 27- DyingNorthWest-->
+                <width value="59"/>
+                <height value="73"/>
+                <rows value="0"/>
+                <columns value="2"/>
+                <StartingRow value="9"/>
+                <StartingColumn value="0"/>
+                <speed value="10"/>
+              </Animation>
             </Animations>
 			<Actions>
 				<action1 id="1"/>
@@ -984,69 +1029,114 @@
               <StartingColumn value="1"/>
               <speed value="10"/>
             </Animation>
-             <AttackingNorth>
-                <width value="62"/>
-                <height value="59"/>
-                <rows value="3"/>
-                <columns value="0"/>
-                <StartingRow value="5"/>
-                <StartingColumn value="0"/>
-                <speed value="0.5"/>
-              </AttackingNorth>
-             <AttackingNorthEast>
-               <width value="59"/>
-                <height value="57"/>
-                <rows value="3"/>
-                <columns value="0"/>
-                <StartingRow value="5"/>
-                <StartingColumn value="1"/>
-                <speed value="0.5"/>
-              </AttackingNorthEast>
-             <AttackingEast>
-                <width value="59"/>
-                <height value="57"/>
-                <rows value="3"/>
-                <columns value="0"/>
-                <StartingRow value="5"/>
-                <StartingColumn value="2"/>
-                <speed value="0.5"/>
-              </AttackingEast>
-             <AttackingSouthEast>
-                <width value="59"/>
-                <height value="57"/>
-                <rows value="3"/>
-                <columns value="0"/>
-                <StartingRow value="5"/>
-                <StartingColumn value="3"/>
-                <speed value="0.5"/>
-              </AttackingSouthEast>
-             <AttackingSouth>
-                <width value="59"/>
-                <height value="57"/>
-                <rows value="3"/>
-                <columns value="0"/>
-                <StartingRow value="5"/>
-                <StartingColumn value="4"/>
-                <speed value="0.5"/>
-              </AttackingSouth>
-             <Dying1>
-                <width value="59"/>
-                <height value="57"/>
-                <rows value="0"/>
-                <columns value="2"/>
-                <StartingRow value="9"/>
-                <StartingColumn value="0"/>
-                <speed value="0.5"/>
-              </Dying1>
-         <Dying2>
-                <width value="59"/>
-                <height value="57"/>
-                <rows value="0"/>
-                <columns value="2"/>
-                <StartingRow value="10"/>
-                <StartingColumn value="0"/>
-                <speed value="0.5"/>
-              </Dying2>
+            <Animation> <!-- 16- AttackingNorth-->
+              <width value="59"/>
+              <height value="57"/>
+              <rows value="3"/>
+              <columns value="0"/>
+              <StartingRow value="5"/>
+              <StartingColumn value="0"/>
+              <speed value="10"/>
+            </Animation>
+            <Animation> <!-- 17- AttackingNorthEast-->
+              <width value="59"/>
+              <height value="57"/>
+              <rows value="3"/>
+              <columns value="0"/>
+              <StartingRow value="5"/>
+              <StartingColumn value="1"/>
+              <speed value="10"/>
+            </Animation>
+            <Animation> <!-- 18- AttackingEast-->
+              <width value="59"/>
+              <height value="57"/>
+              <rows value="3"/>
+              <columns value="0"/>
+              <StartingRow value="5"/>
+              <StartingColumn value="2"/>
+              <speed value="10"/>
+            </Animation>
+            <Animation> <!-- 19- AttackingSouthEast-->
+              <width value="59"/>
+              <height value="57"/>
+              <rows value="3"/>
+              <columns value="0"/>
+              <StartingRow value="5"/>
+              <StartingColumn value="3"/>
+              <speed value="10"/>
+            </Animation>
+            <Animation> <!-- 20- AttackingSouth-->
+              <width value="59"/>
+              <height value="57"/>
+              <rows value="3"/>
+              <columns value="0"/>
+              <StartingRow value="5"/>
+              <StartingColumn value="4"/>
+              <speed value="10"/>
+            </Animation>
+            <Animation> <!-- 21- AttackingSouthWest-->
+              <width value="59"/>
+              <height value="57"/>
+              <rows value="3"/>
+              <columns value="0"/>
+              <StartingRow value="5"/>
+              <StartingColumn value="3"/>
+              <speed value="10"/>
+            </Animation>
+            <Animation> <!-- 22- AttackingWest-->
+              <width value="59"/>
+              <height value="57"/>
+              <rows value="3"/>
+              <columns value="0"/>
+              <StartingRow value="5"/>
+              <StartingColumn value="2"/>
+              <speed value="10"/>
+            </Animation>
+            <Animation> <!-- 23- WalkingNorthWest-->
+              <width value="59"/>
+              <height value="57"/>
+              <rows value="3"/>
+              <columns value="0"/>
+              <StartingRow value="5"/>
+              <StartingColumn value="1"/>
+              <speed value="10"/>
+            </Animation>
+            <Animation> <!-- 24- DyingNorthEast-->
+              <width value="59"/>
+              <height value="57"/>
+              <rows value="0"/>
+              <columns value="2"/>
+              <StartingRow value="9"/>
+              <StartingColumn value="0"/>
+              <speed value="10"/>
+            </Animation>
+            <Animation> <!-- 25- DyingSouthEast-->
+              <width value="59"/>
+              <height value="57"/>
+              <rows value="0"/>
+              <columns value="2"/>
+              <StartingRow value="10"/>
+              <StartingColumn value="0"/>
+              <speed value="10"/>
+            </Animation>
+            <Animation> <!-- 26- DyingSouthWest-->
+              <width value="59"/>
+              <height value="57"/>
+              <rows value="0"/>
+              <columns value="2"/>
+              <StartingRow value="10"/>
+              <StartingColumn value="0"/>
+              <speed value="10"/>
+            </Animation>
+            <Animation> <!-- 27- DyingNorthWest-->
+              <width value="59"/>
+              <height value="57"/>
+              <rows value="0"/>
+              <columns value="2"/>
+              <StartingRow value="9"/>
+              <StartingColumn value="0"/>
+              <speed value="10"/>
+            </Animation>
         </Animations>
       </Unit>
     </Units>
