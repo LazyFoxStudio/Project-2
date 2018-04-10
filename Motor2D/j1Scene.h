@@ -3,6 +3,8 @@
 
 #include "j1Module.h"
 #include "j1Timer.h"
+//minimap_
+#include "Minimap.h"
 
 struct SDL_Texture;
 class Window;
@@ -47,6 +49,10 @@ public:
 	int inactive_workers = 0;
 	int town_hall_lvl = 0;
 	UI_element* pollas;
+	
+	//minimap_
+	Minimap* minimap;
+
 };
 
 #endif // __j1SCENE_H__

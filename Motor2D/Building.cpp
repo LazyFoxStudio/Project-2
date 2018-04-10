@@ -47,6 +47,17 @@ void Building::GetColliderFromSize()
 
 bool Building::Update(float dt)
 {
+	//minimap_
+	if (App->scene->minimap != nullptr) 
+	{
+		SDL_Color color;
+		color.r = 0;
+		color.b = 255;
+		color.g = 0;
+		color.a = 255;
+		App->scene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, color);
+	}
+
 	if (being_built)
 	{
 		HandleConstruction();

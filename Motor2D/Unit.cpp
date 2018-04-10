@@ -9,6 +9,9 @@
 #include "j1EntityController.h"
 #include "Skills.h"
 
+//minimap_
+#include "j1Scene.h"
+
 #define COLLIDER_MARGIN 25  // extra margin for separation calculations  // 10 ~ 30//
 #define MAX_NEXT_STEP_MODULE 20.0f   // max value for the next_step vector, for steering calculations  // 10 ~ 50//
 
@@ -78,7 +81,28 @@ bool Unit::Update(float dt)
 		commands.front()->Execute(dt);
 		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
-	
+
+	//minimap_
+	if (App->scene->minimap != nullptr)
+	{
+		SDL_Color color;
+		color.a = 255;
+		if (type < ALLY_X)
+		{
+			color.r = 0;
+			color.b = 255;
+			color.g = 0;
+		}
+		else
+		{
+			color.r = 255;
+			color.b = 0;
+			color.g = 0;
+		}
+		App->scene->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, color);
+	}
+
+
 	Move(dt);
 	animationController();
 

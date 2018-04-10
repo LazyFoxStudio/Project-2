@@ -4,6 +4,8 @@
 #include "Color.h"
 #include "Command.h"
 
+#include "j1Scene.h"
+
 Hero::Hero(iPoint pos, Hero& hero)
 {
 	
@@ -50,6 +52,18 @@ bool Hero::Update(float dt)
 	}
 
 	Move(dt);
+
+	//minimap_
+	if (App->scene->minimap != nullptr)
+	{
+		SDL_Color color;
+		color.r = 255;
+		color.b = 255;
+		color.g = 255;
+		color.a = 255;
+		App->scene->minimap->Addpoint({ (int)position.x,(int)position.y,75,75 }, color);
+	}
+
 
 	return true;
 }

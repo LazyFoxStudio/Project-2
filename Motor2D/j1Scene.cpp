@@ -54,6 +54,9 @@ bool j1Scene::Start()
 	App->render->camera.x = -1200;
 	App->render->camera.y = -1600;
 
+	//minimap_
+	minimap = new Minimap("Assets/Sprites/Minimap Sprites/minimap_base.png",6,800,4096,4096);
+
 	return true;
 }
 
@@ -69,7 +72,18 @@ bool j1Scene::Update(float dt)
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
 
+	//minimap_
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		int camx, camy;
+		minimap->Mouse_to_map(camx, camy);
 
+		if (camx != -1 && camy != -1)
+		{
+			App->render->camera.y = -camy + App->win->height / 2;
+			App->render->camera.x = -camx + App->win->width / 2;
+		}
+	}
 
 	return true;
 }
@@ -77,7 +91,7 @@ bool j1Scene::Update(float dt)
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
-
+	minimap->DrawMinimap();
 	return true;
 }
 
