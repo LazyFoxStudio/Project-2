@@ -117,6 +117,7 @@
     <ClCompile Include="UI_LifeBar.cpp" />
     <ClCompile Include="UI_ProgressBar.cpp" />
     <ClCompile Include="UI_Text.cpp" />
+    <ClCompile Include="UI_WarningMessages.cpp" />
     <ClCompile Include="UI_Window.cpp" />
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="UI_LifeBar.h" />
     <ClInclude Include="UI_ProgressBar.h" />
     <ClInclude Include="UI_Text.h" />
+    <ClInclude Include="UI_WarningMessages.h" />
     <ClInclude Include="UI_Window.h" />
     <ClInclude Include="Unit.h" />
   </ItemGroup>

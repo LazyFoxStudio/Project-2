@@ -15,6 +15,7 @@
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 #include "j1ActionsController.h"
+#include "UI_WarningMessages.h"
 
 #define SQUAD_MAX_FRAMETIME 0.2f
 #define ENITITY_MAX_FRAMETIME 0.3f
@@ -91,7 +92,7 @@ bool j1EntityController::Update(float dt)
 	}
 
 
-	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building)
+	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building && App->scene->workerAvalible() && App->entitycontroller->CheckCostBuiding(structure_beingbuilt))
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
@@ -119,6 +120,9 @@ bool j1EntityController::Update(float dt)
 		structure_beingbuilt = NONE_BUILDING;
 		App->actionscontroller->action_type = NO_ACTION;
 		App->actionscontroller->doingAction = false;
+		App->gui->warningMessages->hideMessage(NO_WORKERS);
+		App->gui->warningMessages->hideMessage(NO_RESOURCES);
+		App->gui->warningMessages->hideMessage(NO_TREES);
 	}
 
 	return true;
@@ -291,7 +295,17 @@ void j1EntityController::buildingProcessDraw()
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	pos = App->map->MapToWorld(pos.x, pos.y);
 
-	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y) && CheckCostBuiding(structure_beingbuilt))
+	if (!App->scene->workerAvalible())
+		App->gui->warningMessages->showMessage(NO_WORKERS);
+	else
+		App->gui->warningMessages->hideMessage(NO_WORKERS);
+
+	if (!CheckCostBuiding(structure_beingbuilt))
+		App->gui->warningMessages->showMessage(NO_RESOURCES);
+	else
+		App->gui->warningMessages->hideMessage(NO_RESOURCES);
+
+	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y) && CheckCostBuiding(structure_beingbuilt) && App->scene->workerAvalible())
 	{
 		Color green = { 0,255,0,100 };
 		App->render->Blit(buildingDB[structure_beingbuilt]->texture, pos.x, pos.y, &buildingDB[structure_beingbuilt]->sprites[1]);
@@ -306,7 +320,14 @@ void j1EntityController::buildingProcessDraw()
 	}
 	if (structure_beingbuilt == 3)
 	{
-		if (!App->map->WalkabilityArea((pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2), (pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2), buildingDB[structure_beingbuilt]->additional_size.x, buildingDB[structure_beingbuilt]->additional_size.y, false, true) && CheckCostBuiding(structure_beingbuilt))
+		bool treesAround = !App->map->WalkabilityArea((pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2), (pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2), buildingDB[structure_beingbuilt]->additional_size.x, buildingDB[structure_beingbuilt]->additional_size.y, false, true);
+		
+		if (!treesAround)
+			App->gui->warningMessages->showMessage(NO_TREES);
+		else
+			App->gui->warningMessages->hideMessage(NO_TREES);
+		
+		if (treesAround && CheckCostBuiding(structure_beingbuilt) && App->scene->workerAvalible())
 		{
 			Color green2 = { 0,255,0,75 };
 			App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height }, green2);
