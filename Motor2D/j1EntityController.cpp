@@ -30,7 +30,7 @@ bool j1EntityController::Awake(pugi::xml_node &config)
 {
 	death_time = config.child("deathTime").attribute("value").as_int(0);
 	mill_max_villagers = config.child("millMaxVillagers").attribute("value").as_int(0);
-	worker_wood_production = config.child("workerWoodProduction").attribute("value").as_int(0);
+	worker_wood_production = config.child("workerWoodProduction").attribute("value").as_float(0.0f);
 
 	entity_iterator = entities.begin();
 	squad_iterator = all_squads.begin();
@@ -394,6 +394,7 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 				App->scene->inactive_workers += 1;
 			}
 		}
+		building->CalculateResourceProduction();
 	}
 }
 
