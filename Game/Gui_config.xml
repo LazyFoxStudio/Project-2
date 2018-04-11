@@ -88,15 +88,27 @@ Resolution of the screen: 1680x 1050y
 		</atlas_image>
 		
 		<atlas_image icon_atlas="false">
-			<position x="1580" y="0"/>
-			<section x="530" y="393" w="100" h="36"/>
+			<position x="1489" y="0"/>
+			<section x="531" y="394" w="191" h="36"/>
 			<childs>
-				<stopwatch center="true">
-					<position x="1607" y="2"/>
+				<stopwatch center="false">
+					<position x="25" y="2"/>
 					<font id="1"/>
 					<color r="255" g="255" b="255" a="255"/>
 					<interactive value="false"/>
 				</stopwatch>
+				<text text="Wave:" center="false" counter="false">
+					<position x="107" y="2"/>
+					<font id="1"/>
+					<color r="255" g="255" b="255" a="255"/>
+					<interactive value="false"/>
+				</text>
+				<text text="number" center="false" counter="true">
+					<position x="165" y="2"/>
+					<font id="1"/>
+					<color r="255" g="255" b="255" a="255"/>
+					<interactive value="false"/>
+				</text>
 			</childs>
 		</atlas_image>
 		
@@ -108,11 +120,12 @@ Resolution of the screen: 1680x 1050y
 			<OnClick x="589" y="271" w="143" h="53"/>
 		</button>
 	<!-- Wave Window -->
-		<atlas_image icon_atlas="false" active ="false">
+		<nextwavewindow icon_atlas="false" active ="false">
 			<position x="1408" y="462"/>
 			<section x="0" y="271" w="272" h="336"/>
+			<icons x="1300" y="500" offsetX="150" offsetY="78"/>
 			<draggable horizontal="false" vertical="false"/>
-		</atlas_image>
+		</nextwavewindow>
 
 	<!-- in-game menu -->
 		<ingamemenu>

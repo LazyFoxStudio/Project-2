@@ -22,7 +22,7 @@
 #include "UI_IngameMenu.h"
 #include "UI_CostDisplay.h"
 #include "UI_WarningMessages.h"
-
+#include "UI_NextWaveWindow.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -405,6 +405,8 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 			element = createProgressBar(tmp, callback);
 		else if (type == "ingamemenu")
 			element = createIngameMenu(tmp, callback);
+		else if (type == "nextwavewindow")
+			element = createNextWaveWindow(tmp, callback);
 		//minimap_
 		else if (type == "minimap")
 			createMinimap(tmp, nullptr);
@@ -636,6 +638,30 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 	return ret;
 }
 
+NextWaveWindow* j1Gui::createNextWaveWindow(pugi::xml_node node, j1Module* callback)
+{
+	SDL_Texture* texture = nullptr;
+	if (node.attribute("path"))
+		texture = App->tex->Load(node.attribute("path").as_string());
+	else
+		texture = atlas;
+
+	int x = node.child("position").attribute("x").as_int();
+	int y = node.child("position").attribute("y").as_int();
+	SDL_Rect section = { node.child("section").attribute("x").as_int(), node.child("section").attribute("y").as_int(), node.child("section").attribute("w").as_int(), node.child("section").attribute("h").as_int() };
+
+	int firstIcon_posX = node.child("icons").attribute("x").as_int();
+	int firstIcon_posY = node.child("icons").attribute("y").as_int();
+	int icons_offsetX = node.child("icons").attribute("offsetX").as_int();
+	int icons_offsetY = node.child("icons").attribute("offsetY").as_int();
+
+	NextWaveWindow* ret = new NextWaveWindow(texture, x, y, section, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, callback);
+
+	nextWaveWindow = ret;
+
+	return ret;
+}
+
 //minimap_
 void j1Gui::createMinimap(pugi::xml_node node, j1Module* callback)
 {
@@ -827,6 +853,12 @@ void j1Gui::newSelectionDone()
 {
 	if (inGameMenu != nullptr)
 		inGameMenu->updateInfo();
+}
+
+void j1Gui::newWave()
+{
+	if (nextWaveWindow != nullptr)
+		nextWaveWindow->updateWave();
 }
 
 void j1Gui::moveElementToMouse(UI_element* element)
