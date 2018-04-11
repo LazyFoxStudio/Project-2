@@ -70,24 +70,30 @@ bool j1EntityController::Update(float dt)
 
 	
 	int counter = 0;
-	time_slicer.Start();
-	while (time_slicer.Read() < ((float)App->framerate * SQUAD_MAX_FRAMETIME) && counter < all_squads.size())
+	if (!all_squads.empty())
 	{
-		counter++; squad_iterator++;
-		if(squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
-		if (!(*squad_iterator)->Update(dt))							return false;
+		time_slicer.Start();
+		while (time_slicer.Read() < ((float)App->framerate * SQUAD_MAX_FRAMETIME) && counter < all_squads.size())
+		{
+			counter++; squad_iterator++;
+			if (squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
+			if (!(*squad_iterator)->Update(dt))							return false;
+		}
 	}
 
-	counter = 0;
-	time_slicer.Start();
-	while (time_slicer.Read() < ((float)App->framerate * ENITITY_MAX_FRAMETIME) && counter < entities.size())
+	if (!entities.empty())
 	{
-		counter++; entity_iterator++;
-		if (entity_iterator == entities.end()) entity_iterator = entities.begin();
+		counter = 0;
+		time_slicer.Start();
+		while (time_slicer.Read() < ((float)App->framerate * ENITITY_MAX_FRAMETIME) && counter < entities.size())
+		{
+			counter++; entity_iterator++;
+			if (entity_iterator == entities.end()) entity_iterator = entities.begin();
 
-		if ((*entity_iterator)->isActive)
-			if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
-		
+			if ((*entity_iterator)->isActive)
+				if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
+
+		}
 	}
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)

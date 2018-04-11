@@ -42,7 +42,7 @@ bool j1WaveController::Start()
 	TownHall_pos = App->map->WorldToMap(2200, 2000);
 	iPoint map_org = App->map->WorldToMap(TownHall_pos.x+64, TownHall_pos.y);
 	iPoint map_dest = App->map->WorldToMap(TownHall_pos.x,TownHall_pos.y);
-	flow_field=App->pathfinding->CreateFlowField(map_org, map_dest);
+	flow_field = App->pathfinding->RequestFlowField(map_org, map_dest);
 	
 	wave_timer.Start();
 
@@ -56,7 +56,7 @@ bool j1WaveController::Start()
 
 bool j1WaveController::Update(float dt)
 {	
-	if (current_wave == 0 && wave_timer.ReadSec() > initial_wait)
+	if (current_wave == 0 && wave_timer.ReadSec() > initial_wait && flow_field->stage == COMPLETED)
 	{
 		current_wave += 1;
 		wave_timer.Start();
