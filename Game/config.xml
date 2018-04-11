@@ -40,7 +40,7 @@
   <entitycontroller>
     <deathTime value="10"/>
     <millMaxVillagers value="10"/>
-    <workerWoodProduction value="1.5"/>
+    <workerWoodProduction value="2"/>
   </entitycontroller>
 
   <gui>
@@ -54,19 +54,19 @@
     <starting_resources>
 
 
-      <wood value="1000"/>
+      <wood value="350"/>
 
       <gold value="20000"/>
 
-      <workers value="19"/>
+      <workers value="3"/>
 
       <townHallLvl value ="0"/>
     </starting_resources>
   </scene>
 
   <wavecontroller>
-    <initialWait value="10"/>
-    <waitBetweenWaves value="120"/>
+    <initialWait value="120"/>
+    <waitBetweenWaves value="60"/>
     <spawn1 x="2154" y="256"/>
     <spawn2 x="3605" y="1844"/>
     <spawn3 x="2177" y="3549"/>
