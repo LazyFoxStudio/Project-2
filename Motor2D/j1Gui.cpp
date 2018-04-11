@@ -23,6 +23,7 @@
 #include "UI_CostDisplay.h"
 #include "UI_WarningMessages.h"
 
+
 j1Gui::j1Gui() : j1Module()
 {
 	name = "gui";
@@ -191,6 +192,10 @@ bool j1Gui::PostUpdate()
 	}		
 	if (warningMessages != nullptr && warningMessages->active)
 		warningMessages->BlitElement();
+
+	//minimap_
+	App->uiscene->minimap->DrawMinimap();
+
 	//Draw Debug
 	if (UI_Debug)
 		UIDebugDraw();
@@ -392,6 +397,9 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 			element = createProgressBar(tmp, callback);
 		else if (type == "ingamemenu")
 			element = createIngameMenu(tmp, callback);
+		//minimap_
+		else if (type == "minimap")
+			createMinimap(tmp, nullptr);
 
 		element->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
 		element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
@@ -618,6 +626,17 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 	inGameMenu = ret;
 
 	return ret;
+}
+
+//minimap_
+void j1Gui::createMinimap(pugi::xml_node node, j1Module* callback)
+{
+	int position_x = node.child("position").attribute("x").as_int();
+	int position_y = node.child("position").attribute("y").as_int();;
+	int map_width = node.child("map").attribute("x").as_int();;
+	int map_height= node.child("map").attribute("y").as_int();;
+
+	App->uiscene->minimap = new Minimap(node.child("base_image").attribute("path").as_string(),position_x,position_y,map_width,map_height);
 }
 
 void j1Gui::createLifeBar(Entity* entity)

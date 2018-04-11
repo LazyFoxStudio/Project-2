@@ -60,7 +60,7 @@
   </scene>
 
   <wavecontroller>
-    <initialWait value="1000000"/>
+    <initialWait value="10"/>
     <waitBetweenWaves value="120"/>
     <spawn1 x="2154" y="256"/>
     <spawn2 x="3605" y="1844"/>

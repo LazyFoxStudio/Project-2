@@ -1,6 +1,7 @@
 #include "Building.h"
 #include "j1Render.h"
 #include "j1Scene.h"
+#include "j1UIScene.h"
 #include "j1EntityController.h"
 #include "j1Input.h"
 
@@ -49,14 +50,14 @@ void Building::GetColliderFromSize()
 bool Building::Update(float dt)
 {
 	//minimap_
-	if (App->scene->minimap != nullptr) 
+	if (App->uiscene->minimap != nullptr) 
 	{
 		SDL_Color color;
 		color.r = 0;
 		color.b = 255;
 		color.g = 0;
 		color.a = 255;
-		App->scene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, color);
+		App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, color);
 	}
 
 	if (being_built)

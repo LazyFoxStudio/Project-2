@@ -35,8 +35,8 @@ bool j1UIScene::Start()
 
 	LoadUI(guiconfig);
 	
-
-	
+	//minimap_
+	minimap = new Minimap("Assets/Sprites/Minimap Sprites/minimap_base.png", 6, 800, 4096, 4096);
 
 	//Set resource counters
 	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 0);
@@ -63,6 +63,19 @@ bool j1UIScene::Update(float dt)
 	
 	x = mouse_test.x;
 	y = mouse_test.y;
+
+	//minimap_
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		int camx, camy;
+		minimap->Mouse_to_map(camx, camy);
+
+		if (camx != -1 && camy != -1)
+		{
+			App->render->camera.y = -camy + App->win->height / 2;
+			App->render->camera.x = -camx + App->win->width / 2;
+		}
+	}
 
 	return true;
 }
@@ -93,6 +106,7 @@ void j1UIScene::LoadUI(pugi::xml_node node)
 
 bool j1UIScene::CleanUp()
 {
+	minimap->~Minimap();
 	return true;
 }
 
