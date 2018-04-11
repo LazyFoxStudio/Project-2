@@ -51,23 +51,26 @@ bool j1WaveController::Start()
 		ret = false;
 	}
 
+	current_wave = 1;
+	Generate_Next_Wave();
+
 	return ret;
 }
 
 bool j1WaveController::Update(float dt)
 {	
-	if (current_wave == 0 && wave_timer.ReadSec() > initial_wait)
+	if (current_wave == 1 && wave_timer.ReadSec() > initial_wait)
 	{
 		current_wave += 1;
 		wave_timer.Start();
-		GenerateWave();
+		Generate_Wave();
 	}
 
-	else if (current_wave != 0 && wave_timer.ReadSec() > wait_between_waves)
+	else if (current_wave > 1 && wave_timer.ReadSec() > wait_between_waves)
 	{
 		current_wave += 1;
 		wave_timer.Start();
-		GenerateWave();
+		Generate_Wave();
 	}
 
 	return true;
@@ -101,7 +104,7 @@ int j1WaveController::CalculateWaveScore()
 	return ret;
 }
 
-void j1WaveController::GenerateWave()
+void j1WaveController::Generate_Next_Wave()
 {
 	srand(time(NULL));
 	int wave_score = CalculateWaveScore();
@@ -111,26 +114,34 @@ void j1WaveController::GenerateWave()
 		int enemy = rand() % 2 + 1;
 		int position = rand() % 4 + 1;
 		LOG("NUMBER: %i", enemy);
-		Squad* squad = nullptr;
+		NextWave* aux_squad=nullptr;
 		if (enemy == 1)
 		{
 			switch (position)
 			{
 			case 1:
-				squad = App->entitycontroller->AddSquad(GRUNT, spawn_1);
-				wave.push_back(squad);
+				/*squad = App->entitycontroller->AddSquad(GRUNT, spawn_1);
+				wave.push_back(squad);*/
+				aux_squad = new NextWave(GRUNT,spawn_1);
+				next_wave.push_back(aux_squad);
 				break;
 			case 2:
-				squad = App->entitycontroller->AddSquad(GRUNT, spawn_2);
-				wave.push_back(squad);
+				/*squad = App->entitycontroller->AddSquad(GRUNT, spawn_2);
+				wave.push_back(squad);*/
+				aux_squad = new NextWave(GRUNT, spawn_2);
+				next_wave.push_back(aux_squad);
 				break;
 			case 3:
-				squad = App->entitycontroller->AddSquad(GRUNT, spawn_3);
-				wave.push_back(squad);
+				/*squad = App->entitycontroller->AddSquad(GRUNT, spawn_3);
+				wave.push_back(squad);*/
+				aux_squad = new NextWave(GRUNT, spawn_3);
+				next_wave.push_back(aux_squad);
 				break;
 			case 4:
-				squad = App->entitycontroller->AddSquad(GRUNT, spawn_4);
-				wave.push_back(squad);
+				/*squad = App->entitycontroller->AddSquad(GRUNT, spawn_4);
+				wave.push_back(squad);*/
+				aux_squad = new NextWave(GRUNT, spawn_4);
+				next_wave.push_back(aux_squad);
 				break;
 			}
 		}
@@ -140,32 +151,47 @@ void j1WaveController::GenerateWave()
 			switch (position)
 			{
 			case 1:
-				squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_1);
-				wave.push_back(squad);
+				/*squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_1);
+				wave.push_back(squad);*/
+				aux_squad = new NextWave(AXE_THROWER, spawn_1);
+				next_wave.push_back(aux_squad);
 				break;
 			case 2:
-				squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_2);
-				wave.push_back(squad);
+				/*squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_2);
+				wave.push_back(squad);*/
+				aux_squad = new NextWave(AXE_THROWER, spawn_2);
+				next_wave.push_back(aux_squad);
 				break;
 			case 3:
-				squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_3);
-				wave.push_back(squad);
+				/*squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_3);
+				wave.push_back(squad);*/
+				aux_squad = new NextWave(AXE_THROWER, spawn_3);
+				next_wave.push_back(aux_squad);
 				break;
 			case 4:
-				squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_4);
-				wave.push_back(squad);
+				/*squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_4);
+				wave.push_back(squad);*/
+				aux_squad = new NextWave(AXE_THROWER, spawn_4);
+				next_wave.push_back(aux_squad);
 				break;
 			}
 		}
 	}
-
-	for (std::list<Squad*>::iterator it = wave.begin(); it != wave.end(); it++)
-	{
-		//(*it)->commands.push_back(new AttackingMoveToSquad((*it)->commander, TownHall_pos));
-		AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad((*it)->commander, TownHall_pos);
-		new_atk_order->flow_field = flow_field;
-		(*it)->commands.push_back(new_atk_order);
-	}
-
 	LOG("Hola");
+}
+
+void j1WaveController::Generate_Wave()
+{
+	for (std::list<NextWave*>::iterator it = next_wave.begin(); it != next_wave.end(); it++)
+	{
+		Squad* aux_squad = new Squad();
+		aux_squad = App->entitycontroller->AddSquad((*it)->type, (*it)->spawn);
+
+		AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(aux_squad->commander, TownHall_pos);
+		new_atk_order->flow_field = flow_field;
+		aux_squad->commands.push_back(new_atk_order);
+	}
+	next_wave.clear();
+
+	Generate_Next_Wave();
 }

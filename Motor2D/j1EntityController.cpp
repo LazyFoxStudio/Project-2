@@ -632,7 +632,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitTemplate->attack		= NodeInfo.child("Stats").child("attack").attribute("value").as_int(0);
 		unitTemplate->defense		= NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
 		unitTemplate->piercing_atk	= NodeInfo.child("Stats").child("piercingDamage").attribute("value").as_int(0);
-		unitTemplate->speed			= NodeInfo.child("Stats").child("movementSpeed").attribute("value").as_int(0);
+		unitTemplate->speed			= NodeInfo.child("Stats").child("movementSpeed").attribute("value").as_float(0.0f);
 		unitTemplate->range			= NodeInfo.child("Stats").child("range").attribute("value").as_int(0);
 		unitTemplate->line_of_sight = NodeInfo.child("Stats").child("lineOfSight").attribute("value").as_int(0);
 		unitTemplate->flying		= NodeInfo.child("Stats").child("flying").attribute("value").as_bool(false);
