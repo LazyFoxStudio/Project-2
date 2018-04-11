@@ -42,9 +42,8 @@ bool j1WaveController::Start()
 	bool ret = true;
 
 	TownHall_pos = App->map->WorldToMap(2200, 2000);
-	iPoint map_org = App->map->WorldToMap(TownHall_pos.x+64, TownHall_pos.y);
-	iPoint map_dest = App->map->WorldToMap(TownHall_pos.x,TownHall_pos.y);
-	flow_field = App->pathfinding->RequestFlowField(map_org, map_dest);
+	iPoint Starting_pos = App->map->WorldToMap(2400, 2000);
+	flow_field = App->pathfinding->RequestFlowField(Starting_pos, TownHall_pos);
 	
 	wave_timer.Start();
 
