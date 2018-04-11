@@ -655,7 +655,7 @@ NextWaveWindow* j1Gui::createNextWaveWindow(pugi::xml_node node, j1Module* callb
 	int icons_offsetX = node.child("icons").attribute("offsetX").as_int();
 	int icons_offsetY = node.child("icons").attribute("offsetY").as_int();
 
-	NextWaveWindow* ret = new NextWaveWindow(texture, x, y, section, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, callback);
+	NextWaveWindow* ret = new NextWaveWindow(texture, icon_atlas, x, y, section, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, callback);
 
 	nextWaveWindow = ret;
 
@@ -814,6 +814,11 @@ SDL_Rect j1Gui::GetIconRect(Entity* entity)
 		return { 0,0,0,0 };
 		break;
 	}
+}
+
+SDL_Rect j1Gui::GetUnitRect(unitType type)
+{
+	return unitIconRect.at(type);
 }
 
 SDL_Rect j1Gui::GetLifeBarRect(std::string tag)
