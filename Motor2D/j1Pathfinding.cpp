@@ -422,6 +422,7 @@ PathProcessor::PathProcessor(iPoint origin, iPoint destination) : origin(origin)
 
 bool PathProcessor::ProcessFlowField(j1Timer& timer)
 {
+	BROFILER_CATEGORY("Process Flow Field", Profiler::Color::SeaGreen);
 	switch (flow_field->stage)
 	{
 	case REQUESTED:

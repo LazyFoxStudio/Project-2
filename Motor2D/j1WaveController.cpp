@@ -56,6 +56,7 @@ bool j1WaveController::Start()
 
 bool j1WaveController::Update(float dt)
 {	
+	BROFILER_CATEGORY("Waves Update", Profiler::Color::Black);
 	if (current_wave == 0 && wave_timer.ReadSec() > initial_wait && flow_field->stage == COMPLETED)
 	{
 		current_wave += 1;

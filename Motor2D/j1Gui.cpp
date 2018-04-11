@@ -144,6 +144,7 @@ bool j1Gui::PreUpdate()
 
 bool j1Gui::Update(float dt)
 {
+	BROFILER_CATEGORY("Gui Update", Profiler::Color::Beige);
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 		UI_Debug = !UI_Debug;
 
