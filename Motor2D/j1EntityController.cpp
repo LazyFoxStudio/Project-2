@@ -75,7 +75,7 @@ bool j1EntityController::Update(float dt)
 	{
 		counter++; squad_iterator++;
 		if(squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
-		if (!(*squad_iterator)->Update(dt))							return false;
+		if ((*squad_iterator) != nullptr &&  !(*squad_iterator)->Update(dt))							return false;
 	}
 
 	counter = 0;
@@ -84,11 +84,8 @@ bool j1EntityController::Update(float dt)
 	{
 		counter++; entity_iterator++;
 		if (entity_iterator == entities.end()) entity_iterator = entities.begin();
-		if ((*entity_iterator) != nullptr)
-		{
-			if ((*entity_iterator)->isActive)
-				if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
-		}
+		if ((*entity_iterator) != nullptr && (*entity_iterator)->isActive)
+			if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
 	}
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
@@ -173,8 +170,14 @@ bool j1EntityController::CleanUp()
 {
 	if (!DeleteDB()) return false;
 
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)	
+	std::list<Entity*>::iterator it = entities.begin();
+	while (it != entities.end())
+	{
 		DeleteEntity(*it);
+		it++;
+		if ((*it) == nullptr)
+			break;
+	}
 
 	entities.clear();
 	selected_entities.clear();
@@ -202,26 +205,31 @@ bool j1EntityController::Load(pugi::xml_node& file)
 
 void j1EntityController::DeleteEntity(Entity* entity)
 {
-	entities.remove(entity);
-	selected_entities.remove(entity);
-	App->gui->entityDeleted(entity);
-
-	Unit * unit_to_remove = nullptr;
-	switch (entity->entity_type)
+	if (entity != nullptr)
 	{
-	case UNIT:
-		unit_to_remove = (Unit*)(entity);
-		unit_to_remove->squad->removeUnit(unit_to_remove);
-		if ((unit_to_remove)->squad->units.empty())
+		entity_iterator++;
+		entities.remove(entity);
+		selected_entities.remove(entity);
+		App->gui->entityDeleted(entity);
+
+		Unit * unit_to_remove = nullptr;
+		switch (entity->entity_type)
 		{
-			all_squads.remove(unit_to_remove->squad);
-			selected_squads.remove(unit_to_remove->squad);
-			RELEASE(unit_to_remove->squad);
+		case UNIT:
+			unit_to_remove = (Unit*)(entity);
+			unit_to_remove->squad->removeUnit(unit_to_remove);
+			if ((unit_to_remove)->squad->units.empty())
+			{
+				squad_iterator++;
+				all_squads.remove(unit_to_remove->squad);
+				selected_squads.remove(unit_to_remove->squad);
+				RELEASE(unit_to_remove->squad);
+			}
+			delete unit_to_remove;
+			break;
+		case BUILDING: delete ((Building*)(entity)); break;
+		case NATURE: delete ((Nature*)(entity)); break;
 		}
-		delete unit_to_remove;
-		break;
-	case BUILDING: delete ((Building*)(entity)); break;
-	case NATURE: delete ((Nature*)(entity)); break;
 	}
 }
 
