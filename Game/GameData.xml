@@ -50,7 +50,7 @@
                 <life value="70"/>
                 <attack value="3"/>
                 <defense value="6"/>
-                <piercingDamage value="1"/>
+                <piercingDamage value="2"/>
                 <movementSpeed value="1.2"/>
                 <range value="40"/>
                 <lineOfSight value="200"/>

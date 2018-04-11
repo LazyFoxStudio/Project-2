@@ -99,7 +99,7 @@ bool Attack::OnUpdate(float dt)
 			{
 			case UNIT:
 				enemy_unit = (Unit*)enemy;
-				enemy_unit->current_HP -= unit->piercing_atk + (MAX(MIN(unit->attack - enemy_unit->defense, 0), 0)); //dmg
+				enemy_unit->current_HP -= unit->piercing_atk + ((((int)unit->attack - (int)enemy_unit->defense) <= 0) ? 0 : (int)unit->attack - (int)enemy_unit->defense); //dmg
 				if(enemy_unit->current_HP < 0)
 				if (enemy_unit->squad->commands.empty() ? true : enemy_unit->squad->commands.front()->type != ATTACKING_MOVETO_SQUAD)
 					enemy_unit->squad->commands.push_back(new AttackingMoveToSquad(enemy_unit, map_p));
