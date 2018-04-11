@@ -25,6 +25,8 @@ bool j1SceneSwitch::Start()
 
 bool j1SceneSwitch::Update(float dt)
 {
+	BROFILER_CATEGORY("sceneswitch_update", Profiler::Color::BlanchedAlmond);
+
 	BROFILER_CATEGORY("SceneSwitchUpdate", Profiler::Color::AliceBlue);
 
 	if (IsSwitching())

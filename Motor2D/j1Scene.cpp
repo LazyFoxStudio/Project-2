@@ -69,6 +69,7 @@ bool j1Scene::Update(float dt)
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
 
+
 	return true;
 }
 

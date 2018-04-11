@@ -87,7 +87,7 @@ bool Attack::OnUpdate(float dt)
 	if(!enemy) { Stop(); return true; }
 
 	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
-	if (enemy->position.DistanceTo(unit->position) - enemy->collider.w < unit->range)
+	if (enemy->position.DistanceTo(unit->position) - (enemy->collider.w / 2) < unit->range)
 	{
 		if (type == ATTACKING_MOVETO) 
 			{ type = ATTACK; timer.Start(); }

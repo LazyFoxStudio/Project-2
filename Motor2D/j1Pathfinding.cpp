@@ -23,6 +23,7 @@ bool j1PathFinding::CleanUp()
 
 bool j1PathFinding::PostUpdate()
 {
+	BROFILER_CATEGORY("pf_postupdate", Profiler::Color::BlanchedAlmond);
 	if (!path_pool.empty())
 	{
 		timer.Start();

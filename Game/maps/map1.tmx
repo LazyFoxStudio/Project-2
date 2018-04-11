@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="32" tileheight="32" nextobjectid="1">
  <properties>
   <property name="orientation" value="orthogonal"/>
  </properties>
@@ -25,9 +25,6 @@
   <tile id="257" terrain="1,1,2,2"/>
   <tile id="258" terrain="1,2,2,2"/>
   <tile id="372" terrain="0,0,0,0"/>
- </tileset>
- <tileset firstgid="381" name="bts" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="0" columns="2">
-  <image source="terrain.png" width="98" height="164"/>
  </tileset>
  <layer name="Ground" width="128" height="128">
   <data>

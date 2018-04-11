@@ -8,6 +8,8 @@
 
 bool j1ActionsController::Update(float dt)
 {
+	BROFILER_CATEGORY("actions_update", Profiler::Color::BlanchedAlmond);
+
 	if (doingAction)
 	{
 		Color yellow(255, 255, 0, 150);

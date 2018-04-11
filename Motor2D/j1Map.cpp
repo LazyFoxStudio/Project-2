@@ -25,33 +25,35 @@ void j1Map::Draw()
 	iPoint wCoord;
 	SDL_Rect camera = App->render->camera;
 	for (uint a = 0; a < data.layers.size(); a++)
-		if (data.layers[a]->name != "Navigation")
-		{
-			MapLayer* layer = data.layers[a];
+	{
+		MapLayer* layer = data.layers[a];
 
-			for (uint b = 0; b < data.tilesets.size(); b++)
-				for (uint i = 0; i < data.height; i++)
-					for (uint j = 0; j < data.width; j++)
+		for (uint b = 0; b < data.tilesets.size(); b++)
+			for (uint i = 0; i < data.height; i++)
+				for (uint j = 0; j < data.width; j++)
+				{
+					// TODO
+					int tile_id = layer->GetID(j, i);
+					iPoint tileWorld = MapToWorld(j, i);
+
+					if (tile_id > 0 && App->render->CullingCam(fPoint(tileWorld.x, tileWorld.y)))
 					{
-						// TODO
-						int tile_id = layer->GetID(j, i);
-						iPoint tileWorld = MapToWorld(j, i);
+						TileSet* tileset = GetTilesetFromTileId(tile_id);
+						SDL_Rect r = tileset->GetTileRect(tile_id);
 
-						if (tile_id > 0 && App->render->CullingCam(fPoint(tileWorld.x, tileWorld.y)))
+						App->render->Blit(tileset->texture, tileWorld.x, tileWorld.y, &r);
+
+						if (debug)
 						{
-							TileSet* tileset = GetTilesetFromTileId(tile_id);
-							SDL_Rect r = tileset->GetTileRect(tile_id);
-
-							App->render->Blit(tileset->texture, tileWorld.x, tileWorld.y, &r);
-
-							if (debug && !App->pathfinding->IsWalkable(iPoint{ (int)j,(int)i }))
+							if (!App->pathfinding->IsWalkable(iPoint{ (int)j,(int)i }))
 							{
 								SDL_Rect debug_r = { tileWorld.x, tileWorld.y, data.tile_width, data.tile_height };
 								App->render->DrawQuad(debug_r, Red);
 							}
 						}
 					}
-		}
+				}
+	}
 
 	DebugDraw();
 }
