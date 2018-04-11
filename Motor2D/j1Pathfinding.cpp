@@ -154,6 +154,8 @@ bool j1PathFinding::GatherWalkableAdjacents(iPoint map_pos, int count, std::vect
 	int radius = 1;
 	uint found = 0;
 
+	SDL_Rect r = { 0,0, App->map->data.tile_width, App->map->data.tile_height };
+
 	while (radius < max_distance)
 	{
 		for (int i = -radius; i <= radius; i++)
@@ -163,9 +165,17 @@ bool j1PathFinding::GatherWalkableAdjacents(iPoint map_pos, int count, std::vect
 					cell.create(map_pos.x + i, map_pos.y + j);
 					if (App->pathfinding->IsWalkable(cell))
 					{
-						adjacents.push_back(cell);
-						found++;
-						if (found == count) return true;
+						iPoint world_p = App->map->MapToWorld(cell.x, cell.y);
+						r.x = world_p.x; r.y = world_p.y;
+
+						std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(r);
+
+						if (collisions.empty())
+						{
+							adjacents.push_back(cell);
+							found++;
+							if (found == count) return true;
+						}
 					}
 				}
 		radius++;
