@@ -80,8 +80,28 @@ bool j1UIScene::Update(float dt)
 
 		if (camx != -1 && camy != -1)
 		{
-			App->render->camera.y = -camy + App->win->height / 2;
-			App->render->camera.x = -camx + App->win->width / 2;
+		
+			App->render->camera.y = -camy + App->render->camera.h / 2;
+			App->render->camera.x = -camx + App->render->camera.w / 2;
+
+			if (camx- App->render->camera.w/2 > 4096 - App->render->camera.w) {
+				LOG("TOP RIGHT");
+				App->render->camera.x = -4096 + App->render->camera.w;
+			}
+			else if (camx - App->render->camera.w / 2 < 0) {
+				LOG("TOP LEFT");
+				App->render->camera.x = 0;
+			}
+
+			if (camy - App->render->camera.h/2 > 4096 - App->render->camera.h){
+				LOG("TOP DOWN");
+				App->render->camera.y = -4096 + App->render->camera.h;
+			}
+			else if (camy - App->render->camera.h / 2 < 0) {
+				LOG("TOP UP");
+				App->render->camera.y = 0;
+			}
+
 		}
 	}
 
