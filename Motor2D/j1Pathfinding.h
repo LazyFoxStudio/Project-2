@@ -11,7 +11,11 @@
 #define MAX_ADJACENT_DIST 10
 #define FLOWFIELD_MAX 65535
 
+#define PF_MAX_FRAMETIME 0.4f
+
 class Entity;
+
+enum PathProcessStage { REQUESTED, PROCESSING, COMPLETED, FAILED};
 
 struct FieldNode
 {
@@ -27,15 +31,31 @@ struct FieldNode
 
 struct FlowField
 {
-	uint width, height;
-	FieldNode** field;
+	FieldNode** field = nullptr;
+	uint width = 0; uint height = 0;
+	PathProcessStage stage = REQUESTED;
+	bool finished = false;
 
-	FlowField(uint width, uint height, int init_to = FLOWFIELD_MAX);
+	FlowField(uint width, uint heigth, int init_to = FLOWFIELD_MAX);
 	~FlowField();
 
 	void updateFromPath(const std::list<iPoint>& path);
 	void ClearTo(int value = FLOWFIELD_MAX);
 	FieldNode* getNodeAt(iPoint p) { return &field[p.x][p.y]; };
+
+};
+
+struct PathProcessor
+{
+	iPoint origin = { 0,0 }; iPoint destination = { 0,0 };
+	FlowField* flow_field = nullptr;
+
+	std::list<FieldNode> open;
+
+	PathProcessor(iPoint origin, iPoint destination);
+	~PathProcessor() { RELEASE(flow_field); };
+
+	bool ProcessFlowField(j1Timer& timer);
 
 };
 
@@ -45,11 +65,10 @@ class j1PathFinding : public j1Module
 public:
 
 	j1PathFinding();
-
-	// Destructor
-	~j1PathFinding();
+	~j1PathFinding() {};
 
 	// Called before quitting
+	bool PostUpdate();
 	bool CleanUp();
 
 	// Sets up the walkability map
@@ -73,10 +92,11 @@ public:
 	iPoint FirstWalkableAdjacent(iPoint map_pos, int max_distance = 0);
 	iPoint WalkableAdjacentCloserTo(iPoint map_pos, iPoint target, Entity* entity_to_ignore = nullptr);    // this method checks collisions
 
-	FlowField* CreateFlowField(iPoint origin, iPoint destination);
+	FlowField* RequestFlowField(iPoint origin, iPoint destination);
 
 public:
 	uchar * map = nullptr;
+	std::list<PathProcessor*> path_pool;
 private:
 
 	// size of the map
@@ -86,6 +106,7 @@ private:
 	
 	// we store the created path here
 	std::list<iPoint> last_path;
+	j1Timer timer;
 };
 
 // forward declaration

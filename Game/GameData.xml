@@ -1182,7 +1182,7 @@
         <villagers value="0"/>
         <buildingTime value="5"/>
         <defense value="100"/>
-        <woodCost value="000"/>
+        <woodCost value="400"/>
         <goldCost value="0"/>
       </Stats>
 	  <Actions>
@@ -1216,7 +1216,7 @@
         <villagers value="0"/>
         <buildingTime value="10"/>
         <defense value="20"/>
-        <woodCost value="300"/>
+        <woodCost value="350"/>
         <goldCost value="0"/>
       </Stats>
       <iconData x="315" y="264" w="72" h="59"/>
@@ -1328,7 +1328,7 @@
 			<OnClick x="1441" y="437" w="66" h="66"/>
 			<popUp>
 				<Info text="Build Lumber Mill"/>
-				<Cost wood="300" gold="" oil=""/>
+				<Cost wood="350" gold="" oil=""/>
 			</popUp>
 		</buildMill>
 		<buildFarm id="7" function="17">

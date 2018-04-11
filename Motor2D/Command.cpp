@@ -146,25 +146,36 @@ bool Attack::OnStop()
 //		SQUADS: =============================
 //// MOVETOSQUAD
 
+MoveToSquad::MoveToSquad(Unit* commander, iPoint map_dest) : Command(commander, MOVETOSQUAD), dest(map_dest)
+{
+	if (!unit->squad) { Stop(); return; }
+	else squad = unit->squad;
+
+	squad->commander = squad->getClosestUnitTo(dest);
+	if (!squad->commander) { Stop(); return; }
+};
+
 bool MoveToSquad::OnInit()
 {
-	if (!unit->squad) { Stop(); return true; }
-	else squad = unit->squad;
-	
-	squad->commander = squad->getClosestUnitTo(dest);
-	if(!squad->commander) { Stop(); return true; }
-
-	iPoint commander_map_p = App->map->WorldToMap(squad->commander->position.x, squad->commander->position.y);
-	flow_field = App->pathfinding->CreateFlowField(commander_map_p, dest);
-
-	if(!flow_field)  Stop();
+	if (!flow_field)
+	{
+		iPoint commander_map_p = App->map->WorldToMap(unit->position.x, squad->commander->position.y);
+		flow_field = App->pathfinding->RequestFlowField(commander_map_p, dest);
+		state = TO_INIT;
+	}
 	else
 	{
-		for (int i = 0; i < squad->units.size(); i++)
+		if(flow_field->stage == FAILED) { Stop(); return true; }
+		else if (flow_field->stage == COMPLETED)
 		{
-			MoveTo* new_move_order = new MoveTo(squad->units[i], dest, flow_field);
-			squad->units[i]->commands.push_back(new_move_order);
+			for (int i = 0; i < squad->units.size(); i++)
+			{
+				MoveTo* new_move_order = new MoveTo(squad->units[i], dest, flow_field);
+				squad->units[i]->commands.push_back(new_move_order);
+			}
+			return true;
 		}
+		state = TO_INIT;
 	}
 	
 	return true;
@@ -184,7 +195,7 @@ bool MoveToSquad::OnUpdate(float dt)
 
 bool MoveToSquad::OnStop()
 {
-	if (flow_field) delete flow_field;
+	flow_field->finished = true;
 	return true;
 }
 
@@ -229,7 +240,7 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 
 bool AttackingMoveToSquad::OnStop()
 {
-	RELEASE(flow_field);
+	flow_field->finished = true;
 	RELEASE(atk_flow_field);
 	return true;
 }
@@ -245,16 +256,10 @@ bool PatrolSquad::OnUpdate(float dt)
 		if (App->pathfinding->IsWalkable(current_point))
 		{
 			iPoint map_p = App->map->WorldToMap(squad->commander->position.x, squad->commander->position.y);
-			FlowField* flow_field = App->pathfinding->CreateFlowField(map_p, current_point);
 
-			if (flow_field)
-			{
-				AttackingMoveToSquad* new_a_moveto_command = new AttackingMoveToSquad(unit, current_point);
-				new_a_moveto_command->flow_field = flow_field;
-				squad->commands.push_front(new_a_moveto_command);
-				patrol_points.push_back(current_point);
-				return true;
-			}
+			squad->commands.push_front(new AttackingMoveToSquad(unit, current_point));
+			patrol_points.push_back(current_point);
+			return true;
 		}
 	}
 

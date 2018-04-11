@@ -50,7 +50,6 @@ public:
 	
 	j1Timer				wave_timer;
 	
-	std::list<Squad*>	wave;
 	std::list<NextWave*> next_wave;
 
 	iPoint TownHall_pos = { 2200,2000 };
