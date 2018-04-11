@@ -175,8 +175,7 @@ void j1WaveController::Generate_Next_Wave()
 		}
 	}
 
-	if (current_wave > 0)
-		App->gui->newWave();
+	App->gui->newWave();
 }
 
 void j1WaveController::Generate_Wave()
