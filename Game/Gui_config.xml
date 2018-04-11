@@ -54,7 +54,7 @@ Resolution of the screen: 1680x 1050y
 	<fonts>
 		<font path="fonts/Old School Adventures.ttf" size="10"/>
 	</fonts>
-	<menu type="2" active="true">
+	<menu type="2" active="true">	
 	<!-- Resources Display -->
 		<atlas_image icon_atlas="false">
 			<position x="0" y="0"/>
@@ -86,6 +86,13 @@ Resolution of the screen: 1680x 1050y
 				</text>
 			</childs>
 		</atlas_image>
+		
+		<stopwatch text="time" center="false" counter="true">
+			<position x="1600" y="10"/>
+			<font id="1"/>
+			<color r="255" g="255" b="255" a="255"/>
+			<interactive value="false"/>
+		</stopwatch>
 	
 	<!-- Options Button -->
 		<button>

@@ -49,13 +49,15 @@ void Chrono::BlitElement(bool use_camera)
 							callback->OnUIEvent(this, STOPWATCH_ALARM);*/
 					}
 				}
+				int min = time / 60;
+				int sec = time - (min * 60);
+				std::string secs = ((min<10)? "0": "") + std::to_string(min) + ":" + ((sec<10) ? "0" : "") + std::to_string(sec);
 
-				std::string secs("%05d", time);
 				if (last_secs != secs)
 					text->setText(secs);
 
 				section = text->section;
-				last_secs = ("%05d", time);
+				last_secs = secs;
 			}
 			break;
 		case TIMER:
@@ -66,12 +68,15 @@ void Chrono::BlitElement(bool use_camera)
 				if (time == 0 && callback != nullptr) //If has callback send event
 					callback->OnUIEvent(this, TIMER_ZERO);
 
-				std::string secs("%d", time);
+				int min = time / 60;
+				int sec = time - (min * 60);
+				std::string secs = ((min<10) ? "0" : "") + std::to_string(min) + ":" + ((sec<10) ? "0" : "") + std::to_string(sec);
+
 				if (last_secs != secs)
 					text->setText(secs);
 
 				section = text->section;
-				last_secs = ("%05d", time);
+				last_secs = secs;
 			}
 			break;
 		}

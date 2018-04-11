@@ -34,9 +34,6 @@ bool j1UIScene::Start()
 	//App->audio->PlayMusic("Main_Theme.mp3");
 
 	LoadUI(guiconfig);
-	
-	//minimap_
-	minimap = new Minimap("Assets/Sprites/Minimap Sprites/minimap_base.png", 6, 800, 4096, 4096);
 
 	//Set resource counters
 	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 0);
