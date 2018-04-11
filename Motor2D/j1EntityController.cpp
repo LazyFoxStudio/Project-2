@@ -16,6 +16,7 @@
 #include "j1Map.h"
 #include "j1ActionsController.h"
 #include "UI_WarningMessages.h"
+#include "UI_Button.h"
 
 #define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
@@ -107,6 +108,12 @@ bool j1EntityController::Update(float dt)
 		App->input->GetMousePosition(position.x, position.y);
 		if (placingBuilding(structure_beingbuilt, position))
 		{
+			//Hardcoded
+			Button* barracks = App->gui->GetActionButton(5);
+			barracks->Unlock();
+			Button* farms = App->gui->GetActionButton(7);
+			farms->Unlock();
+
 			App->gui->warningMessages->hideMessage(NO_TREES);
 			HandleBuildingResources(structure_beingbuilt);
 

@@ -13,6 +13,7 @@
 #include "j1Textures.h"
 #include "UI_Element.h"
 #include "UI_Chrono.h"
+#include "UI_Button.h"
 #include "UI_Text.h"
 #include "j1Fonts.h"
 #include "j1Input.h"
@@ -45,7 +46,13 @@ bool j1UIScene::Start()
 	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 3);
 	wood_display->convertIntoCounter(&App->scene->wood);
 
-	//menus.front()->elements.push_back(App->gui->createCostDisplay());
+	//Hardcoded
+	Button* barracks = App->gui->GetActionButton(5);
+	barracks->setCondition("Build first a Lumber Mill");
+	barracks->Lock();
+	Button* farms = App->gui->GetActionButton(7);
+	farms->setCondition("Build first a Lumber Mill");
+	farms->Lock();
 
 	return true;
 }
@@ -101,16 +108,23 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 	{
 		App->gui->hovering_element.Start();
 		App->gui->current_hovering_element = element;
-		element->state = MOUSEOVER;
+		if (element->state != LOCKED)
+			element->state = MOUSEOVER;
+		else
+			element->state = LOCKED_MOUSEOVER;
 
 	}
 	else if (event_type == MOUSE_LEAVE)
 	{
-		element->state = STANDBY;
+		if (element->state != LOCKED_MOUSEOVER)
+			element->state = STANDBY;
+		else
+			element->state = LOCKED;
+
 		element->blitPopUpInfo = false;
 		App->gui->current_hovering_element = nullptr;
 	}
-	else if (event_type == MOUSE_LEFT_CLICK)
+	else if (event_type == MOUSE_LEFT_CLICK && element->state != LOCKED && element->state != LOCKED_MOUSEOVER)
 	{
 		element->state = CLICKED;
 
@@ -144,7 +158,7 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 			break;
 		}
 	}
-	else if (event_type == MOUSE_LEFT_RELEASE)
+	else if (event_type == MOUSE_LEFT_RELEASE && element->state != LOCKED && element->state != LOCKED_MOUSEOVER)
 	{
 		if (element->state == CLICKED)
 			element->state = MOUSEOVER;
@@ -171,10 +185,10 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 			break;
 		}
 	}
-	else if (event_type == MOUSE_RIGHT_CLICK)
+	else if (event_type == MOUSE_RIGHT_CLICK && element->state != LOCKED && element->state != LOCKED_MOUSEOVER)
 	{
 	}
-	else if (event_type == MOUSE_RIGHT_RELEASE)
+	else if (event_type == MOUSE_RIGHT_RELEASE && element->state != LOCKED && element->state != LOCKED_MOUSEOVER)
 	{
 	}
 	else if (event_type == TIMER_ZERO)

@@ -1,5 +1,7 @@
 #include "UI_element.h"
 #include "j1Render.h"
+#include "UI_Text.h"
+#include "j1Fonts.h"
 
 UI_element::~UI_element()
 {
@@ -56,6 +58,18 @@ void UI_element::BlitElement(bool use_camera)
 		}
 		else
 			BlitHoverExtraEffect();
+	}
+	else if (state == LOCKED_MOUSEOVER)
+	{
+		if (!blitPopUpInfo)
+		{
+			if (App->gui->hovering_element.ReadMs() > 600)
+			{
+				if (conditionMessage != nullptr)
+					App->gui->moveElementToMouse(conditionMessage);
+				blitPopUpInfo = true;
+			}
+		}
 	}
 }
 
@@ -129,4 +143,22 @@ void UI_element::End_Drag()
 {
 	Click_Pos = { 0,0 };
 	moving = false;
+}
+
+void UI_element::setCondition(std::string condition)
+{
+	RELEASE (conditionMessage);
+
+	conditionMessage = new Text(condition, 0, 0, App->font->fonts.front(), { 255, 0, 0, 0 }, nullptr);
+	((Text*)conditionMessage)->setBackground(true, { 75, 75, 75, 185 });
+}
+
+void UI_element::Lock()
+{
+	state = LOCKED;
+}
+
+void UI_element::Unlock()
+{
+	state = STANDBY;
 }

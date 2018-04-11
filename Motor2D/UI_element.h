@@ -53,7 +53,9 @@ enum element_state
 {
 	STANDBY,
 	MOUSEOVER,
-	CLICKED
+	CLICKED,
+	LOCKED,
+	LOCKED_MOUSEOVER
 };
 
 class UI_element
@@ -114,6 +116,11 @@ public:
 
 	void End_Drag();
 
+	void setCondition(std::string condition);
+
+	void Lock();
+	void Unlock();
+
 public:
 
 	SDL_Texture* texture = nullptr;
@@ -126,6 +133,7 @@ public:
 	UI_element* parent = nullptr;
 	std::list<UI_element*> childs;
 	UI_element* popUpInfo = nullptr;
+	UI_element* conditionMessage = nullptr;
 	UI_element* costDisplay = nullptr;
 	bool hovering = false;
 	bool moving = false;
