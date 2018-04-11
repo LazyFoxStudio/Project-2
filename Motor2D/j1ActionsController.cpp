@@ -63,12 +63,12 @@ bool j1ActionsController::Update(float dt)
 			doingAction = false;
 			break;
 		case CREATE_FOOTMAN:
-			if (App->entitycontroller->CheckCostTroop(FOOTMAN))
+			if (App->entitycontroller->CheckCostTroop(FOOTMAN) && !((Building*)*App->entitycontroller->selected_entities.begin())->being_built)
 				App->entitycontroller->AddSquad(FOOTMAN, newSquadPos);
 			doingAction = false;
 			break;
 		case CREATE_ARCHER:
-			if (App->entitycontroller->CheckCostTroop(ARCHER))
+			if (App->entitycontroller->CheckCostTroop(ARCHER) && !((Building*)*App->entitycontroller->selected_entities.begin())->being_built)
 				App->entitycontroller->AddSquad(ARCHER, newSquadPos);
 			doingAction = false;
 			break;

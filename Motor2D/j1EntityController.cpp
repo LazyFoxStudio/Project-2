@@ -282,6 +282,10 @@ Squad* j1EntityController::AddSquad(unitType type, fPoint position)
 			squad_vector.push_back(addUnit(world_p, type));
 		}
 		new_squad = new Squad(squad_vector);
+		if (!unitDB[type]->IsEnemy())
+		{
+			App->scene->wood -= unitDB[type]->wood_cost;
+		}
 		all_squads.push_back(new_squad);
 	}
 	return new_squad;
