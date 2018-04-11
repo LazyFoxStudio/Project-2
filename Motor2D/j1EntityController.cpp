@@ -84,10 +84,11 @@ bool j1EntityController::Update(float dt)
 	{
 		counter++; entity_iterator++;
 		if (entity_iterator == entities.end()) entity_iterator = entities.begin();
-
-		if ((*entity_iterator)->isActive)
-			if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
-		
+		if ((*entity_iterator) != nullptr)
+		{
+			if ((*entity_iterator)->isActive)
+				if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
+		}
 	}
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
