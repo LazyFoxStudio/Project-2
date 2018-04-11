@@ -185,10 +185,18 @@ bool j1Gui::PostUpdate()
 	//Draw PopUp
 	if (current_hovering_element != nullptr && current_hovering_element->blitPopUpInfo)
 	{
-		if (current_hovering_element->popUpInfo != nullptr)
-			current_hovering_element->popUpInfo->BlitElement();
-		if (current_hovering_element->costDisplay != nullptr)
-			current_hovering_element->costDisplay->BlitElement();
+		if (current_hovering_element->state == MOUSEOVER)
+		{
+			if (current_hovering_element->popUpInfo != nullptr)
+				current_hovering_element->popUpInfo->BlitElement();
+			if (current_hovering_element->costDisplay != nullptr)
+				current_hovering_element->costDisplay->BlitElement();
+		}
+		else if (current_hovering_element->state == LOCKED_MOUSEOVER)
+		{
+			if (current_hovering_element->conditionMessage != nullptr)
+				current_hovering_element->conditionMessage->BlitElement();
+		}
 	}		
 	if (warningMessages != nullptr && warningMessages->active)
 		warningMessages->BlitElement();

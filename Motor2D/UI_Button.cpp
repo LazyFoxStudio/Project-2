@@ -17,6 +17,8 @@ void Button::BlitElement(bool use_camera)
 		case MOUSEOVER:
 			App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouse, use_camera);
 			break;
+		case LOCKED:
+		case LOCKED_MOUSEOVER:
 		case CLICKED:
 			App->render->Blit(texture, globalPos.x, globalPos.y, &OnClick, use_camera);
 			break;
