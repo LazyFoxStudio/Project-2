@@ -69,7 +69,12 @@ bool Building::Update(float dt)
 		current_HP = 0;
 	}
 	if (!destroyed && current_HP <= 0)
-	{
+	{ //hardcoded
+		if (App->scene->inactive_workers >= 5 && type == FARM)
+		{
+			App->scene->inactive_workers -= 5;
+			App->scene->workers -= 5;
+		}
 		destroyed = true;
 		timer.Start();
 	}

@@ -49,6 +49,7 @@ struct PathProcessor
 {
 	iPoint origin = { 0,0 }; iPoint destination = { 0,0 };
 	FlowField* flow_field = nullptr;
+	bool dest_found = false;
 
 	std::list<FieldNode> open;
 
