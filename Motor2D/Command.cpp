@@ -99,7 +99,8 @@ bool Attack::OnUpdate(float dt)
 			{
 			case UNIT:
 				enemy_unit = (Unit*)enemy;
-				enemy_unit->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy_unit->defense, 0)); //dmg
+				enemy_unit->current_HP -= unit->piercing_atk + (MAX(MIN(unit->attack - enemy_unit->defense, 0), 0)); //dmg
+				if(enemy_unit->current_HP < 0)
 				if (enemy_unit->squad->commands.empty() ? true : enemy_unit->squad->commands.front()->type != ATTACKING_MOVETO_SQUAD)
 					enemy_unit->squad->commands.push_back(new AttackingMoveToSquad(enemy_unit, map_p));
 				break;
@@ -127,9 +128,10 @@ bool Attack::OnUpdate(float dt)
 		}
 		else
 			unit->next_step += ((flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized() * STEERING_FACTOR);
+
+		if(unit->position == current_target)
+			{ enemy_positions->remove(current_target); current_target.SetToZero(); }
 	}
-	else
-	    { enemy_positions->remove(current_target); current_target.SetToZero(); }
 
 	type = ATTACKING_MOVETO;
 	return true;
