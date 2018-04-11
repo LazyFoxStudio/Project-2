@@ -215,7 +215,9 @@ void j1EntityController::DeleteEntity(Entity* entity)
 {
 	if (entity != nullptr)
 	{
-		entity_iterator++;
+		if(entity == *entity_iterator)
+			entity_iterator = entities.begin();
+
 		entities.remove(entity);
 		selected_entities.remove(entity);
 		App->gui->entityDeleted(entity);
@@ -226,9 +228,11 @@ void j1EntityController::DeleteEntity(Entity* entity)
 		case UNIT:
 			unit_to_remove = (Unit*)(entity);
 			unit_to_remove->squad->removeUnit(unit_to_remove);
-			if ((unit_to_remove)->squad->units.empty())
+			if (unit_to_remove->squad->units.empty())
 			{
-				squad_iterator++;
+				if (*squad_iterator == unit_to_remove->squad)
+					squad_iterator = all_squads.begin();
+
 				all_squads.remove(unit_to_remove->squad);
 				selected_squads.remove(unit_to_remove->squad);
 				RELEASE(unit_to_remove->squad);
