@@ -82,19 +82,31 @@ bool Attack::OnUpdate(float dt)
 		return true;
 	}
 
-	Unit* enemy = App->entitycontroller->getNearestEnemyUnit(unit->position, unit->IsEnemy());
+	Entity* enemy = App->entitycontroller->getNearestEnemy(unit->position, unit->IsEnemy());
 	if(!enemy) { Stop(); return true; }
 
 	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
-	if (enemy->position.DistanceTo(unit->position) < unit->range)
+	if (enemy->position.DistanceTo(unit->position) - enemy->collider.w < unit->range)
 	{
 		if (type == ATTACKING_MOVETO) 
 			{ type = ATTACK; timer.Start(); }
 		else if (timer.ReadSec() > 0.5f)
 		{ 
-			enemy->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy->defense, 0));
-			if (enemy->squad->commands.empty() ? true : enemy->squad->commands.front()->type != ATTACKING_MOVETO_SQUAD)
-				enemy->squad->commands.push_back(new AttackingMoveToSquad(enemy, map_p));
+			Unit* enemy_unit = (Unit*)enemy;
+			Building* enemy_building = (Building*)enemy;
+			switch (enemy->entity_type)
+			{
+			case UNIT:
+				enemy_unit = (Unit*)enemy;
+				enemy_unit->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy_unit->defense, 0));
+				if (enemy_unit->squad->commands.empty() ? true : enemy_unit->squad->commands.front()->type != ATTACKING_MOVETO_SQUAD)
+					enemy_unit->squad->commands.push_back(new AttackingMoveToSquad(enemy_unit, map_p));
+				break;
+
+			case BUILDING:
+				enemy_building = (Building*)enemy;
+				enemy_building->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy_building->defense, 0));
+			}
 			timer.Start();
 		}
 
@@ -129,86 +141,41 @@ bool Attack::OnStop()
 	return true;
 }
 
-// HOLD
-//
-//bool Hold::OnInit()
-//{
-//	iPoint pos = App->map->WorldToMap(unit->position.x, unit->position.y);
-//
-//	if (pos != held_position)
-//	{
-//		MoveTo* new_moveto_command = new MoveTo(unit, held_position);
-//		unit->commands.push_front(new_moveto_command);
-//
-//		Restart();
-//	}
-//	return true;
-//}
-//
-//bool Hold::OnUpdate(float dt)
-//{
-//	Unit* enemy = nullptr; // unit->SearchNearestEnemy();
-//	if (enemy)
-//	{
-//		iPoint enemy_position = App->map->WorldToMap(enemy->position.x, enemy->position.y);
-//		iPoint pos = App->map->WorldToMap(unit->position.x, unit->position.y);
-//
-//		if (pos.DistanceTo(enemy_position) < unit->line_of_sight)
-//		{
-//			Attack* new_attack_command = new Attack(unit);
-//			new_attack_command->state = UPDATE;
-//			unit->commands.push_front(new_attack_command);
-//
-//			Restart();
-//		}
-//	}
-//	
-//	return true;
-//}
-//
-//
-//// PATROL
-//
-//bool Patrol::OnInit()
-//{
-//	// TODO  (Check if the paths between points are possible: here or before creating the Patrol command?
-//	return true;
-//}
-//
-//bool Patrol::OnUpdate(float dt) 
-//{
-//	current_point++;
-//	if (current_point == patrol_points.size()) current_point = 0;
-//
-//	AttackingMoveTo* new_a_moveto_command = new AttackingMoveTo(unit, patrol_points[current_point]);
-//	unit->commands.push_front(new_a_moveto_command);
-//
-//	return true;
-//}
 
 
 //		SQUADS: =============================
 //// MOVETOSQUAD
 
+MoveToSquad::MoveToSquad(Unit* commander, iPoint map_dest) : Command(commander, MOVETOSQUAD), dest(map_dest)
+{
+	if (!unit->squad) { Stop(); return; }
+	else squad = unit->squad;
+
+	squad->commander = squad->getClosestUnitTo(dest);
+	if (!squad->commander) { Stop(); return; }
+};
+
 bool MoveToSquad::OnInit()
 {
-	if (!unit->squad) { Stop(); return true; }
-	else squad = unit->squad;
-	
-	squad->commander = squad->getClosestUnitTo(dest);
-	if(!squad->commander) { Stop(); return true; }
-
-	iPoint commander_map_p = App->map->WorldToMap(squad->commander->position.x, squad->commander->position.y);
-	flow_field = App->pathfinding->CreateFlowField(commander_map_p, dest);
-
-	if(!flow_field)  Stop();
+	if (!flow_field)
+	{
+		iPoint commander_map_p = App->map->WorldToMap(unit->position.x, squad->commander->position.y);
+		flow_field = App->pathfinding->RequestFlowField(commander_map_p, dest);
+		state = TO_INIT;
+	}
 	else
 	{
-		for (int i = 0; i < squad->units.size(); i++)
+		if(flow_field->stage == FAILED) { Stop(); return true; }
+		else if (flow_field->stage == COMPLETED)
 		{
-			MoveTo* new_move_order = new MoveTo(squad->units[i], dest, flow_field);
-			squad->units[i]->commands.push_back(new_move_order);
+			for (int i = 0; i < squad->units.size(); i++)
+			{
+				MoveTo* new_move_order = new MoveTo(squad->units[i], dest, flow_field);
+				squad->units[i]->commands.push_back(new_move_order);
+			}
+			return true;
 		}
+		state = TO_INIT;
 	}
 	
 	return true;
@@ -228,7 +195,7 @@ bool MoveToSquad::OnUpdate(float dt)
 
 bool MoveToSquad::OnStop()
 {
-	if (flow_field) delete flow_field;
+	flow_field->finished = true;
 	return true;
 }
 
@@ -257,12 +224,15 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 	{
 		if (enemies_in_sight) enemies_in_sight = false;
 
-		bool all_idle = true;
+		if (!hold)
+		{
+			bool all_idle = true;
 
-		for (int i = 0; i < squad->units.size(); i++)
-			if (!squad->units[i]->commands.empty()) all_idle = false;
+			for (int i = 0; i < squad->units.size(); i++)
+				if (!squad->units[i]->commands.empty()) all_idle = false;
 
-		if (all_idle) Stop();
+			if (all_idle) Stop();
+		}
 	}
 
 	return true;
@@ -270,8 +240,31 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 
 bool AttackingMoveToSquad::OnStop()
 {
-	RELEASE(flow_field);
+	flow_field->finished = true;
 	RELEASE(atk_flow_field);
 	return true;
 }
+
+
+bool PatrolSquad::OnUpdate(float dt)
+{
+	iPoint current_point = patrol_points.front();
+	patrol_points.pop_front();
+
+	if (!patrol_points.empty())
+	{
+		if (App->pathfinding->IsWalkable(current_point))
+		{
+			iPoint map_p = App->map->WorldToMap(squad->commander->position.x, squad->commander->position.y);
+
+			squad->commands.push_front(new AttackingMoveToSquad(unit, current_point));
+			patrol_points.push_back(current_point);
+			return true;
+		}
+	}
+
+	Stop();
+	return true;
+}
+
 

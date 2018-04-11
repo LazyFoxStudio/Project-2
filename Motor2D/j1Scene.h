@@ -36,17 +36,19 @@ public:
 	bool Load(pugi::xml_node& data);
 	bool Save(pugi::xml_node& data) const;
 
-	bool workerAvalible();
+	bool workerAvalible(int num = 1);
 
 public:
 	SDL_Texture* debug_tex = nullptr;
 
 	int wood = 0;
 	int gold = 0;
+	int oil = 0;
 	int workers = 0;
 	int inactive_workers = 0;
 	int town_hall_lvl = 0;
 	UI_element* pollas;
+
 };
 
 #endif // __j1SCENE_H__

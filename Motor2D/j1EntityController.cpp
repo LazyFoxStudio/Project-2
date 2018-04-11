@@ -16,8 +16,9 @@
 #include "j1Map.h"
 #include "j1ActionsController.h"
 #include "UI_WarningMessages.h"
+#include "UI_Button.h"
 
-#define SQUAD_MAX_FRAMETIME 0.2f
+#define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
 
 
@@ -29,7 +30,7 @@ bool j1EntityController::Awake(pugi::xml_node &config)
 {
 	death_time = config.child("deathTime").attribute("value").as_int(0);
 	mill_max_villagers = config.child("millMaxVillagers").attribute("value").as_int(0);
-	worker_wood_production = config.child("workerWoodProduction").attribute("value").as_int(0);
+	worker_wood_production = config.child("workerWoodProduction").attribute("value").as_float(0.0f);
 
 	entity_iterator = entities.begin();
 	squad_iterator = all_squads.begin();
@@ -45,10 +46,13 @@ bool j1EntityController::Start()
 
 	loadEntitiesDB(gameData);
 
-	AddSquad(FOOTMAN, fPoint(1900, 2100));
+	/*AddSquad(FOOTMAN, fPoint(1900, 2100));
 	AddSquad(FOOTMAN, fPoint(2200, 2100));
 
 	AddSquad(GRUNT, fPoint(3000, 2100));
+	AddSquad(AXE_THROWER, fPoint(1700, 2100));
+	AddSquad(ARCHER, fPoint(1500, 2100));*/
+
 
 	StartHero(iPoint(2000, 1950));
 
@@ -64,45 +68,65 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
-	time_slicer.Start();
 	
 	int counter = 0;
-	while (time_slicer.Read() < ((100000.0f / ((float)App->framerate)) * SQUAD_MAX_FRAMETIME) && counter < all_squads.size())
+	if (!all_squads.empty())
 	{
-		counter++; squad_iterator++;
-		if(squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
-		if (!(*squad_iterator)->Update(dt))							return false;
-	}
-
-	counter = 0;
-	time_slicer.Start();
-	while (time_slicer.Read() < ((1000000.0f / ((float)App->framerate)) * ENITITY_MAX_FRAMETIME) && counter < entities.size())
-	{
-		counter++; entity_iterator++;
-		if (entity_iterator == entities.end()) entity_iterator = entities.begin();
-		if ((*entity_iterator)->isActive)
+		time_slicer.Start();
+		while (time_slicer.Read() < ((float)App->framerate * SQUAD_MAX_FRAMETIME) && counter < all_squads.size())
 		{
-			if (App->render->CullingCam((*entity_iterator)->position))
-			{
-				(*entity_iterator)->Draw(dt);
-				if (debug) debugDrawEntity(*entity_iterator);
-			}
-			if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
+			counter++; squad_iterator++;
+			if (squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
+			if ((*squad_iterator) != nullptr && !(*squad_iterator)->Update(dt))							return false;
 		}
 	}
 
+	if (!entities.empty())
+	{
+		counter = 0;
+		time_slicer.Start();
+		while (time_slicer.Read() < ((float)App->framerate * ENITITY_MAX_FRAMETIME) && counter < entities.size())
+		{
+			counter++; entity_iterator++;
+			if (entity_iterator == entities.end()) entity_iterator = entities.begin();
+
+			if ((*entity_iterator)->isActive)
+				if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
+
+		}
+	}
+
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		if ((*it)->isActive)
+		{
+			if (App->render->CullingCam((*it)->position))
+			{
+				(*it)->Draw(dt);
+				if (debug) debugDrawEntity(*it);
+			}
+		}
+	}
 
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building && App->scene->workerAvalible() && App->entitycontroller->CheckCostBuiding(structure_beingbuilt))
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);
+		if (placingBuilding(structure_beingbuilt, position))
+		{
+			//Hardcoded
+			Button* barracks = App->gui->GetActionButton(5);
+			barracks->Unlock();
+			Button* farms = App->gui->GetActionButton(7);
+			farms->Unlock();
 
-		App->gui->warningMessages->hideMessage(NO_TREES);
-		HandleBuildingResources(structure_beingbuilt);
-		placingBuilding(structure_beingbuilt,position);
-		App->scene->inactive_workers -= 1;
-		if (App->actionscontroller->action_type == structure_beingbuilt)
-			App->actionscontroller->doingAction = false;
+			App->gui->warningMessages->hideMessage(NO_TREES);
+			HandleBuildingResources(structure_beingbuilt);
+
+			App->scene->inactive_workers -= 1;
+			if (App->actionscontroller->action_type == structure_beingbuilt && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT)
+				App->actionscontroller->doingAction = false;
+		}
 	}
 
 	if (building)
@@ -110,9 +134,9 @@ bool j1EntityController::Update(float dt)
 		buildingProcessDraw();
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI && !App->actionscontroller->doingAction)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI && !App->actionscontroller->doingAction_lastFrame)
 		selectionControl();
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction_lastFrame)
 		commandControl();
 
 	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && App->entitycontroller->building)
@@ -154,8 +178,14 @@ bool j1EntityController::CleanUp()
 {
 	if (!DeleteDB()) return false;
 
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)	
+	std::list<Entity*>::iterator it = entities.begin();
+	while (it != entities.end())
+	{
 		DeleteEntity(*it);
+		it++;
+		if ((*it) == nullptr)
+			break;
+	}
 
 	entities.clear();
 	selected_entities.clear();
@@ -183,32 +213,46 @@ bool j1EntityController::Load(pugi::xml_node& file)
 
 void j1EntityController::DeleteEntity(Entity* entity)
 {
-	entities.remove(entity);
-	selected_entities.remove(entity);
-	App->gui->deleteLifeBar(entity);
-
-	Unit * unit_to_remove = nullptr;
-	switch (entity->entity_type)
+	if (entity != nullptr)
 	{
-	case UNIT:
-		unit_to_remove = (Unit*)(entity);
-		unit_to_remove->squad->removeUnit(unit_to_remove);
-		if ((unit_to_remove)->squad->units.empty())
+		if(entity == *entity_iterator)
+			entity_iterator = entities.begin();
+
+		entities.remove(entity);
+		selected_entities.remove(entity);
+		App->gui->entityDeleted(entity);
+
+		Unit * unit_to_remove = nullptr;
+		switch (entity->entity_type)
 		{
-			all_squads.remove(unit_to_remove->squad);
-			selected_squads.remove(unit_to_remove->squad);
-			RELEASE(unit_to_remove->squad);
+		case UNIT:
+			unit_to_remove = (Unit*)(entity);
+			unit_to_remove->squad->removeUnit(unit_to_remove);
+			if (unit_to_remove->squad->units.empty())
+			{
+				if (*squad_iterator == unit_to_remove->squad)
+					squad_iterator = all_squads.begin();
+
+				all_squads.remove(unit_to_remove->squad);
+				selected_squads.remove(unit_to_remove->squad);
+				RELEASE(unit_to_remove->squad);
+			}
+			delete unit_to_remove;
+			break;
+		case BUILDING: delete ((Building*)(entity)); break;
+		case NATURE: delete ((Nature*)(entity)); break;
 		}
-		delete unit_to_remove;
-		break;
-	case BUILDING: delete ((Building*)(entity)); break;
-	case NATURE: delete ((Nature*)(entity)); break;
 	}
 }
 
 Unit* j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
 {
 	Unit* unit = new Unit(pos, *(unitDB[type]), squad);
+	if (!unit->IsEnemy())
+	{
+		App->scene->workers--;
+		App->scene->inactive_workers--;
+	}
 	entities.push_back(unit);
 	App->gui->createLifeBar(unit);
 	
@@ -259,15 +303,19 @@ Squad* j1EntityController::AddSquad(unitType type, fPoint position)
 			squad_vector.push_back(addUnit(world_p, type));
 		}
 		new_squad = new Squad(squad_vector);
+		if (!unitDB[type]->IsEnemy())
+		{
+			App->scene->wood -= unitDB[type]->wood_cost;
+		}
 		all_squads.push_back(new_squad);
 	}
 	return new_squad;
 }
 
-void j1EntityController::placingBuilding(buildingType type, iPoint position)
+bool j1EntityController::placingBuilding(buildingType type, iPoint position)
 {
 	iPoint pos;
-
+	bool ret = false;
 	if (building)
 	{
 		pos = App->render->ScreenToWorld(position.x, position.y);
@@ -279,12 +327,17 @@ void j1EntityController::placingBuilding(buildingType type, iPoint position)
 
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	pos = App->map->MapToWorld(pos.x, pos.y);
-	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y))
+	SDL_Rect building_col = { pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width, buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height };
+
+	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y) && App->entitycontroller->CheckCollidingWith(building_col).empty())
 	{
 		addBuilding(pos, type);
 		App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y, true,false);
 		building = false;
+		ret = true;
 	}
+
+	return ret;
 }
 
 void j1EntityController::buildingProcessDraw()
@@ -366,7 +419,13 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 				App->scene->inactive_workers += 1;
 			}
 		}
+		building->CalculateResourceProduction();
 	}
+}
+
+bool j1EntityController::CheckCostTroop(unitType target)
+{
+	return App->scene->wood >= unitDB[target]->wood_cost && App->scene->gold >= unitDB[target]->gold_cost && App->scene->workerAvalible(unitDB[target]->squad_members);
 }
 
 bool j1EntityController::CheckCostBuiding(buildingType target)
@@ -482,6 +541,10 @@ void j1EntityController::selectionControl()
 					}
 				}
 				else selected_entities.push_back(*it);
+				if ((*it)->entity_type == BUILDING)
+				{
+					App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
+				}
 			}
 		}
 
@@ -504,9 +567,9 @@ void j1EntityController::selectionControl()
 	}
 }
 
-Unit* j1EntityController::getNearestEnemyUnit(fPoint position, bool isEnemy)
+Entity* j1EntityController::getNearestEnemy(fPoint position, bool isEnemy)
 {
-	Unit* ret = nullptr;
+	Entity* ret = nullptr;
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
 		if ((*it)->entity_type == UNIT)
@@ -517,6 +580,11 @@ Unit* j1EntityController::getNearestEnemyUnit(fPoint position, bool isEnemy)
 				if (!ret) { ret = enemy; continue; }
 				else if (enemy->position.DistanceTo(position) < ret->position.DistanceTo(position)) ret = enemy;
 			}
+		}
+		else if ((*it)->entity_type == BUILDING && isEnemy)
+		{
+			if (!ret) { ret = (*it); continue; }
+			else if ((*it)->position.DistanceTo(position) < ret->position.DistanceTo(position)) ret = (*it);
 		}
 	}
 	return ret;
@@ -586,7 +654,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitTemplate->attack		= NodeInfo.child("Stats").child("attack").attribute("value").as_int(0);
 		unitTemplate->defense		= NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
 		unitTemplate->piercing_atk	= NodeInfo.child("Stats").child("piercingDamage").attribute("value").as_int(0);
-		unitTemplate->speed			= NodeInfo.child("Stats").child("movementSpeed").attribute("value").as_int(0);
+		unitTemplate->speed			= NodeInfo.child("Stats").child("movementSpeed").attribute("value").as_float(0.0f);
 		unitTemplate->range			= NodeInfo.child("Stats").child("range").attribute("value").as_int(0);
 		unitTemplate->line_of_sight = NodeInfo.child("Stats").child("lineOfSight").attribute("value").as_int(0);
 		unitTemplate->flying		= NodeInfo.child("Stats").child("flying").attribute("value").as_bool(false);
@@ -719,7 +787,7 @@ void j1EntityController::StartHero(iPoint pos)
 	hero->position.x = hero->collider.x = pos.x;
 	hero->position.y = hero->collider.y = pos.y;
 
-	hero->skill_one = new Skill(hero, 40, 60, 400, 20, AREA);		//Icicle Crash
+	hero->skill_one = new Skill(hero, 3, 60, 400, 20, AREA);		//Icicle Crash
 	hero->skill_two = new Skill(hero, 0, 200, 200, 20, NONE_RANGE);	//Overflow
 	hero->skill_three = new Skill(hero, 0, 50, 200, 10, LINE);		//Dragon Breath
 
@@ -728,6 +796,8 @@ void j1EntityController::StartHero(iPoint pos)
 
 	Squad* new_squad = new Squad(aux_vector);
 	all_squads.push_back(new_squad);
+
+	App->gui->createLifeBar(hero);
 
 	entities.push_back(hero);
 }

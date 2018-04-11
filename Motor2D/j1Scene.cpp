@@ -69,6 +69,7 @@ bool j1Scene::Update(float dt)
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
 
+
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT)
 	{
 		App->audio->PlayFx(listOfSFX::PEASANT_READY);
@@ -77,13 +78,13 @@ bool j1Scene::Update(float dt)
 	{
 		App->audio->PlayFx(listOfSFX::PEASANT_FOLLOW_ORDERS);
 	}
+
 	return true;
 }
 
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
-
 	return true;
 }
 
@@ -105,14 +106,15 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	return true;
 }
 
-bool j1Scene::workerAvalible()
+bool j1Scene::workerAvalible(int num)
 {
-	bool ret;
+	bool ret = false;
+
 	if (inactive_workers == 0)
 	{
 		ret = false;
 	}
-	else if (inactive_workers > 0)
+	else if (inactive_workers >= num)
 	{
 		ret = true;
 	}

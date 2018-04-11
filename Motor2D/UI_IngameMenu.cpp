@@ -60,8 +60,15 @@ void IngameMenu::createSelectionBasicInfo()
 	{
 		for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
 		{
-			troopsIcons.push_back(new Image(icon_atlas, firstIcon_pos.x + icons_offset.x*counterX, firstIcon_pos.y + icons_offset.y*counterY, App->gui->GetIconRect((*it_e)), callback));
-			(*troopsIcons.rbegin())->setBorder(true, White, 4);
+			TroopIcon* icon = new TroopIcon();
+
+			Image* img = new Image(icon_atlas, firstIcon_pos.x + icons_offset.x*counterX, firstIcon_pos.y + icons_offset.y*counterY, App->gui->GetIconRect((*it_e)), callback);
+			img->setBorder(true, White, 4);
+			
+			icon->image = img;
+			icon->entity = (*it_e);
+			troopsIcons.push_back(icon);
+			
 			lifeBars.push_back(new LifeBar((*it_e), texture, firstIcon_pos.x + icons_offset.x*counterX + lifeBars_offset.x, firstIcon_pos.y + icons_offset.y*counterY + lifeBars_offset.y));
 			counterY++;
 			if (counterY == 3)
@@ -80,7 +87,7 @@ void IngameMenu::createSelectionBasicInfo()
 			{
 				Unit* unit = (*it_s)->units[i];
 
-				squadTroopIcon* icon = new squadTroopIcon();
+				TroopIcon* icon = new TroopIcon();
 
 				Image* img = new Image(icon_atlas, position.x + squadIcon_offsetX*counterX, position.y + icons_offset.y*counterY, App->gui->GetIconRect(unit), callback);
 				Color borderColor = Green;
@@ -93,8 +100,7 @@ void IngameMenu::createSelectionBasicInfo()
 				img->setBorder(true, borderColor, 4);
 
 				icon->image = img;
-				icon->HP = &unit->current_HP;
-				icon->max_HP = &unit->max_HP;
+				icon->entity = unit;
 
 				squadTroopsIcons.push_back(icon);
 
@@ -230,12 +236,13 @@ void IngameMenu::updateActionButtons()
 
 void IngameMenu::updateSquadIcons()
 {
-	for (std::list<squadTroopIcon*>::iterator it_i = squadTroopsIcons.begin(); it_i != squadTroopsIcons.end(); it_i++)
+	for (std::list<TroopIcon*>::iterator it_i = squadTroopsIcons.begin(); it_i != squadTroopsIcons.end(); it_i++)
 	{
-		if (*(*it_i)->HP < *(*it_i)->max_HP*0.2)
+		Unit* unit = ((Unit*)(*it_i)->entity);
+		if (unit->current_HP < unit->max_HP*0.2)
 			(*it_i)->image->border_color = Red;
-		else if (*(*it_i)->HP < *(*it_i)->max_HP*0.5)
-			(*it_i)->image->border_color = Yellow;
+		else if (unit->current_HP < unit->max_HP*0.5)
+(*it_i)->image->border_color = Yellow;
 		else
 			(*it_i)->image->border_color = Green;
 	}
@@ -246,7 +253,7 @@ void IngameMenu::cleanLists(bool icons, bool squadIcons, bool lifebars, bool sta
 	if (icons)
 	{
 		//Clean troops icons
-		std::list<Image*>::iterator it_i = troopsIcons.begin();
+		std::list<TroopIcon*>::iterator it_i = troopsIcons.begin();
 		while (it_i != troopsIcons.end())
 		{
 			RELEASE(*it_i);
@@ -257,7 +264,7 @@ void IngameMenu::cleanLists(bool icons, bool squadIcons, bool lifebars, bool sta
 	if (squadIcons)
 	{
 		//Clean squad troops icons
-		std::list<squadTroopIcon*>::iterator it_i = squadTroopsIcons.begin();
+		std::list<TroopIcon*>::iterator it_i = squadTroopsIcons.begin();
 		while (it_i != squadTroopsIcons.end())
 		{
 			RELEASE(*it_i);
@@ -300,6 +307,91 @@ void IngameMenu::cleanLists(bool icons, bool squadIcons, bool lifebars, bool sta
 	}
 }
 
+void IngameMenu::deleteMenuTroop(Entity* entity)
+{
+	//Delete the icon
+	std::list<TroopIcon*>::iterator it_i;
+	if (severalSquads)
+		deleteTroopIcon(entity, squadTroopsIcons);
+	else
+		deleteTroopIcon(entity, troopsIcons);
+
+	//Delete the life bar
+	App->gui->deleteLifeBar(entity, lifeBars);
+
+	OrderSelectionIcons();
+}
+
+void IngameMenu::deleteTroopIcon(Entity* entity, std::list<TroopIcon*>& list)
+{
+	std::list<TroopIcon*>::iterator it_i = list.begin();
+	while (it_i != list.end())
+	{
+		if ((*it_i)->entity == entity)
+		{
+			list.erase(it_i);
+			RELEASE((*it_i));
+			break;
+		}
+		it_i++;
+	}
+}
+
+void IngameMenu::OrderSelectionIcons()
+{
+	int counterX = 0;
+	int counterY = 0;
+	if (!severalSquads)
+	{
+		for (std::list<TroopIcon*>::iterator it_i = troopsIcons.begin(); it_i != troopsIcons.end(); it_i++)
+		{
+			(*it_i)->image->localPosition = { firstIcon_pos.x + icons_offset.x*counterX, firstIcon_pos.y + icons_offset.y*counterY };
+			counterY++;
+			if (counterY == 3)
+			{
+				counterX++;
+				counterY = 0;
+			}
+		}
+		counterX = 0;
+		counterY = 0;
+		for (std::list<LifeBar*>::iterator it_l = lifeBars.begin(); it_l != lifeBars.end(); it_l++)
+		{
+			(*it_l)->bar->localPosition = { firstIcon_pos.x + icons_offset.x*counterX + lifeBars_offset.x, firstIcon_pos.y + icons_offset.y*counterY + lifeBars_offset.y };
+			counterY++;
+			if (counterY == 3)
+			{
+				counterX++;
+				counterY = 0;
+			}
+		}		
+	}
+	else
+	{
+		if (squadTroopsIcons.size() > 0)
+		{
+			iPoint position = firstIcon_pos;
+			Squad* common_squad = ((Unit*)(*squadTroopsIcons.begin())->entity)->squad;
+			for (std::list<TroopIcon*>::iterator it_i = squadTroopsIcons.begin(); it_i != squadTroopsIcons.end(); it_i++)
+			{
+				if (common_squad != ((Unit*)(*it_i)->entity)->squad)
+				{
+					common_squad = ((Unit*)(*it_i)->entity)->squad;
+					counterY++;
+					counterX = 0;
+					if (counterY == 3)
+					{
+						position.x += icons_offset.x;
+						counterY = 0;
+					}
+				}
+				(*it_i)->image->localPosition = { position.x + squadIcon_offsetX*counterX, position.y + icons_offset.y*counterY };
+				counterX++;				
+			}
+		}
+	}
+}
+
 void IngameMenu::BlitElement(bool use_camera)
 {
 	BROFILER_CATEGORY("In-game Menu Blit", Profiler::Color::Beige);
@@ -314,16 +406,16 @@ void IngameMenu::BlitElement(bool use_camera)
 	if (severalSquads)
 	{
 		updateSquadIcons();
-		for (std::list<squadTroopIcon*>::iterator it_i = squadTroopsIcons.begin(); it_i != squadTroopsIcons.end(); it_i++)
+		for (std::list<TroopIcon*>::iterator it_i = squadTroopsIcons.begin(); it_i != squadTroopsIcons.end(); it_i++)
 		{
 			(*it_i)->image->BlitElement(use_camera);
 		}
 	}
 	else
 	{
-		for (std::list<Image*>::iterator it_i = troopsIcons.begin(); it_i != troopsIcons.end(); it_i++)
+		for (std::list<TroopIcon*>::iterator it_i = troopsIcons.begin(); it_i != troopsIcons.end(); it_i++)
 		{
-			(*it_i)->BlitElement(use_camera);
+			(*it_i)->image->BlitElement(use_camera);
 		}
 		//Blit life bars
 		for (std::list<LifeBar*>::iterator it_l = lifeBars.begin(); it_l != lifeBars.end(); it_l++)

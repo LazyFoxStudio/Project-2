@@ -33,6 +33,7 @@ public:
 	bool being_built = false;
 	bool destroyed = false;
 	int villagers_inside = 0;
+	float resource_production = 0;
 
 	j1Timer timer;
 	int last_frame_time = 0;
@@ -52,6 +53,7 @@ public:
 	void HandleConstruction();
 	void HandleDestruction();
 	void HandleResourceProduction();
+	void CalculateResourceProduction();
 	void Draw(float dt);
 };
 

@@ -22,7 +22,10 @@ public:
 	Chrono(int x, int y, chrono_type type, _TTF_Font* font, SDL_Color color, j1Module* callback) : UI_element(x, y, element_type::CHRONO, { 0, 0, 0, 0 }, callback, nullptr),
 		type(type)
 	{
-		text = new Text("00000", x, y, font, color, nullptr);
+		text = new Text("00:00", 0, 0, font, color, nullptr);
+		text->parent = this;
+		section.w = text->tex_width;
+		section.h = text->tex_height;
 		//counter.Pause();
 		time = -1;
 	}

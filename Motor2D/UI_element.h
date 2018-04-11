@@ -20,7 +20,8 @@ enum element_type
 	WINDOW,
 	CHRONO,
 	PROGRESSBAR,
-	MENU
+	MENU,
+	COSTDISPLAY
 };
 
 enum element_function
@@ -46,14 +47,18 @@ enum element_function
 	BUILD_LUMBER_MILL_FUNCTION,
 	BUILD_FARM_FUNCTION,
 	UNASSIGN_WORKER_FUNCTION,
-	ASSIGN_WORKER_FUNCTION
+	ASSIGN_WORKER_FUNCTION,
+	CREATE_FOOTMAN_FUNCTION,
+	CREATE_ARCHER_FUNCTION
 };
 
 enum element_state
 {
 	STANDBY,
 	MOUSEOVER,
-	CLICKED
+	CLICKED,
+	LOCKED,
+	LOCKED_MOUSEOVER
 };
 
 class UI_element
@@ -114,6 +119,11 @@ public:
 
 	void End_Drag();
 
+	void setCondition(std::string condition);
+
+	void Lock();
+	void Unlock();
+
 public:
 
 	SDL_Texture* texture = nullptr;
@@ -126,6 +136,7 @@ public:
 	UI_element* parent = nullptr;
 	std::list<UI_element*> childs;
 	UI_element* popUpInfo = nullptr;
+	UI_element* conditionMessage = nullptr;
 	UI_element* costDisplay = nullptr;
 	bool hovering = false;
 	bool moving = false;

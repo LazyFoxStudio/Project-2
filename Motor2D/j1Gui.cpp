@@ -23,6 +23,7 @@
 #include "UI_CostDisplay.h"
 #include "UI_WarningMessages.h"
 
+
 j1Gui::j1Gui() : j1Module()
 {
 	name = "gui";
@@ -184,13 +185,25 @@ bool j1Gui::PostUpdate()
 	//Draw PopUp
 	if (current_hovering_element != nullptr && current_hovering_element->blitPopUpInfo)
 	{
-		if (current_hovering_element->popUpInfo != nullptr)
-			current_hovering_element->popUpInfo->BlitElement();
-		if (current_hovering_element->costDisplay != nullptr)
-			current_hovering_element->costDisplay->BlitElement();
+		if (current_hovering_element->state == MOUSEOVER)
+		{
+			if (current_hovering_element->popUpInfo != nullptr)
+				current_hovering_element->popUpInfo->BlitElement();
+			if (current_hovering_element->costDisplay != nullptr)
+				current_hovering_element->costDisplay->BlitElement();
+		}
+		else if (current_hovering_element->state == LOCKED_MOUSEOVER)
+		{
+			if (current_hovering_element->conditionMessage != nullptr)
+				current_hovering_element->conditionMessage->BlitElement();
+		}
 	}		
 	if (warningMessages != nullptr && warningMessages->active)
 		warningMessages->BlitElement();
+
+	//minimap_
+	App->uiscene->minimap->DrawMinimap();
+
 	//Draw Debug
 	if (UI_Debug)
 		UIDebugDraw();
@@ -392,6 +405,9 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 			element = createProgressBar(tmp, callback);
 		else if (type == "ingamemenu")
 			element = createIngameMenu(tmp, callback);
+		//minimap_
+		else if (type == "minimap")
+			createMinimap(tmp, nullptr);
 
 		element->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
 		element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
@@ -620,6 +636,17 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 	return ret;
 }
 
+//minimap_
+void j1Gui::createMinimap(pugi::xml_node node, j1Module* callback)
+{
+	int position_x = node.child("position").attribute("x").as_int();
+	int position_y = node.child("position").attribute("y").as_int();;
+	int map_width = node.child("map").attribute("width").as_int();;
+	int map_height= node.child("map").attribute("height").as_int();;
+
+	App->uiscene->minimap = new Minimap(node.child("base_image").attribute("path").as_string(),position_x,position_y,map_width,map_height);
+}
+
 void j1Gui::createLifeBar(Entity* entity)
 {
 	LifeBar* ret = new LifeBar(entity, atlas);
@@ -627,21 +654,33 @@ void j1Gui::createLifeBar(Entity* entity)
 	LifeBars.push_back(ret);
 }
 
-void j1Gui::deleteLifeBar(Entity* entity)
+void j1Gui::deleteLifeBar(Entity* entity, std::list<LifeBar*>& list)
 {
-	for (std::list<LifeBar*>::iterator it_l = LifeBars.begin(); it_l != LifeBars.end(); it_l++)
+	std::list<LifeBar*>::iterator it_l = list.begin();
+	while (it_l != list.end())
 	{
 		if ((*it_l)->entity == entity)
 		{
-			LifeBars.erase(it_l);
+			list.erase(it_l);
 			RELEASE((*it_l));
+			break;
 		}
+		it_l++;
 	}
 }
 
-CostDisplay* j1Gui::createCostDisplay(std::string name, int wood_cost, int gold_cost, int oil_cost)
+void j1Gui::entityDeleted(Entity* entity)
 {
-	CostDisplay* ret = new CostDisplay(atlas, name, wood_cost, WOOD);
+	//Delete in-game life bar
+	deleteLifeBar(entity, LifeBars);
+
+	//Delete information from the in-game menu
+	inGameMenu->deleteMenuTroop(entity);
+}
+
+CostDisplay* j1Gui::createCostDisplay(std::string name, int wood_cost, int gold_cost, int oil_cost, int workers_cost)
+{
+	CostDisplay* ret = new CostDisplay(atlas, name, wood_cost, gold_cost, oil_cost, workers_cost);
 	return ret;
 }
 
@@ -689,7 +728,7 @@ void j1Gui::LoadDB(pugi::xml_node node)
 		pugi::xml_node cost = actionButton.child("popUp").child("Cost");
 		if (cost && info)
 		{
-			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.attribute("wood").as_int(), cost.attribute("gold").as_int(), cost.attribute("oil").as_int());
+			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.attribute("wood").as_int(0), cost.attribute("gold").as_int(0), cost.attribute("oil").as_int(0), cost.attribute("workers").as_int(0));
 		}
 		else if (info)
 		{

@@ -54,7 +54,7 @@ Resolution of the screen: 1680x 1050y
 	<fonts>
 		<font path="fonts/Old School Adventures.ttf" size="10"/>
 	</fonts>
-	<menu type="2" active="true">
+	<menu type="2" active="true">	
 	<!-- Resources Display -->
 		<atlas_image icon_atlas="false">
 			<position x="0" y="0"/>
@@ -86,7 +86,20 @@ Resolution of the screen: 1680x 1050y
 				</text>
 			</childs>
 		</atlas_image>
-	
+		
+		<atlas_image icon_atlas="false">
+			<position x="1580" y="0"/>
+			<section x="530" y="393" w="100" h="36"/>
+			<childs>
+				<stopwatch center="true">
+					<position x="1607" y="2"/>
+					<font id="1"/>
+					<color r="255" g="255" b="255" a="255"/>
+					<interactive value="false"/>
+				</stopwatch>
+			</childs>
+		</atlas_image>
+		
 	<!-- Options Button -->
 		<button>
 			<position x="0" y="0"/>
@@ -116,7 +129,14 @@ Resolution of the screen: 1680x 1050y
     <costdisplay>
       
     </costdisplay>
-   
+
+    <!-- Minimap-->
+    <minimap>
+      <position x="6" y="800"/>
+      <base_image path ="Assets/Sprites/Minimap Sprites/minimap_base.png"/>
+      <map width ="4096" height ="4096"/>
+    </minimap>
+    
 	</menu>
 </config>
 
