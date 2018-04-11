@@ -116,6 +116,7 @@
     <ClCompile Include="UI_Image.cpp" />
     <ClCompile Include="UI_IngameMenu.cpp" />
     <ClCompile Include="UI_LifeBar.cpp" />
+    <ClCompile Include="UI_NextWaveWindow.cpp" />
     <ClCompile Include="UI_ProgressBar.cpp" />
     <ClCompile Include="UI_Text.cpp" />
     <ClCompile Include="UI_WarningMessages.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="UI_Image.h" />
     <ClInclude Include="UI_IngameMenu.h" />
     <ClInclude Include="UI_LifeBar.h" />
+    <ClInclude Include="UI_NextWaveWindow.h" />
     <ClInclude Include="UI_ProgressBar.h" />
     <ClInclude Include="UI_Text.h" />
     <ClInclude Include="UI_WarningMessages.h" />

@@ -19,6 +19,7 @@
 #include "j1Input.h"
 #include "j1ActionsController.h"
 #include "UI_CostDisplay.h"
+#include "j1WaveController.h"
 
 j1UIScene::j1UIScene() { name = "introscene";}
 
@@ -45,6 +46,9 @@ bool j1UIScene::Start()
 
 	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 3);
 	wood_display->convertIntoCounter(&App->scene->wood);
+
+	Text* waves = (Text*)App->gui->GetElement(TEXT, 5);
+	waves->convertIntoCounter(&App->wavecontroller->current_wave);
 
 	//Hardcoded
 	Button* barracks = App->gui->GetActionButton(5);
