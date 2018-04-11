@@ -93,6 +93,10 @@ public:
 	Window* createWindow(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 	IngameMenu* createIngameMenu(pugi::xml_node node, j1Module* callback = nullptr);
+
+	//minimap_
+	void createMinimap(pugi::xml_node node, j1Module* callback = nullptr);
+
 	void createLifeBar(Entity* entity);
 	void deleteLifeBar(Entity* entity, std::list<LifeBar*>& list);
 	void entityDeleted(Entity* entity);

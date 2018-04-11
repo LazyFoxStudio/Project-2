@@ -123,7 +123,14 @@ Resolution of the screen: 1680x 1050y
     <costdisplay>
       
     </costdisplay>
-   
+
+    <!-- Minimap-->
+    <minimap>
+      <position x="6" y="800"/>
+      <base_image path ="Assets/Sprites/Minimap Sprites/minimap_base.png"/>
+      <map width ="4096" height ="4096"/>
+    </minimap>
+    
 	</menu>
 </config>
 

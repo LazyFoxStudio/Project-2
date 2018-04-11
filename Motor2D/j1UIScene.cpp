@@ -35,7 +35,7 @@ bool j1UIScene::Start()
 	//App->audio->PlayMusic("Main_Theme.mp3");
 
 	LoadUI(guiconfig);
-	
+
 	//Set resource counters
 	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 0);
 	text_position_y->convertIntoCounter(&App->scene->inactive_workers);
@@ -68,6 +68,19 @@ bool j1UIScene::Update(float dt)
 	x = mouse_test.x;
 	y = mouse_test.y;
 
+	//minimap_
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		int camx, camy;
+		minimap->Mouse_to_map(camx, camy);
+
+		if (camx != -1 && camy != -1)
+		{
+			App->render->camera.y = -camy + App->win->height / 2;
+			App->render->camera.x = -camx + App->win->width / 2;
+		}
+	}
+
 	return true;
 }
 
@@ -97,6 +110,7 @@ void j1UIScene::LoadUI(pugi::xml_node node)
 
 bool j1UIScene::CleanUp()
 {
+	minimap->~Minimap();
 	return true;
 }
 
