@@ -52,7 +52,10 @@
 
   <scene>
     <starting_resources>
-      <wood value="350"/>
+
+
+      <wood value="1000"/>
+
       <gold value="20000"/>
 
       <workers value="19"/>
