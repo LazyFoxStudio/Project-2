@@ -374,8 +374,6 @@ void IngameMenu::OrderSelectionIcons()
 			Squad* common_squad = ((Unit*)(*squadTroopsIcons.begin())->entity)->squad;
 			for (std::list<TroopIcon*>::iterator it_i = squadTroopsIcons.begin(); it_i != squadTroopsIcons.end(); it_i++)
 			{
-				(*it_i)->image->localPosition = { position.x + squadIcon_offsetX*counterX, position.y + icons_offset.y*counterY };
-				counterX++;
 				if (common_squad != ((Unit*)(*it_i)->entity)->squad)
 				{
 					common_squad = ((Unit*)(*it_i)->entity)->squad;
@@ -387,6 +385,8 @@ void IngameMenu::OrderSelectionIcons()
 						counterY = 0;
 					}
 				}
+				(*it_i)->image->localPosition = { position.x + squadIcon_offsetX*counterX, position.y + icons_offset.y*counterY };
+				counterX++;				
 			}
 		}
 	}
