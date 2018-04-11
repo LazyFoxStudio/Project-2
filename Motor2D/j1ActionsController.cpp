@@ -65,6 +65,13 @@ bool j1ActionsController::Update(float dt)
 		}
 		
 	}
+	if (doingAction == true)
+		doingAction_lastFrame = true;
+	else
+	{
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+			doingAction_lastFrame = false;
+	}
 
 	return true;
 }

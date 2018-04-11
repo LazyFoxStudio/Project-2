@@ -118,7 +118,7 @@ bool j1EntityController::Update(float dt)
 			HandleBuildingResources(structure_beingbuilt);
 
 			App->scene->inactive_workers -= 1;
-			if (App->actionscontroller->action_type == structure_beingbuilt)
+			if (App->actionscontroller->action_type == structure_beingbuilt && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT)
 				App->actionscontroller->doingAction = false;
 		}
 	}
@@ -128,9 +128,9 @@ bool j1EntityController::Update(float dt)
 		buildingProcessDraw();
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI && !App->actionscontroller->doingAction)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->gui->clickedOnUI && !App->actionscontroller->doingAction_lastFrame)
 		selectionControl();
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction_lastFrame)
 		commandControl();
 
 	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && App->entitycontroller->building)

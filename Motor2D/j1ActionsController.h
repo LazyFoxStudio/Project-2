@@ -34,6 +34,7 @@ public:
 public:
 
 	bool doingAction = false;
+	bool doingAction_lastFrame = false;
 	bool action_assigned = false;
 	actionType action_type;
 
