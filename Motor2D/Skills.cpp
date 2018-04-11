@@ -51,17 +51,22 @@ void Skill::DrawRange()
 
 void Skill::BFS()
 {
-	if (radius == 0) radius = 15;
+	if (radius == 0) radius = 1;
 
 	for (int i = 0; i < App->map->data.width; i++)
 	{
 		for (int j = 0; j < App->map->data.width; j++)
 		{
-			iPoint world_tile = App->map->MapToWorld(i, j);
-			if (world_tile.DistanceTo(cast_pos) < radius && App->pathfinding->IsWalkable(iPoint(i, j)))
-				toDraw.push_back(world_tile);
+			iPoint world_tile = { i,j } /*= App->map->MapToWorld(i, j)*/;
+			iPoint world_tile_cast = App->map->WorldToMap(cast_pos.x, cast_pos.y);
+			if (world_tile.DistanceTo(world_tile_cast) < radius && App->pathfinding->IsWalkable(iPoint(i, j)))
+			{
+				toDraw.push_back(App->map->MapToWorld(world_tile.x,world_tile.y));
+			}
 		}
 	}
+
+
 }
 
 void Skill::Line()
@@ -90,7 +95,9 @@ void Skill::Activate()
 		{
 			if (((Unit*)(*item))->IsEnemy())
 			{
-				if((*item)->position.DistanceTo(fPoint(cast_pos.x, cast_pos.y)) < radius)
+				fPoint aux_point = { (float)App->map->WorldToMap(cast_pos.x, cast_pos.y).x,(float)App->map->WorldToMap(cast_pos.x, cast_pos.y).y };
+				fPoint aux_pos = { (float)App->map->WorldToMap((*item)->position.x,(*item)->position.y).x,(float)App->map->WorldToMap((*item)->position.x,(*item)->position.y).y };
+				if(aux_pos.DistanceTo(aux_point) < radius)
 					((Unit*)(*item))->current_HP -= damage;
 			}
 		}
