@@ -7,21 +7,25 @@
 class Chrono;
 class Text;
 class Window;
+class SDL_texture;
 
 class NextWaveWindow : public UI_element
 {
 public:
-	NextWaveWindow(SDL_Texture* atlas, int x, int y, SDL_Rect section, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, j1Module* callback);
+	NextWaveWindow(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, j1Module* callback);
 	~NextWaveWindow();
 
 	void BlitElement(bool use_camera = false);
 
 	void updateWave();
+	void cleanIcons();
 
 public:
 
+	SDL_Texture* icon_atlas = nullptr;
 	Window* window = nullptr;
 	std::list<TroopIcon*> enemiesIcons;
+	std::list<Text*> squads;
 	Text* text = nullptr;
 	Chrono* timer = nullptr;
 

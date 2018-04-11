@@ -113,6 +113,8 @@ public:
 	void AddIconData(buildingType type, pugi::xml_node node);
 	void AddIconData(resourceType type, pugi::xml_node node);
 	SDL_Rect GetIconRect(Entity* entity);
+	//Hardcoded
+	SDL_Rect GetUnitRect(unitType type);
 	SDL_Rect GetLifeBarRect(std::string tag);
 	Button* GetActionButton(uint id);
 	std::list<Button*> activateActionButtons(uint ids[9]);

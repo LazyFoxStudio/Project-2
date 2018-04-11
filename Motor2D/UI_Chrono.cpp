@@ -16,6 +16,7 @@ void Chrono::setAlarm(int alarm)
 
 void Chrono::restartChrono()
 {
+	counter.Start();
 	switch (this->type)
 	{
 	case TIMER:

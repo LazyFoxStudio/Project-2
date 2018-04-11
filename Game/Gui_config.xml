@@ -123,7 +123,7 @@ Resolution of the screen: 1680x 1050y
 		<nextwavewindow icon_atlas="false" active ="false">
 			<position x="1408" y="462"/>
 			<section x="0" y="271" w="272" h="336"/>
-			<icons x="1300" y="500" offsetX="150" offsetY="78"/>
+			<icons x="1430" y="535" offsetX="150" offsetY="80"/>
 			<draggable horizontal="false" vertical="false"/>
 		</nextwavewindow>
 
