@@ -60,7 +60,7 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	BROFILER_CATEGORY("Scene update", Profiler::Color::Black);
+	BROFILER_CATEGORY("Scene update", Profiler::Color::Chocolate);
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !App->entitycontroller->building)
 	{

@@ -54,7 +54,7 @@
     <starting_resources>
 
 
-      <wood value="350"/>
+      <wood value="500"/>
 
       <gold value="20000"/>
 
@@ -65,8 +65,8 @@
   </scene>
 
   <wavecontroller>
-    <initialWait value="10"/>
-    <waitBetweenWaves value="60"/>
+    <initialWait value="120"/>
+    <waitBetweenWaves value="80"/>
     <spawn1 x="2154" y="256"/>
     <spawn2 x="3605" y="1844"/>
     <spawn3 x="2177" y="3549"/>
