@@ -72,11 +72,11 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT)
 	{
-		App->audio->PlayFx(listOfSFX::PEASANT_READY);
+		App->audio->PlayFx(SFX_PEASANT_READY);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_REPEAT)
 	{
-		App->audio->PlayFx(listOfSFX::PEASANT_FOLLOW_ORDERS);
+		App->audio->PlayFx(SFX_PEASANT_FOLLOWING_ORDERS);
 	}
 
 	return true;
