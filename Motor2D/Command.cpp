@@ -106,7 +106,7 @@ bool Attack::OnUpdate(float dt)
 
 			case BUILDING:
 				enemy_building = (Building*)enemy;
-				enemy_building->current_HP -= unit->piercing_atk + (MAX(unit->attack - enemy_building->defense, 0));
+				enemy_building->current_HP -= unit->piercing_atk + (MAX(((int)unit->attack - (int)enemy_building->defense), 0));
 			}
 			timer.Start();
 		}
