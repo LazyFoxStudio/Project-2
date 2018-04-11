@@ -41,6 +41,7 @@ bool MoveTo::OnUpdate(float dt)
 {
 	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
+	FieldNode* f = flow_field->getNodeAt(map_p)->parent;
 	if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR || !flow_field->getNodeAt(map_p)->parent)
 		Stop();
 	else
@@ -240,7 +241,10 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 
 bool AttackingMoveToSquad::OnStop()
 {
-	flow_field->finished = true;
+	if (flow_field)
+	{
+		flow_field->finished = true;
+	}
 	RELEASE(atk_flow_field);
 	return true;
 }

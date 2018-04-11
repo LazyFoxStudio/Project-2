@@ -425,10 +425,10 @@ bool PathProcessor::ProcessFlowField(j1Timer& timer)
 	switch (flow_field->stage)
 	{
 	case REQUESTED:
-		if (App->pathfinding->IsWalkable(destination))
+		if (!App->pathfinding->IsWalkable(destination))
 			destination = App->pathfinding->FirstWalkableAdjacent(destination);
 
-		if (App->pathfinding->IsWalkable(origin))
+		if (!App->pathfinding->IsWalkable(origin))
 			origin = App->pathfinding->FirstWalkableAdjacent(origin);
 
 		if (!App->pathfinding->IsWalkable(destination) || !App->pathfinding->IsWalkable(origin))
@@ -466,13 +466,14 @@ bool PathProcessor::ProcessFlowField(j1Timer& timer)
 					flow_field_node->parent = flow_field->getNodeAt(current_tile.position);
 					open.push_back(*flow_field_node);
 
-					if (adjacents[i].position == origin) flow_field->stage = COMPLETED;
+					if (adjacents[i].position == origin)
+						dest_found = true;
 				}
 			}
 			adjacents.clear();
 		}
 
-		if (!flow_field->stage == COMPLETED) flow_field->stage = FAILED;
+		dest_found ? flow_field->stage = COMPLETED : flow_field->stage = FAILED;
 		break;
 	default: 
 		break;

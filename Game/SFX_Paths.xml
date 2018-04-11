@@ -1,5 +1,21 @@
 <node>
+<!-- Peasant -->
 	<path sfx="Peasant/Psready.wav"/>
-	<path sfx="Peasant/Pswhat1.wav"/>
+	<path sfx="Peasant/Pswhat1.wav"/>	
+	<path sfx="Peasant/Pspissd7.wav"/>	
+	<path sfx="Peasant/Psyessr4.wav"/>	
+	<path sfx="Peasant/Pswrkdon.wav"/>
+<!-- Archer -->	
+	<path sfx="Elves/Eready.wav"/>
+	<path sfx="Elves/Ewhat3.wav"/>
+	<path sfx="Elves/Eyessir3.wav"/>
+	<path sfx="Elves/Epissed3.wav"/>
+<!-- Footman -->
+	<path sfx="Human/Hready.wav"/>
+	<path sfx="Human/Hwhat3.wav"/>
+	<path sfx="Human/Hyessir3.wav"/>
+	<path sfx="Human/Hpissed3.wav"/>
+<!-- Miscellaneous -->
+	<path sfx="Misc/Sword3.wav"/>
 </node>
 
