@@ -93,7 +93,7 @@ public:
 
 public:
 
-	MoveToSquad(Unit* commander, iPoint map_dest) : Command(commander, MOVETOSQUAD), dest(map_dest) {};
+	MoveToSquad(Unit* commander, iPoint map_dest);
 
 private:
 
