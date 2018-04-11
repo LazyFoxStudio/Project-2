@@ -6,43 +6,58 @@
 #include "j1Scene.h"
 #include "j1Render.h"
 
-CostDisplay::CostDisplay(SDL_Texture* icon_atlas, std::string entityname, int cost, resourceType resource)
+CostDisplay::CostDisplay(SDL_Texture* texture, std::string entityname, int wood_cost, int gold_cost, int oil_cost, int workers_cost): UI_element(0,0,COSTDISPLAY, {0,0,0,0}, nullptr, texture)
 {
-	localPosition = { 400, 70 };
-
 	text_name = new Text(entityname.c_str(), 0, 0, (*App->font->fonts.begin()), { 255,255,255,255 }, callback);
-	text_cost = new Text(std::to_string(cost), 50, 37, (*App->font->fonts.begin()), { 255,255,255,255 }, callback);
-	display_cost = cost;
 
-	icon_image = new Image(icon_atlas, 0, 35, {436,341,37,36 }, callback); //WOOD
+	SDL_Rect wood_icon = { 436,341,37,36 };
+	SDL_Rect gold_icon = { 0,0,0,0 };
+	SDL_Rect oil_icon = { 0,0,0,0 };
+	SDL_Rect workers_icon = { 620,341,41,37 };
 
-	section = { 390, 65, (int)text_name->tex_width + 15, (int)(text_name->tex_height + icon_image->section.h + 15) };
-	switch (resource)
+	if (wood_cost > 0)
 	{
-	case NONE_NATURE:
-		break;
-	case WOOD:
-		break;
-	case GOLD:
-		break;
-	case STONE:
-		break;
+		wood = new resource_cost(texture, wood_cost, wood_icon);
+		appendChild(wood->text_cost);
+		appendChild(wood->resource_icon);
+		resources_num++;
+	}
+	if (gold_cost > 0)
+	{
+		gold = new resource_cost(texture, gold_cost, gold_icon);
+		appendChild(gold->text_cost);
+		appendChild(gold->resource_icon);
+		resources_num++;
+	}
+	if (oil_cost > 0)
+	{
+		oil = new resource_cost(texture, oil_cost, oil_icon);
+		appendChild(oil->text_cost);
+		appendChild(oil->resource_icon);
+		resources_num++;
+	}
+	if (workers_cost > 0)
+	{
+		workers = new resource_cost(texture, workers_cost, workers_icon);
+		appendChild(workers->text_cost);
+		appendChild(workers->resource_icon);
+		resources_num++;
 	}
 
+	section = { 0, 0, (int)text_name->tex_width + 15, (int)(text_name->tex_height + (workers_icon.h*resources_num) + 15) };
+
 	appendChild(text_name);
-	appendChild(text_cost);
-	appendChild(icon_image);
 };
 
 
 CostDisplay::~CostDisplay()
 {
-	std::list<UI_element*>::iterator it_e;
-	it_e = childs.begin();
-	while ((*it_e) != nullptr && it_e != childs.end())
+	std::list<UI_element*>::iterator it_c;
+	it_c = childs.begin();
+	while (it_c != childs.end())
 	{
-		RELEASE((*it_e));
-		it_e++;
+		RELEASE((*it_c));
+		it_c++;
 	}
 	childs.clear();
 }
@@ -51,17 +66,61 @@ void CostDisplay::BlitElement(bool use_camera)
 {
 	Color Dark_Grey = Color(75, 75, 75, 200);
 	iPoint globalPosition = calculateAbsolutePosition();
-	App->render->DrawQuad({globalPosition.x-10, globalPosition.y-5, section.w, section.h}, Dark_Grey, true, use_camera);
+	App->render->DrawQuad({ globalPosition.x - 10, globalPosition.y - 5, section.w, section.h }, Dark_Grey, true, use_camera);
 
-	if (display_cost > App->scene->wood)
+	int offsetY = 36;
+
+	if (wood != nullptr)
 	{
-		text_cost->setColor({ 255, 0, 0,255 }); //red
+		if(wood->cost_num > App->scene->wood)
+			wood->text_cost->setColor({ 255, 0, 0,255 });
+		else
+			wood->text_cost->setColor({ 0, 255, 0,255 });
+
+		wood->resource_icon->localPosition.y = offsetY;
+		wood->text_cost->localPosition.y = offsetY;
+		offsetY += 36;
 	}
-	else if (display_cost <= App->scene->wood)
+	if (gold != nullptr)
 	{
-		text_cost->setColor({ 0, 255, 0,255 }); //green
+		if (gold->cost_num > App->scene->gold)
+			gold->text_cost->setColor({ 255, 0, 0,255 });
+		else
+			gold->text_cost->setColor({ 0, 255, 0,255 });
+
+		gold->resource_icon->localPosition.y = offsetY;
+		gold->text_cost->localPosition.y = offsetY;
+		offsetY += 36;
+	}
+	if (oil != nullptr)
+	{
+		if (oil->cost_num > App->scene->oil)
+			oil->text_cost->setColor({ 255, 0, 0,255 });
+		else
+			oil->text_cost->setColor({ 0, 255, 0,255 });
+
+		oil->resource_icon->localPosition.y = offsetY;
+		oil->text_cost->localPosition.y = offsetY;
+		offsetY += 36;
+	}
+	if (workers != nullptr)
+	{
+		if (workers->cost_num > App->scene->inactive_workers)
+			workers->text_cost->setColor({ 255, 0, 0,255 });
+		else
+			workers->text_cost->setColor({ 0, 255, 0,255 });
+
+		workers->resource_icon->localPosition.y = offsetY;
+		workers->text_cost->localPosition.y = offsetY;
+		offsetY += 36;
 	}
 	
 	UI_element::BlitElement(use_camera);
 };
 
+resource_cost::resource_cost(SDL_Texture * texture, int cost, SDL_Rect icon)
+{
+	text_cost = new Text(std::to_string(cost), 50, 36, (*App->font->fonts.begin()), { 255,255,255,255 }, nullptr);
+	resource_icon = new Image(texture, 0, 36, icon, nullptr);
+	cost_num = cost;
+}

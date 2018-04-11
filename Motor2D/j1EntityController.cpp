@@ -227,6 +227,11 @@ void j1EntityController::DeleteEntity(Entity* entity)
 Unit* j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
 {
 	Unit* unit = new Unit(pos, *(unitDB[type]), squad);
+	if (!unit->IsEnemy())
+	{
+		App->scene->workers--;
+		App->scene->inactive_workers--;
+	}
 	entities.push_back(unit);
 	App->gui->createLifeBar(unit);
 	
@@ -392,6 +397,11 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 	}
 }
 
+bool j1EntityController::CheckCostTroop(unitType target)
+{
+	return App->scene->wood >= unitDB[target]->wood_cost && App->scene->gold >= unitDB[target]->gold_cost && App->scene->workerAvalible(unitDB[target]->squad_members);
+}
+
 bool j1EntityController::CheckCostBuiding(buildingType target)
 {
 	bool ret = false;
@@ -505,6 +515,10 @@ void j1EntityController::selectionControl()
 					}
 				}
 				else selected_entities.push_back(*it);
+				if ((*it)->entity_type == BUILDING)
+				{
+					App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
+				}
 			}
 		}
 
@@ -614,7 +628,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitTemplate->attack		= NodeInfo.child("Stats").child("attack").attribute("value").as_int(0);
 		unitTemplate->defense		= NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
 		unitTemplate->piercing_atk	= NodeInfo.child("Stats").child("piercingDamage").attribute("value").as_int(0);
-		unitTemplate->speed			= NodeInfo.child("Stats").child("movementSpeed").attribute("value").as_int(0);
+		unitTemplate->speed			= NodeInfo.child("Stats").child("movementSpeed").attribute("value").as_float(0.0f);
 		unitTemplate->range			= NodeInfo.child("Stats").child("range").attribute("value").as_int(0);
 		unitTemplate->line_of_sight = NodeInfo.child("Stats").child("lineOfSight").attribute("value").as_int(0);
 		unitTemplate->flying		= NodeInfo.child("Stats").child("flying").attribute("value").as_bool(false);
@@ -756,6 +770,8 @@ void j1EntityController::StartHero(iPoint pos)
 
 	Squad* new_squad = new Squad(aux_vector);
 	all_squads.push_back(new_squad);
+
+	App->gui->createLifeBar(hero);
 
 	entities.push_back(hero);
 }

@@ -25,7 +25,8 @@ enum resourceType
 	NONE_NATURE,
 	WOOD,
 	GOLD,
-	STONE
+	OIL,
+	WORKER
 };
 
 class Entity
