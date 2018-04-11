@@ -54,8 +54,8 @@
                 <movementSpeed value="1.2"/>
                 <range value="40"/>
                 <lineOfSight value="200"/>
-                <goldCost value="600"/>
-                <woodCost value="0"/>
+                <goldCost value="0"/>
+                <woodCost value="200"/>
                 <workerCost value="5"/>
                 <trainingTime value="10"/>
                 <squadMembers value="5"/>
@@ -332,8 +332,8 @@
                 <movementSpeed value="1.5"/>
                 <range value="240"/>
                 <lineOfSight value="250"/>
-                <goldCost value="500"/>
-                <woodCost value="50"/>
+                <goldCost value="0"/>
+                <woodCost value="250"/>
                 <workerCost value="4"/>
                 <trainingTime value="10"/>
                 <squadMembers value="4"/>
@@ -594,7 +594,7 @@
               </Animation>
             </Animations>
 			<Actions>
-				<action1 id="1"/>
+				<action id="1"/>
 			</Actions>
 	  </Unit>
       <Unit>
@@ -1182,9 +1182,13 @@
         <villagers value="0"/>
         <buildingTime value="5"/>
         <defense value="100"/>
-        <woodCost value="400"/>
+        <woodCost value="000"/>
         <goldCost value="0"/>
       </Stats>
+	  <Actions>
+		<action id="11"/>
+		<action id="12"/>
+	  </Actions>
       <iconData x="162" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
     </Building>
@@ -1281,7 +1285,7 @@
 	</LifeBars>
 	<ActionButtons>
 		<move id="1" function="14">
-			<position x="1399" y="809"/>
+			<position x="0" y="0"/>
 			<standby x="285" y="437" w="66" h="66"/>
 			<OnMouse x="353" y="437" w="66" h="66"/>
 			<OnClick x="421" y="437" w="66" h="66"/>
@@ -1290,25 +1294,25 @@
 			</popUp>
 		</move>
 		<stop id="2">
-			<position x="1480" y="809"/>
+			<position x="0" y="0"/>
 			<standby x="489" y="437" w="66" h="66"/>
 			<OnMouse x="557" y="437" w="66" h="66"/>
 			<OnClick x="625" y="437" w="66" h="66"/>
 		</stop>
 		<attack id="3">
-			<position x="1558" y="809"/>
+			<position x="0" y="0"/>
 			<standby x="693" y="437" w="66" h="66"/>
 			<OnMouse x="761" y="437" w="66" h="66"/>
 			<OnClick x="829" y="437" w="66" h="66"/>
 		</attack>
 		<patrol id="4">
-			<position x="1399" y="889"/>
+			<position x="0" y="0"/>
 			<standby x="897" y="437" w="66" h="66"/>
 			<OnMouse x="965" y="437" w="66" h="66"/>
 			<OnClick x="1033" y="437" w="66" h="66"/>
 		</patrol>
 		<buildBarrack id="5" function="15">
-			<position x="1399" y="809"/>
+			<position x="0" y="0"/>
 			<standby x="1101" y="437" w="66" h="66"/>
 			<OnMouse x="1169" y="437" w="66" h="66"/>
 			<OnClick x="1237" y="437" w="66" h="66"/>
@@ -1318,7 +1322,7 @@
 			</popUp>
 		</buildBarrack>
 		<buildMill id="6" function="16">
-			<position x="1558" y="889"/>
+			<position x="0" y="0"/>
 			<standby x="1305" y="437" w="66" h="66"/>
 			<OnMouse x="1373" y="437" w="66" h="66"/>
 			<OnClick x="1441" y="437" w="66" h="66"/>
@@ -1328,7 +1332,7 @@
 			</popUp>
 		</buildMill>
 		<buildFarm id="7" function="17">
-			<position x="1717" y="969"/>
+			<position x="0" y="0"/>
 			<standby x="285" y="507" w="66" h="66"/>
 			<OnMouse x="353" y="507" w="66" h="66"/>
 			<OnClick x="421" y="507" w="66" h="66"/>
@@ -1338,34 +1342,42 @@
 			</popUp>
 		</buildFarm>
 		<unassignWorker id="8" function="18">
-			<position x="1399" y="809"/>
+			<position x="0" y="0"/>
 			<standby x="576" y="704" w="82" h="82"/>
 			<OnMouse x="672" y="704" w="82" h="82"/>
 			<OnClick x="770" y="704" w="82" h="82"/>
 		</unassignWorker>
-		<assignWorker id="9" function="19 ">
-			<position x="1717" y="889"/>
+		<assignWorker id="9" function="19">
+			<position x="0" y="0"/>
 			<standby x="285" y="704" w="82" h="82"/>
 			<OnMouse x="384" y="704" w="82" h="82"/>
 			<OnClick x="481" y="704" w="82" h="82"/>
 		</assignWorker>
 		<emptySpace id="10">
-			<position x="1399" y="809"/>
-			<standby x="576" y="940" w="82" h="82"/>
-			<OnMouse x="672" y="940" w="82" h="82"/>
-			<OnClick x="770" y="940" w="82" h="82"/>
+			<position x="0" y="0"/>
+			<standby x="0" y="0" w="0" h="0"/>
+			<OnMouse x="0" y="0" w="0" h="0"/>
+			<OnClick x="0" y="0" w="0" h="0"/>
 		</emptySpace>
-		<action8 id="11">
-			<position x="1480" y="969"/>
+		<createFootman id="11" function="20">
+			<position x="0" y="0"/>
 			<standby x="489" y="507" w="66" h="66"/>
 			<OnMouse x="557" y="507" w="66" h="66"/>
 			<OnClick x="625" y="507" w="66" h="66"/>
-		</action8>
-		<action9 id="12">
-			<position x="1558" y="969"/>
+			<popUp>
+				<Info text="Create Footman Squad"/>
+				<Cost wood="200" workers="5"/>
+			</popUp>
+		</createFootman>
+		<createArcher id="12" function="21">
+			<position x="0" y="0"/>
 			<standby x="693" y="507" w="66" h="66"/>
 			<OnMouse x="761" y="507" w="66" h="66"/>
 			<OnClick x="829" y="507" w="66" h="66"/>
-		</action9>
+			<popUp>
+				<Info text="Create Archer Squad"/>
+				<Cost wood="250" workers="4"/>
+			</popUp>
+		</createArcher>
 	</ActionButtons>
 </GameData>

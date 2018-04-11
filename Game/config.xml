@@ -54,7 +54,9 @@
     <starting_resources>
       <wood value="300"/>
       <gold value="20000"/>
-      <workers value="5"/>
+
+      <workers value="19"/>
+
       <townHallLvl value ="0"/>
     </starting_resources>
   </scene>
