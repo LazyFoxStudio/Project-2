@@ -240,7 +240,10 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 
 bool AttackingMoveToSquad::OnStop()
 {
-	flow_field->finished = true;
+	if (flow_field)
+	{
+		flow_field->finished = true;
+	}
 	RELEASE(atk_flow_field);
 	return true;
 }
