@@ -197,6 +197,12 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 		case ASSIGN_WORKER_FUNCTION:
 			App->actionscontroller->activateAction(ASSIGN_WORKER);
 			break;
+		case CREATE_FOOTMAN_FUNCTION:
+			App->actionscontroller->activateAction(CREATE_FOOTMAN);
+			break;
+		case CREATE_ARCHER_FUNCTION:
+			App->actionscontroller->activateAction(CREATE_ARCHER);
+			break;
 		}
 	}
 	else if (event_type == MOUSE_RIGHT_CLICK && element->state != LOCKED && element->state != LOCKED_MOUSEOVER)

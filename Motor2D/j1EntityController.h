@@ -49,6 +49,7 @@ public:
 	void buildingProcessDraw();
 
 	void HandleWorkerAssignment(bool to_assign, Building* building);
+	bool CheckCostTroop(unitType target);
 	bool CheckCostBuiding(buildingType target);
 	void HandleBuildingResources(buildingType target);
 	void debugDrawEntity(Entity* entity);
@@ -84,7 +85,7 @@ public:
 	bool building = false;
 	int death_time = 0;
 	int mill_max_villagers = 0;
-	int worker_wood_production = 0;
+	float worker_wood_production = 0.0f;
 	int test_counter = 0;
 	
 	buildingType structure_beingbuilt = NONE_BUILDING;

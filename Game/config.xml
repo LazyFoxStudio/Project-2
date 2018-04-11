@@ -40,7 +40,7 @@
   <entitycontroller>
     <deathTime value="10"/>
     <millMaxVillagers value="10"/>
-    <workerWoodProduction value="1"/>
+    <workerWoodProduction value="1.5"/>
   </entitycontroller>
 
   <gui>
@@ -52,9 +52,14 @@
 
   <scene>
     <starting_resources>
+
+
       <wood value="1000"/>
+
       <gold value="20000"/>
-      <workers value="2"/>
+
+      <workers value="19"/>
+
       <townHallLvl value ="0"/>
     </starting_resources>
   </scene>
