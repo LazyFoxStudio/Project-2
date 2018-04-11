@@ -641,8 +641,8 @@ void j1Gui::createMinimap(pugi::xml_node node, j1Module* callback)
 {
 	int position_x = node.child("position").attribute("x").as_int();
 	int position_y = node.child("position").attribute("y").as_int();;
-	int map_width = node.child("map").attribute("x").as_int();;
-	int map_height= node.child("map").attribute("y").as_int();;
+	int map_width = node.child("map").attribute("width").as_int();;
+	int map_height= node.child("map").attribute("height").as_int();;
 
 	App->uiscene->minimap = new Minimap(node.child("base_image").attribute("path").as_string(),position_x,position_y,map_width,map_height);
 }
