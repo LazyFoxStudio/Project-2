@@ -62,6 +62,16 @@ bool j1ActionsController::Update(float dt)
 			App->entitycontroller->HandleWorkerAssignment(true, (Building*)*App->entitycontroller->selected_entities.begin());
 			doingAction = false;
 			break;
+		case CREATE_FOOTMAN:
+			if (App->entitycontroller->CheckCostTroop(FOOTMAN))
+				App->entitycontroller->AddSquad(FOOTMAN, newSquadPos);
+			doingAction = false;
+			break;
+		case CREATE_ARCHER:
+			if (App->entitycontroller->CheckCostTroop(ARCHER))
+				App->entitycontroller->AddSquad(ARCHER, newSquadPos);
+			doingAction = false;
+			break;
 		}
 		
 	}

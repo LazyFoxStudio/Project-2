@@ -678,9 +678,9 @@ void j1Gui::entityDeleted(Entity* entity)
 	inGameMenu->deleteMenuTroop(entity);
 }
 
-CostDisplay* j1Gui::createCostDisplay(std::string name, int wood_cost, int gold_cost, int oil_cost)
+CostDisplay* j1Gui::createCostDisplay(std::string name, int wood_cost, int gold_cost, int oil_cost, int workers_cost)
 {
-	CostDisplay* ret = new CostDisplay(atlas, name, wood_cost, WOOD);
+	CostDisplay* ret = new CostDisplay(atlas, name, wood_cost, gold_cost, oil_cost, workers_cost);
 	return ret;
 }
 
@@ -728,7 +728,7 @@ void j1Gui::LoadDB(pugi::xml_node node)
 		pugi::xml_node cost = actionButton.child("popUp").child("Cost");
 		if (cost && info)
 		{
-			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.attribute("wood").as_int(), cost.attribute("gold").as_int(), cost.attribute("oil").as_int());
+			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.attribute("wood").as_int(0), cost.attribute("gold").as_int(0), cost.attribute("oil").as_int(0), cost.attribute("workers").as_int(0));
 		}
 		else if (info)
 		{

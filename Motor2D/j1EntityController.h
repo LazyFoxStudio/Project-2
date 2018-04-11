@@ -49,6 +49,7 @@ public:
 	void buildingProcessDraw();
 
 	void HandleWorkerAssignment(bool to_assign, Building* building);
+	bool CheckCostTroop(unitType target);
 	bool CheckCostBuiding(buildingType target);
 	void HandleBuildingResources(buildingType target);
 	void debugDrawEntity(Entity* entity);

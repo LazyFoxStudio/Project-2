@@ -87,13 +87,19 @@ Resolution of the screen: 1680x 1050y
 			</childs>
 		</atlas_image>
 		
-		<stopwatch text="time" center="false" counter="true">
-			<position x="1600" y="10"/>
-			<font id="1"/>
-			<color r="255" g="255" b="255" a="255"/>
-			<interactive value="false"/>
-		</stopwatch>
-	
+		<atlas_image icon_atlas="false">
+			<position x="1580" y="0"/>
+			<section x="530" y="393" w="100" h="36"/>
+			<childs>
+				<stopwatch center="true">
+					<position x="1607" y="2"/>
+					<font id="1"/>
+					<color r="255" g="255" b="255" a="255"/>
+					<interactive value="false"/>
+				</stopwatch>
+			</childs>
+		</atlas_image>
+		
 	<!-- Options Button -->
 		<button>
 			<position x="0" y="0"/>

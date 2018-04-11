@@ -106,14 +106,15 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	return true;
 }
 
-bool j1Scene::workerAvalible()
+bool j1Scene::workerAvalible(int num)
 {
-	bool ret;
+	bool ret = false;
+
 	if (inactive_workers == 0)
 	{
 		ret = false;
 	}
-	else if (inactive_workers > 0)
+	else if (inactive_workers >= num)
 	{
 		ret = true;
 	}
