@@ -5,6 +5,8 @@
 #include "Command.h"
 #include "j1Pathfinding.h"
 #include "j1Map.h"
+#include "j1Gui.h"
+#include "UI_NextWaveWindow.h"
 
 #include <time.h>
 
@@ -42,16 +44,12 @@ bool j1WaveController::Start()
 	TownHall_pos = App->map->WorldToMap(2200, 2000);
 	iPoint map_org = App->map->WorldToMap(TownHall_pos.x+64, TownHall_pos.y);
 	iPoint map_dest = App->map->WorldToMap(TownHall_pos.x,TownHall_pos.y);
-	flow_field=App->pathfinding->CreateFlowField(map_org, map_dest);
+	flow_field = App->pathfinding->RequestFlowField(map_org, map_dest);
 	
 	wave_timer.Start();
 
-	if (flow_field == nullptr)
-	{
-		ret = false;
-	}
 
-	current_wave = 1;
+	current_wave = 0;
 	Generate_Next_Wave();
 
 	return ret;
@@ -59,14 +57,14 @@ bool j1WaveController::Start()
 
 bool j1WaveController::Update(float dt)
 {	
-	if (current_wave == 1 && wave_timer.ReadSec() > initial_wait)
+	if (current_wave == 0 && wave_timer.ReadSec() > initial_wait && flow_field->stage == COMPLETED)
 	{
 		current_wave += 1;
 		wave_timer.Start();
 		Generate_Wave();
 	}
 
-	else if (current_wave > 1 && wave_timer.ReadSec() > wait_between_waves)
+	else if (current_wave >= 1 && wave_timer.ReadSec() > wait_between_waves)
 	{
 		current_wave += 1;
 		wave_timer.Start();
@@ -99,7 +97,7 @@ bool j1WaveController::Load(pugi::xml_node &)
 int j1WaveController::CalculateWaveScore()
 {
 	int ret = 0;
-	ret = current_wave * 2;
+	ret = (current_wave+1) * 2;
 
 	return ret;
 }
@@ -177,7 +175,8 @@ void j1WaveController::Generate_Next_Wave()
 			}
 		}
 	}
-	LOG("Hola");
+
+	App->gui->newWave();
 }
 
 void j1WaveController::Generate_Wave()

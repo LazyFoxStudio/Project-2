@@ -10,19 +10,30 @@ j1PathFinding::j1PathFinding() : j1Module(), map(nullptr),width(0), height(0)
 	name = "pathfinding";
 }
 
-// Destructor
-j1PathFinding::~j1PathFinding()
-{
-	RELEASE_ARRAY(map);
-}
-
 // Called before quitting
 bool j1PathFinding::CleanUp()
 {
 	LOG("Freeing pathfinding library");
 
 	last_path.clear();
+	path_pool.clear();
 	RELEASE_ARRAY(map);
+	return true;
+}
+
+bool j1PathFinding::PostUpdate()
+{
+	if (!path_pool.empty())
+	{
+		timer.Start();
+		for (std::list<PathProcessor*>::iterator it = path_pool.begin(); it != path_pool.end(); it++)
+		{
+			if ((*it)->flow_field->finished) { path_pool.erase(it); it--; }
+			else {
+				if (!(*it)->ProcessFlowField(timer)) break;
+			}
+		}
+	}
 	return true;
 }
 
@@ -143,6 +154,8 @@ bool j1PathFinding::GatherWalkableAdjacents(iPoint map_pos, int count, std::vect
 	int radius = 1;
 	uint found = 0;
 
+	SDL_Rect r = { 0,0, App->map->data.tile_width, App->map->data.tile_height };
+
 	while (radius < max_distance)
 	{
 		for (int i = -radius; i <= radius; i++)
@@ -152,9 +165,17 @@ bool j1PathFinding::GatherWalkableAdjacents(iPoint map_pos, int count, std::vect
 					cell.create(map_pos.x + i, map_pos.y + j);
 					if (App->pathfinding->IsWalkable(cell))
 					{
-						adjacents.push_back(cell);
-						found++;
-						if (found == count) return true;
+						iPoint world_p = App->map->MapToWorld(cell.x, cell.y);
+						r.x = world_p.x; r.y = world_p.y;
+
+						std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(r);
+
+						if (collisions.empty())
+						{
+							adjacents.push_back(cell);
+							found++;
+							if (found == count) return true;
+						}
 					}
 				}
 		radius++;
@@ -307,7 +328,6 @@ int j1PathFinding::CreatePath(const iPoint& origin, iPoint& destination)
 }
 
 
-
 int FieldNode::CalculateScore(iPoint goal)
 {
 	h = position.DistanceManhattan(goal);
@@ -337,7 +357,7 @@ void FieldNode::getWalkableAdjacents(std::vector<FieldNode>& list_to_fill, Field
 		list_to_fill.push_back(new_adjacent);
 }
 
-FlowField::FlowField(uint width, uint height, int init_to)
+FlowField::FlowField(uint width, uint height, int init_to) : width(width), height(height)
 {
 	field = new FieldNode*[width];
 	this->width = width;
@@ -388,27 +408,48 @@ void FlowField::updateFromPath(const std::list<iPoint>& path)
 
 }
 
-FlowField* j1PathFinding::CreateFlowField(iPoint origin, iPoint destination)
+FlowField* j1PathFinding::RequestFlowField(iPoint origin, iPoint destination)
 {
-	if (App->pathfinding->IsWalkable(destination))
-		destination = App->pathfinding->FirstWalkableAdjacent(destination);
+	PathProcessor* pp = new PathProcessor(origin, destination);
+	App->pathfinding->path_pool.push_back(pp);
+	return pp->flow_field;
+}
 
-	if (App->pathfinding->IsWalkable(origin))
-		origin = App->pathfinding->FirstWalkableAdjacent(origin);
+PathProcessor::PathProcessor(iPoint origin, iPoint destination) : origin(origin), destination(destination)
+{ 
+	flow_field = new FlowField(App->map->data.width, App->map->data.height);
+}
 
-	if (App->pathfinding->IsWalkable(destination) && App->pathfinding->IsWalkable(origin))
+bool PathProcessor::ProcessFlowField(j1Timer& timer)
+{
+	switch (flow_field->stage)
 	{
-		FlowField* flow_field = new FlowField(width, height);
-		bool origin_reached = false;
+	case REQUESTED:
+		if (App->pathfinding->IsWalkable(destination))
+			destination = App->pathfinding->FirstWalkableAdjacent(destination);
 
-		std::list<FieldNode> open;
-		std::vector<FieldNode> adjacents;
+		if (App->pathfinding->IsWalkable(origin))
+			origin = App->pathfinding->FirstWalkableAdjacent(origin);
 
-		flow_field->getNodeAt(destination)->score = 0;
-		open.push_back(*flow_field->getNodeAt(destination));
+		if (!App->pathfinding->IsWalkable(destination) || !App->pathfinding->IsWalkable(origin))
+			flow_field->stage = FAILED;
+		else
+		{
+			flow_field->getNodeAt(destination)->score = 0;
+			open.push_back(*flow_field->getNodeAt(destination));
+			flow_field->stage = PROCESSING;
+		}
+
+		break;
+
+	case PROCESSING:
 
 		while (!open.empty())
 		{
+			if (timer.Read() > ((float)App->framerate * PF_MAX_FRAMETIME))
+				return false;
+
+			std::vector<FieldNode> adjacents;
 			FieldNode current_tile = open.front();
 			open.pop_front();
 
@@ -425,15 +466,17 @@ FlowField* j1PathFinding::CreateFlowField(iPoint origin, iPoint destination)
 					flow_field_node->parent = flow_field->getNodeAt(current_tile.position);
 					open.push_back(*flow_field_node);
 
-					if (adjacents[i].position == origin) origin_reached = true;
+					if (adjacents[i].position == origin) flow_field->stage = COMPLETED;
 				}
 			}
 			adjacents.clear();
 		}
 
-		if (origin_reached) return flow_field;
-		else { delete flow_field; return nullptr; }
+		if (!flow_field->stage == COMPLETED) flow_field->stage = FAILED;
+		break;
+	default: 
+		break;
 	}
 
-	return nullptr;
+	return true;
 }

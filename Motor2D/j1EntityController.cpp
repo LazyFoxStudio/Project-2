@@ -30,7 +30,7 @@ bool j1EntityController::Awake(pugi::xml_node &config)
 {
 	death_time = config.child("deathTime").attribute("value").as_int(0);
 	mill_max_villagers = config.child("millMaxVillagers").attribute("value").as_int(0);
-	worker_wood_production = config.child("workerWoodProduction").attribute("value").as_int(0);
+	worker_wood_production = config.child("workerWoodProduction").attribute("value").as_float(0.0f);
 
 	entity_iterator = entities.begin();
 	squad_iterator = all_squads.begin();
@@ -46,12 +46,12 @@ bool j1EntityController::Start()
 
 	loadEntitiesDB(gameData);
 
-	AddSquad(FOOTMAN, fPoint(1900, 2100));
+	/*AddSquad(FOOTMAN, fPoint(1900, 2100));
 	AddSquad(FOOTMAN, fPoint(2200, 2100));
 
 	AddSquad(GRUNT, fPoint(3000, 2100));
 	AddSquad(AXE_THROWER, fPoint(1700, 2100));
-	AddSquad(ARCHER, fPoint(1500, 2100));
+	AddSquad(ARCHER, fPoint(1500, 2100));*/
 
 
 	StartHero(iPoint(2000, 1950));
@@ -70,24 +70,30 @@ bool j1EntityController::Update(float dt)
 
 	
 	int counter = 0;
-	time_slicer.Start();
-	while (time_slicer.Read() < ((float)App->framerate * SQUAD_MAX_FRAMETIME) && counter < all_squads.size())
+	if (!all_squads.empty())
 	{
-		counter++; squad_iterator++;
-		if(squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
-		if (!(*squad_iterator)->Update(dt))							return false;
+		time_slicer.Start();
+		while (time_slicer.Read() < ((float)App->framerate * SQUAD_MAX_FRAMETIME) && counter < all_squads.size())
+		{
+			counter++; squad_iterator++;
+			if (squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
+			if ((*squad_iterator) != nullptr && !(*squad_iterator)->Update(dt))							return false;
+		}
 	}
 
-	counter = 0;
-	time_slicer.Start();
-	while (time_slicer.Read() < ((float)App->framerate * ENITITY_MAX_FRAMETIME) && counter < entities.size())
+	if (!entities.empty())
 	{
-		counter++; entity_iterator++;
-		if (entity_iterator == entities.end()) entity_iterator = entities.begin();
+		counter = 0;
+		time_slicer.Start();
+		while (time_slicer.Read() < ((float)App->framerate * ENITITY_MAX_FRAMETIME) && counter < entities.size())
+		{
+			counter++; entity_iterator++;
+			if (entity_iterator == entities.end()) entity_iterator = entities.begin();
 
-		if ((*entity_iterator)->isActive)
-			if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
-		
+			if ((*entity_iterator)->isActive)
+				if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
+
+		}
 	}
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
@@ -172,8 +178,14 @@ bool j1EntityController::CleanUp()
 {
 	if (!DeleteDB()) return false;
 
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)	
+	std::list<Entity*>::iterator it = entities.begin();
+	while (it != entities.end())
+	{
 		DeleteEntity(*it);
+		it++;
+		if ((*it) == nullptr)
+			break;
+	}
 
 	entities.clear();
 	selected_entities.clear();
@@ -201,26 +213,35 @@ bool j1EntityController::Load(pugi::xml_node& file)
 
 void j1EntityController::DeleteEntity(Entity* entity)
 {
-	entities.remove(entity);
-	selected_entities.remove(entity);
-	App->gui->entityDeleted(entity);
-
-	Unit * unit_to_remove = nullptr;
-	switch (entity->entity_type)
+	if (entity != nullptr)
 	{
-	case UNIT:
-		unit_to_remove = (Unit*)(entity);
-		unit_to_remove->squad->removeUnit(unit_to_remove);
-		if ((unit_to_remove)->squad->units.empty())
+		if(entity == *entity_iterator)
+			entity_iterator = entities.begin();
+
+		entities.remove(entity);
+		selected_entities.remove(entity);
+		App->gui->entityDeleted(entity);
+
+		Unit * unit_to_remove = nullptr;
+		switch (entity->entity_type)
 		{
-			all_squads.remove(unit_to_remove->squad);
-			selected_squads.remove(unit_to_remove->squad);
-			RELEASE(unit_to_remove->squad);
+		case UNIT:
+			unit_to_remove = (Unit*)(entity);
+			unit_to_remove->squad->removeUnit(unit_to_remove);
+			if (unit_to_remove->squad->units.empty())
+			{
+				if (*squad_iterator == unit_to_remove->squad)
+					squad_iterator = all_squads.begin();
+
+				all_squads.remove(unit_to_remove->squad);
+				selected_squads.remove(unit_to_remove->squad);
+				RELEASE(unit_to_remove->squad);
+			}
+			delete unit_to_remove;
+			break;
+		case BUILDING: delete ((Building*)(entity)); break;
+		case NATURE: delete ((Nature*)(entity)); break;
 		}
-		delete unit_to_remove;
-		break;
-	case BUILDING: delete ((Building*)(entity)); break;
-	case NATURE: delete ((Nature*)(entity)); break;
 	}
 }
 
@@ -282,6 +303,10 @@ Squad* j1EntityController::AddSquad(unitType type, fPoint position)
 			squad_vector.push_back(addUnit(world_p, type));
 		}
 		new_squad = new Squad(squad_vector);
+		if (!unitDB[type]->IsEnemy())
+		{
+			App->scene->wood -= unitDB[type]->wood_cost;
+		}
 		all_squads.push_back(new_squad);
 	}
 	return new_squad;
@@ -394,6 +419,7 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 				App->scene->inactive_workers += 1;
 			}
 		}
+		building->CalculateResourceProduction();
 	}
 }
 
@@ -761,7 +787,7 @@ void j1EntityController::StartHero(iPoint pos)
 	hero->position.x = hero->collider.x = pos.x;
 	hero->position.y = hero->collider.y = pos.y;
 
-	hero->skill_one = new Skill(hero, 40, 60, 400, 20, AREA);		//Icicle Crash
+	hero->skill_one = new Skill(hero, 3, 60, 400, 20, AREA);		//Icicle Crash
 	hero->skill_two = new Skill(hero, 0, 200, 200, 20, NONE_RANGE);	//Overflow
 	hero->skill_three = new Skill(hero, 0, 50, 200, 10, LINE);		//Dragon Breath
 

@@ -27,6 +27,7 @@ class menu;
 class Entity;
 class CostDisplay;
 class WarningMessages;
+class NextWaveWindow;
 
 enum event_type
 {
@@ -93,6 +94,7 @@ public:
 	Window* createWindow(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 	IngameMenu* createIngameMenu(pugi::xml_node node, j1Module* callback = nullptr);
+	NextWaveWindow* createNextWaveWindow(pugi::xml_node node, j1Module* callback = nullptr);
 
 	//minimap_
 	void createMinimap(pugi::xml_node node, j1Module* callback = nullptr);
@@ -111,11 +113,14 @@ public:
 	void AddIconData(buildingType type, pugi::xml_node node);
 	void AddIconData(resourceType type, pugi::xml_node node);
 	SDL_Rect GetIconRect(Entity* entity);
+	//Hardcoded
+	SDL_Rect GetUnitRect(unitType type);
 	SDL_Rect GetLifeBarRect(std::string tag);
 	Button* GetActionButton(uint id);
 	std::list<Button*> activateActionButtons(uint ids[9]);
 
 	void newSelectionDone();
+	void newWave();
 
 	void moveElementToMouse(UI_element* element);
 
@@ -145,6 +150,7 @@ private:
 	std::list<Window*> Windows;
 
 	IngameMenu* inGameMenu = nullptr;
+	NextWaveWindow* nextWaveWindow = nullptr;
 	UI_element* draggingElement = nullptr;
 
 	std::map<unitType, SDL_Rect> unitIconRect;

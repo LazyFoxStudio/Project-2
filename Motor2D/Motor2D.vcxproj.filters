@@ -136,6 +136,9 @@
     <ClCompile Include="Minimap.cpp">
       <Filter>Desenvolupament  ========\GUI\Minimap</Filter>
     </ClCompile>
+    <ClCompile Include="UI_NextWaveWindow.cpp">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -281,6 +284,9 @@
     </ClInclude>
     <ClInclude Include="Minimap.h">
       <Filter>Desenvolupament  ========\GUI\Minimap</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_NextWaveWindow.h">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
