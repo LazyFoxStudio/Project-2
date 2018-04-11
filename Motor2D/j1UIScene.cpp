@@ -35,9 +35,6 @@ bool j1UIScene::Start()
 
 	LoadUI(guiconfig);
 	
-
-	
-
 	//Set resource counters
 	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 0);
 	text_position_y->convertIntoCounter(&App->scene->inactive_workers);
