@@ -23,6 +23,7 @@
 #include "UI_CostDisplay.h"
 #include "UI_WarningMessages.h"
 #include "UI_NextWaveWindow.h"
+#include "j1Scene.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -42,6 +43,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	buttonFX = conf.child("buttonFX").attribute("source").as_string("");
 	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
 	icon_atlas_file_name = conf.child("icon_atlas").attribute("file").as_string("");
+	popUp_wait_time = conf.child("popUps").attribute("time").as_uint(0);
 
 	return ret;
 }
@@ -265,14 +267,8 @@ bool j1Gui::CleanUp()
 	}
 	Windows.clear();
 	//Chronos
-	std::list<Chrono*>::iterator it_c;
-	it_c = Chronos.begin();
-	while ((*it_c) != nullptr && it_c != Chronos.end())
-	{
-		RELEASE((*it_c));
-		it_c++;
-	}
-	Chronos.clear();
+	RELEASE(Chronos);
+
 	//ProgressBars
 	std::list<ProgressBar*>::iterator it_p;
 	it_p = ProgressBars.begin();
@@ -367,7 +363,7 @@ UI_element* j1Gui::GetElement(int type, int id)
 		ret = (*std::next(Windows.begin(), id));
 		break;
 	case CHRONO:
-		ret = (*std::next(Chronos.begin(), id));
+		ret = Chronos;
 		break;
 	case PROGRESSBAR:
 		ret = (*std::next(ProgressBars.begin(), id));
@@ -395,7 +391,7 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		else if (type == "timer")
 			element = createTimer(tmp, callback);
 		else if (type == "stopwatch")
-			element = createStopWatch(tmp, callback);
+			element = Chronos = createStopWatch(tmp, callback);
 		else if (type == "image")
 			element = createImage(tmp, callback);
 		else if (type == "button")
@@ -552,8 +548,6 @@ Chrono * j1Gui::createTimer(pugi::xml_node node, j1Module * callback, bool saveI
 	Chrono* ret = new Chrono(x, y, TIMER, (*font), color, callback);
 	
 	ret->setStartValue(node.attribute("initial_value").as_int());
-	if (saveIntoGUI)
-		Chronos.push_back(ret);
 
 	return ret;
 }
@@ -568,9 +562,6 @@ Chrono * j1Gui::createStopWatch(pugi::xml_node node, j1Module * callback, bool s
 	SDL_Color color = { node.child("color").attribute("r").as_int(), node.child("color").attribute("g").as_int(), node.child("color").attribute("b").as_int(), node.child("color").attribute("a").as_int() };
 
 	Chrono* ret = new Chrono(x, y, STOPWATCH, (*font), color, callback);
-
-	if (saveIntoGUI)
-		Chronos.push_back(ret);
 
 	return ret;
 }

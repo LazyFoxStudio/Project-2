@@ -14,6 +14,10 @@
 #include "j1EntityController.h"
 #include "j1Gui.h"
 #include "UI_CostDisplay.h"
+#include "Building.h"
+#include "UI_Chrono.h"
+
+#include <time.h>
 
 j1Scene::j1Scene() : j1Module() { name = "scene"; }
 
@@ -69,6 +73,11 @@ bool j1Scene::Update(float dt)
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
 
+	if (Town_Hall->current_HP <= 0 && !App->gui->Chronos->counter.isPaused)
+	{
+		App->gui->Chronos->counter.PauseTimer();
+	}
+
 
 	return true;
 }
@@ -109,6 +118,20 @@ bool j1Scene::workerAvalible(int num)
 	{
 		ret = true;
 	}
+
+	return ret;
+}
+
+int j1Scene::random_value(int min, int max)
+{
+	int ret;
+	srand(time(NULL));
+
+	int interval = max - min;
+
+	ret = rand() % interval;
+
+	ret += min;
 
 	return ret;
 }

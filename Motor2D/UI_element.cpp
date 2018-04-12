@@ -43,7 +43,7 @@ void UI_element::BlitElement(bool use_camera)
 	{
 		if (!blitPopUpInfo)
 		{
-			if (App->gui->hovering_element.ReadMs() > 600)
+			if (App->gui->hovering_element.ReadMs() > App->gui->popUp_wait_time)
 			{
 				if (costDisplay != nullptr)
 				{
@@ -63,7 +63,7 @@ void UI_element::BlitElement(bool use_camera)
 	{
 		if (!blitPopUpInfo)
 		{
-			if (App->gui->hovering_element.ReadMs() > 600)
+			if (App->gui->hovering_element.ReadMs() > App->gui->popUp_wait_time)
 			{
 				if (conditionMessage != nullptr)
 					App->gui->moveElementToMouse(conditionMessage);

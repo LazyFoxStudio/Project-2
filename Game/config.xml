@@ -47,6 +47,7 @@
     <buttonFX source="Buttonsfx.wav"/>
     <atlas file="gui/atlas.png"/>
 	<icon_atlas file="gui/icon_atlas.png"/>
+	<popUps time="100"/>
   </gui>
 
 
