@@ -23,6 +23,8 @@
 #include "j1Console.h"
 #include "j1WaveController.h"
 
+#include <time.h>
+
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -117,6 +119,8 @@ bool j1App::Start()
 {
 	PERF_START(ptimer);
 	LOG("Start:");
+
+	srand(time(NULL));
 
 	for (std::list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
