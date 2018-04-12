@@ -51,7 +51,7 @@
                 <attack value="3"/>
                 <defense value="6"/>
                 <piercingDamage value="2"/>
-                <movementSpeed value="1.2"/>
+                <movementSpeed value="0.7"/>
                 <range value="40"/>
                 <lineOfSight value="200"/>
                 <goldCost value="0"/>
@@ -329,7 +329,7 @@
                 <attack value="2"/>
                 <defense value="1"/>
                 <piercingDamage value="6"/>
-                <movementSpeed value="1.5"/>
+                <movementSpeed value="1.0"/>
                 <range value="240"/>
                 <lineOfSight value="250"/>
                 <goldCost value="0"/>
@@ -607,7 +607,7 @@
                 <attack value="2"/>
                 <defense value="5"/>
                 <piercingDamage value="2"/>
-                <movementSpeed value="1.1"/>
+                <movementSpeed value="0.6"/>
                 <range value="40"/>
                 <lineOfSight value="200"/>
                 <squadMembers value="5"/>
@@ -878,7 +878,7 @@
                 <attack value="2"/>
                 <defense value="0"/>
                 <piercingDamage value="7"/>
-                <movementSpeed value="1.6"/>
+                <movementSpeed value="1.1"/>
                 <range value="240"/>
                 <lineOfSight value="250"/>
                 <squadMembers value="4"/>
