@@ -44,7 +44,7 @@ bool MoveTo::OnUpdate(float dt)
 {
 	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
-	if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR || flow_field->stage == FAILED)
+	if (map_p.DistanceManhattan(dest) < PROXIMITY_FACTOR || flow_field->stage == FAILED)
 		Stop();
 	else if(flow_field->getNodeAt(map_p)->parent)
 		unit->next_step += ((flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized() * STEERING_FACTOR);

@@ -12,12 +12,12 @@
 //minimap_
 #include "j1UIScene.h"
 
-#define COLLIDER_MARGIN 25  // extra margin for separation calculations  // 10 ~ 30//
-#define MAX_NEXT_STEP_MODULE 20.0f   // max value for the next_step vector, for steering calculations  // 10 ~ 50//
+#define COLLIDER_MARGIN 10  // extra margin for separation calculations  // 10 ~ 30//
+#define MAX_NEXT_STEP_MODULE 50.0f   // max value for the next_step vector, for steering calculations  // 10 ~ 50//
 
 #define SEPARATION_STRENGTH 1.25f   // the higher the stronger   // 1.0f ~ 10.0f//
-#define SPEED_CONSTANT 100   // applied to all units            // 60 ~ 140 //
-#define STOP_TRESHOLD 0.6f										// 0.5f ~ 1.5f//
+#define SPEED_CONSTANT 2.5f   // applied to all units            // 60 ~ 140 //
+#define STOP_TRESHOLD 0.3f										// 0.5f ~ 1.5f//
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
@@ -122,13 +122,20 @@ void Unit::Move(float dt)
 
 		fPoint last_pos = position;
 
-		if (squad)	position += (next_step.Normalized() * squad->max_speed * dt * SPEED_CONSTANT);
-		else		position += (next_step.Normalized() * speed * dt * SPEED_CONSTANT);
+		if (squad)	position += (next_step * squad->max_speed * dt * SPEED_CONSTANT);
+		else		position += (next_step * speed * dt * SPEED_CONSTANT);
 
 		if (!App->pathfinding->IsWalkable(App->map->WorldToMap(position.x, position.y))) 
 		{ 
-			position = last_pos; 
-			next_step = next_step.Negate().Normalized() * (MAX_NEXT_STEP_MODULE * 0.25f);
+			iPoint unwalkable_tile = App->map->WorldToMap(position.x, position.y);
+			SDL_Rect r = { unwalkable_tile.x, unwalkable_tile.y, App->map->data.tile_width, App->map->data.tile_height };
+			SDL_Rect result = { 0,0,0,0 };
+			SDL_IntersectRect(&collider, &r, &result);
+
+			int x = (collider.x > r.x ? result.w + 1: result.x - result.w - 1);
+			int y = (collider.y > r.y ? result.y + 1: result.y - result.h - 1);
+			next_step += fPoint(x, y);
+			//position = last_pos; 
 		}
 		else
 		{
@@ -302,16 +309,20 @@ fPoint Unit::calculateSeparationVector()
 	std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(r, this);
 
 	fPoint separation_v = { 0,0 };
-	for (int i = 0; i < collisions.size(); i++)
+	if (commands.empty() ? true : (commands.front()->type != ATTACKING_MOVETO && commands.front()->type != ATTACK))
 	{
-		if (collisions[i]->entity_type == UNIT) {
-			if (((Unit*)collisions[i])->IsEnemy() != IsEnemy()) continue;
-		}
-		else if (collisions[i]->entity_type == BUILDING && IsEnemy()) continue;
+		for (int i = 0; i < collisions.size(); i++)
+		{
+			if (collisions[i]->entity_type == UNIT) {
+				if (((Unit*)collisions[i])->IsEnemy() != IsEnemy()) continue;
+			}
+			else if (collisions[i]->entity_type == BUILDING && IsEnemy()) continue;
 
-		fPoint current_separation = (position - collisions[i]->position);
-		separation_v += current_separation.Normalized() * (1 / current_separation.GetModule());
+			fPoint current_separation = (position - collisions[i]->position);
+			separation_v += (position - collisions[i]->position).Normalized() * (1 / current_separation.GetModule());
+		}
 	}
+	
 
 	return separation_v * SEPARATION_STRENGTH;
 }
