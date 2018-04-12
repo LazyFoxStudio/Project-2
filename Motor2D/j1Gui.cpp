@@ -42,6 +42,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	buttonFX = conf.child("buttonFX").attribute("source").as_string("");
 	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
 	icon_atlas_file_name = conf.child("icon_atlas").attribute("file").as_string("");
+	popUp_wait_time = conf.child("popUps").attribute("time").as_uint(0);
 
 	return ret;
 }
