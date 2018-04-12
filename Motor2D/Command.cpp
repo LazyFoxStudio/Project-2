@@ -166,8 +166,7 @@ bool MoveToSquad::OnInit()
 {
 	if (!flow_field)
 	{
-		iPoint commander_map_p = App->map->WorldToMap(unit->position.x, squad->commander->position.y);
-		flow_field = App->pathfinding->RequestFlowField(commander_map_p, dest);
+		flow_field = App->pathfinding->RequestFlowField(dest);
 		state = TO_INIT;
 	}
 	else

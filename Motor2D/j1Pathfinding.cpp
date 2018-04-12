@@ -409,14 +409,14 @@ void FlowField::updateFromPath(const std::list<iPoint>& path)
 
 }
 
-FlowField* j1PathFinding::RequestFlowField(iPoint origin, iPoint destination)
+FlowField* j1PathFinding::RequestFlowField(iPoint destination)
 {
-	PathProcessor* pp = new PathProcessor(origin, destination);
+	PathProcessor* pp = new PathProcessor(destination);
 	App->pathfinding->path_pool.push_back(pp);
 	return pp->flow_field;
 }
 
-PathProcessor::PathProcessor(iPoint origin, iPoint destination) : origin(origin), destination(destination)
+PathProcessor::PathProcessor(iPoint destination) : destination(destination)
 { 
 	flow_field = new FlowField(App->map->data.width, App->map->data.height);
 }
@@ -427,14 +427,11 @@ bool PathProcessor::ProcessFlowField(j1Timer& timer)
 	switch (flow_field->stage)
 	{
 	case REQUESTED:
+
 		if (!App->pathfinding->IsWalkable(destination))
 			destination = App->pathfinding->FirstWalkableAdjacent(destination);
 
-		if (!App->pathfinding->IsWalkable(origin))
-			origin = App->pathfinding->FirstWalkableAdjacent(origin);
-
-		if (!App->pathfinding->IsWalkable(destination) || !App->pathfinding->IsWalkable(origin))
-			flow_field->stage = FAILED;
+		if (!App->pathfinding->IsWalkable(destination))		flow_field->stage = FAILED;
 		else
 		{
 			flow_field->getNodeAt(destination)->score = 0;
@@ -468,14 +465,12 @@ bool PathProcessor::ProcessFlowField(j1Timer& timer)
 					flow_field_node->parent = flow_field->getNodeAt(current_tile.position);
 					open.push_back(*flow_field_node);
 
-					if (adjacents[i].position == origin)
-						dest_found = true;
 				}
 			}
 			adjacents.clear();
 		}
 
-		dest_found ? flow_field->stage = COMPLETED : flow_field->stage = FAILED;
+		flow_field->stage = COMPLETED;
 		break;
 	default: 
 		break;

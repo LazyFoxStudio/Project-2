@@ -139,7 +139,7 @@ bool j1EntityController::Update(float dt)
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction_lastFrame)
 		commandControl();
 
-	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && App->entitycontroller->building)
+	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && App->entitycontroller->building && !selected_squads.empty())
 	{
 		building = false;
 		structure_beingbuilt = NONE_BUILDING;
@@ -514,14 +514,18 @@ void j1EntityController::commandControl()
 
 	if (!entity)   // clicked on ground
 	{
+		FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
 		for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 		{
-			(*it)->Halt();
-			(*it)->commands.push_back(new MoveToSquad((*it)->commander, map_p));
+			(*it)->Halt(); 
+			MoveToSquad* new_order = new MoveToSquad((*it)->commander, map_p);
+			new_order->flow_field = shared_flowfield;
+			(*it)->commands.push_back(new_order);
 		}
 	}
 	else
 	{
+		FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
 		switch (entity->entity_type)
 		{
 		case UNIT:    //clicked on a unit
@@ -530,7 +534,9 @@ void j1EntityController::commandControl()
 				for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 				{
 					(*it)->Halt();
-					(*it)->commands.push_back(new AttackingMoveToSquad((*it)->commander, map_p));
+					AttackingMoveToSquad* new_order = new AttackingMoveToSquad((*it)->commander, map_p);
+					new_order->flow_field = shared_flowfield;
+					(*it)->commands.push_back(new_order);
 				}
 			}
 			break;
