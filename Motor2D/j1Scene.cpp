@@ -155,6 +155,9 @@ void j1Scene::Restart_game()
 
 	App->entitycontroller->all_squads.clear();
 	App->entitycontroller->selected_squads.clear();
+
+	App->entitycontroller->entity_iterator = App->entitycontroller->entities.begin();
+	App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();
 	
 	App->entitycontroller->addBuilding({ 2000, 2000 }, TOWN_HALL);
 

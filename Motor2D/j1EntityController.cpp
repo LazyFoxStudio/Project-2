@@ -16,7 +16,6 @@
 #include "j1Map.h"
 #include "j1ActionsController.h"
 #include "UI_WarningMessages.h"
-#include "j1WaveController.h"
 #include "UI_Button.h"
 #include "Building.h"
 
@@ -245,6 +244,9 @@ bool j1EntityController::CleanUp()
 	all_squads.clear();
 	selected_squads.clear();
 
+	entity_iterator = entities.begin();
+	squad_iterator = all_squads.begin();
+
 	return true;
 }
 
@@ -386,7 +388,6 @@ bool j1EntityController::placingBuilding(buildingType type, iPoint position)
 	{
 		addBuilding(pos, type);
 		App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y, true,false);
-		App->wavecontroller->updateFlowField();
 		building = false;
 		ret = true;
 	}

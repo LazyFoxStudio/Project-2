@@ -89,7 +89,9 @@ bool Attack::OnUpdate(float dt)
 	if(!enemy) { Stop(); return true; }
 
 	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
-	if (enemy->position.DistanceTo(unit->position) - (enemy->collider.w / 2) < unit->range)
+	SDL_Rect r = { unit->position.x - (unit->range / 2), unit->position.y - (unit->range / 2), unit->collider.w + (unit->range / 2), unit->collider.h + (unit->range / 2) };
+
+	if(SDL_HasIntersection(&r, &enemy->collider))
 	{
 		if (type == ATTACKING_MOVETO) 
 			{ type = ATTACK; timer.Start(); }
@@ -119,7 +121,7 @@ bool Attack::OnUpdate(float dt)
 		unit->next_step = { 0,0 };
 		return true;
 	}
-	else if (current_target.DistanceTo(unit->position) > unit->range)
+	else
 	{
 		if (!flow_field->getNodeAt(map_p)->parent)
 		{

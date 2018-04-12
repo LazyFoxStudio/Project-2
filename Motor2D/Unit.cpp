@@ -304,8 +304,10 @@ fPoint Unit::calculateSeparationVector()
 	fPoint separation_v = { 0,0 };
 	for (int i = 0; i < collisions.size(); i++)
 	{
-		if (collisions[i]->entity_type == UNIT)
+		if (collisions[i]->entity_type == UNIT) {
 			if (((Unit*)collisions[i])->IsEnemy() != IsEnemy()) continue;
+		}
+		else if (collisions[i]->entity_type == BUILDING && IsEnemy()) continue;
 
 		fPoint current_separation = (position - collisions[i]->position);
 		separation_v += current_separation.Normalized() * (1 / current_separation.GetModule());

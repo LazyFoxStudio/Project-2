@@ -119,7 +119,7 @@ void Building::HandleSprite()
 	else if (destroyed)
 	{
 		//TODO add the sprites of the destroyed buildings to the spritesheet.
-		current_sprite = sprites[3];
+		//current_sprite = sprites[3];
 	}
 
 	else if (type == TOWN_HALL)

@@ -41,7 +41,8 @@ bool j1WaveController::Start()
 {
 	bool ret = true;
 
-	TownHall_pos = App->map->WorldToMap(2200, 2000);
+	TownHall_pos = App->map->WorldToMap(2000, 2000);
+	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
 	flow_field = App->pathfinding->RequestFlowField(TownHall_pos);
 	
 	wave_timer.Start();
@@ -165,25 +166,25 @@ void j1WaveController::Generate_Next_Wave()
 			case 1:
 				/*squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_1);
 				wave.push_back(squad);*/
-				aux_squad = new NextWave(AXE_THROWER, spawn_1);
+				aux_squad = new NextWave(GRUNT, spawn_1);
 				next_wave.push_back(aux_squad);
 				break;
 			case 2:
 				/*squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_2);
 				wave.push_back(squad);*/
-				aux_squad = new NextWave(AXE_THROWER, spawn_2);
+				aux_squad = new NextWave(GRUNT, spawn_2);
 				next_wave.push_back(aux_squad);
 				break;
 			case 3:
 				/*squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_3);
 				wave.push_back(squad);*/
-				aux_squad = new NextWave(AXE_THROWER, spawn_3);
+				aux_squad = new NextWave(GRUNT, spawn_3);
 				next_wave.push_back(aux_squad);
 				break;
 			case 4:
 				/*squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_4);
 				wave.push_back(squad);*/
-				aux_squad = new NextWave(AXE_THROWER, spawn_4);
+				aux_squad = new NextWave(GRUNT, spawn_4);
 				next_wave.push_back(aux_squad);
 				break;
 			}
