@@ -8,6 +8,8 @@
 #include "j1Scene.h"
 // BASE CLASSES: =========================
 
+#define RANDOM_FACTOR (1.0f - (((float)(rand() % 6)) / 10.0f))
+
 void Command::Execute(float dt)
 {
 	bool ret = false;
@@ -100,8 +102,8 @@ bool Attack::OnUpdate(float dt)
 			case UNIT:
 				{
 				enemy_unit = (Unit*)enemy;
-				enemy_unit->current_HP -= ((1 / (rand() % 6)) * unit->piercing_atk + ((((int)unit->attack - (int)enemy_unit->defense) <= 0) ? 0 : unit->attack - enemy_unit->defense);); //dmg
-				if (enemy_unit->current_HP < 0)
+				enemy_unit->current_HP -= MAX((RANDOM_FACTOR * (unit->piercing_atk + ((((int)unit->attack - (int)enemy_unit->defense) <= 0) ? 0 : unit->attack - enemy_unit->defense))), 1); //dmg
+
 				if (enemy_unit->squad->commands.empty() ? true : enemy_unit->squad->commands.front()->type != ATTACKING_MOVETO_SQUAD)
 					enemy_unit->squad->commands.push_back(new AttackingMoveToSquad(enemy_unit, map_p));
 				}
