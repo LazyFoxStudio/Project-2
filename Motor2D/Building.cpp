@@ -4,6 +4,8 @@
 #include "j1UIScene.h"
 #include "j1EntityController.h"
 #include "j1Input.h"
+#include "j1Scene.h"
+#include "UI_Chrono.h"
 
 Building::Building(iPoint pos, Building& building)
 {
@@ -35,7 +37,13 @@ Building::Building(iPoint pos, Building& building)
 
 Building::~Building()
 {
+	sprites.clear();
 
+	if (type == TOWN_HALL)
+	{
+		App->gui->Chronos->counter.PauseTimer();
+		App->scene->Restart_game();
+	}
 }
 
 void Building::GetColliderFromSize()
@@ -171,11 +179,7 @@ void Building::HandleDestruction()
 	if (timer.ReadSec() > App->entitycontroller->death_time)
 	{
 		App->map->WalkabilityArea(position.x, position.y, size.x, size.y,true);
-		
-		if (type != TOWN_HALL)
-		{
-			App->entitycontroller->entities_to_destroy.push_back(this);
-		}
+		App->entitycontroller->entities_to_destroy.push_back(this);
 	}
 }
 

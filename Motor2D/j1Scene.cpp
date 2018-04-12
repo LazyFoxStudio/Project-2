@@ -143,10 +143,11 @@ bool j1Scene::workerAvalible(int num)
 
 void j1Scene::Restart_game()
 {
-	for (std::list<Entity*>::iterator it =App->entitycontroller->entities.begin();
-		it != App->entitycontroller->entities.end();it++)
+	std::list<Entity*>::iterator it = App->entitycontroller->entities.begin();
+	while (it != App->entitycontroller->entities.end())
 	{
-		App->entitycontroller->entities_to_destroy.push_back((*it));
+		App->entitycontroller->DeleteEntity(*it);
+		it++;
 	}
 
 	App->entitycontroller->entities.clear();
@@ -154,8 +155,6 @@ void j1Scene::Restart_game()
 
 	App->entitycontroller->all_squads.clear();
 	App->entitycontroller->selected_squads.clear();
-
-	Town_Hall = nullptr;
 	
 	App->entitycontroller->addBuilding({ 2000, 2000 }, TOWN_HALL);
 
