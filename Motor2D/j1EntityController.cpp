@@ -69,7 +69,6 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
-	
 	int counter = 0;
 	if (!all_squads.empty())
 	{
@@ -167,18 +166,16 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 
 void j1EntityController::GetTotalIncome()
 {
-	worker_wood_production = 0;
+	App->scene->wood_production_per_second = 0;
 	for (std::list<Entity*>::iterator tmp = entities.begin(); tmp != entities.end(); tmp++)
 	{
 		if ((*tmp)->entity_type == BUILDING)
 		{
 			if (((Building*)(*tmp))->type == LUMBER_MILL)
 			{
-				worker_wood_production += ((Building*)(*tmp))->resource_production;
-			}
-			
-		}
-			
+				App->scene->wood_production_per_second += ((Building*)(*tmp))->resource_production;
+			}			
+		}		
 	}
 }
 
@@ -446,6 +443,7 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 			}
 		}
 		building->CalculateResourceProduction();
+		GetTotalIncome();
 	}
 }
 

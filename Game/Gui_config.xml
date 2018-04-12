@@ -53,7 +53,7 @@ Resolution of the screen: 1680x 1050y
 <config>
 	<menu type="2" active="true">	
 	<!-- Resources Display -->
-		<atlas_image icon_atlas="false">
+		<atlas_image icon_atlas="false" active="true">
 			<position x="0" y="0"/>
 			<section x="285" y="332" w="874" h="54"/>
 			<childs>
@@ -85,7 +85,10 @@ Resolution of the screen: 1680x 1050y
 					<position x="285" y="13"/>
 					<font id="2"/>
 					<color r="255" g="255" b="0" a="255"/>
-					<interactive value="false"/>
+					<interactive value="true"/>
+					<popUp>
+						<Info text="Wood every 3 seconds"/>
+					</popUp>
 				</text>
 			</childs>
 		</atlas_image>

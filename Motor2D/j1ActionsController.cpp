@@ -56,11 +56,13 @@ bool j1ActionsController::Update(float dt)
 			}
 			break;
 		case UNASSIGN_WORKER:
-			App->entitycontroller->HandleWorkerAssignment(false, (Building*)*App->entitycontroller->selected_entities.begin());
+			if (!((Building*)*App->entitycontroller->selected_entities.begin())->being_built)
+				App->entitycontroller->HandleWorkerAssignment(false, (Building*)*App->entitycontroller->selected_entities.begin());
 			doingAction = false;
 			break;
 		case ASSIGN_WORKER:
-			App->entitycontroller->HandleWorkerAssignment(true, (Building*)*App->entitycontroller->selected_entities.begin());
+			if (!((Building*)*App->entitycontroller->selected_entities.begin())->being_built)
+				App->entitycontroller->HandleWorkerAssignment(true, (Building*)*App->entitycontroller->selected_entities.begin());
 			doingAction = false;
 			break;
 		case CREATE_FOOTMAN:

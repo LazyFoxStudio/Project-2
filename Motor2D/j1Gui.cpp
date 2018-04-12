@@ -86,7 +86,7 @@ bool j1Gui::PreUpdate()
 			if ((*it_m)->active == false) continue;
 			for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++) //Go through elements
 			{
-				if (checkMouseHovering((*it_e)) && (*it_e)->interactive)
+				if ((*it_e)->active  && (*it_e)->interactive && checkMouseHovering((*it_e)))
 					element = (*it_e)->getMouseHoveringElement();			
 			}
 		}
@@ -323,13 +323,32 @@ void j1Gui::UIDebugDraw()
 		if (!(*it_m)->active) continue;
 		for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++)
 		{
-			SDL_Rect box;
-			int scale = App->win->GetScale();
-			box.x = (*it_e)->calculateAbsolutePosition().x * scale;
-			box.y = (*it_e)->calculateAbsolutePosition().y * scale;
-			box.w = (*it_e)->section.w;
-			box.h = (*it_e)->section.h;
-			App->render->DrawQuad(box, Red, false, false);
+			if ((*it_e)->active)
+			{
+				SDL_Rect box;
+				int scale = App->win->GetScale();
+				box.x = (*it_e)->calculateAbsolutePosition().x * scale;
+				box.y = (*it_e)->calculateAbsolutePosition().y * scale;
+				box.w = (*it_e)->section.w;
+				box.h = (*it_e)->section.h;
+				App->render->DrawQuad(box, Red, false, false);
+				if ((*it_e)->childs.size() > 0)
+				{
+					for (std::list<UI_element*>::iterator it_c = (*it_e)->childs.begin(); it_c != (*it_e)->childs.end(); it_c++)
+					{
+						if ((*it_c)->active)
+						{
+							SDL_Rect box;
+							int scale = App->win->GetScale();
+							box.x = (*it_c)->calculateAbsolutePosition().x * scale;
+							box.y = (*it_c)->calculateAbsolutePosition().y * scale;
+							box.w = (*it_c)->section.w;
+							box.h = (*it_c)->section.h;
+							App->render->DrawQuad(box, Red, false, false);
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -412,10 +431,10 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
 		element->active = tmp.attribute("active").as_bool(true);
 		element->function = (element_function)tmp.attribute("function").as_int(0);
-		pugi::xml_attribute info = tmp.attribute("popupInfo");
+		pugi::xml_node info = tmp.child("popUp").child("Info");
 		if (info)
 		{
-			createPopUpInfo(element, info.as_string());
+			createPopUpInfo(element, info.attribute("text").as_string());
 		}
 
 		pugi::xml_node childs = tmp.child("childs");
