@@ -53,6 +53,12 @@ bool j1WaveController::Start()
 	return ret;
 }
 
+void j1WaveController::updateFlowField()
+{
+	if (flow_field_aux) flow_field_aux->finished = true;
+	flow_field_aux = App->pathfinding->RequestFlowField(TownHall_pos);
+}
+
 bool j1WaveController::Update(float dt)
 {	
 	BROFILER_CATEGORY("Waves Update", Profiler::Color::Black);
@@ -75,6 +81,15 @@ bool j1WaveController::Update(float dt)
 
 bool j1WaveController::PostUpdate()
 {
+	if (flow_field_aux ? flow_field_aux->stage == COMPLETED : false)
+	{
+		for (int i = 0; i < flow_field->width; i++)
+		{
+			for (int j = 0; j < flow_field->height; j++)
+				flow_field->field[i][j] = flow_field_aux->field[i][j];
+		}
+		RELEASE(flow_field_aux);
+	}
 	return true;
 }
 

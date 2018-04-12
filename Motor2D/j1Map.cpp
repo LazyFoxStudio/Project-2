@@ -113,43 +113,51 @@ bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bo
 			}
 		}
 	}
-	for (int j = 0; j < columns; j++)
+
+	if (!modify && !check_trees)
 	{
-		for (int i = 0; i < rows; i++)
+		for (int j = 0; j < columns; j++)
 		{
-			iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
-			if (!modify &&  !check_trees)
+			for (int i = 0; i < rows; i++)
 			{
+				iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
 				if (!App->pathfinding->IsWalkable(currentMapTile))
 				{
 					ret = false;
 					break;
 				}
+
 			}
-			else if(modify && !check_trees)
+		}
+	}
+	else if (modify && !check_trees)
+	{
+		for (int j = 0; j < columns; j++)
+		{
+			for (int i = 0; i < rows; i++)
 			{
+				iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
 				int tile = (currentMapTile.y*App->map->data.width) + currentMapTile.x;
-				if(App->pathfinding->map[tile] != INVALID_WALK_CODE)
-				{
-					App->pathfinding->map[tile] = INVALID_WALK_CODE;
-				}
-				else 
-				{
-					App->pathfinding->map[tile] = 0;
-				}
+
+				App->pathfinding->map[tile] = INVALID_WALK_CODE;
+
 			}
-			else if(check_trees)
+		}
+	}
+	else if (check_trees)
+	{
+		for (int j = 0; j < columns; j++)
+		{
+			for (int i = 0; i < rows; i++)
 			{
+				iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
 				if (tree_layer->GetID(currentMapTile.x, currentMapTile.y) != 0)
 				{
 					ret = false;
 					break;
 				}
-			}
+			} if (!ret) break;
 		}
-
-		if (!ret)
-			break;
 	}
 	
 	return ret;

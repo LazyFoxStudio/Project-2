@@ -39,10 +39,11 @@ public:
 	void Generate_Next_Wave();
 	void Generate_Wave();
 
-
+	void updateFlowField();
 public:
 
 	FlowField*			flow_field = nullptr;
+	FlowField*			flow_field_aux = nullptr;    // for swapping purposes
 
 	int					initial_wait = 0;
 	int					wait_between_waves = 0;
