@@ -21,10 +21,27 @@ void Chrono::restartChrono()
 	{
 	case TIMER:
 		time = start_value;
+		text->setColor(default_color);
 		break;
 	case STOPWATCH:
 		time = 0;
 		break;
+	}
+}
+
+void Chrono::Blink()
+{
+	if (last_blink == 0)
+	{
+		last_blink = counter.Read();
+	}
+	if (counter.Read() - last_blink > blinkTime)
+	{
+		if (text->color.r == 255 && text->color.g == 255 && text->color.b == 255)
+			text->setColor({ 255,0,0,255 });
+		else
+			text->setColor({ 255,255,255,255 });
+		last_blink = counter.Read();
 	}
 }
 
@@ -62,6 +79,8 @@ void Chrono::BlitElement(bool use_camera)
 			}
 			break;
 		case TIMER:
+			if (time <= 5)
+				Blink();
 			if (start_value - time_elapsed != time && time != 0)
 			{
 				time = start_value - time_elapsed;
@@ -72,6 +91,9 @@ void Chrono::BlitElement(bool use_camera)
 				int min = time / 60;
 				int sec = time - (min * 60);
 				std::string secs = ((min<10) ? "0" : "") + std::to_string(min) + ":" + ((sec<10) ? "0" : "") + std::to_string(sec);
+
+				if (time <= 10)
+					text->setColor({ 255,0,0,255 });
 
 				if (last_secs != secs)
 					text->setText(secs);
