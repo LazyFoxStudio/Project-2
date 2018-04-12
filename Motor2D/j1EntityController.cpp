@@ -17,6 +17,7 @@
 #include "j1ActionsController.h"
 #include "UI_WarningMessages.h"
 #include "UI_Button.h"
+#include "Building.h"
 
 #define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
@@ -68,7 +69,6 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
-	
 	int counter = 0;
 	if (!all_squads.empty())
 	{
@@ -161,6 +161,21 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 		Unit* unit = (Unit*)entity;
 		App->render->DrawCircle(unit->position.x, unit->position.y, unit->range, Green);
 		App->render->DrawCircle(unit->position.x, unit->position.y, unit->line_of_sight, Blue);
+	}
+}
+
+void j1EntityController::GetTotalIncome()
+{
+	App->scene->wood_production_per_second = 0;
+	for (std::list<Entity*>::iterator tmp = entities.begin(); tmp != entities.end(); tmp++)
+	{
+		if ((*tmp)->entity_type == BUILDING)
+		{
+			if (((Building*)(*tmp))->type == LUMBER_MILL)
+			{
+				App->scene->wood_production_per_second += ((Building*)(*tmp))->resource_production;
+			}			
+		}		
 	}
 }
 
@@ -428,6 +443,7 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 			}
 		}
 		building->CalculateResourceProduction();
+		GetTotalIncome();
 	}
 }
 

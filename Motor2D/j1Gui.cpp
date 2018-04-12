@@ -86,7 +86,7 @@ bool j1Gui::PreUpdate()
 			if ((*it_m)->active == false) continue;
 			for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++) //Go through elements
 			{
-				if (checkMouseHovering((*it_e)) && (*it_e)->interactive)
+				if ((*it_e)->active  && (*it_e)->interactive && checkMouseHovering((*it_e)))
 					element = (*it_e)->getMouseHoveringElement();			
 			}
 		}
@@ -323,13 +323,32 @@ void j1Gui::UIDebugDraw()
 		if (!(*it_m)->active) continue;
 		for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++)
 		{
-			SDL_Rect box;
-			int scale = App->win->GetScale();
-			box.x = (*it_e)->calculateAbsolutePosition().x * scale;
-			box.y = (*it_e)->calculateAbsolutePosition().y * scale;
-			box.w = (*it_e)->section.w;
-			box.h = (*it_e)->section.h;
-			App->render->DrawQuad(box, Red, false, false);
+			if ((*it_e)->active)
+			{
+				SDL_Rect box;
+				int scale = App->win->GetScale();
+				box.x = (*it_e)->calculateAbsolutePosition().x * scale;
+				box.y = (*it_e)->calculateAbsolutePosition().y * scale;
+				box.w = (*it_e)->section.w;
+				box.h = (*it_e)->section.h;
+				App->render->DrawQuad(box, Red, false, false);
+				if ((*it_e)->childs.size() > 0)
+				{
+					for (std::list<UI_element*>::iterator it_c = (*it_e)->childs.begin(); it_c != (*it_e)->childs.end(); it_c++)
+					{
+						if ((*it_c)->active)
+						{
+							SDL_Rect box;
+							int scale = App->win->GetScale();
+							box.x = (*it_c)->calculateAbsolutePosition().x * scale;
+							box.y = (*it_c)->calculateAbsolutePosition().y * scale;
+							box.w = (*it_c)->section.w;
+							box.h = (*it_c)->section.h;
+							App->render->DrawQuad(box, Red, false, false);
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -412,10 +431,10 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
 		element->active = tmp.attribute("active").as_bool(true);
 		element->function = (element_function)tmp.attribute("function").as_int(0);
-		pugi::xml_attribute info = tmp.attribute("popupInfo");
+		pugi::xml_node info = tmp.child("popUp").child("Info");
 		if (info)
 		{
-			createPopUpInfo(element, info.as_string());
+			createPopUpInfo(element, info.attribute("text").as_string());
 		}
 
 		pugi::xml_node childs = tmp.child("childs");
@@ -444,10 +463,17 @@ Text* j1Gui::createText(pugi::xml_node node, j1Module* callback, bool saveIntoGU
 	int x = node.child("position").attribute("x").as_int();
 	int y = node.child("position").attribute("y").as_int();
 	int font_id = node.child("font").attribute("id").as_int();
-	std::list<_TTF_Font*>::iterator font = std::next(App->font->fonts.begin(), font_id-1);
 	SDL_Color color = { node.child("color").attribute("r").as_int(), node.child("color").attribute("g").as_int(), node.child("color").attribute("b").as_int(), node.child("color").attribute("a").as_int() };
 
-	Text* ret = new Text(text, x, y, (*font), color, callback);
+	Text* ret = new Text(text, x, y, App->font->getFont(font_id), color, callback);
+
+	pugi::xml_attribute prefix = node.attribute("prefix");
+	if (prefix)
+		ret->setPrefix(prefix.as_string());
+
+	pugi::xml_attribute sufix = node.attribute("sufix");
+	if (sufix)
+		ret->setSufix(sufix.as_string());
 
 	pugi::xml_node background = node.child("background");
 	if (background)
@@ -760,6 +786,16 @@ void j1Gui::LoadDB(pugi::xml_node node)
 	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
 	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
 	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
+
+	LoadFonts(node.child("fonts"));
+}
+
+void j1Gui::LoadFonts(pugi::xml_node node)
+{
+	for (pugi::xml_node font = node.child("font"); font; font = font.next_sibling("font"))
+	{
+		App->font->Load(font.attribute("path").as_string(), font.attribute("size").as_int());
+	}
 }
 
 void j1Gui::AddIconData(unitType type, pugi::xml_node node)
