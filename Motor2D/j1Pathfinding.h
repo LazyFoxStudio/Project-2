@@ -47,13 +47,12 @@ struct FlowField
 
 struct PathProcessor
 {
-	iPoint origin = { 0,0 }; iPoint destination = { 0,0 };
+	iPoint destination = { 0,0 };
 	FlowField* flow_field = nullptr;
-	bool dest_found = false;
 
 	std::list<FieldNode> open;
 
-	PathProcessor(iPoint origin, iPoint destination);
+	PathProcessor(iPoint destination);
 	~PathProcessor() { RELEASE(flow_field); };
 
 	bool ProcessFlowField(j1Timer& timer);
@@ -93,7 +92,7 @@ public:
 	iPoint FirstWalkableAdjacent(iPoint map_pos, int max_distance = 0);
 	iPoint WalkableAdjacentCloserTo(iPoint map_pos, iPoint target, Entity* entity_to_ignore = nullptr);    // this method checks collisions
 
-	FlowField* RequestFlowField(iPoint origin, iPoint destination);
+	FlowField* RequestFlowField(iPoint destination);
 
 public:
 	uchar * map = nullptr;

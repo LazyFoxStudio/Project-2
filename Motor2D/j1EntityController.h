@@ -28,7 +28,7 @@ public:
 	bool Load(pugi::xml_node&);
 
 	bool loadEntitiesDB(pugi::xml_node& data);
-	
+
 	void DeleteEntity(Entity* entity);
 	bool DeleteDB() { return true; };
 
@@ -36,7 +36,7 @@ public:
 
 	Unit* addUnit(iPoint pos, unitType type, Squad* squad = nullptr);
 	/*Hero* addHero(iPoint pos, heroType type);*/
-	Building* addBuilding(iPoint pos, buildingType type );
+	Building* addBuilding(iPoint pos, buildingType type);
 	Nature* addNature(iPoint pos, resourceType res_type, int amount = 0);
 
 	Squad* AddSquad(unitType type, fPoint position);
@@ -89,12 +89,13 @@ public:
 	int mill_max_villagers = 0;
 	int worker_wood_production = 0;
 	int test_counter = 0;
-	
+
 	buildingType structure_beingbuilt = NONE_BUILDING;
 	SDL_Rect selection_rect = { 0,0,0,0 };
 
-	Hero* hero=nullptr;
+	Hero* hero = nullptr;
 };
+
 
 
 
