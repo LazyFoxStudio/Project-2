@@ -26,6 +26,7 @@ public:
 		text->parent = this;
 		section.w = text->tex_width;
 		section.h = text->tex_height;
+		default_color = color;
 		//counter.Pause();
 		time = -1;
 	}
@@ -40,6 +41,10 @@ public:
 	void setAlarm(int alarm);
 	void restartChrono();
 
+private:
+
+	void Blink();
+
 public:
 	int time = 1;
 	uint time_elapsed = 0;
@@ -49,6 +54,12 @@ public:
 	Text* text = nullptr;
 	chrono_type type;
 	std::string last_secs;
+
+private:
+
+	SDL_Color default_color;
+	uint last_blink = 0;
+	uint blinkTime = 500;
 };
 
 #endif // !__UI_CHRONO__
