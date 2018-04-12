@@ -328,7 +328,7 @@
                 <life value="40"/>
                 <attack value="2"/>
                 <defense value="1"/>
-                <piercingDamage value="6"/>
+                <piercingDamage value="4"/>
                 <movementSpeed value="1.5"/>
                 <range value="240"/>
                 <lineOfSight value="250"/>
@@ -607,7 +607,7 @@
                 <attack value="2"/>
                 <defense value="5"/>
                 <piercingDamage value="2"/>
-                <movementSpeed value="1.1"/>
+                <movementSpeed value="1"/>
                 <range value="40"/>
                 <lineOfSight value="200"/>
                 <squadMembers value="5"/>
@@ -877,9 +877,9 @@
                 <life value="40"/>
                 <attack value="2"/>
                 <defense value="0"/>
-                <piercingDamage value="7"/>
-                <movementSpeed value="1.6"/>
-                <range value="240"/>
+                <piercingDamage value="5"/>
+                <movementSpeed value="1.4"/>
+                <range value="220"/>
                 <lineOfSight value="250"/>
                 <squadMembers value="4"/>
                 <size x="1" y="1"/>
@@ -1153,7 +1153,7 @@
         <sprite x="133" y="0" w="132" h="136"/>
       </sprites>
       <Stats>
-        <life value="200"/>
+        <life value="300"/>
         <villagers value="0"/>
         <buildingTime value="0"/>
         <defense value="20"/>
@@ -1178,11 +1178,11 @@
         <sprite x="545" y="71" w="101" h="109" /> 
       </sprites>
       <Stats>
-        <life value="100"/>
+        <life value="200"/>
         <villagers value="0"/>
         <buildingTime value="5"/>
         <defense value="20"/>
-        <woodCost value="400"/>
+        <woodCost value="300"/>
         <goldCost value="0"/>
       </Stats>
 	  <Actions>
@@ -1212,7 +1212,7 @@
         <sprite x="545" y="71" w="101" h="109" />
       </sprites>
       <Stats>
-        <life value="150"/>
+        <life value="250"/>
         <villagers value="0"/>
         <buildingTime value="10"/>
         <defense value="20"/>
@@ -1235,7 +1235,7 @@
         <sprite x="545" y="71" w="101" h="109" />
       </sprites>
       <Stats>
-        <life value="100"/>
+        <life value="200"/>
         <villagers value="0"/>
         <buildingTime value="10"/>
         <defense value="20"/>
@@ -1318,7 +1318,7 @@
 			<OnClick x="1237" y="437" w="66" h="66"/>
 			<popUp>
 				<Info text="Build Barracks"/>
-				<Cost wood="400" gold="" oil=""/>
+				<Cost wood="300" gold="" oil=""/>
 			</popUp>
 		</buildBarrack>
 		<buildMill id="6" function="16">
