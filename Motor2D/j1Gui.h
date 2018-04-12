@@ -125,6 +125,8 @@ public:
 	void moveElementToMouse(UI_element* element);
 
 public:
+
+	uint popUp_wait_time = 0;
 	bool UI_Debug = false;
 	int alpha_value = 255;
 	uint button_click_fx = 0;
