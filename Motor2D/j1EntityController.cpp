@@ -140,7 +140,7 @@ bool j1EntityController::Update(float dt)
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction_lastFrame)
 		commandControl();
 
-	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && App->entitycontroller->building && !selected_squads.empty())
+	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && App->entitycontroller->building && App->actionscontroller->doingAction)
 	{
 		building = false;
 		structure_beingbuilt = NONE_BUILDING;

@@ -908,9 +908,9 @@ void j1Gui::moveElementToMouse(UI_element* element)
 		}
 		x = x;
 		y -= element->section.h;
-		if (y + element->section.y > win_h)
+		if (y < 0)
 		{
-			y -= ((y + element->section.h) - win_h);
+			y = 0;
 		}
 		element->localPosition = { x, y };
 	}
