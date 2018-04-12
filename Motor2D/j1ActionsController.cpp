@@ -5,6 +5,8 @@
 #include "j1Render.h"
 #include "j1EntityController.h"
 #include "j1Scene.h"
+#include "j1Gui.h"
+#include "UI_WarningMessages.h"
 
 bool j1ActionsController::Update(float dt)
 {
@@ -35,21 +37,21 @@ bool j1ActionsController::Update(float dt)
 			}
 			break;
 		case BUILD_BARRACKS:
-			if (doingAction && !App->entitycontroller->building)
+			if (doingAction)
 			{
 				App->entitycontroller->structure_beingbuilt = BARRACKS;
 				App->entitycontroller->building = true;
 			}
 			break;
 		case BUILD_LUMBER_MILL:
-			if (doingAction && !App->entitycontroller->building)
+			if (doingAction)
 			{
 				App->entitycontroller->structure_beingbuilt = LUMBER_MILL;
 				App->entitycontroller->building = true;
 			}
 			break;
 		case BUILD_FARM:
-			if (doingAction && !App->entitycontroller->building)
+			if (doingAction)
 			{
 				App->entitycontroller->structure_beingbuilt = FARM;
 				App->entitycontroller->building = true;
@@ -91,7 +93,14 @@ bool j1ActionsController::Update(float dt)
 
 void j1ActionsController::activateAction(actionType type)
 {
-	doingAction = true;
+	if (doingAction)
+	{
+		App->gui->warningMessages->hideMessage(NO_WORKERS);
+		App->gui->warningMessages->hideMessage(NO_RESOURCES);
+		App->gui->warningMessages->hideMessage(NO_TREES);
+	}
+	else
+		doingAction = true;
 
 	action_type = type;
 }
