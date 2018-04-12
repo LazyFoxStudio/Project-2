@@ -38,12 +38,6 @@ Building::Building(iPoint pos, Building& building)
 Building::~Building()
 {
 	sprites.clear();
-
-	if (type == TOWN_HALL)
-	{
-		App->gui->Chronos->counter.PauseTimer();
-		App->scene->Restart_game();
-	}
 }
 
 void Building::GetColliderFromSize()
@@ -89,7 +83,12 @@ bool Building::Update(float dt)
 
 	if (destroyed)
 	{
-		HandleDestruction();
+		if (type == TOWN_HALL)
+		{
+			App->gui->Chronos->counter.PauseTimer();
+			App->scene->Restart_game();
+		}
+		else HandleDestruction();
 	}
 
 	if (!being_built && !destroyed && type == LUMBER_MILL)

@@ -88,7 +88,7 @@ bool j1WaveController::PostUpdate()
 			for (int j = 0; j < flow_field->height; j++)
 				flow_field->field[i][j] = flow_field_aux->field[i][j];
 		}
-		RELEASE(flow_field_aux);
+		flow_field_aux->finished = true;
 	}
 	return true;
 }

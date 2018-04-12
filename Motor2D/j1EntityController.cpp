@@ -237,8 +237,6 @@ bool j1EntityController::CleanUp()
 	{
 		DeleteEntity(*it);
 		it++;
-		if ((*it) == nullptr)
-			break;
 	}
 
 	entities.clear();

@@ -139,7 +139,7 @@ bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bo
 				iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
 				int tile = (currentMapTile.y*App->map->data.width) + currentMapTile.x;
 
-				App->pathfinding->map[tile] = INVALID_WALK_CODE;
+				App->pathfinding->map[tile] = (App->pathfinding->map[tile] != INVALID_WALK_CODE ? INVALID_WALK_CODE : 0);
 
 			}
 		}
