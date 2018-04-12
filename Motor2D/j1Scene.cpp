@@ -38,6 +38,7 @@ bool j1Scene::Start()
 	int w = -1, h = -1;
 	uchar* data = nullptr;
 
+	App->audio->PlayMusic("Normal_Round_Theme.ogg");
 	App->map->Load_map("map1.tmx");
 
 	if (App->map->CreateWalkabilityMap(w, h, &data))	
@@ -70,6 +71,23 @@ bool j1Scene::Update(float dt)
 	App->map->Draw();
 
 
+	//Music and SFX modifiers (temporal for Vertical Slice)
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		App->audio->ModifyMusicVolume(10);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+	{
+		App->audio->ModifyMusicVolume(-10);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		App->audio->ModifySFXVolume(10);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+	{
+		App->audio->ModifySFXVolume(-10);
+	}
 	return true;
 }
 

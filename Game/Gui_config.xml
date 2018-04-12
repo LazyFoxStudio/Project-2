@@ -118,7 +118,11 @@ Resolution of the screen: 1680x 1050y
 			<standby x="285" y="271" w="143" h="53"/>
 			<OnMouse x="437" y="271" w="143" h="53"/>
 			<OnClick x="589" y="271" w="143" h="53"/>
+			<popUp>
+				<Info text="Test"/>
+			</popUp>
 		</button>
+
 	<!-- Wave Window -->
 		<nextwavewindow icon_atlas="false" active ="false">
 			<position x="1408" y="462"/>

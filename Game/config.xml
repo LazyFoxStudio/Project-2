@@ -25,7 +25,7 @@
   <audio>
     <music> 
       <folder>audio/music/</folder>
-      <musicVolumeModifier value="0.3" />
+      <musicVolumeModifier value="1" />
     </music>
    <sfx> 
       <folder>audio/fx/</folder>
@@ -65,7 +65,7 @@
   </scene>
 
   <wavecontroller>
-    <initialWait value="120"/>
+    <initialWait value="10"/>
     <waitBetweenWaves value="80"/>
     <spawn1 x="2154" y="256"/>
     <spawn2 x="3605" y="1844"/>

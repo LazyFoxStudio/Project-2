@@ -164,6 +164,32 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 	}
 }
 
+void j1EntityController::HandleSFX(unitType type, int volume)
+{
+	switch (type)
+	{
+	case NONE_UNIT:
+		break;
+	case HERO_1:
+
+		break;
+	case FOOTMAN:
+		App->audio->PlayFx(listOfSFX::SFX_MISCELLANEOUS_SWORD_CLASH, volume);
+		break;
+	case ARCHER:
+		App->audio->PlayFx(listOfSFX::SFX_MISCELLANEOUS_ARROW, volume);
+		break;
+	case GRUNT:
+		App->audio->PlayFx(listOfSFX::SFX_MISCELLANEOUS_SWORD_CLASH, volume);
+		break;
+	case AXE_THROWER:
+		App->audio->PlayFx(listOfSFX::SFX_MISCELLANEOUS_AXETHROW, volume);
+		break;
+	default:
+		break;
+	}
+}
+
 bool j1EntityController::PostUpdate()
 {
 	for (std::list<Entity*>::iterator it = entities_to_destroy.begin(); it != entities_to_destroy.end(); it++)

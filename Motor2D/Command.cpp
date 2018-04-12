@@ -5,6 +5,7 @@
 #include "j1Pathfinding.h"
 #include "j1EntityController.h"
 #include "j1Map.h"
+#include "j1Audio.h"
 
 // BASE CLASSES: =========================
 
@@ -98,6 +99,7 @@ bool Attack::OnUpdate(float dt)
 			switch (enemy->entity_type)
 			{
 			case UNIT:
+				App->entitycontroller->HandleSFX(unit->type, 30);
 				enemy_unit = (Unit*)enemy;
 				enemy_unit->current_HP -= unit->piercing_atk + ((((int)unit->attack - (int)enemy_unit->defense) <= 0) ? 0 : (int)unit->attack - (int)enemy_unit->defense); //dmg
 				if(enemy_unit->current_HP < 0)

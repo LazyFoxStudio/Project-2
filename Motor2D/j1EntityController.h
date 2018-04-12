@@ -53,7 +53,7 @@ public:
 	bool CheckCostBuiding(buildingType target);
 	void HandleBuildingResources(buildingType target);
 	void debugDrawEntity(Entity* entity);
-
+	void HandleSFX(unitType type, int volume = 128);
 
 	Entity* CheckMouseHover(iPoint mouse_world);
 
@@ -61,6 +61,7 @@ public:
 	Entity* getNearestEnemy(fPoint position, bool isEnemy);
 
 	iPoint CameraToWorld(int x, int y);
+
 
 public:
 
