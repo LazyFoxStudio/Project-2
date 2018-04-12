@@ -178,7 +178,7 @@ void Building::HandleDestruction()
 
 void Building::HandleResourceProduction()
 {
-	if (timer.ReadSec() >= 5 && !App->map->WalkabilityArea(position.x - (additional_size.x * App->map->data.tile_width / 2) + collider.w / 2, (position.y - (additional_size.x * App->map->data.tile_width / 2)) + collider.h / 2, additional_size.x, additional_size.y, false, true))
+	if (timer.ReadSec() >= 2 && !App->map->WalkabilityArea(position.x - (additional_size.x * App->map->data.tile_width / 2) + collider.w / 2, (position.y - (additional_size.x * App->map->data.tile_width / 2)) + collider.h / 2, additional_size.x, additional_size.y, false, true))
 	{
 		timer.Start();
 		int production = 5 * villagers_inside*resource_production;

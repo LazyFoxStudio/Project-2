@@ -141,7 +141,7 @@ void Unit::Move(float dt)
 
 void Unit::animationController()
 {
-	if (type == HERO_1) return;
+	//if (type == HERO_1) return;
 
 	if (!next_step.IsZero())
 	{
