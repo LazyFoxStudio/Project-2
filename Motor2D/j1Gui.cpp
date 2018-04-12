@@ -23,6 +23,7 @@
 #include "UI_CostDisplay.h"
 #include "UI_WarningMessages.h"
 #include "UI_NextWaveWindow.h"
+#include "j1Scene.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -42,6 +43,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	buttonFX = conf.child("buttonFX").attribute("source").as_string("");
 	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
 	icon_atlas_file_name = conf.child("icon_atlas").attribute("file").as_string("");
+	popUp_wait_time = conf.child("popUps").attribute("time").as_uint(0);
 
 	return ret;
 }
@@ -84,7 +86,7 @@ bool j1Gui::PreUpdate()
 			if ((*it_m)->active == false) continue;
 			for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++) //Go through elements
 			{
-				if (checkMouseHovering((*it_e)) && (*it_e)->interactive)
+				if ((*it_e)->active  && (*it_e)->interactive && checkMouseHovering((*it_e)))
 					element = (*it_e)->getMouseHoveringElement();			
 			}
 		}
@@ -265,14 +267,8 @@ bool j1Gui::CleanUp()
 	}
 	Windows.clear();
 	//Chronos
-	std::list<Chrono*>::iterator it_c;
-	it_c = Chronos.begin();
-	while ((*it_c) != nullptr && it_c != Chronos.end())
-	{
-		RELEASE((*it_c));
-		it_c++;
-	}
-	Chronos.clear();
+	RELEASE(Chronos);
+
 	//ProgressBars
 	std::list<ProgressBar*>::iterator it_p;
 	it_p = ProgressBars.begin();
@@ -327,13 +323,32 @@ void j1Gui::UIDebugDraw()
 		if (!(*it_m)->active) continue;
 		for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++)
 		{
-			SDL_Rect box;
-			int scale = App->win->GetScale();
-			box.x = (*it_e)->calculateAbsolutePosition().x * scale;
-			box.y = (*it_e)->calculateAbsolutePosition().y * scale;
-			box.w = (*it_e)->section.w;
-			box.h = (*it_e)->section.h;
-			App->render->DrawQuad(box, Red, false, false);
+			if ((*it_e)->active)
+			{
+				SDL_Rect box;
+				int scale = App->win->GetScale();
+				box.x = (*it_e)->calculateAbsolutePosition().x * scale;
+				box.y = (*it_e)->calculateAbsolutePosition().y * scale;
+				box.w = (*it_e)->section.w;
+				box.h = (*it_e)->section.h;
+				App->render->DrawQuad(box, Red, false, false);
+				if ((*it_e)->childs.size() > 0)
+				{
+					for (std::list<UI_element*>::iterator it_c = (*it_e)->childs.begin(); it_c != (*it_e)->childs.end(); it_c++)
+					{
+						if ((*it_c)->active)
+						{
+							SDL_Rect box;
+							int scale = App->win->GetScale();
+							box.x = (*it_c)->calculateAbsolutePosition().x * scale;
+							box.y = (*it_c)->calculateAbsolutePosition().y * scale;
+							box.w = (*it_c)->section.w;
+							box.h = (*it_c)->section.h;
+							App->render->DrawQuad(box, Red, false, false);
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -367,7 +382,7 @@ UI_element* j1Gui::GetElement(int type, int id)
 		ret = (*std::next(Windows.begin(), id));
 		break;
 	case CHRONO:
-		ret = (*std::next(Chronos.begin(), id));
+		ret = Chronos;
 		break;
 	case PROGRESSBAR:
 		ret = (*std::next(ProgressBars.begin(), id));
@@ -395,7 +410,7 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		else if (type == "timer")
 			element = createTimer(tmp, callback);
 		else if (type == "stopwatch")
-			element = createStopWatch(tmp, callback);
+			element = Chronos = createStopWatch(tmp, callback);
 		else if (type == "image")
 			element = createImage(tmp, callback);
 		else if (type == "button")
@@ -416,10 +431,10 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
 		element->active = tmp.attribute("active").as_bool(true);
 		element->function = (element_function)tmp.attribute("function").as_int(0);
-		pugi::xml_attribute info = tmp.attribute("popupInfo");
+		pugi::xml_node info = tmp.child("popUp").child("Info");
 		if (info)
 		{
-			createPopUpInfo(element, info.as_string());
+			createPopUpInfo(element, info.attribute("text").as_string());
 		}
 
 		pugi::xml_node childs = tmp.child("childs");
@@ -448,10 +463,17 @@ Text* j1Gui::createText(pugi::xml_node node, j1Module* callback, bool saveIntoGU
 	int x = node.child("position").attribute("x").as_int();
 	int y = node.child("position").attribute("y").as_int();
 	int font_id = node.child("font").attribute("id").as_int();
-	std::list<_TTF_Font*>::iterator font = std::next(App->font->fonts.begin(), font_id-1);
 	SDL_Color color = { node.child("color").attribute("r").as_int(), node.child("color").attribute("g").as_int(), node.child("color").attribute("b").as_int(), node.child("color").attribute("a").as_int() };
 
-	Text* ret = new Text(text, x, y, (*font), color, callback);
+	Text* ret = new Text(text, x, y, App->font->getFont(font_id), color, callback);
+
+	pugi::xml_attribute prefix = node.attribute("prefix");
+	if (prefix)
+		ret->setPrefix(prefix.as_string());
+
+	pugi::xml_attribute sufix = node.attribute("sufix");
+	if (sufix)
+		ret->setSufix(sufix.as_string());
 
 	pugi::xml_node background = node.child("background");
 	if (background)
@@ -552,8 +574,6 @@ Chrono * j1Gui::createTimer(pugi::xml_node node, j1Module * callback, bool saveI
 	Chrono* ret = new Chrono(x, y, TIMER, (*font), color, callback);
 	
 	ret->setStartValue(node.attribute("initial_value").as_int());
-	if (saveIntoGUI)
-		Chronos.push_back(ret);
 
 	return ret;
 }
@@ -568,9 +588,6 @@ Chrono * j1Gui::createStopWatch(pugi::xml_node node, j1Module * callback, bool s
 	SDL_Color color = { node.child("color").attribute("r").as_int(), node.child("color").attribute("g").as_int(), node.child("color").attribute("b").as_int(), node.child("color").attribute("a").as_int() };
 
 	Chrono* ret = new Chrono(x, y, STOPWATCH, (*font), color, callback);
-
-	if (saveIntoGUI)
-		Chronos.push_back(ret);
 
 	return ret;
 }
@@ -769,6 +786,16 @@ void j1Gui::LoadDB(pugi::xml_node node)
 	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
 	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
 	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
+
+	LoadFonts(node.child("fonts"));
+}
+
+void j1Gui::LoadFonts(pugi::xml_node node)
+{
+	for (pugi::xml_node font = node.child("font"); font; font = font.next_sibling("font"))
+	{
+		App->font->Load(font.attribute("path").as_string(), font.attribute("size").as_int());
+	}
 }
 
 void j1Gui::AddIconData(unitType type, pugi::xml_node node)

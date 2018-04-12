@@ -54,6 +54,7 @@ public:
 	void HandleBuildingResources(buildingType target);
 	void debugDrawEntity(Entity* entity);
 	void HandleSFX(unitType type, int volume = 128);
+	void GetTotalIncome();
 
 	Entity* CheckMouseHover(iPoint mouse_world);
 
@@ -86,7 +87,7 @@ public:
 	bool building = false;
 	int death_time = 0;
 	int mill_max_villagers = 0;
-	float worker_wood_production = 0.0f;
+	int worker_wood_production = 0;
 	int test_counter = 0;
 	
 	buildingType structure_beingbuilt = NONE_BUILDING;

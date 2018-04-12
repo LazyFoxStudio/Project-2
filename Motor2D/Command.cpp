@@ -6,7 +6,7 @@
 #include "j1EntityController.h"
 #include "j1Map.h"
 #include "j1Audio.h"
-
+#include "j1Scene.h"
 // BASE CLASSES: =========================
 
 void Command::Execute(float dt)
@@ -99,10 +99,13 @@ bool Attack::OnUpdate(float dt)
 			switch (enemy->entity_type)
 			{
 			case UNIT:
+
 				App->entitycontroller->HandleSFX(unit->type, 30);
 				enemy_unit = (Unit*)enemy;
-				enemy_unit->current_HP -= unit->piercing_atk + ((((int)unit->attack - (int)enemy_unit->defense) <= 0) ? 0 : (int)unit->attack - (int)enemy_unit->defense); //dmg
-				if(enemy_unit->current_HP < 0)
+				int dmg = unit->piercing_atk + ((((int)unit->attack - (int)enemy_unit->defense) <= 0) ? 0 : (int)unit->attack - (int)enemy_unit->defense);
+				float rand_factor = App->scene->random_value(50, 100);
+				enemy_unit->current_HP -= dmg * (rand_factor/100); //dmg
+				if (enemy_unit->current_HP < 0)
 				if (enemy_unit->squad->commands.empty() ? true : enemy_unit->squad->commands.front()->type != ATTACKING_MOVETO_SQUAD)
 					enemy_unit->squad->commands.push_back(new AttackingMoveToSquad(enemy_unit, map_p));
 				break;

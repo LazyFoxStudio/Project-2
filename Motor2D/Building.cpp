@@ -172,18 +172,21 @@ void Building::HandleDestruction()
 	{
 		App->map->WalkabilityArea(position.x, position.y, size.x, size.y,true);
 		
-		App->entitycontroller->entities_to_destroy.push_back(this);
+		if (type != TOWN_HALL)
+		{
+			App->entitycontroller->entities_to_destroy.push_back(this);
+		}
 	}
 }
 
 void Building::HandleResourceProduction()
 {
-	if (timer.ReadSec() >= 5 && !App->map->WalkabilityArea(position.x - (additional_size.x * App->map->data.tile_width / 2) + collider.w / 2, (position.y - (additional_size.x * App->map->data.tile_width / 2)) + collider.h / 2, additional_size.x, additional_size.y, false, true))
+	if (timer.ReadSec() >= 3 && !App->map->WalkabilityArea(position.x - (additional_size.x * App->map->data.tile_width / 2) + collider.w / 2, (position.y - (additional_size.x * App->map->data.tile_width / 2)) + collider.h / 2, additional_size.x, additional_size.y, false, true))
 	{
 		timer.Start();
-		int production = 5 * villagers_inside*resource_production;
-		App->scene->wood += production;
-		LOG("Production: %i", production);
+
+		App->scene->wood += resource_production;
+
 	}
 }
 
@@ -192,39 +195,40 @@ void Building::CalculateResourceProduction()
 	switch (villagers_inside)
 	{
 	case 0:
-		resource_production = 0;
+		resource_production_modifier = 0;
 		break;
 	case 1:
-		resource_production = App->entitycontroller->worker_wood_production;
+		resource_production_modifier = App->entitycontroller->worker_wood_production;
 		break;
 	case 2:
-		resource_production = App->entitycontroller->worker_wood_production*0.95f;
+		resource_production_modifier = App->entitycontroller->worker_wood_production*0.95f;
 		break;
 	case 3:
-		resource_production = App->entitycontroller->worker_wood_production*0.90f;
+		resource_production_modifier = App->entitycontroller->worker_wood_production*0.90f;
 		break;
 	case 4:
-		resource_production = App->entitycontroller->worker_wood_production*0.85f;
+		resource_production_modifier = App->entitycontroller->worker_wood_production*0.85f;
 		break;
 	case 5:
-		resource_production = App->entitycontroller->worker_wood_production*0.80f;
+		resource_production_modifier = App->entitycontroller->worker_wood_production*0.80f;
 		break;
 	case 6:
-		resource_production = App->entitycontroller->worker_wood_production*0.75f;
+		resource_production_modifier = App->entitycontroller->worker_wood_production*0.75f;
 		break;
 	case 7:
-		resource_production = App->entitycontroller->worker_wood_production*0.70f;
+		resource_production_modifier = App->entitycontroller->worker_wood_production*0.70f;
 		break;
 	case 8:
-		resource_production = App->entitycontroller->worker_wood_production*0.65f;
+		resource_production_modifier = App->entitycontroller->worker_wood_production*0.65f;
 		break;
 	case 9:
-		resource_production = App->entitycontroller->worker_wood_production*0.60f;
+		resource_production_modifier = App->entitycontroller->worker_wood_production*0.60f;
 		break;
 	case 10:
-		resource_production = App->entitycontroller->worker_wood_production*0.55f;
+		resource_production_modifier = App->entitycontroller->worker_wood_production*0.55f;
 		break;
 	}
+	resource_production = 3 * villagers_inside*resource_production_modifier;
 }
 
 void Building::Draw(float dt)

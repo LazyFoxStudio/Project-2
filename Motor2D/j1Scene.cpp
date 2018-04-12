@@ -14,6 +14,11 @@
 #include "j1EntityController.h"
 #include "j1Gui.h"
 #include "UI_CostDisplay.h"
+#include "Building.h"
+#include "UI_Chrono.h"
+#include "j1EntityController.h"
+
+#include <time.h>
 
 j1Scene::j1Scene() : j1Module() { name = "scene"; }
 
@@ -67,9 +72,15 @@ bool j1Scene::Update(float dt)
 	{
 		return false;
 	}
+	
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
 
+	/*if (Town_Hall!=nullptr && Town_Hall->current_HP <= 0 && !App->gui->Chronos->counter.isPaused)
+	{
+		App->gui->Chronos->counter.PauseTimer();
+		Restart_game();
+	}*/
 
 	//Music and SFX modifiers (temporal for Vertical Slice)
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
@@ -129,4 +140,41 @@ bool j1Scene::workerAvalible(int num)
 	}
 
 	return ret;
+}
+
+int j1Scene::random_value(int min, int max)
+{
+	int ret;
+	srand(time(NULL));
+
+	int interval = max - min;
+
+	ret = rand() % interval;
+
+	ret += min;
+
+	return ret;
+}
+
+void j1Scene::Restart_game()
+{
+	for (std::list<Entity*>::iterator it =App->entitycontroller->entities.begin();
+		it != App->entitycontroller->entities.end();it++)
+	{
+		App->entitycontroller->entities_to_destroy.push_back((*it));
+	}
+
+	App->entitycontroller->entities.clear();
+	App->entitycontroller->selected_entities.clear();
+
+	App->entitycontroller->all_squads.clear();
+	App->entitycontroller->selected_squads.clear();
+
+	Town_Hall = nullptr;
+	
+	App->entitycontroller->addBuilding({ 2000, 2000 }, TOWN_HALL);
+
+	App->gui->Chronos->counter.Start();
+
+	App->entitycontroller->StartHero(iPoint(2000, 1950));
 }

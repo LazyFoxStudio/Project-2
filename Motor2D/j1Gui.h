@@ -107,6 +107,7 @@ public:
 	void createPopUpInfo(UI_element* element, std::string info);
 
 	void LoadDB(pugi::xml_node node);
+	void LoadFonts(pugi::xml_node node);
 
 	void AddIconData(unitType type, pugi::xml_node node);
 	/*void AddIconData(heroType type, pugi::xml_node node);*/
@@ -125,6 +126,8 @@ public:
 	void moveElementToMouse(UI_element* element);
 
 public:
+
+	uint popUp_wait_time = 0;
 	bool UI_Debug = false;
 	int alpha_value = 255;
 	uint button_click_fx = 0;
@@ -132,6 +135,7 @@ public:
 	j1PerfTimer hovering_element;
 	UI_element* current_hovering_element = nullptr;
 	WarningMessages* warningMessages = nullptr;
+	Chrono* Chronos = nullptr;
 
 private:
 
@@ -144,7 +148,6 @@ private:
 	std::list<Image*> Images;
 	std::list<Text*> Texts;
 	std::list<Button*> Buttons;
-	std::list<Chrono*> Chronos;
 	std::list<ProgressBar*> ProgressBars;
 	std::list<LifeBar*> LifeBars;
 	std::list<Window*> Windows;

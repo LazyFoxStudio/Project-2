@@ -74,7 +74,12 @@ void Text::BlitElement(bool use_camera)
 		{
 			if (counter != nullptr)
 			{
-				std::string newValue = std::to_string(*counter);
+				std::string newValue = "";
+				if (hasPrefix)
+					newValue += prefix;
+				newValue += std::to_string(*counter);
+				if (hasSufix)
+					newValue += sufix;
 				if (newValue != text)
 				{
 					setText(newValue);
@@ -149,4 +154,16 @@ void Text::setText(std::string string)
 int Text::getLength() const
 {
 	return text.length();
+}
+
+void Text::setPrefix(std::string prefix)
+{
+	hasPrefix = true;
+	this->prefix = prefix;
+}
+
+void Text::setSufix(std::string sufix)
+{
+	hasSufix = true;
+	this->sufix = sufix;
 }

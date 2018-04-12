@@ -17,6 +17,7 @@
 #include "j1ActionsController.h"
 #include "UI_WarningMessages.h"
 #include "UI_Button.h"
+#include "Building.h"
 
 #define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
@@ -68,7 +69,6 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
-	
 	int counter = 0;
 	if (!all_squads.empty())
 	{
@@ -189,6 +189,21 @@ void j1EntityController::HandleSFX(unitType type, int volume)
 		break;
 	}
 }
+void j1EntityController::GetTotalIncome()
+{
+	App->scene->wood_production_per_second = 0;
+	for (std::list<Entity*>::iterator tmp = entities.begin(); tmp != entities.end(); tmp++)
+	{
+		if ((*tmp)->entity_type == BUILDING)
+		{
+			if (((Building*)(*tmp))->type == LUMBER_MILL)
+			{
+				App->scene->wood_production_per_second += ((Building*)(*tmp))->resource_production;
+			}			
+		}		
+
+	}
+}
 
 bool j1EntityController::PostUpdate()
 {
@@ -304,6 +319,11 @@ Building* j1EntityController::addBuilding(iPoint pos, buildingType type)
 	building->being_built = true;
 	building->current_HP = 1;
 	building->last_frame_time = 0;
+
+	if (type == TOWN_HALL)
+	{
+		App->scene->Town_Hall = building;
+	}
 	return building;
 }
 
@@ -422,8 +442,11 @@ void j1EntityController::buildingProcessDraw()
 }
 
 void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * building)
-{
-	if (building->type == LUMBER_MILL)
+{	
+	if (building == nullptr)
+		LOG("building was nullptr, was saved by checking <phew!>");
+
+	if (building != nullptr/*may need other work in the future*/ && building->type == LUMBER_MILL)
 	{
 		if (to_assign)
 		{
@@ -446,6 +469,7 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 			}
 		}
 		building->CalculateResourceProduction();
+		GetTotalIncome();
 	}
 }
 
@@ -813,8 +837,8 @@ void j1EntityController::StartHero(iPoint pos)
 	hero->position.x = hero->collider.x = pos.x;
 	hero->position.y = hero->collider.y = pos.y;
 
-	hero->skill_one = new Skill(hero, 3, 60, 400, 20, AREA);		//Icicle Crash
-	hero->skill_two = new Skill(hero, 0, 200, 200, 20, NONE_RANGE);	//Overflow
+	hero->skill_one = new Skill(hero, 3, 100, 400, 5, AREA);		//Icicle Crash
+	hero->skill_two = new Skill(hero, 0, 200, 200, 2, NONE_RANGE);	//Overflow
 	hero->skill_three = new Skill(hero, 0, 50, 200, 10, LINE);		//Dragon Breath
 
 	std::vector<Unit*>aux_vector;
