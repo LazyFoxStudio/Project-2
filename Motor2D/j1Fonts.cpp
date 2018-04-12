@@ -95,3 +95,15 @@ void j1Fonts::CloseFont(_TTF_Font * font)
 		fonts.remove(font);
 	}
 }
+
+_TTF_Font * j1Fonts::getFont(int id)
+{
+	std::list<_TTF_Font*>::iterator font = fonts.begin();
+
+	for (int i = 1; i < id; i++)
+	{
+		font++;
+	}
+	
+	return (*font);
+}
