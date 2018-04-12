@@ -46,7 +46,7 @@ bool Hero::Update(float dt)
 	}
 
 	Move(dt);
-
+	animationController();
 	//minimap_
 	if (App->uiscene->minimap != nullptr)
 	{
@@ -57,8 +57,6 @@ bool Hero::Update(float dt)
 		color.a = 255;
 		App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,75,75 }, color);
 	}
-
-
 	return true;
 }
 
