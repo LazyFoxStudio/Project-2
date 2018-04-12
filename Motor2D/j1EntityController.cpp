@@ -17,6 +17,7 @@
 #include "j1ActionsController.h"
 #include "UI_WarningMessages.h"
 #include "UI_Button.h"
+#include "Building.h"
 
 #define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
@@ -161,6 +162,23 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 		Unit* unit = (Unit*)entity;
 		App->render->DrawCircle(unit->position.x, unit->position.y, unit->range, Green);
 		App->render->DrawCircle(unit->position.x, unit->position.y, unit->line_of_sight, Blue);
+	}
+}
+
+void j1EntityController::GetTotalIncome()
+{
+	worker_wood_production = 0;
+	for (std::list<Entity*>::iterator tmp = entities.begin(); tmp != entities.end(); tmp++)
+	{
+		if ((*tmp)->entity_type == BUILDING)
+		{
+			if (((Building*)(*tmp))->type == LUMBER_MILL)
+			{
+				worker_wood_production += ((Building*)(*tmp))->resource_production;
+			}
+			
+		}
+			
 	}
 }
 

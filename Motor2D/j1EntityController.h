@@ -54,6 +54,8 @@ public:
 	void HandleBuildingResources(buildingType target);
 	void debugDrawEntity(Entity* entity);
 
+	void GetTotalIncome();
+
 
 	Entity* CheckMouseHover(iPoint mouse_world);
 
