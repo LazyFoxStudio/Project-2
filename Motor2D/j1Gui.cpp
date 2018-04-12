@@ -444,10 +444,17 @@ Text* j1Gui::createText(pugi::xml_node node, j1Module* callback, bool saveIntoGU
 	int x = node.child("position").attribute("x").as_int();
 	int y = node.child("position").attribute("y").as_int();
 	int font_id = node.child("font").attribute("id").as_int();
-	std::list<_TTF_Font*>::iterator font = std::next(App->font->fonts.begin(), font_id-1);
 	SDL_Color color = { node.child("color").attribute("r").as_int(), node.child("color").attribute("g").as_int(), node.child("color").attribute("b").as_int(), node.child("color").attribute("a").as_int() };
 
-	Text* ret = new Text(text, x, y, (*font), color, callback);
+	Text* ret = new Text(text, x, y, App->font->getFont(font_id), color, callback);
+
+	pugi::xml_attribute prefix = node.attribute("prefix");
+	if (prefix)
+		ret->setPrefix(prefix.as_string());
+
+	pugi::xml_attribute sufix = node.attribute("sufix");
+	if (sufix)
+		ret->setSufix(sufix.as_string());
 
 	pugi::xml_node background = node.child("background");
 	if (background)
@@ -760,6 +767,16 @@ void j1Gui::LoadDB(pugi::xml_node node)
 	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
 	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
 	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
+
+	LoadFonts(node.child("fonts"));
+}
+
+void j1Gui::LoadFonts(pugi::xml_node node)
+{
+	for (pugi::xml_node font = node.child("font"); font; font = font.next_sibling("font"))
+	{
+		App->font->Load(font.attribute("path").as_string(), font.attribute("size").as_int());
+	}
 }
 
 void j1Gui::AddIconData(unitType type, pugi::xml_node node)

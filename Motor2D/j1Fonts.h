@@ -39,6 +39,8 @@ public:
 
 	void CloseFont(_TTF_Font* font);
 
+	_TTF_Font* getFont(int id);
+
 public:
 
 	std::list<_TTF_Font*>	fonts;

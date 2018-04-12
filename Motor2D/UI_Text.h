@@ -35,6 +35,9 @@ public:
 	void setText(std::string string);
 	int getLength() const;
 
+	void setPrefix(std::string prefix);
+	void setSufix(std::string sufix);
+
 	void BlitElement(bool use_camera = false);
 
 public:
@@ -45,7 +48,11 @@ public:
 
 private:
 
-	std::string text = nullptr;
+	std::string text = "";
+	std::string prefix = "";
+	std::string sufix = "";
+	bool hasPrefix = false;
+	bool hasSufix = false;
 	_TTF_Font* font = nullptr;
 	bool outlined = false;
 	SDL_Texture* outline = nullptr;

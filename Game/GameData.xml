@@ -1380,4 +1380,7 @@
 			</popUp>
 		</createArcher>
 	</ActionButtons>
+	<fonts>
+		<font path="fonts/BebasNeue-Regular.ttf" size="23"/>
+	</fonts>
 </GameData>
