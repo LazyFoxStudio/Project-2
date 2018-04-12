@@ -5,6 +5,7 @@
 #include "j1Fonts.h"
 #include "j1WaveController.h"
 #include "UI_Image.h"
+#include "j1EntityController.h"
 
 NextWaveWindow::NextWaveWindow(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, j1Module* callback): UI_element(x, y, MENU, section, callback, atlas),
 firstIcon_pos({firstIcon_posX, firstIcon_posY}),
@@ -78,7 +79,7 @@ void NextWaveWindow::updateWave()
 		enemyIcon->image = img;
 		enemiesIcons.push_back(enemyIcon);
 
-		Text* num = new Text(("x" + std::to_string(gruntSquads)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 10, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
+		Text* num = new Text(("x" + std::to_string(gruntSquads * App->entitycontroller->unitDB[GRUNT]->squad_members)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 10, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
 		squads.push_back(num);
 
 		counterY++;
@@ -91,7 +92,7 @@ void NextWaveWindow::updateWave()
 		enemyIcon->image = img;
 		enemiesIcons.push_back(enemyIcon);
 
-		Text* num = new Text(("x" + std::to_string(axeThrowerSquads)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 15, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
+		Text* num = new Text(("x" + std::to_string(axeThrowerSquads * App->entitycontroller->unitDB[AXE_THROWER]->squad_members)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 15, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
 		squads.push_back(num);
 
 		counterY++;

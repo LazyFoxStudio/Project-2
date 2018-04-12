@@ -38,6 +38,8 @@ public:
 
 	bool workerAvalible(int num = 1);
 
+	int random_value(int min, int max);
+
 public:
 	SDL_Texture* debug_tex = nullptr;
 
@@ -48,6 +50,7 @@ public:
 	int inactive_workers = 0;
 	int town_hall_lvl = 0;
 	UI_element* pollas;
+
 
 };
 
