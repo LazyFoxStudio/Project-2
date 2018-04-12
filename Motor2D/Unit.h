@@ -20,6 +20,8 @@ enum unitType
 	 GRUNT, AXE_THROWER, /* ... */ ENEMY_X,
 };
 
+enum direction { E, NE, SE, N, S, NW, W, SW};
+
 class Animation;
 class Squad;
 class Effect;
@@ -58,6 +60,7 @@ public:
 	Animation* current_anim = nullptr;
 
 	animationType new_animation=IDLE_S;
+	direction dir = S;
 	
 
 public:
@@ -73,6 +76,7 @@ public:
 	fPoint calculateSeparationVector();
 	bool IsEnemy() { return type >= GRUNT; };
 	void Move(float dt);
+	void setDirection();
 };
 
 #endif

@@ -75,12 +75,19 @@ bool Attack::OnUpdate(float dt)
 	{
 		if (enemy_positions->empty())
 			if (!unit->squad->getEnemiesInSight(*enemy_positions)) { Stop(); return true; }
-		
+
 		current_target = enemy_positions->front();
 
 		for (std::list<fPoint>::iterator it = enemy_positions->begin(); it != enemy_positions->end(); it++)
-			if ((*it).DistanceTo(unit->position) < current_target.DistanceTo(unit->position)) 
+			if ((*it).DistanceTo(unit->position) < current_target.DistanceTo(unit->position))
 				current_target = (*it);
+
+		iPoint target_map_p = App->map->WorldToMap(current_target.x, current_target.y);
+
+		if (App->pathfinding->CreatePath(map_p, target_map_p) < 0)
+			{ Stop(); return true; }
+		else
+			flow_field->updateFromPath(*App->pathfinding->GetLastPath());
 
 		return true;
 	}

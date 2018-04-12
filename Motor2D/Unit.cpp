@@ -61,14 +61,10 @@ void Unit::Draw(float dt)
 {
 	SDL_Rect r = current_anim->GetCurrentFrame(dt);
 
-	if (new_animation == MOVE_W || new_animation == IDLE_W || new_animation == ATK_W || new_animation == ATK_NW || new_animation == ATK_SW)
-	{
+	if(dir == W  || dir == NW || dir == SW)
 		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r, true,SDL_FLIP_HORIZONTAL);
-	}
 	else
-	{
 		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r);
-	}
 	
 }
 
@@ -135,7 +131,6 @@ void Unit::Move(float dt)
 			int x = (collider.x > r.x ? result.w + 1: result.x - result.w - 1);
 			int y = (collider.y > r.y ? result.y + 1: result.y - result.h - 1);
 			next_step += fPoint(x, y);
-			//position = last_pos; 
 		}
 		else
 		{
@@ -146,143 +141,86 @@ void Unit::Move(float dt)
 	else if (!next_step.IsZero()) next_step.SetToZero();
 }
 
+void Unit::setDirection()
+{
+	if (next_step.x != 0 || next_step.y != 0)
+	{
+		if (next_step.x < -MAX_NEXT_STEP_MODULE / 2)
+		{
+			if (next_step.y < MAX_NEXT_STEP_MODULE / 4 && next_step.y > -MAX_NEXT_STEP_MODULE / 4) dir = W;
+			else dir = (next_step.y < 0 ? NW : SW);
+		}
+		else if (next_step.x > MAX_NEXT_STEP_MODULE / 2)
+		{
+			if (next_step.y < MAX_NEXT_STEP_MODULE / 4 && next_step.y > -MAX_NEXT_STEP_MODULE / 4) dir = E;
+			else dir = (next_step.y < 0 ? NE : SE);
+		}
+		else dir = (next_step.y < 0 ? N : S);
+	}
+}
+
 void Unit::animationController()
 {
-	//if (type == HERO_1) return;
+	setDirection();
 
 	if (!next_step.IsZero())
 	{
 		switch (commands.empty() ? MOVETO : commands.front()->type)
 		{
 		case MOVETO || ATTACKING_MOVETO:
-			if (next_step.x > 0 && next_step.y < MAX_NEXT_STEP_MODULE/2 && next_step.y > -MAX_NEXT_STEP_MODULE/2) //MOVE E
+			switch (dir)
 			{
-				new_animation = MOVE_E;
-			}
-			else if (next_step.x < 0 && next_step.y < MAX_NEXT_STEP_MODULE/2 && next_step.y > -MAX_NEXT_STEP_MODULE/2) //MOVE W
-			{
-				new_animation = MOVE_W;
-			}
-			else if (next_step.y > 0) //MOVE S
-			{
-				if (next_step.x < 3 && next_step.x > -3)
-				{
-					new_animation = MOVE_S;
-				}
-				else if (next_step.x < MAX_NEXT_STEP_MODULE/2)
-				{
-					new_animation = MOVE_SE;
-				}
-				else if (next_step.x < -MAX_NEXT_STEP_MODULE/2)
-				{
-					new_animation = MOVE_SW;
-				}
-			}
-			else if (next_step.y < 0) //MOVE N
-			{
-				if (next_step.x < 3 && next_step.x > -3)
-				{
-					new_animation = MOVE_N;
-				}
-				if (next_step.x > MAX_NEXT_STEP_MODULE/2)
-				{
-					new_animation = MOVE_NW;
-				}
-				else if (next_step.x < -MAX_NEXT_STEP_MODULE/2)
-				{
-					new_animation = MOVE_NE;
-				}				
+			case E:  new_animation = MOVE_E;  break;
+			case SE: new_animation = MOVE_SE; break;
+			case NE: new_animation = MOVE_NE; break;
+			case N:  new_animation = MOVE_N;  break;
+			case S:  new_animation = MOVE_S;  break;
+			case W:  new_animation = MOVE_W;  break;
+			case NW: new_animation = MOVE_NW; break;
+			case SW: new_animation = MOVE_SW; break;
 			}
 			break;
 		case ATTACK:
-			switch (new_animation)
+			switch (dir)
 			{
-			case IDLE_N:
-				new_animation = ATK_N;
-				break;
-			case IDLE_NE:
-				new_animation = ATK_NE;
-				break;
-			case IDLE_E:
-				new_animation = ATK_E;
-				break;
-			case IDLE_SE:
-				new_animation = ATK_SE;
-				break;
-			case IDLE_S:
-				new_animation = ATK_S;
-				break;
-			case IDLE_SW:
-				new_animation = ATK_SW;
-				break;
-			case IDLE_W:
-				new_animation = ATK_W;
-				break;
-			case IDLE_NW:
-				new_animation = ATK_NW;
-				break;
+			case E:  new_animation = ATK_E;  break;
+			case SE: new_animation = ATK_SE; break;
+			case NE: new_animation = ATK_NE; break;
+			case N:  new_animation = ATK_N;  break;
+			case S:  new_animation = ATK_S;  break;
+			case W:  new_animation = ATK_W;  break;
+			case NW: new_animation = ATK_NW; break;
+			case SW: new_animation = ATK_SW; break;
 			}
 			break;
 		}
 	}
-	else if (commands.empty() == false)
+	else if (commands.empty() ? false : commands.front()->type == ATTACK)
 	{
-		switch (new_animation)
+		switch (dir)
 		{
-		case MOVE_N:
-			new_animation = ATK_N;
-			break;
-		case MOVE_NE:
-			new_animation = ATK_NE;
-			break;
-		case MOVE_E:
-			new_animation = ATK_E;
-			break;
-		case MOVE_SE:
-			new_animation = ATK_SE;
-			break;
-		case MOVE_S:
-			new_animation = ATK_S;
-			break;
-		case MOVE_SW:
-			new_animation = ATK_SW;
-			break;
-		case MOVE_W:
-			new_animation = ATK_W;
-			break;
-		case MOVE_NW:
-			new_animation = ATK_NW;
-			break;
+		case E:  new_animation = ATK_E;  break;
+		case SE: new_animation = ATK_SE; break;
+		case NE: new_animation = ATK_NE; break;
+		case N:  new_animation = ATK_N;  break;
+		case S:  new_animation = ATK_S;  break;
+		case W:  new_animation = ATK_W;  break;
+		case NW: new_animation = ATK_NW; break;
+		case SW: new_animation = ATK_SW; break;
 		}
 	}
 	else
 	{
-		switch (new_animation)
+		switch (dir)
 		{
-		case MOVE_N:
-			new_animation = IDLE_N;
-			break;
-		case MOVE_NE:
-			new_animation = IDLE_NE;
-			break;
-		case MOVE_E:
-			new_animation = IDLE_E;
-			break;
-		case MOVE_SE:
-			new_animation = IDLE_SE;
-			break;
-		case MOVE_S:
-			new_animation = IDLE_S;
-			break;
-		case MOVE_SW:
-			new_animation = IDLE_SW;
-			break;
-		case MOVE_W:
-			new_animation = IDLE_W;
-			break;
-		case MOVE_NW:
-			new_animation = IDLE_NW;
-			break;
+		case E:  new_animation = IDLE_E;  break;
+		case SE: new_animation = IDLE_SE; break;
+		case NE: new_animation = IDLE_NE; break;
+		case N:  new_animation = IDLE_N;  break;
+		case S:  new_animation = IDLE_S;  break;
+		case W:  new_animation = IDLE_W;  break;
+		case NW: new_animation = IDLE_NW; break;
+		case SW: new_animation = IDLE_SW; break;
 		}
 	}
 
@@ -309,20 +247,21 @@ fPoint Unit::calculateSeparationVector()
 	std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(r, this);
 
 	fPoint separation_v = { 0,0 };
-	if (commands.empty() ? true : (commands.front()->type != ATTACKING_MOVETO && commands.front()->type != ATTACK))
+
+
+	for (int i = 0; i < collisions.size(); i++)
 	{
-		for (int i = 0; i < collisions.size(); i++)
-		{
-			if (collisions[i]->entity_type == UNIT) {
-				if (((Unit*)collisions[i])->IsEnemy() != IsEnemy()) continue;
-			}
-			else if (collisions[i]->entity_type == BUILDING && IsEnemy()) continue;
-
-			fPoint current_separation = (position - collisions[i]->position);
-			separation_v += (position - collisions[i]->position).Normalized() * (1 / current_separation.GetModule());
+		if (collisions[i]->entity_type == UNIT) {
+			if (((Unit*)collisions[i])->IsEnemy() != IsEnemy()) continue;
 		}
-	}
-	
+		else if (collisions[i]->entity_type == BUILDING && IsEnemy()) continue;
 
-	return separation_v * SEPARATION_STRENGTH;
+		fPoint current_separation = (position - collisions[i]->position);
+		separation_v += (position - collisions[i]->position).Normalized() * (1 / current_separation.GetModule());
+	}
+
+	if (commands.empty() ? false : (commands.front()->type == ATTACKING_MOVETO || commands.front()->type == ATTACK))
+		return separation_v * SEPARATION_STRENGTH * 0.3f;
+	else
+		return separation_v * SEPARATION_STRENGTH;
 }

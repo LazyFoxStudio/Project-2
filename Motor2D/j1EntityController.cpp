@@ -47,8 +47,8 @@ bool j1EntityController::Start()
 
 	loadEntitiesDB(gameData);
 
-	/*AddSquad(FOOTMAN, fPoint(1900, 2100));
-	AddSquad(FOOTMAN, fPoint(2200, 2100));
+	AddSquad(FOOTMAN, fPoint(1900, 2100));
+	/*AddSquad(FOOTMAN, fPoint(2200, 2100));
 
 	AddSquad(GRUNT, fPoint(3000, 2100));
 	AddSquad(AXE_THROWER, fPoint(1700, 2100));
