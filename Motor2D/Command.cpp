@@ -44,10 +44,9 @@ bool MoveTo::OnUpdate(float dt)
 {
 	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
-	FieldNode* f = flow_field->getNodeAt(map_p)->parent;
-	if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR || !flow_field->getNodeAt(map_p)->parent)
+	if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR || flow_field->stage == FAILED)
 		Stop();
-	else
+	else if(flow_field->getNodeAt(map_p)->parent)
 		unit->next_step += ((flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized() * STEERING_FACTOR);
 
 	return true; 
@@ -174,7 +173,7 @@ bool MoveToSquad::OnInit()
 	else
 	{
 		if(flow_field->stage == FAILED) { Stop(); return true; }
-		else if (flow_field->stage == COMPLETED)
+		else 
 		{
 			for (int i = 0; i < squad->units.size(); i++)
 			{
@@ -183,7 +182,6 @@ bool MoveToSquad::OnInit()
 			}
 			return true;
 		}
-		state = TO_INIT;
 	}
 	
 	return true;
