@@ -40,6 +40,7 @@ public:
 	bool workerAvalible(int num = 1);
 
 	int random_value(int min, int max);
+	void Restart_game();
 
 public:
 	SDL_Texture* debug_tex = nullptr;

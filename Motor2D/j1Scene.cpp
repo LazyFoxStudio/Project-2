@@ -16,6 +16,7 @@
 #include "UI_CostDisplay.h"
 #include "Building.h"
 #include "UI_Chrono.h"
+#include "j1EntityController.h"
 
 #include <time.h>
 
@@ -70,14 +71,15 @@ bool j1Scene::Update(float dt)
 	{
 		return false;
 	}
+	
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
 
-	if (Town_Hall->current_HP <= 0 && !App->gui->Chronos->counter.isPaused)
+	/*if (Town_Hall!=nullptr && Town_Hall->current_HP <= 0 && !App->gui->Chronos->counter.isPaused)
 	{
 		App->gui->Chronos->counter.PauseTimer();
-	}
-
+		Restart_game();
+	}*/
 
 	return true;
 }
@@ -134,4 +136,27 @@ int j1Scene::random_value(int min, int max)
 	ret += min;
 
 	return ret;
+}
+
+void j1Scene::Restart_game()
+{
+	for (std::list<Entity*>::iterator it =App->entitycontroller->entities.begin();
+		it != App->entitycontroller->entities.end();it++)
+	{
+		App->entitycontroller->entities_to_destroy.push_back((*it));
+	}
+
+	App->entitycontroller->entities.clear();
+	App->entitycontroller->selected_entities.clear();
+
+	App->entitycontroller->all_squads.clear();
+	App->entitycontroller->selected_squads.clear();
+
+	Town_Hall = nullptr;
+	
+	App->entitycontroller->addBuilding({ 2000, 2000 }, TOWN_HALL);
+
+	App->gui->Chronos->counter.Start();
+
+	App->entitycontroller->StartHero(iPoint(2000, 1950));
 }
