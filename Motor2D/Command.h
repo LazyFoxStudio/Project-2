@@ -3,7 +3,8 @@
 #define _COMMAND_H_
 
 #define STEERING_FACTOR 7.0f    // the higher the stiffer      // 4.0f ~ 10.0f//
-#define PROXIMITY_FACTOR 2  // the higher the sooner units will reach destination  // 1 ~ 5//
+#define PROXIMITY_FACTOR 2  // the higher the sooner units will reach destination (in tiles)  // 1 ~ 5//
+#define ATK_PROXIMITY_FACTOR 30  // the higher the further the units will approach their enemies (in pixels)
 
 #include <list>
 #include <vector>

@@ -84,11 +84,6 @@ bool Attack::OnUpdate(float dt)
 
 		iPoint target_map_p = App->map->WorldToMap(current_target.x, current_target.y);
 
-		if (App->pathfinding->CreatePath(map_p, target_map_p) < 0)
-			{ Stop(); return true; }
-		else
-			flow_field->updateFromPath(*App->pathfinding->GetLastPath());
-
 		return true;
 	}
 
@@ -125,12 +120,14 @@ bool Attack::OnUpdate(float dt)
 			timer.Start();
 		}
 
-		unit->next_step = { 0,0 };
+		unit->next_step = { 0.0f,0.0f };
 		return true;
 	}
 	else
 	{
-		if (!flow_field->getNodeAt(map_p)->parent)
+		if(unit->position.DistanceTo(current_target) < ATK_PROXIMITY_FACTOR)
+			{ enemy_positions->remove(current_target); current_target.SetToZero(); }
+		else if (!flow_field->getNodeAt(map_p)->parent)
 		{
 			iPoint target_map_p = App->map->WorldToMap(current_target.x, current_target.y);
 
@@ -142,8 +139,6 @@ bool Attack::OnUpdate(float dt)
 		else
 			unit->next_step += ((flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized() * STEERING_FACTOR);
 
-		if(unit->position == current_target)
-			{ enemy_positions->remove(current_target); current_target.SetToZero(); }
 	}
 
 	type = ATTACKING_MOVETO;
@@ -229,6 +224,7 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 				{
 					Attack* new_atk_order = new Attack(squad->units[j], atk_flow_field, &enemy_positions);
 					squad->units[j]->commands.push_front(new_atk_order);
+					squad->units[j]->next_step = { 0.0f,0.0f };
 				}
 			}
 			enemies_in_sight = true;

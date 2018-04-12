@@ -269,56 +269,55 @@ int j1PathFinding::CreatePath(const iPoint& origin, iPoint& destination)
 	if (!IsWalkable(destination))
 	{
 		destination = FirstWalkableAdjacent(destination);
-		if (destination.x == -1) return ret;
+		if (destination.x == -1)
+			return ret;
 	}
 
-	if (IsWalkable(origin))
+	PathList open;
+	PathList closed;
+
+	PathNode originNode(0, origin.DistanceNoSqrt(destination), origin, nullptr);
+
+	open.list.push_back(originNode);
+
+	while (open.list.size())
 	{
-		PathList open;
-		PathList closed;
+		ret++;
+		if (ret > 2500)
+			return -1;
 
-		PathNode originNode(0, origin.DistanceNoSqrt(destination), origin, nullptr);
+		PathNode lowestScoreNode = open.GetNodeLowestScore();
 
-		open.list.push_back(originNode);
+		closed.list.push_back(lowestScoreNode);
+		open.list.remove(lowestScoreNode);
 
-		while (open.list.size())
+		if (lowestScoreNode.pos == destination)
 		{
-			ret++;
-			if (ret > 2500) return -1;
+			PathNode current;
+			for (current = lowestScoreNode; current.parent; current = *current.parent)
+				last_path.push_front(current.pos);
 
-			PathNode lowestScoreNode = open.GetNodeLowestScore();
+			last_path.push_front(origin);
+			break;
+		}
 
-			closed.list.push_back(lowestScoreNode);
-			open.list.remove(lowestScoreNode);
+		PathList neighbors;
+		lowestScoreNode.FindWalkableAdjacents(neighbors, &(*closed.Find(lowestScoreNode.pos)));
 
-			if (lowestScoreNode.pos == destination)
+		for (std::list<PathNode>::iterator current = neighbors.list.begin(); current != neighbors.list.end(); current++)
+		{
+			if (closed.Find((*current).pos) == closed.list.end())
 			{
-				PathNode current;
- 				for (current = lowestScoreNode; current.parent; current = *current.parent)
-					last_path.push_front(current.pos);
+				(*current).CalculateF(destination);
 
-				last_path.push_front(origin);
-				break;
-			}
-
-			PathList neighbors;
-			lowestScoreNode.FindWalkableAdjacents(neighbors, &(*closed.Find(lowestScoreNode.pos)));
-
-			for(std::list<PathNode>::iterator current = neighbors.list.begin(); current != neighbors.list.end(); current++)
-			{
-				if (closed.Find((*current).pos) == closed.list.end())
+				if (open.Find((*current).pos) == open.list.end())		open.list.push_back(*current);
+				else
 				{
-					(*current).CalculateF(destination);
-
-					if (open.Find((*current).pos) == open.list.end())		open.list.push_back(*current);
-					else
+					std::list<PathNode>::iterator prev_node = open.Find((*current).pos);
+					if ((*prev_node).Score() > (*current).Score())
 					{
-						std::list<PathNode>::iterator prev_node = open.Find((*current).pos);
-						if ((*prev_node).Score() > (*current).Score())
-						{
-							open.list.erase(prev_node);
-							open.list.push_back(*current);
-						}
+						open.list.erase(prev_node);
+						open.list.push_back(*current);
 					}
 				}
 			}

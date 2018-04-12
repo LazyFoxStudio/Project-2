@@ -109,7 +109,7 @@ void Unit::Move(float dt)
 {
 	fPoint separation_v = calculateSeparationVector() * STEERING_FACTOR;
 
-	if (!commands.empty() || separation_v.GetModule() > STOP_TRESHOLD)
+	if ((!commands.empty() ? commands.front()->type != ATTACK : false) || separation_v.GetModule() > STOP_TRESHOLD)
 	{
 		next_step = next_step + (separation_v * STEERING_FACTOR);
 
@@ -124,19 +124,18 @@ void Unit::Move(float dt)
 		if (!App->pathfinding->IsWalkable(App->map->WorldToMap(position.x, position.y))) 
 		{ 
 			iPoint unwalkable_tile = App->map->WorldToMap(position.x, position.y);
-			SDL_Rect r = { unwalkable_tile.x, unwalkable_tile.y, App->map->data.tile_width, App->map->data.tile_height };
+			iPoint unwalkable_tile_w = App->map->MapToWorld(unwalkable_tile.x, unwalkable_tile.y);
+			SDL_Rect r = { unwalkable_tile_w.x, unwalkable_tile_w.y, App->map->data.tile_width, App->map->data.tile_height };
 			SDL_Rect result = { 0,0,0,0 };
 			SDL_IntersectRect(&collider, &r, &result);
 
-			int x = (collider.x > r.x ? result.w + 1: result.x - result.w - 1);
-			int y = (collider.y > r.y ? result.y + 1: result.y - result.h - 1);
-			next_step += fPoint(x, y);
+			int x = (collider.x >= result.x ? result.w + 4 - (collider.w / 2) : -result.w - 4 + (collider.w / 2));
+			int y = (collider.y >= result.y ? result.h + 4 - (collider.h / 2) : -result.h - 4 + (collider.h / 2));
+			position += fPoint(x, y);
 		}
-		else
-		{
-			collider.x = position.x - (collider.w / 2);
-			collider.y = position.y - (collider.h / 2);
-		}
+
+		collider.x = position.x - (collider.w / 2);
+		collider.y = position.y - (collider.h / 2);
 	}
 	else if (!next_step.IsZero()) next_step.SetToZero();
 }
