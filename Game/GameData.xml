@@ -11,7 +11,7 @@
                 <attack value="1"/>
                 <defense value="6"/>
                 <piercingDamage value="15"/>
-                <movementSpeed value="1.5"/>
+                <movementSpeed value="1.1"/>
                 <range value="80"/>
                 <lineOfSight value="500"/>
                 <size x="1" y="1"/>
