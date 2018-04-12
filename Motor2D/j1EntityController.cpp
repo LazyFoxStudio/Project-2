@@ -792,7 +792,7 @@ void j1EntityController::StartHero(iPoint pos)
 	hero->position.x = hero->collider.x = pos.x;
 	hero->position.y = hero->collider.y = pos.y;
 
-	hero->skill_one = new Skill(hero, 3, 60, 400, 20, AREA);		//Icicle Crash
+	hero->skill_one = new Skill(hero, 3, 100, 400, 20, AREA);		//Icicle Crash
 	hero->skill_two = new Skill(hero, 0, 200, 200, 20, NONE_RANGE);	//Overflow
 	hero->skill_three = new Skill(hero, 0, 50, 200, 10, LINE);		//Dragon Breath
 

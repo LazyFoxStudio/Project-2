@@ -17,6 +17,8 @@
 #include "Building.h"
 #include "UI_Chrono.h"
 
+#include <time.h>
+
 j1Scene::j1Scene() : j1Module() { name = "scene"; }
 
 // Destructor
@@ -116,6 +118,20 @@ bool j1Scene::workerAvalible(int num)
 	{
 		ret = true;
 	}
+
+	return ret;
+}
+
+int j1Scene::random_value(int min, int max)
+{
+	int ret;
+	srand(time(NULL));
+
+	int interval = max - min;
+
+	ret = rand() % interval;
+
+	ret += min;
 
 	return ret;
 }

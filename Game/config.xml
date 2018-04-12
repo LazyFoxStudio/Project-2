@@ -12,7 +12,7 @@
 
   <window>
     <resolution width="1680" height="1050" scale="1"/>
-    <fullscreen value="false"/>
+    <fullscreen value="true"/>
     <borderless value="false"/>
     <resizable value="true"/>
     <fullscreen_window value="true"/>
@@ -47,6 +47,7 @@
     <buttonFX source="Buttonsfx.wav"/>
     <atlas file="gui/atlas.png"/>
 	<icon_atlas file="gui/icon_atlas.png"/>
+	<popUps time="100"/>
   </gui>
 
 
