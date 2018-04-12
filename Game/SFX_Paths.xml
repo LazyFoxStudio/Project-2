@@ -5,17 +5,28 @@
 	<path sfx="Peasant/Pspissd7.wav"/>	
 	<path sfx="Peasant/Psyessr4.wav"/>	
 	<path sfx="Peasant/Pswrkdon.wav"/>
+	
 <!-- Archer -->	
 	<path sfx="Elves/Eready.wav"/>
 	<path sfx="Elves/Ewhat3.wav"/>
 	<path sfx="Elves/Eyessir3.wav"/>
 	<path sfx="Elves/Epissed3.wav"/>
+	
 <!-- Footman -->
 	<path sfx="Human/Hready.wav"/>
 	<path sfx="Human/Hwhat3.wav"/>
 	<path sfx="Human/Hyessir3.wav"/>
 	<path sfx="Human/Hpissed3.wav"/>
+	
+<!-- Hero Yha'mam -->
+	<path sfx="Spells/Spell.wav"/>
+	<path sfx="Spells/Icestorm.wav"/>
+	<path sfx="Spells/Deathcoil.wav"/>
+	<path sfx="Spells/Flamshld.wav"/>
+
 <!-- Miscellaneous -->
 	<path sfx="Misc/Sword3.wav"/>
+	<path sfx="Misc/Axe.wav"/>
+	<path sfx="Misc/Bowfire.wav"/>
 </node>
 

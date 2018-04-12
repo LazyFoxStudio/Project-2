@@ -172,7 +172,10 @@ void Building::HandleDestruction()
 	{
 		App->map->WalkabilityArea(position.x, position.y, size.x, size.y,true);
 		
-		App->entitycontroller->entities_to_destroy.push_back(this);
+		if (type != TOWN_HALL)
+		{
+			App->entitycontroller->entities_to_destroy.push_back(this);
+		}
 	}
 }
 

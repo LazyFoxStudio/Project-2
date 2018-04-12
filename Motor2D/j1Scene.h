@@ -39,6 +39,8 @@ public:
 
 	bool workerAvalible(int num = 1);
 
+	void Restart_game();
+
 public:
 	SDL_Texture* debug_tex = nullptr;
 

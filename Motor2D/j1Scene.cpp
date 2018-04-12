@@ -16,6 +16,7 @@
 #include "UI_CostDisplay.h"
 #include "Building.h"
 #include "UI_Chrono.h"
+#include "j1EntityController.h"
 
 
 j1Scene::j1Scene() : j1Module() { name = "scene"; }
@@ -41,6 +42,7 @@ bool j1Scene::Start()
 	int w = -1, h = -1;
 	uchar* data = nullptr;
 
+	App->audio->PlayMusic("Normal_Round_Theme.ogg");
 	App->map->Load_map("map1.tmx");
 
 	if (App->map->CreateWalkabilityMap(w, h, &data))	
@@ -69,15 +71,33 @@ bool j1Scene::Update(float dt)
 	{
 		return false;
 	}
+	
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
 
-	if (Town_Hall->current_HP <= 0 && !App->gui->Chronos->counter.isPaused)
+	/*if (Town_Hall!=nullptr && Town_Hall->current_HP <= 0 && !App->gui->Chronos->counter.isPaused)
 	{
 		App->gui->Chronos->counter.PauseTimer();
+		Restart_game();
+	}*/
+
+	//Music and SFX modifiers (temporal for Vertical Slice)
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		App->audio->ModifyMusicVolume(10);
 	}
-
-
+	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+	{
+		App->audio->ModifyMusicVolume(-10);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		App->audio->ModifySFXVolume(10);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+	{
+		App->audio->ModifySFXVolume(-10);
+	}
 	return true;
 }
 
@@ -119,4 +139,27 @@ bool j1Scene::workerAvalible(int num)
 	}
 
 	return ret;
+}
+
+void j1Scene::Restart_game()
+{
+	for (std::list<Entity*>::iterator it =App->entitycontroller->entities.begin();
+		it != App->entitycontroller->entities.end();it++)
+	{
+		App->entitycontroller->entities_to_destroy.push_back((*it));
+	}
+
+	App->entitycontroller->entities.clear();
+	App->entitycontroller->selected_entities.clear();
+
+	App->entitycontroller->all_squads.clear();
+	App->entitycontroller->selected_squads.clear();
+
+	Town_Hall = nullptr;
+	
+	App->entitycontroller->addBuilding({ 2000, 2000 }, TOWN_HALL);
+
+	App->gui->Chronos->counter.Start();
+
+	App->entitycontroller->StartHero(iPoint(2000, 1950));
 }

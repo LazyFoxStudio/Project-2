@@ -48,7 +48,7 @@ bool j1UIScene::Start()
 	wood_display->convertIntoCounter(&App->scene->wood);
 
 	Text* wood_sec = (Text*)App->gui->GetElement(TEXT, 4);
-	wood_sec->convertIntoCounter(&App->wavecontroller->current_wave);
+	wood_sec->convertIntoCounter(&App->scene->wood_production_per_second);
 
 	Text* waves = (Text*)App->gui->GetElement(TEXT, 6);
 	waves->convertIntoCounter(&App->wavecontroller->current_wave);
