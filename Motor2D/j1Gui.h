@@ -107,6 +107,7 @@ public:
 	void createPopUpInfo(UI_element* element, std::string info);
 
 	void LoadDB(pugi::xml_node node);
+	void LoadFonts(pugi::xml_node node);
 
 	void AddIconData(unitType type, pugi::xml_node node);
 	/*void AddIconData(heroType type, pugi::xml_node node);*/

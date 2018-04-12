@@ -51,9 +51,6 @@ The id of the fonts will be ordered as they are in the file, starting with 1
 Resolution of the screen: 1680x 1050y
 -->
 <config>
-	<fonts>
-		<font path="fonts/Old School Adventures.ttf" size="10"/>
-	</fonts>
 	<menu type="2" active="true">	
 	<!-- Resources Display -->
 		<atlas_image icon_atlas="false">
@@ -82,6 +79,12 @@ Resolution of the screen: 1680x 1050y
 					<position x="220" y="10"/>
 					<font id="1"/>
 					<color r="255" g="255" b="255" a="255"/>
+					<interactive value="false"/>
+				</text>
+				<text text="wood_sec" center="false" counter="true" prefix="+">
+					<position x="285" y="13"/>
+					<font id="2"/>
+					<color r="255" g="255" b="0" a="255"/>
 					<interactive value="false"/>
 				</text>
 			</childs>
