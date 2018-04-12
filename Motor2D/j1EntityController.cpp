@@ -401,8 +401,11 @@ void j1EntityController::buildingProcessDraw()
 }
 
 void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * building)
-{
-	if (building->type == LUMBER_MILL)
+{	
+	if (building == nullptr)
+		LOG("building was nullptr, was saved by checking <phew!>");
+
+	if (building != nullptr/*may need other work in the future*/ && building->type == LUMBER_MILL)
 	{
 		if (to_assign)
 		{
