@@ -278,6 +278,11 @@ Building* j1EntityController::addBuilding(iPoint pos, buildingType type)
 	building->being_built = true;
 	building->current_HP = 1;
 	building->last_frame_time = 0;
+
+	if (type == TOWN_HALL)
+	{
+		App->scene->Town_Hall = building;
+	}
 	return building;
 }
 
