@@ -150,6 +150,18 @@ bool j1EntityController::Update(float dt)
 		App->gui->warningMessages->hideMessage(NO_TREES);
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+	{
+		App->actionscontroller->activateAction(BUILD_BARRACKS);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	{
+		App->actionscontroller->activateAction(BUILD_LUMBER_MILL);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+	{
+		App->actionscontroller->activateAction(BUILD_FARM);
+	}
 	return true;
 }
 
