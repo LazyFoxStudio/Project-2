@@ -7,6 +7,7 @@
 struct SDL_Texture;
 class Window;
 class LifeBar;
+class Building;
 
 
 class j1Scene : public j1Module
@@ -47,7 +48,8 @@ public:
 	int workers = 0;
 	int inactive_workers = 0;
 	int town_hall_lvl = 0;
-	UI_element* pollas;
+	
+	Building* Town_Hall=nullptr;
 
 };
 

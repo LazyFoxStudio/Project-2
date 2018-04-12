@@ -14,6 +14,8 @@
 #include "j1EntityController.h"
 #include "j1Gui.h"
 #include "UI_CostDisplay.h"
+#include "Building.h"
+#include "UI_Chrono.h"
 
 j1Scene::j1Scene() : j1Module() { name = "scene"; }
 
@@ -68,6 +70,11 @@ bool j1Scene::Update(float dt)
 	}
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
+
+	if (Town_Hall->current_HP <= 0 && !App->gui->Chronos->counter.isPaused)
+	{
+		App->gui->Chronos->counter.PauseTimer();
+	}
 
 
 	return true;
