@@ -137,6 +137,7 @@ public:
 	UI_element* current_hovering_element = nullptr;
 	WarningMessages* warningMessages = nullptr;
 	Chrono* Chronos = nullptr;
+	NextWaveWindow* nextWaveWindow = nullptr;
 
 private:
 
@@ -154,7 +155,6 @@ private:
 	std::list<Window*> Windows;
 
 	IngameMenu* inGameMenu = nullptr;
-	NextWaveWindow* nextWaveWindow = nullptr;
 	UI_element* draggingElement = nullptr;
 
 	std::map<unitType, SDL_Rect> unitIconRect;

@@ -23,6 +23,12 @@ void j1Timer::Start()
 	isPaused = false;
 }
 
+void j1Timer::Restart()
+{
+	isPaused = false;
+	started_at = SDL_GetTicks();
+}
+
 // ---------------------------------------------
 uint32 j1Timer::Read() const
 {

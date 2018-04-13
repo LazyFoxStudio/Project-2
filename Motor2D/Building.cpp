@@ -86,7 +86,7 @@ bool Building::Update(float dt)
 		if (type == TOWN_HALL)
 		{
 			App->gui->Chronos->counter.PauseTimer();
-			App->scene->Restart_game();
+			//App->scene->Restart_game();
 		}
 		else HandleDestruction();
 	}

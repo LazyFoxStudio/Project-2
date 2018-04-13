@@ -47,7 +47,6 @@ bool j1WaveController::Start()
 	
 	wave_timer.Start();
 
-
 	current_wave = 0;
 	Generate_Next_Wave();
 
@@ -121,6 +120,7 @@ void j1WaveController::Generate_Next_Wave()
 {
 	srand(time(NULL));
 	int wave_score = CalculateWaveScore();
+	next_wave.clear();
 	
 	for (int i = 0; i < wave_score; i++)
 	{
@@ -205,7 +205,14 @@ void j1WaveController::Generate_Wave()
 		new_atk_order->flow_field = flow_field;
 		aux_squad->commands.push_back(new_atk_order);
 	}
-	next_wave.clear();
 
 	Generate_Next_Wave();
+}
+
+void j1WaveController::Restart_Wave_Sys()
+{
+	current_wave = 0;
+	Generate_Next_Wave();
+	wave_timer.Start();
+
 }
