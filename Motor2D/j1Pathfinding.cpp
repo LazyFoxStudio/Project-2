@@ -393,6 +393,15 @@ void FlowField::ClearTo(int value)
 		}
 	
 }
+
+FieldNode* FlowField::getNodeAt(iPoint p) 
+{
+	if (App->pathfinding->CheckBoundaries(p))
+		return &field[p.x][p.y];
+	else
+		return &field[0][0];
+}
+
 FlowField* j1PathFinding::RequestFlowField(iPoint destination)
 {
 	PathProcessor* pp = new PathProcessor(destination);

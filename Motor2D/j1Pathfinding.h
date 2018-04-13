@@ -40,7 +40,7 @@ struct FlowField
 	~FlowField();
 
 	void ClearTo(int value = FLOWFIELD_MAX);
-	FieldNode* getNodeAt(iPoint p) { return &field[p.x][p.y]; };
+	FieldNode* getNodeAt(iPoint p);
 
 };
 
