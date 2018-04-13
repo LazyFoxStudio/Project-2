@@ -297,7 +297,6 @@ int j1PathFinding::CreatePath(const iPoint& origin, iPoint& destination)
 			for (current = lowestScoreNode; current.parent; current = *current.parent)
 				last_path.push_front(current.pos);
 
-			last_path.push_front(origin);
 			break;
 		}
 
@@ -394,20 +393,6 @@ void FlowField::ClearTo(int value)
 		}
 	
 }
-
-void FlowField::updateFromPath(const std::list<iPoint>& path)
-{
-
-	std::list<iPoint>::const_iterator it = path.begin();
-	iPoint prev = *it++;
-	while (it != path.end())
-	{
-		getNodeAt(prev)->parent = getNodeAt(*it);
-		iPoint prev = *it++;
-	}
-
-}
-
 FlowField* j1PathFinding::RequestFlowField(iPoint destination)
 {
 	PathProcessor* pp = new PathProcessor(destination);

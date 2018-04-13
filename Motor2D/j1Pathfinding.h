@@ -39,7 +39,6 @@ struct FlowField
 	FlowField(uint width, uint heigth, int init_to = FLOWFIELD_MAX);
 	~FlowField();
 
-	void updateFromPath(const std::list<iPoint>& path);
 	void ClearTo(int value = FLOWFIELD_MAX);
 	FieldNode* getNodeAt(iPoint p) { return &field[p.x][p.y]; };
 

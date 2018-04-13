@@ -159,8 +159,10 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 	if (entity->entity_type == UNIT)
 	{
 		Unit* unit = (Unit*)entity;
-		App->render->DrawCircle(unit->position.x, unit->position.y, unit->range, Green);
 		App->render->DrawCircle(unit->position.x, unit->position.y, unit->line_of_sight, Blue);
+		SDL_Rect r = { unit->position.x - unit->range, unit->position.y - unit->range, unit->range * 2, unit->range * 2};
+		App->render->DrawQuad(r, White, false);
+		App->render->DrawLine(unit->position.x, unit->position.y, unit->position.x + unit->next_step.x, unit->position.y + unit->next_step.y, Red);
 	}
 }
 

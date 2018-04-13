@@ -64,34 +64,39 @@ bool MoveTo::OnStop()
 
 bool Attack::OnInit()
 {
-	if (!flow_field || !enemy_positions) Stop();
+	if (!enemy_positions) Stop();
 
 	return true;
 }
 
 bool Attack::OnUpdate(float dt)
 {
+	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
+
 	if (current_target.IsZero())
 	{
-		if (enemy_positions->empty())
-			if (!unit->squad->getEnemiesInSight(*enemy_positions)) { Stop(); return true; }
-
+		if (enemy_positions->empty()){
+			if (!unit->squad->getEnemiesInSight(*enemy_positions)) 
+				{ Stop(); return true; }
+		}	
 		current_target = enemy_positions->front();
 
 		for (std::list<fPoint>::iterator it = enemy_positions->begin(); it != enemy_positions->end(); it++)
 			if ((*it).DistanceTo(unit->position) < current_target.DistanceTo(unit->position))
 				current_target = (*it);
 
-		iPoint target_map_p = App->map->WorldToMap(current_target.x, current_target.y);
+		iPoint targetMap_p = App->map->WorldToMap(current_target.x, current_target.y);
+		if (!App->pathfinding->CreatePath(map_p, targetMap_p) >= 0) path = *App->pathfinding->GetLastPath();
+		else { Stop(); return true; }
 
+		type = ATTACKING_MOVETO;
 		return true;
 	}
 
 	Entity* enemy = App->entitycontroller->getNearestEnemy(unit->position, unit->IsEnemy());
-	if(!enemy) { Stop(); return true; }
+	if(!enemy)  { Stop(); return true; }
 
-	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
-	SDL_Rect r = { unit->position.x - (unit->range / 2), unit->position.y - (unit->range / 2), unit->collider.w + (unit->range / 2), unit->collider.h + (unit->range / 2) };
+	SDL_Rect r = { unit->position.x - unit->range, unit->position.y - unit->range, unit->range * 2, unit->range * 2};
 
 	if(SDL_HasIntersection(&r, &enemy->collider))
 	{
@@ -115,29 +120,29 @@ bool Attack::OnUpdate(float dt)
 
 			case BUILDING:
 				enemy_building = (Building*)enemy;
-				enemy_building->current_HP -= unit->piercing_atk + (MAX(((int)unit->attack - (int)enemy_building->defense), 0));
+				enemy_building->current_HP -= MAX((RANDOM_FACTOR * (unit->piercing_atk + ((((int)unit->attack - (int)enemy_unit->defense) <= 0) ? 0 : unit->attack - enemy_building->defense))), 1); //dmg
 			}
 			timer.Start();
 		}
 
-		unit->next_step = { 0.0f,0.0f };
+		unit->next_step.SetToZero();
 		return true;
 	}
 	else
 	{
-		if(unit->position.DistanceTo(current_target) < ATK_PROXIMITY_FACTOR)
-			{ enemy_positions->remove(current_target); current_target.SetToZero(); }
-		else if (!flow_field->getNodeAt(map_p)->parent)
+		if (map_p == path.front())
 		{
-			iPoint target_map_p = App->map->WorldToMap(current_target.x, current_target.y);
-
-			if (App->pathfinding->CreatePath(map_p, target_map_p) < 0) 
-				{ Stop(); return true;}
+			if (path.empty())
+			{
+				enemy_positions->remove(current_target);
+				current_target.SetToZero();
+				return true;
+			}
 			else
-				flow_field->updateFromPath(*App->pathfinding->GetLastPath());
+				path.pop_front();
 		}
 		else
-			unit->next_step += ((flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized() * STEERING_FACTOR);
+			unit->next_step += (path.front() -map_p).Normalized() * STEERING_FACTOR;
 
 	}
 
@@ -215,17 +220,10 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 	{
 		if (squad->getEnemiesInSight(enemy_positions))
 		{
-			if (!atk_flow_field) atk_flow_field = new FlowField(App->map->data.width, App->map->data.height);
-			else atk_flow_field->ClearTo();
-
 			for (int j = 0; j < squad->units.size(); j++)
 			{
 				if (squad->units[j]->commands.empty() ? true : (squad->units[j]->commands.front()->type != ATTACK || squad->units[j]->commands.front()->type != ATTACKING_MOVETO))
-				{
-					Attack* new_atk_order = new Attack(squad->units[j], atk_flow_field, &enemy_positions);
-					squad->units[j]->commands.push_front(new_atk_order);
-					squad->units[j]->next_step = { 0.0f,0.0f };
-				}
+					squad->units[j]->commands.push_front(new Attack(squad->units[j], &enemy_positions));
 			}
 			enemies_in_sight = true;
 		}
@@ -254,7 +252,6 @@ bool AttackingMoveToSquad::OnStop()
 	{
 		flow_field->finished = true;
 	}
-	RELEASE(atk_flow_field);
 	return true;
 }
 

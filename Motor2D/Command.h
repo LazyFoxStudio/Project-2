@@ -69,11 +69,11 @@ public:
 	fPoint current_target = { 0.0f, 0.0f };
 
 	j1Timer timer;
-	FlowField* flow_field = nullptr;
+	std::list<iPoint> path;
 	std::list<fPoint>* enemy_positions = nullptr;
 
 public:
-	Attack(Unit* unit, FlowField* flow_field, std::list<fPoint>* enemy_positions) : Command(unit, ATTACK), flow_field(flow_field), enemy_positions(enemy_positions) {};
+	Attack(Unit* unit, std::list<fPoint>* enemy_positions) : Command(unit, ATTACK), enemy_positions(enemy_positions) {};
 
 private:
 	bool OnInit();
@@ -106,7 +106,6 @@ private:
 
 class AttackingMoveToSquad : public MoveToSquad
 {
-	FlowField* atk_flow_field = nullptr;
 	std::list<fPoint> enemy_positions;
 	bool enemies_in_sight = false;
 	bool hold = false;
