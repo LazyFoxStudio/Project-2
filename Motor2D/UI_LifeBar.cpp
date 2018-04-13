@@ -16,7 +16,7 @@ LifeBar::LifeBar(Entity * entity, SDL_Texture* texture) : UI_element(0, 0, PROGR
 			bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("R_empty"), App->gui->GetLifeBarRect("R_full"), { 0,0,0,0 }, ((Unit*)entity)->max_HP, callback);
 		else
 			bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("G_empty"), App->gui->GetLifeBarRect("G_full"), { 0,0,0,0 }, ((Unit*)entity)->max_HP, callback);
-		offset.x = entity->collider.w / 2 - bar->section.w / 2;
+		offset.x = bar->section.w / 2;
 		break;
 	case BUILDING:
 		bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("Y_empty"), App->gui->GetLifeBarRect("Y_full"), { 0,0,0,0 }, ((Building*)entity)->max_HP, callback);
@@ -27,7 +27,7 @@ LifeBar::LifeBar(Entity * entity, SDL_Texture* texture) : UI_element(0, 0, PROGR
 		offset.x = entity->collider.w / 2 - bar->section.w / 2;
 		break;*/
 	}
-	offset.y = -(5 + bar->section.h);
+	offset.y = -(25 + bar->section.h);
 
 	this->entity = entity;
 	this->inMenu = false;
