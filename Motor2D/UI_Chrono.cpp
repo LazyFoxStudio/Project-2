@@ -92,7 +92,7 @@ void Chrono::BlitElement(bool use_camera)
 				int sec = time - (min * 60);
 				std::string secs = ((min<10) ? "0" : "") + std::to_string(min) + ":" + ((sec<10) ? "0" : "") + std::to_string(sec);
 
-				if (time <= 10)
+				if (time <= 10 && time > 5)
 					text->setColor({ 255,0,0,255 });
 
 				if (last_secs != secs)

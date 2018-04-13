@@ -47,7 +47,7 @@ bool j1EntityController::Start()
 
 	loadEntitiesDB(gameData);
 
-	AddSquad(FOOTMAN, fPoint(1900, 2100));
+	//AddSquad(FOOTMAN, fPoint(1900, 2100));
 	/*AddSquad(FOOTMAN, fPoint(2200, 2100));
 
 	AddSquad(GRUNT, fPoint(3000, 2100));
@@ -68,7 +68,7 @@ bool j1EntityController::Update(float dt)
 	BROFILER_CATEGORY("Entites update", Profiler::Color::Maroon);
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
-
+	
 	int counter = 0;
 	if (!all_squads.empty())
 	{
@@ -150,18 +150,6 @@ bool j1EntityController::Update(float dt)
 		App->gui->warningMessages->hideMessage(NO_TREES);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
-	{
-		App->actionscontroller->activateAction(BUILD_BARRACKS);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
-	{
-		App->actionscontroller->activateAction(BUILD_LUMBER_MILL);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
-	{
-		App->actionscontroller->activateAction(BUILD_FARM);
-	}
 	return true;
 }
 

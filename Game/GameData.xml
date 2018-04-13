@@ -1552,6 +1552,7 @@
 			<popUp>
 				<Info text="Move troops"/>
 			</popUp>
+			<hotkey key="M" font_id="3"/>
 		</move>
 		<stop id="2">
 			<position x="0" y="0"/>
@@ -1580,6 +1581,7 @@
 				<Info text="Build Barracks"/>
 				<Cost wood="300" gold="" oil=""/>
 			</popUp>
+			<hotkey key="A" font_id="3"/>
 		</buildBarrack>
 		<buildMill id="6" function="16">
 			<position x="0" y="0"/>
@@ -1590,6 +1592,7 @@
 				<Info text="Build Lumber Mill"/>
 				<Cost wood="350" gold="" oil=""/>
 			</popUp>
+			<hotkey key="S" font_id="3"/>
 		</buildMill>
 		<buildFarm id="7" function="17">
 			<position x="0" y="0"/>
@@ -1600,6 +1603,7 @@
 				<Info text="Build Farm"/>
 				<Cost wood="150" gold="" oil=""/>
 			</popUp>
+			<hotkey key="D" font_id="3"/>
 		</buildFarm>
 		<unassignWorker id="8" function="18">
 			<position x="0" y="0"/>
@@ -1642,5 +1646,6 @@
 	</ActionButtons>
 	<fonts>
 		<font path="fonts/BebasNeue-Regular.ttf" size="23"/>
+		<font path="fonts/ABeeZee-Regular.ttf" size="25"/>
 	</fonts>
 </GameData>

@@ -100,9 +100,12 @@ _TTF_Font * j1Fonts::getFont(int id)
 {
 	std::list<_TTF_Font*>::iterator font = fonts.begin();
 
-	for (int i = 1; i < id; i++)
+	if (fonts.size() >= id)
 	{
-		font++;
+		for (int i = 1; i < id; i++)
+		{
+			font++;
+		}
 	}
 	
 	return (*font);
