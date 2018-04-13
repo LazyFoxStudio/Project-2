@@ -119,6 +119,7 @@ public:
 	SDL_Rect GetLifeBarRect(std::string tag);
 	Button* GetActionButton(uint id);
 	std::list<Button*> activateActionButtons(uint ids[9]);
+	bool checkActionButtonsHotkeys();
 
 	void newSelectionDone();
 	void newWave();

@@ -71,8 +71,10 @@ bool j1Console::PostUpdate()
 
 	if (console_active)
 	{
-		SDL_Rect r = { 0,0,App->win->screen_surface->w ,App->win->screen_surface->h / 2 };
-		App->render->DrawQuad(r, White);
+		SDL_Rect r = { -App->render->camera.x,-App->render->camera.y,App->win->screen_surface->w ,App->win->screen_surface->h / 2 };
+		//SDL_Rect r = { 0,0,App->win->screen_surface->w ,App->win->screen_surface->h / 2 };
+
+		App->render->DrawQuad(r, Grey,true,true);
 
 		SDL_Color color = { Black.r, Black.g, Black.b, Black.a };
 		int iterations = 0;

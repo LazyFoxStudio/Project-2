@@ -15,23 +15,26 @@ public:
 		OnClick(OnClick)
 	{}
 
-	/*Button(int x, int y, SDL_Texture* texture, SDL_Rect standby, SDL_Rect OnMouse, SDL_Rect standbyActive, SDL_Rect OnMouseActive, j1Module* callback) : UI_element(x, y, element_type::SWITCH, standby, callback, texture),
-		OnMouse(OnMouse),
-		OnClick(OnMouse),
-		sectionActive(standbyActive),
-		OnMouseActive(OnMouseActive)
-	{}*/
-
 	~Button()
 	{}
 
 	void BlitElement(bool use_camera = false);
+	void displayHotkey(bool display, _TTF_Font* font = nullptr);
+	void setHotkey(SDL_Scancode hotkey);
+	SDL_Scancode getHotkey() const;
+	void updatedPosition();
 
 public:
 
 	SDL_Rect OnMouse = { 0,0,0,0 };
 	SDL_Rect OnClick = { 0,0,0,0 };
 	bool clicked = false;
+
+private:
+
+	bool displayingHotkey = false;
+	SDL_Scancode Hotkey = SDL_SCANCODE_UNKNOWN;
+	Text* hotkey_text = nullptr;
 };
 
 #endif // !__UI_BUTTON__

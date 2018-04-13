@@ -141,6 +141,9 @@ bool j1Gui::PreUpdate()
 		}
 	}
 
+	//Check action buttons hotkeys
+	checkActionButtonsHotkeys();
+
 	return ret;
 }
 
@@ -737,6 +740,7 @@ void j1Gui::createPopUpInfo(UI_element* element, std::string info)
 
 void j1Gui::LoadDB(pugi::xml_node node)
 {
+	//Load life bars
 	pugi::xml_node lifebar;
 	pugi::xml_node rect;
 
@@ -761,6 +765,10 @@ void j1Gui::LoadDB(pugi::xml_node node)
 		}
 	}
 
+	//Load fonts
+	LoadFonts(node.child("fonts"));
+
+	//Load action buttons
 	pugi::xml_node actionButton;
 	for (actionButton = node.child("ActionButtons").first_child(); actionButton; actionButton = actionButton.next_sibling())
 	{
@@ -779,15 +787,23 @@ void j1Gui::LoadDB(pugi::xml_node node)
 			createPopUpInfo(button, info.attribute("text").as_string());
 		}
 		actionButtons.insert(std::pair<uint, Button*>(id, button));
+
+		pugi::xml_node hotkey = actionButton.child("hotkey");
+		if (hotkey)
+		{
+			std::string letter = hotkey.attribute("key").as_string();
+			SDL_Scancode key = (SDL_Scancode)(*letter.c_str() - 61);
+			button->setHotkey(key);
+			button->displayHotkey(true, App->font->getFont(hotkey.attribute("font_id").as_int()));
+		}
 	}
 
+	//Create warning messages
 	warningMessages = new WarningMessages();
 	warningMessages->active = false;
 	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
 	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
 	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
-
-	LoadFonts(node.child("fonts"));
 }
 
 void j1Gui::LoadFonts(pugi::xml_node node)
@@ -880,6 +896,42 @@ std::list<Button*> j1Gui::activateActionButtons(uint ids[9])
 	//need to make sure all actionButtons are unactive
 
 	return list;
+}
+
+bool j1Gui::checkActionButtonsHotkeys()
+{
+	bool ret = false;
+
+	for (std::map<uint, Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
+	{
+		Button* button = (*it_b).second;
+
+		if (button->active)
+		{
+			if (App->input->GetKey(button->getHotkey()) == KEY_DOWN)
+			{
+				if (button->callback != nullptr)
+				{
+					button->callback->OnUIEvent(button, MOUSE_ENTER);
+					button->callback->OnUIEvent(button, MOUSE_LEFT_CLICK);
+					ret = true;
+					break;
+				}
+			}
+			else if (App->input->GetKey(button->getHotkey()) == KEY_UP)
+			{
+				if (button->callback != nullptr)
+				{
+					button->callback->OnUIEvent(button, MOUSE_LEFT_RELEASE);
+					button->callback->OnUIEvent(button, MOUSE_LEAVE);
+					ret = true;
+					break;
+				}
+			}
+		}
+	}
+
+	return ret;
 }
 
 void j1Gui::newSelectionDone()

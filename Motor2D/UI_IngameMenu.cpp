@@ -225,6 +225,7 @@ void IngameMenu::updateActionButtons()
 		(*it_b)->localPosition.x = firstButton_pos.x + (buttons_offset.x*counterX);
 		(*it_b)->localPosition.y = firstButton_pos.y + (buttons_offset.y*counterY) + extraYvalue;
 		(*it_b)->active = true;
+		(*it_b)->updatedPosition();
 		counterX++;
 		if (counterX == 3)
 		{

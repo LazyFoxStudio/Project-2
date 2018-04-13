@@ -47,7 +47,7 @@ bool j1EntityController::Start()
 
 	loadEntitiesDB(gameData);
 
-	AddSquad(FOOTMAN, fPoint(1900, 2100));
+	//AddSquad(FOOTMAN, fPoint(1900, 2100));
 	/*AddSquad(FOOTMAN, fPoint(2200, 2100));
 
 	AddSquad(GRUNT, fPoint(3000, 2100));
@@ -68,7 +68,7 @@ bool j1EntityController::Update(float dt)
 	BROFILER_CATEGORY("Entites update", Profiler::Color::Maroon);
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
-
+	
 	int counter = 0;
 	if (!all_squads.empty())
 	{
@@ -150,18 +150,6 @@ bool j1EntityController::Update(float dt)
 		App->gui->warningMessages->hideMessage(NO_TREES);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
-	{
-		App->actionscontroller->activateAction(BUILD_BARRACKS);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
-	{
-		App->actionscontroller->activateAction(BUILD_LUMBER_MILL);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
-	{
-		App->actionscontroller->activateAction(BUILD_FARM);
-	}
 	return true;
 }
 
@@ -742,6 +730,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		int size_x = NodeInfo.child("Stats").child("size").attribute("x").as_int(1);
 		int size_y = NodeInfo.child("Stats").child("size").attribute("y").as_int(1);
 
+		//TODO: https://github.com/LazyFoxStudio/Project-2/issues/13
 		unitTemplate->collider = { 0,0, App->map->data.tile_width * size_x, App->map->data.tile_height * size_y };
 
 		if (NodeInfo.child("iconData"))
