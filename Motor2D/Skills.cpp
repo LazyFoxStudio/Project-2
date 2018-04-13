@@ -79,8 +79,9 @@ void Skill::Line()
 			SDL_Rect r = { world_tile.x, world_tile.y, App->map->data.tile_width, App->map->data.tile_height };
 
 			int hero_x = hero->position.x; int hero_y = hero->position.y;
+			int cast_pos_x = cast_pos.x;   int cast_pos_y = cast_pos.y;
 
-			if (SDL_IntersectRectAndLine(&r, &hero_x, &hero_y, &cast_pos.x, &cast_pos.y) && App->pathfinding->IsWalkable(iPoint(i, j)))
+			if (SDL_IntersectRectAndLine(&r, &hero_x, &hero_y, &cast_pos_x, &cast_pos_y) && App->pathfinding->IsWalkable(iPoint(i, j)))
 				toDraw.push_back(world_tile);
 		}
 	}
