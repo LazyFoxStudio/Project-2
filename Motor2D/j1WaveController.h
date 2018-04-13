@@ -43,7 +43,7 @@ public:
 public:
 
 	FlowField*			flow_field = nullptr;
-	FlowField*			flow_field_aux = nullptr;    // for swapping purposes
+	FlowField*			flow_field_aux = nullptr;    // for swapping
 
 	int					initial_wait = 0;
 	int					wait_between_waves = 0;
@@ -53,11 +53,8 @@ public:
 	
 	std::list<NextWave*> next_wave;
 
-	iPoint TownHall_pos = { 2200,2000 };
+	iPoint TownHall_pos = { 0,0 };
 	
-	fPoint				spawn_1 = { 0.0f,0.0f };
-	fPoint				spawn_2= { 0.0f,0.0f };
-	fPoint				spawn_3= { 0.0f,0.0f };
-	fPoint				spawn_4= { 0.0f,0.0f };
+	std::vector<fPoint> spawns;
 };	
 #endif

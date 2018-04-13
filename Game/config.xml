@@ -68,9 +68,11 @@
   <wavecontroller>
     <initialWait value="10"/>
     <waitBetweenWaves value="80"/>
-    <spawn1 x="2154" y="256"/>
-    <spawn2 x="3605" y="1844"/>
-    <spawn3 x="2177" y="3549"/>
-    <spawn4 x="410" y="1982"/>
+    <Spawns>
+      <spawn x="2154" y="256"/>
+      <spawn x="3605" y="1844"/>
+      <spawn x="2177" y="3549"/>
+      <spawn x="410" y="1982"/>
+    </Spawns>
   </wavecontroller>
 </config>

@@ -9,7 +9,6 @@
 #include "j1Scene.h"
 #include "j1Map.h"
 #include "Color.h"
-#include "j1WaveController.h"
 #include <math.h>
 
 j1Map::j1Map() { name = "map"; }
@@ -144,7 +143,6 @@ bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bo
 
 			}
 		}
-		App->wavecontroller->updateFlowField();
 	}
 	else if (check_trees)
 	{

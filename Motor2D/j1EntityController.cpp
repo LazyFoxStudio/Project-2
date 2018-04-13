@@ -16,6 +16,7 @@
 #include "j1Map.h"
 #include "j1ActionsController.h"
 #include "UI_WarningMessages.h"
+#include "j1WaveController.h"
 #include "UI_Button.h"
 #include "Building.h"
 
@@ -378,6 +379,9 @@ bool j1EntityController::placingBuilding(buildingType type, iPoint position)
 	{
 		addBuilding(pos, type);
 		App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y, true,false);
+		if(type != TOWN_HALL)
+			App->wavecontroller->updateFlowField();
+
 		building = false;
 		ret = true;
 	}
@@ -736,8 +740,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		if (NodeInfo.child("iconData"))
 			App->gui->AddIconData(unitTemplate->type, NodeInfo.child("iconData"));
 
-		pugi::xml_node AnimInfo;
-		for (AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"))
+		for (pugi::xml_node AnimInfo = NodeInfo.child("Animations").child("Animation"); AnimInfo; AnimInfo = AnimInfo.next_sibling("Animation"))
 		{
 			Animation* animation = new Animation();
 			if (animation->LoadAnimation(AnimInfo))

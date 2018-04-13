@@ -25,14 +25,9 @@ bool j1WaveController::Awake(pugi::xml_node &config)
 {
 	initial_wait = config.child("initialWait").attribute("value").as_int(0);
 	wait_between_waves = config.child("waitBetweenWaves").attribute("value").as_int(0);
-	spawn_1.x = config.child("spawn1").attribute("x").as_float(0);
-	spawn_1.y = config.child("spawn1").attribute("y").as_float(0);
-	spawn_2.x = config.child("spawn2").attribute("x").as_float(0);
-	spawn_2.y = config.child("spawn2").attribute("y").as_float(0);
-	spawn_3.x = config.child("spawn3").attribute("x").as_float(0);
-	spawn_3.y = config.child("spawn3").attribute("y").as_float(0);
-	spawn_4.x = config.child("spawn4").attribute("x").as_float(0);
-	spawn_4.y = config.child("spawn4").attribute("y").as_float(0);
+
+	for (pugi::xml_node spawn = config.child("Spawns").child("spawn"); spawn; spawn = spawn.next_sibling("spawn"))
+		spawns.push_back(fPoint(spawn.attribute("x").as_float(0), spawn.attribute("y").as_float(0)));
 
 	return true;
 }
@@ -96,6 +91,7 @@ bool j1WaveController::PostUpdate()
 
 bool j1WaveController::CleanUp()
 {
+	spawns.clear();
 	return true;
 }
 
@@ -124,71 +120,10 @@ void j1WaveController::Generate_Next_Wave()
 	
 	for (int i = 0; i < wave_score; i++)
 	{
-		int enemy = rand() % 2 + 1;
-		int position = rand() % 4 + 1;
-		LOG("NUMBER: %i", enemy);
-		NextWave* aux_squad=nullptr;
-		if (enemy == 1)
-		{
-			switch (position)
-			{
-			case 1:
-				/*squad = App->entitycontroller->AddSquad(GRUNT, spawn_1);
-				wave.push_back(squad);*/
-				aux_squad = new NextWave(GRUNT,spawn_1);
-				next_wave.push_back(aux_squad);
-				break;
-			case 2:
-				/*squad = App->entitycontroller->AddSquad(GRUNT, spawn_2);
-				wave.push_back(squad);*/
-				aux_squad = new NextWave(GRUNT, spawn_2);
-				next_wave.push_back(aux_squad);
-				break;
-			case 3:
-				/*squad = App->entitycontroller->AddSquad(GRUNT, spawn_3);
-				wave.push_back(squad);*/
-				aux_squad = new NextWave(GRUNT, spawn_3);
-				next_wave.push_back(aux_squad);
-				break;
-			case 4:
-				/*squad = App->entitycontroller->AddSquad(GRUNT, spawn_4);
-				wave.push_back(squad);*/
-				aux_squad = new NextWave(GRUNT, spawn_4);
-				next_wave.push_back(aux_squad);
-				break;
-			}
-		}
+		int enemy = rand() % ((AXE_THROWER - GRUNT) + 1);    //   (last_enemy_type - first_enemy_type)
+		int position = rand() % spawns.size();
 
-		else if (enemy == 2)
-		{
-			switch (position)
-			{
-			case 1:
-				/*squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_1);
-				wave.push_back(squad);*/
-				aux_squad = new NextWave(AXE_THROWER, spawn_1);
-				next_wave.push_back(aux_squad);
-				break;
-			case 2:
-				/*squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_2);
-				wave.push_back(squad);*/
-				aux_squad = new NextWave(AXE_THROWER, spawn_2);
-				next_wave.push_back(aux_squad);
-				break;
-			case 3:
-				/*squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_3);
-				wave.push_back(squad);*/
-				aux_squad = new NextWave(AXE_THROWER, spawn_3);
-				next_wave.push_back(aux_squad);
-				break;
-			case 4:
-				/*squad = App->entitycontroller->AddSquad(AXE_THROWER, spawn_4);
-				wave.push_back(squad);*/
-				aux_squad = new NextWave(AXE_THROWER, spawn_4);
-				next_wave.push_back(aux_squad);
-				break;
-			}
-		}
+		next_wave.push_back(new NextWave((unitType)(GRUNT + enemy), spawns[position]));
 	}
 
 	App->gui->newWave();
