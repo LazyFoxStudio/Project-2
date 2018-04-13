@@ -17,7 +17,7 @@
 
 #define SEPARATION_STRENGTH 1.25f   // the higher the stronger   // 1.0f ~ 10.0f//
 #define SPEED_CONSTANT 2.5f   // applied to all units            // 60 ~ 140 //
-#define STOP_TRESHOLD 0.3f										// 0.5f ~ 1.5f//
+#define STOP_TRESHOLD 0.4f										// 0.5f ~ 1.5f//
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
@@ -123,15 +123,8 @@ void Unit::Move(float dt)
 
 		if (!App->pathfinding->IsWalkable(App->map->WorldToMap(position.x, position.y))) 
 		{ 
-			iPoint unwalkable_tile = App->map->WorldToMap(position.x, position.y);
-			iPoint unwalkable_tile_w = App->map->MapToWorld(unwalkable_tile.x, unwalkable_tile.y);
-			SDL_Rect r = { unwalkable_tile_w.x, unwalkable_tile_w.y, App->map->data.tile_width, App->map->data.tile_height };
-			SDL_Rect result = { 0,0,0,0 };
-			SDL_IntersectRect(&collider, &r, &result);
-
-			int x = (collider.x >= result.x ? result.w + 4 - (collider.w / 2) : -result.w - 4 + (collider.w / 2));
-			int y = (collider.y >= result.y ? result.h + 4 - (collider.h / 2) : -result.h - 4 + (collider.h / 2));
-			position += fPoint(x, y);
+			position = last_pos;
+			next_step.SetToZero();
 		}
 
 		collider.x = position.x - (collider.w / 2);
@@ -259,8 +252,12 @@ fPoint Unit::calculateSeparationVector()
 		separation_v += (position - collisions[i]->position).Normalized() * (1 / current_separation.GetModule());
 	}
 
+	separation_v *= SEPARATION_STRENGTH;
 	if (commands.empty() ? false : (commands.front()->type == ATTACKING_MOVETO || commands.front()->type == ATTACK))
-		return separation_v * SEPARATION_STRENGTH * 0.3f;
-	else
-		return separation_v * SEPARATION_STRENGTH;
+	{
+		if (separation_v.GetModule() > STOP_TRESHOLD)
+			separation_v = separation_v.Normalized() * STOP_TRESHOLD;
+	}
+
+	return separation_v;
 }
