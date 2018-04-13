@@ -76,7 +76,7 @@ public:
 	fPoint calculateSeparationVector();
 	bool IsEnemy() { return type >= GRUNT; };
 	void Move(float dt);
-	void setDirection();
+	void setDirection(fPoint movement);
 };
 
 #endif

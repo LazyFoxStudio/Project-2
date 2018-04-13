@@ -125,6 +125,7 @@ bool Attack::OnUpdate(float dt)
 			timer.Start();
 		}
 
+		unit->setDirection((enemy->position - unit->position).Normalized() * MAX_NEXT_STEP_MODULE);
 		unit->next_step.SetToZero();
 		return true;
 	}

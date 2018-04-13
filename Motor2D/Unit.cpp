@@ -13,11 +13,10 @@
 #include "j1UIScene.h"
 
 #define COLLIDER_MARGIN 10  // extra margin for separation calculations  // 10 ~ 30//
-#define MAX_NEXT_STEP_MODULE 50.0f   // max value for the next_step vector, for steering calculations  // 10 ~ 50//
 
 #define SEPARATION_STRENGTH 1.25f   // the higher the stronger   // 1.0f ~ 10.0f//
 #define SPEED_CONSTANT 2.5f   // applied to all units            // 60 ~ 140 //
-#define STOP_TRESHOLD 0.4f										// 0.5f ~ 1.5f//
+#define STOP_TRESHOLD 0.3f										// 0.5f ~ 1.5f//
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
@@ -133,27 +132,27 @@ void Unit::Move(float dt)
 	else if (!next_step.IsZero()) next_step.SetToZero();
 }
 
-void Unit::setDirection()
+void Unit::setDirection(fPoint movement)
 {
-	if (next_step.x != 0 || next_step.y != 0)
+	if (movement.x != 0 || movement.y != 0)
 	{
-		if (next_step.x < -MAX_NEXT_STEP_MODULE / 2)
+		if (movement.x < -MAX_NEXT_STEP_MODULE / 2)
 		{
-			if (next_step.y < MAX_NEXT_STEP_MODULE / 4 && next_step.y > -MAX_NEXT_STEP_MODULE / 4) dir = W;
-			else dir = (next_step.y < 0 ? NW : SW);
+			if (movement.y < MAX_NEXT_STEP_MODULE / 4 && movement.y > -MAX_NEXT_STEP_MODULE / 4) dir = W;
+			else dir = (movement.y < 0 ? NW : SW);
 		}
-		else if (next_step.x > MAX_NEXT_STEP_MODULE / 2)
+		else if (movement.x > MAX_NEXT_STEP_MODULE / 2)
 		{
-			if (next_step.y < MAX_NEXT_STEP_MODULE / 4 && next_step.y > -MAX_NEXT_STEP_MODULE / 4) dir = E;
-			else dir = (next_step.y < 0 ? NE : SE);
+			if (movement.y < MAX_NEXT_STEP_MODULE / 4 && movement.y > -MAX_NEXT_STEP_MODULE / 4) dir = E;
+			else dir = (movement.y < 0 ? NE : SE);
 		}
-		else dir = (next_step.y < 0 ? N : S);
+		else dir = (movement.y < 0 ? N : S);
 	}
 }
 
 void Unit::animationController()
 {
-	setDirection();
+	setDirection(next_step);
 
 	if (!next_step.IsZero())
 	{
@@ -255,8 +254,8 @@ fPoint Unit::calculateSeparationVector()
 	separation_v *= SEPARATION_STRENGTH;
 	if (commands.empty() ? false : (commands.front()->type == ATTACKING_MOVETO || commands.front()->type == ATTACK))
 	{
-		if (separation_v.GetModule() > STOP_TRESHOLD)
-			separation_v = separation_v.Normalized() * STOP_TRESHOLD;
+		if (separation_v.GetModule() > (STOP_TRESHOLD * 1.5f))
+			separation_v = separation_v.Normalized() * (STOP_TRESHOLD * 1.5f);
 	}
 
 	return separation_v;
