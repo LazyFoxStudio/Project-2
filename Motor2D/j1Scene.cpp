@@ -13,10 +13,12 @@
 #include "j1Pathfinding.h"
 #include "j1EntityController.h"
 #include "j1Gui.h"
-#include "UI_CostDisplay.h"
-#include "Building.h"
-#include "UI_Chrono.h"
 #include "j1EntityController.h"
+#include "j1WaveController.h"
+#include "UI_CostDisplay.h"
+#include "UI_Chrono.h"
+#include "UI_NextWaveWindow.h"
+#include "Building.h"
 
 
 j1Scene::j1Scene() : j1Module() { name = "scene"; }
@@ -28,9 +30,9 @@ j1Scene::~j1Scene() {}
 bool j1Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
-	wood = config.child("starting_resources").child("wood").attribute("value").as_int(0);
-	gold = config.child("starting_resources").child("gold").attribute("value").as_int(0);
-	workers = config.child("starting_resources").child("workers").attribute("value").as_int(0);
+	init_wood = wood = config.child("starting_resources").child("wood").attribute("value").as_int(0);
+	init_gold = gold = config.child("starting_resources").child("gold").attribute("value").as_int(0);
+	init_workers = workers = config.child("starting_resources").child("workers").attribute("value").as_int(0);
 	inactive_workers = workers;
 	town_hall_lvl = config.child("starting_resources").child("townHallLvl").attribute("value").as_int(0);
 	return true;
@@ -143,6 +145,7 @@ bool j1Scene::workerAvalible(int num)
 
 void j1Scene::Restart_game()
 {
+	//DELETING ENTITIES-------------------------------------------------------
 	std::list<Entity*>::iterator it = App->entitycontroller->entities.begin();
 	while (it != App->entitycontroller->entities.end())
 	{
@@ -150,18 +153,27 @@ void j1Scene::Restart_game()
 		it++;
 	}
 
+	//CLEANING ENTITY LISTS---------------------------------------------------
 	App->entitycontroller->entities.clear();
 	App->entitycontroller->selected_entities.clear();
-
 	App->entitycontroller->all_squads.clear();
 	App->entitycontroller->selected_squads.clear();
-
 	App->entitycontroller->entity_iterator = App->entitycontroller->entities.begin();
 	App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();
-	
+
+	//SATARTING ENTITIES-------------------------------------------------------
 	App->entitycontroller->addBuilding({ 2000, 2000 }, TOWN_HALL);
-
-	App->gui->Chronos->counter.Start();
-
 	App->entitycontroller->StartHero(iPoint(2000, 1950));
+
+	//RESTARTING WAVES---------------------------------------------------------
+	App->gui->Chronos->counter.Restart();
+	App->wavecontroller->Restart_Wave_Sys();
+	App->gui->nextWaveWindow->timer->start_value = 0;
+	App->gui->nextWaveWindow->timer->setStartValue(App->wavecontroller->initial_wait);
+
+	//RESTARTING RESOURCES-----------------------------------------------------
+	wood= init_wood;
+	gold= init_gold;
+	workers=init_workers;
+	inactive_workers = workers;
 }

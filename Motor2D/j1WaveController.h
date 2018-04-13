@@ -38,8 +38,10 @@ public:
 
 	void Generate_Next_Wave();
 	void Generate_Wave();
+	void Restart_Wave_Sys();
 
 	void updateFlowField();
+
 public:
 
 	FlowField*			flow_field = nullptr;

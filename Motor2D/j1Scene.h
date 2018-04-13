@@ -48,8 +48,14 @@ public:
 	int gold = 0;
 	int oil = 0;
 	int workers = 0;
+
 	int inactive_workers = 0;
 	int town_hall_lvl = 0;
+
+	int init_wood = 0;
+	int init_gold = 0;
+	int init_oil = 0;
+	int init_workers = 0;
 	
 	int wood_production_per_second = 0;
 };
