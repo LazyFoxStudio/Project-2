@@ -98,7 +98,7 @@ bool Attack::OnUpdate(float dt)
 
 	SDL_Rect r = { unit->position.x - unit->range, unit->position.y - unit->range, unit->range * 2, unit->range * 2};
 
-	if(SDL_HasIntersection(&r, &enemy->collider))
+	if(SDL_HasIntersection(&r, &enemy->collider) && enemy->isActive)
 	{
 		if (type == ATTACKING_MOVETO) 
 			{ type = ATTACK; timer.Start(); }
@@ -131,19 +131,17 @@ bool Attack::OnUpdate(float dt)
 	}
 	else
 	{
-		if (map_p == path.front())
+		if (path.empty())
 		{
-			if (path.empty())
-			{
-				enemy_positions->remove(current_target);
-				current_target.SetToZero();
-				return true;
-			}
-			else
-				path.pop_front();
+			enemy_positions->remove(current_target);
+			current_target.SetToZero();
+			return true;
 		}
+
+		if (map_p == path.front())
+			path.pop_front();
 		else
-			unit->next_step += (path.front() -map_p).Normalized() * STEERING_FACTOR;
+			unit->next_step += (path.front() - map_p).Normalized() * STEERING_FACTOR;
 
 	}
 

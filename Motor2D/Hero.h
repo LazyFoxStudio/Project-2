@@ -7,6 +7,8 @@
 #include "Skills.h"
 #include "j1Timer.h"
 
+#define HERO_REVIVE_COOLDOWN 60
+
 class Hero : public Unit
 {
 public:
@@ -19,6 +21,7 @@ public:
 	Skill* skill_three = nullptr;
 
 	uint current_skill = 0;
+	j1Timer revive_timer;
 
 public:
 

@@ -55,6 +55,8 @@ bool Squad::getEnemiesInSight(std::list<fPoint>& list_to_fill)
 
 	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
 	{
+		if ((*it)->isActive == false) continue;
+
 		if (((*it)->entity_type == BUILDING && commander->IsEnemy()))
 		{
 			if (isInSquadSight((*it)->position))

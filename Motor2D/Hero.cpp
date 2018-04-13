@@ -3,6 +3,7 @@
 #include "j1Input.h"
 #include "Color.h"
 #include "Command.h"
+#include "j1EntityController.h"
 
 #include "j1UIScene.h"
 
@@ -17,6 +18,20 @@ Hero::~Hero()
 
 bool Hero::Update(float dt)
 {
+	if (current_HP < 0)
+	{
+		if (isActive)
+		{ 
+			setActive(false);	
+			revive_timer.Start();
+			App->entitycontroller->selected_squads.remove(squad);
+			App->entitycontroller->selected_entities.remove(this);
+			current_skill = 0;
+		}
+		else if (revive_timer.ReadSec() > HERO_REVIVE_COOLDOWN) { current_HP = max_HP;  setActive(true); }
+		return true;
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)			current_skill != 1 ? current_skill = 1 : current_skill = 0;
 	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)	current_skill != 2 ? current_skill = 2 : current_skill = 0;
 	else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)	current_skill != 3 ? current_skill = 3 : current_skill = 0;

@@ -602,6 +602,8 @@ void j1EntityController::selectionControl()
 
 		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 		{
+			if ((*it)->isActive == false) continue;
+
 			if (SDL_HasIntersection(&(*it)->collider, &selection_rect))
 			{
 				if ((*it)->entity_type == UNIT)
@@ -644,6 +646,8 @@ Entity* j1EntityController::getNearestEnemy(fPoint position, bool isEnemy)
 	Entity* ret = nullptr;
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
+		if ((*it)->isActive == false) continue;
+
 		if ((*it)->entity_type == UNIT)
 		{
 			Unit* enemy = (Unit*)(*it);
