@@ -23,6 +23,7 @@
 #define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
 
+#define MOUSE_RADIUS 15 //(in pixels)
 
 j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
@@ -501,13 +502,25 @@ void j1EntityController::HandleBuildingResources(buildingType target)
 
 Entity* j1EntityController::CheckMouseHover(iPoint mouse_world)
 {
-	SDL_Point p = { mouse_world.x, mouse_world.y };
+	SDL_Rect r = { mouse_world.x - (MOUSE_RADIUS / 2), mouse_world.y - (MOUSE_RADIUS / 2) , MOUSE_RADIUS , MOUSE_RADIUS };
+	Entity* ret = nullptr;
 
+	std::vector<Entity*> hovered_entities;
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)	
-		if (SDL_PointInRect(&p, &(*it)->collider))  
-			return (*it);
+		if (SDL_HasIntersection(&r, &(*it)->collider))
+			hovered_entities.push_back(*it);
 
-	return nullptr;
+	if (!hovered_entities.empty())
+	{
+		ret = hovered_entities.front();
+		for (int i = 1; i < hovered_entities.size(); i++)
+		{
+			if (hovered_entities[i]->position.DistanceTo(fPoint(mouse_world.x, mouse_world.y)) < ret->position.DistanceTo(fPoint(mouse_world.x, mouse_world.y)))
+				ret = hovered_entities[i];
+		}
+	}
+
+	return ret;
 }
 
 void j1EntityController::commandControl()
