@@ -740,6 +740,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		int size_x = NodeInfo.child("Stats").child("size").attribute("x").as_int(1);
 		int size_y = NodeInfo.child("Stats").child("size").attribute("y").as_int(1);
 
+		//TODO: https://github.com/LazyFoxStudio/Project-2/issues/13
 		unitTemplate->collider = { 0,0, App->map->data.tile_width * size_x, App->map->data.tile_height * size_y };
 
 		if (NodeInfo.child("iconData"))
