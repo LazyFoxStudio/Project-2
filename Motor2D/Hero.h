@@ -18,9 +18,6 @@ public:
 	Skill* skill_two = nullptr;
 	Skill* skill_three = nullptr;
 
-
-private:
-
 	uint current_skill = 0;
 
 public:
