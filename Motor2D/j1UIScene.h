@@ -13,6 +13,7 @@ enum menu_id
 	SETTINGS_MENU,
 	INGAME_MENU,
 	PAUSE_MENU,
+	GAMEOVER_MENU,
 	CREDITS_MENU,
 	CONTROLS_MENU
 };
@@ -36,7 +37,6 @@ public:
 	// Called before the first frame
 	bool Start();
 
-
 	// Called each loop iteration
 	bool Update(float dt);
 
@@ -44,6 +44,8 @@ public:
 	void LoadUI(pugi::xml_node node);
 
 	bool OnUIEvent(UI_element* element, event_type event_type);
+
+	void toggleMenu(bool setActive, menu_id id);
 
 	// Called before quitting
 	bool CleanUp();
