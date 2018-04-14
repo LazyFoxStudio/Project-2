@@ -269,11 +269,12 @@ void j1EntityController::DeleteEntity(Entity* entity)
 		App->gui->entityDeleted(entity);
 
 		Unit * unit_to_remove = nullptr;
+		Squad* unit_squad = nullptr;
 		switch (entity->entity_type)
 		{
 		case UNIT:
 			unit_to_remove = (Unit*)(entity);
-			Squad* unit_squad = unit_to_remove->squad;
+			unit_squad = unit_to_remove->squad;
 			unit_squad->removeUnit(unit_to_remove);
 			if (unit_squad->units.empty())
 			{
