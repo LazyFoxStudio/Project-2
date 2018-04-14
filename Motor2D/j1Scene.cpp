@@ -97,10 +97,8 @@ bool j1Scene::Update(float dt)
 		App->audio->ModifySFXVolume(-10);
 	}
 
-	if (toRestart)
-	{
-		Restart_game();
-	}
+	if (toRestart && Restart_timer.ReadSec() >= restart_time) Restart_game();
+
 	return true;
 }
 
@@ -157,6 +155,7 @@ void j1Scene::Restart_game()
 		}
 
 		//CLEANING ENTITY LISTS---------------------------------------------------
+		App->entitycontroller->entities_to_destroy.clear();
 		App->entitycontroller->entities.clear();
 		App->entitycontroller->selected_entities.clear();
 		App->entitycontroller->all_squads.clear();
