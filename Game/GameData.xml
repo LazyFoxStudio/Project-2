@@ -1411,6 +1411,7 @@
         <sprite x="266" y="0" w="132" h="136"/>
         <sprite x="0" y="0" w="132" h="136"/>
         <sprite x="133" y="0" w="132" h="136"/>
+        <sprite x="545" y="181" w="132" h="136"/>
       </sprites>
       <Stats>
         <life value="300"/>
@@ -1489,10 +1490,10 @@
       <type value="4"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <sprites>
-        <sprite x="399" y="71" w="72" h="70"/>
+        <sprite x="399" y="71" w="72"  h="70"/>
         <sprite x="399" y="0" w="72" h="70"/>
         <sprite x="15" y="655" w="70" h="70" />
-        <sprite x="545" y="71" w="101" h="109" />
+        <sprite x="545" y="0" w="72" h="70" />
       </sprites>
       <Stats>
         <life value="200"/>

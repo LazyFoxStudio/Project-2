@@ -31,7 +31,6 @@ public:
 	//(...)
 	
 	bool being_built = false;
-	bool destroyed = false;
 	int villagers_inside = 0;
 	float resource_production_modifier = 0;
 	int resource_production = 0;
