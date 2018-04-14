@@ -77,6 +77,18 @@ bool j1ActionsController::Update(float dt)
 				App->entitycontroller->AddSquad(ARCHER, newSquadPos);
 			doingAction = false;
 			break;
+		case USE_ABILITY1:
+			App->entitycontroller->hero->current_skill != 1 ? App->entitycontroller->hero->current_skill = 1 : App->entitycontroller->hero->current_skill = 0;
+			doingAction = false;
+			break;
+		case USE_ABILITY2:
+			App->entitycontroller->hero->current_skill != 2 ? App->entitycontroller->hero->current_skill = 2 : App->entitycontroller->hero->current_skill = 0;
+			doingAction = false;
+			break;
+		case USE_ABILITY3:
+			App->entitycontroller->hero->current_skill != 3 ? App->entitycontroller->hero->current_skill = 3 : App->entitycontroller->hero->current_skill = 0;
+			doingAction = false;
+			break;
 		}
 		
 	}
