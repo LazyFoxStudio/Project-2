@@ -53,7 +53,7 @@ public:
 	bool CheckCostBuiding(buildingType target);
 	void HandleBuildingResources(buildingType target);
 	void debugDrawEntity(Entity* entity);
-	void HandleSFX(unitType type, int volume = 128);
+	void HandleSFX(unitType type, int volume = 128, bool isBuilding = false);
 	void GetTotalIncome();
 	void TownHallLevelUp();
 
