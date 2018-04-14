@@ -5,6 +5,7 @@
 #include "Command.h"
 #include "j1EntityController.h"
 #include "Squad.h"
+#include "j1Gui.h"
 
 #include "j1UIScene.h"
 
@@ -19,7 +20,7 @@ Hero::~Hero()
 
 bool Hero::Update(float dt)
 {
-	if (current_HP < 0)
+	if (current_HP <= 0)
 	{
 		if (isActive)
 		{ 
@@ -27,6 +28,7 @@ bool Hero::Update(float dt)
 			revive_timer.Start();
 			App->entitycontroller->selected_squads.remove(squad);
 			App->entitycontroller->selected_entities.remove(this);
+			App->gui->entityDeleted(this);
 			current_skill = 0;
 			isSelected = false;
 		}

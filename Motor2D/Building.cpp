@@ -78,11 +78,6 @@ bool Building::Update(float dt)
 			App->scene->workers -= 5;
 		}
 		destroyed = true;
-		timer.Start();
-	}
-
-	if (destroyed)
-	{
 		if (type == TOWN_HALL)
 		{
 			if (!App->gui->Chronos->counter.isPaused)
@@ -95,8 +90,10 @@ bool Building::Update(float dt)
 				App->scene->Restart_game();
 			}
 		}
-		else HandleDestruction();
+		timer.Start();
 	}
+
+	if (destroyed)	HandleDestruction();
 
 	if (!being_built && !destroyed && type == LUMBER_MILL)
 	{
