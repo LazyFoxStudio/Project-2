@@ -147,6 +147,8 @@ bool j1Scene::workerAvalible(int num)
 
 void j1Scene::Restart_game()
 {
+	App->uiscene->toggleMenu(true, GAMEOVER_MENU);
+
 	if (Restart_timer.ReadSec() >= restart_time)
 	{
 
