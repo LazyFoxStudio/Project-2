@@ -79,12 +79,6 @@ bool j1Scene::Update(float dt)
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
 
-	/*if (Town_Hall!=nullptr && Town_Hall->current_HP <= 0 && !App->gui->Chronos->counter.isPaused)
-	{
-		App->gui->Chronos->counter.PauseTimer();
-		Restart_game();
-	}*/
-
 	//Music and SFX modifiers (temporal for Vertical Slice)
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
@@ -101,6 +95,11 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
 	{
 		App->audio->ModifySFXVolume(-10);
+	}
+
+	if (toRestart)
+	{
+		Restart_game();
 	}
 	return true;
 }
@@ -147,11 +146,8 @@ bool j1Scene::workerAvalible(int num)
 
 void j1Scene::Restart_game()
 {
-	App->uiscene->toggleMenu(true, GAMEOVER_MENU);
-
 	if (Restart_timer.ReadSec() >= restart_time)
 	{
-
 		//DELETING ENTITIES-------------------------------------------------------
 		std::list<Entity*>::iterator it = App->entitycontroller->entities.begin();
 		while (it != App->entitycontroller->entities.end())
@@ -183,5 +179,8 @@ void j1Scene::Restart_game()
 		gold = init_gold;
 		workers = init_workers;
 		inactive_workers = workers;
+
+		App->uiscene->toggleMenu(false, GAMEOVER_MENU);
+		toRestart = false;
 	}
 }

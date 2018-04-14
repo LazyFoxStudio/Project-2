@@ -162,7 +162,7 @@ Resolution of the screen: 1680x 1050y
     
 	</menu>
 
-  <menu type="2" active="true">
+  <menu type="4" active="false">
     
     <!--Dead Image-->
     <atlas_image icon_atlas="false" active="true">
