@@ -164,7 +164,8 @@ void j1Scene::Restart_game()
 		App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();
 
 		//SATARTING ENTITIES-------------------------------------------------------
-		App->entitycontroller->addBuilding({ 2000, 2000 }, TOWN_HALL);
+		App->entitycontroller->building = false;
+		App->entitycontroller->placingBuilding(TOWN_HALL, { 2000, 2000 });
 		App->entitycontroller->StartHero(iPoint(2000, 1950));
 
 		//RESTARTING WAVES---------------------------------------------------------

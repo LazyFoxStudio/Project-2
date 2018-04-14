@@ -98,68 +98,71 @@ iPoint j1Map::WorldToMap(int x, int y) const
 bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bool check_trees)
 {
 	bool ret = true;
-	iPoint currentTile = { x,y };
-	MapLayer* tree_layer = data.layers[0];
-	if (check_trees)
+	if (App->pathfinding->map)
 	{
-		for (int i = 0; i < data.layers.size(); i++)
+		iPoint currentTile = { x,y };
+		MapLayer* tree_layer = data.layers[0];
+		if (check_trees)
 		{
-			MapLayer* layer = data.layers[i];
-
-			if (layer->name == "Resources")
+			for (int i = 0; i < data.layers.size(); i++)
 			{
-				tree_layer = layer;
-				break;
-			}
-		}
-	}
+				MapLayer* layer = data.layers[i];
 
-	if (!modify && !check_trees)
-	{
-		for (int j = 0; j < columns; j++)
-		{
-			for (int i = 0; i < rows; i++)
-			{
-				iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
-				if (!App->pathfinding->IsWalkable(currentMapTile))
+				if (layer->name == "Resources")
 				{
-					ret = false;
+					tree_layer = layer;
 					break;
 				}
-
 			}
 		}
-	}
-	else if (modify && !check_trees)
-	{
-		for (int j = 0; j < columns; j++)
-		{
-			for (int i = 0; i < rows; i++)
-			{
-				iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
-				int tile = (currentMapTile.y*App->map->data.width) + currentMapTile.x;
 
-				App->pathfinding->map[tile] = (App->pathfinding->map[tile] != INVALID_WALK_CODE ? INVALID_WALK_CODE : 0);
-
-			}
-		}
-	}
-	else if (check_trees)
-	{
-		for (int j = 0; j < columns; j++)
+		if (!modify && !check_trees)
 		{
-			for (int i = 0; i < rows; i++)
+			for (int j = 0; j < columns; j++)
 			{
-				iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
-				if (tree_layer->GetID(currentMapTile.x, currentMapTile.y) != 0)
+				for (int i = 0; i < rows; i++)
 				{
-					ret = false;
-					break;
+					iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
+					if (!App->pathfinding->IsWalkable(currentMapTile))
+					{
+						ret = false;
+						break;
+					}
+
 				}
-			} if (!ret) break;
+			}
+		}
+		else if (modify && !check_trees)
+		{
+			for (int j = 0; j < columns; j++)
+			{
+				for (int i = 0; i < rows; i++)
+				{
+					iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
+					int tile = (currentMapTile.y*App->map->data.width) + currentMapTile.x;
+
+					App->pathfinding->map[tile] = (App->pathfinding->map[tile] != INVALID_WALK_CODE ? INVALID_WALK_CODE : 0);
+
+				}
+			}
+		}
+		else if (check_trees)
+		{
+			for (int j = 0; j < columns; j++)
+			{
+				for (int i = 0; i < rows; i++)
+				{
+					iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
+					if (tree_layer->GetID(currentMapTile.x, currentMapTile.y) != 0)
+					{
+						ret = false;
+						break;
+					}
+				} if (!ret) break;
+			}
 		}
 	}
-	
+
 	return ret;
 }
 

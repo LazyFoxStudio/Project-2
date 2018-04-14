@@ -80,10 +80,9 @@ bool Building::Update(float dt)
 		break;
 	case DESTROYED:
 		if (timer.ReadSec() > App->entitycontroller->death_time)
-		{
-			App->map->WalkabilityArea(position.x, position.y, size.x, size.y, true);
 			App->entitycontroller->entities_to_destroy.push_back(this);
-		}
+
+		break;
 	}
 
 	return true;
