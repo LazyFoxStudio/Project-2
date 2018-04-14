@@ -46,6 +46,8 @@ public:
 
 	j1Timer Restart_timer;
 
+	bool toRestart=false;
+
 	int restart_time = 0;
 
 	int wood = 0;

@@ -884,6 +884,9 @@ void j1EntityController::StartHero(iPoint pos)
 
 	hero->entity_type = UNIT;
 
+	for (int i = 0; i < 9; i++)
+		hero->available_actions[i] = (unitDB[HERO_1])->available_actions[i];
+
 	hero->position.x =  pos.x;
 	hero->position.y =  pos.y;
 

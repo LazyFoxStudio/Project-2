@@ -84,9 +84,8 @@ bool Building::Update(float dt)
 			App->map->WalkabilityArea(position.x, position.y, size.x, size.y, true);
 			App->entitycontroller->entities_to_destroy.push_back(this);
 		}
-		break;
 	}
-	
+
 	return true;
 }
 
@@ -111,7 +110,9 @@ void Building::Destroy()
 	case TOWN_HALL:
 		current_sprite = &sprites[4];
 		App->gui->Chronos->counter.PauseTimer();
-		//App->scene->Restart_game();
+		App->scene->toRestart = true;
+		App->scene->Restart_timer.Start();
+		App->uiscene->toggleMenu(true, GAMEOVER_MENU);
 		break;
 	}
 }

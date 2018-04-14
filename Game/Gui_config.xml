@@ -161,5 +161,16 @@ Resolution of the screen: 1680x 1050y
     </minimap>
     
 	</menu>
+
+  <menu type="4" active="false">
+    
+    <!--Dead Image-->
+    <atlas_image icon_atlas="false" active="true">
+      <position x="500" y="500"/>
+      <section x="285" y="332" w="874" h="54"/>
+    </atlas_image>
+    
+   </menu>
+
 </config>
 

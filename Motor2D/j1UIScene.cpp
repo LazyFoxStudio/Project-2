@@ -197,6 +197,15 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 		case WEB:
 			//App->RequestBrowser("https://adria-f.github.io/Game-Development/");
 			break;
+		case HERO_ABILITY1:
+			App->actionscontroller->activateAction(USE_ABILITY1);
+			break;
+		case HERO_ABILITY2:
+			App->actionscontroller->activateAction(USE_ABILITY2);
+			break;
+		case HERO_ABILITY3:
+			App->actionscontroller->activateAction(USE_ABILITY3);
+			break;
 		}
 	}
 	else if (event_type == MOUSE_LEFT_RELEASE && element->state != LOCKED && element->state != LOCKED_MOUSEOVER)
@@ -230,6 +239,7 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 		case CREATE_ARCHER_FUNCTION:
 			App->actionscontroller->activateAction(CREATE_ARCHER);
 			break;
+
 		}
 	}
 	else if (event_type == MOUSE_RIGHT_CLICK && element->state != LOCKED && element->state != LOCKED_MOUSEOVER)
@@ -249,4 +259,16 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 	}
 
 	return ret;
+}
+
+void j1UIScene::toggleMenu(bool setActive, menu_id id)
+{
+	for (std::list<menu*>::iterator it_m = menus.begin(); it_m != menus.end(); it_m++)
+	{
+		if ((*it_m)->id == id)
+		{
+			(*it_m)->active = setActive;
+			break;
+		}
+	}
 }

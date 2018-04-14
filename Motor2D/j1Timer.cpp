@@ -49,6 +49,6 @@ float j1Timer::ReadSec() const
 
 void j1Timer::PauseTimer()
 {
-	paused_at = Read();
+	paused_at = Read()+started_at;
 	isPaused = true;
 }

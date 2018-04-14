@@ -299,6 +299,12 @@
               </Animation>
             </Animations>
 			<Actions>
+				<action id="1"/>
+				<action id="10"/>
+				<action id="10"/>
+				<action id="13"/>
+				<action id="14"/>
+				<action id="15"/>
 			</Actions>
         </Unit>
       <Unit>
@@ -1551,7 +1557,7 @@
 			<OnMouse x="353" y="437" w="66" h="66"/>
 			<OnClick x="421" y="437" w="66" h="66"/>
 			<popUp>
-				<Info text="Move troops"/>
+				<Info text="Move to position"/>
 			</popUp>
 			<hotkey key="M" font_id="3"/>
 		</move>
@@ -1644,6 +1650,36 @@
 				<Cost wood="250" workers="4"/>
 			</popUp>
 		</createArcher>
+		<ability1 id="13" function="22">
+			<position x="0" y="0"/>
+			<standby x="897" y="507" w="66" h="66"/>
+			<OnMouse x="965" y="507" w="66" h="66"/>
+			<OnClick x="1033" y="507" w="66" h="66"/>
+			<popUp>
+				<Info text="Big area ability"/>
+			</popUp>
+			<hotkey key="Q" font_id="3"/>
+		</ability1>
+		<ability2 id="14" function="23">
+			<position x="0" y="0"/>
+			<standby x="1101" y="507" w="66" h="66"/>
+			<OnMouse x="1169" y="507" w="66" h="66"/>
+			<OnClick x="1237" y="507" w="66" h="66"/>
+			<popUp>
+				<Info text="Single target ability"/>
+			</popUp>
+			<hotkey key="W" font_id="3"/>
+		</ability2>
+		<ability3 id="15" function="24">
+			<position x="0" y="0"/>
+			<standby x="1305" y="507" w="66" h="66"/>
+			<OnMouse x="1373" y="507" w="66" h="66"/>
+			<OnClick x="1441" y="507" w="66" h="66"/>
+			<popUp>
+				<Info text="Straight line ability"/>
+			</popUp>
+			<hotkey key="E" font_id="3"/>
+		</ability3>
 	</ActionButtons>
 	<fonts>
 		<font path="fonts/BebasNeue-Regular.ttf" size="23"/>

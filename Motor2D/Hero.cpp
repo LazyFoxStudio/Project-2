@@ -36,13 +36,6 @@ bool Hero::Update(float dt)
 		return true;
 	}
 
-	if(isSelected)
-	{
-		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)			current_skill != 1 ? current_skill = 1 : current_skill = 0;
-		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)	current_skill != 2 ? current_skill = 2 : current_skill = 0;
-		else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)	current_skill != 3 ? current_skill = 3 : current_skill = 0;
-	}
-
 	switch (current_skill)
 	{
 	case 1: 

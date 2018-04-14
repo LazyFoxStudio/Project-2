@@ -15,7 +15,10 @@ enum actionType
 	UNASSIGN_WORKER,
 	ASSIGN_WORKER,
 	CREATE_FOOTMAN,
-	CREATE_ARCHER
+	CREATE_ARCHER,
+	USE_ABILITY1,
+	USE_ABILITY2,
+	USE_ABILITY3
 };
 
 class j1ActionsController : public j1Module
