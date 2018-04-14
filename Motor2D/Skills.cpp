@@ -102,8 +102,11 @@ void Skill::Activate()
 			{
 				if (((Unit*)(*item))->IsEnemy())
 				{
-					fPoint aux_point = { (float)App->map->WorldToMap(cast_pos.x, cast_pos.y).x,(float)App->map->WorldToMap(cast_pos.x, cast_pos.y).y };
-					fPoint aux_pos = { (float)App->map->WorldToMap((*item)->position.x,(*item)->position.y).x,(float)App->map->WorldToMap((*item)->position.x,(*item)->position.y).y };
+					iPoint cast_aux = App->map->WorldToMap(cast_pos.x, cast_pos.y);
+					fPoint aux_point = { (float)cast_aux.x,(float)cast_aux.y };
+					iPoint pos = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
+					fPoint aux_pos = { (float)pos.x,(float)pos.y };
+
 					if (aux_pos.DistanceTo(aux_point) < radius)
 						((Unit*)(*item))->current_HP -= damage;
 				}
