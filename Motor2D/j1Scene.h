@@ -44,6 +44,10 @@ public:
 public:
 	SDL_Texture* debug_tex = nullptr;
 
+	j1Timer Restart_timer;
+
+	int restart_time = 0;
+
 	int wood = 0;
 	int gold = 0;
 	int oil = 0;

@@ -46,14 +46,17 @@ bool Hero::Update(float dt)
 	case 1: 
 		skill_one->DrawRange(); 
 		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_one->Ready())  skill_one->Activate();
+		skill_one->toDraw.clear();
 		break;
 	case 2:
 		skill_two->DrawRange();
 		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready())  skill_two->Activate();
+		skill_two->toDraw.clear();
 		break;
 	case 3:
 		skill_three->DrawRange();
 		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready())  skill_three->Activate();
+		skill_three->toDraw.clear();
 		break;
 	default: 
 		break;

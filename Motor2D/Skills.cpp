@@ -45,7 +45,6 @@ void Skill::DrawRange()
 				App->render->DrawQuad(r, black);
 			}
 		}
-		toDraw.clear();
 	}
 }
 
@@ -102,13 +101,31 @@ void Skill::Activate()
 			{
 				if (((Unit*)(*item))->IsEnemy())
 				{
-					iPoint cast_aux = App->map->WorldToMap(cast_pos.x, cast_pos.y);
-					fPoint aux_point = { (float)cast_aux.x,(float)cast_aux.y };
-					iPoint pos = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
-					fPoint aux_pos = { (float)pos.x,(float)pos.y };
+					if (type == AREA || type == NONE_RANGE)
+					{
 
-					if (aux_pos.DistanceTo(aux_point) < radius)
-						((Unit*)(*item))->current_HP -= damage;
+						iPoint cast_aux = App->map->WorldToMap(cast_pos.x, cast_pos.y);
+						iPoint pos = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
+
+						if (cast_aux.DistanceTo(pos) < radius)
+							((Unit*)(*item))->current_HP -= damage;
+					}
+					else if (type==LINE)
+					{
+						SDL_Point enemy_pos = { ((Unit*)(*item))->position.x, ((Unit*)(*item))->position.y };
+
+						for (std::list<iPoint>::iterator it = toDraw.begin(); it != toDraw.end(); it++)
+						{
+							iPoint rect_point = App->map->WorldToMap((*it).x, (*it).y);
+							rect_point = App->map->MapToWorld(rect_point.x, rect_point.y);
+							SDL_Rect r = { rect_point.x,rect_point.y,32,32 };
+
+							if (SDL_PointInRect(&enemy_pos, &r))
+							{
+								((Unit*)(*item))->current_HP -= damage;
+							}
+						}
+					}
 				}
 			}
 		}
