@@ -97,7 +97,6 @@ bool j1Scene::Update(float dt)
 		App->audio->ModifySFXVolume(-10);
 	}
 
-	if (toRestart && Restart_timer.ReadSec() >= restart_time) Restart_game();
 
 	return true;
 }
@@ -105,6 +104,7 @@ bool j1Scene::Update(float dt)
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
+	if (toRestart && Restart_timer.ReadSec() >= restart_time) Restart_game();
 	return true;
 }
 

@@ -621,7 +621,7 @@ void j1EntityController::selectionControl()
 					{	
 						if(((Unit*)*it)->squad)
 							selected_squads.push_back(((Unit*)*it)->squad);
-						if (((Unit*)*it)->type <= HERO_X)
+						if (((Unit*)*it)->type <= HERO_X && (*it)->isActive)
 							hero->isSelected = true;
 					}
 				}
