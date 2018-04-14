@@ -44,6 +44,8 @@ public:
 	bool to_unassign = false;
 	bool to_assign = false;
 
+	bool destroyed = false;
+
 public:
 	virtual ~Entity() {};
 

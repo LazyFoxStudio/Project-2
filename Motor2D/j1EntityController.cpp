@@ -198,7 +198,7 @@ void j1EntityController::GetTotalIncome()
 	App->scene->wood_production_per_second = 0;
 	for (std::list<Entity*>::iterator tmp = entities.begin(); tmp != entities.end(); tmp++)
 	{
-		if ((*tmp)->entity_type == BUILDING)
+		if ((*tmp)->entity_type == BUILDING && !(*tmp)->destroyed)
 		{
 			if (((Building*)(*tmp))->type == LUMBER_MILL)
 			{

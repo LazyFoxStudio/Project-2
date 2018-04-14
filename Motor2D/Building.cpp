@@ -72,13 +72,18 @@ bool Building::Update(float dt)
 	}
 	if (!destroyed && current_HP <= 0)
 	{ //hardcoded
+		destroyed = true;
+		timer.Start();
 		if (App->scene->inactive_workers >= 5 && type == FARM)
 		{
 			App->scene->inactive_workers -= 5;
 			App->scene->workers -= 5;
 		}
-		destroyed = true;
-		timer.Start();
+		if (type == LUMBER_MILL)
+		{
+			App->entitycontroller->GetTotalIncome();
+		}
+
 	}
 
 	if (destroyed)
@@ -116,10 +121,14 @@ void Building::HandleSprite()
 		current_sprite = sprites[1];
 	}
 
-	else if (destroyed)
+	else if (destroyed && type != TOWN_HALL)
 	{
-		//TODO add the sprites of the destroyed buildings to the spritesheet.
-		//current_sprite = sprites[3];
+		current_sprite = sprites[3];
+	}
+
+	else if (destroyed && type == TOWN_HALL)
+	{
+		current_sprite = sprites[4];
 	}
 
 	else if (type == TOWN_HALL)
