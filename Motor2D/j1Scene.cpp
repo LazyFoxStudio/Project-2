@@ -61,6 +61,8 @@ bool j1Scene::Start()
 	App->render->camera.x = -1200;
 	App->render->camera.y = -1600;
 
+	restart_time = 10;
+
 	return true;
 }
 
@@ -145,35 +147,39 @@ bool j1Scene::workerAvalible(int num)
 
 void j1Scene::Restart_game()
 {
-	//DELETING ENTITIES-------------------------------------------------------
-	std::list<Entity*>::iterator it = App->entitycontroller->entities.begin();
-	while (it != App->entitycontroller->entities.end())
+	if (Restart_timer.ReadSec() >= restart_time)
 	{
-		App->entitycontroller->DeleteEntity(*it);
-		it++;
+
+		//DELETING ENTITIES-------------------------------------------------------
+		std::list<Entity*>::iterator it = App->entitycontroller->entities.begin();
+		while (it != App->entitycontroller->entities.end())
+		{
+			App->entitycontroller->DeleteEntity(*it);
+			it++;
+		}
+
+		//CLEANING ENTITY LISTS---------------------------------------------------
+		App->entitycontroller->entities.clear();
+		App->entitycontroller->selected_entities.clear();
+		App->entitycontroller->all_squads.clear();
+		App->entitycontroller->selected_squads.clear();
+		App->entitycontroller->entity_iterator = App->entitycontroller->entities.begin();
+		App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();
+
+		//SATARTING ENTITIES-------------------------------------------------------
+		App->entitycontroller->addBuilding({ 2000, 2000 }, TOWN_HALL);
+		App->entitycontroller->StartHero(iPoint(2000, 1950));
+
+		//RESTARTING WAVES---------------------------------------------------------
+		App->gui->Chronos->counter.Restart();
+		App->wavecontroller->Restart_Wave_Sys();
+		App->gui->nextWaveWindow->timer->start_value = 0;
+		App->gui->nextWaveWindow->timer->setStartValue(App->wavecontroller->initial_wait);
+
+		//RESTARTING RESOURCES-----------------------------------------------------
+		wood = init_wood;
+		gold = init_gold;
+		workers = init_workers;
+		inactive_workers = workers;
 	}
-
-	//CLEANING ENTITY LISTS---------------------------------------------------
-	App->entitycontroller->entities.clear();
-	App->entitycontroller->selected_entities.clear();
-	App->entitycontroller->all_squads.clear();
-	App->entitycontroller->selected_squads.clear();
-	App->entitycontroller->entity_iterator = App->entitycontroller->entities.begin();
-	App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();
-
-	//SATARTING ENTITIES-------------------------------------------------------
-	App->entitycontroller->addBuilding({ 2000, 2000 }, TOWN_HALL);
-	App->entitycontroller->StartHero(iPoint(2000, 1950));
-
-	//RESTARTING WAVES---------------------------------------------------------
-	App->gui->Chronos->counter.Restart();
-	App->wavecontroller->Restart_Wave_Sys();
-	App->gui->nextWaveWindow->timer->start_value = 0;
-	App->gui->nextWaveWindow->timer->setStartValue(App->wavecontroller->initial_wait);
-
-	//RESTARTING RESOURCES-----------------------------------------------------
-	wood= init_wood;
-	gold= init_gold;
-	workers=init_workers;
-	inactive_workers = workers;
 }

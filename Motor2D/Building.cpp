@@ -79,6 +79,7 @@ bool Building::Update(float dt)
 			App->scene->inactive_workers -= 5;
 			App->scene->workers -= 5;
 		}
+
 		if (type == LUMBER_MILL)
 		{
 			App->entitycontroller->GetTotalIncome();
@@ -88,13 +89,23 @@ bool Building::Update(float dt)
 
 	if (destroyed)
 	{
+
 		if (type == TOWN_HALL)
 		{
-			App->gui->Chronos->counter.PauseTimer();
-			//App->scene->Restart_game();
+			if (!App->gui->Chronos->counter.isPaused)
+			{
+				App->gui->Chronos->counter.PauseTimer();
+				App->scene->Restart_timer.Start();
+			}
+			else
+			{
+				App->scene->Restart_game();
+			}
 		}
-		else HandleDestruction();
+		timer.Start();
 	}
+
+	if (destroyed)	HandleDestruction();
 
 	if (!being_built && !destroyed && type == LUMBER_MILL)
 	{

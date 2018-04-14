@@ -32,7 +32,7 @@ void j1Timer::Restart()
 // ---------------------------------------------
 uint32 j1Timer::Read() const
 {
-	if (!isPaused)
+	if (isPaused==false)
 		return float(SDL_GetTicks() - started_at);
 	else
 		return float(paused_at - started_at);
@@ -44,11 +44,11 @@ float j1Timer::ReadSec() const
 	if (!isPaused)
 		return float(SDL_GetTicks() - started_at) / 1000.0f;
 	else
-		return float(paused_at - started_at) / 1000.0f;
+		return float((paused_at - started_at) / 1000.0f);
 }
 
 void j1Timer::PauseTimer()
 {
-	paused_at = Read();
+	paused_at = Read()+started_at;
 	isPaused = true;
 }
