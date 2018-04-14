@@ -119,6 +119,7 @@ bool Attack::OnUpdate(float dt)
 				break;
 
 			case BUILDING:
+				App->entitycontroller->HandleSFX(unit->type, 30, true);
 				enemy_building = (Building*)enemy;
 				enemy_building->current_HP -= MAX((RANDOM_FACTOR * (unit->piercing_atk + ((((int)unit->attack - (int)enemy_unit->defense) <= 0) ? 0 : unit->attack - enemy_building->defense))), 1); //dmg
 			}

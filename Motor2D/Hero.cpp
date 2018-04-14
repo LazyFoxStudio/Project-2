@@ -6,6 +6,7 @@
 #include "j1EntityController.h"
 #include "Squad.h"
 #include "j1Gui.h"
+#include "j1Audio.h"
 
 #include "j1UIScene.h"
 
@@ -40,18 +41,18 @@ bool Hero::Update(float dt)
 	{
 	case 1: 
 		skill_one->DrawRange(); 
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_one->Ready())  skill_one->Activate();
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_one->Ready())  skill_one->Activate(), App->audio->PlayFx(listOfSFX::SFX_HERO_YHAMAM_ICICLECRASH);
 		skill_one->toDraw.clear();
 		break;
 	case 2:
 		skill_two->DrawRange();
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready())  skill_two->Activate();
-		skill_two->toDraw.clear();
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready())  skill_two->Activate(), App->audio->PlayFx(listOfSFX::SFX_HERO_YHAMAM_OVERFLOW);
+		skill_two->toDraw.clear();		
 		break;
 	case 3:
 		skill_three->DrawRange();
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready())  skill_three->Activate();
-		skill_three->toDraw.clear();
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready())  skill_three->Activate(), App->audio->PlayFx(listOfSFX::SFX_HERO_YHAMAM_DRAGONBREATH);
+		skill_three->toDraw.clear();	
 		break;
 	default: 
 		break;

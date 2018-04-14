@@ -168,14 +168,14 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 	}
 }
 
-void j1EntityController::HandleSFX(unitType type, int volume)
+void j1EntityController::HandleSFX(unitType type, int volume, bool isBuilding)
 {
 	switch (type)
 	{
 	case NONE_UNIT:
 		break;
 	case HERO_1:
-
+		App->audio->PlayFx(listOfSFX::SFX_HERO_YHAMAM_BASICATTACK, volume);
 		break;
 	case FOOTMAN:
 		App->audio->PlayFx(listOfSFX::SFX_MISCELLANEOUS_SWORD_CLASH, volume);
@@ -184,7 +184,11 @@ void j1EntityController::HandleSFX(unitType type, int volume)
 		App->audio->PlayFx(listOfSFX::SFX_MISCELLANEOUS_ARROW, volume);
 		break;
 	case GRUNT:
-		App->audio->PlayFx(listOfSFX::SFX_MISCELLANEOUS_SWORD_CLASH, volume);
+		if(isBuilding)
+			// May be changed in case a good sfx is found (for free)
+			App->audio->PlayFx(listOfSFX::SFX_MISCELLANEOUS_SWORD_CLASH, volume);
+		else
+			App->audio->PlayFx(listOfSFX::SFX_MISCELLANEOUS_SWORD_CLASH, volume);
 		break;
 	case AXE_THROWER:
 		App->audio->PlayFx(listOfSFX::SFX_MISCELLANEOUS_AXETHROW, volume);
