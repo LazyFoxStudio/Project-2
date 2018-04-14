@@ -90,18 +90,25 @@ void Skill::Line()
 
 void Skill::Activate()
 {
-	for (std::list<Entity*>::iterator item = App->entitycontroller->entities.begin(); item != App->entitycontroller->entities.end(); item++)
+	iPoint mouse_pos;
+	App->input->GetMousePosition(mouse_pos.x, mouse_pos.y);
+	cast_pos = App->render->ScreenToWorld(mouse_pos.x, mouse_pos.y);
+
+	if (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range)
 	{
-		if ((*item)->entity_type == UNIT)
+		for (std::list<Entity*>::iterator item = App->entitycontroller->entities.begin(); item != App->entitycontroller->entities.end(); item++)
 		{
-			if (((Unit*)(*item))->IsEnemy())
+			if ((*item)->entity_type == UNIT)
 			{
-				fPoint aux_point = { (float)App->map->WorldToMap(cast_pos.x, cast_pos.y).x,(float)App->map->WorldToMap(cast_pos.x, cast_pos.y).y };
-				fPoint aux_pos = { (float)App->map->WorldToMap((*item)->position.x,(*item)->position.y).x,(float)App->map->WorldToMap((*item)->position.x,(*item)->position.y).y };
-				if(aux_pos.DistanceTo(aux_point) < radius)
-					((Unit*)(*item))->current_HP -= damage;
+				if (((Unit*)(*item))->IsEnemy())
+				{
+					fPoint aux_point = { (float)App->map->WorldToMap(cast_pos.x, cast_pos.y).x,(float)App->map->WorldToMap(cast_pos.x, cast_pos.y).y };
+					fPoint aux_pos = { (float)App->map->WorldToMap((*item)->position.x,(*item)->position.y).x,(float)App->map->WorldToMap((*item)->position.x,(*item)->position.y).y };
+					if (aux_pos.DistanceTo(aux_point) < radius)
+						((Unit*)(*item))->current_HP -= damage;
+				}
 			}
 		}
+		timer.Start();
 	}
-	timer.Start();
 }

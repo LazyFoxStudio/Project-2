@@ -4,6 +4,7 @@
 #include "Color.h"
 #include "Command.h"
 #include "j1EntityController.h"
+#include "Squad.h"
 
 #include "j1UIScene.h"
 
@@ -27,14 +28,18 @@ bool Hero::Update(float dt)
 			App->entitycontroller->selected_squads.remove(squad);
 			App->entitycontroller->selected_entities.remove(this);
 			current_skill = 0;
+			isSelected = false;
 		}
 		else if (revive_timer.ReadSec() > HERO_REVIVE_COOLDOWN) { current_HP = max_HP;  setActive(true); }
 		return true;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)			current_skill != 1 ? current_skill = 1 : current_skill = 0;
-	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)	current_skill != 2 ? current_skill = 2 : current_skill = 0;
-	else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)	current_skill != 3 ? current_skill = 3 : current_skill = 0;
+	if(isSelected)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)			current_skill != 1 ? current_skill = 1 : current_skill = 0;
+		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)	current_skill != 2 ? current_skill = 2 : current_skill = 0;
+		else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)	current_skill != 3 ? current_skill = 3 : current_skill = 0;
+	}
 
 	switch (current_skill)
 	{
@@ -53,6 +58,8 @@ bool Hero::Update(float dt)
 	default: 
 		break;
 	}
+
+	if (App->input->GetMouseButtonDown(3) == KEY_DOWN && current_skill!=0)  current_skill=0;
 
 	if (!commands.empty())
 	{

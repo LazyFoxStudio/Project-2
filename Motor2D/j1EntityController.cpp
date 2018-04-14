@@ -590,6 +590,7 @@ void j1EntityController::selectionControl()
 
 		selected_entities.clear();
 		selected_squads.clear();
+		hero->isSelected = false;
 
 		iPoint selection_to_world = App->render->ScreenToWorld(selection_rect.x, selection_rect.y);
 		selection_rect.x = selection_to_world.x; selection_rect.y = selection_to_world.y;
@@ -612,6 +613,8 @@ void j1EntityController::selectionControl()
 					{	
 						if(((Unit*)*it)->squad)
 							selected_squads.push_back(((Unit*)*it)->squad);
+						if (((Unit*)*it)->type <= HERO_X)
+							hero->isSelected = true;
 					}
 				}
 				else selected_entities.push_back(*it);

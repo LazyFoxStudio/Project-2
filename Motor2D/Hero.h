@@ -23,6 +23,8 @@ public:
 	uint current_skill = 0;
 	j1Timer revive_timer;
 
+	bool isSelected = false;
+
 public:
 
 	Hero() {};
