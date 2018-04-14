@@ -80,15 +80,8 @@ bool Building::Update(float dt)
 		destroyed = true;
 		if (type == TOWN_HALL)
 		{
-			if (!App->gui->Chronos->counter.isPaused)
-			{
-				App->gui->Chronos->counter.PauseTimer();
-				App->scene->Restart_timer.Start();
-			}
-			else
-			{
-				App->scene->Restart_game();
-			}
+			App->gui->Chronos->counter.PauseTimer();
+			//App->scene->Restart_game();
 		}
 		timer.Start();
 	}

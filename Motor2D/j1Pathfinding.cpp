@@ -283,7 +283,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, iPoint& destination)
 	while (open.list.size())
 	{
 		ret++;
-		if (ret > 2500)
+		if (ret > 500)
 			return -1;
 
 		PathNode lowestScoreNode = open.GetNodeLowestScore();
