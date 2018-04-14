@@ -15,6 +15,8 @@ enum buildingType {
 	//...
 };
 
+enum existence_state { BEING_BUILT, OPERATIVE, DESTROYED };
+
 class Building : public Entity
 {
 public:
@@ -30,31 +32,27 @@ public:
 	uint gold_cost = 0;
 	//(...)
 	
-	bool being_built = false;
 	int villagers_inside = 0;
-	float resource_production_modifier = 0;
 	int resource_production = 0;
 
-	j1Timer timer;
 	int last_frame_time = 0;
 
 	std::vector<SDL_Rect> sprites;
-	SDL_Rect current_sprite;
+	SDL_Rect* current_sprite;
+	existence_state ex_state = BEING_BUILT;
 
 public:
 	Building() { entity_type = BUILDING; };
 	Building(iPoint pos, Building& building);
 	~Building();
 
-	void GetColliderFromSize();
-
 	bool Update(float dt);
 	void HandleSprite();
 	void HandleConstruction();
-	void HandleDestruction();
 	void HandleResourceProduction();
 	void CalculateResourceProduction();
 	void Draw(float dt);
+	void Destroy();
 };
 
 #endif

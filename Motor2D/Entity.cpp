@@ -6,18 +6,10 @@
 #include "j1App.h"
 #include "Entity.h"
 
-iPoint Entity::getSize()
+int Entity::getHP()
 {
-	return iPoint(0, 0);
-}
-
-void Entity::selectedDraw()
-{
-
-}
-
-bool Entity::Collides(Entity& other)
-{
-	return false;
+	if		(entity_type == UNIT)		return ((Unit*)this)->current_HP;
+	else if (entity_type == BUILDING)	return ((Building*)this)->current_HP;
+	else return 0;
 }
 

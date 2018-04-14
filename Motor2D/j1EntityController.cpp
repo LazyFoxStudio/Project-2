@@ -198,9 +198,9 @@ void j1EntityController::GetTotalIncome()
 	App->scene->wood_production_per_second = 0;
 	for (std::list<Entity*>::iterator tmp = entities.begin(); tmp != entities.end(); tmp++)
 	{
-		if ((*tmp)->entity_type == BUILDING && !(*tmp)->destroyed)
+		if ((*tmp)->entity_type == BUILDING)
 		{
-			if (((Building*)(*tmp))->type == LUMBER_MILL)
+			if (((Building*)(*tmp))->type == LUMBER_MILL && ((Building*)(*tmp))->ex_state != DESTROYED)
 			{
 				App->scene->wood_production_per_second += ((Building*)(*tmp))->resource_production;
 			}			
@@ -320,10 +320,12 @@ Building* j1EntityController::addBuilding(iPoint pos, buildingType type)
 	Building* building = new Building(pos, *(buildingDB[type]));
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
-	building->timer.Start();
-	building->being_built = true;
-	building->current_HP = 1;
-	building->last_frame_time = 0;
+
+	if (type != TOWN_HALL)
+	{
+		building->current_HP = 1;
+		building->last_frame_time = 0;
+	}
 
 	return building;
 }
@@ -662,8 +664,11 @@ Entity* j1EntityController::getNearestEnemy(fPoint position, bool isEnemy)
 		}
 		else if ((*it)->entity_type == BUILDING && isEnemy)
 		{
-			if (!ret) { ret = (*it); continue; }
-			else if ((*it)->position.DistanceTo(position) < ret->position.DistanceTo(position)) ret = (*it);
+			if (((Building*)(*it))->ex_state != DESTROYED)
+			{
+				if (!ret) { ret = (*it); continue; }
+				else if ((*it)->position.DistanceTo(position) < ret->position.DistanceTo(position)) ret = (*it);
+			}
 		}
 	}
 	return ret;
@@ -715,6 +720,22 @@ entityType j1EntityController::getSelectedType()
 	}
 
 	return ret;
+}
+
+void j1EntityController::TownHallLevelUp()
+{
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		if ((*it)->entity_type == BUILDING)
+		{
+			Building* building = (Building*)(*it);
+			if (building->type == TOWN_HALL)
+			{
+				App->scene->town_hall_lvl++;
+				building->current_sprite[App->scene->town_hall_lvl + 1];
+			}
+		}
+	}
 }
 
 bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
@@ -790,7 +811,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		buildingTemplate->size.y = NodeInfo.child("size").attribute("y").as_int(0);
 		buildingTemplate->additional_size.x = NodeInfo.child("additionalSize").attribute("x").as_int(0);
 		buildingTemplate->additional_size.y = NodeInfo.child("additionalSize").attribute("y").as_int(0);
-		buildingTemplate->GetColliderFromSize();
+
 		// TODO building cost outside the DB so it's not unnecessarily repeated on every unit
 		int i = 0;
 		for (pugi::xml_node action = NodeInfo.child("Actions").child("action"); action; action = action.next_sibling("action"))

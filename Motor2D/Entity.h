@@ -44,15 +44,13 @@ public:
 	bool to_unassign = false;
 	bool to_assign = false;
 
-	bool destroyed = false;
+	j1Timer timer;
 
 public:
 	virtual ~Entity() {};
 
-	iPoint getSize();
 	void setActive(bool active) { isActive = active; };
-	void selectedDraw();
-	bool Collides(Entity& other);
+	int getHP();
 
 	virtual bool Update(float dt)	{ return true; };
 	virtual void Draw(float dt)		{};

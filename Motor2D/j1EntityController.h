@@ -55,6 +55,7 @@ public:
 	void debugDrawEntity(Entity* entity);
 	void HandleSFX(unitType type, int volume = 128);
 	void GetTotalIncome();
+	void TownHallLevelUp();
 
 	Entity* CheckMouseHover(iPoint mouse_world);
 

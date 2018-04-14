@@ -13,26 +13,38 @@ Building::Building(iPoint pos, Building& building)
 	texture							= building.texture;
 	type							= building.type;
 
-	current_HP						= building.current_HP;
-	max_HP							= building.max_HP;
+	current_HP = max_HP				= building.max_HP;
 	villagers_inside				= building.villagers_inside;
 	building_time					= building.building_time;
 	defense							= building.defense;
 	
 	entity_type						= BUILDING;
-	position.x = pos.x, position.y	= pos.y;
+
+	collider.x = position.x = pos.x;
+	collider.y = position.y	= pos.y;
+
 	size.x = building.size.x;
 	size.y = building.size.y;
+
+	collider.w = size.x*App->map->data.tile_width;
+	collider.h = size.y*App->map->data.tile_height;
+
 	additional_size.x = building.additional_size.x;
 	additional_size.y = building.additional_size.y;
 
 	for (int i = 0; i < 9; i++)
 		available_actions[i] = building.available_actions[i];
 
-	GetColliderFromSize();
-
 	sprites = building.sprites;
 
+	if (type == TOWN_HALL)
+	{
+		ex_state = OPERATIVE;
+		current_sprite = &sprites[1];
+	}
+	else current_sprite = &sprites[2];
+
+	timer.Start();
 }
 
 Building::~Building()
@@ -40,14 +52,6 @@ Building::~Building()
 	sprites.clear();
 }
 
-void Building::GetColliderFromSize()
-{
-	collider.x = position.x;
-	collider.y = position.y;
-	collider.w = size.x*App->map->data.tile_width;
-	collider.h = size.y*App->map->data.tile_height;
-	
-}
 
 bool Building::Update(float dt)
 {
@@ -55,199 +59,107 @@ bool Building::Update(float dt)
 	if (App->uiscene->minimap != nullptr) 
 	{
 		SDL_Color color;
-		color.r = 0;
-		color.b = 255;
-		color.g = 0;
-		color.a = 255;
+		if(ex_state != DESTROYED)	color = { 0,255,0,255 };
+		else						color = { 100,100,100,255 };
 		App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, color);
 	}
 
-	if (being_built)
+	if(current_HP <= 0 && ex_state != DESTROYED)   Destroy();
+
+	switch (ex_state)
 	{
+	case BEING_BUILT:
 		HandleConstruction();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN && type != TOWN_HALL)
-	{
-		current_HP = 0;
-	}
-	if (!destroyed && current_HP <= 0)
-	{ //hardcoded
-		destroyed = true;
-		timer.Start();
-		if (App->scene->inactive_workers >= 5 && type == FARM)
-		{
-			App->scene->inactive_workers -= 5;
-			App->scene->workers -= 5;
-		}
+		if (timer.ReadSec() >= building_time / 2 && current_sprite == &sprites[2])
+			current_sprite = &sprites[0];
+		break;
+	case OPERATIVE:
 
 		if (type == LUMBER_MILL)
+			HandleResourceProduction();
+		break;
+	case DESTROYED:
+		if (timer.ReadSec() > App->entitycontroller->death_time)
 		{
-			App->entitycontroller->GetTotalIncome();
+			App->map->WalkabilityArea(position.x, position.y, size.x, size.y, true);
+			App->entitycontroller->entities_to_destroy.push_back(this);
 		}
-
+		break;
 	}
-
-	if (destroyed)
-	{
-
-		if (type == TOWN_HALL)
-		{
-			App->gui->Chronos->counter.PauseTimer();
-			//App->scene->Restart_game();
-		}
-		timer.Start();
-	}
-
-	if (destroyed)	HandleDestruction();
-
-	if (!being_built && !destroyed && type == LUMBER_MILL)
-	{
-		HandleResourceProduction();
-	}
-	HandleSprite();
 	
 	return true;
 }
 
-void Building::HandleSprite()
+void Building::Destroy()
 {
-	if (being_built && building_time/2 < timer.ReadSec() && !destroyed)
+	ex_state = DESTROYED;
+	timer.Start();
+	switch (type)
 	{
-		current_sprite = sprites[0];
-	}
-
-	else if (being_built && building_time / 2 >= timer.ReadSec() && !destroyed)
-	{
-		current_sprite = sprites[2];
-	}
-	else if (!being_built && type != TOWN_HALL && !destroyed)
-	{
-		current_sprite = sprites[1];
-	}
-
-	else if (destroyed && type != TOWN_HALL)
-	{
-		current_sprite = sprites[3];
-	}
-
-	else if (destroyed && type == TOWN_HALL)
-	{
-		current_sprite = sprites[4];
-	}
-
-	else if (type == TOWN_HALL)
-	{
-		switch (App->scene->town_hall_lvl)
+	case FARM:
+		if (App->scene->inactive_workers >= 5)
 		{
-		case 0:
-			current_sprite = sprites[1];
-			break;
-		case 1:
-			current_sprite = sprites[2];
-			break;
-		case 2:
-			current_sprite = sprites[3];
-			break;
+			App->scene->inactive_workers -= 5;
+			App->scene->workers -= 5;
 		}
+		current_sprite = &sprites[3];
+		break;
+	case LUMBER_MILL:
+		App->entitycontroller->GetTotalIncome();
+		current_sprite = &sprites[3];
+		break;
+	case TOWN_HALL:
+		current_sprite = &sprites[4];
+		App->gui->Chronos->counter.PauseTimer();
+		//App->scene->Restart_game();
+		break;
 	}
 }
+
 
 void Building::HandleConstruction()
 {
-	if (type != TOWN_HALL)
+	int current_time = timer.ReadSec();
+	if (current_time >= building_time)
 	{
-		int current_time = timer.ReadSec();
-		if (current_time >= building_time)
+		int hp_unit = max_HP / building_time;
+		current_HP += hp_unit - 1;
+		App->scene->inactive_workers += 1;
+		timer.Start();
+		if (type == FARM)
 		{
-			int hp_unit = max_HP / building_time;
-			current_HP += hp_unit - 1;
-			being_built = false;
-			last_frame_time = 0;
-			App->scene->inactive_workers += 1;
-			timer.Start();
-			if (type == FARM)
-			{
-				App->scene->workers += 5;
-				App->scene->inactive_workers += 5;
-			}
+			App->scene->workers += 5;
+			App->scene->inactive_workers += 5;
 		}
-		else if (current_time > last_frame_time)
-		{
-			last_frame_time = current_time;
-			int hp_unit = max_HP / building_time;
-			current_HP += hp_unit;
-		}
+		ex_state = OPERATIVE;
+		current_sprite = &sprites[1];
+	}
+	else if (current_time > last_frame_time)
+	{
+		last_frame_time = current_time;
+		int hp_unit = max_HP / building_time;
+		current_HP += hp_unit;
 	}
 
-	else if (type == TOWN_HALL)
-	{
-		being_built = false;
-		current_HP = max_HP;
-	}
 }
 
-void Building::HandleDestruction()
-{
-	if (timer.ReadSec() > App->entitycontroller->death_time)
-	{
-		App->map->WalkabilityArea(position.x, position.y, size.x, size.y,true);
-		App->entitycontroller->entities_to_destroy.push_back(this);
-	}
-}
 
 void Building::HandleResourceProduction()
 {
 	if (timer.ReadSec() >= 3 && !App->map->WalkabilityArea(position.x - (additional_size.x * App->map->data.tile_width / 2) + collider.w / 2, (position.y - (additional_size.x * App->map->data.tile_width / 2)) + collider.h / 2, additional_size.x, additional_size.y, false, true))
 	{
 		timer.Start();
-
 		App->scene->wood += resource_production;
-
 	}
 }
 
 void Building::CalculateResourceProduction()
 {
-	switch (villagers_inside)
-	{
-	case 0:
-		resource_production_modifier = 0;
-		break;
-	case 1:
-		resource_production_modifier = App->entitycontroller->worker_wood_production;
-		break;
-	case 2:
-		resource_production_modifier = App->entitycontroller->worker_wood_production*0.95f;
-		break;
-	case 3:
-		resource_production_modifier = App->entitycontroller->worker_wood_production*0.90f;
-		break;
-	case 4:
-		resource_production_modifier = App->entitycontroller->worker_wood_production*0.85f;
-		break;
-	case 5:
-		resource_production_modifier = App->entitycontroller->worker_wood_production*0.80f;
-		break;
-	case 6:
-		resource_production_modifier = App->entitycontroller->worker_wood_production*0.75f;
-		break;
-	case 7:
-		resource_production_modifier = App->entitycontroller->worker_wood_production*0.70f;
-		break;
-	case 8:
-		resource_production_modifier = App->entitycontroller->worker_wood_production*0.65f;
-		break;
-	case 9:
-		resource_production_modifier = App->entitycontroller->worker_wood_production*0.60f;
-		break;
-	case 10:
-		resource_production_modifier = App->entitycontroller->worker_wood_production*0.55f;
-		break;
-	}
-	resource_production = 3 * villagers_inside*resource_production_modifier;
+	float production_modifier = App->entitycontroller->worker_wood_production * (1 - (float)((villagers_inside - 1) * 0.05f));
+	resource_production = 3 * villagers_inside * production_modifier;
 }
 
 void Building::Draw(float dt)
 {
-	App->render->Blit(texture, position.x, position.y, &current_sprite);
+	App->render->Blit(texture, position.x, position.y, current_sprite);
 }

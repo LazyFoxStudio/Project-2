@@ -59,7 +59,7 @@ bool Squad::getEnemiesInSight(std::list<fPoint>& list_to_fill)
 
 		if (((*it)->entity_type == BUILDING && commander->IsEnemy()))
 		{
-			if (isInSquadSight((*it)->position))
+			if (isInSquadSight((*it)->position) && ((Building*)(*it))->ex_state != DESTROYED)
 				list_to_fill.push_back((*it)->position);
 		}
 		else if ((*it)->entity_type == UNIT)
