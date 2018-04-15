@@ -285,19 +285,22 @@ void j1EntityController::DeleteEntity(Entity* entity)
 		case UNIT:
 			unit_to_remove = (Unit*)(entity);
 			unit_squad = unit_to_remove->squad;
-			unit_squad->removeUnit(unit_to_remove);
-			if (unit_squad->units.empty())
+			if (unit_to_remove->squad != nullptr)
 			{
-				if (*squad_iterator == unit_squad)
-					squad_iterator = all_squads.begin();
+				unit_squad->removeUnit(unit_to_remove);
+				if (unit_squad->units.empty())
+				{
+					if (*squad_iterator == unit_squad)
+						squad_iterator = all_squads.begin();
 
-				all_squads.remove(unit_to_remove->squad);
-				selected_squads.remove(unit_to_remove->squad);
-				
-				for (int i = 0; i < unit_squad->units.size(); i++)
-					unit_squad->units[i]->squad = nullptr;
+					all_squads.remove(unit_to_remove->squad);
+					selected_squads.remove(unit_to_remove->squad);
 
-				RELEASE(unit_squad);
+					for (int i = 0; i < unit_squad->units.size(); i++)
+						unit_squad->units[i]->squad = nullptr;
+
+					RELEASE(unit_squad);
+				}
 			}
 			RELEASE(unit_to_remove);
 			break;

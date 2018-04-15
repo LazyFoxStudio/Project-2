@@ -47,7 +47,10 @@ public:
 	j1Timer timer;
 
 public:
-	virtual ~Entity() {};
+	virtual ~Entity() 
+	{
+	
+	};
 
 	void setActive(bool active) { isActive = active; };
 	int getHP();
