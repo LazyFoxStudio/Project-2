@@ -13,6 +13,7 @@
 #include "j1Pathfinding.h"
 #include "j1EntityController.h"
 #include "j1Gui.h"
+#include "UI_Button.h"
 #include "j1EntityController.h"
 #include "j1WaveController.h"
 #include "UI_CostDisplay.h"
@@ -179,6 +180,15 @@ void j1Scene::Restart_game()
 		gold = init_gold;
 		workers = init_workers;
 		inactive_workers = workers;
+
+		//RESTART LOCKED ACTION BUTTONS
+		//Hardcoded
+		Button* barracks = App->gui->GetActionButton(5);
+		barracks->setCondition("Build first a Lumber Mill");
+		barracks->Lock();
+		Button* farms = App->gui->GetActionButton(7);
+		farms->setCondition("Build first a Lumber Mill");
+		farms->Lock();
 
 		//CHANGING MUSIC BACK TO WAVE ONE-----------------------------------------
 		App->audio->PlayMusic("Normal_Round_Theme.ogg");
