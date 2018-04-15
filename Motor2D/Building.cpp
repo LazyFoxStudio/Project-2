@@ -5,6 +5,7 @@
 #include "j1EntityController.h"
 #include "j1Input.h"
 #include "j1Scene.h"
+#include "j1Audio.h"
 #include "UI_Chrono.h"
 
 Building::Building(iPoint pos, Building& building)
@@ -108,6 +109,7 @@ void Building::Destroy()
 		current_sprite = &sprites[3];
 		break;
 	case TOWN_HALL:
+		App->audio->PlayMusic("Defeat Theme.ogg");
 		current_sprite = &sprites[4];
 		App->gui->Chronos->counter.PauseTimer();
 		App->scene->toRestart = true;

@@ -179,6 +179,10 @@ void j1Scene::Restart_game()
 		workers = init_workers;
 		inactive_workers = workers;
 
+		//CHANGING MUSIC BACK TO WAVE ONE-----------------------------------------
+		App->audio->PlayMusic("Normal_Round_Theme.ogg");
+
+
 		App->uiscene->toggleMenu(false, GAMEOVER_MENU);
 		toRestart = false;
 	}
