@@ -149,6 +149,7 @@ bool j1EntityController::Update(float dt)
 		structure_beingbuilt = NONE_BUILDING;
 		App->actionscontroller->action_type = NO_ACTION;
 		App->actionscontroller->doingAction = false;
+		App->actionscontroller->doingAction_lastFrame = false;
 		App->gui->warningMessages->hideMessage(NO_WORKERS);
 		App->gui->warningMessages->hideMessage(NO_RESOURCES);
 		App->gui->warningMessages->hideMessage(NO_TREES);
