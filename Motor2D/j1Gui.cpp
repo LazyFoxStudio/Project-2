@@ -881,8 +881,6 @@ std::list<Button*> j1Gui::activateActionButtons(uint ids[9])
 
 	for (int i = 0; i < 9; i++)
 	{
-		if (ids[i] == 0)
-			break;
 		for (std::map<uint, Button*>::iterator test = actionButtons.begin(); test != actionButtons.end(); test++)
 		{
 			(*test).second->active = false;
@@ -893,7 +891,6 @@ std::list<Button*> j1Gui::activateActionButtons(uint ids[9])
 			}
 		}
 	}
-	//need to make sure all actionButtons are unactive
 
 	return list;
 }

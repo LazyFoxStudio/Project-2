@@ -214,6 +214,11 @@ void IngameMenu::updateActionButtons()
 		Entity* entity = App->entitycontroller->selected_entities.front();
 		actionButtons = App->gui->activateActionButtons(entity->available_actions);
 	}
+	else
+	{
+		uint ids[9] = {};
+		App->gui->activateActionButtons(ids);
+	}
 
 	int counterX = 0;
 	int counterY = 0;

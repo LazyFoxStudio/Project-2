@@ -97,7 +97,6 @@ bool j1Scene::Update(float dt)
 		App->audio->ModifySFXVolume(-10);
 	}
 
-	if (toRestart && Restart_timer.ReadSec() >= restart_time) Restart_game();
 
 	return true;
 }
@@ -105,6 +104,7 @@ bool j1Scene::Update(float dt)
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
+	if (toRestart && Restart_timer.ReadSec() >= restart_time) Restart_game();
 	return true;
 }
 
@@ -164,7 +164,8 @@ void j1Scene::Restart_game()
 		App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();
 
 		//SATARTING ENTITIES-------------------------------------------------------
-		App->entitycontroller->addBuilding({ 2000, 2000 }, TOWN_HALL);
+		App->entitycontroller->building = false;
+		App->entitycontroller->placingBuilding(TOWN_HALL, { 2000, 2000 });
 		App->entitycontroller->StartHero(iPoint(2000, 1950));
 
 		//RESTARTING WAVES---------------------------------------------------------

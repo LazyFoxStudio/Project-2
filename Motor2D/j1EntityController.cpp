@@ -273,6 +273,7 @@ void j1EntityController::DeleteEntity(Entity* entity)
 		App->gui->entityDeleted(entity);
 
 		Unit * unit_to_remove = nullptr;
+		Building * building_to_remove = nullptr;
 		Squad* unit_squad = nullptr;
 		switch (entity->entity_type)
 		{
@@ -295,7 +296,12 @@ void j1EntityController::DeleteEntity(Entity* entity)
 			}
 			delete unit_to_remove;
 			break;
-		case BUILDING: delete ((Building*)(entity)); break;
+		case BUILDING: 
+			building_to_remove = (Building*)(entity);
+			App->map->WalkabilityArea(building_to_remove->position.x, building_to_remove->position.y, building_to_remove->size.x, building_to_remove->size.y, true);
+			App->wavecontroller->updateFlowField();
+			delete ((Building*)(entity)); 
+			break;
 		case NATURE: delete ((Nature*)(entity)); break;
 		}
 	}
@@ -625,7 +631,7 @@ void j1EntityController::selectionControl()
 					{	
 						if(((Unit*)*it)->squad)
 							selected_squads.push_back(((Unit*)*it)->squad);
-						if (((Unit*)*it)->type <= HERO_X)
+						if (((Unit*)*it)->type <= HERO_X && (*it)->isActive)
 							hero->isSelected = true;
 					}
 				}
