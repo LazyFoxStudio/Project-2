@@ -55,8 +55,8 @@ private:
 
 public:
 
-	std::string			music_folder;
-	std::string			sfx_folder;
+	std::string			music_folder="";
+	std::string			sfx_folder="";
 };
 
 enum listOfSFX

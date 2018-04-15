@@ -57,7 +57,7 @@ public:
 	int y = 0;
 
 	//minimap_
-	Minimap* minimap;
+	Minimap* minimap = nullptr;
 };
 
 #endif

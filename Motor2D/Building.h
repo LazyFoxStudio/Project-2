@@ -38,7 +38,7 @@ public:
 	int last_frame_time = 0;
 
 	std::vector<SDL_Rect> sprites;
-	SDL_Rect* current_sprite;
+	SDL_Rect* current_sprite = nullptr;
 	existence_state ex_state = BEING_BUILT;
 
 public:

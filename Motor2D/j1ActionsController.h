@@ -42,7 +42,7 @@ public:
 	bool doingAction = false;
 	bool doingAction_lastFrame = false;
 	bool action_assigned = false;
-	actionType action_type;
+	actionType action_type=NO_ACTION;
 	fPoint newSquadPos = { 0.0f,0.0f };
 
 };

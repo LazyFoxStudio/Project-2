@@ -29,8 +29,8 @@ public:
 	Text* text = nullptr;
 	Chrono* timer = nullptr;
 
-	iPoint firstIcon_pos;
-	iPoint icons_offset;
+	iPoint firstIcon_pos = { 0,0 };
+	iPoint icons_offset = { 0,0 };
 
 };
 
