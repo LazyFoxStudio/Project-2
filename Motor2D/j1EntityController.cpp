@@ -297,9 +297,6 @@ void j1EntityController::DeleteEntity(Entity* entity)
 					all_squads.remove(unit_to_remove->squad);
 					selected_squads.remove(unit_to_remove->squad);
 
-					for (int i = 0; i < unit_squad->units.size(); i++)
-						unit_squad->units[i]->squad = nullptr;
-
 					RELEASE(unit_squad);
 				}
 			}
