@@ -125,8 +125,7 @@ void Building::HandleConstruction()
 	int current_time = timer.ReadSec();
 	if (current_time >= building_time)
 	{
-		int hp_unit = max_HP / building_time;
-		current_HP += hp_unit - 1;
+		current_HP = max_HP;
 		App->scene->inactive_workers += 1;
 		timer.Start();
 		if (type == FARM)
