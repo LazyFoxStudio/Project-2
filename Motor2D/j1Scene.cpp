@@ -152,13 +152,13 @@ void j1Scene::Restart_game()
 
 	//DELETING ENTITIES-------------------------------------------------------
 	std::list<Entity*>::iterator it = App->entitycontroller->entities.begin();
-	while (it != App->entitycontroller->entities.end() && !App->entitycontroller->entities.empty())
+	while (it != App->entitycontroller->entities.end() && !App->entitycontroller->entities.empty() && (*it) != nullptr)
 	{
 		App->entitycontroller->DeleteEntity(*it);
 		it++;
 	}
 
-	for (std::list<Squad*>::iterator it = App->entitycontroller->all_squads.begin(); it != App->entitycontroller->all_squads.end() && !App->entitycontroller->all_squads.empty(); it++)
+	for (std::list<Squad*>::iterator it = App->entitycontroller->all_squads.begin(); it != App->entitycontroller->all_squads.end() && !App->entitycontroller->all_squads.empty() && (*it) != nullptr; it++)
 	{
 		if ((*it)->units.empty())
 		{

@@ -233,10 +233,13 @@ bool j1EntityController::PostUpdate()
 {
 	int selected_size = selected_entities.size();
 
-	for (std::list<Entity*>::iterator it = entities_to_destroy.begin(); it != entities_to_destroy.end() && !entities_to_destroy.empty(); it++)
+	for (std::list<Entity*>::iterator it = entities_to_destroy.begin(); it != entities_to_destroy.end() && !entities_to_destroy.empty() && (*it) != nullptr; it++)
+	{
 		DeleteEntity(*it);
+	}
+		
 
-	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end() && !all_squads.empty(); it++)
+	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end() && !all_squads.empty() && (*it) != nullptr; it++)
 	{
 		if ((*it)->units.empty())
 		{
@@ -264,13 +267,13 @@ bool j1EntityController::CleanUp()
 	if (!DeleteDB()) return false;
 
 	std::list<Entity*>::iterator it = entities.begin();
-	while (it != entities.end() && !entities.empty())
+	while (it != entities.end() && !entities.empty() && (*it) != nullptr)
 	{
 		DeleteEntity(*it);
 		it++;
 	}
 
-	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end() && !all_squads.empty(); it++)
+	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end() && !all_squads.empty() && (*it) != nullptr; it++)
 	{
 		if ((*it)->units.empty())
 		{
