@@ -51,6 +51,7 @@ bool j1WaveController::Start()
 void j1WaveController::updateFlowField()
 {
 	if (flow_field_aux) flow_field_aux->finished = true;
+	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
 	flow_field_aux = App->pathfinding->RequestFlowField(TownHall_pos);
 }
 
