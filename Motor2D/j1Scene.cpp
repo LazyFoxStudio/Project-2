@@ -211,6 +211,7 @@ void j1Scene::Restart_game()
 
 	App->entitycontroller->GetTotalIncome();
 
+	App->gui->newSelectionDone();
 	App->uiscene->toggleMenu(false, GAMEOVER_MENU);
 	toRestart = false;
 

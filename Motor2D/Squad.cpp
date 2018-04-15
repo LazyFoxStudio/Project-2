@@ -39,7 +39,9 @@ void Squad::removeUnit(Unit* unit)
 {
 	for (std::vector<Unit*>::iterator it = units.begin(); it != units.end(); it++)
 		if ((*it) == unit) 
-			{ units.erase(it); RELEASE (unit); return; }
+			{ units.erase(it);
+	RELEASE (unit); 
+	return; }
 }
 
 bool Squad::isInSquadSight(fPoint position)

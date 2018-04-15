@@ -236,6 +236,7 @@ bool j1EntityController::PostUpdate()
 		}
 	}
 
+	App->gui->newSelectionDone();
 	entities_to_destroy.clear();
 
 	return true;
@@ -306,7 +307,6 @@ void j1EntityController::DeleteEntity(Entity* entity)
 		App->gui->entityDeleted(entity);
 
 		selected_entities.remove(entity);
-		App->gui->newSelectionDone();
 
 		Unit * unit_to_remove = nullptr;
 		Building * building_to_remove = nullptr;
