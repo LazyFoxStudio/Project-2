@@ -110,6 +110,8 @@ class AttackingMoveToSquad : public MoveToSquad
 	std::list<fPoint> enemy_positions;
 	bool enemies_in_sight = false;
 	bool hold = false;
+	bool just_attacked = false;
+	j1Timer timer;
 
 public:
 	AttackingMoveToSquad(Unit* commander, iPoint map_dest, bool hold = false) : MoveToSquad(commander, map_dest), hold(hold) { type = ATTACKING_MOVETO_SQUAD; };
