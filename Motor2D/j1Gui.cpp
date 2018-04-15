@@ -722,7 +722,8 @@ void j1Gui::entityDeleted(Entity* entity)
 	deleteLifeBar(entity, LifeBars);
 
 	//Delete information from the in-game menu
-	inGameMenu->deleteMenuTroop(entity);
+	if (inGameMenu != nullptr)
+		inGameMenu->deleteMenuTroop(entity);
 }
 
 CostDisplay* j1Gui::createCostDisplay(std::string name, int wood_cost, int gold_cost, int oil_cost, int workers_cost)
