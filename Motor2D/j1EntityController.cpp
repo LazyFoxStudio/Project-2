@@ -93,7 +93,7 @@ bool j1EntityController::Update(float dt)
 		{
 			counter++; squad_iterator++;
 			if (squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
-			if ((*squad_iterator) != nullptr && !(*squad_iterator)->Update(dt))							return false;
+			if (!(*squad_iterator)->Update(dt))							return false;
 		}
 	}
 
