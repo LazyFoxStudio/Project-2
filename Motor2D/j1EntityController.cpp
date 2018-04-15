@@ -122,7 +122,7 @@ bool j1EntityController::Update(float dt)
 		}
 	}*/
 
-	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building && App->scene->workerAvalible() && App->entitycontroller->CheckCostBuiding(structure_beingbuilt))
+	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building && App->scene->workerAvalible() && App->entitycontroller->CheckCostBuiding(structure_beingbuilt) && !App->gui->clickedOnUI)
 	{
 		iPoint position;
 		App->input->GetMousePosition(position.x, position.y);

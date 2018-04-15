@@ -101,7 +101,7 @@ bool j1Gui::PreUpdate()
 			if (element->callback != nullptr)
 				element->callback->OnUIEvent(element, MOUSE_ENTER);
 		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
 			clickedOnUI = true;
 			if (element->callback != nullptr)
