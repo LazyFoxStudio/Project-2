@@ -88,12 +88,16 @@ void LifeBar::BlitElement(bool use_camera)
 	{
 	case UNIT:
 		life = ((Unit*)entity)->current_HP;
+		if (life < 0)
+			life = 0;
 		max_life = ((Unit*)entity)->max_HP;
 		bar->enterCurrentValue(life);
 		break;
 	case BUILDING:
 		life = ((Building*)entity)->current_HP;
 		max_life = ((Building*)entity)->max_HP;
+		if (life < 0)
+			life = 0;
 		bar->enterCurrentValue(life);
 		break;
 	/*case HERO:
