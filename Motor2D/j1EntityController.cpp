@@ -397,12 +397,12 @@ bool j1EntityController::placingBuilding(buildingType type, iPoint position)
 
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	pos = App->map->MapToWorld(pos.x, pos.y);
-	SDL_Rect building_col = { pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x*App->map->data.tile_width, buildingDB[structure_beingbuilt]->size.y*App->map->data.tile_height };
+	SDL_Rect building_col = { pos.x, pos.y, buildingDB[type]->size.x*App->map->data.tile_width, buildingDB[type]->size.y*App->map->data.tile_height };
 
-	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y) && App->entitycontroller->CheckCollidingWith(building_col).empty())
+	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[type]->size.x, buildingDB[type]->size.y) && App->entitycontroller->CheckCollidingWith(building_col).empty())
 	{
 		addBuilding(pos, type);
-		App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y, true,false);
+		App->map->WalkabilityArea(pos.x, pos.y, buildingDB[type]->size.x, buildingDB[type]->size.y, true,false);
 		if(type != TOWN_HALL)
 			App->wavecontroller->updateFlowField();
 

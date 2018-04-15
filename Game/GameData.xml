@@ -313,7 +313,7 @@
 			      <iconData x="162" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Alliance Sprites\Footman_Spritesheet.png"/>
             <Stats>
-                <life value="70"/>
+                <life value="75"/>
                 <attack value="3"/>
                 <defense value="6"/>
                 <piercingDamage value="2"/>
@@ -322,7 +322,7 @@
                 <lineOfSight value="200"/>
                 <goldCost value="0"/>
                 <woodCost value="200"/>
-                <workerCost value="5"/>
+                <workerCost value="4"/>
                 <trainingTime value="10"/>
                 <squadMembers value="5"/>
                 <size x="1" y="1"/>
@@ -596,11 +596,11 @@
                 <defense value="1"/>
                 <piercingDamage value="4"/>
                 <movementSpeed value="1.0"/>
-                <range value="230"/>
+                <range value="210"/>
                 <lineOfSight value="250"/>
                 <goldCost value="0"/>
                 <woodCost value="250"/>
-                <workerCost value="4"/>
+                <workerCost value="3"/>
                 <trainingTime value="10"/>
                 <squadMembers value="4"/>
                 <size x="1" y="1"/>
@@ -1143,9 +1143,9 @@
                 <life value="40"/>
                 <attack value="2"/>
                 <defense value="0"/>
-                <piercingDamage value="5"/>
-                <movementSpeed value="1.1"/>
-                <range value="180"/>
+                <piercingDamage value="4"/>
+                <movementSpeed value="1.05"/>
+                <range value="160"/>
                 <lineOfSight value="250"/>
                 <squadMembers value="4"/>
                 <size x="1" y="1"/>
@@ -1639,7 +1639,6 @@
 				<Info text="Create Footman Squad"/>
 				<Cost wood="200" workers="5"/>
 			</popUp>
-			<hotkey key="A" font_id="3"/>
 		</createFootman>
 		<createArcher id="12" function="21">
 			<position x="0" y="0"/>
@@ -1650,7 +1649,6 @@
 				<Info text="Create Archer Squad"/>
 				<Cost wood="250" workers="4"/>
 			</popUp>
-			<hotkey key="S" font_id="3"/>
 		</createArcher>
 		<ability1 id="13" function="22">
 			<position x="0" y="0"/>

@@ -53,6 +53,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(pathfinding);
 	AddModule(console);
 	AddModule(map);
 	AddModule(font);
@@ -62,7 +63,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(sceneswitch);
 	AddModule(entitycontroller);
 	AddModule(actionscontroller);
-	AddModule(pathfinding);
+	
 	AddModule(wavecontroller);
 
 	// render last to swap buffer
