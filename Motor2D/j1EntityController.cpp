@@ -952,7 +952,7 @@ void j1EntityController::StartHero(iPoint pos)
 	hero->collider.y = pos.y - (hero->collider.h / 2);
 
 	hero->skill_one = new Skill(hero, 3, 100, 300, 6, AREA);		//Icicle Crash
-	hero->skill_two = new Skill(hero, 0, 400, 200, 2, NONE_RANGE);	//Overflow
+	hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
 	hero->skill_three = new Skill(hero, 0, 200, 250, 2, LINE);		//Dragon Breath
 
 	std::vector<Unit*>aux_vector;
