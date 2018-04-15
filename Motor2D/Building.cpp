@@ -27,8 +27,8 @@ Building::Building(iPoint pos, Building& building)
 	size.x = building.size.x;
 	size.y = building.size.y;
 
-	collider.w = size.x*App->map->data.tile_width;
-	collider.h = size.y*App->map->data.tile_height;
+	collider.w = building.collider.w;
+	collider.h = building.collider.h;
 
 	additional_size.x = building.additional_size.x;
 	additional_size.y = building.additional_size.y;

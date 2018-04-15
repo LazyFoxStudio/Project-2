@@ -454,7 +454,11 @@ void j1EntityController::buildingProcessDraw()
 		if (treesAround && CheckCostBuiding(structure_beingbuilt) && App->scene->workerAvalible())
 		{
 			Color green2 = { 0,255,0,75 };
-			App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height }, green2);
+			App->render->DrawQuad({ (pos.x - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.w / 2),
+				(pos.y - (buildingDB[structure_beingbuilt]->additional_size.x * App->map->data.tile_width / 2)) + (buildingDB[structure_beingbuilt]->collider.h / 2),
+				buildingDB[structure_beingbuilt]->additional_size.x*App->map->data.tile_width,
+				buildingDB[structure_beingbuilt]->additional_size.y*App->map->data.tile_height },
+				green2);
 		}
 		else
 		{
@@ -832,6 +836,11 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		buildingTemplate->gold_cost = NodeInfo.child("Stats").child("goldCost").attribute("value").as_int(0);
 		buildingTemplate->size.x = NodeInfo.child("size").attribute("x").as_int(0);
 		buildingTemplate->size.y = NodeInfo.child("size").attribute("y").as_int(0);
+
+		// Needed to blit the wood collecting area correctly
+		buildingTemplate->collider.w = buildingTemplate->size.x*App->map->data.tile_width;
+		buildingTemplate->collider.h = buildingTemplate->size.y*App->map->data.tile_height;
+
 		buildingTemplate->additional_size.x = NodeInfo.child("additionalSize").attribute("x").as_int(0);
 		buildingTemplate->additional_size.y = NodeInfo.child("additionalSize").attribute("y").as_int(0);
 
