@@ -146,73 +146,72 @@ bool j1Scene::workerAvalible(int num)
 
 void j1Scene::Restart_game()
 {
-	if (Restart_timer.ReadSec() >= restart_time)
+
+	//DELETING ENTITIES-------------------------------------------------------
+	std::list<Entity*>::iterator it = App->entitycontroller->entities.begin();
+	while (it != App->entitycontroller->entities.end())
 	{
-		//DELETING ENTITIES-------------------------------------------------------
-		std::list<Entity*>::iterator it = App->entitycontroller->entities.begin();
-		while (it != App->entitycontroller->entities.end())
-		{
-			App->entitycontroller->DeleteEntity(*it);
-			it++;
-		}
-
-		for (std::list<Squad*>::iterator it = App->entitycontroller->all_squads.begin(); it != App->entitycontroller->all_squads.end(); it++)
-		{
-			if ((*it)->units.empty())
-			{
-				if (*App->entitycontroller->squad_iterator == (*it))
-					App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();
-
-				App->entitycontroller->selected_squads.remove(*it);
-				Squad* squad = (*it);
-				App->entitycontroller->all_squads.remove(*it);
-
-				RELEASE(squad);
-			}
-		}
-
-		//CLEANING ENTITY LISTS---------------------------------------------------
-		App->entitycontroller->entities_to_destroy.clear();
-		App->entitycontroller->entities.clear();
-		App->entitycontroller->selected_entities.clear();
-		App->entitycontroller->all_squads.clear();
-		App->entitycontroller->selected_squads.clear();
-		App->entitycontroller->entity_iterator = App->entitycontroller->entities.begin();
-		App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();
-
-		//SATARTING ENTITIES-------------------------------------------------------
-		App->entitycontroller->building = false;
-		App->entitycontroller->placingBuilding(TOWN_HALL, { 2000, 2000 });
-		App->entitycontroller->StartHero(iPoint(2000, 1950));
-		App->wavecontroller->updateFlowField();
-
-		//RESTARTING WAVES---------------------------------------------------------
-		App->gui->Chronos->counter.Restart();
-		App->wavecontroller->Restart_Wave_Sys();
-		App->gui->nextWaveWindow->timer->start_value = 0;
-		App->gui->nextWaveWindow->timer->setStartValue(App->wavecontroller->initial_wait);
-
-		//RESTARTING RESOURCES-----------------------------------------------------
-		wood = init_wood;
-		gold = init_gold;
-		workers = init_workers;
-		inactive_workers = workers;
-
-		//RESTART LOCKED ACTION BUTTONS
-		//Hardcoded
-		Button* barracks = App->gui->GetActionButton(5);
-		barracks->setCondition("Build first a Lumber Mill");
-		barracks->Lock();
-		Button* farms = App->gui->GetActionButton(7);
-		farms->setCondition("Build first a Lumber Mill");
-		farms->Lock();
-
-		//CHANGING MUSIC BACK TO WAVE ONE-----------------------------------------
-		App->audio->PlayMusic("Normal_Round_Theme.ogg");
-
-		App->entitycontroller->GetTotalIncome();
-
-		App->uiscene->toggleMenu(false, GAMEOVER_MENU);
-		toRestart = false;
+		App->entitycontroller->DeleteEntity(*it);
+		it++;
 	}
+
+	for (std::list<Squad*>::iterator it = App->entitycontroller->all_squads.begin(); it != App->entitycontroller->all_squads.end(); it++)
+	{
+		if ((*it)->units.empty())
+		{
+			if (*App->entitycontroller->squad_iterator == (*it))
+				App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();
+
+			App->entitycontroller->selected_squads.remove(*it);
+			Squad* squad = (*it);
+			App->entitycontroller->all_squads.remove(*it);
+
+			RELEASE(squad);
+		}
+	}
+
+	//CLEANING ENTITY LISTS---------------------------------------------------
+	App->entitycontroller->entities_to_destroy.clear();
+	App->entitycontroller->entities.clear();
+	App->entitycontroller->selected_entities.clear();
+	App->entitycontroller->all_squads.clear();
+	App->entitycontroller->selected_squads.clear();
+	App->entitycontroller->entity_iterator = App->entitycontroller->entities.begin();
+	App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();
+
+	//SATARTING ENTITIES-------------------------------------------------------
+	App->entitycontroller->building = false;
+	App->entitycontroller->placingBuilding(TOWN_HALL, { 2000, 2000 });
+	App->entitycontroller->StartHero(iPoint(2000, 1950));
+	App->wavecontroller->updateFlowField();
+
+	//RESTARTING WAVES---------------------------------------------------------
+	App->gui->Chronos->counter.Restart();
+	App->wavecontroller->Restart_Wave_Sys();
+	App->gui->nextWaveWindow->timer->start_value = 0;
+	App->gui->nextWaveWindow->timer->setStartValue(App->wavecontroller->initial_wait);
+
+	//RESTARTING RESOURCES-----------------------------------------------------
+	wood = init_wood;
+	gold = init_gold;
+	workers = init_workers;
+	inactive_workers = workers;
+
+	//RESTART LOCKED ACTION BUTTONS
+	//Hardcoded
+	Button* barracks = App->gui->GetActionButton(5);
+	barracks->setCondition("Build first a Lumber Mill");
+	barracks->Lock();
+	Button* farms = App->gui->GetActionButton(7);
+	farms->setCondition("Build first a Lumber Mill");
+	farms->Lock();
+
+	//CHANGING MUSIC BACK TO WAVE ONE-----------------------------------------
+	App->audio->PlayMusic("Normal_Round_Theme.ogg");
+
+	App->entitycontroller->GetTotalIncome();
+
+	App->uiscene->toggleMenu(false, GAMEOVER_MENU);
+	toRestart = false;
+
 }

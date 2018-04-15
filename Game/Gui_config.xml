@@ -161,9 +161,15 @@ Resolution of the screen: 1680x 1050y
     
     <!--Dead Image-->
     <atlas_image icon_atlas="false" active="true">
-      <position x="494" y="398"/>
+      <position x="494" y="350"/>
       <section x="285" y="794" w="692" h="255"/>
     </atlas_image>
+	<text text="wood_sec" center="false" counter="true" prefix="You survived " sufix=" wave/s">
+		<position x="650" y="630"/>
+		<font id="4"/>
+		<color r="255" g="255" b="255" a="255"/>
+		<interactive value="false"/>
+	</text>
     
    </menu>
 

@@ -53,6 +53,9 @@ bool j1UIScene::Start()
 	Text* waves = (Text*)App->gui->GetElement(TEXT, 6);
 	waves->convertIntoCounter(&App->wavecontroller->current_wave);
 
+	Text* survived_waves = (Text*)App->gui->GetElement(TEXT, 7);
+	survived_waves->convertIntoCounter(&App->wavecontroller->current_wave);
+
 	//Hardcoded
 	Button* barracks = App->gui->GetActionButton(5);
 	barracks->setCondition("Build first a Lumber Mill");
