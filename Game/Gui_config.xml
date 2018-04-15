@@ -58,19 +58,19 @@ Resolution of the screen: 1680x 1050y
 			<section x="285" y="332" w="874" h="54"/>
 			<childs>
 				<text text="inactive_workers" center="false" counter="true">
-					<position x="400" y="10"/>
+					<position x="390" y="10"/>
 					<font id="1"/>
 					<color r="255" g="255" b="255" a="255"/>
 					<interactive value="false"/>
 				</text>
 				<text text="/" center="false" counter="false">
-					<position x="420" y="10"/>
+					<position x="435" y="10"/>
 					<font id="1"/>
 					<color r="255" g="255" b="255" a="255"/>
 					<interactive value="false"/>
 				</text>
 				<text text="toatl_workers" center="false" counter="true">
-					<position x="440" y="10"/>
+					<position x="450" y="10"/>
 					<font id="1"/>
 					<color r="255" g="255" b="255" a="255"/>
 					<interactive value="false"/>
