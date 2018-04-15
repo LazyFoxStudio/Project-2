@@ -218,6 +218,8 @@ void j1EntityController::GetTotalIncome()
 
 bool j1EntityController::PostUpdate()
 {
+	int selected_size = selected_entities.size();
+
 	for (std::list<Entity*>::iterator it = entities_to_destroy.begin(); it != entities_to_destroy.end(); it++)
 		DeleteEntity(*it);
 
@@ -236,7 +238,9 @@ bool j1EntityController::PostUpdate()
 		}
 	}
 
-	App->gui->newSelectionDone();
+	if(selected_size != selected_entities.size())
+		App->gui->newSelectionDone();
+
 	entities_to_destroy.clear();
 
 	return true;

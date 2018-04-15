@@ -30,7 +30,7 @@ public:
 
 public:
 	Command(Unit* unit, Command_Type type) : unit(unit), type(type) {};
-	virtual ~Command() {};
+	virtual ~Command() { OnStop(); };
 
 	void Execute(float dt);
 	void Stop();
