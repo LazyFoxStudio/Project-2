@@ -107,7 +107,7 @@ bool j1EntityController::Update(float dt)
 			if (entity_iterator == entities.end()) entity_iterator = entities.begin();
 
 			if ((*entity_iterator)->isActive || (*entity_iterator) == hero)
-				if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
+				if (!(*entity_iterator)->Update(dt))	entities_to_destroy.push_back(*entity_iterator);
 
 		}
 	}
@@ -237,6 +237,7 @@ bool j1EntityController::CleanUp()
 		it++;
 	}
 
+	entities_to_destroy.clear();
 	entities.clear();
 	selected_entities.clear();
 
