@@ -96,9 +96,5 @@ public:
 
 	Hero* hero = nullptr;
 };
-
-
-
-
 #endif // !
 
