@@ -1637,7 +1637,7 @@
 			<OnClick x="625" y="507" w="66" h="66"/>
 			<popUp>
 				<Info text="Create Footman Squad"/>
-				<Cost wood="200" workers="5"/>
+				<Cost wood="200" workers="4"/>
 			</popUp>
 		</createFootman>
 		<createArcher id="12" function="21">
@@ -1647,7 +1647,7 @@
 			<OnClick x="829" y="507" w="66" h="66"/>
 			<popUp>
 				<Info text="Create Archer Squad"/>
-				<Cost wood="250" workers="4"/>
+				<Cost wood="250" workers="3"/>
 			</popUp>
 		</createArcher>
 		<ability1 id="13" function="22">
