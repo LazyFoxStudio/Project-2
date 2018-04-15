@@ -649,8 +649,6 @@ void j1EntityController::selectionControl()
 						App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
 					}
 				}
-					
-				selected_entities.push_back(*it);
 			}
 		}
 
