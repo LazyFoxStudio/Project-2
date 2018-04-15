@@ -315,11 +315,7 @@ void j1EntityController::DeleteEntity(Entity* entity)
 Unit* j1EntityController::addUnit(iPoint pos, unitType type, Squad* squad)
 {
 	Unit* unit = new Unit(pos, *(unitDB[type]), squad);
-	if (!unit->IsEnemy())
-	{
-		App->scene->workers--;
-		App->scene->inactive_workers--;
-	}
+
 	entities.push_back(unit);
 	App->gui->createLifeBar(unit);
 	
@@ -376,6 +372,8 @@ Squad* j1EntityController::AddSquad(unitType type, fPoint position)
 		if (!unitDB[type]->IsEnemy())
 		{
 			App->scene->wood -= unitDB[type]->wood_cost;
+			App->scene->inactive_workers -= unitDB[type]->worker_cost;
+			App->scene->workers = unitDB[type]->worker_cost;
 		}
 		all_squads.push_back(new_squad);
 	}
@@ -506,7 +504,7 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 
 bool j1EntityController::CheckCostTroop(unitType target)
 {
-	return App->scene->wood >= unitDB[target]->wood_cost && App->scene->gold >= unitDB[target]->gold_cost && App->scene->workerAvalible(unitDB[target]->squad_members);
+	return App->scene->wood >= unitDB[target]->wood_cost && App->scene->gold >= unitDB[target]->gold_cost && App->scene->workerAvalible(unitDB[target]->worker_cost);
 }
 
 bool j1EntityController::CheckCostBuiding(buildingType target)
