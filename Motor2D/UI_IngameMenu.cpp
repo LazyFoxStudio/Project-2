@@ -46,6 +46,7 @@ void IngameMenu::updateInfo()
 		severalSquads = true;
 	else
 		severalSquads = false;
+
 	cleanLists(true, true, true, false, true, false);
 	createSelectionBasicInfo();
 	updateStatsDisplay();
@@ -248,7 +249,7 @@ void IngameMenu::updateSquadIcons()
 		if (unit->current_HP < unit->max_HP*0.2)
 			(*it_i)->image->border_color = Red;
 		else if (unit->current_HP < unit->max_HP*0.5)
-(*it_i)->image->border_color = Yellow;
+			(*it_i)->image->border_color = Yellow;
 		else
 			(*it_i)->image->border_color = Green;
 	}

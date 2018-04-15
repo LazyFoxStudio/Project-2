@@ -58,23 +58,35 @@ bool j1ActionsController::Update(float dt)
 			}
 			break;
 		case UNASSIGN_WORKER:
-			if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
-				App->entitycontroller->HandleWorkerAssignment(false, (Building*)*App->entitycontroller->selected_entities.begin());
+			if (!App->entitycontroller->selected_entities.empty())
+			{
+				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
+					App->entitycontroller->HandleWorkerAssignment(false, (Building*)*App->entitycontroller->selected_entities.begin());
+			}
 			doingAction = false;
 			break;
 		case ASSIGN_WORKER:
-			if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
-				App->entitycontroller->HandleWorkerAssignment(true, (Building*)*App->entitycontroller->selected_entities.begin());
+			if (!App->entitycontroller->selected_entities.empty())
+			{
+				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
+					App->entitycontroller->HandleWorkerAssignment(true, (Building*)*App->entitycontroller->selected_entities.begin());
+			}
 			doingAction = false;
 			break;
 		case CREATE_FOOTMAN:
-			if (App->entitycontroller->CheckCostTroop(FOOTMAN) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
-				App->entitycontroller->AddSquad(FOOTMAN, newSquadPos);
+			if (!App->entitycontroller->selected_entities.empty())
+			{
+				if (App->entitycontroller->CheckCostTroop(FOOTMAN) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
+					App->entitycontroller->AddSquad(FOOTMAN, newSquadPos);
+			}
 			doingAction = false;
 			break;
 		case CREATE_ARCHER:
-			if (App->entitycontroller->CheckCostTroop(ARCHER) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
-				App->entitycontroller->AddSquad(ARCHER, newSquadPos);
+			if (!App->entitycontroller->selected_entities.empty())
+			{
+				if (App->entitycontroller->CheckCostTroop(ARCHER) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
+					App->entitycontroller->AddSquad(ARCHER, newSquadPos);
+			}
 			doingAction = false;
 			break;
 		case USE_ABILITY1:
