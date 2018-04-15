@@ -33,7 +33,7 @@ bool Hero::Update(float dt)
 			current_skill = 0;
 			isSelected = false;
 		}
-		else if (revive_timer.ReadSec() > HERO_REVIVE_COOLDOWN) { current_HP = max_HP;  setActive(true); }
+		else if (revive_timer.ReadSec() > HERO_REVIVE_COOLDOWN) { current_HP = max_HP;  setActive(true); App->gui->createLifeBar(this); }
 		return true;
 	}
 
