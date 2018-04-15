@@ -218,7 +218,7 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 {
 	if (!enemies_in_sight)
 	{
-		if (squad->getEnemiesInSight(enemy_positions))
+		if (squad->getEnemiesInSight(enemy_positions) && (just_attacked == false || timer.ReadSec() > 1))
 		{
 			for (int j = 0; j < squad->units.size(); j++)
 			{
@@ -226,11 +226,12 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 					squad->units[j]->commands.push_front(new Attack(squad->units[j], &enemy_positions));
 			}
 			enemies_in_sight = true;
+			just_attacked = true;
 		}
 	}
 	else if (enemy_positions.empty())
 	{
-		if (enemies_in_sight) enemies_in_sight = false;
+		if (enemies_in_sight) { enemies_in_sight = false; timer.Start(); }
 
 		if (!hold)
 		{
