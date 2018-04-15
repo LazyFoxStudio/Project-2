@@ -374,7 +374,7 @@ Squad* j1EntityController::AddSquad(unitType type, fPoint position)
 		{
 			App->scene->wood -= unitDB[type]->wood_cost;
 			App->scene->inactive_workers -= unitDB[type]->worker_cost;
-			App->scene->workers = unitDB[type]->worker_cost;
+			App->scene->workers -= unitDB[type]->worker_cost;
 		}
 		all_squads.push_back(new_squad);
 	}
