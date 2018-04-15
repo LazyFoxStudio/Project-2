@@ -49,7 +49,7 @@ public:
 public:
 	virtual ~Entity() 
 	{
-	
+	 
 	};
 
 	void setActive(bool active) { isActive = active; };

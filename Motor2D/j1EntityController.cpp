@@ -221,6 +221,21 @@ bool j1EntityController::PostUpdate()
 	for (std::list<Entity*>::iterator it = entities_to_destroy.begin(); it != entities_to_destroy.end(); it++)
 		DeleteEntity(*it);
 
+	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end(); it++)
+	{
+		if ((*it)->units.empty())
+		{
+			if (*squad_iterator == (*it))
+				squad_iterator = all_squads.begin();
+
+			selected_squads.remove(*it);
+			Squad* squad = (*it);
+			all_squads.remove(*it);
+
+			RELEASE(squad);
+		}
+	}
+
 	entities_to_destroy.clear();
 
 	return true;
@@ -235,6 +250,21 @@ bool j1EntityController::CleanUp()
 	{
 		DeleteEntity(*it);
 		it++;
+	}
+
+	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end(); it++)
+	{
+		if ((*it)->units.empty())
+		{
+			if (*squad_iterator == (*it))
+				squad_iterator = all_squads.begin();
+
+			selected_squads.remove(*it);
+			Squad* squad = (*it);
+			all_squads.remove(*it);
+
+			RELEASE(squad);
+		}
 	}
 
 	entities_to_destroy.clear();
@@ -286,26 +316,18 @@ void j1EntityController::DeleteEntity(Entity* entity)
 		case UNIT:
 			unit_to_remove = (Unit*)(entity);
 			unit_squad = unit_to_remove->squad;
+
 			if (unit_to_remove->squad != nullptr)
-			{
 				unit_squad->removeUnit(unit_to_remove);
-				if (unit_squad->units.empty())
-				{
-					if (*squad_iterator == unit_squad)
-						squad_iterator = all_squads.begin();
-
-					all_squads.remove(unit_to_remove->squad);
-					selected_squads.remove(unit_to_remove->squad);
-
-					RELEASE(unit_squad);
-				}
-			}
-			RELEASE(unit_to_remove);
+			else
+				RELEASE(unit_to_remove);
 			break;
 		case BUILDING: 
 			building_to_remove = (Building*)(entity);
 			App->map->WalkabilityArea(building_to_remove->position.x, building_to_remove->position.y, building_to_remove->size.x, building_to_remove->size.y, true);
-			App->wavecontroller->updateFlowField();
+
+			if(!App->scene->toRestart)
+				App->wavecontroller->updateFlowField();
 			RELEASE(building_to_remove);
 			break;
 		case NATURE: RELEASE(entity); break;

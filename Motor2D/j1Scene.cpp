@@ -20,6 +20,7 @@
 #include "UI_Chrono.h"
 #include "UI_NextWaveWindow.h"
 #include "Building.h"
+#include "Squad.h"
 
 
 j1Scene::j1Scene() : j1Module() { name = "scene"; }
@@ -155,6 +156,21 @@ void j1Scene::Restart_game()
 			it++;
 		}
 
+		for (std::list<Squad*>::iterator it = App->entitycontroller->all_squads.begin(); it != App->entitycontroller->all_squads.end(); it++)
+		{
+			if ((*it)->units.empty())
+			{
+				if (*App->entitycontroller->squad_iterator == (*it))
+					App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();
+
+				App->entitycontroller->selected_squads.remove(*it);
+				Squad* squad = (*it);
+				App->entitycontroller->all_squads.remove(*it);
+
+				RELEASE(squad);
+			}
+		}
+
 		//CLEANING ENTITY LISTS---------------------------------------------------
 		App->entitycontroller->entities_to_destroy.clear();
 		App->entitycontroller->entities.clear();
@@ -168,6 +184,7 @@ void j1Scene::Restart_game()
 		App->entitycontroller->building = false;
 		App->entitycontroller->placingBuilding(TOWN_HALL, { 2000, 2000 });
 		App->entitycontroller->StartHero(iPoint(2000, 1950));
+		App->wavecontroller->updateFlowField();
 
 		//RESTARTING WAVES---------------------------------------------------------
 		App->gui->Chronos->counter.Restart();
