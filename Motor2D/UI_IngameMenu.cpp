@@ -217,7 +217,7 @@ void IngameMenu::updateActionButtons()
 	else
 	{
 		uint ids[9] = {};
-		App->gui->activateActionButtons(ids);
+		actionButtons = App->gui->activateActionButtons(ids);
 	}
 
 	int counterX = 0;
