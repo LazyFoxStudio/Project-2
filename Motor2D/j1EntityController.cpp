@@ -70,6 +70,20 @@ bool j1EntityController::Update(float dt)
 	BROFILER_CATEGORY("Entites update", Profiler::Color::Maroon);
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
+
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		if ((*it)->isActive)
+		{
+			if (App->render->CullingCam((*it)->position))
+			{
+				(*it)->Draw(dt);
+				if (debug) debugDrawEntity(*it);
+			}
+		}
+	}
+
+	if (App->scene->toRestart) return true;
 	
 	int counter = 0;
 	if (!all_squads.empty())
@@ -95,18 +109,6 @@ bool j1EntityController::Update(float dt)
 			if ((*entity_iterator)->isActive || (*entity_iterator) == hero)
 				if (!(*entity_iterator)->Update(dt))	DeleteEntity(*entity_iterator);
 
-		}
-	}
-
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
-	{
-		if ((*it)->isActive)
-		{
-			if (App->render->CullingCam((*it)->position))
-			{
-				(*it)->Draw(dt);
-				if (debug) debugDrawEntity(*it);
-			}
 		}
 	}
 
