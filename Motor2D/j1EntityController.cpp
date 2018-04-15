@@ -299,15 +299,15 @@ void j1EntityController::DeleteEntity(Entity* entity)
 
 				RELEASE(unit_squad);
 			}
-			delete unit_to_remove;
+			RELEASE(unit_to_remove);
 			break;
 		case BUILDING: 
 			building_to_remove = (Building*)(entity);
 			App->map->WalkabilityArea(building_to_remove->position.x, building_to_remove->position.y, building_to_remove->size.x, building_to_remove->size.y, true);
 			App->wavecontroller->updateFlowField();
-			delete ((Building*)(entity)); 
+			RELEASE(building_to_remove);
 			break;
-		case NATURE: delete ((Nature*)(entity)); break;
+		case NATURE: RELEASE(entity); break;
 		}
 	}
 }
