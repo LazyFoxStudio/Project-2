@@ -1639,6 +1639,7 @@
 				<Info text="Create Footman Squad"/>
 				<Cost wood="200" workers="4"/>
 			</popUp>
+			<hotkey key="A" font_id="3"/>
 		</createFootman>
 		<createArcher id="12" function="21">
 			<position x="0" y="0"/>
@@ -1649,6 +1650,7 @@
 				<Info text="Create Archer Squad"/>
 				<Cost wood="250" workers="3"/>
 			</popUp>
+			<hotkey key="S" font_id="3"/>
 		</createArcher>
 		<ability1 id="13" function="22">
 			<position x="0" y="0"/>
