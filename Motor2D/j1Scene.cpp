@@ -183,6 +183,7 @@ void j1Scene::Restart_game()
 		//CHANGING MUSIC BACK TO WAVE ONE-----------------------------------------
 		App->audio->PlayMusic("Normal_Round_Theme.ogg");
 
+		App->entitycontroller->GetTotalIncome();
 
 		App->uiscene->toggleMenu(false, GAMEOVER_MENU);
 		toRestart = false;
