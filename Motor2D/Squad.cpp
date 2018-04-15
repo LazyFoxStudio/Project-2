@@ -105,7 +105,7 @@ int Squad::getTotalHP()
 
 Unit* Squad::getClosestUnitTo(iPoint p)
 {
-	if (units.empty() || ret = units[0] == nullptr) return nullptr;
+	if (units.empty() || units[0] == nullptr) return nullptr;
 
 	Unit* ret = units[0];
 	iPoint closest_map_p = App->map->WorldToMap(units[0]->position.x, units[0]->position.y);
