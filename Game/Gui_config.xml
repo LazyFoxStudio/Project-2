@@ -148,11 +148,6 @@ Resolution of the screen: 1680x 1050y
 			<buttons x="1399" y="809" offsetX="81" offsetY="81"/>
 		</ingamemenu>
     
-   <!-- Cost Display-->
-    <costdisplay>
-      
-    </costdisplay>
-
     <!-- Minimap-->
     <minimap>
       <position x="6" y="800"/>
