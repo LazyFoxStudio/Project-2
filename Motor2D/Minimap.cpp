@@ -65,7 +65,7 @@ void Minimap::DrawMinimap()
 		representation.h = ratio_y * it->rect.h;
 
 		//now we make it fit inside the modifiable texture
-		SDL_FillRect(manipulable, &representation, SDL_MapRGB(manipulable->format, it->color.b, it->color.g, it->color.r));
+		SDL_FillRect(manipulable, &representation, SDL_MapRGB(manipulable->format, it->color.r, it->color.g, it->color.b));
 	}
 
 	point_queue.clear();
