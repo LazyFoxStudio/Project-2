@@ -71,10 +71,20 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
+	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end() && !App->scene->toRestart; it++)
+	{
+		if (!(*it)->Update(dt))	return false;
+	}
+
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
-		if ((*it)->isActive)
+		if ((*it)->isActive || (*it) == hero)
 		{
+			if (!App->scene->toRestart)
+			{
+				if (!(*it)->Update(dt))	entities_to_destroy.push_back(*it);
+			}
+			
 			if (App->render->CullingCam((*it)->position))
 			{
 				(*it)->Draw(dt);
@@ -84,8 +94,8 @@ bool j1EntityController::Update(float dt)
 	}
 
 	if (App->scene->toRestart) return true;
-	
-	int counter = 0;
+
+	/*int counter = 0;
 	if (!all_squads.empty())
 	{
 		time_slicer.Start();
@@ -110,7 +120,7 @@ bool j1EntityController::Update(float dt)
 				if (!(*entity_iterator)->Update(dt))	entities_to_destroy.push_back(*entity_iterator);
 
 		}
-	}
+	}*/
 
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN ) && building && App->scene->workerAvalible() && App->entitycontroller->CheckCostBuiding(structure_beingbuilt))
 	{
@@ -220,10 +230,10 @@ bool j1EntityController::PostUpdate()
 {
 	int selected_size = selected_entities.size();
 
-	for (std::list<Entity*>::iterator it = entities_to_destroy.begin(); it != entities_to_destroy.end(); it++)
+	for (std::list<Entity*>::iterator it = entities_to_destroy.begin(); it != entities_to_destroy.end() && !entities_to_destroy.empty(); it++)
 		DeleteEntity(*it);
 
-	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end(); it++)
+	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end() && !all_squads.empty(); it++)
 	{
 		if ((*it)->units.empty())
 		{
@@ -251,13 +261,13 @@ bool j1EntityController::CleanUp()
 	if (!DeleteDB()) return false;
 
 	std::list<Entity*>::iterator it = entities.begin();
-	while (it != entities.end())
+	while (it != entities.end() && !entities.empty())
 	{
 		DeleteEntity(*it);
 		it++;
 	}
 
-	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end(); it++)
+	for (std::list<Squad*>::iterator it = all_squads.begin(); it != all_squads.end() && !all_squads.empty(); it++)
 	{
 		if ((*it)->units.empty())
 		{

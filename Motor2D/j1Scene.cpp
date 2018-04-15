@@ -73,10 +73,7 @@ bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene update", Profiler::Color::Chocolate);
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !App->entitycontroller->building)
-	{
-		return false;
-	}
+	
 	
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
@@ -106,6 +103,11 @@ bool j1Scene::Update(float dt)
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !App->entitycontroller->building)
+	{
+		return false;
+	}
+
 	if (toRestart && Restart_timer.ReadSec() >= restart_time) Restart_game();
 	return true;
 }
@@ -149,13 +151,13 @@ void j1Scene::Restart_game()
 
 	//DELETING ENTITIES-------------------------------------------------------
 	std::list<Entity*>::iterator it = App->entitycontroller->entities.begin();
-	while (it != App->entitycontroller->entities.end())
+	while (it != App->entitycontroller->entities.end() && !App->entitycontroller->entities.empty())
 	{
 		App->entitycontroller->DeleteEntity(*it);
 		it++;
 	}
 
-	for (std::list<Squad*>::iterator it = App->entitycontroller->all_squads.begin(); it != App->entitycontroller->all_squads.end(); it++)
+	for (std::list<Squad*>::iterator it = App->entitycontroller->all_squads.begin(); it != App->entitycontroller->all_squads.end() && !App->entitycontroller->all_squads.empty(); it++)
 	{
 		if ((*it)->units.empty())
 		{
