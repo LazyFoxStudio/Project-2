@@ -152,15 +152,14 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 	{
 		App->gui->hovering_element.Start();
 		App->gui->current_hovering_element = element;
-		if (element->state != LOCKED)
+		if (element->state != LOCKED && element->state != LOCKED_MOUSEOVER)
 			element->state = MOUSEOVER;
 		else
 			element->state = LOCKED_MOUSEOVER;
-
 	}
 	else if (event_type == MOUSE_LEAVE)
 	{
-		if (element->state != LOCKED_MOUSEOVER)
+		if (element->state != LOCKED_MOUSEOVER && element->state != LOCKED)
 			element->state = STANDBY;
 		else
 			element->state = LOCKED;

@@ -21,7 +21,8 @@
 #include "UI_NextWaveWindow.h"
 #include "Building.h"
 #include "Squad.h"
-
+#include "j1ActionsController.h"
+#include "UI_WarningMessages.h"
 
 j1Scene::j1Scene() : j1Module() { name = "scene"; }
 
@@ -207,6 +208,15 @@ void j1Scene::Restart_game()
 	Button* farms = App->gui->GetActionButton(7);
 	farms->setCondition("Build first a Lumber Mill");
 	farms->Lock();
+
+	//CANCEL IF BUILDING
+	App->entitycontroller->structure_beingbuilt = NONE_BUILDING;
+	App->actionscontroller->action_type = NO_ACTION;
+	App->actionscontroller->doingAction = false;
+	App->actionscontroller->doingAction_lastFrame = false;
+	App->gui->warningMessages->hideMessage(NO_WORKERS);
+	App->gui->warningMessages->hideMessage(NO_RESOURCES);
+	App->gui->warningMessages->hideMessage(NO_TREES);
 
 	//CHANGING MUSIC BACK TO WAVE ONE-----------------------------------------
 	App->audio->PlayMusic("Normal_Round_Theme.ogg");

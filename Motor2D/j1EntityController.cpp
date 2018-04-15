@@ -470,6 +470,8 @@ void j1EntityController::buildingProcessDraw()
 	else
 		App->gui->warningMessages->hideMessage(NO_RESOURCES);
 
+	App->gui->warningMessages->hideMessage(NO_TREES);
+
 	if (App->map->WalkabilityArea(pos.x, pos.y, buildingDB[structure_beingbuilt]->size.x, buildingDB[structure_beingbuilt]->size.y) && CheckCostBuiding(structure_beingbuilt) && App->scene->workerAvalible())
 	{
 		Color green = { 0,255,0,100 };
@@ -489,8 +491,6 @@ void j1EntityController::buildingProcessDraw()
 		
 		if (!treesAround)
 			App->gui->warningMessages->showMessage(NO_TREES);
-		else
-			App->gui->warningMessages->hideMessage(NO_TREES);
 		
 		if (treesAround && CheckCostBuiding(structure_beingbuilt) && App->scene->workerAvalible())
 		{
