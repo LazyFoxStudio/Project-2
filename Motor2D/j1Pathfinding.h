@@ -11,7 +11,7 @@
 #define MAX_ADJACENT_DIST 10
 #define FLOWFIELD_MAX 65535
 
-#define PF_MAX_FRAMETIME 0.5f
+#define PF_MAX_FRAMETIME 1.0f
 
 class Entity;
 

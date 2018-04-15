@@ -82,8 +82,11 @@ void IngameMenu::createSelectionBasicInfo()
 	else
 	{
 		iPoint position = firstIcon_pos;
+		int counter = 0;
 		for (std::list<Squad*>::iterator it_s = App->entitycontroller->selected_squads.begin(); it_s != App->entitycontroller->selected_squads.end(); it_s++)
 		{
+			if (counter >= 6)
+				break;
 			for (int i = 0; i < (*it_s)->units.size(); i++)//for each entity of the squad
 			{
 				Unit* unit = (*it_s)->units[i];
@@ -114,6 +117,7 @@ void IngameMenu::createSelectionBasicInfo()
 				position.x += icons_offset.x;
 				counterY = 0;
 			}
+			counter++;
 		}
 	}
 }
