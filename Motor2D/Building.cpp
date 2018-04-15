@@ -92,6 +92,7 @@ bool Building::Update(float dt)
 void Building::Destroy()
 {
 	ex_state = DESTROYED;
+	App->entitycontroller->selected_entities.remove(this);
 	timer.Start();
 	switch (type)
 	{

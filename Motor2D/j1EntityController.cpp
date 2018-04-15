@@ -269,8 +269,10 @@ void j1EntityController::DeleteEntity(Entity* entity)
 			entity_iterator = entities.begin();
 
 		entities.remove(entity);
-		selected_entities.remove(entity);
 		App->gui->entityDeleted(entity);
+
+		selected_entities.remove(entity);
+		App->gui->newSelectionDone();
 
 		Unit * unit_to_remove = nullptr;
 		Building * building_to_remove = nullptr;
@@ -635,11 +637,16 @@ void j1EntityController::selectionControl()
 							hero->isSelected = true;
 					}
 				}
-				else selected_entities.push_back(*it);
-				if ((*it)->entity_type == BUILDING)
+				else if((*it)->entity_type == BUILDING)
 				{
-					App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
+					if (((Building*)*it)->ex_state == OPERATIVE)
+					{
+						selected_entities.push_back(*it);
+						App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
+					}
 				}
+					
+				selected_entities.push_back(*it);
 			}
 		}
 

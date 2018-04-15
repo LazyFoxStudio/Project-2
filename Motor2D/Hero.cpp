@@ -28,7 +28,7 @@ bool Hero::Update(float dt)
 			setActive(false);	
 			revive_timer.Start();
 			App->entitycontroller->selected_squads.remove(squad);
-			App->entitycontroller->selected_entities.remove((Entity*)this);
+			App->entitycontroller->selected_entities.remove(this);
 			App->gui->entityDeleted(this);
 			current_skill = 0;
 			isSelected = false;
