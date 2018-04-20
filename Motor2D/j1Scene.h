@@ -9,10 +9,10 @@ class Window;
 class LifeBar;
 class Building;
 
-#define INIT_WOOD 10
-#define INIT_GOLD 10
-#define INIT_OIL 10
-#define INIT_WORKERS 10
+#define INIT_WOOD 500
+#define INIT_GOLD 500
+#define INIT_OIL 100
+#define INIT_WORKERS 3
 
 #define INIT_TOWNHALL_LVL 0
 
