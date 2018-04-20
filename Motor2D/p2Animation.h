@@ -31,7 +31,7 @@ private:
 public:
 	Animation() {};
 	Animation(Animation& anim);
-	bool LoadAnimation(pugi::xml_node& data);
+	bool LoadAnimation(pugi::xml_node& data, int width, int height);
 
 	void PushBack(const SDL_Rect& rect);
 	SDL_Rect& GetCurrentFrame(float dt);

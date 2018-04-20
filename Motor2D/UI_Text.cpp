@@ -100,7 +100,7 @@ void Text::BlitElement(bool use_camera)
 			if (hasBackground)
 			{
 				SDL_Rect rect = { globalPos.x -4 , globalPos.y - 1, section.w + 5, section.h +5};
-				Color bckg_color = { (float)background_color.r, (float)background_color.g, (float)background_color.b, (float)background_color.a };
+				Color bckg_color = { background_color.r, background_color.g, background_color.b, background_color.a };
 				App->render->DrawQuad(rect, bckg_color, true, use_camera);
 			}
 			if (outlined)

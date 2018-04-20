@@ -4,7 +4,6 @@
 #include "Squad.h"
 #include "j1Pathfinding.h"
 #include "j1Render.h"
-#include "Command.h"
 #include "p2Animation.h"
 #include "j1EntityController.h"
 #include "Skills.h"
@@ -20,12 +19,11 @@
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
-	entity_type				= UNIT;
-	name					= unit.name;
 	texture					= unit.texture;
 	type					= unit.type;
 	flying					= unit.flying;
 	collider				= unit.collider;
+	cost					= unit.cost;
 
 	attack					= unit.attack;
 	current_HP = max_HP		= unit.max_HP;
@@ -38,10 +36,10 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	for (int i = 0; i < unit.animations.size(); i++)
 		animations.push_back(new Animation(*unit.animations[i]));
 
-	current_anim = animations[1];
+	current_anim = animations[IDLE_S];
 
 	for(int i = 0; i < 9; i++)
-	 available_actions[i] = unit.available_actions[i];
+	 available_actions = unit.available_actions;
 
 	position.x = pos.x; position.y = pos.y;
 
@@ -80,25 +78,11 @@ bool Unit::Update(float dt)
 	}
 
 	//minimap_
-	if (App->uiscene->minimap != nullptr)
+	if (App->uiscene->minimap)
 	{
-		SDL_Color color;
-		color.a = 255;
-		if (type < ALLY_X)
-		{
-			color.r = 0;
-			color.b = 255;
-			color.g = 0;
-		}
-		else
-		{
-			color.r = 255;
-			color.b = 0;
-			color.g = 0;
-		}
-		App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, color);
+		if (IsEnemy()) App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
+		else		   App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
 	}
-
 
 	Move(dt);
 	animationController();
@@ -134,45 +118,34 @@ void Unit::Move(float dt)
 	else if (!next_step.IsZero()) next_step.SetToZero();
 }
 
-void Unit::setDirection(fPoint movement)
+void Unit::lookAt(fPoint direction)
 {
-	if (movement.x != 0 || movement.y != 0)
+	if (direction.x != 0 || direction.y != 0)
 	{
-		if (movement.x < -MAX_NEXT_STEP_MODULE / 2)
+		if (direction.x < -MAX_NEXT_STEP_MODULE / 2)
 		{
-			if (movement.y < MAX_NEXT_STEP_MODULE / 4 && movement.y > -MAX_NEXT_STEP_MODULE / 4) dir = W;
-			else dir = (movement.y < 0 ? NW : SW);
+			if (direction.y < MAX_NEXT_STEP_MODULE / 4 && direction.y > -MAX_NEXT_STEP_MODULE / 4) dir = W;
+			else dir = (direction.y < 0 ? NW : SW);
 		}
-		else if (movement.x > MAX_NEXT_STEP_MODULE / 2)
+		else if (direction.x > MAX_NEXT_STEP_MODULE / 2)
 		{
-			if (movement.y < MAX_NEXT_STEP_MODULE / 4 && movement.y > -MAX_NEXT_STEP_MODULE / 4) dir = E;
-			else dir = (movement.y < 0 ? NE : SE);
+			if (direction.y < MAX_NEXT_STEP_MODULE / 4 && direction.y > -MAX_NEXT_STEP_MODULE / 4) dir = E;
+			else dir = (direction.y < 0 ? NE : SE);
 		}
-		else dir = (movement.y < 0 ? N : S);
+		else dir = (direction.y < 0 ? N : S);
 	}
 }
 
 void Unit::animationController()
 {
-	setDirection(next_step);
+	lookAt(next_step);
+
+	animationType new_animation = IDLE_S;
 
 	if (!next_step.IsZero())
 	{
 		switch (commands.empty() ? MOVETO : commands.front()->type)
 		{
-		case MOVETO || ATTACKING_MOVETO:
-			switch (dir)
-			{
-			case E:  new_animation = MOVE_E;  break;
-			case SE: new_animation = MOVE_SE; break;
-			case NE: new_animation = MOVE_NE; break;
-			case N:  new_animation = MOVE_N;  break;
-			case S:  new_animation = MOVE_S;  break;
-			case W:  new_animation = MOVE_W;  break;
-			case NW: new_animation = MOVE_NW; break;
-			case SW: new_animation = MOVE_SW; break;
-			}
-			break;
 		case ATTACK:
 			switch (dir)
 			{
@@ -184,6 +157,19 @@ void Unit::animationController()
 			case W:  new_animation = ATK_W;  break;
 			case NW: new_animation = ATK_NW; break;
 			case SW: new_animation = ATK_SW; break;
+			}
+			break;
+		default:
+			switch (dir)
+			{
+			case E:  new_animation = MOVE_E;  break;
+			case SE: new_animation = MOVE_SE; break;
+			case NE: new_animation = MOVE_NE; break;
+			case N:  new_animation = MOVE_N;  break;
+			case S:  new_animation = MOVE_S;  break;
+			case W:  new_animation = MOVE_W;  break;
+			case NW: new_animation = MOVE_NW; break;
+			case SW: new_animation = MOVE_SW; break;
 			}
 			break;
 		}
@@ -244,13 +230,11 @@ fPoint Unit::calculateSeparationVector()
 
 	for (int i = 0; i < collisions.size(); i++)
 	{
-		if (collisions[i]->entity_type == UNIT) {
-			if (((Unit*)collisions[i])->IsEnemy() != IsEnemy()) continue;
+		if ((collisions[i])->IsEnemy() == IsEnemy())
+		{
+			fPoint current_separation = (position - collisions[i]->position);
+			separation_v += (position - collisions[i]->position).Normalized() * (1 / current_separation.GetModule());
 		}
-		else if (collisions[i]->entity_type == BUILDING && IsEnemy()) continue;
-
-		fPoint current_separation = (position - collisions[i]->position);
-		separation_v += (position - collisions[i]->position).Normalized() * (1 / current_separation.GetModule());
 	}
 
 	separation_v *= SEPARATION_STRENGTH;

@@ -92,11 +92,11 @@ void Minimap::DrawMinimap()
 	SDL_FreeSurface(manipulable);
 	manipulable = nullptr;
 }
-void Minimap::Addpoint(SDL_Rect rect, SDL_Color color) 
+void Minimap::Addpoint(SDL_Rect rect, Color color) 
 {
 	point p;
 	p.rect = rect;
-	p.color = color;
+	p.color = { (Uint8)color.r, (Uint8)color.g, (Uint8)color.b, (Uint8)color.a };
 
 	point_queue.push_back(p);
 }

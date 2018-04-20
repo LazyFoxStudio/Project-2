@@ -27,17 +27,11 @@ public:
 
 public:
 
-	Hero() {};
-	Hero(iPoint pos, Hero& unit);
-
 	~Hero();
 
 	bool Update(float dt);
+	void Deactivate();
 
-	void UseSkill(int index);
-
-	Entity* findTarget();
-	void attackEntity(Entity* target);
 };
 
 #endif

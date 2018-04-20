@@ -13,11 +13,6 @@
 
 j1Map::j1Map() { name = "map"; }
 
-// Destructor
-j1Map::~j1Map()
-{}
-
-
 void j1Map::Draw()
 {
 	BROFILER_CATEGORY("Map draw", Profiler::Color::BlanchedAlmond);

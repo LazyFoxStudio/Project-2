@@ -29,17 +29,6 @@ j1Scene::j1Scene() : j1Module() { name = "scene"; }
 // Destructor
 j1Scene::~j1Scene() {}
 
-// Called before render is available
-bool j1Scene::Awake(pugi::xml_node& config)
-{
-	LOG("Loading Scene");
-	init_wood = wood = config.child("starting_resources").child("wood").attribute("value").as_int(0);
-	init_gold = gold = config.child("starting_resources").child("gold").attribute("value").as_int(0);
-	init_workers = workers = config.child("starting_resources").child("workers").attribute("value").as_int(0);
-	inactive_workers = workers;
-	town_hall_lvl = config.child("starting_resources").child("townHallLvl").attribute("value").as_int(0);
-	return true;
-}
 
 // Called before the first frame
 bool j1Scene::Start()
@@ -47,13 +36,11 @@ bool j1Scene::Start()
 	int w = -1, h = -1;
 	uchar* data = nullptr;
 
-	App->audio->PlayMusic("Normal_Round_Theme.ogg");
+	App->audio->PlayMusic(MAIN_THEME);
 	App->map->Load_map("map1.tmx");
 
 	if (App->map->CreateWalkabilityMap(w, h, &data))	
 		App->pathfinding->SetMap(w, h, data);
-
-	debug_tex = App->tex->Load("maps/Navigable.png");
 
 	pugi::xml_document	Gui_config_file;
 	pugi::xml_node		guiconfig;
@@ -64,7 +51,12 @@ bool j1Scene::Start()
 	App->render->camera.x = -1200;
 	App->render->camera.y = -1600;
 
-	restart_time = 10;
+	restart_time = 10
+		;
+	wood = INIT_WOOD;
+	gold = INIT_GOLD;
+	inactive_workers = workers = INIT_WORKERS;
+	town_hall_lvl = INIT_TOWNHALL_LVL;
 
 	return true;
 }
@@ -73,9 +65,6 @@ bool j1Scene::Start()
 bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene update", Profiler::Color::Chocolate);
-
-	
-	
 	App->render->MouseCameraMovement(dt);
 	App->map->Draw();
 
@@ -104,10 +93,8 @@ bool j1Scene::Update(float dt)
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !App->entitycontroller->building)
-	{
+	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN )
 		return false;
-	}
 
 	if (toRestart && Restart_timer.ReadSec() >= restart_time) Restart_game();
 	return true;
@@ -158,16 +145,16 @@ void j1Scene::Restart_game()
 		it++;
 	}
 
-	for (std::list<Squad*>::iterator it = App->entitycontroller->all_squads.begin(); it != App->entitycontroller->all_squads.end() && !App->entitycontroller->all_squads.empty() && (*it) != nullptr; it++)
+	for (std::list<Squad*>::iterator it = App->entitycontroller->squads.begin(); it != App->entitycontroller->squads.end() && !App->entitycontroller->squads.empty() && (*it) != nullptr; it++)
 	{
 		if ((*it)->units.empty())
-		{
+		{/*
 			if (*App->entitycontroller->squad_iterator == (*it))
-				App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();
+				App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();*/
 
 			App->entitycontroller->selected_squads.remove(*it);
 			Squad* squad = (*it);
-			App->entitycontroller->all_squads.remove(*it);
+			App->entitycontroller->squads.remove(*it);
 
 			RELEASE(squad);
 		}
@@ -177,15 +164,16 @@ void j1Scene::Restart_game()
 	App->entitycontroller->entities_to_destroy.clear();
 	App->entitycontroller->entities.clear();
 	App->entitycontroller->selected_entities.clear();
-	App->entitycontroller->all_squads.clear();
-	App->entitycontroller->selected_squads.clear();
+	App->entitycontroller->squads.clear();
+	App->entitycontroller->selected_squads.clear();/*
 	App->entitycontroller->entity_iterator = App->entitycontroller->entities.begin();
-	App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();
+	App->entitycontroller->squad_iterator = App->entitycontroller->squads.begin();*/
 
 	//SATARTING ENTITIES-------------------------------------------------------
-	App->entitycontroller->building = false;
-	App->entitycontroller->placingBuilding(TOWN_HALL, { 2000, 2000 });
-	App->entitycontroller->StartHero(iPoint(2000, 1950));
+	App->entitycontroller->hero = App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
+	iPoint town_hall_pos = TOWN_HALL_POS;
+	Building* town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
+	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
 	App->wavecontroller->updateFlowField();
 
 	//RESTARTING WAVES---------------------------------------------------------
@@ -195,10 +183,10 @@ void j1Scene::Restart_game()
 	App->gui->nextWaveWindow->timer->setStartValue(App->wavecontroller->initial_wait);
 
 	//RESTARTING RESOURCES-----------------------------------------------------
-	wood = init_wood;
-	gold = init_gold;
-	workers = init_workers;
-	inactive_workers = workers;
+	wood = INIT_WOOD;
+	gold = INIT_GOLD;
+	inactive_workers = workers = INIT_WORKERS;
+	town_hall_lvl = INIT_TOWNHALL_LVL;
 
 	//RESTART LOCKED ACTION BUTTONS
 	//Hardcoded
@@ -210,7 +198,7 @@ void j1Scene::Restart_game()
 	farms->Lock();
 
 	//CANCEL IF BUILDING
-	App->entitycontroller->structure_beingbuilt = NONE_BUILDING;
+	App->entitycontroller->to_build_type = NONE_ENTITY;
 	App->actionscontroller->action_type = NO_ACTION;
 	App->actionscontroller->doingAction = false;
 	App->actionscontroller->doingAction_lastFrame = false;
@@ -219,7 +207,7 @@ void j1Scene::Restart_game()
 	App->gui->warningMessages->hideMessage(NO_TREES);
 
 	//CHANGING MUSIC BACK TO WAVE ONE-----------------------------------------
-	App->audio->PlayMusic("Normal_Round_Theme.ogg");
+	App->audio->PlayMusic(MAIN_THEME);
 
 	App->entitycontroller->GetTotalIncome();
 

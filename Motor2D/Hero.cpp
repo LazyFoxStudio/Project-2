@@ -10,29 +10,18 @@
 
 #include "j1UIScene.h"
 
-Hero::Hero(iPoint pos, Hero& hero)
-{
-	
-}
 Hero::~Hero()
 {
 	RELEASE(skill_one);
+	RELEASE(skill_two);
+	RELEASE(skill_three);
 }
 
 bool Hero::Update(float dt)
 {
 	if (current_HP <= 0)
 	{
-		if (isActive)
-		{ 
-			setActive(false);	
-			revive_timer.Start();
-			App->entitycontroller->selected_squads.remove(squad);
-			App->entitycontroller->selected_entities.remove(this);
-			App->gui->entityDeleted(this);
-			current_skill = 0;
-			isSelected = false;
-		}
+		if (isActive) Deactivate();
 		else if (revive_timer.ReadSec() > HERO_REVIVE_COOLDOWN) { current_HP = max_HP;  setActive(true); App->gui->createLifeBar(this); }
 		return true;
 	}
@@ -41,17 +30,17 @@ bool Hero::Update(float dt)
 	{
 	case 1: 
 		skill_one->DrawRange(); 
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_one->Ready())  skill_one->Activate(), App->audio->PlayFx(listOfSFX::SFX_HERO_YHAMAM_ICICLECRASH);
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_one->Ready())  skill_one->Activate(), App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
 		skill_one->toDraw.clear();
 		break;
 	case 2:
 		skill_two->DrawRange();
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready())  skill_two->Activate(), App->audio->PlayFx(listOfSFX::SFX_HERO_YHAMAM_OVERFLOW);
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready())  skill_two->Activate(), App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
 		skill_two->toDraw.clear();		
 		break;
 	case 3:
 		skill_three->DrawRange();
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready())  skill_three->Activate(), App->audio->PlayFx(listOfSFX::SFX_HERO_YHAMAM_DRAGONBREATH);
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready())  skill_three->Activate(), App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
 		skill_three->toDraw.clear();	
 		break;
 	default: 
@@ -68,30 +57,21 @@ bool Hero::Update(float dt)
 
 	Move(dt);
 	animationController();
+
 	//minimap_
-	if (App->uiscene->minimap != nullptr)
-	{
-		SDL_Color color;
-		color.r = 255;
-		color.b = 255;
-		color.g = 255;
-		color.a = 255;
-		App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,75,75 }, color);
-	}
+	if (App->uiscene->minimap)
+		App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,75,75 }, White);
+
 	return true;
 }
 
-void Hero::UseSkill(int index)
+void Hero::Deactivate()
 {
-
-}
-
-void Hero::attackEntity(Entity* target)
-{
-
-}
-
-Entity* Hero::findTarget()
-{
-	return nullptr;
+	setActive(false);
+	revive_timer.Start();
+	App->entitycontroller->selected_squads.remove(squad);
+	App->entitycontroller->selected_entities.remove(this);
+	App->gui->entityDeleted(this);
+	current_skill = 0;
+	isSelected = false;
 }

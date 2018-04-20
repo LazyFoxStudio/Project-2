@@ -1,4 +1,5 @@
 <node>
+   <SFX>
 <!-- Peasant -->
 	<path sfx="Peasant/Psready.wav"/>
 	<path sfx="Peasant/Pswhat1.wav"/>	
@@ -28,5 +29,11 @@
 	<path sfx="Misc/Sword3.wav"/>
 	<path sfx="Misc/Axe.wav"/>
 	<path sfx="Misc/Bowfire.wav"/>
+   </SFX>
+   <Music>
+	<path track="Main_Theme.ogg"/>
+	<path track="Defeat Theme.ogg"/>
+   </Music>
+
 </node>
 

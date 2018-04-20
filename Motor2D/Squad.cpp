@@ -9,13 +9,12 @@
 Squad::Squad(std::vector<Unit*>& units) : units(units)
 {
 	commander = units[0];
-
-	max_speed = units[0]->speed;
+	max_speed = commander->speed;
 
 	for (int i = 0; i < units.size(); i++)
 	{
 		units[i]->squad = this;
-		if (units[i]->speed < max_speed) max_speed = units[i]->speed < max_speed;
+		if (units[i]->speed < max_speed) max_speed = units[i]->speed;
 	}
 }
 
@@ -55,18 +54,8 @@ bool Squad::getEnemiesInSight(std::list<fPoint>& list_to_fill)
 
 	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
 	{
-		if ((*it)->isActive == false) continue;
-
-		if (((*it)->entity_type == BUILDING && commander->IsEnemy()))
-		{
-			if (isInSquadSight((*it)->position) && ((Building*)(*it))->ex_state != DESTROYED)
+		if ((*it)->isActive && (commander->IsEnemy() != (*it)->IsEnemy()) && (*it)->ex_state != DESTROYED)
 				list_to_fill.push_back((*it)->position);
-		}
-		else if ((*it)->entity_type == UNIT)
-		{
-			if (isInSquadSight((*it)->position) && ((Unit*)(*it))->IsEnemy() != commander->IsEnemy())
-				list_to_fill.push_back((*it)->position);
-		}
 	}
 	return !list_to_fill.empty();
 }
@@ -83,25 +72,6 @@ void Squad::Halt()
 	commands.clear();
 }
 
-int Squad::getTotalMaxHP()
-{
-	int ret = 0;
-
-	for (int i = 0; i < units.size(); i++)
-		ret += units[i]->max_HP;
-
-	return ret;
-}
-
-int Squad::getTotalHP()
-{
-	int ret = 0;
-
-	for (int i = 0; i < units.size(); i++)
-		ret += units[i]->current_HP;
-
-	return ret;
-}
 
 Unit* Squad::getClosestUnitTo(iPoint p)
 {
@@ -110,7 +80,7 @@ Unit* Squad::getClosestUnitTo(iPoint p)
 	Unit* ret = units[0];
 	iPoint closest_map_p = App->map->WorldToMap(units[0]->position.x, units[0]->position.y);
 
-	for (int i = 1; i < units.size(); i++)
+	for (int i = 1; i < units.size() && units[i] != nullptr; i++)
 	{
 		iPoint map_p = App->map->WorldToMap(units[i]->position.x, units[i]->position.y);
 		if (map_p.DistanceTo(p) < closest_map_p.DistanceTo(p))

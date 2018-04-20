@@ -11,10 +11,10 @@ class FlowField;
 
 struct NextWave
 {
-	NextWave(unitType type, fPoint spawn) :type(type), spawn(spawn)
+	NextWave(Type type, fPoint spawn) :type(type), spawn(spawn)
 	{};
 
-	unitType	type;
+	Type	type;
 	fPoint		spawn;
 };
 
@@ -54,8 +54,6 @@ public:
 	j1Timer				wave_timer;
 	
 	std::list<NextWave*> next_wave;
-
-	iPoint TownHall_pos = { 0,0 };
 	
 	std::vector<fPoint> spawns;
 };	

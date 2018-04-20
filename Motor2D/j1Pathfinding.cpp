@@ -26,13 +26,13 @@ bool j1PathFinding::PostUpdate()
 	BROFILER_CATEGORY("pf_postupdate", Profiler::Color::BlanchedAlmond);
 	if (!path_pool.empty())
 	{
+		for (std::list<PathProcessor*>::iterator it = path_pool.begin(); it != path_pool.end(); it++)
+			if ((*it)->flow_field->finished) { path_pool.erase(it); it--; }
+
 		timer.Start();
 		for (std::list<PathProcessor*>::iterator it = path_pool.begin(); it != path_pool.end(); it++)
 		{
-			if ((*it)->flow_field->finished) { path_pool.erase(it); it--; }
-			else {
-				if (!(*it)->ProcessFlowField(timer)) break;
-			}
+			if (!(*it)->ProcessFlowField(timer)) break;
 		}
 	}
 	return true;
@@ -204,38 +204,6 @@ iPoint j1PathFinding::FirstWalkableAdjacent(iPoint map_pos, int max_distance)
 		radius++;
 	}
 	return { -1,-1 };
-}
-
-iPoint j1PathFinding::WalkableAdjacentCloserTo(iPoint map_pos, iPoint target, Entity* entity_to_ignore)
-{
-	iPoint ret = { -1,-1 };
-	iPoint p = { -1,-1 };
-	int dist = 65535;
-
-	SDL_Rect r = { 0,0, App->map->data.tile_width, App->map->data.tile_height };
-
-	for (int i = -1; i <= 1; i++)
-		for (int j = -1; j <= 1; j++)
-			if (i != 0 || j != 0)
-			{
-				p.create(map_pos.x + i, map_pos.y + j);
-
-				if (App->pathfinding->IsWalkable(p))
-				{
-					iPoint world_p = App->map->MapToWorld(p.x, p.y);
-					r.x = world_p.x; r.y = world_p.y;
-
-					std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(r, entity_to_ignore);
-
-					if (p.DistanceManhattan(target) < dist && collisions.empty())
-					{
-						ret = p;
-						dist = p.DistanceManhattan(target);
-					}
-				}
-			}
-
-	return ret;
 }
 
 // PathNode -------------------------------------------------------------------------

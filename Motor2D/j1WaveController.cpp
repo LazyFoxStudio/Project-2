@@ -36,7 +36,8 @@ bool j1WaveController::Start()
 {
 	bool ret = true;
 
-	TownHall_pos = App->map->WorldToMap(2000, 2000);
+	iPoint TownHall_pos = TOWN_HALL_POS;
+	TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
 	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
 	flow_field = App->pathfinding->RequestFlowField(TownHall_pos);
 	
@@ -51,6 +52,8 @@ bool j1WaveController::Start()
 void j1WaveController::updateFlowField()
 {
 	if (flow_field_aux) flow_field_aux->finished = true;
+	iPoint TownHall_pos = TOWN_HALL_POS;
+	TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
 	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
 	flow_field_aux = App->pathfinding->RequestFlowField(TownHall_pos);
 }
@@ -124,7 +127,7 @@ void j1WaveController::Generate_Next_Wave()
 		int enemy = rand() % ((AXE_THROWER - GRUNT) + 1);    //   (last_enemy_type - first_enemy_type)
 		int position = rand() % spawns.size();
 
-		next_wave.push_back(new NextWave((unitType)(GRUNT + enemy), spawns[position]));
+		next_wave.push_back(new NextWave((Type)(GRUNT + enemy), spawns[position]));
 	}
 
 	App->gui->newWave();
@@ -134,12 +137,11 @@ void j1WaveController::Generate_Wave()
 {
 	for (std::list<NextWave*>::iterator it = next_wave.begin(); it != next_wave.end(); it++)
 	{
-		Squad* aux_squad = new Squad();
-		aux_squad = App->entitycontroller->AddSquad((*it)->type, (*it)->spawn);
+		Squad* squad = App->entitycontroller->AddSquad((*it)->type, (*it)->spawn);
 
-		AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(aux_squad->commander, TownHall_pos);
+		AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->commander, TOWN_HALL_POS);
 		new_atk_order->flow_field = flow_field;
-		aux_squad->commands.push_back(new_atk_order);
+		squad->commands.push_back(new_atk_order);
 	}
 
 	Generate_Next_Wave();

@@ -15,6 +15,7 @@
 class Unit;
 class Squad;
 class FlowField;
+class Entity;
 
 enum Command_State { TO_INIT, UPDATE, TO_STOP, FINISHED };
 enum Command_Type { NOTHING, MOVETO, ATTACKING_MOVETO, ATTACK, PATROL, HOLD, MOVETOSQUAD, ATTACKING_MOVETO_SQUAD, ATTACK_SQUAD};
@@ -40,6 +41,7 @@ private:
 	virtual bool OnInit()			{ return false; };
 	virtual bool OnUpdate(float dt) { return false; };
 	virtual bool OnStop()			{ return false; };
+
 };
 
 
@@ -81,6 +83,10 @@ private:
 	bool OnUpdate(float dt);
 	bool OnStop();
 
+	bool searchTarget();
+	void moveToTarget();
+	void callRetaliation(Entity* enemy);
+
 };
 
 //		SQUADS: =======================
@@ -97,6 +103,7 @@ public:
 
 	MoveToSquad(Unit* commander, iPoint map_dest);
 
+	bool allIdle();
 private:
 
 	bool OnInit();

@@ -145,7 +145,7 @@ void IngameMenu::updateStatsDisplay()
 	if (App->entitycontroller->selected_entities.size() > 0)
 	{
 		Entity* entity = App->entitycontroller->selected_entities.front();
-		if (entity->entity_type == entityType::UNIT)
+		if (entity->IsUnit() && !entity->IsUnit())
 		{
 			for (std::list<Text*>::iterator it_t = statsTitles.begin(); it_t != statsTitles.end(); it_t++)
 			{
@@ -162,7 +162,7 @@ void IngameMenu::updateStatsDisplay()
 			statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->range), stats_pos.x + 170, stats_pos.y + 160, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
 			statsNumbers.push_back(new Text(std::to_string((int)((Unit*)entity)->speed), stats_pos.x + 170, stats_pos.y + 200, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
 		}
-		else if (entity->entity_type == entityType::HERO)
+		else if (entity->IsHero())
 		{
 			for (std::list<Text*>::iterator it_t = statsTitles.begin(); it_t != statsTitles.end(); it_t++)
 			{
@@ -180,7 +180,7 @@ void IngameMenu::updateStatsDisplay()
 			statsNumbers.push_back(new Text(std::to_string((int)((Hero*)entity)->speed), stats_pos.x + 170, stats_pos.y + 200, (*App->font->fonts.begin()), { 0,0,0,255 }, callback));
 
 		}
-		else if(entity->entity_type == entityType::BUILDING)
+		else if(entity->IsBuilding())
 		{
 			for (std::list<Text*>::iterator it_t = statsTitles.begin(); it_t != statsTitles.end(); it_t++)
 			{
@@ -221,8 +221,8 @@ void IngameMenu::updateActionButtons()
 	}
 	else
 	{
-		uint ids[9] = {};
-		actionButtons = App->gui->activateActionButtons(ids);
+		std::vector<uint> empty_vector;
+		actionButtons = App->gui->activateActionButtons(empty_vector);
 	}
 
 	int counterX = 0;
@@ -448,8 +448,7 @@ void IngameMenu::BlitElement(bool use_camera)
 		if (App->entitycontroller->selected_entities.size() > 0)
 		{
 			int workers_num = ((Building*)App->entitycontroller->selected_entities.front())->villagers_inside;
-			int max = App->entitycontroller->mill_max_villagers;
-			std::string text = std::to_string(workers_num) + '/' + std::to_string(max);
+			std::string text = std::to_string(workers_num) + '/' + std::to_string(MAX_VILLAGERS_LUMBERMILL);
 			workers->setText(text);
 			workers->BlitElement(use_camera);
 		}

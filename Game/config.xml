@@ -18,52 +18,12 @@
     <fullscreen_window value="false"/>
   </window>
 
-  <file_system>
-    <path>data.zip</path>
-  </file_system>
-
-  <audio>
-    <music> 
-      <folder>audio/music/</folder>
-      <musicVolumeModifier value="1" />
-    </music>
-   <sfx> 
-      <folder>audio/fx/</folder>
-      <sfxVolumeModifier value="1" />
-    </sfx>
-  </audio>
-  
-  <map>
-    <folder>maps/</folder>
-  </map>
-
-  <entitycontroller>
-    <deathTime value="10"/>
-    <millMaxVillagers value="10"/>
-    <workerWoodProduction value="2"/>
-  </entitycontroller>
-
   <gui>
-    <buttonFX source="Buttonsfx.wav"/>
     <atlas file="gui/atlas.png"/>
 	<icon_atlas file="gui/icon_atlas.png"/>
 	<popUps time="100"/>
   </gui>
 
-
-  <scene>
-    <starting_resources>
-
-
-      <wood value="500"/>
-
-      <gold value="20000"/>
-
-      <workers value="3"/>
-
-      <townHallLvl value ="0"/>
-    </starting_resources>
-  </scene>
 
   <wavecontroller>
     <initialWait value="10"/>

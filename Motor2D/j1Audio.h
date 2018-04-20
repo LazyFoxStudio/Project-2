@@ -30,11 +30,11 @@ public:
 	bool Save(pugi::xml_node&) const;
 	bool Load(pugi::xml_node&);
 
-	// Play a music file
-	bool PlayMusic(const char* path, uint fade_time = DEFAULT_MUSIC_FADE_TIME);
 
-	// Load a WAV in memory
-	unsigned int LoadFx(const char* path);
+	bool j1Audio::PlayMusic(uint id, uint fade_time = DEFAULT_MUSIC_FADE_TIME);
+
+	void LoadFx(const char* path);
+	void LoadMusic(const char* path);
 
 	void LoadFXFromXML();
 
@@ -48,20 +48,24 @@ public:
 
 private:
 
-	float					musicVolumeModifier = 1;
-	float					sfxVolumeModifier = 1;
-	_Mix_Music*				music = nullptr;
-	std::vector<Mix_Chunk*>	fx;
+	float						musicVolumeModifier = 1;
+	float						sfxVolumeModifier = 1;
+	_Mix_Music*					current_track = nullptr;
+	std::vector<Mix_Chunk*>		fx;
+	std::vector<_Mix_Music*>	music;
 
 public:
 
-	std::string			music_folder="";
-	std::string			sfx_folder="";
 };
 
-enum listOfSFX
+enum MusicList
 {
-	SFX_NO_FX,
+	MAIN_THEME,
+	DEFEAT_THEME
+};
+
+enum SFXList
+{
 	//Peasant SFX
 	SFX_PEASANT_READY,
 	SFX_PEASANT_WAITING_FOR_ORDERS,
@@ -90,6 +94,9 @@ enum listOfSFX
 	//Miscellanious SFX
 	SFX_MISCELLANEOUS_SWORD_CLASH,
 	SFX_MISCELLANEOUS_AXETHROW,
-	SFX_MISCELLANEOUS_ARROW
+	SFX_MISCELLANEOUS_ARROW,
+
+	//UI
+	SFX_BUTTON_CLICKED
 };
 #endif // __j1AUDIO_H__

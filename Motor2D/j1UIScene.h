@@ -53,8 +53,6 @@ public:
 public:
 
 	std::list<menu*> menus;
-	int x = 0;
-	int y = 0;
 
 	//minimap_
 	Minimap* minimap = nullptr;

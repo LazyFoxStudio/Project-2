@@ -9,6 +9,12 @@ class Window;
 class LifeBar;
 class Building;
 
+#define INIT_WOOD 10
+#define INIT_GOLD 10
+#define INIT_OIL 10
+#define INIT_WORKERS 10
+
+#define INIT_TOWNHALL_LVL 0
 
 class j1Scene : public j1Module
 {
@@ -19,8 +25,6 @@ public:
 	// Destructor
 	virtual ~j1Scene();
 
-	// Called before render is available
-	bool Awake(pugi::xml_node&);
 
 	// Called before the first frame
 	bool Start();
@@ -42,26 +46,19 @@ public:
 	void Restart_game();
 
 public:
-	SDL_Texture* debug_tex = nullptr;
 
 	j1Timer Restart_timer;
-
 	bool toRestart=false;
-
 	int restart_time = 0;
 
 	int wood = 0;
 	int gold = 0;
 	int oil = 0;
+
 	int workers = 0;
-
 	int inactive_workers = 0;
-	int town_hall_lvl = 0;
 
-	int init_wood = 0;
-	int init_gold = 0;
-	int init_oil = 0;
-	int init_workers = 0;
+	int town_hall_lvl = 0;
 	
 	int wood_production_per_second = 0;
 };

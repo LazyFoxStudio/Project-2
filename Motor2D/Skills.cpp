@@ -10,9 +10,9 @@ Skill::Skill(Hero* hero, uint _radius, int _damage, uint _range, uint _cooldown,
 {
 	switch (type = _type)
 	{
-	case AREA: tile_color = { 0,255,100,100 };	break; //GREEN
-	case LINE: tile_color = { 0,255,255,100 };	break; //YELLOW
-	default:   tile_color = { 0,100,255,100 };	break; //BLUE
+	case AREA: tile_color = Translucid_Green;	break; 
+	case LINE: tile_color = Translucid_Yellow;	break; 
+	default:   tile_color = Translucid_Blue;	break; 
 	}
 
 	timer.Start();
@@ -33,17 +33,10 @@ void Skill::DrawRange()
 		else if (type == LINE)
 			Line();
 
-		Color black = { 0,0,0,100 };
-		// Draw 	
 		for (std::list<iPoint>::iterator item = toDraw.begin(); item != toDraw.end(); item++)
 		{
 			SDL_Rect r = { (*item).x,(*item).y, App->map->data.tile_width,App->map->data.tile_height };
-			if(Ready())
-				App->render->DrawQuad(r, tile_color);
-			else 
-			{
-				App->render->DrawQuad(r, black);
-			}
+			App->render->DrawQuad(r, Ready() ? tile_color : Translucid_Grey);
 		}
 	}
 }
@@ -89,42 +82,33 @@ void Skill::Line()
 
 void Skill::Activate()
 {
-	iPoint mouse_pos;
-	App->input->GetMousePosition(mouse_pos.x, mouse_pos.y);
-	cast_pos = App->render->ScreenToWorld(mouse_pos.x, mouse_pos.y);
-
 	if (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range)
 	{
+		iPoint cast_aux = App->map->WorldToMap(cast_pos.x, cast_pos.y);
+
 		for (std::list<Entity*>::iterator item = App->entitycontroller->entities.begin(); item != App->entitycontroller->entities.end(); item++)
 		{
-			if ((*item)->entity_type == UNIT)
+			if ((*item)->IsEnemy())
 			{
-				if (((Unit*)(*item))->IsEnemy())
+				if (type == AREA || type == NONE_RANGE)
 				{
-					if (type == AREA || type == NONE_RANGE)
+					iPoint pos = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
+
+					if (cast_aux.DistanceTo(pos) < radius)
+						(*item)->current_HP -= damage;
+				}
+				else if (type == LINE)
+				{
+					SDL_Point enemy_pos = { ((Unit*)(*item))->position.x, ((Unit*)(*item))->position.y };
+
+					for (std::list<iPoint>::iterator it = toDraw.begin(); it != toDraw.end(); it++)
 					{
+						iPoint rect_point = App->map->WorldToMap((*it).x, (*it).y);
+						rect_point = App->map->MapToWorld(rect_point.x, rect_point.y);
+						SDL_Rect r = { rect_point.x,rect_point.y,32,32 };
 
-						iPoint cast_aux = App->map->WorldToMap(cast_pos.x, cast_pos.y);
-						iPoint pos = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
-
-						if (cast_aux.DistanceTo(pos) < radius)
-							((Unit*)(*item))->current_HP -= damage;
-					}
-					else if (type==LINE)
-					{
-						SDL_Point enemy_pos = { ((Unit*)(*item))->position.x, ((Unit*)(*item))->position.y };
-
-						for (std::list<iPoint>::iterator it = toDraw.begin(); it != toDraw.end(); it++)
-						{
-							iPoint rect_point = App->map->WorldToMap((*it).x, (*it).y);
-							rect_point = App->map->MapToWorld(rect_point.x, rect_point.y);
-							SDL_Rect r = { rect_point.x,rect_point.y,32,32 };
-
-							if (SDL_PointInRect(&enemy_pos, &r))
-							{
-								((Unit*)(*item))->current_HP -= damage;
-							}
-						}
+						if (SDL_PointInRect(&enemy_pos, &r))
+							(*item)->current_HP -= damage;
 					}
 				}
 			}

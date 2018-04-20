@@ -3,6 +3,7 @@
 #include "SDL\include\SDL.h"
 #include "SDL_image\include\SDL_image.h"
 #include <list>
+#include "Color.h"
 
 /* this struct has the 2 elements needed to represent a point on the minimap: 
 the rectangle we want to represent on the minimap(x,y,w,h)
@@ -58,7 +59,7 @@ public:
 	void DrawMinimap();
 	
 	//used to add a point to the map
-	void Addpoint (SDL_Rect rect, SDL_Color color);
+	void Addpoint (SDL_Rect rect, Color color);
 
 	// used to add a sprite to the map, the sprite must be loaded in whoever calls this function
 	void Draw_Sprite(SDL_Surface* img, int x, int y);

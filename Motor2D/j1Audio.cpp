@@ -19,9 +19,6 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	musicVolumeModifier = config.child("music").child("musicVolumeModifier").attribute("value").as_float();
 	sfxVolumeModifier = config.child("sfx").child("sfxVolumeModifier").attribute("value").as_float();
 
-	music_folder = config.child("music").child("folder").attribute("value").as_string(); 
-	sfx_folder = config.child("sfx").child("folder").attribute("value").as_string();
-
 	LOG("Loading Audio Mixer");
 	SDL_Init(0);
 
@@ -59,7 +56,8 @@ bool j1Audio::CleanUp()
 	{
 		LOG("Freeing sound FX, closing Mixer and Audio subsystem");
 
-		if (music) Mix_FreeMusic(music);
+		for (int i = 0; i < music.size(); i++) Mix_FreeMusic(music[i]);
+		music.clear();
 
 		for (int i = 0; i < fx.size(); i++)   Mix_FreeChunk(fx[i]);
 		fx.clear();
@@ -89,73 +87,84 @@ bool j1Audio::Load(pugi::xml_node & config)
 }
 
 // Play a music file
-bool j1Audio::PlayMusic(const char* path, uint fade_time)
+
+bool j1Audio::PlayMusic(uint id, uint fade_time)
 {
 	bool ret = false;
 
-	if (active) {
+	if (active && id < music.size()) {
 
-		if (music)
+		if (current_track)
 		{
 			if (fade_time)	Mix_FadeOutMusic(int(fade_time * 1000.0f));
 			else			Mix_HaltMusic();
 
-			// this call blocks until fade out is done
-			Mix_FreeMusic(music);
 		}
 
-		if (music = Mix_LoadMUS(PATH(MUSIC_FOLDER, path)))
+		if (current_track = music[id])
 		{
-			if (fade_time)	ret = (Mix_FadeInMusic(music, -1, fade_time * 1000) < 0);
-			else			ret = (Mix_PlayMusic(music, -1) < 0);
+			if (fade_time)	ret = (Mix_FadeInMusic(current_track, -1, fade_time * 1000) < 0);
+			else			ret = (Mix_PlayMusic(current_track, -1) < 0);
 		}
 
-		if (ret) LOG("Successfully playing %s", path);
-		else	 LOG("Cannot load music %s. Mix_GetError(): %s\n", path, Mix_GetError());
 	}
 
 	return ret;
 }
 
+
+// Play WAV
+bool j1Audio::PlayFx(unsigned int id, uint volume, int repeat)
+{
+	if (id < fx.size() && active)
+	{
+		Mix_VolumeChunk(fx[id], volume*sfxVolumeModifier);
+		Mix_PlayChannel(-1, fx[id], repeat);
+		return true;
+	}
+
+	return false;
+}
+
+
+void j1Audio::LoadMusic(const char* path)
+{
+	if (active) {
+
+		if (_Mix_Music* track = Mix_LoadMUS(PATH(MUSIC_FOLDER, path)))
+			music.push_back(track);
+		else 
+			LOG("Cannot load music %s. Mix_GetError(): %s", path, Mix_GetError());
+	}
+
+}
+
 // Load WAV
-unsigned int j1Audio::LoadFx(const char* path)
+void j1Audio::LoadFx(const char* path)
 {
 	if (active) {
 
 		if (Mix_Chunk* chunk = Mix_LoadWAV(PATH(FX_FOLDER, path)))
-		{
 			fx.push_back(chunk);
-			return fx.size();
-		}
-		else LOG("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());
+		else
+			LOG("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());
 	}
 
-	return 0;
 }
 
 
 void j1Audio::LoadFXFromXML()
 {
 	pugi::xml_document SFXdoc;
-	pugi::xml_node node;
+	pugi::xml_node file;
 
-	node = App->LoadFile(SFXdoc, "SFX_Paths.xml");
+	file = App->LoadFile(SFXdoc, "Audio_Paths.xml");
 
-	for (node = node.child("path"); node; node = node.next_sibling("path"))
-		LoadFx(node.attribute("sfx").as_string());
-}
+	for (pugi::xml_node SFX = file.child("SFX").child("path"); SFX; SFX = SFX.next_sibling("path"))
+		LoadFx(SFX.attribute("sfx").as_string());
 
-// Play WAV
-bool j1Audio::PlayFx(unsigned int id, uint volume, int repeat)
-{
-	if(id > 0 && id <= fx.size() && active)
-	{
-		Mix_VolumeChunk(fx[id - 1], volume*sfxVolumeModifier);
-		Mix_PlayChannel(-1, fx[id - 1], repeat);
-		return true;
-	}
-
-	return false;
+	for (pugi::xml_node Music = file.child("Music").child("path"); Music; Music = Music.next_sibling("path"))
+		LoadMusic(Music.attribute("track").as_string());
 }
 
 void j1Audio::ModifyMusicVolume(int value)

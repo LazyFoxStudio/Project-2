@@ -54,8 +54,6 @@ bool j1Gui::Start()
 	atlas = App->tex->Load(atlas_file_name.c_str());
 	icon_atlas = App->tex->Load(icon_atlas_file_name.c_str());
 
-	button_click_fx = App->audio->LoadFx(buttonFX.c_str());
-
 	pugi::xml_document doc;
 	pugi::xml_node gameData;
 
@@ -109,7 +107,7 @@ bool j1Gui::PreUpdate()
 				ret = element->callback->OnUIEvent(element, MOUSE_LEFT_CLICK);
 			}
 			if (element->element_type == BUTTON)
-				App->audio->PlayFx(button_click_fx, 0);
+				App->audio->PlayFx(SFX_BUTTON_CLICKED, 0);
 
 			if (element->dragable)
 			{
@@ -815,10 +813,10 @@ void j1Gui::LoadFonts(pugi::xml_node node)
 	}
 }
 
-void j1Gui::AddIconData(unitType type, pugi::xml_node node)
+void j1Gui::AddIconDataUnit(Type type, pugi::xml_node node)
 {
 	SDL_Rect rect = { node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() };
-	unitIconRect.insert(std::pair<unitType, SDL_Rect>(type, rect));
+	unitIconRect.insert(std::pair<Type, SDL_Rect>(type, rect));
 }
 
 //void j1Gui::AddIconData(heroType type, pugi::xml_node node)
@@ -827,41 +825,24 @@ void j1Gui::AddIconData(unitType type, pugi::xml_node node)
 //	heroIconRect.insert(std::pair<heroType, SDL_Rect>(type, rect));
 //}
 
-void j1Gui::AddIconData(buildingType type, pugi::xml_node node)
+void j1Gui::AddIconDataBuilding(Type type, pugi::xml_node node)
 {
 	SDL_Rect rect = { node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() };
-	buildingIconRect.insert(std::pair<buildingType, SDL_Rect>(type, rect));
+	buildingIconRect.insert(std::pair<Type, SDL_Rect>(type, rect));
 }
 
-void j1Gui::AddIconData(resourceType type, pugi::xml_node node)
-{
-	SDL_Rect rect = { node.attribute("x").as_int(), node.attribute("y").as_int(), node.attribute("w").as_int(), node.attribute("h").as_int() };
-	resourceIconRect.insert(std::pair<resourceType, SDL_Rect>(type, rect));
-}
 
 SDL_Rect j1Gui::GetIconRect(Entity* entity)
 {
-	switch (entity->entity_type)
-	{
-	case UNIT:
+	if(entity->IsUnit())
 		return unitIconRect.at(((Unit*)entity)->type);
-		break;
-	case BUILDING:
+	else if (entity->IsBuilding())
 		return buildingIconRect.at(((Building*)entity)->type);
-		break;
-	/*case HERO:
-		return heroIconRect.at(((Hero*)entity)->type);
-		break;*/
-	case NATURE:
-		return resourceIconRect.at(((Nature*)entity)->type);
-		break;
-	default:
-		return { 0,0,0,0 };
-		break;
-	}
+
+	return { 0,0,0,0 };
 }
 
-SDL_Rect j1Gui::GetUnitRect(unitType type)
+SDL_Rect j1Gui::GetUnitRect(Type type)
 {
 	return unitIconRect.at(type);
 }
@@ -876,23 +857,16 @@ Button * j1Gui::GetActionButton(uint id)
 	return actionButtons.at(id);
 }
 
-std::list<Button*> j1Gui::activateActionButtons(uint ids[9])
+std::list<Button*> j1Gui::activateActionButtons(std::vector<uint> buttons)
 {
 	std::list<Button*> list;
 
-	for (int i = 0; i < 9; i++)
-	{
-		for (std::map<uint, Button*>::iterator test = actionButtons.begin(); test != actionButtons.end(); test++)
-		{
-			(*test).second->active = false;
-			if (ids[i] == (*test).first)
-			{
-				list.push_back((*test).second);
-				break;
-			}
-		}
-	}
+	for (std::map<uint, Button*>::iterator it = actionButtons.begin(); it != actionButtons.end(); it++)
+		(*it).second->active = false;
 
+	for(int i = 0; i < buttons.size(); i++)
+		list.push_back((actionButtons.find(buttons[i]))->second);
+		
 	return list;
 }
 

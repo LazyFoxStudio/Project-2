@@ -10,16 +10,12 @@
 
 Building::Building(iPoint pos, Building& building)
 {
-	name							= building.name;
-	texture							= building.texture;
-	type							= building.type;
+	texture				= building.texture;
+	type				= building.type;
+	cost				= building.cost;
 
-	current_HP = max_HP				= building.max_HP;
-	villagers_inside				= building.villagers_inside;
-	building_time					= building.building_time;
-	defense							= building.defense;
-	
-	entity_type						= BUILDING;
+	current_HP = max_HP	= building.max_HP;
+	defense				= building.defense;
 
 	collider.x = position.x = pos.x;
 	collider.y = position.y	= pos.y;
@@ -34,7 +30,7 @@ Building::Building(iPoint pos, Building& building)
 	additional_size.y = building.additional_size.y;
 
 	for (int i = 0; i < 9; i++)
-		available_actions[i] = building.available_actions[i];
+		available_actions = building.available_actions;
 
 	sprites = building.sprites;
 
@@ -43,26 +39,19 @@ Building::Building(iPoint pos, Building& building)
 		ex_state = OPERATIVE;
 		current_sprite = &sprites[1];
 	}
-	else current_sprite = &sprites[2];
+	else current_sprite = &sprites[CREATION_STARTED];
 
 	timer.Start();
-}
-
-Building::~Building()
-{
-	sprites.clear();
 }
 
 
 bool Building::Update(float dt)
 {
 	//minimap_
-	if (App->uiscene->minimap != nullptr) 
+	if (App->uiscene->minimap) 
 	{
-		SDL_Color color;
-		if(ex_state != DESTROYED)	color = { 0,255,0,255 };
-		else						color = { 100,100,100,255 };
-		App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, color);
+		if(ex_state != DESTROYED)	App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
+		else						App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
 	}
 
 	if(current_HP <= 0 && ex_state != DESTROYED)   Destroy();
@@ -71,8 +60,8 @@ bool Building::Update(float dt)
 	{
 	case BEING_BUILT:
 		HandleConstruction();
-		if (timer.ReadSec() >= building_time / 2 && current_sprite == &sprites[2])
-			current_sprite = &sprites[0];
+		if (timer.ReadSec() >= cost.creation_time / 2 && current_sprite == &sprites[2])
+			current_sprite = &sprites[HALF_CREATED];
 		break;
 	case OPERATIVE:
 
@@ -80,7 +69,7 @@ bool Building::Update(float dt)
 			HandleResourceProduction();
 		break;
 	case DESTROYED:
-		if (timer.ReadSec() > App->entitycontroller->death_time)
+		if (timer.ReadSec() > DEATH_TIME)
 			App->entitycontroller->entities_to_destroy.push_back(this);
 
 		break;
@@ -93,7 +82,8 @@ void Building::Destroy()
 {
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
-	timer.Start();
+	current_sprite = &sprites[RUIN];
+
 	switch (type)
 	{
 	case FARM:
@@ -102,14 +92,12 @@ void Building::Destroy()
 			App->scene->inactive_workers -= 5;
 			App->scene->workers -= 5;
 		}
-		current_sprite = &sprites[3];
 		break;
 	case LUMBER_MILL:
 		App->entitycontroller->GetTotalIncome();
-		current_sprite = &sprites[3];
 		break;
 	case TOWN_HALL:
-		App->audio->PlayMusic("Defeat Theme.ogg");
+		App->audio->PlayMusic(DEFEAT_THEME);
 		current_sprite = &sprites[4];
 		App->gui->Chronos->counter.PauseTimer();
 		App->scene->toRestart = true;
@@ -117,13 +105,15 @@ void Building::Destroy()
 		App->uiscene->toggleMenu(true, GAMEOVER_MENU);
 		break;
 	}
+
+	timer.Start();
 }
 
 
 void Building::HandleConstruction()
 {
 	int current_time = timer.ReadSec();
-	if (current_time >= building_time)
+	if (current_time >= cost.creation_time)
 	{
 		current_HP = max_HP;
 		App->scene->inactive_workers += 1;
@@ -134,13 +124,12 @@ void Building::HandleConstruction()
 			App->scene->inactive_workers += 5;
 		}
 		ex_state = OPERATIVE;
-		current_sprite = &sprites[1];
+		current_sprite = &sprites[COMPLETE];
 	}
 	else if (current_time > last_frame_time)
 	{
 		last_frame_time = current_time;
-		int hp_unit = max_HP / building_time;
-		current_HP += hp_unit;
+		current_HP += (max_HP / cost.creation_time);
 	}
 
 }
@@ -148,16 +137,17 @@ void Building::HandleConstruction()
 
 void Building::HandleResourceProduction()
 {
-	if (timer.ReadSec() >= 3 && !App->map->WalkabilityArea(position.x - (additional_size.x * App->map->data.tile_width / 2) + collider.w / 2, (position.y - (additional_size.x * App->map->data.tile_width / 2)) + collider.h / 2, additional_size.x, additional_size.y, false, true))
+	if (timer.ReadSec() >= 3)
 	{
 		timer.Start();
-		App->scene->wood += resource_production;
+		if(!App->map->WalkabilityArea(position.x - (additional_size.x * App->map->data.tile_width / 2) + collider.w / 2, (position.y - (additional_size.x * App->map->data.tile_width / 2)) + collider.h / 2, additional_size.x, additional_size.y, false, true))
+			App->scene->wood += resource_production;
 	}
 }
 
 void Building::CalculateResourceProduction()
 {
-	float production_modifier = App->entitycontroller->worker_wood_production * (1 - (float)((villagers_inside - 1) * 0.05f));
+	float production_modifier = WOOD_PER_WORKER * (1 - (float)((villagers_inside - 1) * 0.05f));
 	resource_production = 3 * villagers_inside * production_modifier;
 }
 

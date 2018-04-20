@@ -9,28 +9,25 @@
 
 LifeBar::LifeBar(Entity * entity, SDL_Texture* texture) : UI_element(0, 0, PROGRESSBAR, { 0,0,109,14 }, nullptr)
 {
-	switch (entity->entity_type)
+
+	if (entity->IsUnit())
 	{
-	case UNIT:
-		if (((Unit*)entity)->IsEnemy())
+		if ((entity)->IsEnemy())
 			bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("R_empty"), App->gui->GetLifeBarRect("R_full"), { 0,0,0,0 }, ((Unit*)entity)->max_HP, callback);
 		else
 			bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("G_empty"), App->gui->GetLifeBarRect("G_full"), { 0,0,0,0 }, ((Unit*)entity)->max_HP, callback);
 		offset.x = -(bar->section.w / 2);
-		break;
-	case BUILDING:
+	}
+	else if (entity->IsBuilding())
+	{
 		bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("Y_empty"), App->gui->GetLifeBarRect("Y_full"), { 0,0,0,0 }, ((Building*)entity)->max_HP, callback);
 		offset.x = ((Building*)entity)->sprites[0].w / 2 - bar->section.w / 2;
-		break;
-	/*case HERO:
-			bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("G_empty"), App->gui->GetLifeBarRect("G_full"), { 0,0,0,0 }, ((Hero*)entity)->max_HP, callback);
-		offset.x = entity->collider.w / 2 - bar->section.w / 2;
-		break;*/
 	}
+
 	offset.y = -(25 + bar->section.h);
 
 	this->entity = entity;
-	this->inMenu = false;
+	inMenu = false;
 }
 
 LifeBar::LifeBar(Entity * entity, SDL_Texture * texture, int x, int y)
@@ -38,24 +35,12 @@ LifeBar::LifeBar(Entity * entity, SDL_Texture * texture, int x, int y)
 	float progress = 1.0f;
 	int life = 100;
 	int max_value = 100;
-	switch (entity->entity_type)
-	{
-	case UNIT:
-		life = ((Unit*)entity)->current_HP;
-		max_value = ((Unit*)entity)->max_HP;
-		progress = life / max_value;
-		break;
-	case BUILDING:
-		life = ((Building*)entity)->current_HP;
-		max_value = ((Building*)entity)->max_HP;
-		progress = life / max_value;
-		break;
-	/*case HERO:
-		life = ((Hero*)entity)->current_HP;
-		max_value = ((Hero*)entity)->max_HP;
-		progress = life / max_value;
-		break;*/
-	}
+
+	life = entity->current_HP;
+	max_value = entity->max_HP;
+	progress = life / max_value;
+		
+	
 	if (progress >= 0.5)
 		bar = new ProgressBar(x, y, texture, App->gui->GetLifeBarRect("mG_empty"), App->gui->GetLifeBarRect("mG_full"), { 0,0,0,0 }, max_value, callback);
 	else if (progress >= 0.2)
@@ -84,29 +69,13 @@ void LifeBar::BlitElement(bool use_camera)
 	//Update progressbar
 	int life = 100;
 	int max_life = 100;
-	switch (entity->entity_type)
-	{
-	case UNIT:
-		life = ((Unit*)entity)->current_HP;
-		if (life < 0)
-			life = 0;
-		max_life = ((Unit*)entity)->max_HP;
-		bar->enterCurrentValue(life);
-		break;
-	case BUILDING:
-		life = ((Building*)entity)->current_HP;
-		max_life = ((Building*)entity)->max_HP;
-		if (life < 0)
-			life = 0;
-		bar->enterCurrentValue(life);
-		break;
-	/*case HERO:
-		life = ((Hero*)entity)->current_HP;
-		max_life = ((Hero*)entity)->max_HP;
-		bar->enterCurrentValue(life);
-		break;*/
-	}
-	//If in menu update bar color
+
+	life = ((Building*)entity)->current_HP;
+	max_life = ((Building*)entity)->max_HP;
+	if (life < 0)
+		life = 0;
+	bar->enterCurrentValue(life);
+
 	if (inMenu)
 	{
 		if (life / max_life != bar->progress)

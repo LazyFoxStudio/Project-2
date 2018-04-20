@@ -91,7 +91,7 @@ public:
 	j1Map();
 
 	// Destructor
-	virtual ~j1Map();
+	virtual ~j1Map() {};
 
 	// Called each loop iteration
 	void Draw();

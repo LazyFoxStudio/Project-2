@@ -79,7 +79,7 @@ void NextWaveWindow::updateWave()
 		enemyIcon->image = img;
 		enemiesIcons.push_back(enemyIcon);
 
-		Text* num = new Text(("x" + std::to_string(gruntSquads * App->entitycontroller->unitDB[GRUNT]->squad_members)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 10, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
+		Text* num = new Text(("x" + std::to_string(gruntSquads * App->entitycontroller->getUnitFromDB(GRUNT)->squad_members)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 10, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
 		squads.push_back(num);
 
 		counterY++;
@@ -92,7 +92,7 @@ void NextWaveWindow::updateWave()
 		enemyIcon->image = img;
 		enemiesIcons.push_back(enemyIcon);
 
-		Text* num = new Text(("x" + std::to_string(axeThrowerSquads * App->entitycontroller->unitDB[AXE_THROWER]->squad_members)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 15, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
+		Text* num = new Text(("x" + std::to_string(axeThrowerSquads * App->entitycontroller->getUnitFromDB(AXE_THROWER)->squad_members)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 15, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
 		squads.push_back(num);
 
 		counterY++;

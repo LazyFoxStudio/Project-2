@@ -75,8 +75,8 @@ bool j1UIScene::Update(float dt)
 	App->input->GetMousePosition(mouse_test.x, mouse_test.y);
 	mouse_test=App->render->ScreenToWorld(mouse_test.x, mouse_test.y);
 	
-	x = mouse_test.x;
-	y = mouse_test.y;
+	int x = mouse_test.x;
+	int y = mouse_test.y;
 
 	//minimap_
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)

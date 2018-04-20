@@ -13,14 +13,13 @@ bool j1ActionsController::Update(float dt)
 	BROFILER_CATEGORY("Actions Update", Profiler::Color::AliceBlue);
 	if (doingAction)
 	{
-		Color yellow(255, 255, 0, 150);
 		switch (action_type)
 		{
 		case MOVE:
 			//Blit mouse effect
 			int x, y;
 			App->input->GetMousePosition(x, y);
-			App->render->DrawQuad({ x, y, 10, 10 }, yellow, true, false);
+			App->render->DrawQuad({ x, y, 10, 10 }, Translucid_Yellow, true, false);
 			if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
 				App->entitycontroller->commandControl();
@@ -38,24 +37,18 @@ bool j1ActionsController::Update(float dt)
 			break;
 		case BUILD_BARRACKS:
 			if (doingAction)
-			{
-				App->entitycontroller->structure_beingbuilt = BARRACKS;
-				App->entitycontroller->building = true;
-			}
+				App->entitycontroller->to_build_type = BARRACKS;
+			
 			break;
 		case BUILD_LUMBER_MILL:
 			if (doingAction)
-			{
-				App->entitycontroller->structure_beingbuilt = LUMBER_MILL;
-				App->entitycontroller->building = true;
-			}
+				App->entitycontroller->to_build_type = LUMBER_MILL;
+			
 			break;
 		case BUILD_FARM:
 			if (doingAction)
-			{
-				App->entitycontroller->structure_beingbuilt = FARM;
-				App->entitycontroller->building = true;
-			}
+				App->entitycontroller->to_build_type = FARM;
+			
 			break;
 		case UNASSIGN_WORKER:
 			if (!App->entitycontroller->selected_entities.empty())
@@ -76,7 +69,7 @@ bool j1ActionsController::Update(float dt)
 		case CREATE_FOOTMAN:
 			if (!App->entitycontroller->selected_entities.empty())
 			{
-				if (App->entitycontroller->CheckCostTroop(FOOTMAN) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
+				if (App->entitycontroller->CheckCost(FOOTMAN) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->AddSquad(FOOTMAN, newSquadPos);
 			}
 			doingAction = false;
@@ -84,7 +77,7 @@ bool j1ActionsController::Update(float dt)
 		case CREATE_ARCHER:
 			if (!App->entitycontroller->selected_entities.empty())
 			{
-				if (App->entitycontroller->CheckCostTroop(ARCHER) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
+				if (App->entitycontroller->CheckCost(ARCHER) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->AddSquad(ARCHER, newSquadPos);
 			}
 			doingAction = false;

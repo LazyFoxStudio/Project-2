@@ -80,7 +80,6 @@
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Effects.cpp" />
-    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="j1ActionsController.cpp" />
     <ClCompile Include="j1Console.cpp" />
@@ -99,7 +98,6 @@
     <ClCompile Include="j1Timer.cpp" />
     <ClCompile Include="j1WaveController.cpp" />
     <ClCompile Include="Minimap.cpp" />
-    <ClCompile Include="Nature.cpp" />
     <ClCompile Include="p2Animation.cpp" />
     <ClCompile Include="p2Log.cpp" />
     <ClCompile Include="j1Render.cpp" />
@@ -144,7 +142,6 @@
     <ClInclude Include="j1Timer.h" />
     <ClInclude Include="j1WaveController.h" />
     <ClInclude Include="Minimap.h" />
-    <ClInclude Include="Nature.h" />
     <ClInclude Include="p2Animation.h" />
     <ClInclude Include="j1Audio.h" />
     <ClInclude Include="j1Input.h" />

@@ -87,9 +87,9 @@ public:
 
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
+
 	bool GatherWalkableAdjacents(iPoint map_pos, int count, std::vector<iPoint>& adjacents, int max_distance = 0);
 	iPoint FirstWalkableAdjacent(iPoint map_pos, int max_distance = 0);
-	iPoint WalkableAdjacentCloserTo(iPoint map_pos, iPoint target, Entity* entity_to_ignore = nullptr);    // this method checks collisions
 
 	FlowField* RequestFlowField(iPoint destination);
 

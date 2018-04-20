@@ -5,9 +5,9 @@
 
 class Unit;
 class Entity;
-class Command;
 
 #include "p2Point.h"
+#include "Command.h"
 #include <list>
 #include <vector>
 #include <deque>
@@ -22,12 +22,9 @@ public:
 	float max_speed = 0.0f;
 
 public:
-	Squad() {};
 	Squad(std::vector<Unit*>& units);
 	~Squad();
 
-	int getTotalHP();
-	int getTotalMaxHP();
 	Unit* getClosestUnitTo(iPoint map_p);
 	bool isInSquadSight(fPoint position);
 	bool getEnemiesInSight(std::list<fPoint>& list_to_fill);
@@ -36,6 +33,8 @@ public:
 
 	void Halt();
 	bool Update(float dt);
+
+	Command_Type getCurrentCommand() { return (commands.empty() ? NOTHING : commands.front()->type); }
 
 };
 

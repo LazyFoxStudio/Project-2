@@ -7,7 +7,6 @@
 #include "Unit.h"
 #include "Building.h"
 #include "Hero.h"
-#include "Nature.h"
 #include <map>
 #include <string>
 #include <list>
@@ -109,16 +108,15 @@ public:
 	void LoadDB(pugi::xml_node node);
 	void LoadFonts(pugi::xml_node node);
 
-	void AddIconData(unitType type, pugi::xml_node node);
+	void AddIconDataUnit(Type type, pugi::xml_node node);
 	/*void AddIconData(heroType type, pugi::xml_node node);*/
-	void AddIconData(buildingType type, pugi::xml_node node);
-	void AddIconData(resourceType type, pugi::xml_node node);
+	void AddIconDataBuilding(Type type, pugi::xml_node node);
 	SDL_Rect GetIconRect(Entity* entity);
 	//Hardcoded
-	SDL_Rect GetUnitRect(unitType type);
+	SDL_Rect GetUnitRect(Type type);
 	SDL_Rect GetLifeBarRect(std::string tag);
 	Button* GetActionButton(uint id);
-	std::list<Button*> activateActionButtons(uint ids[9]);
+	std::list<Button*> activateActionButtons(std::vector<uint> buttons);
 	bool checkActionButtonsHotkeys();
 
 	void newSelectionDone();
@@ -131,7 +129,6 @@ public:
 	uint popUp_wait_time = 0;
 	bool UI_Debug = false;
 	int alpha_value = 255;
-	uint button_click_fx = 0;
 	bool clickedOnUI = false;
 	j1PerfTimer hovering_element;
 	UI_element* current_hovering_element = nullptr;
@@ -157,10 +154,9 @@ private:
 	IngameMenu* inGameMenu = nullptr;
 	UI_element* draggingElement = nullptr;
 
-	std::map<unitType, SDL_Rect> unitIconRect;
+	std::map<Type, SDL_Rect> unitIconRect;
 	/*std::map<heroType, SDL_Rect> heroIconRect;*/
-	std::map<buildingType, SDL_Rect> buildingIconRect;
-	std::map<resourceType, SDL_Rect> resourceIconRect;
+	std::map<Type, SDL_Rect> buildingIconRect;
 	std::map<std::string, SDL_Rect> LifeBarRect;
 	std::map<uint, Button*> actionButtons;
 };
