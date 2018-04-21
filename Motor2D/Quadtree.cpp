@@ -193,6 +193,6 @@ void Quadtree::BlitSection()
 	}
 	else
 	{
-		App->render->DrawQuad(Space, White, false);
+		App->render->DrawQuad(Space, Black, false);
 	}
 }

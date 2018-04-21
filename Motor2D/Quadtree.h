@@ -1,7 +1,7 @@
 #ifndef __QUADTREE_H__
 #define __QUADTREE_H__ 
 
-#define MAX_OBJECTS 1
+#define MAX_OBJECTS 5
 #define MAX_LEVELS 10
 
 #include "SDL/include/SDL_rect.h"

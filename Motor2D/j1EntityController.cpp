@@ -19,6 +19,7 @@
 #include "j1WaveController.h"
 #include "UI_Button.h"
 #include "Building.h"
+#include "Quadtree.h"
 
 #define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
@@ -42,6 +43,8 @@ bool j1EntityController::Start()
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	Building* town_hall = addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
+
+	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
 /*
 	entity_iterator = entities.begin();
 	squad_iterator = all_squads.begin();*/
@@ -63,6 +66,8 @@ bool j1EntityController::Update(float dt)
 	{
 		if ((*it)->isActive || (*it) == hero)
 		{
+			colliderQT->insert(*it);
+
 			if (!App->scene->toRestart)
 			{
 				if (!(*it)->Update(dt))	entities_to_destroy.push_back(*it);
@@ -126,6 +131,7 @@ bool j1EntityController::Update(float dt)
 		App->gui->warningMessages->hideMessage(NO_RESOURCES);
 		App->gui->warningMessages->hideMessage(NO_TREES);
 	}
+
 
 	return true;
 }
@@ -240,6 +246,11 @@ bool j1EntityController::PostUpdate()
 		App->gui->newSelectionDone();
 
 	entities_to_destroy.clear();
+
+	if(debug)
+		colliderQT->BlitSection();
+
+	colliderQT->Clear();
 
 	return true;
 }
