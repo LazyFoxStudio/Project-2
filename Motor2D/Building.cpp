@@ -122,6 +122,7 @@ void Building::HandleConstruction()
 		{
 			App->scene->workers += 5;
 			App->scene->inactive_workers += 5;
+			workers_inside = 5;
 		}
 		ex_state = OPERATIVE;
 		current_sprite = &sprites[COMPLETE];
@@ -147,8 +148,8 @@ void Building::HandleResourceProduction()
 
 void Building::CalculateResourceProduction()
 {
-	float production_modifier = WOOD_PER_WORKER * (1 - (float)((villagers_inside - 1) * 0.05f));
-	resource_production = 3 * villagers_inside * production_modifier;
+	float production_modifier = WOOD_PER_WORKER * (1 - (float)((workers_inside - 1) * 0.05f));
+	resource_production = 3 * workers_inside * production_modifier;
 }
 
 void Building::Draw(float dt)

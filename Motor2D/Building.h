@@ -18,7 +18,7 @@ public:
 	iPoint size = { 0,0 };
 	iPoint additional_size = { 0,0 };
 	
-	int villagers_inside = 0;
+	int workers_inside = 0;
 	int resource_production = 0;
 
 	int last_frame_time = 0;

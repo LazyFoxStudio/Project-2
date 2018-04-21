@@ -54,6 +54,7 @@ public:
 	void HandleSFX(Type type, int volume = 128);
 	void GetTotalIncome();
 	void TownHallLevelUp();
+	void SubstractRandomWorkers(int num);
 
 	Unit* getUnitFromDB(Type type);
 	Hero* getHeroFromDB(Type type);

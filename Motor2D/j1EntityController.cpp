@@ -521,9 +521,9 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 		{
 			if (to_assign)
 			{
-				if (building->villagers_inside < MAX_VILLAGERS_LUMBERMILL && App->scene->workerAvalible())
+				if (building->workers_inside < MAX_VILLAGERS_LUMBERMILL && App->scene->workerAvalible())
 				{
-					building->villagers_inside += 1;
+					building->workers_inside += 1;
 					App->scene->inactive_workers -= 1;
 				}
 				else
@@ -533,9 +533,9 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 			}
 			else
 			{
-				if (building->villagers_inside > 0)
+				if (building->workers_inside > 0)
 				{
-					building->villagers_inside -= 1;
+					building->workers_inside -= 1;
 					App->scene->inactive_workers += 1;
 				}
 			}
@@ -746,6 +746,32 @@ void j1EntityController::TownHallLevelUp()
 	}
 }
 
+
+void j1EntityController::SubstractRandomWorkers(int num)
+{
+	int counter = 0;
+	std::list<Entity*>::iterator it = entities.begin();
+
+	while (counter < num)
+	{
+		if ((*it)->type == FARM)
+		{
+			if (((Building*)*it)->workers_inside > 0)
+			{
+				((Building*)*it)->workers_inside -= 1;
+				counter++;
+			}
+		}
+		if (it == entities.end())
+		{
+			it = entities.
+		}
+		it++;
+		
+	}
+	
+}
+
 bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 {
 	pugi::xml_node NodeInfo;
@@ -807,7 +833,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		buildingTemplate->texture = App->tex->Load(NodeInfo.child("texture").attribute("value").as_string("error"));
 
 		buildingTemplate->current_HP = buildingTemplate->max_HP = NodeInfo.child("Stats").child("life").attribute("value").as_int(0);
-		buildingTemplate->villagers_inside = NodeInfo.child("Stats").child("villagers").attribute("value").as_int(0);
+		buildingTemplate->workers_inside = NodeInfo.child("Stats").child("villagers").attribute("value").as_int(0);
 		buildingTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
 		buildingTemplate->cost.creation_time = NodeInfo.child("Stats").child("buildingTime").attribute("value").as_int(0);
 		buildingTemplate->cost.wood_cost = NodeInfo.child("Stats").child("woodCost").attribute("value").as_int(0);

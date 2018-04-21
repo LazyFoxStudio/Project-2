@@ -447,7 +447,7 @@ void IngameMenu::BlitElement(bool use_camera)
 	{
 		if (App->entitycontroller->selected_entities.size() > 0)
 		{
-			int workers_num = ((Building*)App->entitycontroller->selected_entities.front())->villagers_inside;
+			int workers_num = ((Building*)App->entitycontroller->selected_entities.front())->workers_inside;
 			std::string text = std::to_string(workers_num) + '/' + std::to_string(MAX_VILLAGERS_LUMBERMILL);
 			workers->setText(text);
 			workers->BlitElement(use_camera);
