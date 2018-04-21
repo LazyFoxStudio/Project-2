@@ -39,10 +39,10 @@ bool j1UIScene::Start()
 
 	//Set resource counters
 	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 0);
-	text_position_y->convertIntoCounter(&App->scene->inactive_workers);
+	text_position_y->convertIntoCounter(&App->scene->inactive_workers_int);
 
 	Text* gold_display = (Text*)App->gui->GetElement(TEXT, 2);
-	gold_display->convertIntoCounter(&App->scene->workers);
+	gold_display->convertIntoCounter(&App->scene->workers_int);
 
 	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 3);
 	wood_display->convertIntoCounter(&App->scene->wood);

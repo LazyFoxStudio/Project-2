@@ -16,6 +16,25 @@ class Squad;
 #define DEATH_TIME 5
 #define WOOD_PER_WORKER 2
 
+struct worker
+{
+	Building* farm = nullptr;
+	Building* working_at = nullptr;
+	bool to_destroy = false;
+
+	worker(Building* _farm)
+	{
+		farm = _farm;
+		working_at = nullptr;
+		to_destroy = false;
+	}
+	
+	bool IsBusy()
+	{
+		return (working_at == nullptr);
+	}
+};
+
 class j1EntityController : public j1Module
 {
 public:
@@ -54,7 +73,7 @@ public:
 	void HandleSFX(Type type, int volume = 128);
 	void GetTotalIncome();
 	void TownHallLevelUp();
-	void SubstractRandomWorkers(int num);
+
 
 	Unit* getUnitFromDB(Type type);
 	Hero* getHeroFromDB(Type type);
@@ -63,6 +82,15 @@ public:
 	Entity* CheckMouseHover(iPoint mouse_world);
 	std::vector<Entity*> CheckCollidingWith(SDL_Rect collider, Entity* entity_to_ignore = nullptr);
 	Entity* getNearestEnemy(fPoint position, bool isEnemy);
+
+	//------Worker Related Functions--------
+	void SubstractRandomWorkers(int num);
+	void DeleteWorkers();
+	void CreateWorkers(Building* target, int num);
+	bool CheckInactiveWorkers(int num = 1);
+	worker* GetInactiveWorker();
+	void AssignWorker(Building* building, worker* worker);
+
 
 public:
 

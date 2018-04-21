@@ -83,14 +83,17 @@ void Building::Destroy()
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
 	current_sprite = &sprites[RUIN];
+	for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
+	{
+		(*it)->working_at = nullptr;
+	}
 
 	switch (type)
 	{
 	case FARM:
-		if (App->scene->inactive_workers >= 5)
+		for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
 		{
-			App->scene->inactive_workers -= 5;
-			App->scene->workers -= 5;
+			(*it)->to_destroy = true;
 		}
 		break;
 	case LUMBER_MILL:
@@ -116,13 +119,16 @@ void Building::HandleConstruction()
 	if (current_time >= cost.creation_time)
 	{
 		current_HP = max_HP;
-		App->scene->inactive_workers += 1;
+		
 		timer.Start();
 		if (type == FARM)
 		{
-			App->scene->workers += 5;
-			App->scene->inactive_workers += 5;
-			workers_inside = 5;
+			App->entitycontroller->CreateWorkers(this, 5);
+		}
+		if (type != LUMBER_MILL)
+		{
+			(*workers_inside.end())->working_at = nullptr;
+			workers_inside.pop_back();
 		}
 		ex_state = OPERATIVE;
 		current_sprite = &sprites[COMPLETE];
@@ -148,9 +154,12 @@ void Building::HandleResourceProduction()
 
 void Building::CalculateResourceProduction()
 {
-	float production_modifier = WOOD_PER_WORKER * (1 - (float)((workers_inside - 1) * 0.05f));
-	resource_production = 3 * workers_inside * production_modifier;
+	float production_modifier = WOOD_PER_WORKER * (1 - (float)((workers_inside.size() - 1) * 0.05f));
+	resource_production = 3 * workers_inside.size() * production_modifier;
 }
+
+
+
 
 void Building::Draw(float dt)
 {

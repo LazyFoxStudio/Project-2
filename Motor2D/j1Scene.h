@@ -8,6 +8,7 @@ struct SDL_Texture;
 class Window;
 class LifeBar;
 class Building;
+struct worker;
 
 #define INIT_WOOD 500
 #define INIT_GOLD 500
@@ -41,9 +42,11 @@ public:
 	bool Load(pugi::xml_node& data);
 	bool Save(pugi::xml_node& data) const;
 
-	bool workerAvalible(int num = 1);
+	//bool workerAvalible(int num = 1);
 
 	void Restart_game();
+	void InitialWorkers(Building* town_hall);
+	void GetTotalInactiveWorkers();
 
 public:
 
@@ -55,8 +58,11 @@ public:
 	int gold = 0;
 	int oil = 0;
 
-	int workers = 0;
-	int inactive_workers = 0;
+	std::list<worker*> workers;
+	int workers_int = 0;
+	int inactive_workers_int = 0;
+	//int workers = 0;
+
 
 	int town_hall_lvl = 0;
 	

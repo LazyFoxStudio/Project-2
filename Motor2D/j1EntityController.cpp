@@ -42,6 +42,7 @@ bool j1EntityController::Start()
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	Building* town_hall = addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
+	App->scene->InitialWorkers(town_hall);
 /*
 	entity_iterator = entities.begin();
 	squad_iterator = all_squads.begin();*/
@@ -136,7 +137,7 @@ void j1EntityController::buildingCalculations()
 
 	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && !App->gui->clickedOnUI)
 	{
-		if (App->scene->workerAvalible() && App->entitycontroller->CheckCost(to_build_type))
+		if (CheckInactiveWorkers() && App->entitycontroller->CheckCost(to_build_type))
 		{
 			iPoint position;
 			App->input->GetMousePosition(position.x, position.y);
@@ -151,7 +152,6 @@ void j1EntityController::buildingCalculations()
 				App->gui->warningMessages->hideMessage(NO_TREES);
 				App->entitycontroller->SpendCost(to_build_type);
 
-				App->scene->inactive_workers -= 1;
 				if (App->actionscontroller->action_type == to_build_type && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT)
 					App->actionscontroller->doingAction = false;
 
@@ -426,8 +426,7 @@ Squad* j1EntityController::AddSquad(Type type, fPoint position)
 		if (!unit_template->IsEnemy())
 		{
 			App->scene->wood				-= unit_template->cost.wood_cost;
-			App->scene->inactive_workers	-= unit_template->cost.worker_cost;
-			App->scene->workers				-= unit_template->cost.worker_cost;
+			SubstractRandomWorkers(unit_template->cost.worker_cost);
 		}
 		squads.push_back(new_squad);
 	}
@@ -462,7 +461,12 @@ bool j1EntityController::placeBuilding(iPoint position)
 
 	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && App->entitycontroller->CheckCollidingWith(building_col).empty())
 	{
-		addBuilding(pos, to_build_type);
+		Building* tmp = addBuilding(pos, to_build_type);
+		worker* tmp2 = GetInactiveWorker();
+		
+		tmp->workers_inside.push_back(tmp2);
+		tmp2->working_at = tmp;
+		
 		App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, true,false);
 		App->wavecontroller->updateFlowField();
 
@@ -482,7 +486,7 @@ void j1EntityController::buildingProcessDraw()
 	Building* to_build = getBuildingFromDB(to_build_type);
 	bool enough_resources = true;
 
-	if (!App->scene->workerAvalible()) { App->gui->warningMessages->showMessage(NO_WORKERS); enough_resources = false; }
+	if (!CheckInactiveWorkers()) { App->gui->warningMessages->showMessage(NO_WORKERS); enough_resources = false; }
 	else								App->gui->warningMessages->hideMessage(NO_WORKERS);
 
 	if (!CheckCost(to_build_type)) { App->gui->warningMessages->showMessage(NO_RESOURCES); enough_resources = false; }
@@ -521,10 +525,11 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 		{
 			if (to_assign)
 			{
-				if (building->workers_inside < MAX_VILLAGERS_LUMBERMILL && App->scene->workerAvalible())
+				if (building->workers_inside.size() < MAX_VILLAGERS_LUMBERMILL && CheckInactiveWorkers())
 				{
-					building->workers_inside += 1;
-					App->scene->inactive_workers -= 1;
+					worker* tmp = GetInactiveWorker();
+					
+					AssignWorker(building, tmp);
 				}
 				else
 				{
@@ -533,10 +538,10 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 			}
 			else
 			{
-				if (building->workers_inside > 0)
+				if (building->workers_inside.size()<0)
 				{
-					building->workers_inside -= 1;
-					App->scene->inactive_workers += 1;
+					(*building->workers_inside.end())->working_at = nullptr;
+					building->workers_inside.pop_back();
 				}
 			}
 			building->CalculateResourceProduction();
@@ -547,7 +552,7 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 
 bool j1EntityController::CheckCost(Type target)
 {
-	return (App->scene->wood >= DataBase[target]->cost.wood_cost && App->scene->gold >= DataBase[target]->cost.gold_cost && App->scene->workerAvalible(DataBase[target]->cost.worker_cost));
+	return (App->scene->wood >= DataBase[target]->cost.wood_cost && App->scene->gold >= DataBase[target]->cost.gold_cost && CheckInactiveWorkers(DataBase[target]->cost.worker_cost));
 }
 
 bool j1EntityController::SpendCost(Type target)
@@ -750,27 +755,94 @@ void j1EntityController::TownHallLevelUp()
 void j1EntityController::SubstractRandomWorkers(int num)
 {
 	int counter = 0;
-	std::list<Entity*>::iterator it = entities.begin();
-
-	while (counter < num)
+	for (std::list<worker*>::iterator it = App->scene->workers.begin(); it != App->scene->workers.end(); it++)
 	{
-		if ((*it)->type == FARM)
+		if ((*it)->working_at == nullptr)
 		{
-			if (((Building*)*it)->workers_inside > 0)
+			(*it)->to_destroy = true;
+			counter++;
+			if (counter == num)
 			{
-				((Building*)*it)->workers_inside -= 1;
+				break;
+			}
+		}
+	}
+	
+	
+}
+
+void j1EntityController::DeleteWorkers()
+{
+
+}
+
+void j1EntityController::CreateWorkers(Building * target, int num)
+{
+	for (int i = 0; i < num; i++)
+	{
+		worker* tmp = new worker(target);
+		App->scene->workers.push_back(tmp);
+		target->workers_inside.push_back(tmp);
+	}
+}
+
+bool j1EntityController::CheckInactiveWorkers(int num)
+{
+
+	if (num == 1)
+	{
+		for (std::list<worker*>::iterator it = App->scene->workers.begin(); it != App->scene->workers.end(); it++)
+		{
+			if ((*it)->working_at == nullptr)
+			{
+			return true;
+			}
+		}
+		return false;
+	}
+	else
+	{
+		int counter = 0;
+		for (std::list<worker*>::iterator it = App->scene->workers.begin(); it != App->scene->workers.end(); it++)
+		{
+			if ((*it)->working_at == nullptr)
+			{
 				counter++;
 			}
 		}
-		if (it == entities.end())
+		if (counter >= num)
 		{
-			it = entities.
+			return true;
 		}
-		it++;
-		
+		else
+		{
+			return false;
+		}
 	}
-	
 }
+
+worker * j1EntityController::GetInactiveWorker()
+{
+	for (std::list<worker*>::iterator it = App->scene->workers.begin(); it != App->scene->workers.end(); it++)
+	{
+		if ((*it)->working_at == nullptr)
+		{
+			return *it;
+		}
+	}
+	return nullptr;
+
+}
+
+void j1EntityController::AssignWorker(Building * building, worker * worker)
+{
+	worker->working_at = building;
+	building->workers_inside.push_back(worker);
+}
+
+
+
+
 
 bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 {
@@ -833,7 +905,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		buildingTemplate->texture = App->tex->Load(NodeInfo.child("texture").attribute("value").as_string("error"));
 
 		buildingTemplate->current_HP = buildingTemplate->max_HP = NodeInfo.child("Stats").child("life").attribute("value").as_int(0);
-		buildingTemplate->workers_inside = NodeInfo.child("Stats").child("villagers").attribute("value").as_int(0);
+		//buildingTemplate->workers_inside = NodeInfo.child("Stats").child("villagers").attribute("value").as_int(0);
 		buildingTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
 		buildingTemplate->cost.creation_time = NodeInfo.child("Stats").child("buildingTime").attribute("value").as_int(0);
 		buildingTemplate->cost.wood_cost = NodeInfo.child("Stats").child("woodCost").attribute("value").as_int(0);

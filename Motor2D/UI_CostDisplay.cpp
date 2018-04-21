@@ -105,7 +105,7 @@ void CostDisplay::BlitElement(bool use_camera)
 	}
 	if (workers != nullptr)
 	{
-		if (workers->cost_num > App->scene->inactive_workers)
+		if (workers->cost_num > App->scene->inactive_workers_int)
 			workers->text_cost->setColor({ 255, 0, 0,255 });
 		else
 			workers->text_cost->setColor({ 0, 255, 0,255 });
