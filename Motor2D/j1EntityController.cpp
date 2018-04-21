@@ -747,31 +747,6 @@ void j1EntityController::TownHallLevelUp()
 }
 
 
-void j1EntityController::SubstractRandomWorkers(int num)
-{
-	int counter = 0;
-	std::list<Entity*>::iterator it = entities.begin();
-
-	while (counter < num)
-	{
-		if ((*it)->type == FARM)
-		{
-			if (((Building*)*it)->workers_inside > 0)
-			{
-				((Building*)*it)->workers_inside -= 1;
-				counter++;
-			}
-		}
-		if (it == entities.end())
-		{
-			it = entities.
-		}
-		it++;
-		
-	}
-	
-}
-
 bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 {
 	pugi::xml_node NodeInfo;
