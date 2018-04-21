@@ -48,6 +48,7 @@ bool Animation::LoadAnimation(pugi::xml_node& data, int width, int height)
 	int StartingRow = data.child("StartingRow").attribute("value").as_int(0);
 	int StartingColumn = data.child("StartingColumn").attribute("value").as_int(0);
 	speed = data.child("speed").attribute("value").as_float(10.0f);
+	loop = data.child("loop").attribute("value").as_bool(true);
 
 	for (int i = StartingRow; i <= StartingRow + rows; i++) 
 		for (int j = StartingColumn; j <= StartingColumn + columns; j++) 

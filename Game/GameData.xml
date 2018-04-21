@@ -449,6 +449,7 @@
                 <StartingRow value="9"/>
                 <StartingColumn value="0"/>
                 <speed value="10"/>
+                <loop value="false"/>
               </Animation>
                 <Animation> <!-- 25- DyingSouthEast-->
                 <rows value="0"/>
@@ -456,6 +457,7 @@
                 <StartingRow value="10"/>
                 <StartingColumn value="0"/>
                 <speed value="10"/>
+                <loop value="false"/>
               </Animation>
               <Animation> <!-- 26- DyingSouthWest-->
                 <rows value="0"/>
@@ -463,6 +465,7 @@
                 <StartingRow value="10"/>
                 <StartingColumn value="0"/>
                 <speed value="10"/>
+                <loop value="false"/>
               </Animation>
               <Animation> <!-- 27- DyingNorthWest-->
                 <rows value="0"/>
@@ -470,6 +473,7 @@
                 <StartingRow value="9"/>
                 <StartingColumn value="0"/>
                 <speed value="10"/>
+                <loop value="false"/>
               </Animation>
           </Animations>
 			<Actions>

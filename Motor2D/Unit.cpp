@@ -174,6 +174,7 @@ void Unit::animationController()
 			break;
 		}
 	}
+	
 	else if (commands.empty() ? false : commands.front()->type == ATTACK)
 	{
 		switch (dir)
@@ -200,6 +201,21 @@ void Unit::animationController()
 		case W:  new_animation = IDLE_W;  break;
 		case NW: new_animation = IDLE_NW; break;
 		case SW: new_animation = IDLE_SW; break;
+		}
+	}
+
+	if (current_HP <= 0)
+	{
+		switch (dir)
+		{
+		case E:  new_animation = DEAD_SE;  break;
+		case SE: new_animation = DEAD_SE; break;
+		case NE: new_animation = DEAD_NE; break;
+		case N:  new_animation = DEAD_NE;  break;
+		case S:  new_animation = DEAD_SW;  break;
+		case W:  new_animation = DEAD_NW;  break;
+		case NW: new_animation = DEAD_NW; break;
+		case SW: new_animation = DEAD_SW; break;
 		}
 	}
 
