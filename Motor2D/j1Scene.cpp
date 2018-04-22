@@ -86,6 +86,13 @@ bool j1Scene::Update(float dt)
 		App->audio->ModifySFXVolume(-10);
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+		int x, y;
+		App->input->GetMousePosition(x,y);
+		App->entitycontroller->AddSquad(FOOTMAN, {(float)x,(float)y});
+	}
+
 
 	return true;
 }

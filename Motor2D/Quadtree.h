@@ -51,7 +51,7 @@ public:
 	int getIndex(const SDL_Rect& r);
 
 	bool insert(Entity* entity);
-	bool CheckBoundaries(const SDL_Rect& r);
+	bool CheckBoundaries(const SDL_Rect& r)const;
 
 	vector<Entity*> FillCollisionVector(vector<Entity*> &EntityList, const SDL_Rect& collider);
 

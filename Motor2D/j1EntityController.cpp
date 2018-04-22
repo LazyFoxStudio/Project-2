@@ -44,7 +44,7 @@ bool j1EntityController::Start()
 	Building* town_hall = addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
 
-	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
+	//colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
 /*
 	entity_iterator = entities.begin();
 	squad_iterator = all_squads.begin();*/
@@ -66,7 +66,7 @@ bool j1EntityController::Update(float dt)
 	{
 		if ((*it)->isActive || (*it) == hero)
 		{
-			colliderQT->insert(*it);
+			//colliderQT->insert(*it);
 
 			if (!App->scene->toRestart)
 			{
@@ -247,10 +247,10 @@ bool j1EntityController::PostUpdate()
 
 	entities_to_destroy.clear();
 
-	if(debug)
+	/*if(debug)
 		colliderQT->BlitSection();
 
-	colliderQT->Clear();
+	colliderQT->Clear();*/
 
 	return true;
 }

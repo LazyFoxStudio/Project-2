@@ -11,13 +11,13 @@ void Quadtree::Clear()
 	//First we have to clear all the objects of the node
 	list<Entity*>::iterator item = Entities.begin();
 
-	for (item; item != Entities.end(); item++)
+	/*for (item; item != Entities.end(); item++)
 	{
 		if (*item == nullptr)
 		{
 			RELEASE(*item);
 		}
-	}
+	}*/
 
 	Entities.clear();
 
@@ -169,7 +169,7 @@ vector<Entity*> Quadtree::FillCollisionVector(vector<Entity*> &EntityList, const
 	return EntityList;
 }
 
-bool Quadtree::CheckBoundaries(const SDL_Rect& r)
+bool Quadtree::CheckBoundaries(const SDL_Rect& r)const
 {
 	if (Space.x < r.x + r.w && Space.x + Space.w > r.x)
 	{
