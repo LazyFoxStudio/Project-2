@@ -86,7 +86,8 @@ bool j1Scene::Update(float dt)
 		App->audio->ModifySFXVolume(-10);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	//TEST SPAWNER--------------------------------------------------
+	/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		int x, y;
 		iPoint mouse_pos;
@@ -94,7 +95,7 @@ bool j1Scene::Update(float dt)
 		mouse_pos=App->render->ScreenToWorld(x, y);
 		App->entitycontroller->AddSquad(FOOTMAN, {(float)mouse_pos.x,(float)mouse_pos.y});
 	}
-
+	*/
 	return true;
 }
 
