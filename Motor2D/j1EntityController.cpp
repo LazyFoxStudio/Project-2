@@ -558,7 +558,7 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 
 bool j1EntityController::CheckCost(Type target)
 {
-	return (App->scene->wood >= DataBase[target]->cost.wood_cost && App->scene->gold >= DataBase[target]->cost.gold_cost && App->scene->workerAvalible(DataBase[target]->cost.worker_cost));
+	return (App->scene->wood >= DataBase[target]->cost.wood_cost && App->scene->gold >= DataBase[target]->cost.gold_cost && (!DataBase[target]->IsUnit() || App->scene->workerAvalible(DataBase[target]->cost.worker_cost)));
 }
 
 bool j1EntityController::SpendCost(Type target)
