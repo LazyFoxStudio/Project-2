@@ -89,10 +89,11 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		int x, y;
+		iPoint mouse_pos;
 		App->input->GetMousePosition(x,y);
-		App->entitycontroller->AddSquad(FOOTMAN, {(float)x,(float)y});
+		mouse_pos=App->render->ScreenToWorld(x, y);
+		App->entitycontroller->AddSquad(FOOTMAN, {(float)mouse_pos.x,(float)mouse_pos.y});
 	}
-
 
 	return true;
 }

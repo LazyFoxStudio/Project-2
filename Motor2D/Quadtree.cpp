@@ -11,13 +11,13 @@ void Quadtree::Clear()
 	//First we have to clear all the objects of the node
 	list<Entity*>::iterator item = Entities.begin();
 
-	/*for (item; item != Entities.end(); item++)
+	for (item; item != Entities.end(); item++)
 	{
 		if (*item == nullptr)
 		{
 			RELEASE(*item);
 		}
-	}*/
+	}
 
 	Entities.clear();
 
@@ -93,7 +93,6 @@ int Quadtree::getIndex(const SDL_Rect& r)
 	return index;
 }
 
-//TODO 3: Create the Insert() function.
 bool Quadtree::insert(Entity* entity)
 {
 	if (entity == nullptr)
@@ -136,12 +135,9 @@ bool Quadtree::insert(Entity* entity)
 		}
 	}
 
-	//LOG("level: %d", Level);
-
 	return true;
 }
 
-//TODO 3: Create the FillCollisionVector() function.
 vector<Entity*> Quadtree::FillCollisionVector(vector<Entity*> &EntityList, const SDL_Rect& collider)
 {
 	if (Children[0] != nullptr)
@@ -171,14 +167,7 @@ vector<Entity*> Quadtree::FillCollisionVector(vector<Entity*> &EntityList, const
 
 bool Quadtree::CheckBoundaries(const SDL_Rect& r)const
 {
-	if (Space.x < r.x + r.w && Space.x + Space.w > r.x)
-	{
-		if (Space.y < r.y + r.h && Space.y + Space.h > r.y)
-		{
-			return true;
-		}
-	}
-	return false;
+	return (Space.x < r.x + r.w && Space.x + Space.w > r.x && Space.y < r.y + r.h && Space.y + Space.h > r.y);
 }
 
 
