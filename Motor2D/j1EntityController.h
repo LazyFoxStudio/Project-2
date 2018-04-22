@@ -28,11 +28,6 @@ struct worker
 		working_at = nullptr;
 		to_destroy = false;
 	}
-	
-	bool IsBusy()
-	{
-		return (working_at == nullptr);
-	}
 };
 
 class j1EntityController : public j1Module
@@ -90,6 +85,7 @@ public:
 	bool CheckInactiveWorkers(int num = 1);
 	worker* GetInactiveWorker();
 	void AssignWorker(Building* building, worker* worker);
+	void DestroyWorkers();
 
 
 public:

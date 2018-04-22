@@ -241,6 +241,7 @@ bool j1EntityController::PostUpdate()
 
 	entities_to_destroy.clear();
 
+	DestroyWorkers();
 	return true;
 }
 
@@ -538,9 +539,9 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 			}
 			else
 			{
-				if (building->workers_inside.size()<0)
+				if (building->workers_inside.size()>0)
 				{
-					(*building->workers_inside.end())->working_at = nullptr;
+					building->workers_inside.back()->working_at = nullptr;
 					building->workers_inside.pop_back();
 				}
 			}
@@ -782,7 +783,7 @@ void j1EntityController::CreateWorkers(Building * target, int num)
 	{
 		worker* tmp = new worker(target);
 		App->scene->workers.push_back(tmp);
-		target->workers_inside.push_back(tmp);
+		target->workers_inside.push_front(tmp);
 	}
 }
 
@@ -838,6 +839,24 @@ void j1EntityController::AssignWorker(Building * building, worker * worker)
 {
 	worker->working_at = building;
 	building->workers_inside.push_back(worker);
+}
+
+void j1EntityController::DestroyWorkers()
+{
+	for (std::list<worker*>::iterator it = App->scene->workers.begin(); it != App->scene->workers.end(); it++)
+	{
+		if ((*it)->to_destroy)
+		{
+			worker* tmp = (*it);
+			if (tmp->working_at != nullptr)
+			{
+				(*it)->working_at->workers_inside.remove(*it);
+			}
+			(*it)->farm->workers_inside.remove(*it);
+			App->scene->workers.remove(*it);
+			RELEASE(tmp);
+		}
+	}
 }
 
 

@@ -100,6 +100,10 @@ void Building::Destroy()
 		App->entitycontroller->GetTotalIncome();
 		break;
 	case TOWN_HALL:
+		for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
+		{
+			(*it)->to_destroy = true;
+		}
 		App->audio->PlayMusic(DEFEAT_THEME);
 		current_sprite = &sprites[4];
 		App->gui->Chronos->counter.PauseTimer();
@@ -127,8 +131,13 @@ void Building::HandleConstruction()
 		}
 		if (type != LUMBER_MILL)
 		{
-			(*workers_inside.end())->working_at = nullptr;
+			workers_inside.back()->working_at = nullptr;
 			workers_inside.pop_back();
+		}
+		else
+		{
+			CalculateResourceProduction();
+			App->entitycontroller->GetTotalIncome();
 		}
 		ex_state = OPERATIVE;
 		current_sprite = &sprites[COMPLETE];
