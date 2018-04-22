@@ -85,8 +85,20 @@ bool j1Scene::Update(float dt)
 		App->audio->ModifySFXVolume(-10);
 	}
 
+
 	workers_int = workers.size();
 	GetTotalInactiveWorkers();
+
+	//TEST SPAWNER--------------------------------------------------
+	/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+		int x, y;
+		iPoint mouse_pos;
+		App->input->GetMousePosition(x,y);
+		mouse_pos=App->render->ScreenToWorld(x, y);
+		App->entitycontroller->AddSquad(FOOTMAN, {(float)mouse_pos.x,(float)mouse_pos.y});
+	}
+	*/
 
 	return true;
 }

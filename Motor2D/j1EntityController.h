@@ -10,6 +10,7 @@
 #include <map>
 
 class Squad;
+class Quadtree;
 
 #define TOWN_HALL_POS {2000,2000}
 #define MAX_VILLAGERS_LUMBERMILL 10
@@ -106,6 +107,8 @@ public:
 	std::list<Squad*>::iterator squad_iterator;*/
 
 	bool debug = false;
+
+	Quadtree* colliderQT = nullptr;
 
 	Type to_build_type = NONE_ENTITY;
 	SDL_Rect selection_rect = { 0,0,0,0 };
