@@ -22,12 +22,40 @@ struct sprite
 	SDL_Rect section;
 };
 
+enum alert_type
+{
+	DANGER,
+	ASSIST,
+	LIMIT
+};
+
+struct alert_def
+{
+	SDL_Surface* img;
+	alert_type type;
+};
+
+struct alert
+{
+	alert()
+	{
+		time_started_at = SDL_GetTicks();
+	}
+	int time_started_at;
+	int time_in_seconds;
+	int x;
+	int y;
+	alert_type type;
+	bool to_delete = false;
+};
+
 class Minimap
 {
 public:
 
 	std::list<point> point_queue;
 	std::list<sprite> sprite_queue;
+	std::list<alert*>alert_queue;
 
 	// position of the minimap on the window
 	int window_position_x;
@@ -40,6 +68,8 @@ public:
 private:
 
 	SDL_Surface* base_image = nullptr;// the base texture we are using will be saved here
+
+	std::list<alert_def>alert_images;
 
 	//relation to the map it is representing
 	float ratio_x = 1;
@@ -63,6 +93,10 @@ public:
 
 	// used to add a sprite to the map, the sprite must be loaded in whoever calls this function
 	void Draw_Sprite(SDL_Surface* img, int x, int y);
+
+	void AddAlert(int x, int y, int time_in_seconds, alert_type type);
+
+	void AddAlertDef(const char* path, alert_type type);
 
 	//transforms a coordinate clicked in the minimap into a real map one
 	void Mouse_to_map(int& map_x, int& map_y);
