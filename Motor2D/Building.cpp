@@ -67,7 +67,10 @@ bool Building::Update(float dt)
 
 		if (type == LUMBER_MILL)
 			HandleResourceProduction();
+		else if (type == FARM)
+			HandleWorkerProduction();
 		break;
+		
 	case DESTROYED:
 		if (timer.ReadSec() > DEATH_TIME)
 			App->entitycontroller->entities_to_destroy.push_back(this);
@@ -124,7 +127,7 @@ void Building::HandleConstruction()
 	{
 		current_HP = max_HP;
 		
-		timer.Start();
+		
 		if (type == FARM)
 		{
 			App->entitycontroller->CreateWorkers(this, 5);
@@ -136,6 +139,7 @@ void Building::HandleConstruction()
 		}
 		else
 		{
+			timer.Start();
 			CalculateResourceProduction();
 			App->entitycontroller->GetTotalIncome();
 		}
@@ -165,6 +169,20 @@ void Building::CalculateResourceProduction()
 {
 	float production_modifier = WOOD_PER_WORKER * (1 - (float)((workers_inside.size() - 1) * 0.05f));
 	resource_production = 3 * workers_inside.size() * production_modifier;
+}
+
+void Building::HandleWorkerProduction()
+{
+	if (workers_inside.size() < MAX_VILLAGERS_FARM && !producing_worker)
+	{
+		timer.Start();
+		producing_worker = true;
+	}
+	else if (workers_inside.size() < MAX_VILLAGERS_FARM && producing_worker && timer.ReadSec()>FARM_WORKER_PRODUCTION_SECONDS)
+	{
+		App->entitycontroller->CreateWorkers(this, 1);
+		producing_worker = false;
+	}
 }
 
 

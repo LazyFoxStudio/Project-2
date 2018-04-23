@@ -26,6 +26,7 @@ public:
 
 	std::vector<SDL_Rect> sprites;
 	SDL_Rect* current_sprite = nullptr;
+	bool producing_worker = false;
 
 public:
 	Building() {};
@@ -38,6 +39,7 @@ public:
 	void HandleConstruction();
 	void HandleResourceProduction();
 	void CalculateResourceProduction();
+	void HandleWorkerProduction();
 
 	void Destroy();
 };
