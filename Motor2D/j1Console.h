@@ -19,7 +19,7 @@ class j1Console : public j1Module
 {
 public:
 	j1Console();
-	~j1Console();
+	~j1Console() {};
 
 	bool Start();
 
@@ -29,13 +29,16 @@ public:
 
 	bool CleanUp();
 
-	bool UIinteraction(/*UIelement* element*/);
+	bool Usefunction(/*UIelement* element*/);
 
 	bool Save(pugi::xml_node& node)const;
 	bool Load(pugi::xml_node& node);
 
 	std::list<std::string> logs;
 	
+	//text being written in the console
+	std::string editable_text;
+
 	//UITextbox* input = nullptr;
 
 	std::list<function*> functions;

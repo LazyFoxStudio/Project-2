@@ -89,13 +89,15 @@ void Minimap::DrawMinimap()
 	{
 		//now we make it fit inside the modifiable texture
 		SDL_Surface* s = nullptr;
-		SDL_Rect r = { (*it)->x*ratio_x, (*it)->y *ratio_y, 12, 12 };//PROVISIONAL
+		SDL_Rect r = { (*it)->x*ratio_x, (*it)->y *ratio_y, 1, 1 };//PROVISIONAL
 
 		for (std::list<alert_def>::iterator it_images = alert_images.begin(); it_images != alert_images.end(); it_images++)
 		{
 			if ((*it)->type == it_images->type)
 			{
 				s = it_images->img;
+				r.w = s->w;//PROVISIONAL
+				r.h = s->h;
 				break;
 			}
 		}

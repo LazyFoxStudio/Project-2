@@ -44,13 +44,13 @@ bool j1Console::PreUpdate()
 		{
 			LOG("console on!");
 			console_active = true;
-			// input = (UITextbox*)App->gui->GUIAdd_textbox(0, App->win->screen_surface->h / 2,this);
+			App->input->StartTextInput();
 		}
 		else
 		{
 			LOG("console off!");
 			console_active = false;
-			// App->gui->delete_element((UIelement*)input);
+			App->input->StopTextInput();
 		}
 	}
 	return true;
@@ -59,7 +59,14 @@ bool j1Console::PreUpdate()
 bool j1Console::Update(float dt)
 {
 	BROFILER_CATEGORY("Update_Console", Profiler::Color::DarkOliveGreen);
-	
+	//TEXT MANAGEMENT
+
+	if (console_active)
+	{
+		editable_text += App->input->text_buffer;
+		App->input->text_buffer.clear();
+		LOG("%s",editable_text.c_str());
+	}
 
 	return true;
 }
@@ -68,7 +75,7 @@ bool j1Console::Update(float dt)
 bool j1Console::PostUpdate()
 {
 	BROFILER_CATEGORY("PostUpdate_Console", Profiler::Color::DarkOliveGreen);
-
+	//PRINTING ONLY
 	if (console_active)
 	{
 		SDL_Rect r = { -App->render->camera.x,-App->render->camera.y,App->win->screen_surface->w ,App->win->screen_surface->h / 2 };
@@ -77,6 +84,7 @@ bool j1Console::PostUpdate()
 		App->render->DrawQuad(r, Grey,true,true);
 
 		SDL_Color color = { Black.r, Black.g, Black.b, Black.a };
+
 		int iterations = 0;
 		for(std::list<std::string>::reverse_iterator it = logs.rbegin(); it != logs.rend(); it++)
 		{
@@ -92,7 +100,7 @@ bool j1Console::PostUpdate()
 	return true;
 }
 
-bool j1Console::UIinteraction(/*UIelement* element*/)
+bool j1Console::Usefunction(/*UIelement* element*/)
 {
 	bool ret = true;
 	if (false/*element == input*/)

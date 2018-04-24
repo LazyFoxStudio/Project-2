@@ -84,6 +84,10 @@ bool j1Input::PreUpdate()
 			case SDL_QUIT:
 				windowEvents[WE_QUIT] = true;
 			break;
+			
+			case SDL_TEXTINPUT:
+				text_buffer += event.text.text;
+			break;
 
 			case SDL_WINDOWEVENT:
 				switch(event.window.event)
@@ -153,4 +157,16 @@ void j1Input::GetMouseMotion(int& x, int& y)
 {
 	x = mouse_motion_x;
 	y = mouse_motion_y;
+}
+
+void j1Input::StartTextInput()
+{
+	SDL_StartTextInput();
+	text_buffer.clear();
+}
+
+void j1Input::StopTextInput()
+{
+	SDL_StopTextInput();
+	text_buffer.clear();
 }

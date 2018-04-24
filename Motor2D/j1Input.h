@@ -55,6 +55,11 @@ public:
 
 	j1KeyState GetMouseButtonDown(int id) const { return mouse_buttons[id - 1]; }
 
+	std::string text_buffer;
+	//console_
+	void StartTextInput();
+	
+	void StopTextInput();
 
 	// Get mouse / axis position
 	void GetMousePosition(int &x, int &y);
