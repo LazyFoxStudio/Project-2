@@ -84,6 +84,7 @@ bool j1Scene::Update(float dt)
 	{
 		App->audio->ModifySFXVolume(-10);
 	}
+	//if(App->in)
 
 
 	workers_int = workers.size();
