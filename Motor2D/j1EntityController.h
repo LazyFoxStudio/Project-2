@@ -89,6 +89,7 @@ public:
 	worker* GetInactiveWorker();
 	void AssignWorker(Building* building, worker* worker);
 	void DestroyWorkers();
+	void UnassignRandomWorker();
 
 
 public:

@@ -872,6 +872,23 @@ void j1EntityController::DestroyWorkers()
 	}
 }
 
+void j1EntityController::UnassignRandomWorker()
+{
+	for (std::list<worker*>::iterator it = App->scene->workers.begin(); it != App->scene->workers.end(); it++)
+	{
+		if ((*it)->working_at != nullptr)
+		{
+			if ((*it)->working_at->ex_state != BEING_BUILT)
+			{
+				(*it)->working_at->CalculateResourceProduction();
+				(*it)->working_at->workers_inside.remove(*it);
+				(*it)->working_at = nullptr;
+				break;
+			}
+		}
+	}
+}
+
 
 bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 {

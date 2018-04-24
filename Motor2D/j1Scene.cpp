@@ -84,7 +84,10 @@ bool j1Scene::Update(float dt)
 	{
 		App->audio->ModifySFXVolume(-10);
 	}
-	//if(App->in)
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		App->entitycontroller->UnassignRandomWorker();
+	}
 
 
 	workers_int = workers.size();
