@@ -153,6 +153,10 @@ Resolution of the screen: 1680x 1050y
       <position x="6" y="800"/>
       <base_image path ="Assets/Sprites/Minimap Sprites/minimap_base.png"/>
       <map width ="4096" height ="4096"/>
+      <alerts>
+        <path value ="Assets/Sprites/Minimap Sprites/alert.png" type ="0"/>
+        <path value ="Assets/Sprites/Minimap Sprites/assist.png" type ="1"/>
+      </alerts>
     </minimap>
     
 	</menu>
