@@ -52,6 +52,8 @@ public:
 
 public:
 	bool console_active = false;
+private:
+	int textpos;
 
 };
 #endif // !__J1ENTITIES_H__

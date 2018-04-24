@@ -63,9 +63,45 @@ bool j1Console::Update(float dt)
 
 	if (console_active)
 	{
-		editable_text += App->input->text_buffer;
+		if (App->input->text_buffer.length() > 0)
+		{
+		editable_text.insert(textpos, App->input->text_buffer);
+		textpos += App->input->text_buffer.length();
 		App->input->text_buffer.clear();
-		LOG("%s",editable_text.c_str());
+		LOG("%s", editable_text.c_str());
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_HOME) == KEY_DOWN && editable_text.length() >0)
+		{
+			textpos = 0;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_END) == KEY_DOWN && editable_text.length() >0)
+		{
+			textpos = editable_text.length();
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN && editable_text.length() >0 && textpos > 0)
+		{textpos -= 1;}
+
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN && editable_text.length() >0 && textpos < editable_text.length())
+		{textpos += 1;}
+
+		if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN && editable_text.length() >0 && textpos > 0)
+		{
+			editable_text.erase(textpos - 1);
+			textpos -= 1;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN && editable_text.length() >0 && textpos != editable_text.length())
+		{
+			editable_text.erase(textpos);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+		{
+			Usefunction();
+			textpos = 0;
+		}
 	}
 
 	return true;
@@ -90,10 +126,28 @@ bool j1Console::PostUpdate()
 		{
 			SDL_Texture* text_texture = App->font->Print((*it).c_str(), &color, App->font->default_font);
 
-			App->render->Blit(text_texture, 0, App->win->screen_surface->h / 2 - 15 - 20*iterations);
+			App->render->Blit(text_texture, -App->render->camera.x, App->win->screen_surface->h / 2 - 30 - 20*iterations - App->render->camera.y);
 			App->tex->UnLoad(text_texture);
 
 			++iterations;
+		}
+		if (editable_text.length() > 0)
+		{
+			SDL_Texture* edit_text = App->font->Print(editable_text.c_str(), &color, App->font->default_font);
+
+			App->render->Blit(edit_text, -App->render->camera.x, App->win->screen_surface->h / 2 - App->render->camera.y);
+			App->tex->UnLoad(edit_text);
+
+			int width = 0;
+			int height;
+			std::string yolo = editable_text;
+			if (editable_text.length() > 0)
+			{
+				char* test = (char*)yolo.c_str();
+				test[textpos] = '\0';
+				App->font->CalcSize(test, width, height, App->font->default_font);
+			}
+			App->render->DrawQuad({ -App->render->camera.x + width, App->win->screen_surface->h / 2 - App->render->camera.y,2,25 }, Grey, true, true);
 		}
 	}
 
@@ -103,64 +157,57 @@ bool j1Console::PostUpdate()
 bool j1Console::Usefunction(/*UIelement* element*/)
 {
 	bool ret = true;
-	if (false/*element == input*/)
+
+	//UITextbox* textbox = (UITextbox*)element;
+	std::string new_string = editable_text;
+	editable_text.clear();
+
+	LOG(new_string.c_str());
+	logs.push_back(new_string);
+	//we gonna need to analyze this string
+
+	std::string maybe;
+	maybe = new_string;
+
+	std::vector<std::string> strings;
+	std::string first = "";
+	strings.push_back(first);
+	//every space in this will be starting a new string
+	
+	int current_string = 0;
+	for (int i = 0; i < new_string.length(); ++i)
 	{
-		//UITextbox* textbox = (UITextbox*)element;
-		std::string new_string = ""; // textbox->text;
-		LOG(new_string.c_str());
-		logs.push_back(new_string);
-		//we gonna need to analyze this string
-
-		std::string maybe;
-		maybe = new_string;
-
-		std::vector<std::string> strings;
-		std::string first = "";
-		strings.push_back(first);
-		//every space in this will be starting a new string
-		
-		int current_string = 0;
-
-		for (int i = 0; i < new_string.length(); ++i)
+		if (maybe[i] == 32)//space
 		{
-			if (maybe[i] == 32)//space
-			{
-				std::string next_word = "";
-				strings.push_back(next_word);
-				++current_string;
-			}
-			else
-			{
-				strings[current_string] += maybe[i];
-			}
+			std::string next_word = "";
+			strings.push_back(next_word);
+			++current_string;
 		}
-
+		else
+		{
+			strings[current_string] += maybe[i];
+		}
+	}
 		//now we check if he inputed a function
-		bool found_function = false;
-		for(std::list<function*>::iterator it = functions.begin(); it != functions.end(); it++)
+	bool found_function = false;
+	for(std::list<function*>::iterator it = functions.begin(); it != functions.end(); it++)
+	{
+		if ((*it)->name == strings[0] )
 		{
-			if ((*it)->name == strings[0] )
-			{
-				found_function = true;
-				std::vector<int> arguments;
+			found_function = true;
+			std::vector<int> arguments;
 
-				for (int i = 1; i < strings.size(); ++i)
-					arguments.push_back(std::stoi(strings[i]));
+			for (int i = 1; i < strings.size(); ++i)
+				arguments.push_back(std::stoi(strings[i]));
 
-				if (arguments.size() < (*it)->min_args && arguments.size() > (*it)->max_args)
-					ret = (*it)->callback->Console_Interaction((*it)->name, arguments);
-				else
-					logs.push_back("argument error (not enough or too many)");
-			}
+			if (arguments.size() >= (*it)->min_args && arguments.size() <= (*it)->max_args)
+				ret = (*it)->callback->Console_Interaction((*it)->name, arguments);
+			else
+				logs.push_back("argument error (not enough or too many)");
 		}
-
-		if (!found_function) logs.push_back("function not found");
-
-		//so fukin dirty :V
-		//App->gui->delete_element(textbox);
-		//input = (UITextbox*)App->gui->GUIAdd_textbox(0, App->win->screen_surface->h / 2, this);
 	}
 
+	if (!found_function) logs.push_back("function not found");
 	return ret;
 }
 
@@ -179,22 +226,22 @@ int j1Console::AddFunction(const char* name, j1Module* callback, int min_args, i
 
 }
 
-bool j1Console::Console_Interaction(std::string& function, std::vector<int>& arguments)
+bool j1Console::Console_Interaction(std::string& _function, std::vector<int>& arguments)
 {
-	if (function == function_1)
+	if (_function == "function_1")
 		LOG("works");
-	else if (function == exit)
+	else if (_function == "exit")
 	{
 		LOG("Exiting from console");
 		return false;
 	}
-	else if (function == help)
+	else if (_function == "help")
 	{
 		logs.push_back("The avalible commands are the following:");
-		for (std::list<std::string>::iterator it = logs.begin(); it != logs.end(); it++)
+		for (std::list<function*>::iterator it = functions.begin(); it != functions.end(); it++)
 		{
-			logs.push_back(*it);
-			LOG("%s", (*it).c_str());
+			logs.push_back((*it)->name.c_str());
+			LOG("%s", (*it)->name.c_str());
 		}
 	}
 	return true;
