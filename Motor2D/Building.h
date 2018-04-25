@@ -40,6 +40,7 @@ public:
 	void HandleResourceProduction();
 	void CalculateResourceProduction();
 	void HandleWorkerProduction();
+	void RepairBuilding();
 
 	void Destroy();
 };
