@@ -22,6 +22,7 @@ class j1Scene;
 class j1SceneSwitch;
 class j1Map;
 class j1EntityController;
+class j1ParticleController;
 class j1ActionsController;
 class j1PathFinding;
 class j1Fonts;
@@ -100,6 +101,7 @@ public:
 	j1Audio*				audio = nullptr;
 	j1UIScene*				uiscene = nullptr;
 	j1Console*				console = nullptr;
+	j1ParticleController*	particle = nullptr;
 	j1Scene*				scene = nullptr;
 	j1SceneSwitch*			sceneswitch = nullptr;
 	j1Map*					map = nullptr;

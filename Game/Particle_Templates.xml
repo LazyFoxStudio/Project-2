@@ -1,0 +1,13 @@
+<node>
+   <particle>
+<!-- Test Arrow -->
+	<template> 
+		<type value="1"/>
+		<anim>
+			<pushback x="322" y="5" w="13" h="46"/>
+			<loop value="false"/>
+		</anim>
+	</template>
+   </particle>
+</node>
+

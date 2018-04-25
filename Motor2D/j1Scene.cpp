@@ -10,6 +10,7 @@
 #include "j1Scene.h"
 #include "j1UIScene.h"
 #include "j1Sceneswitch.h"
+#include "j1ParticleController.h"
 #include "j1Pathfinding.h"
 #include "j1EntityController.h"
 #include "j1Gui.h"
@@ -88,7 +89,10 @@ bool j1Scene::Update(float dt)
 	{
 		App->entitycontroller->UnassignRandomWorker();
 	}
-
+	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+	{
+		App->particle->AddParticle(particleType::ARROW, 100, 100, 10000);
+	}
 
 	workers_int = workers.size();
 	GetTotalInactiveWorkers();
