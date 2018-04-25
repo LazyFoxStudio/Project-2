@@ -16,6 +16,7 @@
 #include "j1Map.h"
 #include "j1App.h"
 #include "j1EntityController.h"
+#include "j1ParticleController.h"
 #include "j1ActionsController.h"
 #include "j1Pathfinding.h"
 #include "j1Fonts.h"
@@ -41,6 +42,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	sceneswitch			= new j1SceneSwitch();
 	map					= new j1Map();
 	entitycontroller	= new j1EntityController();
+	particle			= new j1ParticleController();
 	actionscontroller	= new j1ActionsController();
 	pathfinding			= new j1PathFinding();
 	font				= new j1Fonts();
@@ -62,6 +64,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(uiscene);
 	AddModule(sceneswitch);
 	AddModule(entitycontroller);
+	AddModule(particle);
 	AddModule(actionscontroller);
 	
 	AddModule(wavecontroller);

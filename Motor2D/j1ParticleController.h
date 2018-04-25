@@ -35,14 +35,16 @@ class j1ParticleController : public j1Module
 public:
 	j1ParticleController();
 	~j1ParticleController();
-	bool Awake();
+	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool Update(float dt);
 	bool CleanUp();
 
 	void LoadParticlesFromXML();
+	particleType GetTypeFromInt(int posOnEnum);
+	Particle* FindParticleType(particleType type);
 
-	void AddParticle(Particle& particle, int x, int y, float speed_x = 0.0f, float speed_y = 0.0f, Uint32 delay = 0, bool using_camera = true, particleType type = NO_TYPE);
+	void AddParticle(particleType type = NO_TYPE, int x = 0, int y = 0, int life = 0, float speed_x = 0.0f, float speed_y = 0.0f, bool using_camera = true);
 	//void DeleteParticle();
 
 private:

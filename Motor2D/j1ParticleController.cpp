@@ -15,15 +15,18 @@ j1ParticleController::~j1ParticleController()
 {}
 
 // Load assets
-bool j1ParticleController::Awake()
+bool j1ParticleController::Awake(pugi::xml_node& config)
 {
-	
+	name = "particle";
+
+	LoadParticlesFromXML();
+
 	return true;
 }
 
 bool j1ParticleController::Start()
 {
-	graphics = App->tex->Load("assets/images/particles.png");
+	graphics = App->tex->Load("Assets/Sprites/Projectiles and Particles.png");
 	return true;
 }
 
@@ -40,19 +43,59 @@ bool j1ParticleController::CleanUp()
 			active[i] = nullptr;
 		}
 	}
-
+	for (std::list<Particle*>::reverse_iterator it = particleTemplates.rbegin(); it != particleTemplates.rend() && (*it) != nullptr; it++)
+	{
+		delete *it;
+		*it = nullptr;
+	}
 	return true;
 }
 
 void j1ParticleController::LoadParticlesFromXML()
 {
-	/*pugi::xml_document Particledoc;
+	pugi::xml_document Particledoc;
 	pugi::xml_node file;
 
-	file = App->LoadFile(Particledoc, "Audio_Paths.xml");
+	file = App->LoadFile(Particledoc, "Particle_Templates.xml");
 
-	for (pugi::xml_node part = file.child("SFX").child("path"); part; part = part.next_sibling("path"))
-		LoadFx(SFX.attribute("sfx").as_string());*/
+	Particle* tmp = new Particle();
+
+	for (pugi::xml_node part = file.child("particle").child("template"); part; part = part.next_sibling("template"))
+	{
+		tmp->type = GetTypeFromInt(part.child("type").attribute("value").as_int(0));
+
+		pugi::xml_node childNode = part.child("anim");
+
+		tmp->anim.speed = childNode.child("speed").attribute("value").as_float(0);
+		tmp->anim.loop = childNode.child("loop").attribute("value").as_bool(true);
+		
+		for (pugi::xml_node pb = childNode.child("pushback"); pb; pb = pb.next_sibling("pushback"))
+			tmp->anim.PushBack({ pb.attribute("x").as_int(0), pb.attribute("y").as_int(0), pb.attribute("w").as_int(0), pb.attribute("h").as_int(0) });
+
+		particleTemplates.push_back(tmp);
+	}
+
+}
+
+particleType j1ParticleController::GetTypeFromInt(int posOnEnum)
+{
+	switch (posOnEnum)
+	{
+	case 1:
+	{
+		return particleType::ARROW;
+	}
+	default:
+		return particleType::NO_TYPE;
+	}
+}
+
+Particle* j1ParticleController::FindParticleType(particleType type)
+{
+	Particle tmp;
+
+	for (std::list<Particle*>::iterator it = particleTemplates.begin(); it != particleTemplates.end(); it++)
+		if ((*it)->type == type) return *it;
 
 }
 
@@ -83,25 +126,25 @@ bool j1ParticleController::Update(float dt)
 	return true;
 }
 
-void j1ParticleController::AddParticle(Particle& particle, int x, int y, float speed_x, float speed_y, Uint32 delay,  bool using_camera, particleType type)
+void j1ParticleController::AddParticle(particleType type, int x, int y, int life, float speed_x, float speed_y, bool using_camera)
 {
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
 		if (active[i] == nullptr)
 		{
-			Particle* p = new Particle(particle);
-			p->born = SDL_GetTicks() + delay;
+			Particle* p = new Particle(*FindParticleType(type));
+			p->born = SDL_GetTicks();
 			
 			if(speed_x != 0)
 			p->speed.x = speed_x;
 			if(speed_y != 0)
 			p->speed.y = speed_y;
-			
+			if (life != 0)
+			p->life = life;
 
 			p->position.x = x;
 			p->position.y = y;
 		
-			p->type = type;
 			active[i] = p;
 			break;
 		}
