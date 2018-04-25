@@ -287,6 +287,7 @@
     <ClInclude Include="j1ParticleController.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -344,5 +345,11 @@
     <Xml Include="..\Game\GameData.xml">
       <Filter>Desenvolupament  ========\Files</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Project2.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Game\gui\Application icon.ico" />
   </ItemGroup>
 </Project>

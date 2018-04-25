@@ -27,6 +27,9 @@ public:
 	std::vector<SDL_Rect> sprites;
 	SDL_Rect* current_sprite = nullptr;
 	bool producing_worker = false;
+	j1Timer repair_timer;
+	bool recently_repaired = false;
+	
 
 public:
 	Building() {};

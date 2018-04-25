@@ -16,6 +16,7 @@
     <borderless value="false"/>
     <resizable value="true"/>
     <fullscreen_window value="false"/>
+    <icon path ="gui/Application icon.png"/>
   </window>
 
   <gui>
