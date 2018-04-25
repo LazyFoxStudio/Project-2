@@ -134,6 +134,9 @@
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClCompile>
     <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="j1ParticleController.cpp">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -281,6 +284,9 @@
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClInclude>
     <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="j1ParticleController.h">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
