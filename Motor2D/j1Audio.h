@@ -97,6 +97,8 @@ enum SFXList
 	SFX_MISCELLANEOUS_ARROW,
 
 	//UI
-	SFX_BUTTON_CLICKED
+	SFX_BUTTON_CLICKED, // Isn't yet on the xml (temporary Map assist sfx)
+	SFX_MAP_ASSIST,
+	SFX_MAP_ATTACK
 };
 #endif // __j1AUDIO_H__

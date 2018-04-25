@@ -29,6 +29,11 @@
 	<path sfx="Misc/Sword3.wav"/>
 	<path sfx="Misc/Axe.wav"/>
 	<path sfx="Misc/Bowfire.wav"/>
+
+<!-- UI/Map -->
+	<path sfx="Map/Massist.wav"/>
+	<path sfx="Map/Massist.wav"/>
+	<path sfx="Map/Mattack.wav"/>
    </SFX>
    <Music>
 	<path track="Main_Theme.ogg"/>
