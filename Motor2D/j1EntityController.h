@@ -14,8 +14,24 @@ class Quadtree;
 
 #define TOWN_HALL_POS {2000,2000}
 #define MAX_VILLAGERS_LUMBERMILL 10
+#define MAX_VILLAGERS_FARM 5
+#define FARM_WORKER_PRODUCTION_SECONDS 5
 #define DEATH_TIME 5
 #define WOOD_PER_WORKER 2
+
+struct worker
+{
+	Building* farm = nullptr;
+	Building* working_at = nullptr;
+	bool to_destroy = false;
+
+	worker(Building* _farm)
+	{
+		farm = _farm;
+		working_at = nullptr;
+		to_destroy = false;
+	}
+};
 
 class j1EntityController : public j1Module
 {
@@ -56,6 +72,7 @@ public:
 	void GetTotalIncome();
 	void TownHallLevelUp();
 
+
 	Unit* getUnitFromDB(Type type);
 	Hero* getHeroFromDB(Type type);
 	Building* getBuildingFromDB(Type type);
@@ -63,6 +80,17 @@ public:
 	Entity* CheckMouseHover(iPoint mouse_world);
 	std::vector<Entity*> CheckCollidingWith(SDL_Rect collider, Entity* entity_to_ignore = nullptr);
 	Entity* getNearestEnemy(fPoint position, bool isEnemy);
+
+	//------Worker Related Functions--------
+	void SubstractRandomWorkers(int num);
+	void DeleteWorkers();
+	void CreateWorkers(Building* target, int num);
+	bool CheckInactiveWorkers(int num = 1);
+	worker* GetInactiveWorker();
+	void AssignWorker(Building* building, worker* worker);
+	void DestroyWorkers();
+	void UnassignRandomWorker();
+
 
 public:
 

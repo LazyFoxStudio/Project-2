@@ -67,7 +67,10 @@ bool Building::Update(float dt)
 
 		if (type == LUMBER_MILL)
 			HandleResourceProduction();
+		else if (type == FARM)
+			HandleWorkerProduction();
 		break;
+		
 	case DESTROYED:
 		if (timer.ReadSec() > DEATH_TIME)
 			App->entitycontroller->entities_to_destroy.push_back(this);
@@ -83,20 +86,27 @@ void Building::Destroy()
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
 	current_sprite = &sprites[RUIN];
+	for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
+	{
+		(*it)->working_at = nullptr;
+	}
 
 	switch (type)
 	{
 	case FARM:
-		if (App->scene->inactive_workers >= 5)
+		for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
 		{
-			App->scene->inactive_workers -= 5;
-			App->scene->workers -= 5;
+			(*it)->to_destroy = true;
 		}
 		break;
 	case LUMBER_MILL:
 		App->entitycontroller->GetTotalIncome();
 		break;
 	case TOWN_HALL:
+		for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
+		{
+			(*it)->to_destroy = true;
+		}
 		App->audio->PlayMusic(DEFEAT_THEME);
 		current_sprite = &sprites[4];
 		App->gui->Chronos->counter.PauseTimer();
@@ -116,13 +126,22 @@ void Building::HandleConstruction()
 	if (current_time >= cost.creation_time)
 	{
 		current_HP = max_HP;
-		App->scene->inactive_workers += 1;
-		timer.Start();
+		
+		
 		if (type == FARM)
 		{
-			App->scene->workers += 5;
-			App->scene->inactive_workers += 5;
-			workers_inside = 5;
+			App->entitycontroller->CreateWorkers(this, 5);
+		}
+		if (type != LUMBER_MILL)
+		{
+			workers_inside.back()->working_at = nullptr;
+			workers_inside.pop_back();
+		}
+		else
+		{
+			timer.Start();
+			CalculateResourceProduction();
+			App->entitycontroller->GetTotalIncome();
 		}
 		ex_state = OPERATIVE;
 		current_sprite = &sprites[COMPLETE];
@@ -148,9 +167,26 @@ void Building::HandleResourceProduction()
 
 void Building::CalculateResourceProduction()
 {
-	float production_modifier = WOOD_PER_WORKER * (1 - (float)((workers_inside - 1) * 0.05f));
-	resource_production = 3 * workers_inside * production_modifier;
+	float production_modifier = WOOD_PER_WORKER * (1 - (float)((workers_inside.size() - 1) * 0.05f));
+	resource_production = 3 * workers_inside.size() * production_modifier;
 }
+
+void Building::HandleWorkerProduction()
+{
+	if (workers_inside.size() < MAX_VILLAGERS_FARM && !producing_worker)
+	{
+		timer.Start();
+		producing_worker = true;
+	}
+	else if (workers_inside.size() < MAX_VILLAGERS_FARM && producing_worker && timer.ReadSec()>FARM_WORKER_PRODUCTION_SECONDS)
+	{
+		App->entitycontroller->CreateWorkers(this, 1);
+		producing_worker = false;
+	}
+}
+
+
+
 
 void Building::Draw(float dt)
 {

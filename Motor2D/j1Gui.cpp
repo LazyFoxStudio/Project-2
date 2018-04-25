@@ -205,6 +205,8 @@ bool j1Gui::PostUpdate()
 	if (warningMessages != nullptr && warningMessages->active)
 		warningMessages->BlitElement();
 
+
+
 	//minimap_
 	App->uiscene->minimap->DrawMinimap();
 
@@ -690,6 +692,13 @@ void j1Gui::createMinimap(pugi::xml_node node, j1Module* callback)
 	int map_height= node.child("map").attribute("height").as_int();;
 
 	App->uiscene->minimap = new Minimap(node.child("base_image").attribute("path").as_string(),position_x,position_y,map_width,map_height);
+	
+	pugi::xml_node iterator;
+	for (iterator = node.child("alerts").child("path"); iterator; iterator = iterator.next_sibling("path"))
+	{
+		App->uiscene->minimap->AddAlertDef(iterator.attribute("value").as_string(),(alert_type)iterator.attribute("type").as_int());
+	}
+
 }
 
 void j1Gui::createLifeBar(Entity* entity)

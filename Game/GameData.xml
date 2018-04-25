@@ -218,6 +218,7 @@
                 <StartingRow value="9"/>
                 <StartingColumn value="0"/>
                 <speed value="6"/>
+                <loop value="false"/>
               </Animation>
               <Animation>
                 <!-- 25- DyingSouthEast-->
@@ -226,6 +227,7 @@
                 <StartingRow value="10"/>
                 <StartingColumn value="0"/>
                 <speed value="6"/>
+                <loop value="false"/>
               </Animation>
               <Animation>
                 <!-- 26- DyingSouthWest-->
@@ -234,6 +236,7 @@
                 <StartingRow value="10"/>
                 <StartingColumn value="0"/>
                 <speed value="6"/>
+                <loop value="false"/>
               </Animation>
               <Animation>
                 <!-- 27- DyingNorthWest-->
@@ -242,6 +245,7 @@
                 <StartingRow value="9"/>
                 <StartingColumn value="0"/>
                 <speed value="6"/>
+                <loop value="false"/>
               </Animation>
             </Animations>
 			<Actions>
@@ -677,6 +681,7 @@
                 <StartingRow value="9"/>
                 <StartingColumn value="0"/>
                 <speed value="5"/>
+                <loop value="false"/>
               </Animation>
               <Animation> <!-- 25- DyingSouthEast-->
                 <rows value="0"/>
@@ -684,6 +689,7 @@
                 <StartingRow value="10"/>
                 <StartingColumn value="0"/>
                 <speed value="10"/>
+                <loop value="false"/>
               </Animation>
               <Animation> <!-- 26- DyingSouthWest-->
                 <rows value="0"/>
@@ -691,6 +697,7 @@
                 <StartingRow value="10"/>
                 <StartingColumn value="0"/>
                 <speed value="10"/>
+                <loop value="false"/>
               </Animation>
               <Animation> <!-- 27- DyingNorthWest-->
                 <rows value="0"/>
@@ -698,6 +705,7 @@
                 <StartingRow value="9"/>
                 <StartingColumn value="0"/>
                 <speed value="10"/>
+                <loop value="false"/>
               </Animation>
             </Animations>
 			<Actions>
@@ -897,6 +905,7 @@
             <StartingRow value="9"/>
             <StartingColumn value="0"/>
             <speed value="6"/>
+            <loop value="false"/>
           </Animation>
           <Animation> <!-- 25- DyingSouthEast-->
             <rows value="0"/>
@@ -904,6 +913,7 @@
             <StartingRow value="10"/>
             <StartingColumn value="0"/>
             <speed value="6"/>
+            <loop value="false"/>
           </Animation>
           <Animation> <!-- 26- DyingSouthWest-->
             <rows value="0"/>
@@ -911,6 +921,7 @@
             <StartingRow value="10"/>
             <StartingColumn value="0"/>
             <speed value="6"/>
+            <loop value="false"/>
           </Animation>
           <Animation> <!-- 27- DyingNorthWest-->
             <rows value="0"/>
@@ -918,6 +929,7 @@
             <StartingRow value="9"/>
             <StartingColumn value="0"/>
             <speed value="6"/>
+            <loop value="false"/>
           </Animation>
         </Animations>
       </Unit>
@@ -1114,6 +1126,7 @@
               <StartingRow value="9"/>
               <StartingColumn value="0"/>
               <speed value="7"/>
+              <loop value="false"/>
             </Animation>
             <Animation> <!-- 25- DyingSouthEast-->
               <rows value="0"/>
@@ -1121,6 +1134,7 @@
               <StartingRow value="10"/>
               <StartingColumn value="0"/>
               <speed value="7"/>
+              <loop value="false"/>
             </Animation>
             <Animation> <!-- 26- DyingSouthWest-->
               <rows value="0"/>
@@ -1128,6 +1142,7 @@
               <StartingRow value="10"/>
               <StartingColumn value="0"/>
               <speed value="7"/>
+              <loop value="false"/>
             </Animation>
             <Animation> <!-- 27- DyingNorthWest-->
               <rows value="0"/>
@@ -1135,6 +1150,7 @@
               <StartingRow value="9"/>
               <StartingColumn value="0"/>
               <speed value="7"/>
+              <loop value="false"/>
             </Animation>
         </Animations>
       </Unit>
@@ -1188,6 +1204,7 @@
 	  <Actions>
 		<action id="11"/>
 		<action id="12"/>
+    <action id="16"/>
 	  </Actions>
       <iconData x="162" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
@@ -1201,6 +1218,7 @@
          <action id="8"/>
 		     <action id="10"/>
          <action id="9"/>
+         <action id="16"/>
        </Actions>
       <sprites>
         <sprite x="102" y="413" w="101" h="109"/>
@@ -1225,6 +1243,9 @@
       <name value="Farm"/>
       <type value="4"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
+      <Actions>
+        <action id="16"/>
+      </Actions>
       <sprites>
         <sprite x="399" y="71" w="72"  h="70"/>
         <sprite x="399" y="0" w="72" h="70"/>
@@ -1412,6 +1433,12 @@
 			</popUp>
 			<hotkey key="E" font_id="3"/>
 		</ability3>
+    <repairBuilding id="16" function="25">
+      <position x="0" y="0"/>
+      <standby x="1305" y="507" w="66" h="66"/>
+      <OnMouse x="1373" y="507" w="66" h="66"/>
+      <OnClick x="1441" y="507" w="66" h="66"/>
+    </repairBuilding>
 	</ActionButtons>
 	<fonts>
 		<font path="fonts/BebasNeue-Regular.ttf" size="23"/>

@@ -69,7 +69,20 @@ void Unit::Draw(float dt)
 
 bool Unit::Update(float dt)
 {
-	if (current_HP <= 0) return false;
+	animationController();
+
+	if (current_HP <= 0)
+	{
+		if (ex_state != DESTROYED)
+		{
+			timer.Start();
+			ex_state = DESTROYED;
+			App->entitycontroller->selected_entities.remove(this);
+		}
+		else if (timer.ReadSec() > DEATH_TIME)  return false;
+		return true;
+	}
+
 
 	if (!commands.empty())
 	{
@@ -85,7 +98,7 @@ bool Unit::Update(float dt)
 	}
 
 	Move(dt);
-	animationController();
+	
 
 	return true;
 }
@@ -141,12 +154,43 @@ void Unit::animationController()
 	lookAt(next_step);
 
 	animationType new_animation = IDLE_S;
-
-	if (!next_step.IsZero())
+	if (ex_state != DESTROYED)
 	{
-		switch (commands.empty() ? MOVETO : commands.front()->type)
+		if (!next_step.IsZero())
 		{
-		case ATTACK:
+			switch (commands.empty() ? MOVETO : commands.front()->type)
+			{
+			case ATTACK:
+				switch (dir)
+				{
+				case E:  new_animation = ATK_E;  break;
+				case SE: new_animation = ATK_SE; break;
+				case NE: new_animation = ATK_NE; break;
+				case N:  new_animation = ATK_N;  break;
+				case S:  new_animation = ATK_S;  break;
+				case W:  new_animation = ATK_W;  break;
+				case NW: new_animation = ATK_NW; break;
+				case SW: new_animation = ATK_SW; break;
+				}
+				break;
+			default:
+				switch (dir)
+				{
+				case E:  new_animation = MOVE_E;  break;
+				case SE: new_animation = MOVE_SE; break;
+				case NE: new_animation = MOVE_NE; break;
+				case N:  new_animation = MOVE_N;  break;
+				case S:  new_animation = MOVE_S;  break;
+				case W:  new_animation = MOVE_W;  break;
+				case NW: new_animation = MOVE_NW; break;
+				case SW: new_animation = MOVE_SW; break;
+				}
+				break;
+			}
+		}
+
+		else if (commands.empty() ? false : commands.front()->type == ATTACK)
+		{
 			switch (dir)
 			{
 			case E:  new_animation = ATK_E;  break;
@@ -158,62 +202,32 @@ void Unit::animationController()
 			case NW: new_animation = ATK_NW; break;
 			case SW: new_animation = ATK_SW; break;
 			}
-			break;
-		default:
+		}
+		else
+		{
 			switch (dir)
 			{
-			case E:  new_animation = MOVE_E;  break;
-			case SE: new_animation = MOVE_SE; break;
-			case NE: new_animation = MOVE_NE; break;
-			case N:  new_animation = MOVE_N;  break;
-			case S:  new_animation = MOVE_S;  break;
-			case W:  new_animation = MOVE_W;  break;
-			case NW: new_animation = MOVE_NW; break;
-			case SW: new_animation = MOVE_SW; break;
+			case E:  new_animation = IDLE_E;  break;
+			case SE: new_animation = IDLE_SE; break;
+			case NE: new_animation = IDLE_NE; break;
+			case N:  new_animation = IDLE_N;  break;
+			case S:  new_animation = IDLE_S;  break;
+			case W:  new_animation = IDLE_W;  break;
+			case NW: new_animation = IDLE_NW; break;
+			case SW: new_animation = IDLE_SW; break;
 			}
-			break;
 		}
 	}
-	
-	else if (commands.empty() ? false : commands.front()->type == ATTACK)
+	else 
 	{
 		switch (dir)
 		{
-		case E:  new_animation = ATK_E;  break;
-		case SE: new_animation = ATK_SE; break;
-		case NE: new_animation = ATK_NE; break;
-		case N:  new_animation = ATK_N;  break;
-		case S:  new_animation = ATK_S;  break;
-		case W:  new_animation = ATK_W;  break;
-		case NW: new_animation = ATK_NW; break;
-		case SW: new_animation = ATK_SW; break;
-		}
-	}
-	else
-	{
-		switch (dir)
-		{
-		case E:  new_animation = IDLE_E;  break;
-		case SE: new_animation = IDLE_SE; break;
-		case NE: new_animation = IDLE_NE; break;
-		case N:  new_animation = IDLE_N;  break;
-		case S:  new_animation = IDLE_S;  break;
-		case W:  new_animation = IDLE_W;  break;
-		case NW: new_animation = IDLE_NW; break;
-		case SW: new_animation = IDLE_SW; break;
-		}
-	}
-
-	if (current_HP <= 0)
-	{
-		switch (dir)
-		{
-		case E:  new_animation = DEAD_SE;  break;
+		case E:  new_animation = DEAD_SE; break;
 		case SE: new_animation = DEAD_SE; break;
 		case NE: new_animation = DEAD_NE; break;
-		case N:  new_animation = DEAD_NE;  break;
-		case S:  new_animation = DEAD_SW;  break;
-		case W:  new_animation = DEAD_NW;  break;
+		case N:  new_animation = DEAD_NE; break;
+		case S:  new_animation = DEAD_SW; break;
+		case W:  new_animation = DEAD_NW; break;
 		case NW: new_animation = DEAD_NW; break;
 		case SW: new_animation = DEAD_SW; break;
 		}

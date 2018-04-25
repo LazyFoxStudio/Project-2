@@ -51,11 +51,10 @@ bool j1Scene::Start()
 	App->render->camera.x = -1200;
 	App->render->camera.y = -1600;
 
-	restart_time = 10
-		;
+	restart_time = 10;
 	wood = INIT_WOOD;
 	gold = INIT_GOLD;
-	inactive_workers = workers = INIT_WORKERS;
+	//inactive_workers = workers = INIT_WORKERS;
 	town_hall_lvl = INIT_TOWNHALL_LVL;
 
 	return true;
@@ -85,6 +84,14 @@ bool j1Scene::Update(float dt)
 	{
 		App->audio->ModifySFXVolume(-10);
 	}
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		App->entitycontroller->UnassignRandomWorker();
+	}
+
+
+	workers_int = workers.size();
+	GetTotalInactiveWorkers();
 
 	//TEST SPAWNER--------------------------------------------------
 	/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
@@ -96,6 +103,7 @@ bool j1Scene::Update(float dt)
 		App->entitycontroller->AddSquad(FOOTMAN, {(float)mouse_pos.x,(float)mouse_pos.y});
 	}
 	*/
+
 	return true;
 }
 
@@ -127,21 +135,21 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	return true;
 }
 
-bool j1Scene::workerAvalible(int num)
-{
-	bool ret = false;
-
-	if (inactive_workers == 0)
-	{
-		ret = false;
-	}
-	else if (inactive_workers >= num)
-	{
-		ret = true;
-	}
-
-	return ret;
-}
+//bool j1Scene::workerAvalible(int num)
+//{
+//	bool ret = false;
+//
+//	if (inactive_workers == 0)
+//	{
+//		ret = false;
+//	}
+//	else if (inactive_workers >= num)
+//	{
+//		ret = true;
+//	}
+//
+//	return ret;
+//}
 
 void j1Scene::Restart_game()
 {
@@ -194,7 +202,8 @@ void j1Scene::Restart_game()
 	//RESTARTING RESOURCES-----------------------------------------------------
 	wood = INIT_WOOD;
 	gold = INIT_GOLD;
-	inactive_workers = workers = INIT_WORKERS;
+	//inactive_workers = workers = INIT_WORKERS;
+	InitialWorkers(town_hall);
 	town_hall_lvl = INIT_TOWNHALL_LVL;
 
 	//RESTART LOCKED ACTION BUTTONS
@@ -224,4 +233,21 @@ void j1Scene::Restart_game()
 	App->uiscene->toggleMenu(false, GAMEOVER_MENU);
 	toRestart = false;
 
+}
+
+void j1Scene::InitialWorkers(Building* town_hall)
+{
+	App->entitycontroller->CreateWorkers(town_hall, 3);
+}
+
+void j1Scene::GetTotalInactiveWorkers()
+{
+	inactive_workers_int = 0;
+	for (std::list<worker*>::iterator it = workers.begin(); it != workers.end(); it++)
+	{
+		if ((*it)->working_at == nullptr)
+		{
+			inactive_workers_int++;
+		}
+	}
 }

@@ -18,7 +18,8 @@ enum actionType
 	CREATE_ARCHER,
 	USE_ABILITY1,
 	USE_ABILITY2,
-	USE_ABILITY3
+	USE_ABILITY3,
+	REPAIR_BUILDING
 };
 
 class j1ActionsController : public j1Module

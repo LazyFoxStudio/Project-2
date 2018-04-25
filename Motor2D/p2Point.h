@@ -192,6 +192,9 @@ public:
 
 typedef p2Point<int> iPoint;
 typedef p2Point<float> fPoint;
+//ask lorién
+
+
 
 
 #endif // __P2POINT_H__

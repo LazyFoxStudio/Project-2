@@ -35,6 +35,21 @@ Minimap::~Minimap()
 		SDL_FreeSurface(base_image);
 		base_image = nullptr;
 	}
+
+	for (std::list<alert_def>::iterator it = alert_images.begin(); it != alert_images.end(); it++)
+	{
+		SDL_FreeSurface(it->img);
+	}
+
+	alert_images.clear();
+
+	for (std::list<alert*>::iterator it = alert_queue.begin(); it != alert_queue.end(); it++)
+	{
+		RELEASE(*it);
+	
+	}
+	alert_queue.clear();
+
 	point_queue.clear();
 	sprite_queue.clear();
 }
@@ -70,6 +85,39 @@ void Minimap::DrawMinimap()
 
 	point_queue.clear();
 
+	for (std::list<alert*>::iterator it = alert_queue.begin(); it != alert_queue.end(); it++)
+	{
+		//now we make it fit inside the modifiable texture
+		SDL_Surface* s = nullptr;
+		SDL_Rect r = { (*it)->x*ratio_x, (*it)->y *ratio_y, 1, 1 };//PROVISIONAL
+
+		for (std::list<alert_def>::iterator it_images = alert_images.begin(); it_images != alert_images.end(); it_images++)
+		{
+			if ((*it)->type == it_images->type)
+			{
+				s = it_images->img;
+				r.w = s->w;//PROVISIONAL
+				r.h = s->h;
+				break;
+			}
+		}
+		if (s)
+		{
+			SDL_BlitSurface(s, NULL, manipulable, &r);
+		}
+		if (SDL_GetTicks() >(*it)->time_in_seconds * 1000 + (*it)->time_started_at)
+		{
+			(*it)->to_delete = true;
+		}
+	}
+	for (std::list<alert*>::iterator it = alert_queue.begin(); it != alert_queue.end(); it++)
+	{
+		if ((*it)->to_delete)
+		{
+			RELEASE(*it)
+			alert_queue.remove(*it);
+		}
+	}
 	//now we will blit the viewport representation on the minimap
 	SDL_Rect up = {-App->render->camera.x * ratio_x,-App->render->camera.y * ratio_y ,App->render->camera.w * ratio_x, 1};
 	SDL_FillRect(manipulable, &up, SDL_MapRGB(manipulable->format, 255, 255, 255));
@@ -103,7 +151,6 @@ void Minimap::Addpoint(SDL_Rect rect, Color color)
 
 void Minimap::Draw_Sprite(SDL_Surface* img, int pos_x, int pos_y)
 {
-
 	sprite _sprite;
 
 	_sprite.sprite_surface = img;
@@ -113,7 +160,28 @@ void Minimap::Draw_Sprite(SDL_Surface* img, int pos_x, int pos_y)
 	_sprite.section.h = img->h;
 
 	sprite_queue.push_back(_sprite);
+}
 
+void Minimap::AddAlert(int x, int y, int time_in_seconds, alert_type type)
+{
+	alert* ret = new alert();
+
+	ret->x = x;
+	ret->y = y;
+	ret->time_in_seconds = time_in_seconds;
+	ret->type = type;
+
+	alert_queue.push_back(ret);
+}
+
+void Minimap::AddAlertDef(const char* path, alert_type type)
+{
+	alert_def def;
+
+	def.img = IMG_Load(path);
+	def.type = type;
+
+	alert_images.push_back(def);
 }
 
 void Minimap::Mouse_to_map(int& map_x, int& map_y)// returns -1 in the variables if unsuccesfull
