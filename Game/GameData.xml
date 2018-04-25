@@ -1438,6 +1438,10 @@
       <standby x="1305" y="507" w="66" h="66"/>
       <OnMouse x="1373" y="507" w="66" h="66"/>
       <OnClick x="1441" y="507" w="66" h="66"/>
+    <popUp>
+				<Info text="Repair Building"/>
+				<Cost wood="200" gold="" oil=""/>
+			</popUp>
     </repairBuilding>
 	</ActionButtons>
 	<fonts>

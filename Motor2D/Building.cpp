@@ -86,10 +86,7 @@ void Building::Destroy()
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
 	current_sprite = &sprites[RUIN];
-	for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
-	{
-		(*it)->working_at = nullptr;
-	}
+	
 
 	switch (type)
 	{
@@ -100,7 +97,9 @@ void Building::Destroy()
 		}
 		break;
 	case LUMBER_MILL:
+		CalculateResourceProduction();
 		App->entitycontroller->GetTotalIncome();
+
 		break;
 	case TOWN_HALL:
 		for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
