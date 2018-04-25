@@ -16,6 +16,16 @@ j1Window::j1Window() : j1Module()
 // Destructor
 j1Window::~j1Window() {}
 
+bool j1Window::Start()
+{
+	icon = IMG_Load(icon_window_path.c_str());
+	SDL_SetWindowIcon(window, icon);
+	SDL_FreeSurface(icon);
+	icon = nullptr;
+
+	return true;
+}
+
 // Called before render is available
 bool j1Window::Awake(pugi::xml_node& config)
 {
@@ -53,6 +63,8 @@ bool j1Window::Awake(pugi::xml_node& config)
 		LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
 		return false;
 	}
+
+	icon_window_path = config.child("icon").attribute("path").as_string("not_found");
 
 	return true;
 }
