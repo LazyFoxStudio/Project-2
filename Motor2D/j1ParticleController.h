@@ -9,7 +9,11 @@
 
 struct SDL_Texture;
 enum particleType;
-
+enum particleType
+{
+	NO_TYPE,
+	ARROW,
+};
 struct Particle
 {
 	Animation anim;
@@ -51,10 +55,6 @@ public:
 
 };
 
-enum particleType
-{
-	NO_TYPE,
-	ARROW,
-};
+
 
 #endif // __MODULEPARTICLES_H__

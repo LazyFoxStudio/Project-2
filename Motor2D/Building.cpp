@@ -78,6 +78,11 @@ bool Building::Update(float dt)
 		break;
 	}
 
+	if (recently_repaired && repair_timer.ReadSec() > REPAIR_COOLDOWN)
+	{
+		recently_repaired = false;
+	}
+
 	return true;
 }
 
@@ -181,6 +186,17 @@ void Building::HandleWorkerProduction()
 	{
 		App->entitycontroller->CreateWorkers(this, 1);
 		producing_worker = false;
+	}
+}
+
+void Building::RepairBuilding()
+{
+	if (App->scene->wood >= REPAIR_COST && !recently_repaired)
+	{
+		App->scene->wood -= REPAIR_COST;
+		current_HP = max_HP;
+		recently_repaired = true;
+		repair_timer.Start();
 	}
 }
 

@@ -18,6 +18,8 @@ class Quadtree;
 #define FARM_WORKER_PRODUCTION_SECONDS 5
 #define DEATH_TIME 5
 #define WOOD_PER_WORKER 2
+#define REPAIR_COST 10
+#define REPAIR_COOLDOWN 30
 
 struct worker
 {
