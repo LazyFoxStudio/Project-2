@@ -241,7 +241,9 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 		case CREATE_ARCHER_FUNCTION:
 			App->actionscontroller->activateAction(CREATE_ARCHER);
 			break;
-
+		case REPAIR_BUILDING_FUNCTION:
+			App->actionscontroller->activateAction(REPAIR_BUILDING);
+			break;
 		}
 	}
 	else if (event_type == MOUSE_RIGHT_CLICK && element->state != LOCKED && element->state != LOCKED_MOUSEOVER)

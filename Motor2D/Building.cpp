@@ -78,6 +78,11 @@ bool Building::Update(float dt)
 		break;
 	}
 
+	if (recently_repaired && repair_timer.ReadSec() > REPAIR_COOLDOWN)
+	{
+		recently_repaired = false;
+	}
+
 	return true;
 }
 
@@ -86,10 +91,7 @@ void Building::Destroy()
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
 	current_sprite = &sprites[RUIN];
-	for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
-	{
-		(*it)->working_at = nullptr;
-	}
+	
 
 	switch (type)
 	{
@@ -100,7 +102,9 @@ void Building::Destroy()
 		}
 		break;
 	case LUMBER_MILL:
+		CalculateResourceProduction();
 		App->entitycontroller->GetTotalIncome();
+
 		break;
 	case TOWN_HALL:
 		for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
@@ -182,6 +186,17 @@ void Building::HandleWorkerProduction()
 	{
 		App->entitycontroller->CreateWorkers(this, 1);
 		producing_worker = false;
+	}
+}
+
+void Building::RepairBuilding()
+{
+	if (App->scene->wood >= REPAIR_COST && !recently_repaired)
+	{
+		App->scene->wood -= REPAIR_COST;
+		current_HP = max_HP;
+		recently_repaired = true;
+		repair_timer.Start();
 	}
 }
 

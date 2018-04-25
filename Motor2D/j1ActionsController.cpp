@@ -99,9 +99,10 @@ bool j1ActionsController::Update(float dt)
 			{
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state == OPERATIVE)
 				{
-					(Building*)*App->entitycontroller->selected_entities.begin();
+					((Building*)*App->entitycontroller->selected_entities.begin())->RepairBuilding();
 				}
 			}
+			doingAction = false;
 			break;
 		}
 		
