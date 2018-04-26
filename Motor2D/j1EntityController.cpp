@@ -28,23 +28,14 @@
 
 j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
-
 bool j1EntityController::Start()
 {
-	pugi::xml_document doc;
-	pugi::xml_node gameData;
-
-	gameData = App->LoadFile(doc, "GameData.xml");
-
-	loadEntitiesDB(gameData);
-
 	hero = addHero(iPoint(2000, 1950), HERO_1);
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	Building* town_hall = addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
 	App->scene->InitialWorkers(town_hall);
-
 
 	//colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
 
@@ -127,12 +118,7 @@ bool j1EntityController::Update(float dt)
 	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && to_build_type != NONE_ENTITY && App->actionscontroller->doingAction)
 	{
 		to_build_type = NONE_ENTITY;
-		App->actionscontroller->action_type = NO_ACTION;
-		App->actionscontroller->doingAction = false;
-		App->actionscontroller->doingAction_lastFrame = false;
-		App->gui->warningMessages->hideMessage(NO_WORKERS);
-		App->gui->warningMessages->hideMessage(NO_RESOURCES);
-		App->gui->warningMessages->hideMessage(NO_TREES);
+		App->actionscontroller->activateAction(NO_ACTION);
 	}
 
 
@@ -447,8 +433,6 @@ Squad* j1EntityController::AddSquad(Type type, fPoint position)
 	return new_squad;
 }
 
-
-
 Unit* j1EntityController::getUnitFromDB(Type type)
 {
 	return (DataBase[type]->IsUnit() ? (Unit*)DataBase[type] : nullptr);
@@ -567,6 +551,14 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 bool j1EntityController::CheckCost(Type target)
 {
 	return (App->scene->wood >= DataBase[target]->cost.wood_cost && App->scene->gold >= DataBase[target]->cost.gold_cost && ((!DataBase[target]->IsUnit()) || CheckInactiveWorkers(DataBase[target]->cost.worker_cost)));
+}
+
+Cost j1EntityController::getCost(Type target)
+{
+	if (DataBase.size() >= target)
+		return DataBase[target]->cost;
+	else
+		return Cost();
 }
 
 bool j1EntityController::SpendCost(Type target)

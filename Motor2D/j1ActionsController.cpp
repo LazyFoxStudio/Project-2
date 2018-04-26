@@ -120,11 +120,17 @@ bool j1ActionsController::Update(float dt)
 
 void j1ActionsController::activateAction(actionType type)
 {
-	if (doingAction)
+	if (doingAction || type == NO_ACTION)
 	{
 		App->gui->warningMessages->hideMessage(NO_WORKERS);
 		App->gui->warningMessages->hideMessage(NO_RESOURCES);
 		App->gui->warningMessages->hideMessage(NO_TREES);
+
+		if (type == NO_ACTION)
+		{
+			doingAction = false;
+			doingAction_lastFrame = false;
+		}
 	}
 	else
 		doingAction = true;

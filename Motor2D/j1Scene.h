@@ -26,7 +26,6 @@ public:
 	// Destructor
 	virtual ~j1Scene();
 
-
 	// Called before the first frame
 	bool Start();
 
@@ -47,6 +46,8 @@ public:
 	void Restart_game();
 	void InitialWorkers(Building* town_hall);
 	void GetTotalInactiveWorkers();
+
+	void loadGameDB(pugi::xml_node& data);
 
 public:
 

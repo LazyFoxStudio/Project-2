@@ -59,11 +59,11 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(console);
 	AddModule(map);
 	AddModule(font);
-	AddModule(gui);
 	AddModule(scene);
+	AddModule(entitycontroller);
+	AddModule(gui);
 	AddModule(uiscene);
 	AddModule(sceneswitch);
-	AddModule(entitycontroller);
 	AddModule(particle);
 	AddModule(actionscontroller);
 	

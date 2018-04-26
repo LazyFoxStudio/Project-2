@@ -167,90 +167,25 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 		element->blitPopUpInfo = false;
 		App->gui->current_hovering_element = nullptr;
 	}
-	else if (event_type == MOUSE_LEFT_CLICK && element->state != LOCKED && element->state != LOCKED_MOUSEOVER)
+	else if (element->state != LOCKED && element->state != LOCKED_MOUSEOVER)
 	{
-		element->state = CLICKED;
-
-		switch (element->function)
+		if (event_type == MOUSE_LEFT_CLICK)
 		{
-		case NEW_GAME:
-			break;
-		case CONTINUE:
-			break;
-		case SETTINGS:
-			break;
-		case CREDITS:
-			break;
-		case EXIT:
-			ret = false;
-			break;
-		case PAUSE:
-			break;
-		case APPLY:
-			break;
-		case CANCEL:
-			break;
-		case BACK:
-			break;
-		case RESTORE:
-			break;
-		case HOME:
-			break;
-		case WEB:
-			//App->RequestBrowser("https://adria-f.github.io/Game-Development/");
-			break;
-		case HERO_ABILITY1:
-			App->actionscontroller->activateAction(USE_ABILITY1);
-			break;
-		case HERO_ABILITY2:
-			App->actionscontroller->activateAction(USE_ABILITY2);
-			break;
-		case HERO_ABILITY3:
-			App->actionscontroller->activateAction(USE_ABILITY3);
-			break;
-		}
-	}
-	else if (event_type == MOUSE_LEFT_RELEASE && element->state != LOCKED && element->state != LOCKED_MOUSEOVER)
-	{
-		if (element->state == CLICKED)
-			element->state = MOUSEOVER;
+			element->state = CLICKED;
 
-		switch (element->function)
-		{
-		case MOVE_FUNCTION:
-			App->actionscontroller->activateAction(MOVE);
-			break;
-		case BUILD_BARRACKS_FUNCTION:
-			App->actionscontroller->activateAction(BUILD_BARRACKS);
-			break;
-		case BUILD_LUMBER_MILL_FUNCTION:
-			App->actionscontroller->activateAction(BUILD_LUMBER_MILL);
-			break;
-		case BUILD_FARM_FUNCTION:
-			App->actionscontroller->activateAction(BUILD_FARM);
-			break;
-		case UNASSIGN_WORKER_FUNCTION:
-			App->actionscontroller->activateAction(UNASSIGN_WORKER);
-			break;
-		case ASSIGN_WORKER_FUNCTION:
-			App->actionscontroller->activateAction(ASSIGN_WORKER);
-			break;
-		case CREATE_FOOTMAN_FUNCTION:
-			App->actionscontroller->activateAction(CREATE_FOOTMAN);
-			break;
-		case CREATE_ARCHER_FUNCTION:
-			App->actionscontroller->activateAction(CREATE_ARCHER);
-			break;
-		case REPAIR_BUILDING_FUNCTION:
-			App->actionscontroller->activateAction(REPAIR_BUILDING);
-			break;
+			App->actionscontroller->activateAction(element->clickAction);
 		}
-	}
-	else if (event_type == MOUSE_RIGHT_CLICK && element->state != LOCKED && element->state != LOCKED_MOUSEOVER)
-	{
-	}
-	else if (event_type == MOUSE_RIGHT_RELEASE && element->state != LOCKED && element->state != LOCKED_MOUSEOVER)
-	{
+		else if (event_type == MOUSE_LEFT_RELEASE)
+		{
+			if (element->state == CLICKED)
+				element->state = MOUSEOVER;
+
+			App->actionscontroller->activateAction(element->releaseAction);
+		}
+		else if (event_type == MOUSE_RIGHT_CLICK)
+		{}
+		else if (event_type == MOUSE_RIGHT_RELEASE)
+		{}
 	}
 	else if (event_type == TIMER_ZERO)
 	{

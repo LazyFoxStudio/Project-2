@@ -58,6 +58,12 @@ bool j1Scene::Start()
 	//inactive_workers = workers = INIT_WORKERS;
 	town_hall_lvl = INIT_TOWNHALL_LVL;
 
+	pugi::xml_document doc;
+	pugi::xml_node gameData;
+
+	gameData = App->LoadFile(doc, "GameData.xml");
+	loadGameDB(gameData);
+
 	return true;
 }
 
@@ -254,4 +260,18 @@ void j1Scene::GetTotalInactiveWorkers()
 			inactive_workers_int++;
 		}
 	}
+}
+
+void j1Scene::loadGameDB(pugi::xml_node& data)
+{
+	//Load Life Bars
+	App->gui->LoadLifeBarsDB(data);
+	//Load fonts
+	App->gui->LoadFonts(data.child("fonts"));
+
+	//Load entities DB
+	App->entitycontroller->loadEntitiesDB(data);
+
+	//Load action buttons
+	App->gui->LoadActionButtonsDB(data);
 }

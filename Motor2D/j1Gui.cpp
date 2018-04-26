@@ -51,15 +51,12 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 // Called before the first frame
 bool j1Gui::Start()
 {
-	atlas = App->tex->Load(atlas_file_name.c_str());
-	icon_atlas = App->tex->Load(icon_atlas_file_name.c_str());
-
-	pugi::xml_document doc;
-	pugi::xml_node gameData;
-
-	gameData = App->LoadFile(doc, "GameData.xml");
-
-	LoadDB(gameData);
+	//Create warning messages
+	warningMessages = new WarningMessages();
+	warningMessages->active = false;
+	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
+	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
+	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
 
 	return true;
 }
@@ -433,7 +430,8 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		element->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
 		element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
 		element->active = tmp.attribute("active").as_bool(true);
-		element->function = (element_function)tmp.attribute("function").as_int(0);
+		element->clickAction = (actionType)tmp.attribute("click_action").as_int(0);
+		element->releaseAction = (actionType)tmp.attribute("release_action").as_int(0);
 		pugi::xml_node info = tmp.child("popUp").child("Info");
 		if (info)
 		{
@@ -746,8 +744,12 @@ void j1Gui::createPopUpInfo(UI_element* element, std::string info)
 	element->popUpInfo = text;
 }
 
-void j1Gui::LoadDB(pugi::xml_node node)
+void j1Gui::LoadLifeBarsDB(pugi::xml_node node)
 {
+	//Load textures
+	atlas = App->tex->Load(atlas_file_name.c_str());
+	icon_atlas = App->tex->Load(icon_atlas_file_name.c_str());
+
 	//Load life bars
 	pugi::xml_node lifebar;
 	pugi::xml_node rect;
@@ -772,10 +774,10 @@ void j1Gui::LoadDB(pugi::xml_node node)
 			LifeBarRect.insert(std::pair<std::string, SDL_Rect>(tag, section));
 		}
 	}
+}
 
-	//Load fonts
-	LoadFonts(node.child("fonts"));
-
+void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
+{
 	//Load action buttons
 	pugi::xml_node actionButton;
 	for (actionButton = node.child("ActionButtons").first_child(); actionButton; actionButton = actionButton.next_sibling())
@@ -783,12 +785,13 @@ void j1Gui::LoadDB(pugi::xml_node node)
 		uint id = actionButton.attribute("id").as_uint();
 		Button* button = createButton(actionButton, App->uiscene);
 		button->active = false;
-		button->function = (element_function)actionButton.attribute("function").as_int(0);
+		button->clickAction = (actionType)actionButton.attribute("click_action").as_int(0);
+		button->releaseAction = (actionType)actionButton.attribute("release_action").as_int(0);
 		pugi::xml_node info = actionButton.child("popUp").child("Info");
-		pugi::xml_node cost = actionButton.child("popUp").child("Cost");
-		if (cost && info)
+		if (info && info.attribute("cost").as_bool())
 		{
-			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.attribute("wood").as_int(0), cost.attribute("gold").as_int(0), cost.attribute("oil").as_int(0), cost.attribute("workers").as_int(0));
+			Cost cost = App->entitycontroller->getCost((Type)info.attribute("type").as_int());
+			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.wood_cost, cost.gold_cost, cost.oil_cost, cost.worker_cost);
 		}
 		else if (info)
 		{
@@ -805,13 +808,6 @@ void j1Gui::LoadDB(pugi::xml_node node)
 			button->displayHotkey(true, App->font->getFont(hotkey.attribute("font_id").as_int()));
 		}
 	}
-
-	//Create warning messages
-	warningMessages = new WarningMessages();
-	warningMessages->active = false;
-	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
-	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
-	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
 }
 
 void j1Gui::LoadFonts(pugi::xml_node node)

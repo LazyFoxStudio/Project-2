@@ -251,6 +251,7 @@
 			<Actions>
 				<action id="1"/>
 				<action id="10"/>
+				<action id="10"/>
 				<action id="13"/>
 				<action id="14"/>
 				<action id="15"/>
@@ -1218,6 +1219,9 @@
          <action id="8"/>
 		     <action id="10"/>
          <action id="9"/>
+		 <action id="10"/>
+		 <action id="10"/>
+		 <action id="10"/>
          <action id="16"/>
        </Actions>
       <sprites>
@@ -1301,8 +1305,9 @@
 			</LifeBarY>
 		</menu>
 	</LifeBars>
+	
 	<ActionButtons>
-		<move id="1" function="14">
+		<move id="1" release_action="1">
 			<position x="0" y="0"/>
 			<standby x="285" y="437" w="66" h="66"/>
 			<OnMouse x="353" y="437" w="66" h="66"/>
@@ -1330,46 +1335,43 @@
 			<OnMouse x="965" y="437" w="66" h="66"/>
 			<OnClick x="1033" y="437" w="66" h="66"/>
 		</patrol>
-		<buildBarrack id="5" function="15">
+		<buildBarrack id="5" release_action="2">
 			<position x="0" y="0"/>
 			<standby x="1101" y="437" w="66" h="66"/>
 			<OnMouse x="1169" y="437" w="66" h="66"/>
 			<OnClick x="1237" y="437" w="66" h="66"/>
 			<popUp>
-				<Info text="Build Barracks"/>
-				<Cost wood="300" gold="" oil=""/>
+				<Info text="Build Barracks" cost="true" type="2"/>
 			</popUp>
 			<hotkey key="A" font_id="3"/>
 		</buildBarrack>
-		<buildMill id="6" function="16">
+		<buildMill id="6" release_action="3">
 			<position x="0" y="0"/>
 			<standby x="1305" y="437" w="66" h="66"/>
 			<OnMouse x="1373" y="437" w="66" h="66"/>
 			<OnClick x="1441" y="437" w="66" h="66"/>
 			<popUp>
-				<Info text="Build Lumber Mill"/>
-				<Cost wood="350" gold="" oil=""/>
+				<Info text="Build Lumber Mill" cost="true" type="3"/>
 			</popUp>
 			<hotkey key="S" font_id="3"/>
 		</buildMill>
-		<buildFarm id="7" function="17">
+		<buildFarm id="7" release_action="4">
 			<position x="0" y="0"/>
 			<standby x="285" y="507" w="66" h="66"/>
 			<OnMouse x="353" y="507" w="66" h="66"/>
 			<OnClick x="421" y="507" w="66" h="66"/>
 			<popUp>
-				<Info text="Build Farm"/>
-				<Cost wood="150" gold="" oil=""/>
+				<Info text="Build Farm" cost="true" type="4"/>
 			</popUp>
 			<hotkey key="D" font_id="3"/>
 		</buildFarm>
-		<unassignWorker id="8" function="18">
+		<unassignWorker id="8" click_action="5">
 			<position x="0" y="0"/>
 			<standby x="576" y="704" w="82" h="82"/>
 			<OnMouse x="672" y="704" w="82" h="82"/>
 			<OnClick x="770" y="704" w="82" h="82"/>
 		</unassignWorker>
-		<assignWorker id="9" function="19">
+		<assignWorker id="9" click_action="6">
 			<position x="0" y="0"/>
 			<standby x="285" y="704" w="82" h="82"/>
 			<OnMouse x="384" y="704" w="82" h="82"/>
@@ -1381,29 +1383,27 @@
 			<OnMouse x="0" y="0" w="0" h="0"/>
 			<OnClick x="0" y="0" w="0" h="0"/>
 		</emptySpace>
-		<createFootman id="11" function="20">
+		<createFootman id="11" click_action="7">
 			<position x="0" y="0"/>
 			<standby x="489" y="507" w="66" h="66"/>
 			<OnMouse x="557" y="507" w="66" h="66"/>
 			<OnClick x="625" y="507" w="66" h="66"/>
 			<popUp>
-				<Info text="Create Footman Squad"/>
-				<Cost wood="200" workers="4"/>
+				<Info text="Create Footman Squad" cost="true" type="7"/>
 			</popUp>
 			<hotkey key="A" font_id="3"/>
 		</createFootman>
-		<createArcher id="12" function="21">
+		<createArcher id="12" click_action="8">
 			<position x="0" y="0"/>
 			<standby x="693" y="507" w="66" h="66"/>
 			<OnMouse x="761" y="507" w="66" h="66"/>
 			<OnClick x="829" y="507" w="66" h="66"/>
 			<popUp>
-				<Info text="Create Archer Squad"/>
-				<Cost wood="250" workers="3"/>
+				<Info text="Create Archer Squad" cost="true" type="8"/>
 			</popUp>
 			<hotkey key="S" font_id="3"/>
 		</createArcher>
-		<ability1 id="13" function="22">
+		<ability1 id="13" click_action="9">
 			<position x="0" y="0"/>
 			<standby x="897" y="507" w="66" h="66"/>
 			<OnMouse x="965" y="507" w="66" h="66"/>
@@ -1413,7 +1413,7 @@
 			</popUp>
 			<hotkey key="Q" font_id="3"/>
 		</ability1>
-		<ability2 id="14" function="23">
+		<ability2 id="14" click_action="10">
 			<position x="0" y="0"/>
 			<standby x="1101" y="507" w="66" h="66"/>
 			<OnMouse x="1169" y="507" w="66" h="66"/>
@@ -1423,7 +1423,7 @@
 			</popUp>
 			<hotkey key="W" font_id="3"/>
 		</ability2>
-		<ability3 id="15" function="24">
+		<ability3 id="15" click_action="11">
 			<position x="0" y="0"/>
 			<standby x="1305" y="507" w="66" h="66"/>
 			<OnMouse x="1373" y="507" w="66" h="66"/>
@@ -1433,17 +1433,18 @@
 			</popUp>
 			<hotkey key="E" font_id="3"/>
 		</ability3>
-    <repairBuilding id="16" function="25">
-      <position x="0" y="0"/>
-      <standby x="1305" y="507" w="66" h="66"/>
-      <OnMouse x="1373" y="507" w="66" h="66"/>
-      <OnClick x="1441" y="507" w="66" h="66"/>
-    <popUp>
+		<repairBuilding id="16" click_action="12">
+			<position x="0" y="0"/>
+			<standby x="1305" y="507" w="66" h="66"/>
+			<OnMouse x="1373" y="507" w="66" h="66"/>
+			<OnClick x="1441" y="507" w="66" h="66"/>
+			<popUp>
 				<Info text="Repair Building"/>
-				<Cost wood="200" gold="" oil=""/>
+				<Cost wood="200" gold="" oil="" workers="" time=""/>
 			</popUp>
-    </repairBuilding>
+		</repairBuilding>
 	</ActionButtons>
+	
 	<fonts>
 		<font path="fonts/BebasNeue-Regular.ttf" size="23"/>
 		<font path="fonts/ABeeZee-Regular.ttf" size="25"/>

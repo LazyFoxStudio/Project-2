@@ -230,7 +230,7 @@ void IngameMenu::updateActionButtons()
 	int extraYvalue = 0;
 	for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
 	{
-		if ((*it_b)->function == ASSIGN_WORKER_FUNCTION || (*it_b)->function == UNASSIGN_WORKER_FUNCTION)
+		if ((*it_b)->clickAction == ASSIGN_WORKER || (*it_b)->clickAction == UNASSIGN_WORKER) //HARDCODED
 			extraYvalue = 50;
 		(*it_b)->localPosition.x = firstButton_pos.x + (buttons_offset.x*counterX);
 		(*it_b)->localPosition.y = firstButton_pos.y + (buttons_offset.y*counterY) + extraYvalue;

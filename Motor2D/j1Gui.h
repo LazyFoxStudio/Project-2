@@ -105,7 +105,8 @@ public:
 
 	void createPopUpInfo(UI_element* element, std::string info);
 
-	void LoadDB(pugi::xml_node node);
+	void LoadLifeBarsDB(pugi::xml_node node);
+	void LoadActionButtonsDB(pugi::xml_node node);
 	void LoadFonts(pugi::xml_node node);
 
 	void AddIconDataUnit(Type type, pugi::xml_node node);

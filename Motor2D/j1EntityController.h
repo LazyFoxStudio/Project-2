@@ -68,6 +68,7 @@ public:
 
 	void HandleWorkerAssignment(bool to_assign, Building* building);
 	bool CheckCost(Type type);
+	Cost getCost(Type type);
 	bool SpendCost(Type type);
 	void debugDrawEntity(Entity* entity);
 	void HandleSFX(Type type, int volume = 128);

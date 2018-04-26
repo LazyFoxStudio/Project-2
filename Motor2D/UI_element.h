@@ -9,6 +9,7 @@
 #include "j1Input.h"
 #include "j1Window.h"
 #include "j1App.h"
+#include "j1ActionsController.h"
 
 struct SDL_Texture;
 
@@ -22,38 +23,6 @@ enum element_type
 	PROGRESSBAR,
 	MENU,
 	COSTDISPLAY
-};
-
-enum element_function
-{
-	NONE,
-
-	NEW_GAME,
-	CONTINUE,
-	SETTINGS,
-	CREDITS,
-	EXIT,
-	PAUSE,
-	RESTART,
-	RESTORE,
-	BACK,
-	CANCEL,
-	APPLY,
-	HOME,
-	WEB,
-
-	MOVE_FUNCTION,
-	BUILD_BARRACKS_FUNCTION,
-	BUILD_LUMBER_MILL_FUNCTION,
-	BUILD_FARM_FUNCTION,
-	UNASSIGN_WORKER_FUNCTION,
-	ASSIGN_WORKER_FUNCTION,
-	CREATE_FOOTMAN_FUNCTION,
-	CREATE_ARCHER_FUNCTION,
-	HERO_ABILITY1,
-	HERO_ABILITY2,
-	HERO_ABILITY3,
-	REPAIR_BUILDING_FUNCTION
 };
 
 enum element_state
@@ -135,7 +104,8 @@ public:
 	SDL_Rect section = { 0, 0, 0, 0 };
 	element_type element_type;
 	element_state state = STANDBY;
-	element_function function = NONE;
+	actionType clickAction = NO_ACTION;
+	actionType releaseAction = NO_ACTION;
 	j1Module* callback = nullptr;
 	UI_element* parent = nullptr;
 	std::list<UI_element*> childs;
