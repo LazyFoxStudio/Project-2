@@ -37,6 +37,7 @@ public:
 	SDL_Rect& GetCurrentFrame(float dt);
 
 	bool Finished() const;
+	bool justFinished() const;
 	void Reset();
 
 	float GetCurrentFrameinFloat();

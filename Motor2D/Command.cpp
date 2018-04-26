@@ -85,7 +85,7 @@ bool Attack::OnUpdate(float dt)
 	{
 		if (type == ATTACKING_MOVETO) 
 			{ type = ATTACK; timer.Start(); }
-		else if (timer.ReadSec() > 0.5f)
+		else if (unit->current_anim->justFinished())
 		{ 
 			App->entitycontroller->HandleSFX(unit->type, 30);
 			enemy->current_HP -= MAX((RANDOM_FACTOR * (unit->piercing_atk + ((((int)unit->attack - (int)enemy->defense) <= 0) ? 0 : unit->attack - enemy->defense))), 1); //dmg
