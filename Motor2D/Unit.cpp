@@ -258,10 +258,10 @@ void Unit::Halt()
 fPoint Unit::calculateSeparationVector()
 {
 	SDL_Rect r = { collider.x - COLLIDER_MARGIN, collider.y - COLLIDER_MARGIN , collider.w + COLLIDER_MARGIN , collider.h + COLLIDER_MARGIN };
-	std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(r, this);
+	std::vector<Entity*> collisions;
+	App->entitycontroller->CheckCollidingWith(r, collisions, this);
 
 	fPoint separation_v = { 0,0 };
-
 
 	for (int i = 0; i < collisions.size(); i++)
 	{

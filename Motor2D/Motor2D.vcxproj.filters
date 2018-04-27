@@ -133,7 +133,6 @@
     <ClCompile Include="UI_NextWaveWindow.cpp">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClCompile>
-    <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="j1ParticleController.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
@@ -142,6 +141,9 @@
     </ClCompile>
     <ClCompile Include="UI_InfoTable.cpp">
       <Filter>Desenvolupament  ========\GUI\Compund Elements\Ingame Menu components</Filter>
+    </ClCompile>
+    <ClCompile Include="Quadtree.cpp">
+      <Filter>Desenvolupament  ========\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -289,7 +291,6 @@
     <ClInclude Include="UI_NextWaveWindow.h">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClInclude>
-    <ClInclude Include="Quadtree.h" />
     <ClInclude Include="j1ParticleController.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
@@ -299,6 +300,9 @@
     </ClInclude>
     <ClInclude Include="UI_InfoTable.h">
       <Filter>Desenvolupament  ========\GUI\Compund Elements\Ingame Menu components</Filter>
+    </ClInclude>
+    <ClInclude Include="Quadtree.h">
+      <Filter>Desenvolupament  ========\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -38,7 +38,7 @@ bool j1EntityController::Start()
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
 	App->scene->InitialWorkers(town_hall);
 
-	//colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
+	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
 
 /*
 	entity_iterator = entities.begin();
@@ -61,7 +61,7 @@ bool j1EntityController::Update(float dt)
 	{
 		if ((*it)->isActive || (*it) == hero)
 		{
-			//colliderQT->insert(*it);
+			colliderQT->insert(*it);
 
 			if (!App->scene->toRestart)
 			{
@@ -211,6 +211,8 @@ void j1EntityController::GetTotalIncome()
 
 bool j1EntityController::PostUpdate()
 {
+	BROFILER_CATEGORY("Entites postupdate", Profiler::Color::Maroon);
+
 	int selected_size = selected_entities.size();
 
 	for (std::list<Entity*>::iterator it = entities_to_destroy.begin(); it != entities_to_destroy.end() && !entities_to_destroy.empty() && (*it) != nullptr; it++)
@@ -238,10 +240,10 @@ bool j1EntityController::PostUpdate()
 
 	DestroyWorkers();
 
-	/*if(debug)
+	if(debug)
 		colliderQT->BlitSection();
 
-	colliderQT->Clear();*/
+	colliderQT->Clear();
 	return true;
 }
 
@@ -277,6 +279,8 @@ bool j1EntityController::CleanUp()
 
 	squads.clear();
 	selected_squads.clear();
+
+	RELEASE(colliderQT);
 /*
 	entity_iterator = entities.begin();
 	squad_iterator = squads.begin();*/
@@ -457,10 +461,14 @@ bool j1EntityController::placeBuilding(iPoint position)
 	iPoint pos = App->render->ScreenToWorld(position.x, position.y);
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	pos = App->map->MapToWorld(pos.x, pos.y);
+
 	Building* to_build = getBuildingFromDB(to_build_type);
 	SDL_Rect building_col = { pos.x, pos.y, to_build->size.x*App->map->data.tile_width, to_build->size.y*App->map->data.tile_height };
 
-	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && App->entitycontroller->CheckCollidingWith(building_col).empty())
+	std::vector<Entity*> collisions;
+	App->entitycontroller->CheckCollidingWith(building_col, collisions);
+
+	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && collisions.empty())
 	{
 		Building* tmp = addBuilding(pos, to_build_type);
 		worker* tmp2 = GetInactiveWorker();
@@ -734,17 +742,18 @@ Entity* j1EntityController::getNearestEnemy(fPoint position, bool isEnemy)
 	return ret;
 }
 
-std::vector<Entity*> j1EntityController::CheckCollidingWith(SDL_Rect collider, Entity* entity_to_ignore)
+void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entity*>& list_to_fill, Entity* entity_to_ignore)
 {
-	std::vector<Entity*> ret;
+	std::vector<Entity*> QT_entities;
+	
+	App->entitycontroller->colliderQT->FillCollisionVector(QT_entities, collider);
 
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	for (int i = 0; i < QT_entities.size(); i++)
 	{
-		if (*it != entity_to_ignore)
-			if (SDL_HasIntersection(&collider, &(*it)->collider)) ret.push_back(*it);
+		if (QT_entities[i] != entity_to_ignore && QT_entities[i]->ex_state !=  DESTROYED && QT_entities[i]->isActive)
+			if (SDL_HasIntersection(&collider, &QT_entities[i]->collider)) list_to_fill.push_back(QT_entities[i]);
 	}
 
-	return ret;
 }
 
 

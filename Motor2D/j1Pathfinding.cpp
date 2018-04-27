@@ -169,7 +169,8 @@ bool j1PathFinding::GatherWalkableAdjacents(iPoint map_pos, int count, std::vect
 						iPoint world_p = App->map->MapToWorld(cell.x, cell.y);
 						r.x = world_p.x; r.y = world_p.y;
 
-						std::vector<Entity*> collisions = App->entitycontroller->CheckCollidingWith(r);
+						std::vector<Entity*> collisions;
+						App->entitycontroller->CheckCollidingWith(r, collisions);
 
 						if (collisions.empty())
 						{

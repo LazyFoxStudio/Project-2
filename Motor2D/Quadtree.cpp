@@ -138,7 +138,7 @@ bool Quadtree::insert(Entity* entity)
 	return true;
 }
 
-vector<Entity*> Quadtree::FillCollisionVector(vector<Entity*> &EntityList, const SDL_Rect& collider)
+void Quadtree::FillCollisionVector(vector<Entity*> &EntityList, const SDL_Rect& collider)
 {
 	if (Children[0] != nullptr)
 	{
@@ -161,8 +161,6 @@ vector<Entity*> Quadtree::FillCollisionVector(vector<Entity*> &EntityList, const
 	{
 		EntityList.push_back(*item);
 	}
-
-	return EntityList;
 }
 
 bool Quadtree::CheckBoundaries(const SDL_Rect& r)const

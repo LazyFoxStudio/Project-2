@@ -38,9 +38,9 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.h = App->win->screen_surface->h;
 		camera.x = camera.y = 0;
 
-		culling_camera.w = App->win->screen_surface->w + 100;
-		culling_camera.h = App->win->screen_surface->h + 100;
-		culling_camera.x = camera.y = -100;
+		culling_camera.w = App->win->screen_surface->w + 200;
+		culling_camera.h = App->win->screen_surface->h + 200;
+		culling_camera.x = camera.y = -50;
 	}
 	else
 	{
@@ -274,8 +274,8 @@ void j1Render::MouseCameraMovement(float dt)
 	camera.x = (camera.x < -cam_limit_x ? -cam_limit_x : (camera.x > 0 ? 0 : camera.x));
 	camera.y = (camera.y < -cam_limit_y ? -cam_limit_y : (camera.y > 0 ? 0 : camera.y));
 
-	culling_camera.x = -camera.x - 100;
-	culling_camera.y = -camera.y - 100;
+	culling_camera.x = -camera.x - 50;
+	culling_camera.y = -camera.y - 50;
 
 }
 

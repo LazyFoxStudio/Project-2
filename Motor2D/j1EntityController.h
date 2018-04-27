@@ -81,7 +81,7 @@ public:
 	Building* getBuildingFromDB(Type type);
 
 	Entity* CheckMouseHover(iPoint mouse_world);
-	std::vector<Entity*> CheckCollidingWith(SDL_Rect collider, Entity* entity_to_ignore = nullptr);
+	void CheckCollidingWith(SDL_Rect collider, std::vector<Entity*>& list_to_fill, Entity* entity_to_ignore = nullptr);
 	Entity* getNearestEnemy(fPoint position, bool isEnemy);
 
 	//------Worker Related Functions--------
@@ -107,6 +107,8 @@ public:
 
 	std::map<uint, Entity*> DataBase;
 
+	uint last_UID = 0;
+	uint hero_UID = 0;
 /*
 	j1Timer time_slicer;
 	std::list<Entity*>::iterator entity_iterator;

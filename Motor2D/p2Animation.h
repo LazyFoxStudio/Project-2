@@ -27,6 +27,7 @@ private:
 	float current_frame;
 	int last_frame = 0;
 	int loops = 0;
+	bool last_loop = 0;
 
 public:
 	Animation() {};
@@ -37,7 +38,7 @@ public:
 	SDL_Rect& GetCurrentFrame(float dt);
 
 	bool Finished() const;
-	bool justFinished() const;
+	bool justFinished();
 	void Reset();
 
 	float GetCurrentFrameinFloat();

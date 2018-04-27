@@ -53,7 +53,7 @@ public:
 	bool insert(Entity* entity);
 	bool CheckBoundaries(const SDL_Rect& r)const;
 
-	vector<Entity*> FillCollisionVector(vector<Entity*> &EntityList, const SDL_Rect& collider);
+	void FillCollisionVector(vector<Entity*> &EntityList, const SDL_Rect& collider);
 
 public:
 
