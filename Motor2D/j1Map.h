@@ -96,7 +96,6 @@ public:
 	// Called each loop iteration
 	void Draw();
 
-	void DebugDraw() {};
 	// Called before quitting
 	bool CleanUp();
 

@@ -18,39 +18,44 @@ void j1Map::Draw()
 	BROFILER_CATEGORY("Map draw", Profiler::Color::BlanchedAlmond);
 
 	iPoint wCoord;
-	SDL_Rect camera = App->render->camera;
-	for (uint a = 0; a < data.layers.size(); a++)
-	{
-		MapLayer* layer = data.layers[a];
+	iPoint starting_tile = App->map->WorldToMap(App->render->culling_camera.x, App->render->culling_camera.y);
+	iPoint last_tile = { starting_tile.x + (App->render->culling_camera.w / data.tile_width), starting_tile.y + (App->render->culling_camera.h / data.tile_height) };
 
-		for (uint b = 0; b < data.tilesets.size(); b++)
-			for (uint i = 0; i < data.height; i++)
-				for (uint j = 0; j < data.width; j++)
+
+	for (uint b = 0; b < data.tilesets.size(); b++)
+		for (uint i = starting_tile.y; i < last_tile.y; i++)
+			for (uint j = starting_tile.x; j < last_tile.x; j++)
+			{
+				// TODO
+				int tile_id = data.layers[0]->GetID(j, i);
+
+				TileSet* tileset = GetTilesetFromTileId(tile_id);
+				SDL_Rect r = tileset->GetTileRect(tile_id);
+				iPoint tileWorld = MapToWorld(j, i);
+
+				App->render->Blit(tileset->texture, tileWorld.x, tileWorld.y, &r);
+
+				tile_id = data.layers[1]->GetID(j, i);
+				if (tile_id > 0)
 				{
-					// TODO
-					int tile_id = layer->GetID(j, i);
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
+					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint tileWorld = MapToWorld(j, i);
 
-					if (tile_id > 0 && App->render->CullingCam(fPoint(tileWorld.x, tileWorld.y)))
+					App->render->Blit(tileset->texture, tileWorld.x, tileWorld.y, &r);
+				}
+
+				if (debug)
+				{
+					if (!App->pathfinding->IsWalkable(iPoint{ (int)j,(int)i }))
 					{
-						TileSet* tileset = GetTilesetFromTileId(tile_id);
-						SDL_Rect r = tileset->GetTileRect(tile_id);
-
-						App->render->Blit(tileset->texture, tileWorld.x, tileWorld.y, &r);
-
-						if (debug)
-						{
-							if (!App->pathfinding->IsWalkable(iPoint{ (int)j,(int)i }))
-							{
-								SDL_Rect debug_r = { tileWorld.x, tileWorld.y, data.tile_width, data.tile_height };
-								App->render->DrawQuad(debug_r, Red);
-							}
-						}
+						iPoint tileWorld = MapToWorld(j, i);
+						SDL_Rect debug_r = { tileWorld.x, tileWorld.y, data.tile_width, data.tile_height };
+						App->render->DrawQuad(debug_r, Red);
 					}
 				}
-	}
 
-	DebugDraw();
+			}
 }
 
 

@@ -210,6 +210,8 @@ void j1EntityController::GetTotalIncome()
 
 bool j1EntityController::PostUpdate()
 {
+	BROFILER_CATEGORY("Entites postupdate", Profiler::Color::Maroon);
+
 	int selected_size = selected_entities.size();
 
 	for (std::list<Entity*>::iterator it = entities_to_destroy.begin(); it != entities_to_destroy.end() && !entities_to_destroy.empty() && (*it) != nullptr; it++)
