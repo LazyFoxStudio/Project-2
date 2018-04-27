@@ -32,6 +32,8 @@ Building::Building(iPoint pos, Building& building)
 	for (int i = 0; i < 9; i++)
 		available_actions = building.available_actions;
 
+	infoData = building.infoData;
+
 	sprites = building.sprites;
 
 	if (type == TOWN_HALL)

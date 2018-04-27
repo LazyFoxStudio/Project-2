@@ -8,6 +8,8 @@
 #include "j1Map.h"
 #include "j1App.h"
 
+struct InfoData;
+
 enum Type
 {
 	NONE_ENTITY,
@@ -24,7 +26,6 @@ enum Type
 	//Enemies
 	GRUNT, AXE_THROWER, /* ... */ ENEMY_X,
 };
-
 
 enum existence_state { BEING_BUILT, OPERATIVE, DESTROYED };
 
@@ -57,6 +58,7 @@ public:
 
 	j1Timer timer;
 	Cost cost;
+	InfoData* infoData = nullptr;
 	existence_state ex_state = BEING_BUILT;
 
 public:

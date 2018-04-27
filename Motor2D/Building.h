@@ -34,7 +34,7 @@ public:
 public:
 	Building() {};
 	Building(iPoint pos, Building& building);
-	~Building() { sprites.clear(); };
+	~Building() { sprites.clear(); RELEASE(infoData); };
 
 	bool Update(float dt);
 	void Draw(float dt);

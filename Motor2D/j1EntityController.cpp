@@ -20,6 +20,7 @@
 #include "UI_Button.h"
 #include "Building.h"
 #include "Quadtree.h"
+#include "UI_InfoTable.h"
 
 #define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
@@ -369,6 +370,8 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 
 	for (int i = 0; i < 9; i++)
 		hero->available_actions = hero_template->available_actions;
+
+	hero->infoData = hero_template->infoData;
 
 	hero->position.x = pos.x;
 	hero->position.y = pos.y;
@@ -914,6 +917,20 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		int size_x = NodeInfo.child("Stats").child("size").attribute("x").as_int(1);
 		int size_y = NodeInfo.child("Stats").child("size").attribute("y").as_int(1);
 
+		pugi::xml_node info = NodeInfo.child("Info");
+		if (info)
+		{
+			InfoData* infoData = new InfoData();
+			infoData->title = info.attribute("title").as_string();
+			infoData->linesData.push_back(new InfoLineData(STAT, "Damage:", unitTemplate->attack));
+			infoData->linesData.push_back(new InfoLineData(STAT, "Armor:", unitTemplate->defense));
+			infoData->linesData.push_back(new InfoLineData(STAT, "Sight:", unitTemplate->line_of_sight));
+			infoData->linesData.push_back(new InfoLineData(STAT, "Range:", unitTemplate->range));
+			infoData->linesData.push_back(new InfoLineData(STAT, "Speed:", unitTemplate->speed));
+			unitTemplate->infoData = infoData;
+		}
+		
+
 		//TODO: https://github.com/LazyFoxStudio/Project-2/issues/13
 		unitTemplate->collider = { 0,0, App->map->data.tile_width * size_x, App->map->data.tile_height * size_y };
 
@@ -960,6 +977,18 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 
 		for (pugi::xml_node action = NodeInfo.child("Actions").child("action"); action; action = action.next_sibling("action"))
 			buildingTemplate->available_actions.push_back(action.attribute("id").as_uint());
+
+		pugi::xml_node info = NodeInfo.child("Info");
+		if (info)
+		{
+			InfoData* infoData = new InfoData();
+			infoData->title = info.attribute("title").as_string();
+			for (pugi::xml_node line = info.child("line"); line; line = line.next_sibling("line"))
+			{
+				infoData->linesData.push_back(new InfoLineData(INFO, line.attribute("text").as_string()));
+			}
+			buildingTemplate->infoData = infoData;
+		}
 
 		pugi::xml_node IconData;
 		if (NodeInfo.child("iconData"))

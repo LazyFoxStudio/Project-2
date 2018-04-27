@@ -71,8 +71,7 @@ public:
 
 	void UIDebugDraw();
 	// Gui creation functions
-	const SDL_Texture* GetAtlas() const;
-	const SDL_Texture* GetIconAtlas() const;
+
 	//Type:
 	//TEXT - 0
 	//IMAGE - 1
@@ -127,6 +126,9 @@ public:
 
 public:
 
+	SDL_Texture* atlas = nullptr;
+	SDL_Texture* icon_atlas = nullptr;
+
 	uint popUp_wait_time = 0;
 	bool UI_Debug = false;
 	int alpha_value = 255;
@@ -139,8 +141,6 @@ public:
 
 private:
 
-	SDL_Texture* atlas=nullptr;
-	SDL_Texture* icon_atlas = nullptr;
 	std::string atlas_file_name = "";
 	std::string icon_atlas_file_name = "";
 	std::string	buttonFX = "";

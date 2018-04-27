@@ -247,7 +247,7 @@ void j1Scene::Restart_game()
 
 void j1Scene::InitialWorkers(Building* town_hall)
 {
-	App->entitycontroller->CreateWorkers(town_hall, 3);
+	App->entitycontroller->CreateWorkers(town_hall, INIT_WORKERS);
 }
 
 void j1Scene::GetTotalInactiveWorkers()

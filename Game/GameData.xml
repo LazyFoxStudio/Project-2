@@ -16,6 +16,7 @@
                 <lineOfSight value="500"/>
                 <size x="1" y="1"/>
             </Stats>
+			<Info title="Hero Stats:"/>
             <Animations>
                 <width value="74"/>
                 <height value="64"/>
@@ -277,6 +278,7 @@
                 <squadMembers value="5"/>
                 <size x="1" y="1"/>
             </Stats>
+			<Info title="Footman Stats:"/>
             <Animations>
                 <width value="73"/>
                 <height value="65"/>
@@ -505,6 +507,7 @@
                 <squadMembers value="4"/>
                 <size x="1" y="1"/>
             </Stats>
+			<Info title="Archer Stats:"/>
             <Animations>
                 <width value="59"/>
                 <height value="73"/>
@@ -1175,6 +1178,11 @@
         <buildingTime value="0"/>
         <defense value="20"/>
       </Stats>
+	  <Info title="Town Hall:">
+		<line text="This is the center"/>
+		<line text="of your village."/>
+		<line text="You have to defent it."/>
+	  </Info>
 	  <Actions>
 		  <action id="5"/>
 		  <action id="6"/>
@@ -1202,6 +1210,10 @@
         <woodCost value="300"/>
         <goldCost value="0"/>
       </Stats>
+	  <Info title="Barracks:">
+		<line text="Use this building"/>
+		<line text="to train your troops"/>
+	  </Info>
 	  <Actions>
 		<action id="11"/>
 		<action id="12"/>
@@ -1238,6 +1250,10 @@
         <woodCost value="350"/>
         <goldCost value="0"/>
       </Stats>
+	  <Info title="Lumber Mill:">
+		<line text="Use this building"/>
+		<line text="to collect wood"/>
+	  </Info>
       <iconData x="315" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
       <additionalSize x="11" y="11"/>
@@ -1264,6 +1280,12 @@
         <woodCost value="150"/>
         <goldCost value="0"/>
       </Stats>
+	  <Info title="Farm:">
+		<line text="This building is"/>
+		<line text="where workers live"/>
+		<line text="if it is destroyed"/>
+		<line text="you will lose them."/>
+	  </Info>
       <iconData x="621" y="200" w="72" h="59"/>
       <size x="2" y="2"/>
     </Building>
@@ -1383,7 +1405,7 @@
 			<OnMouse x="0" y="0" w="0" h="0"/>
 			<OnClick x="0" y="0" w="0" h="0"/>
 		</emptySpace>
-		<createFootman id="11" click_action="7">
+		<createFootman id="11" release_action="7">
 			<position x="0" y="0"/>
 			<standby x="489" y="507" w="66" h="66"/>
 			<OnMouse x="557" y="507" w="66" h="66"/>
@@ -1393,7 +1415,7 @@
 			</popUp>
 			<hotkey key="A" font_id="3"/>
 		</createFootman>
-		<createArcher id="12" click_action="8">
+		<createArcher id="12" release_action="8">
 			<position x="0" y="0"/>
 			<standby x="693" y="507" w="66" h="66"/>
 			<OnMouse x="761" y="507" w="66" h="66"/>

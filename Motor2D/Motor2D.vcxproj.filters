@@ -137,6 +137,12 @@
     <ClCompile Include="j1ParticleController.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="UI_SelectionDisplay.cpp">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements\Ingame Menu components</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_InfoTable.cpp">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements\Ingame Menu components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -288,6 +294,12 @@
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="UI_SelectionDisplay.h">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements\Ingame Menu components</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_InfoTable.h">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements\Ingame Menu components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -325,6 +337,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\GUI\Minimap">
       <UniqueIdentifier>{8cd7f751-f093-4ff7-8144-382d182b9e8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\GUI\Compund Elements\Ingame Menu components">
+      <UniqueIdentifier>{8690d753-37b0-4fe2-a3bd-c4bce765d460}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

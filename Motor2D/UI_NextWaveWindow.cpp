@@ -73,10 +73,7 @@ void NextWaveWindow::updateWave()
 	
 	if (gruntSquads > 0)
 	{
-		TroopIcon* enemyIcon = new TroopIcon();
-		Image* img = new Image(icon_atlas, firstIcon_pos.x + (icons_offset.x*counterX), firstIcon_pos.y + (icons_offset.y*counterY), App->gui->GetUnitRect(GRUNT), callback);
-		img->setBorder(true);
-		enemyIcon->image = img;
+		TroopIcon* enemyIcon = new TroopIcon(App->entitycontroller->getUnitFromDB(GRUNT), firstIcon_pos.x + (icons_offset.x*counterX), firstIcon_pos.y + (icons_offset.y*counterY));
 		enemiesIcons.push_back(enemyIcon);
 
 		Text* num = new Text(("x" + std::to_string(gruntSquads * App->entitycontroller->getUnitFromDB(GRUNT)->squad_members)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 10, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
@@ -86,10 +83,7 @@ void NextWaveWindow::updateWave()
 	}
 	if (axeThrowerSquads > 0)
 	{
-		TroopIcon* enemyIcon = new TroopIcon();
-		Image* img = new Image(icon_atlas, firstIcon_pos.x + (icons_offset.x*counterX), firstIcon_pos.y + (icons_offset.y*counterY), App->gui->GetUnitRect(AXE_THROWER), callback);
-		img->setBorder(true);
-		enemyIcon->image = img;
+		TroopIcon* enemyIcon = new TroopIcon(App->entitycontroller->getUnitFromDB(AXE_THROWER), firstIcon_pos.x + (icons_offset.x*counterX), firstIcon_pos.y + (icons_offset.y*counterY));
 		enemiesIcons.push_back(enemyIcon);
 
 		Text* num = new Text(("x" + std::to_string(axeThrowerSquads * App->entitycontroller->getUnitFromDB(AXE_THROWER)->squad_members)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 15, App->font->fonts.front(), { 0,0,0,255 }, nullptr);

@@ -9,7 +9,7 @@ void Image::BlitElement(bool use_camera)
 	{
 		BROFILER_CATEGORY("Image Blit", Profiler::Color::Beige);
 
-		if (texture != App->gui->GetAtlas())
+		if (texture != App->gui->atlas)
 			SDL_SetTextureAlphaMod(texture, App->gui->alpha_value);
 		iPoint globalPos = calculateAbsolutePosition();
 		if (border)

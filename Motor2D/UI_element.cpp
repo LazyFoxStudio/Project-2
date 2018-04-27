@@ -5,7 +5,7 @@
 
 UI_element::~UI_element()
 {
-	if (texture != nullptr && texture != App->gui->GetAtlas() && texture != App->gui->GetIconAtlas())
+	if (texture != nullptr && texture != App->gui->atlas && texture != App->gui->icon_atlas)
 	{
 		App->tex->UnLoad(texture);
 		texture = nullptr;

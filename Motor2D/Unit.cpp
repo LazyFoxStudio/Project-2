@@ -7,6 +7,7 @@
 #include "p2Animation.h"
 #include "j1EntityController.h"
 #include "Skills.h"
+#include "j1Gui.h"
 
 //minimap_
 #include "j1UIScene.h"
@@ -41,6 +42,8 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	for(int i = 0; i < 9; i++)
 	 available_actions = unit.available_actions;
 
+	infoData = unit.infoData;
+
 	position.x = pos.x; position.y = pos.y;
 
 	collider.x = pos.x - (collider.w / 2);
@@ -52,6 +55,7 @@ Unit::~Unit()
 	Halt();
 	animations.clear();
 	effects.clear();
+	RELEASE(infoData);
 }
 
 void Unit::Draw(float dt)
@@ -78,6 +82,7 @@ bool Unit::Update(float dt)
 			timer.Start();
 			ex_state = DESTROYED;
 			App->entitycontroller->selected_entities.remove(this);
+			App->gui->entityDeleted(this);
 		}
 		else if (timer.ReadSec() > DEATH_TIME)  return false;
 		return true;

@@ -2,7 +2,7 @@
 #define __UI_NEXTWAVEWINDOW_H__
 
 #include "UI_element.h"
-#include "UI_IngameMenu.h"
+#include "UI_SelectionDisplay.h"
 
 class Chrono;
 class Text;
