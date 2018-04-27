@@ -9,10 +9,6 @@ Animation::Animation(Animation& anim)
 	{
 		PushBack(anim.frames[i]);
 	}
-	//for (int i = anim.last_frame-2; i >= 0; i--)
-	//{
-	//	PushBack(anim.frames[i]);
-	//}
 }
 
 void Animation::PushBack(const SDL_Rect& rect)
@@ -41,6 +37,12 @@ SDL_Rect& Animation::GetCurrentFrame(float dt)
 	return frames[(int)current_frame];
 }
 
+bool Animation::justFinished()
+{
+	if (last_loop != loops) { last_loop = loops; return true; }
+	else					  return false;
+}
+
 bool Animation::LoadAnimation(pugi::xml_node& data, int width, int height)
 {
 	int rows = data.child("rows").attribute("value").as_int(0);
@@ -58,14 +60,6 @@ bool Animation::LoadAnimation(pugi::xml_node& data, int width, int height)
 }
 
 bool Animation::Finished() const				{ return loops > 0; }
-bool Animation::justFinished() const			
-{ 
-	if ((int)current_frame == last_frame - 2)
-		return true;
-	else
-		return false;
-	
-}
 void Animation::Reset()							{ current_frame = 0; }
 float Animation::GetCurrentFrameinFloat()		{ return current_frame; }
 int Animation::GetLastFrameinInt()				{ return last_frame;}
