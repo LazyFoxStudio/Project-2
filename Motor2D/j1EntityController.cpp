@@ -37,7 +37,7 @@ bool j1EntityController::Start()
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
 	App->scene->InitialWorkers(town_hall);
 
-	//colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
+	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
 
 /*
 	entity_iterator = entities.begin();
@@ -60,7 +60,7 @@ bool j1EntityController::Update(float dt)
 	{
 		if ((*it)->isActive || (*it) == hero)
 		{
-			//colliderQT->insert(*it);
+			colliderQT->insert(*it);
 
 			if (!App->scene->toRestart)
 			{
@@ -237,10 +237,10 @@ bool j1EntityController::PostUpdate()
 
 	DestroyWorkers();
 
-	/*if(debug)
+	if(debug)
 		colliderQT->BlitSection();
 
-	colliderQT->Clear();*/
+	colliderQT->Clear();
 	return true;
 }
 
@@ -276,6 +276,8 @@ bool j1EntityController::CleanUp()
 
 	squads.clear();
 	selected_squads.clear();
+
+	RELEASE(colliderQT);
 /*
 	entity_iterator = entities.begin();
 	squad_iterator = squads.begin();*/
@@ -735,7 +737,7 @@ Entity* j1EntityController::getNearestEnemy(fPoint position, bool isEnemy)
 	return ret;
 }
 
-void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entity*> list_to_fill, Entity* entity_to_ignore)
+void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entity*>& list_to_fill, Entity* entity_to_ignore)
 {
 	std::vector<Entity*> QT_entities;
 	

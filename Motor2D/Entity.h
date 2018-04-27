@@ -40,23 +40,24 @@ struct Cost
 class Entity
 {
 public:
-	fPoint position = { 0.0f, 0.0f };
-	SDL_Rect collider = { 0,0,0,0 };
-	SDL_Texture* texture = nullptr;
-	bool isActive = true;
-	Type type = NONE_ENTITY;
-	std::vector<uint> available_actions;
+	fPoint position			= { 0.0f, 0.0f };
+	SDL_Rect collider		= { 0,0,0,0 };
+	SDL_Texture* texture	= nullptr;
+	bool isActive			= true;
+	Type type				= NONE_ENTITY;
+	int UID					= -1;
 
-	int current_HP = 0;
-	uint max_HP = 0;
-	uint defense = 0;
-	uint attack = 0;
-	uint piercing_atk = 0;
-	uint line_of_sight = 0;
-	uint range = 0;
+	int current_HP			= 0;
+	uint max_HP				= 0;
+	uint defense			= 0;
+	uint attack				= 0;
+	uint piercing_atk		= 0;
+	uint line_of_sight		= 0;
+	uint range				= 0;
 
 	j1Timer timer;
 	Cost cost;
+	std::vector<uint> available_actions;
 	existence_state ex_state = BEING_BUILT;
 
 public:
