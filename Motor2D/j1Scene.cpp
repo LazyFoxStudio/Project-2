@@ -48,6 +48,7 @@ bool j1Scene::Start()
 
 	guiconfig = App->LoadFile(Gui_config_file, "Gui_config.xml");
 	guiconfig = guiconfig.child("scene");
+	
 
 	App->render->camera.x = -1200;
 	App->render->camera.y = -1600;
@@ -63,6 +64,7 @@ bool j1Scene::Start()
 
 	gameData = App->LoadFile(doc, "GameData.xml");
 	loadGameDB(gameData);
+	//App->entitycontroller->addUnit({ 2000, 2200 }, KNIGHT);
 
 	return true;
 }

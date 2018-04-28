@@ -185,6 +185,8 @@ void j1EntityController::HandleSFX(Type type, int volume)
 	case ARCHER:
 		App->audio->PlayFx(SFX_MISCELLANEOUS_ARROW, volume);
 		break;
+	case KNIGHT:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_ARROW, volume);
 	case GRUNT:
 		// May be changed if a better sfx is found (for free)
 		App->audio->PlayFx(SFX_MISCELLANEOUS_SWORD_CLASH, volume);
@@ -228,7 +230,7 @@ bool j1EntityController::PostUpdate()
 			selected_squads.remove(*it);
 			Squad* squad = (*it);
 			squads.remove(*it);
-
+			//it--;
 			RELEASE(squad);
 		}
 	}

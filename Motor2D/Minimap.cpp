@@ -116,6 +116,7 @@ void Minimap::DrawMinimap()
 		{
 			RELEASE(*it)
 			alert_queue.remove(*it);
+			//it--;
 		}
 	}
 	//now we will blit the viewport representation on the minimap

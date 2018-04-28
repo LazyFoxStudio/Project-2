@@ -82,6 +82,12 @@ bool j1ActionsController::Update(float dt)
 			}
 			doingAction = false;
 			break;
+		case CREATE_KNIGHT:
+			if (!App->entitycontroller->selected_entities.empty())
+			{
+				if (App->entitycontroller->CheckCost(KNIGHT) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
+					App->entitycontroller->AddSquad(KNIGHT, newSquadPos);
+			}
 		case USE_ABILITY1:
 			App->entitycontroller->hero->current_skill != 1 ? App->entitycontroller->hero->current_skill = 1 : App->entitycontroller->hero->current_skill = 0;
 			doingAction = false;

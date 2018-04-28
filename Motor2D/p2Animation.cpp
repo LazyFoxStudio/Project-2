@@ -40,7 +40,7 @@ SDL_Rect& Animation::GetCurrentFrame(float dt)
 bool Animation::justFinished()
 {
 	if (last_loop != loops) { last_loop = loops; return true; }
-	else					  return false;
+	else return false;
 }
 
 bool Animation::LoadAnimation(pugi::xml_node& data, int width, int height)
