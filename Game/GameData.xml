@@ -1759,6 +1759,22 @@
 		</demolishBuilding>
 	</ActionButtons>
 	
+	<WorkersDisplay>
+			<icon x="861" y="704" w="29" h="26"/>
+			<assign click_action="6">
+				<position x="60" y="0"/>
+				<standby x="892" y="704" w="22" h="22"/>
+				<OnMouse x="918" y="704" w="22" h="22"/>
+				<OnClick x="944" y="704" w="22" h="22"/>
+			</assign>
+			<unassign click_action="5">
+				<position x="20" y="0"/>
+				<standby x="969" y="704" w="22" h="22"/>
+				<OnMouse x="994" y="704" w="22" h="22"/>
+				<OnClick x="1020" y="704" w="22" h="22"/>
+			</unassign>
+		</WorkersDisplay>
+	
 	<fonts>
 		<font path="fonts/BebasNeue-Regular.ttf" size="23"/>
 		<font path="fonts/ABeeZee-Regular.ttf" size="25"/>

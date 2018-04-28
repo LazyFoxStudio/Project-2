@@ -3,7 +3,7 @@
 #include "j1Render.h"
 #include "Brofiler\Brofiler.h"
 
-void Button::BlitElement(bool use_camera)
+void Button::BlitElement()
 {
 	if (active)
 	{
@@ -26,10 +26,10 @@ void Button::BlitElement(bool use_camera)
 
 		if (displayingHotkey && hotkey_text != nullptr)
 		{
-			hotkey_text->BlitElement(use_camera);
+			hotkey_text->BlitElement();
 		}
 
-		UI_element::BlitElement(use_camera);
+		UI_element::BlitElement();
 	}
 }
 

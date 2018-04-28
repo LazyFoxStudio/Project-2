@@ -24,6 +24,7 @@
 #include "UI_InfoTable.h"
 #include "UI_WarningMessages.h"
 #include "UI_NextWaveWindow.h"
+#include "UI_WorkersDisplay.h"
 #include "j1Scene.h"
 
 j1Gui::j1Gui() : j1Module()
@@ -300,6 +301,11 @@ bool j1Gui::checkMouseHovering(UI_element* element)
 {
 	int x, y;
 	App->input->GetMousePosition(x, y);
+	if (element->use_camera)
+	{
+		x -= App->render->camera.x;
+		y -= App->render->camera.y;
+	}
 	int scale = App->win->GetScale();
 	bool ret = false;
 
@@ -334,6 +340,11 @@ void j1Gui::UIDebugDraw()
 				box.y = (*it_e)->calculateAbsolutePosition().y * scale;
 				box.w = (*it_e)->section.w;
 				box.h = (*it_e)->section.h;
+				if ((*it_e)->use_camera)
+				{
+					box.x += App->render->camera.x;
+					box.y += App->render->camera.y;
+				}
 				App->render->DrawQuad(box, Red, false, false);
 				if ((*it_e)->childs.size() > 0)
 				{
@@ -416,6 +427,7 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 			element = createIngameMenu(tmp, callback);
 		else if (type == "nextwavewindow")
 			element = createNextWaveWindow(tmp, callback);
+
 		//minimap_
 		else if (type == "minimap")
 			createMinimap(tmp, nullptr);
@@ -659,6 +671,16 @@ NextWaveWindow* j1Gui::createNextWaveWindow(pugi::xml_node node, j1Module* callb
 	return ret;
 }
 
+WorkersDisplay* j1Gui::createWorkersDisplay(Building* building)
+{
+	WorkersDisplay* ret = new WorkersDisplay(workersDisplayBase, building);
+	menu* menu = App->uiscene->getMenu(INGAME_MENU);
+	if (menu != nullptr)
+		menu->elements.push_back(ret);
+
+	return ret;
+}
+
 //minimap_
 void j1Gui::createMinimap(pugi::xml_node node, j1Module* callback)
 {
@@ -795,6 +817,17 @@ void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
 			button->displayHotkey(true, App->font->getFont(hotkey.attribute("font_id").as_int()));
 		}
 	}
+}
+
+void j1Gui::LoadWorkersDisplayDB(pugi::xml_node node)
+{
+	pugi::xml_node workers = node.child("WorkersDisplay");
+	Button* assign = createButton(workers.child("assign"), App->uiscene, false);
+	assign->clickAction = (actionType)workers.child("assign").attribute("click_action").as_int(0);
+	Button* unassign = createButton(workers.child("unassign"), App->uiscene, false);
+	unassign->clickAction = (actionType)workers.child("unassign").attribute("click_action").as_int(0);
+	SDL_Rect icon = { workers.child("icon").attribute("x").as_int(), workers.child("icon").attribute("y").as_int() , workers.child("icon").attribute("w").as_int() , workers.child("icon").attribute("h").as_int() };
+	workersDisplayBase = new WorkersDisplay(icon, assign, unassign, nullptr);
 }
 
 void j1Gui::LoadFonts(pugi::xml_node node)

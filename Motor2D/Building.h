@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "j1Timer.h"
 
+class WorkersDisplay;
 
 enum buildingSprites   // ATTENTION!: Town hall does not use this enum yet
 {
@@ -20,6 +21,7 @@ public:
 	iPoint additional_size = { 0,0 };
 	
 	std::list<worker*> workers_inside;
+	WorkersDisplay* workersDisplay = nullptr;
 	int resource_production = 0;
 
 	int last_frame_time = 0;
@@ -34,7 +36,7 @@ public:
 public:
 	Building() {};
 	Building(iPoint pos, Building& building);
-	~Building() { sprites.clear(); RELEASE(infoData); };
+	~Building();
 
 	bool Update(float dt);
 	void Draw(float dt);

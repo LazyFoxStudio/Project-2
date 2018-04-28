@@ -123,6 +123,7 @@
     <ClCompile Include="UI_Text.cpp" />
     <ClCompile Include="UI_WarningMessages.cpp" />
     <ClCompile Include="UI_Window.cpp" />
+    <ClCompile Include="UI_WorkersDisplay.cpp" />
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +179,7 @@
     <ClInclude Include="UI_Text.h" />
     <ClInclude Include="UI_WarningMessages.h" />
     <ClInclude Include="UI_Window.h" />
+    <ClInclude Include="UI_WorkersDisplay.h" />
     <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>

@@ -27,20 +27,20 @@ NextWaveWindow::~NextWaveWindow()
 	cleanIcons();
 }
 
-void NextWaveWindow::BlitElement(bool use_camera)
+void NextWaveWindow::BlitElement()
 {
-	window->BlitElement(use_camera);
-	text->BlitElement(use_camera);
-	timer->BlitElement(use_camera);
+	window->BlitElement();
+	text->BlitElement();
+	timer->BlitElement();
 
 	for (std::list<TroopIcon*>::iterator it_i = enemiesIcons.begin(); it_i != enemiesIcons.end(); it_i++)
 	{
-		(*it_i)->image->BlitElement(use_camera);
+		(*it_i)->image->BlitElement();
 	}
 
 	for (std::list<Text*>::iterator it_t = squads.begin(); it_t != squads.end(); it_t++)
 	{
-		(*it_t)->BlitElement(use_camera);
+		(*it_t)->BlitElement();
 	}
 }
 

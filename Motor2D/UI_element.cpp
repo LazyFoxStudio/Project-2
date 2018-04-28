@@ -36,7 +36,7 @@ void UI_element::appendChild(UI_element * child, bool center)
 	childs.push_back(child);
 }
 
-void UI_element::BlitElement(bool use_camera)
+void UI_element::BlitElement()
 {
 	BlitChilds();
 	if (state == MOUSEOVER)

@@ -31,7 +31,7 @@ void ProgressBar::enterCurrentValue(float current_value)
 		progress = current_value / max_value;
 }
 
-void ProgressBar::BlitElement(bool use_camera)
+void ProgressBar::BlitElement()
 {
 	if (active)
 	{
@@ -75,6 +75,6 @@ void ProgressBar::BlitElement(bool use_camera)
 			break;
 		}
 
-		UI_element::BlitElement(use_camera);
+		UI_element::BlitElement();
 	}
 }

@@ -22,7 +22,7 @@ public:
 	void showMessage(message_type type);
 	void hideMessage(message_type type);
 
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
 
 public:
 

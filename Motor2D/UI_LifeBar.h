@@ -20,7 +20,7 @@ public:
 
 	~LifeBar();
 
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
 
 public:
 

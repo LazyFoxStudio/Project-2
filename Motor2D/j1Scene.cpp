@@ -276,4 +276,7 @@ void j1Scene::loadGameDB(pugi::xml_node& data)
 
 	//Load action buttons
 	App->gui->LoadActionButtonsDB(data);
+
+	//Load workers display
+	App->gui->LoadWorkersDisplayDB(data);
 }

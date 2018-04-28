@@ -144,7 +144,7 @@ void SelectionDisplay::deleteDisplay(Entity* entity)
 	OrderDisplay();
 }
 
-void SelectionDisplay::BlitElement(bool use_camera)
+void SelectionDisplay::BlitElement()
 {
 	if (!severalSquads)
 	{

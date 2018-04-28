@@ -3,7 +3,7 @@
 #include "j1Render.h"
 #include "Brofiler\Brofiler.h"
 
-void Image::BlitElement(bool use_camera)
+void Image::BlitElement()
 {
 	if (active)
 	{
@@ -19,7 +19,7 @@ void Image::BlitElement(bool use_camera)
 		}
 		App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera);
 
-		UI_element::BlitElement(use_camera);
+		UI_element::BlitElement();
 	}
 }
 

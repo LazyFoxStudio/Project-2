@@ -145,6 +145,9 @@
     <ClCompile Include="Quadtree.cpp">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="UI_WorkersDisplay.cpp">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -303,6 +306,9 @@
     </ClInclude>
     <ClInclude Include="Quadtree.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_WorkersDisplay.h">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

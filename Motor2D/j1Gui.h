@@ -27,6 +27,8 @@ class Entity;
 class CostDisplay;
 class WarningMessages;
 class NextWaveWindow;
+class WorkersDisplay;
+class Building;
 
 enum event_type
 {
@@ -93,6 +95,7 @@ public:
 	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 	IngameMenu* createIngameMenu(pugi::xml_node node, j1Module* callback = nullptr);
 	NextWaveWindow* createNextWaveWindow(pugi::xml_node node, j1Module* callback = nullptr);
+	WorkersDisplay* createWorkersDisplay(Building* building);
 
 	//minimap_
 	void createMinimap(pugi::xml_node node, j1Module* callback = nullptr);
@@ -106,6 +109,7 @@ public:
 
 	void LoadLifeBarsDB(pugi::xml_node node);
 	void LoadActionButtonsDB(pugi::xml_node node);
+	void LoadWorkersDisplayDB(pugi::xml_node node);
 	void LoadFonts(pugi::xml_node node);
 
 	void AddIconDataUnit(Type type, pugi::xml_node node);
@@ -154,6 +158,7 @@ private:
 
 	IngameMenu* inGameMenu = nullptr;
 	UI_element* draggingElement = nullptr;
+	WorkersDisplay* workersDisplayBase = nullptr;
 
 	std::map<Type, SDL_Rect> unitIconRect;
 	/*std::map<heroType, SDL_Rect> heroIconRect;*/

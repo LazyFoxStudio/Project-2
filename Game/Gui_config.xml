@@ -144,17 +144,17 @@ Resolution of the screen: 1680x 1050y
 			<buttons x="1399" y="809" offsetX="81" offsetY="81"/>
 		</ingamemenu>
     
-    <!-- Minimap-->
-    <minimap>
-      <position x="6" y="800"/>
-      <base_image path ="Assets/Sprites/Minimap Sprites/minimap_base.png"/>
-      <map width ="4096" height ="4096"/>
-      <alerts>
-        <path value ="Assets/Sprites/Minimap Sprites/alert.png" type ="0"/>
-        <path value ="Assets/Sprites/Minimap Sprites/assist.png" type ="1"/>
-      </alerts>
-    </minimap>
-    
+    <!-- Minimap -->
+		<minimap>
+			<position x="6" y="800"/>
+			<base_image path ="Assets/Sprites/Minimap Sprites/minimap_base.png"/>
+			<map width ="4096" height ="4096"/>
+			<alerts>
+				<path value ="Assets/Sprites/Minimap Sprites/alert.png" type ="0"/>
+				<path value ="Assets/Sprites/Minimap Sprites/assist.png" type ="1"/>
+			</alerts>
+		</minimap>
+		
 	</menu>
 
   <menu type="4" active="false">

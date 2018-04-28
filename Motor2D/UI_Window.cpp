@@ -7,7 +7,7 @@
 #include "j1Render.h"
 #include "Brofiler\Brofiler.h"
 
-void Window::BlitElement(bool use_camera)
+void Window::BlitElement()
 {
 	if (active)
 	{
@@ -17,6 +17,6 @@ void Window::BlitElement(bool use_camera)
 		iPoint globalPos = calculateAbsolutePosition();
 		App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera);
 
-		UI_element::BlitElement(use_camera);
+		UI_element::BlitElement();
 	}
 }

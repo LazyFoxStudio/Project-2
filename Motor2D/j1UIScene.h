@@ -44,6 +44,7 @@ public:
 	void LoadUI(pugi::xml_node node);
 
 	bool OnUIEvent(UI_element* element, event_type event_type);
+	menu* getMenu(menu_id id);
 
 	void toggleMenu(bool setActive, menu_id id);
 

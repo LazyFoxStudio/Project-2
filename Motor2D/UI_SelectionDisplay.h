@@ -71,7 +71,7 @@ public:
 	void cleanLists();
 	void deleteDisplay(Entity* entity);
 
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
 
 public:
 

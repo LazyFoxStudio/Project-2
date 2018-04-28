@@ -15,7 +15,7 @@ public:
 	NextWaveWindow(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, j1Module* callback);
 	~NextWaveWindow();
 
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
 
 	void updateWave();
 	void cleanIcons();

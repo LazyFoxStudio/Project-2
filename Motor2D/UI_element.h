@@ -59,7 +59,7 @@ public:
 
 	void appendChild(UI_element* child, bool center = false);
 
-	virtual void BlitElement(bool use_camera = false);
+	virtual void BlitElement();
 
 	virtual void BlitHoverExtraEffect()
 	{}
@@ -118,6 +118,7 @@ public:
 	bool interactive = true;
 	bool active = true;
 	bool blitPopUpInfo = false;
+	bool use_camera = false;
 	std::string PopUpInfo;
 
 protected:

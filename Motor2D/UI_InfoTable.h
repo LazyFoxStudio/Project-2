@@ -18,24 +18,6 @@ enum line_type
 	STAT
 };
 
-struct InfoData
-{
-	~InfoData()
-	{
-		std::list<InfoLineData*>::iterator it_l;
-		it_l = linesData.begin();
-		while (it_l != linesData.end())
-		{
-			RELEASE((*it_l));
-			it_l++;
-		}
-		linesData.clear();
-	}
-
-	std::string title = "";
-	std::list<InfoLineData*> linesData;
-};
-
 struct InfoLineData
 {
 	InfoLineData(line_type type, std::string text, int value = 0): type(type), text(text), value(value)
@@ -62,6 +44,17 @@ struct InfoLine
 	Text* value = nullptr;
 };
 
+struct InfoData
+{
+	~InfoData()
+	{
+		linesData.clear();
+	}
+
+	std::string title = "";
+	std::list<InfoLineData*> linesData;
+};
+
 class InfoTable : public UI_element
 {
 public:
@@ -73,7 +66,7 @@ public:
 	void newSelection();
 	void cleanInfo();
 
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
 
 public:
 

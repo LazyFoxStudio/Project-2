@@ -7,6 +7,8 @@
 #include "j1Scene.h"
 #include "j1Audio.h"
 #include "UI_Chrono.h"
+#include "UI_InfoTable.h"
+#include "UI_WorkersDisplay.h"
 
 Building::Building(iPoint pos, Building& building)
 {
@@ -44,6 +46,14 @@ Building::Building(iPoint pos, Building& building)
 	else current_sprite = &sprites[CREATION_STARTED];
 
 	timer.Start();
+}
+
+Building::~Building()
+{
+	sprites.clear();
+	//Should be cleared just once with the DB
+	/*RELEASE(infoData);
+	RELEASE(workersDisplay);*/
 }
 
 
