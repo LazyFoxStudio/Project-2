@@ -770,10 +770,15 @@ void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
 		button->clickAction = (actionType)actionButton.attribute("click_action").as_int(0);
 		button->releaseAction = (actionType)actionButton.attribute("release_action").as_int(0);
 		pugi::xml_node info = actionButton.child("popUp").child("Info");
+		pugi::xml_node cost_node = actionButton.child("popUp").child("Cost");
 		if (info && info.attribute("cost").as_bool())
 		{
 			Cost cost = App->entitycontroller->getCost((Type)info.attribute("type").as_int());
 			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.wood_cost, cost.gold_cost, cost.oil_cost, cost.worker_cost);
+		}
+		else if (info && cost_node)
+		{
+			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost_node.attribute("wood").as_int(0), cost_node.attribute("gold").as_int(0), cost_node.attribute("oil").as_int(0), cost_node.attribute("workers").as_int(0));
 		}
 		else if (info)
 		{

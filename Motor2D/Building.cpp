@@ -93,7 +93,6 @@ void Building::Destroy()
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
 	current_sprite = &sprites[RUIN];
-	
 
 	switch (type)
 	{
@@ -123,6 +122,7 @@ void Building::Destroy()
 	}
 
 	timer.Start();
+	App->gui->entityDeleted(this);
 }
 
 
@@ -202,8 +202,17 @@ void Building::RepairBuilding()
 	}
 }
 
-
-
+void Building::DemolishBuilding()
+{
+	if (type != FARM)
+	{
+		while (workers_inside.size() > 0)
+		{
+			App->entitycontroller->HandleWorkerAssignment(false, this);
+		}
+	}
+	current_HP = 0;
+}
 
 void Building::Draw(float dt)
 {

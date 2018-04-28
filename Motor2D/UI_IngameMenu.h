@@ -35,6 +35,7 @@ public:
 	Window* window = nullptr;
 	iPoint firstButton_pos = { 0,0 };
 	iPoint buttons_offset = { 0,0 };
+	Text* workers_title = nullptr;
 	Text* workers = nullptr;
 	std::list<Button*> actionButtons; //Loading the activated buttons
 

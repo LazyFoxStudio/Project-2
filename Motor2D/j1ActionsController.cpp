@@ -110,6 +110,16 @@ bool j1ActionsController::Update(float dt)
 			}
 			doingAction = false;
 			break;
+		case DEMOLISH_BUILDING:
+			if (!App->entitycontroller->selected_entities.empty())
+			{
+				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state == OPERATIVE)
+				{
+					((Building*)*App->entitycontroller->selected_entities.begin())->DemolishBuilding();
+				}
+			}
+			doingAction = false;
+			break;
 		}
 		
 	}

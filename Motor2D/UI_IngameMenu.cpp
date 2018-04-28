@@ -18,6 +18,7 @@ buttons_offset({buttons_offsetX, buttons_offsetY})
 	selectionDisplay = new SelectionDisplay();
 	infoTable = new InfoTable();
 	window = new Window(texture, x, y, section, callback);
+	workers_title = new Text("Workers:", 1480, 815, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
 	workers = new Text("", 1495, 865, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
 }
 
@@ -26,6 +27,7 @@ IngameMenu::~IngameMenu()
 	RELEASE(window);
 	RELEASE(selectionDisplay);
 	RELEASE(infoTable);
+	RELEASE(workers_title)
 	RELEASE(workers);
 }
 
@@ -58,6 +60,7 @@ void IngameMenu::updateActionButtons()
 	{
 		if ((*it_b)->clickAction == ASSIGN_WORKER || (*it_b)->clickAction == UNASSIGN_WORKER) //HARDCODED
 			extraYvalue = 50;
+		else extraYvalue = 0;
 		(*it_b)->localPosition.x = firstButton_pos.x + (buttons_offset.x*counterX);
 		(*it_b)->localPosition.y = firstButton_pos.y + (buttons_offset.y*counterY) + extraYvalue;
 		(*it_b)->active = true;
@@ -93,8 +96,9 @@ void IngameMenu::BlitElement(bool use_camera)
 
 	//HARDCODED ?
 	//Blit workers on Lumber Mill
-	if (workers != nullptr && App->entitycontroller->selected_entities.size() > 0 && App->entitycontroller->selected_entities.front()->type == LUMBER_MILL)
+	if (workers_title != nullptr && workers != nullptr && App->entitycontroller->selected_entities.size() > 0 && App->entitycontroller->selected_entities.front()->type == LUMBER_MILL)
 	{
+		workers_title->BlitElement(use_camera);
 		int workers_num = ((Building*)App->entitycontroller->selected_entities.front())->workers_inside.size();
 		std::string text = std::to_string(workers_num) + '/' + std::to_string(MAX_VILLAGERS_LUMBERMILL);
 		workers->setText(text);

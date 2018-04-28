@@ -44,6 +44,7 @@ public:
 	void CalculateResourceProduction();
 	void HandleWorkerProduction();
 	void RepairBuilding();
+	void DemolishBuilding();
 
 	void Destroy();
 };

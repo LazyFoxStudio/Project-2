@@ -1474,7 +1474,13 @@
 	  <Actions>
 		<action id="11"/>
 		<action id="12"/>
-    <action id="16"/>
+		<action id="10"/>
+		<action id="10"/>
+		<action id="10"/>
+		<action id="10"/>
+        <action id="16"/>
+		<action id="10"/>
+        <action id="17"/>
 	  </Actions>
       <iconData x="162" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
@@ -1492,6 +1498,8 @@
 		 <action id="10"/>
 		 <action id="10"/>
          <action id="16"/>
+		 <action id="10"/>
+         <action id="17"/>
        </Actions>
       <sprites>
         <sprite x="102" y="413" w="101" h="109"/>
@@ -1521,7 +1529,15 @@
       <type value="4"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <Actions>
-        <action id="16"/>
+		<action id="10"/>
+		<action id="10"/>
+		<action id="10"/>
+		<action id="10"/>
+		<action id="10"/>
+		<action id="10"/>
+		<action id="16"/>
+		<action id="10"/>
+		<action id="17"/>
       </Actions>
       <sprites>
         <sprite x="399" y="71" w="72"  h="70"/>
@@ -1722,16 +1738,25 @@
 			</popUp>
 			<hotkey key="E" font_id="3"/>
 		</ability3>
-		<repairBuilding id="16" click_action="12">
+		<repairBuilding id="16" click_action="13">
 			<position x="0" y="0"/>
-			<standby x="1305" y="507" w="66" h="66"/>
-			<OnMouse x="1373" y="507" w="66" h="66"/>
-			<OnClick x="1441" y="507" w="66" h="66"/>
+			<standby x="1101" y="588" w="66" h="66"/>
+			<OnMouse x="1169" y="588" w="66" h="66"/>
+			<OnClick x="1237" y="588" w="66" h="66"/>
 			<popUp>
 				<Info text="Repair Building"/>
 				<Cost wood="200" gold="" oil="" workers="" time=""/>
 			</popUp>
 		</repairBuilding>
+		<demolishBuilding id="17" click_action="14">
+			<position x="0" y="0"/>
+			<standby x="1305" y="588" w="66" h="66"/>
+			<OnMouse x="1373" y="588" w="66" h="66"/>
+			<OnClick x="1441" y="588" w="66" h="66"/>
+			<popUp>
+				<Info text="Demolish Building"/>
+			</popUp>
+		</demolishBuilding>
 	</ActionButtons>
 	
 	<fonts>

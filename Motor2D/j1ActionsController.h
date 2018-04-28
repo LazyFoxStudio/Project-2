@@ -20,7 +20,8 @@ enum actionType
 	USE_ABILITY1,
 	USE_ABILITY2,
 	USE_ABILITY3,
-	REPAIR_BUILDING
+	REPAIR_BUILDING,
+	DEMOLISH_BUILDING
 };
 
 class j1ActionsController : public j1Module
