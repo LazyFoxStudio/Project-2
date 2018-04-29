@@ -105,6 +105,8 @@ public:
 	void entityDeleted(Entity* entity);
 	CostDisplay* createCostDisplay(std::string name, int wood_cost = 0, int gold_cost = 0, int oil_cost = 0, int workers_cost = 0);
 
+	void deleteElement(UI_element* element);
+
 	void createPopUpInfo(UI_element* element, std::string info);
 
 	void LoadLifeBarsDB(pugi::xml_node node);
@@ -136,7 +138,8 @@ public:
 	uint popUp_wait_time = 0;
 	bool UI_Debug = false;
 	int alpha_value = 255;
-	bool clickedOnUI = false;
+	bool leftClickedOnUI = false;
+	bool rightClickedOnUI = false;
 	j1PerfTimer hovering_element;
 	UI_element* current_hovering_element = nullptr;
 	WarningMessages* warningMessages = nullptr;

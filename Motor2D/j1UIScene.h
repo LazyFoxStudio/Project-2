@@ -15,7 +15,9 @@ enum menu_id
 	PAUSE_MENU,
 	GAMEOVER_MENU,
 	CREDITS_MENU,
-	CONTROLS_MENU
+	CONTROLS_MENU,
+
+	NO_MENU
 };
 
 struct menu

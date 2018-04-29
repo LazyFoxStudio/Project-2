@@ -10,6 +10,7 @@
 #include "j1Window.h"
 #include "j1App.h"
 #include "j1ActionsController.h"
+#include "j1UIScene.h"
 
 struct SDL_Texture;
 
@@ -22,7 +23,8 @@ enum element_type
 	CHRONO,
 	PROGRESSBAR,
 	MENU,
-	COSTDISPLAY
+	COSTDISPLAY,
+	WORKERSDISPLAY
 };
 
 enum element_state
@@ -120,6 +122,7 @@ public:
 	bool blitPopUpInfo = false;
 	bool use_camera = false;
 	std::string PopUpInfo;
+	menu_id menu = NO_MENU;
 
 protected:
 	iPoint Click_Pos{ 0,0 };

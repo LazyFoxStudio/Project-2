@@ -52,8 +52,8 @@ Building::~Building()
 {
 	sprites.clear();
 	//Should be cleared just once with the DB
-	/*RELEASE(infoData);
-	RELEASE(workersDisplay);*/
+	//RELEASE(infoData);
+	App->gui->deleteElement(workersDisplay);
 }
 
 

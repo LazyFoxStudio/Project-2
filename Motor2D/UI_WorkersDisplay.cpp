@@ -8,7 +8,7 @@
 #include "j1EntityController.h"
 #include "j1Fonts.h"
 
-WorkersDisplay::WorkersDisplay(SDL_Rect icon, Button* increase, Button* decrease, Building* building) : UI_element(0, 0, element_type::WINDOW, { 0,0,100,55 }, nullptr),
+WorkersDisplay::WorkersDisplay(SDL_Rect icon, Button* increase, Button* decrease, Building* building) : UI_element(0, 0, element_type::WORKERSDISPLAY, { 0,0,100,55 }, (j1Module*)App->uiscene),
 increase(increase),
 decrease(decrease),
 building(building)
@@ -22,7 +22,7 @@ building(building)
 	use_camera = true;
 }
 
-WorkersDisplay::WorkersDisplay(WorkersDisplay* copy, Building* building): UI_element(0, 0, element_type::WINDOW, { 0,0,100,55 }, nullptr)
+WorkersDisplay::WorkersDisplay(WorkersDisplay* copy, Building* building): UI_element(0, 0, element_type::WORKERSDISPLAY, { 0,0,100,55 }, (j1Module*)App->uiscene)
 {
 	icon = new Image();
 	*icon = *copy->icon;
@@ -57,10 +57,19 @@ void WorkersDisplay::BlitElement()
 		std::string text = std::to_string(building->workers_inside.size()) + '/' + std::to_string(MAX_VILLAGERS_LUMBERMILL);
 		workers->setText(text);
 		workers->BlitElement();
-		if (App->entitycontroller->selected_entities.size() > 0 && App->entitycontroller->selected_entities.front() == building)
+		if (state == element_state::MOUSEOVER || state == element_state::CLICKED)
 		{
 			increase->BlitElement();
 			decrease->BlitElement();
+		}
+		else
+		{
+			SDL_SetTextureAlphaMod(increase->texture, 100);
+			increase->BlitElement();
+			SDL_SetTextureAlphaMod(decrease->texture, 100);
+			decrease->BlitElement();
+			SDL_SetTextureAlphaMod(increase->texture, 255);
+			SDL_SetTextureAlphaMod(decrease->texture, 255);
 		}
 	}
 }
@@ -69,10 +78,13 @@ UI_element* WorkersDisplay::getMouseHoveringElement()
 {
 	UI_element* ret = this;
 
-	if (App->gui->checkMouseHovering(increase))
-		ret = increase;
-	else if (App->gui->checkMouseHovering(decrease))
-		ret = decrease;
+	if (state == element_state::MOUSEOVER || state == element_state::CLICKED)
+	{
+		if (App->gui->checkMouseHovering(increase))
+			ret = increase;
+		else if (App->gui->checkMouseHovering(decrease))
+			ret = decrease;
+	}
 
 	return ret;
 }

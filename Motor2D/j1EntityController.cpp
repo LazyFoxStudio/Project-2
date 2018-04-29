@@ -108,13 +108,10 @@ bool j1EntityController::Update(float dt)
 	if (to_build_type != NONE_ENTITY)
 		buildingCalculations();
 
-	if (!App->gui->clickedOnUI)
-	{
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->actionscontroller->doingAction_lastFrame && hero->current_skill == 0)
-			selectionControl();
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction_lastFrame)
-			commandControl();
-	}
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->actionscontroller->doingAction_lastFrame && hero->current_skill == 0 && !App->gui->leftClickedOnUI)
+		selectionControl();
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction_lastFrame && !App->gui->rightClickedOnUI)
+		commandControl();
 
 	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && to_build_type != NONE_ENTITY && App->actionscontroller->doingAction)
 	{
@@ -130,7 +127,7 @@ void j1EntityController::buildingCalculations()
 {
 	buildingProcessDraw();
 
-	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && !App->gui->clickedOnUI)
+	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && !App->gui->leftClickedOnUI)
 	{
 		if (CheckInactiveWorkers() && App->entitycontroller->CheckCost(to_build_type))
 		{

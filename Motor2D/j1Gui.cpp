@@ -98,9 +98,10 @@ bool j1Gui::PreUpdate()
 			if (element->callback != nullptr)
 				element->callback->OnUIEvent(element, MOUSE_ENTER);
 		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
-			clickedOnUI = true;
+			if (element->element_type != WORKERSDISPLAY)
+				leftClickedOnUI = true;
 			if (element->callback != nullptr)
 			{
 				ret = element->callback->OnUIEvent(element, MOUSE_LEFT_CLICK);
@@ -116,6 +117,8 @@ bool j1Gui::PreUpdate()
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 		{
+			if (element->element_type != WORKERSDISPLAY)
+				rightClickedOnUI = true;
 			if (element->callback != nullptr)
 			{
 				element->callback->OnUIEvent(element, MOUSE_LEFT_RELEASE);
@@ -159,7 +162,10 @@ bool j1Gui::PostUpdate()
 	BROFILER_CATEGORY("GUI posupdate", Profiler::Color::Maroon);
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
-		clickedOnUI = false;
+		leftClickedOnUI = false;
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
+		rightClickedOnUI = false;
 
 	//Draw selection quads
 	for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
@@ -455,7 +461,10 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		}
 
 		if (menu != nullptr)
+		{
 			menu->elements.push_back(element);
+			element->menu = menu->id;
+		}
 	}
 }
 
@@ -676,7 +685,10 @@ WorkersDisplay* j1Gui::createWorkersDisplay(Building* building)
 	WorkersDisplay* ret = new WorkersDisplay(workersDisplayBase, building);
 	menu* menu = App->uiscene->getMenu(INGAME_MENU);
 	if (menu != nullptr)
+	{
 		menu->elements.push_back(ret);
+		ret->menu = INGAME_MENU;
+	}
 
 	return ret;
 }
@@ -739,6 +751,20 @@ CostDisplay* j1Gui::createCostDisplay(std::string name, int wood_cost, int gold_
 {
 	CostDisplay* ret = new CostDisplay(atlas, name, wood_cost, gold_cost, oil_cost, workers_cost);
 	return ret;
+}
+
+void j1Gui::deleteElement(UI_element* element)
+{
+	if (element->menu != NO_MENU)
+	{
+		menu* menu = App->uiscene->getMenu(element->menu);
+		if (menu != nullptr)
+		{
+			menu->elements.remove(element);
+		}
+	}
+
+	RELEASE(element);
 }
 
 void j1Gui::createPopUpInfo(UI_element* element, std::string info)

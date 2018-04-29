@@ -7,6 +7,7 @@
 #include "j1Scene.h"
 #include "j1Gui.h"
 #include "UI_WarningMessages.h"
+#include "UI_WorkersDisplay.h"
 
 bool j1ActionsController::Update(float dt)
 {
@@ -51,18 +52,26 @@ bool j1ActionsController::Update(float dt)
 			
 			break;
 		case UNASSIGN_WORKER:
-			if (!App->entitycontroller->selected_entities.empty())
+			if (!App->entitycontroller->selected_entities.empty() && App->entitycontroller->selected_entities.front()->type == LUMBER_MILL)
 			{
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(false, (Building*)*App->entitycontroller->selected_entities.begin());
 			}
+			else
+			{
+				App->entitycontroller->HandleWorkerAssignment(false, ((WorkersDisplay*)App->gui->current_hovering_element->parent)->building);
+			}
 			doingAction = false;
 			break;
 		case ASSIGN_WORKER:
-			if (!App->entitycontroller->selected_entities.empty())
+			if (!App->entitycontroller->selected_entities.empty() && App->entitycontroller->selected_entities.front()->type == LUMBER_MILL)
 			{
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(true, (Building*)*App->entitycontroller->selected_entities.begin());
+			}
+			else
+			{
+				App->entitycontroller->HandleWorkerAssignment(true, ((WorkersDisplay*)App->gui->current_hovering_element->parent)->building);
 			}
 			doingAction = false;
 			break;
