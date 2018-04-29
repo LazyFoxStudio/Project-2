@@ -7,6 +7,8 @@
 #include "j1Scene.h"
 #include "j1Audio.h"
 #include "UI_Chrono.h"
+#include "UI_InfoTable.h"
+#include "UI_WorkersDisplay.h"
 
 Building::Building(iPoint pos, Building& building)
 {
@@ -32,6 +34,8 @@ Building::Building(iPoint pos, Building& building)
 	for (int i = 0; i < 9; i++)
 		available_actions = building.available_actions;
 
+	infoData = building.infoData;
+
 	sprites = building.sprites;
 
 	if (type == TOWN_HALL)
@@ -44,6 +48,14 @@ Building::Building(iPoint pos, Building& building)
 	timer.Start();
 }
 
+Building::~Building()
+{
+	sprites.clear();
+	//Should be cleared just once with the DB
+	//RELEASE(infoData);
+	App->gui->deleteElement(workersDisplay);
+}
+
 
 bool Building::Update(float dt)
 {
@@ -53,6 +65,8 @@ bool Building::Update(float dt)
 		if(ex_state != DESTROYED)	App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
 		else						App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
 	}
+
+	if (current_HP <= 0 && ex_state != DESTROYED)   Destroy();
 
 	switch (ex_state)
 	{
@@ -86,7 +100,11 @@ bool Building::Update(float dt)
 
 void Building::Destroy()
 {
-	if (ex_state != DESTROYED)
+	ex_state = DESTROYED;
+	App->entitycontroller->selected_entities.remove(this);
+	current_sprite = &sprites[RUIN];
+
+	switch (type)
 	{
 		ex_state = DESTROYED;
 		App->entitycontroller->selected_entities.remove(this);
@@ -122,6 +140,7 @@ void Building::Destroy()
 	}
 
 	timer.Start();
+	App->gui->entityDeleted(this);
 }
 
 
@@ -200,8 +219,17 @@ void Building::RepairBuilding()
 	}
 }
 
-
-
+void Building::DemolishBuilding()
+{
+	if (type != FARM)
+	{
+		while (workers_inside.size() > 0)
+		{
+			App->entitycontroller->HandleWorkerAssignment(false, this);
+		}
+	}
+	current_HP = 0;
+}
 
 void Building::Draw(float dt)
 {

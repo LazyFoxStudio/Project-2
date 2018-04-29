@@ -45,7 +45,7 @@ void Chrono::Blink()
 	}
 }
 
-void Chrono::BlitElement(bool use_camera)
+void Chrono::BlitElement()
 {
 	if (active)
 	{
@@ -106,6 +106,6 @@ void Chrono::BlitElement(bool use_camera)
 
 		text->BlitElement();
 
-		UI_element::BlitElement(use_camera);
+		UI_element::BlitElement();
 	}
 }

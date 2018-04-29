@@ -48,6 +48,7 @@ bool j1Scene::Start()
 
 	guiconfig = App->LoadFile(Gui_config_file, "Gui_config.xml");
 	guiconfig = guiconfig.child("scene");
+	
 
 	App->render->camera.x = -1200;
 	App->render->camera.y = -1600;
@@ -63,6 +64,7 @@ bool j1Scene::Start()
 
 	gameData = App->LoadFile(doc, "GameData.xml");
 	loadGameDB(gameData);
+	//App->entitycontroller->addUnit({ 2000, 2200 }, KNIGHT);
 
 	return true;
 }
@@ -230,7 +232,7 @@ void j1Scene::Restart_game()
 
 void j1Scene::InitialWorkers(Building* town_hall)
 {
-	App->entitycontroller->CreateWorkers(town_hall, 3);
+	App->entitycontroller->CreateWorkers(town_hall, INIT_WORKERS);
 }
 
 void j1Scene::GetTotalInactiveWorkers()
@@ -257,4 +259,7 @@ void j1Scene::loadGameDB(pugi::xml_node& data)
 
 	//Load action buttons
 	App->gui->LoadActionButtonsDB(data);
+
+	//Load workers display
+	App->gui->LoadWorkersDisplayDB(data);
 }

@@ -8,6 +8,8 @@
 #include "j1Map.h"
 #include "j1App.h"
 
+struct InfoData;
+
 enum Type
 {
 	NONE_ENTITY,
@@ -19,12 +21,11 @@ enum Type
 	HERO_1, /* ... */ HERO_X,
 
 	// Allies
-	FOOTMAN, ARCHER, /* ... */ ALLY_X,
+	FOOTMAN, ARCHER, KNIGHT, /* ... */ ALLY_X,
 
 	//Enemies
 	GRUNT, AXE_THROWER, /* ... */ ENEMY_X,
 };
-
 
 enum existence_state { BEING_BUILT, OPERATIVE, DESTROYED };
 
@@ -57,7 +58,11 @@ public:
 
 	j1Timer timer;
 	Cost cost;
+
+	InfoData* infoData = nullptr;
+
 	std::vector<uint> available_actions;
+
 	existence_state ex_state = BEING_BUILT;
 
 public:

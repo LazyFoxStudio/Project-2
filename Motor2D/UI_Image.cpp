@@ -3,13 +3,13 @@
 #include "j1Render.h"
 #include "Brofiler\Brofiler.h"
 
-void Image::BlitElement(bool use_camera)
+void Image::BlitElement()
 {
 	if (active)
 	{
 		BROFILER_CATEGORY("Image Blit", Profiler::Color::Beige);
 
-		if (texture != App->gui->GetAtlas())
+		if (texture != App->gui->atlas)
 			SDL_SetTextureAlphaMod(texture, App->gui->alpha_value);
 		iPoint globalPos = calculateAbsolutePosition();
 		if (border)
@@ -19,7 +19,7 @@ void Image::BlitElement(bool use_camera)
 		}
 		App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera);
 
-		UI_element::BlitElement(use_camera);
+		UI_element::BlitElement();
 	}
 }
 

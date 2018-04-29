@@ -21,8 +21,10 @@
 #include "j1EntityController.h"
 #include "UI_IngameMenu.h"
 #include "UI_CostDisplay.h"
+#include "UI_InfoTable.h"
 #include "UI_WarningMessages.h"
 #include "UI_NextWaveWindow.h"
+#include "UI_WorkersDisplay.h"
 #include "j1Scene.h"
 
 j1Gui::j1Gui() : j1Module()
@@ -96,9 +98,10 @@ bool j1Gui::PreUpdate()
 			if (element->callback != nullptr)
 				element->callback->OnUIEvent(element, MOUSE_ENTER);
 		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
-			clickedOnUI = true;
+			if (element->element_type != WORKERSDISPLAY)
+				leftClickedOnUI = true;
 			if (element->callback != nullptr)
 			{
 				ret = element->callback->OnUIEvent(element, MOUSE_LEFT_CLICK);
@@ -113,7 +116,7 @@ bool j1Gui::PreUpdate()
 			}
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
-		{
+		{			
 			if (element->callback != nullptr)
 			{
 				element->callback->OnUIEvent(element, MOUSE_LEFT_RELEASE);
@@ -126,6 +129,8 @@ bool j1Gui::PreUpdate()
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
+			if (element->element_type != WORKERSDISPLAY)
+				rightClickedOnUI = true;
 			if (element->callback != nullptr)
 				ret = element->callback->OnUIEvent(element, MOUSE_RIGHT_CLICK);
 		}
@@ -157,7 +162,10 @@ bool j1Gui::PostUpdate()
 	BROFILER_CATEGORY("GUI posupdate", Profiler::Color::Maroon);
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
-		clickedOnUI = false;
+		leftClickedOnUI = false;
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
+		rightClickedOnUI = false;
 
 	//Draw selection quads
 	for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
@@ -175,6 +183,8 @@ bool j1Gui::PostUpdate()
 		if (!(*it_m)->active) continue;
 		for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++)
 		{
+			if (!(*it_e)->active)
+				continue;
 			if ((*it_e)->moving)
 			{
 				(*it_e)->Mouse_Drag();
@@ -299,6 +309,11 @@ bool j1Gui::checkMouseHovering(UI_element* element)
 {
 	int x, y;
 	App->input->GetMousePosition(x, y);
+	if (element->use_camera)
+	{
+		x -= App->render->camera.x;
+		y -= App->render->camera.y;
+	}
 	int scale = App->win->GetScale();
 	bool ret = false;
 
@@ -333,6 +348,11 @@ void j1Gui::UIDebugDraw()
 				box.y = (*it_e)->calculateAbsolutePosition().y * scale;
 				box.w = (*it_e)->section.w;
 				box.h = (*it_e)->section.h;
+				if ((*it_e)->use_camera)
+				{
+					box.x += App->render->camera.x;
+					box.y += App->render->camera.y;
+				}
 				App->render->DrawQuad(box, Red, false, false);
 				if ((*it_e)->childs.size() > 0)
 				{
@@ -354,16 +374,6 @@ void j1Gui::UIDebugDraw()
 		}
 	}
 
-}
-// const getter for atlas
-const SDL_Texture* j1Gui::GetAtlas() const
-{
-	return atlas;
-}
-
-const SDL_Texture* j1Gui::GetIconAtlas() const
-{
-	return icon_atlas;
 }
 
 UI_element* j1Gui::GetElement(int type, int id)
@@ -425,6 +435,7 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 			element = createIngameMenu(tmp, callback);
 		else if (type == "nextwavewindow")
 			element = createNextWaveWindow(tmp, callback);
+
 		//minimap_
 		else if (type == "minimap")
 			createMinimap(tmp, nullptr);
@@ -452,7 +463,10 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		}
 
 		if (menu != nullptr)
+		{
 			menu->elements.push_back(element);
+			element->menu = menu->id;
+		}
 	}
 }
 
@@ -559,6 +573,9 @@ Button* j1Gui::createButton(pugi::xml_node node, j1Module* callback, bool saveIn
 
 	Button* ret = new Button(x, y, texture, standby, OnMouse, OnClick, callback);
 
+	ret->clickAction = (actionType)node.attribute("click_action").as_int(0);
+	ret->releaseAction = (actionType)node.attribute("release_action").as_int(0);
+
 	if (saveIntoGUI)
 		Buttons.push_back(ret);
 
@@ -632,27 +649,12 @@ IngameMenu* j1Gui::createIngameMenu(pugi::xml_node node, j1Module * callback)
 	int y = node.child("position").attribute("y").as_int();
 	SDL_Rect section = { node.child("section").attribute("x").as_int(), node.child("section").attribute("y").as_int(), node.child("section").attribute("w").as_int(), node.child("section").attribute("h").as_int() };
 
-	int minimap_posX = node.child("minimap").attribute("x").as_int();
-	int minimap_posY = node.child("minimap").attribute("y").as_int();
-
-	int firstIcon_posX = node.child("icons").attribute("x").as_int();
-	int firstIcon_posY = node.child("icons").attribute("y").as_int();
-	int icons_offsetX = node.child("icons").attribute("offsetX").as_int();
-	int icons_offsetY = node.child("icons").attribute("offsetY").as_int();
-	int squad_offsetX = node.child("icons").attribute("squad_offsetX").as_int();
-
-	int lifeBars_offsetX = node.child("lifeBars").attribute("offsetX").as_int();
-	int lifeBars_offsetY = node.child("lifeBars").attribute("offsetY").as_int();
-
-	int stats_posX = node.child("stats").attribute("x").as_int();
-	int stats_posY = node.child("stats").attribute("y").as_int();
-
 	int actionButtons_posX = node.child("buttons").attribute("x").as_int();
 	int actionButtons_posY = node.child("buttons").attribute("y").as_int();
 	int actionButtons_offsetX = node.child("buttons").attribute("offsetX").as_int();
 	int actionButtons_offsetY = node.child("buttons").attribute("offsetY").as_int();
 
-	IngameMenu* ret = new IngameMenu(texture, icon_atlas, x, y, section, minimap_posX, minimap_posY, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, squad_offsetX, lifeBars_offsetX, lifeBars_offsetY, stats_posX, stats_posY, actionButtons_posX, actionButtons_posY, actionButtons_offsetX, actionButtons_offsetY, callback);
+	IngameMenu* ret = new IngameMenu(texture, x, y, section, actionButtons_posX, actionButtons_posY, actionButtons_offsetX, actionButtons_offsetY, callback);
 
 	inGameMenu = ret;
 
@@ -676,9 +678,27 @@ NextWaveWindow* j1Gui::createNextWaveWindow(pugi::xml_node node, j1Module* callb
 	int icons_offsetX = node.child("icons").attribute("offsetX").as_int();
 	int icons_offsetY = node.child("icons").attribute("offsetY").as_int();
 
-	NextWaveWindow* ret = new NextWaveWindow(texture, icon_atlas, x, y, section, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, callback);
+	Button* button = createButton(node.child("button"), App->uiscene, false);
+
+	int min_x = node.child("minimizedPosition").attribute("x").as_int();
+	int min_y = node.child("minimizedPosition").attribute("y").as_int();
+
+	NextWaveWindow* ret = new NextWaveWindow(texture, icon_atlas, button, x, y, min_x, min_y, section, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, callback);
 
 	nextWaveWindow = ret;
+
+	return ret;
+}
+
+WorkersDisplay* j1Gui::createWorkersDisplay(Building* building)
+{
+	WorkersDisplay* ret = new WorkersDisplay(workersDisplayBase, building);
+	menu* menu = App->uiscene->getMenu(INGAME_MENU);
+	if (menu != nullptr)
+	{
+		menu->elements.push_back(ret);
+		ret->menu = INGAME_MENU;
+	}
 
 	return ret;
 }
@@ -730,13 +750,31 @@ void j1Gui::entityDeleted(Entity* entity)
 
 	//Delete information from the in-game menu
 	if (inGameMenu != nullptr)
-		inGameMenu->deleteMenuTroop(entity);
+	{
+		inGameMenu->selectionDisplay->deleteDisplay(entity);
+		inGameMenu->infoTable->newSelection();
+		inGameMenu->updateActionButtons();
+	}
 }
 
 CostDisplay* j1Gui::createCostDisplay(std::string name, int wood_cost, int gold_cost, int oil_cost, int workers_cost)
 {
 	CostDisplay* ret = new CostDisplay(atlas, name, wood_cost, gold_cost, oil_cost, workers_cost);
 	return ret;
+}
+
+void j1Gui::deleteElement(UI_element* element)
+{
+	if (element->menu != NO_MENU)
+	{
+		menu* menu = App->uiscene->getMenu(element->menu);
+		if (menu != nullptr)
+		{
+			menu->elements.remove(element);
+		}
+	}
+
+	RELEASE(element);
 }
 
 void j1Gui::createPopUpInfo(UI_element* element, std::string info)
@@ -787,13 +825,17 @@ void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
 		uint id = actionButton.attribute("id").as_uint();
 		Button* button = createButton(actionButton, App->uiscene);
 		button->active = false;
-		button->clickAction = (actionType)actionButton.attribute("click_action").as_int(0);
-		button->releaseAction = (actionType)actionButton.attribute("release_action").as_int(0);
+		
 		pugi::xml_node info = actionButton.child("popUp").child("Info");
+		pugi::xml_node cost_node = actionButton.child("popUp").child("Cost");
 		if (info && info.attribute("cost").as_bool())
 		{
 			Cost cost = App->entitycontroller->getCost((Type)info.attribute("type").as_int());
 			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.wood_cost, cost.gold_cost, cost.oil_cost, cost.worker_cost);
+		}
+		else if (info && cost_node)
+		{
+			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost_node.attribute("wood").as_int(0), cost_node.attribute("gold").as_int(0), cost_node.attribute("oil").as_int(0), cost_node.attribute("workers").as_int(0));
 		}
 		else if (info)
 		{
@@ -810,6 +852,15 @@ void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
 			button->displayHotkey(true, App->font->getFont(hotkey.attribute("font_id").as_int()));
 		}
 	}
+}
+
+void j1Gui::LoadWorkersDisplayDB(pugi::xml_node node)
+{
+	pugi::xml_node workers = node.child("WorkersDisplay");
+	Button* assign = createButton(workers.child("assign"), App->uiscene, false);
+	Button* unassign = createButton(workers.child("unassign"), App->uiscene, false);
+	SDL_Rect icon = { workers.child("icon").attribute("x").as_int(), workers.child("icon").attribute("y").as_int() , workers.child("icon").attribute("w").as_int() , workers.child("icon").attribute("h").as_int() };
+	workersDisplayBase = new WorkersDisplay(icon, assign, unassign, nullptr);
 }
 
 void j1Gui::LoadFonts(pugi::xml_node node)

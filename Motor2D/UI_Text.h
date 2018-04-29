@@ -38,7 +38,7 @@ public:
 	void setPrefix(std::string prefix);
 	void setSufix(std::string sufix);
 
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
 
 public:
 

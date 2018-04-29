@@ -5,7 +5,7 @@
 
 UI_element::~UI_element()
 {
-	if (texture != nullptr && texture != App->gui->GetAtlas() && texture != App->gui->GetIconAtlas())
+	if (texture != nullptr && texture != App->gui->atlas && texture != App->gui->icon_atlas)
 	{
 		App->tex->UnLoad(texture);
 		texture = nullptr;
@@ -36,7 +36,7 @@ void UI_element::appendChild(UI_element * child, bool center)
 	childs.push_back(child);
 }
 
-void UI_element::BlitElement(bool use_camera)
+void UI_element::BlitElement()
 {
 	BlitChilds();
 	if (state == MOUSEOVER)

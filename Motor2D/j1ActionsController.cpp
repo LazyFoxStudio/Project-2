@@ -7,6 +7,8 @@
 #include "j1Scene.h"
 #include "j1Gui.h"
 #include "UI_WarningMessages.h"
+#include "UI_WorkersDisplay.h"
+#include "UI_NextWaveWindow.h"
 
 bool j1ActionsController::Update(float dt)
 {
@@ -51,18 +53,26 @@ bool j1ActionsController::Update(float dt)
 			
 			break;
 		case UNASSIGN_WORKER:
-			if (!App->entitycontroller->selected_entities.empty())
+			if (!App->entitycontroller->selected_entities.empty() && App->entitycontroller->selected_entities.front()->type == LUMBER_MILL)
 			{
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(false, (Building*)*App->entitycontroller->selected_entities.begin());
 			}
+			else
+			{
+				App->entitycontroller->HandleWorkerAssignment(false, ((WorkersDisplay*)App->gui->current_hovering_element->parent)->building);
+			}
 			doingAction = false;
 			break;
 		case ASSIGN_WORKER:
-			if (!App->entitycontroller->selected_entities.empty())
+			if (!App->entitycontroller->selected_entities.empty() && App->entitycontroller->selected_entities.front()->type == LUMBER_MILL)
 			{
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(true, (Building*)*App->entitycontroller->selected_entities.begin());
+			}
+			else
+			{
+				App->entitycontroller->HandleWorkerAssignment(true, ((WorkersDisplay*)App->gui->current_hovering_element->parent)->building);
 			}
 			doingAction = false;
 			break;
@@ -82,6 +92,12 @@ bool j1ActionsController::Update(float dt)
 			}
 			doingAction = false;
 			break;
+		case CREATE_KNIGHT:
+			if (!App->entitycontroller->selected_entities.empty())
+			{
+				if (App->entitycontroller->CheckCost(KNIGHT) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
+					App->entitycontroller->AddSquad(KNIGHT, newSquadPos);
+			}
 		case USE_ABILITY1:
 			App->entitycontroller->hero->current_skill != 1 ? App->entitycontroller->hero->current_skill = 1 : App->entitycontroller->hero->current_skill = 0;
 			doingAction = false;
@@ -102,6 +118,20 @@ bool j1ActionsController::Update(float dt)
 					((Building*)*App->entitycontroller->selected_entities.begin())->RepairBuilding();
 				}
 			}
+			doingAction = false;
+			break;
+		case DEMOLISH_BUILDING:
+			if (!App->entitycontroller->selected_entities.empty())
+			{
+				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state == OPERATIVE)
+				{
+					((Building*)*App->entitycontroller->selected_entities.begin())->DemolishBuilding();
+				}
+			}
+			doingAction = false;
+			break;
+		case TOGGLE_NEXTWAVE:
+			App->gui->nextWaveWindow->toggle();
 			doingAction = false;
 			break;
 		}

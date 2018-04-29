@@ -114,13 +114,16 @@
     <ClCompile Include="UI_CostDisplay.cpp" />
     <ClCompile Include="UI_element.cpp" />
     <ClCompile Include="UI_Image.cpp" />
+    <ClCompile Include="UI_InfoTable.cpp" />
     <ClCompile Include="UI_IngameMenu.cpp" />
     <ClCompile Include="UI_LifeBar.cpp" />
     <ClCompile Include="UI_NextWaveWindow.cpp" />
     <ClCompile Include="UI_ProgressBar.cpp" />
+    <ClCompile Include="UI_SelectionDisplay.cpp" />
     <ClCompile Include="UI_Text.cpp" />
     <ClCompile Include="UI_WarningMessages.cpp" />
     <ClCompile Include="UI_Window.cpp" />
+    <ClCompile Include="UI_WorkersDisplay.cpp" />
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -167,13 +170,16 @@
     <ClInclude Include="UI_CostDisplay.h" />
     <ClInclude Include="UI_element.h" />
     <ClInclude Include="UI_Image.h" />
+    <ClInclude Include="UI_InfoTable.h" />
     <ClInclude Include="UI_IngameMenu.h" />
     <ClInclude Include="UI_LifeBar.h" />
     <ClInclude Include="UI_NextWaveWindow.h" />
     <ClInclude Include="UI_ProgressBar.h" />
+    <ClInclude Include="UI_SelectionDisplay.h" />
     <ClInclude Include="UI_Text.h" />
     <ClInclude Include="UI_WarningMessages.h" />
     <ClInclude Include="UI_Window.h" />
+    <ClInclude Include="UI_WorkersDisplay.h" />
     <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>

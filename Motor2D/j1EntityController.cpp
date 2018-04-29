@@ -20,6 +20,7 @@
 #include "UI_Button.h"
 #include "Building.h"
 #include "Quadtree.h"
+#include "UI_InfoTable.h"
 
 #define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
@@ -108,13 +109,10 @@ bool j1EntityController::Update(float dt)
 	if (to_build_type != NONE_ENTITY)
 		buildingCalculations();
 
-	if (!App->gui->clickedOnUI)
-	{
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->actionscontroller->doingAction_lastFrame && hero->current_skill == 0)
-			selectionControl();
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction_lastFrame)
-			commandControl();
-	}
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->actionscontroller->doingAction_lastFrame && hero->current_skill == 0 && !App->gui->leftClickedOnUI)
+		selectionControl();
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction_lastFrame && !App->gui->rightClickedOnUI)
+		commandControl();
 
 	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && to_build_type != NONE_ENTITY && App->actionscontroller->doingAction)
 	{
@@ -130,7 +128,7 @@ void j1EntityController::buildingCalculations()
 {
 	buildingProcessDraw();
 
-	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && !App->gui->clickedOnUI)
+	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && !App->gui->leftClickedOnUI)
 	{
 		if (CheckInactiveWorkers() && App->entitycontroller->CheckCost(to_build_type))
 		{
@@ -185,6 +183,8 @@ void j1EntityController::HandleSFX(Type type, int volume)
 	case ARCHER:
 		App->audio->PlayFx(SFX_MISCELLANEOUS_ARROW, volume);
 		break;
+	case KNIGHT:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_ARROW, volume);
 	case GRUNT:
 		// May be changed if a better sfx is found (for free)
 		App->audio->PlayFx(SFX_MISCELLANEOUS_SWORD_CLASH, volume);
@@ -218,8 +218,18 @@ bool j1EntityController::PostUpdate()
 	for (int i = 0; i < entities_to_destroy.size(); i++)
 		DeleteEntity(entities_to_destroy[i]);
 
+<<<<<<< HEAD
 	for (int i = 0; i < squads_to_destroy.size(); i++)
 		DeleteSquad(squads_to_destroy[i]);
+=======
+			selected_squads.remove(*it);
+			Squad* squad = (*it);
+			squads.remove(*it);
+			//it--;
+			RELEASE(squad);
+		}
+	}
+>>>>>>> 6030b68f033fd538472f0ea25500b816bcc5e887
 
 	if(selected_size != selected_entities.size())
 		App->gui->newSelectionDone();
@@ -378,6 +388,8 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	for (int i = 0; i < 9; i++)
 		hero->available_actions = hero_template->available_actions;
 
+	hero->infoData = hero_template->infoData;
+
 	hero->position.x = pos.x;
 	hero->position.y = pos.y;
 
@@ -407,7 +419,11 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 Building* j1EntityController::addBuilding(iPoint pos, Type type)
 {
 	Building* building = new Building(pos, *getBuildingFromDB(type));
+<<<<<<< HEAD
 	building->UID = last_UID++;
+=======
+	building->workersDisplay = App->gui->createWorkersDisplay(building);
+>>>>>>> 6030b68f033fd538472f0ea25500b816bcc5e887
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
 
@@ -924,6 +940,20 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		int size_x = NodeInfo.child("Stats").child("size").attribute("x").as_int(1);
 		int size_y = NodeInfo.child("Stats").child("size").attribute("y").as_int(1);
 
+		pugi::xml_node info = NodeInfo.child("Info");
+		if (info)
+		{
+			InfoData* infoData = new InfoData();
+			infoData->title = info.attribute("title").as_string();
+			infoData->linesData.push_back(new InfoLineData(STAT, "Damage:", unitTemplate->attack));
+			infoData->linesData.push_back(new InfoLineData(STAT, "Armor:", unitTemplate->defense));
+			infoData->linesData.push_back(new InfoLineData(STAT, "Sight:", unitTemplate->line_of_sight));
+			infoData->linesData.push_back(new InfoLineData(STAT, "Range:", unitTemplate->range));
+			infoData->linesData.push_back(new InfoLineData(STAT, "Speed:", unitTemplate->speed));
+			unitTemplate->infoData = infoData;
+		}
+		
+
 		//TODO: https://github.com/LazyFoxStudio/Project-2/issues/13
 		unitTemplate->collider = { 0,0, App->map->data.tile_width * size_x, App->map->data.tile_height * size_y };
 
@@ -970,6 +1000,18 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 
 		for (pugi::xml_node action = NodeInfo.child("Actions").child("action"); action; action = action.next_sibling("action"))
 			buildingTemplate->available_actions.push_back(action.attribute("id").as_uint());
+
+		pugi::xml_node info = NodeInfo.child("Info");
+		if (info)
+		{
+			InfoData* infoData = new InfoData();
+			infoData->title = info.attribute("title").as_string();
+			for (pugi::xml_node line = info.child("line"); line; line = line.next_sibling("line"))
+			{
+				infoData->linesData.push_back(new InfoLineData(INFO, line.attribute("text").as_string()));
+			}
+			buildingTemplate->infoData = infoData;
+		}
 
 		pugi::xml_node IconData;
 		if (NodeInfo.child("iconData"))

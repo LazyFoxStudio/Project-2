@@ -15,6 +15,7 @@ Hero::~Hero()
 	RELEASE(skill_one);
 	RELEASE(skill_two);
 	RELEASE(skill_three);
+	RELEASE(infoData);
 }
 
 bool Hero::Update(float dt)

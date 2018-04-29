@@ -7,7 +7,7 @@
 #include "UI_Text.h"
 #include "j1Fonts.h"
 
-LifeBar::LifeBar(Entity * entity, SDL_Texture* texture) : UI_element(0, 0, PROGRESSBAR, { 0,0,109,14 }, nullptr)
+LifeBar::LifeBar(Entity* entity, SDL_Texture* texture) : UI_element(0, 0, PROGRESSBAR, { 0,0,109,14 }, nullptr)
 {
 
 	if (entity->IsUnit())
@@ -17,17 +17,19 @@ LifeBar::LifeBar(Entity * entity, SDL_Texture* texture) : UI_element(0, 0, PROGR
 		else
 			bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("G_empty"), App->gui->GetLifeBarRect("G_full"), { 0,0,0,0 }, ((Unit*)entity)->max_HP, callback);
 		offset.x = -(bar->section.w / 2);
+		offset.y = -(25 + bar->section.h);
 	}
 	else if (entity->IsBuilding())
 	{
 		bar = new ProgressBar(0, 0, texture, App->gui->GetLifeBarRect("Y_empty"), App->gui->GetLifeBarRect("Y_full"), { 0,0,0,0 }, ((Building*)entity)->max_HP, callback);
 		offset.x = ((Building*)entity)->sprites[0].w / 2 - bar->section.w / 2;
+		offset.y = -bar->section.h;
 	}
-
-	offset.y = -(25 + bar->section.h);
 
 	this->entity = entity;
 	inMenu = false;
+	use_camera = true;
+	bar->use_camera = true;
 }
 
 LifeBar::LifeBar(Entity * entity, SDL_Texture * texture, int x, int y)
@@ -64,7 +66,7 @@ LifeBar::~LifeBar()
 	RELEASE(bar);
 }
 
-void LifeBar::BlitElement(bool use_camera)
+void LifeBar::BlitElement()
 {
 	//Update progressbar
 	int life = 100;
@@ -100,14 +102,14 @@ void LifeBar::BlitElement(bool use_camera)
 		std::string text = std::to_string((int)(bar->max_value*bar->progress)) + "/" + std::to_string((int)bar->max_value); //PERFORMANCE ISSUE? (creating string each frame)
 		display->setText(text);
 
-		bar->BlitElement(false);
+		bar->BlitElement();
 	}
-	else if (bar->progress < 1.0f) //If "in-game" but 100% do not draw
+	else if (bar->progress < 1.1f) //If "in-game" but 100% do not draw
 	{
 		bar->localPosition = { (int)entity->position.x+offset.x, (int)entity->position.y+offset.y };
 	
-		bar->BlitElement(true);
+		bar->BlitElement();
 	}
 
-	UI_element::BlitElement(use_camera);
+	UI_element::BlitElement();
 }

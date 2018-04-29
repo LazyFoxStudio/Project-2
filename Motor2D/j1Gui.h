@@ -27,6 +27,8 @@ class Entity;
 class CostDisplay;
 class WarningMessages;
 class NextWaveWindow;
+class WorkersDisplay;
+class Building;
 
 enum event_type
 {
@@ -71,8 +73,7 @@ public:
 
 	void UIDebugDraw();
 	// Gui creation functions
-	const SDL_Texture* GetAtlas() const;
-	const SDL_Texture* GetIconAtlas() const;
+
 	//Type:
 	//TEXT - 0
 	//IMAGE - 1
@@ -94,6 +95,7 @@ public:
 	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 	IngameMenu* createIngameMenu(pugi::xml_node node, j1Module* callback = nullptr);
 	NextWaveWindow* createNextWaveWindow(pugi::xml_node node, j1Module* callback = nullptr);
+	WorkersDisplay* createWorkersDisplay(Building* building);
 
 	//minimap_
 	void createMinimap(pugi::xml_node node, j1Module* callback = nullptr);
@@ -103,10 +105,13 @@ public:
 	void entityDeleted(Entity* entity);
 	CostDisplay* createCostDisplay(std::string name, int wood_cost = 0, int gold_cost = 0, int oil_cost = 0, int workers_cost = 0);
 
+	void deleteElement(UI_element* element);
+
 	void createPopUpInfo(UI_element* element, std::string info);
 
 	void LoadLifeBarsDB(pugi::xml_node node);
 	void LoadActionButtonsDB(pugi::xml_node node);
+	void LoadWorkersDisplayDB(pugi::xml_node node);
 	void LoadFonts(pugi::xml_node node);
 
 	void AddIconDataUnit(Type type, pugi::xml_node node);
@@ -127,10 +132,14 @@ public:
 
 public:
 
+	SDL_Texture* atlas = nullptr;
+	SDL_Texture* icon_atlas = nullptr;
+
 	uint popUp_wait_time = 0;
 	bool UI_Debug = false;
 	int alpha_value = 255;
-	bool clickedOnUI = false;
+	bool leftClickedOnUI = false;
+	bool rightClickedOnUI = false;
 	j1PerfTimer hovering_element;
 	UI_element* current_hovering_element = nullptr;
 	WarningMessages* warningMessages = nullptr;
@@ -139,8 +148,6 @@ public:
 
 private:
 
-	SDL_Texture* atlas=nullptr;
-	SDL_Texture* icon_atlas = nullptr;
 	std::string atlas_file_name = "";
 	std::string icon_atlas_file_name = "";
 	std::string	buttonFX = "";
@@ -154,6 +161,7 @@ private:
 
 	IngameMenu* inGameMenu = nullptr;
 	UI_element* draggingElement = nullptr;
+	WorkersDisplay* workersDisplayBase = nullptr;
 
 	std::map<Type, SDL_Rect> unitIconRect;
 	/*std::map<heroType, SDL_Rect> heroIconRect;*/

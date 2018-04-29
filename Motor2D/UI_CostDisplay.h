@@ -25,7 +25,7 @@ public:
 
 	~CostDisplay();
 
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
 
 public:
 	//SDL_Texture* icon_atlas = nullptr;

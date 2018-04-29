@@ -64,7 +64,7 @@ void Text::setOutlineColor(SDL_Color newColor)
 		createTexture();
 }
 
-void Text::BlitElement(bool use_camera)
+void Text::BlitElement()
 {
 	if (active)
 	{
@@ -111,7 +111,7 @@ void Text::BlitElement(bool use_camera)
 			App->render->Blit(texture, globalPos.x, globalPos.y, NULL, use_camera);
 		}
 
-		UI_element::BlitElement(use_camera);
+		UI_element::BlitElement();
 	}
 }
 

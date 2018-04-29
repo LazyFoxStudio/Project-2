@@ -2,23 +2,27 @@
 #define __UI_NEXTWAVEWINDOW_H__
 
 #include "UI_element.h"
-#include "UI_IngameMenu.h"
+#include "UI_SelectionDisplay.h"
 
 class Chrono;
 class Text;
 class Window;
 class SDL_texture;
+class Button;
 
 class NextWaveWindow : public UI_element
 {
 public:
-	NextWaveWindow(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, j1Module* callback);
+	NextWaveWindow(SDL_Texture* atlas, SDL_Texture* icon_atlas, Button* button, int x, int y, int min_x, int min_y, SDL_Rect section, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, j1Module* callback);
 	~NextWaveWindow();
 
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
 
 	void updateWave();
 	void cleanIcons();
+	void toggle();
+
+	UI_element* getMouseHoveringElement();
 
 public:
 
@@ -28,9 +32,13 @@ public:
 	std::list<Text*> squads;
 	Text* text = nullptr;
 	Chrono* timer = nullptr;
+	Button* button = nullptr;
+	bool minimized = false;
 
 	iPoint firstIcon_pos = { 0,0 };
 	iPoint icons_offset = { 0,0 };
+	iPoint default_pos = { 0,0 };
+	iPoint minimized_pos = { 0,0 };
 
 };
 
