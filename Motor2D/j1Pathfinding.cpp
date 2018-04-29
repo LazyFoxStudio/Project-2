@@ -27,7 +27,7 @@ bool j1PathFinding::PostUpdate()
 	if (!path_pool.empty())
 	{
 		for (std::list<PathProcessor*>::iterator it = path_pool.begin(); it != path_pool.end(); it++)
-			if ((*it)->flow_field->finished) { path_pool.erase(it); it--; }
+			if ((*it)->flow_field->finished) { RELEASE(*it);  path_pool.erase(it); it--; }
 
 		timer.Start();
 		for (std::list<PathProcessor*>::iterator it = path_pool.begin(); it != path_pool.end(); it++)
