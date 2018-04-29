@@ -49,6 +49,7 @@ struct InfoData
 	~InfoData()
 	{
 		linesData.clear();
+		title.clear();
 	}
 
 	std::string title = "";

@@ -216,10 +216,20 @@ bool j1EntityController::PostUpdate()
 	int selected_size = selected_entities.size();
 
 	for (int i = 0; i < entities_to_destroy.size(); i++)
-		DeleteEntity(entities_to_destroy[i]);
+	{
+		if (Entity* entity = getEntitybyID(entities_to_destroy[i]))
+		{
+			App->gui->entityDeleted(entity);
+			entities.remove(getEntitybyID(entities_to_destroy[i]));
+			DeleteEntity(entities_to_destroy[i]);
+		}
+	}
 
 	for (int i = 0; i < squads_to_destroy.size(); i++)
+	{
+		squads.remove(getSquadbyID(squads_to_destroy[i]));
 		DeleteSquad(squads_to_destroy[i]);
+	}
 
 	if(selected_size != selected_entities.size())
 		App->gui->newSelectionDone();
@@ -238,13 +248,16 @@ bool j1EntityController::PostUpdate()
 
 bool j1EntityController::CleanUp()
 {
-	if (!DeleteDB()) return false;
-
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		App->gui->entityDeleted(*it);
 		DeleteEntity((*it)->UID);
+	}
 
 	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end(); it++)
 		DeleteSquad((*it)->UID);
+
+	DeleteDB();
 
 	entities_to_destroy.clear();
 	squads_to_destroy.clear();
@@ -286,17 +299,19 @@ void j1EntityController::DeleteEntity(uint UID)
 		if(entity == *entity_iterator)
 			entity_iterator = entities.begin();*/
 
-		entities.remove(entity);
-		App->gui->entityDeleted(entity);
-
 		selected_entities.remove(entity);
 
 		if (entity->IsUnit())
 		{
 			Unit* unit_to_remove = (Unit*)(entity);
 
-			unit_to_remove->squad->removeUnit(unit_to_remove->UID);
-			RELEASE(unit_to_remove);
+			if (unit_to_remove->IsHero())
+			{
+				Hero* hero_to_remove = (Hero*)unit_to_remove;
+				RELEASE(hero_to_remove);
+			}
+			else
+				{ RELEASE(unit_to_remove); }
 		}
 		else   // is building
 		{
@@ -316,7 +331,6 @@ void j1EntityController::DeleteSquad(uint UID)
 	if (Squad* squad = getSquadbyID(UID))
 	{
 		selected_squads.remove(squad);
-		squads.remove(squad);
 
 		squad->Destroy();
 		RELEASE(squad);
@@ -401,6 +415,7 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	aux_vector.push_back(hero->UID);
 
 	Squad* new_squad = new Squad(aux_vector);
+	new_squad->UID = last_UID++;
 	squads.push_back(new_squad);
 
 	return hero;
@@ -1017,4 +1032,24 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 	}
 
 	return true;
+}
+
+void j1EntityController::DeleteDB()
+{
+	for (std::map<uint, Entity*>::iterator it = DataBase.begin(); it != DataBase.end(); it++)
+	{
+		Entity* entity = (*it).second;
+		if (entity->IsUnit())
+		{
+			Unit* unit_to_delete = (Unit*)entity;
+			RELEASE(unit_to_delete);
+		}
+		else if (entity->IsBuilding())
+		{
+			Building* building_to_delete = (Building*)entity;
+			RELEASE(building_to_delete);
+		}
+	}
+
+	DataBase.clear();
 }

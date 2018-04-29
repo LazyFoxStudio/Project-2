@@ -166,7 +166,8 @@ bool MoveToSquad::OnUpdate(float dt)
 
 bool MoveToSquad::OnStop()
 {
-	flow_field->finished = true;
+	if(!unit->IsEnemy() && flow_field) flow_field->finished = true;
+
 	return true;
 }
 
@@ -194,7 +195,7 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 
 bool AttackingMoveToSquad::OnStop()
 {
-	if (flow_field) flow_field->finished = true;
+	if (!unit->IsEnemy() && flow_field) flow_field->finished = true;
 
 	return true;
 }

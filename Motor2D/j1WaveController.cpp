@@ -82,7 +82,7 @@ bool j1WaveController::Update(float dt)
 bool j1WaveController::PostUpdate()
 {
 	BROFILER_CATEGORY("WaveController postupdate", Profiler::Color::Maroon);
-	if (flow_field_aux ? flow_field_aux->stage == COMPLETED : false)
+	if (flow_field_aux ? (flow_field_aux->stage == COMPLETED && !flow_field_aux->finished) : false)
 	{
 		for (int i = 0; i < flow_field->width; i++)
 		{

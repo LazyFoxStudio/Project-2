@@ -44,7 +44,11 @@ bool Squad::Update(float dt)
 void Squad::removeUnit(uint unit_ID)
 {
 	for (int i = 0; i < units_id.size(); i++)
-		if (units_id[i] == unit_ID) { units_id.erase(units_id.begin() + i); return;}
+		if (units_id[i] == unit_ID)
+		{
+			units_id.erase(units_id.begin() + i);
+			return;
+		}
 }
 
 bool Squad::isInSquadSight(fPoint position)

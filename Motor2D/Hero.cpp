@@ -12,10 +12,13 @@
 
 Hero::~Hero()
 {
+	Halt();
+	animations.clear();
+	effects.clear();
+
 	RELEASE(skill_one);
 	RELEASE(skill_two);
 	RELEASE(skill_three);
-	RELEASE(infoData);
 }
 
 bool Hero::Update(float dt)

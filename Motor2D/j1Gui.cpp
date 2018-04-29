@@ -765,12 +765,15 @@ CostDisplay* j1Gui::createCostDisplay(std::string name, int wood_cost, int gold_
 
 void j1Gui::deleteElement(UI_element* element)
 {
-	if (element->menu != NO_MENU)
+	if (element)
 	{
-		menu* menu = App->uiscene->getMenu(element->menu);
-		if (menu != nullptr)
+		if (element->menu != NO_MENU)
 		{
-			menu->elements.remove(element);
+			menu* menu = App->uiscene->getMenu(element->menu);
+			if (menu != nullptr)
+			{
+				menu->elements.remove(element);
+			}
 		}
 	}
 

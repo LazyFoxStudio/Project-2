@@ -55,7 +55,6 @@ Unit::~Unit()
 	Halt();
 	animations.clear();
 	effects.clear();
-	RELEASE(infoData);
 }
 
 void Unit::Draw(float dt)

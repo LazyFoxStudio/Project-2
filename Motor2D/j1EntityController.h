@@ -53,7 +53,7 @@ public:
 
 	void DeleteEntity(uint UID);
 	void DeleteSquad(uint UID);
-	bool DeleteDB() { return true; };
+	void DeleteDB();
 
 	Unit* addUnit(iPoint pos, Type type, Squad* squad = nullptr);
 	Hero* addHero(iPoint pos, Type type);

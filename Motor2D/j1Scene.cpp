@@ -168,7 +168,10 @@ void j1Scene::Restart_game()
 
 	//DELETING ENTITIES-------------------------------------------------------
 	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+	{
+		App->gui->entityDeleted(*it);
 		App->entitycontroller->DeleteEntity((*it)->UID);
+	}
 
 	for (std::list<Squad*>::iterator it = App->entitycontroller->squads.begin(); it != App->entitycontroller->squads.end(); it++)
 		App->entitycontroller->DeleteSquad((*it)->UID);
@@ -177,7 +180,10 @@ void j1Scene::Restart_game()
 
 	//CLEANING ENTITY LISTS---------------------------------------------------
 	App->entitycontroller->selected_entities.clear();
-	App->entitycontroller->selected_squads.clear();/*
+	App->entitycontroller->selected_squads.clear();
+	App->entitycontroller->entities.clear();
+	App->entitycontroller->squads.clear();
+		/*
 	App->entitycontroller->entity_iterator = App->entitycontroller->entities.begin();
 	App->entitycontroller->squad_iterator = App->entitycontroller->squads.begin();*/
 
