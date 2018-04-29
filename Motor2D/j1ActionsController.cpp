@@ -15,6 +15,7 @@ bool j1ActionsController::Update(float dt)
 	BROFILER_CATEGORY("Actions Update", Profiler::Color::AliceBlue);
 	if (doingAction)
 	{
+		Hero* hero = nullptr;
 		switch (action_type)
 		{
 		case MOVE:
@@ -99,16 +100,25 @@ bool j1ActionsController::Update(float dt)
 					App->entitycontroller->AddSquad(KNIGHT, newSquadPos);
 			}
 		case USE_ABILITY1:
-			App->entitycontroller->hero->current_skill != 1 ? App->entitycontroller->hero->current_skill = 1 : App->entitycontroller->hero->current_skill = 0;
-			doingAction = false;
+			if (hero = (Hero*)App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID))
+			{
+				hero->current_skill != 1 ? hero->current_skill = 1 : hero->current_skill = 0;
+				doingAction = false;
+			}
 			break;
 		case USE_ABILITY2:
-			App->entitycontroller->hero->current_skill != 2 ? App->entitycontroller->hero->current_skill = 2 : App->entitycontroller->hero->current_skill = 0;
-			doingAction = false;
+			if (hero = (Hero*)App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID))
+			{
+				hero->current_skill != 2 ? hero->current_skill = 2 : hero->current_skill = 0;
+				doingAction = false;
+			}
 			break;
 		case USE_ABILITY3:
-			App->entitycontroller->hero->current_skill != 3 ? App->entitycontroller->hero->current_skill = 3 : App->entitycontroller->hero->current_skill = 0;
-			doingAction = false;
+			if (hero = (Hero*)App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID))
+			{
+				hero->current_skill != 3 ? hero->current_skill = 3 : hero->current_skill = 0;
+				doingAction = false;
+			}
 			break;
 		case REPAIR_BUILDING:
 			if (!App->entitycontroller->selected_entities.empty())

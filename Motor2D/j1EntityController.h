@@ -124,7 +124,6 @@ public:
 	Type to_build_type = NONE_ENTITY;
 	SDL_Rect selection_rect = { 0,0,0,0 };
 
-	Hero* hero = nullptr;
 };
 #endif // !
 

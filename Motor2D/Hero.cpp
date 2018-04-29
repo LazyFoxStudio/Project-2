@@ -23,7 +23,7 @@ bool Hero::Update(float dt)
 	if (current_HP <= 0)
 	{
 		if (isActive) Deactivate();
-		else if (revive_timer.ReadSec() > HERO_REVIVE_COOLDOWN) { current_HP = max_HP;  setActive(true); App->gui->createLifeBar(this); }
+		else if (timer.ReadSec() > HERO_REVIVE_COOLDOWN) { current_HP = max_HP;  setActive(true); App->gui->createLifeBar(this); }
 		return true;
 	}
 
@@ -69,10 +69,9 @@ bool Hero::Update(float dt)
 void Hero::Deactivate()
 {
 	setActive(false);
-	revive_timer.Start();
+	timer.Start();
 	App->entitycontroller->selected_squads.remove(squad);
 	App->entitycontroller->selected_entities.remove(this);
 	App->gui->entityDeleted(this);
 	current_skill = 0;
-	isSelected = false;
 }

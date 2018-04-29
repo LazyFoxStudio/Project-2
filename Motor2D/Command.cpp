@@ -249,8 +249,10 @@ bool Attack::searchTarget()
 	{
 		for (int i = 1; i < enemy_ids->size(); i++)
 		{
-			if (target->position.DistanceTo(unit->position) < App->entitycontroller->getEntitybyID(enemy_ids->at(i))->position.DistanceTo(unit->position))
-				target = App->entitycontroller->getEntitybyID(enemy_ids->at(i));
+			Entity* new_target = App->entitycontroller->getEntitybyID(enemy_ids->at(i));
+
+			if (target->position.DistanceTo(unit->position) < new_target->position.DistanceTo(unit->position))
+				target = new_target;
 		}
 
 		iPoint targetMap_p = App->map->WorldToMap(target->position.x, target->position.y);

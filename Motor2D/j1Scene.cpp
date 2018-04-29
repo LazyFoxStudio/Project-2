@@ -182,7 +182,7 @@ void j1Scene::Restart_game()
 	App->entitycontroller->squad_iterator = App->entitycontroller->squads.begin();*/
 
 	//SATARTING ENTITIES-------------------------------------------------------
-	App->entitycontroller->hero = App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
+	App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	Building* town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);

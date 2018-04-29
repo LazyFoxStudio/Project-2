@@ -31,7 +31,7 @@ j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
 bool j1EntityController::Start()
 {
-	hero = addHero(iPoint(2000, 1950), HERO_1);
+	addHero(iPoint(2000, 1950), HERO_1);
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	Building* town_hall = addBuilding(town_hall_pos, TOWN_HALL);
@@ -51,7 +51,7 @@ bool j1EntityController::Update(float dt)
 	BROFILER_CATEGORY("Entites update", Profiler::Color::Maroon);
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
-
+	Hero* hero = (Hero*)getEntitybyID(hero_UID);
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
@@ -109,7 +109,7 @@ bool j1EntityController::Update(float dt)
 	if (to_build_type != NONE_ENTITY)
 		buildingCalculations();
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->actionscontroller->doingAction_lastFrame && hero->current_skill == 0 && !App->gui->leftClickedOnUI)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->actionscontroller->doingAction_lastFrame && (hero ? hero->current_skill == 0 : true) && !App->gui->leftClickedOnUI)
 		selectionControl();
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction_lastFrame && !App->gui->rightClickedOnUI)
 		commandControl();
@@ -354,8 +354,8 @@ Unit* j1EntityController::addUnit(iPoint pos, Type type, Squad* squad)
 
 Hero* j1EntityController::addHero(iPoint pos, Type type)
 {
-	hero = new Hero();
-	hero->UID = last_UID++;
+	Hero* hero = new Hero();
+	hero_UID = hero->UID = last_UID++;
 	Hero* hero_template = getHeroFromDB(type);
 
 	hero->texture	= hero_template->texture;
@@ -675,7 +675,6 @@ void j1EntityController::selectionControl()
 
 		selected_entities.clear();
 		selected_squads.clear();
-		hero->isSelected = false;
 		bool buildings = false;
 		bool units = false;
 
@@ -699,8 +698,6 @@ void j1EntityController::selectionControl()
 						if (!(*it)->IsEnemy())
 						{
 							selected_squads.push_back(((Unit*)*it)->squad);
-							if ((*it)->IsHero())
-								hero->isSelected = true;
 							if (!units) units = true;
 						}
 					}
