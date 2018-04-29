@@ -67,6 +67,7 @@ public:
 
 	virtual bool Update(float dt)	{ return true; };
 	virtual void Draw(float dt)		{};
+	virtual void Destroy() {};
 
 	virtual bool Save()		{ return true; };
 	virtual bool Load()		{ return true; };

@@ -144,7 +144,7 @@ void j1WaveController::Generate_Wave()
 		App->uiscene->minimap->AddAlert((*it)->spawn.x, (*it)->spawn.y, 5, alert_type::DANGER);
 
 
-		AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->commander, TOWN_HALL_POS);
+		AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->getCommander(), TOWN_HALL_POS);
 		new_atk_order->flow_field = flow_field;
 		squad->commands.push_back(new_atk_order);
 	}

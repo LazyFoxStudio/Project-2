@@ -45,6 +45,7 @@ public:
 	void animationController();
 
 	void Halt();
+	void Destroy();
 
 	fPoint calculateSeparationVector();
 	Command_Type getCurrentCommand() { return (commands.empty() ? NOTHING : commands.front()->type); }

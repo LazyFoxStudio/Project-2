@@ -165,33 +165,16 @@ void j1Scene::Restart_game()
 {
 
 	//DELETING ENTITIES-------------------------------------------------------
-	std::list<Entity*>::iterator it = App->entitycontroller->entities.begin();
-	while (it != App->entitycontroller->entities.end() && !App->entitycontroller->entities.empty() && (*it) != nullptr)
-	{
-		App->entitycontroller->DeleteEntity(*it);
-		it++;
-	}
+	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+		App->entitycontroller->DeleteEntity((*it)->UID);
 
-	for (std::list<Squad*>::iterator it = App->entitycontroller->squads.begin(); it != App->entitycontroller->squads.end() && !App->entitycontroller->squads.empty() && (*it) != nullptr; it++)
-	{
-		if ((*it)->units.empty())
-		{/*
-			if (*App->entitycontroller->squad_iterator == (*it))
-				App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();*/
+	for (std::list<Squad*>::iterator it = App->entitycontroller->squads.begin(); it != App->entitycontroller->squads.end(); it++)
+		App->entitycontroller->DeleteSquad((*it)->UID);
 
-			App->entitycontroller->selected_squads.remove(*it);
-			Squad* squad = (*it);
-			App->entitycontroller->squads.remove(*it);
-
-			RELEASE(squad);
-		}
-	}
+	App->entitycontroller->last_UID = 0;
 
 	//CLEANING ENTITY LISTS---------------------------------------------------
-	App->entitycontroller->entities_to_destroy.clear();
-	App->entitycontroller->entities.clear();
 	App->entitycontroller->selected_entities.clear();
-	App->entitycontroller->squads.clear();
 	App->entitycontroller->selected_squads.clear();/*
 	App->entitycontroller->entity_iterator = App->entitycontroller->entities.begin();
 	App->entitycontroller->squad_iterator = App->entitycontroller->squads.begin();*/

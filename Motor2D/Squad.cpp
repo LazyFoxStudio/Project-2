@@ -6,15 +6,20 @@
 #include "j1Input.h"
 #include "j1Render.h"
 
-Squad::Squad(std::vector<Unit*>& units) : units(units)
+Squad::Squad(std::vector<uint>& units) : units_id(units)
 {
-	commander = units[0];
-	max_speed = commander->speed;
+	std::vector<Unit*> squad_units;
+	getUnits(squad_units);
 
-	for (int i = 0; i < units.size(); i++)
+	if (!squad_units.empty())
 	{
-		units[i]->squad = this;
-		if (units[i]->speed < max_speed) max_speed = units[i]->speed;
+		max_speed = squad_units[0]->speed;
+
+		for (int i = 0; i < squad_units.size(); i++)
+		{
+			squad_units[i]->squad = this;
+			if (squad_units[i]->speed < max_speed) max_speed = squad_units[i]->speed;
+		}
 	}
 }
 
@@ -25,6 +30,8 @@ Squad::~Squad()
 
 bool Squad::Update(float dt)
 {
+	if (units_id.empty()) { Destroy(); return false; }
+
 	if (!commands.empty())
 	{
 		commands.front()->Execute(dt);
@@ -34,28 +41,45 @@ bool Squad::Update(float dt)
 	return true;
 }
 
-void Squad::removeUnit(Unit* unit)
+void Squad::removeUnit(uint unit_ID)
 {
-	for (std::vector<Unit*>::iterator it = units.begin(); it != units.end(); it++)
-		if ((*it) == unit) { units.erase(it); RELEASE (unit); return; }
+	for (std::vector<uint>::iterator it = units_id.begin(); it != units_id.end(); it++)
+		if (*it == unit_ID) { units_id.erase(it); break;}
 }
 
 bool Squad::isInSquadSight(fPoint position)
 {
-	for (int i = 0; i < units.size(); i++)
-		if (position.DistanceTo(units[i]->position) < units[i]->line_of_sight) return true;
+	std::vector<Unit*> squad_units;
+	getUnits(squad_units);
+
+	for (int i = 0; i < squad_units.size(); i++)
+		if (position.DistanceTo(squad_units[i]->position) < squad_units[i]->line_of_sight) return true;
 
 	return false;
 }
 
-bool Squad::getEnemiesInSight(std::list<fPoint>& list_to_fill)
+bool Squad::getEnemiesInSight(std::vector<uint>& list_to_fill, int target_squad_UID)
 {
 	list_to_fill.clear();
 
-	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+	if (!units_id.empty())
 	{
-		if ((*it)->isActive && (commander->IsEnemy() != (*it)->IsEnemy()) && (*it)->ex_state != DESTROYED)
-				list_to_fill.push_back((*it)->position);
+		bool isEnemy = App->entitycontroller->getEntitybyID(units_id[0])->IsEnemy();
+
+		for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+		{
+			if ((*it)->isActive && isEnemy != (*it)->IsEnemy() && (*it)->ex_state != DESTROYED)
+				if (isInSquadSight((*it)->position))
+				{
+					if ((*it)->IsUnit())
+					{
+						if (target_squad_UID != -1 ? target_squad_UID != ((Unit*)*it)->squad->UID : false)
+							continue;
+					}
+
+					list_to_fill.push_back((*it)->UID);
+				}
+		}
 	}
 	return !list_to_fill.empty();
 }
@@ -63,8 +87,12 @@ bool Squad::getEnemiesInSight(std::list<fPoint>& list_to_fill)
 
 void Squad::Halt()
 {
-	for (int i = 0; i < units.size(); i++)
-		units[i]->Halt();
+	std::vector<Unit*> squad_units;
+	getUnits(squad_units);
+
+	for (int i = 0; i < squad_units.size(); i++)
+		squad_units[i]->Halt();
+
 
 	for (std::deque<Command*>::iterator it = commands.begin(); it != commands.end(); it++)
 		(*it)->Restart();  // Restarting the order calls onStop(), which would be otherwise unaccesible
@@ -72,22 +100,41 @@ void Squad::Halt()
 	commands.clear();
 }
 
-
-Unit* Squad::getClosestUnitTo(iPoint p)
+void Squad::getUnits(std::vector<Unit*>& list_to_fill)
 {
-	if (units.empty() || units[0] == nullptr) return nullptr;
+	std::vector<uint> to_erase;
 
-	Unit* ret = units[0];
-	iPoint closest_map_p = App->map->WorldToMap(units[0]->position.x, units[0]->position.y);
-
-	for (int i = 1; i < units.size() && units[i] != nullptr; i++)
+	for (int i = 0; i < units_id.size(); i++)
 	{
-		iPoint map_p = App->map->WorldToMap(units[i]->position.x, units[i]->position.y);
-		if (map_p.DistanceTo(p) < closest_map_p.DistanceTo(p))
-		{
-			ret = units[i];
-			closest_map_p = map_p;
-		}
+		if (Unit* unit = (Unit*)App->entitycontroller->getEntitybyID(units_id[i]))	list_to_fill.push_back(unit);
+		else																		to_erase.push_back(units_id[i]);
 	}
+
+	for (int j = 0; j < to_erase.size(); j++)
+		removeUnit(to_erase[j]);
+}
+
+
+Unit* Squad::getCommander()
+{
+	std::vector<uint> to_erase;
+	Unit* ret = nullptr;
+
+	for (int i = 0; i < units_id.size(); i++)
+	{
+		if (Unit* unit = (Unit*)App->entitycontroller->getEntitybyID(units_id[i])) { ret = unit; break; }
+		else																		to_erase.push_back(units_id[i]);
+	}
+
+	for (int j = 0; j < to_erase.size(); j++)
+		removeUnit(to_erase[j]);
+
 	return ret;
+}
+
+void Squad::Destroy()
+{
+	Halt();
+	units_id.clear();
+	App->entitycontroller->selected_squads.remove(this);
 }

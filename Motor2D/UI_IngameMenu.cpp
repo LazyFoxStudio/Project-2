@@ -85,11 +85,14 @@ void IngameMenu::createSelectionBasicInfo()
 		int counter = 0;
 		for (std::list<Squad*>::iterator it_s = App->entitycontroller->selected_squads.begin(); it_s != App->entitycontroller->selected_squads.end(); it_s++)
 		{
-			if (counter >= 6)
-				break;
-			for (int i = 0; i < (*it_s)->units.size(); i++)//for each entity of the squad
+			if (counter >= 6) break;
+
+			std::vector<Unit*> units;
+			(*it_s)->getUnits(units);
+
+			for (int i = 0; i < units.size(); i++)//for each entity of the squad
 			{
-				Unit* unit = (*it_s)->units[i];
+				Unit* unit = units[i];
 
 				TroopIcon* icon = new TroopIcon();
 

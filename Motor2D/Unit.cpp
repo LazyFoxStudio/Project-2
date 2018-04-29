@@ -73,16 +73,11 @@ bool Unit::Update(float dt)
 
 	if (current_HP <= 0)
 	{
-		if (ex_state != DESTROYED)
-		{
-			timer.Start();
-			ex_state = DESTROYED;
-			App->entitycontroller->selected_entities.remove(this);
-		}
-		else if (timer.ReadSec() > DEATH_TIME)  return false;
-		return true;
-	}
+		if (ex_state != DESTROYED) { Destroy(); squad->removeUnit(UID); }
 
+		if (timer.ReadSec() > DEATH_TIME)  return false;
+		else							   return true;
+	}
 
 	if (!commands.empty())
 	{
@@ -249,6 +244,12 @@ void Unit::Halt()
 	commands.clear();
 }
 
+void Unit::Destroy()
+{
+	timer.Start();
+	ex_state = DESTROYED;
+	App->entitycontroller->selected_entities.remove(this);
+}
 
 fPoint Unit::calculateSeparationVector()
 {

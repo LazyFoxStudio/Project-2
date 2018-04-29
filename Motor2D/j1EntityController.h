@@ -51,7 +51,8 @@ public:
 
 	bool loadEntitiesDB(pugi::xml_node& data);
 
-	void DeleteEntity(Entity* entity);
+	void DeleteEntity(uint UID);
+	void DeleteSquad(uint UID);
 	bool DeleteDB() { return true; };
 
 	Unit* addUnit(iPoint pos, Type type, Squad* squad = nullptr);
@@ -75,6 +76,8 @@ public:
 	void GetTotalIncome();
 	void TownHallLevelUp();
 
+	Entity* getEntitybyID(uint ID);
+	Squad* getSquadbyID(uint ID);
 
 	Unit* getUnitFromDB(Type type);
 	Hero* getHeroFromDB(Type type);
@@ -82,7 +85,6 @@ public:
 
 	Entity* CheckMouseHover(iPoint mouse_world);
 	void CheckCollidingWith(SDL_Rect collider, std::vector<Entity*>& list_to_fill, Entity* entity_to_ignore = nullptr);
-	Entity* getNearestEnemy(fPoint position, bool isEnemy);
 
 	//------Worker Related Functions--------
 	void SubstractRandomWorkers(int num);
@@ -103,7 +105,8 @@ public:
 	std::list<Squad*> squads;
 	std::list<Squad*> selected_squads;
 
-	std::list<Entity*> entities_to_destroy;
+	std::vector<uint> entities_to_destroy;
+	std::vector<uint> squads_to_destroy;
 
 	std::map<uint, Entity*> DataBase;
 

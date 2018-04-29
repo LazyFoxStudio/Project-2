@@ -21,6 +21,8 @@ void j1Map::Draw()
 	iPoint starting_tile = App->map->WorldToMap(App->render->culling_camera.x, App->render->culling_camera.y);
 	iPoint last_tile = { starting_tile.x + (App->render->culling_camera.w / data.tile_width), starting_tile.y + (App->render->culling_camera.h / data.tile_height) };
 
+	if (starting_tile.x < 0) starting_tile.x = 0;
+	if (starting_tile.y < 0) starting_tile.y = 0;
 
 	for (uint b = 0; b < data.tilesets.size(); b++)
 		for (uint i = starting_tile.y; i < last_tile.y; i++)
@@ -28,12 +30,14 @@ void j1Map::Draw()
 			{
 				// TODO
 				int tile_id = data.layers[0]->GetID(j, i);
+				if (tile_id != 0)
+				{
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
+					SDL_Rect r = tileset->GetTileRect(tile_id);
+					iPoint tileWorld = MapToWorld(j, i);
 
-				TileSet* tileset = GetTilesetFromTileId(tile_id);
-				SDL_Rect r = tileset->GetTileRect(tile_id);
-				iPoint tileWorld = MapToWorld(j, i);
-
-				App->render->Blit(tileset->texture, tileWorld.x, tileWorld.y, &r);
+					App->render->Blit(tileset->texture, tileWorld.x, tileWorld.y, &r);
+				}
 
 				tile_id = data.layers[1]->GetID(j, i);
 				if (tile_id > 0)

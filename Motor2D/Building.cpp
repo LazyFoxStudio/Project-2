@@ -54,8 +54,6 @@ bool Building::Update(float dt)
 		else						App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
 	}
 
-	if(current_HP <= 0 && ex_state != DESTROYED)   Destroy();
-
 	switch (ex_state)
 	{
 	case BEING_BUILT:
@@ -73,7 +71,7 @@ bool Building::Update(float dt)
 		
 	case DESTROYED:
 		if (timer.ReadSec() > DEATH_TIME)
-			App->entitycontroller->entities_to_destroy.push_back(this);
+			App->entitycontroller->entities_to_destroy.push_back(UID);
 
 		break;
 	}
@@ -88,36 +86,39 @@ bool Building::Update(float dt)
 
 void Building::Destroy()
 {
-	ex_state = DESTROYED;
-	App->entitycontroller->selected_entities.remove(this);
-	current_sprite = &sprites[RUIN];
-	
-
-	switch (type)
+	if (ex_state != DESTROYED)
 	{
-	case FARM:
-		for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
-		{
-			(*it)->to_destroy = true;
-		}
-		break;
-	case LUMBER_MILL:
-		CalculateResourceProduction();
-		App->entitycontroller->GetTotalIncome();
+		ex_state = DESTROYED;
+		App->entitycontroller->selected_entities.remove(this);
+		current_sprite = &sprites[RUIN];
 
-		break;
-	case TOWN_HALL:
-		for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
+
+		switch (type)
 		{
-			(*it)->to_destroy = true;
+		case FARM:
+			for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
+			{
+				(*it)->to_destroy = true;
+			}
+			break;
+		case LUMBER_MILL:
+			CalculateResourceProduction();
+			App->entitycontroller->GetTotalIncome();
+
+			break;
+		case TOWN_HALL:
+			for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
+			{
+				(*it)->to_destroy = true;
+			}
+			App->audio->PlayMusic(DEFEAT_THEME);
+			current_sprite = &sprites[4];
+			App->gui->Chronos->counter.PauseTimer();
+			App->scene->toRestart = true;
+			App->scene->Restart_timer.Start();
+			App->uiscene->toggleMenu(true, GAMEOVER_MENU);
+			break;
 		}
-		App->audio->PlayMusic(DEFEAT_THEME);
-		current_sprite = &sprites[4];
-		App->gui->Chronos->counter.PauseTimer();
-		App->scene->toRestart = true;
-		App->scene->Restart_timer.Start();
-		App->uiscene->toggleMenu(true, GAMEOVER_MENU);
-		break;
 	}
 
 	timer.Start();
@@ -130,7 +131,6 @@ void Building::HandleConstruction()
 	if (current_time >= cost.creation_time)
 	{
 		current_HP = max_HP;
-		
 		
 		if (type == FARM)
 		{

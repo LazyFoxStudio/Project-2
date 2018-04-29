@@ -51,10 +51,6 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
-	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end() && !App->scene->toRestart; it++)
-	{
-		if (!(*it)->Update(dt))	return false;
-	}
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
@@ -64,7 +60,7 @@ bool j1EntityController::Update(float dt)
 
 			if (!App->scene->toRestart)
 			{
-				if (!(*it)->Update(dt))	entities_to_destroy.push_back(*it);
+				if (!(*it)->Update(dt))	entities_to_destroy.push_back((*it)->UID);
 			}
 			
 			if (App->render->CullingCam((*it)->position))
@@ -73,6 +69,11 @@ bool j1EntityController::Update(float dt)
 				if (debug) debugDrawEntity(*it);
 			}
 		}
+	}
+
+	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end() && !App->scene->toRestart; it++)
+	{
+		if (!(*it)->Update(dt)) squads_to_destroy.push_back((*it)->UID);
 	}
 
 	if (App->scene->toRestart) return true;
@@ -214,28 +215,17 @@ bool j1EntityController::PostUpdate()
 
 	int selected_size = selected_entities.size();
 
-	for (std::list<Entity*>::iterator it = entities_to_destroy.begin(); it != entities_to_destroy.end() && !entities_to_destroy.empty() && (*it) != nullptr; it++)
-		DeleteEntity(*it);
+	for (int i = 0; i < entities_to_destroy.size(); i++)
+		DeleteEntity(entities_to_destroy[i]);
 
-	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end() && !squads.empty() && (*it) != nullptr; it++)
-	{
-		if ((*it)->units.empty())
-		{/*
-			if (*squad_iterator == (*it))
-				squad_iterator = all_squads.begin();*/
-
-			selected_squads.remove(*it);
-			Squad* squad = (*it);
-			squads.remove(*it);
-
-			RELEASE(squad);
-		}
-	}
+	for (int i = 0; i < squads_to_destroy.size(); i++)
+		DeleteSquad(squads_to_destroy[i]);
 
 	if(selected_size != selected_entities.size())
 		App->gui->newSelectionDone();
 
 	entities_to_destroy.clear();
+	squads_to_destroy.clear();
 
 	DestroyWorkers();
 
@@ -250,35 +240,22 @@ bool j1EntityController::CleanUp()
 {
 	if (!DeleteDB()) return false;
 
-	std::list<Entity*>::iterator it = entities.begin();
-	while (it != entities.end() && !entities.empty() && (*it) != nullptr)
-	{
-		DeleteEntity(*it);
-		it++;
-	}
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		DeleteEntity((*it)->UID);
 
-	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end() && !squads.empty() && (*it) != nullptr; it++)
-	{
-		if ((*it)->units.empty())
-		{/*
-			if (*squad_iterator == (*it))
-				squad_iterator = all_squads.begin();*/
-
-			selected_squads.remove(*it);
-			Squad* squad = (*it);
-			squads.remove(*it);
-
-			RELEASE(squad);
-		}
-	}
+	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end(); it++)
+		DeleteSquad((*it)->UID);
 
 	entities_to_destroy.clear();
-	entities.clear();
-	selected_entities.clear();
+	squads_to_destroy.clear();
 
-	squads.clear();
+	selected_entities.clear();
 	selected_squads.clear();
 
+	entities.clear();
+	squads.clear();
+
+	last_UID = 0;
 	RELEASE(colliderQT);
 /*
 	entity_iterator = entities.begin();
@@ -302,9 +279,9 @@ bool j1EntityController::Load(pugi::xml_node& file)
 }
 
 
-void j1EntityController::DeleteEntity(Entity* entity)
+void j1EntityController::DeleteEntity(uint UID)
 {
-	if (entity != nullptr)
+	if (Entity* entity = getEntitybyID(UID))
 	{/*
 		if(entity == *entity_iterator)
 			entity_iterator = entities.begin();*/
@@ -317,12 +294,9 @@ void j1EntityController::DeleteEntity(Entity* entity)
 		if (entity->IsUnit())
 		{
 			Unit* unit_to_remove = (Unit*)(entity);
-			Squad* unit_squad = unit_to_remove->squad;
 
-			if (unit_to_remove->squad != nullptr)
-				unit_squad->removeUnit(unit_to_remove);
-			else
-				RELEASE(unit_to_remove);
+			unit_to_remove->squad->removeUnit(unit_to_remove->UID);
+			RELEASE(unit_to_remove);
 		}
 		else   // is building
 		{
@@ -337,10 +311,39 @@ void j1EntityController::DeleteEntity(Entity* entity)
 	}
 }
 
+void j1EntityController::DeleteSquad(uint UID)
+{
+	if (Squad* squad = getSquadbyID(UID))
+	{
+		selected_squads.remove(squad);
+		squads.remove(squad);
+
+		squad->Destroy();
+		RELEASE(squad);
+	}
+}
+
+Entity* j1EntityController::getEntitybyID(uint ID)
+{
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		if ((*it)->UID == ID) return *it;
+	
+	return nullptr;
+}
+
+Squad* j1EntityController::getSquadbyID(uint ID)
+{
+	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end(); it++)
+		if ((*it)->UID == ID) return *it;
+
+	return nullptr;
+}
+
 Unit* j1EntityController::addUnit(iPoint pos, Type type, Squad* squad)
 {
 	Unit* unit = new Unit(pos, *getUnitFromDB(type), squad);
 
+	unit->UID = last_UID++;
 	entities.push_back(unit);
 	App->gui->createLifeBar(unit);
 	
@@ -352,6 +355,7 @@ Unit* j1EntityController::addUnit(iPoint pos, Type type, Squad* squad)
 Hero* j1EntityController::addHero(iPoint pos, Type type)
 {
 	hero = new Hero();
+	hero->UID = last_UID++;
 	Hero* hero_template = getHeroFromDB(type);
 
 	hero->texture	= hero_template->texture;
@@ -387,21 +391,23 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 		hero->skill_three = new Skill(hero, 0, 200, 250, 2, LINE);		//Dragon Breath
 	}
 
-	std::vector<Unit*>aux_vector;
-	aux_vector.push_back(hero);
+	App->gui->createLifeBar(hero);
+
+	entities.push_back(hero);
+
+	std::vector<uint>aux_vector;
+	aux_vector.push_back(hero->UID);
 
 	Squad* new_squad = new Squad(aux_vector);
 	squads.push_back(new_squad);
 
-	App->gui->createLifeBar(hero);
-
-	entities.push_back(hero);
 	return hero;
 }
 
 Building* j1EntityController::addBuilding(iPoint pos, Type type)
 {
 	Building* building = new Building(pos, *getBuildingFromDB(type));
+	building->UID = last_UID++;
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
 
@@ -413,7 +419,7 @@ Building* j1EntityController::addBuilding(iPoint pos, Type type)
 
 Squad* j1EntityController::AddSquad(Type type, fPoint position)
 {
-	std::vector<Unit*> squad_vector;
+	std::vector<uint> squad_vector;
 	std::vector<iPoint> positions;
 	iPoint map_p = App->map->WorldToMap(position.x, position.y);
 	Squad* new_squad = nullptr;
@@ -424,14 +430,15 @@ Squad* j1EntityController::AddSquad(Type type, fPoint position)
 		for (int i = 0; i < unit_template->squad_members; ++i)
 		{
 			iPoint world_p = App->map->MapToWorld(positions[i].x, positions[i].y);
-			squad_vector.push_back(addUnit(world_p, type));
+			squad_vector.push_back(addUnit(world_p, type)->UID);
 		}
 		new_squad = new Squad(squad_vector);
 		if (!unit_template->IsEnemy())
 		{
-			App->scene->wood				-= unit_template->cost.wood_cost;
+			App->scene->wood -= unit_template->cost.wood_cost;
 			SubstractRandomWorkers(unit_template->cost.worker_cost);
 		}
+		new_squad->UID = last_UID++;
 		squads.push_back(new_squad);
 	}
 	return new_squad;
@@ -617,20 +624,22 @@ void j1EntityController::commandControl()
 		for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 		{
 			(*it)->Halt(); 
-			MoveToSquad* new_order = new MoveToSquad((*it)->commander, map_p);
+			MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
 			new_order->flow_field = shared_flowfield;
 			(*it)->commands.push_back(new_order);
 		}
 	}
 	else
 	{
-		if (entity->IsEnemy())    //clicked on a enemy
+		if (entity->IsEnemy() && entity->ex_state != DESTROYED && entity->isActive)    //clicked on a enemy
 		{
 			FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
 			for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 			{
 				(*it)->Halt();
-				AttackingMoveToSquad* new_order = new AttackingMoveToSquad((*it)->commander, map_p);
+				AttackingMoveToSquad* new_order = nullptr;
+				new_order = new AttackingMoveToSquad((*it)->getCommander(), map_p, false, ((Unit*)entity)->squad->UID);
+
 				new_order->flow_field = shared_flowfield;
 				(*it)->commands.push_back(new_order);
 			}
@@ -708,9 +717,14 @@ void j1EntityController::selectionControl()
 		selected_squads.unique(CompareSquad);
 
 		for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
-			for(int i = 0; i < (*it)->units.size(); i++)
-				selected_entities.push_back((*it)->units[i]);
-		
+		{
+			std::vector<Unit*> units;
+			(*it)->getUnits(units);
+
+			for (int i = 0; i < units.size(); i++)
+				selected_entities.push_back(units[i]);
+		}
+
 		if (buildings && units)
 		{
 			for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
@@ -724,20 +738,7 @@ void j1EntityController::selectionControl()
 	}
 }
 
-Entity* j1EntityController::getNearestEnemy(fPoint position, bool isEnemy)
-{
-	Entity* ret = nullptr;
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
-	{
-		if ((*it)->IsEnemy() != isEnemy && (*it)->ex_state != DESTROYED && (*it)->isActive)
-		{
-			if (!ret) { ret = (*it); continue; }
-			else if ((*it)->position.DistanceTo(position) < ret->position.DistanceTo(position)) ret = (*it);
-		}
 
-	}
-	return ret;
-}
 
 void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entity*>& list_to_fill, Entity* entity_to_ignore)
 {
