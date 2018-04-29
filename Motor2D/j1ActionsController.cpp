@@ -8,6 +8,7 @@
 #include "j1Gui.h"
 #include "UI_WarningMessages.h"
 #include "UI_WorkersDisplay.h"
+#include "UI_NextWaveWindow.h"
 
 bool j1ActionsController::Update(float dt)
 {
@@ -127,6 +128,10 @@ bool j1ActionsController::Update(float dt)
 					((Building*)*App->entitycontroller->selected_entities.begin())->DemolishBuilding();
 				}
 			}
+			doingAction = false;
+			break;
+		case TOGGLE_NEXTWAVE:
+			App->gui->nextWaveWindow->toggle();
 			doingAction = false;
 			break;
 		}

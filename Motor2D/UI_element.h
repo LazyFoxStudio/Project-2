@@ -123,6 +123,8 @@ public:
 	bool use_camera = false;
 	std::string PopUpInfo;
 	menu_id menu = NO_MENU;
+	bool flipHorizontal = false;
+	bool flipVertical = false;
 
 protected:
 	iPoint Click_Pos{ 0,0 };

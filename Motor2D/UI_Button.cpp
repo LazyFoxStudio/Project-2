@@ -7,20 +7,26 @@ void Button::BlitElement()
 {
 	if (active)
 	{
+		SDL_RendererFlip flip = SDL_FLIP_NONE;
+		if (flipHorizontal)
+			flip = SDL_FLIP_HORIZONTAL;
+		else if (flipVertical)
+			flip = SDL_FLIP_VERTICAL;
+
 		BROFILER_CATEGORY("Button Blit", Profiler::Color::DarkKhaki);
 		iPoint globalPos = calculateAbsolutePosition();
 		switch (state)
 		{
 		case STANDBY:
-			App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera, flip);
 			break;
 		case MOUSEOVER:
-			App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouse, use_camera);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouse, use_camera, flip);
 			break;
 		case LOCKED:
 		case LOCKED_MOUSEOVER:
 		case CLICKED:
-			App->render->Blit(texture, globalPos.x, globalPos.y, &OnClick, use_camera);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &OnClick, use_camera, flip);
 			break;
 		}
 

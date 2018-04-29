@@ -130,11 +130,18 @@ Resolution of the screen: 1680x 1050y
 		</button>
 
 	<!-- Wave Window -->
-		<nextwavewindow icon_atlas="false" active ="false">
+		<nextwavewindow icon_atlas="false">
 			<position x="1408" y="462"/>
+			<minimizedPosition x="1408" y="758"/>
 			<section x="0" y="271" w="272" h="336"/>
-			<icons x="1430" y="535" offsetX="150" offsetY="80"/>
+			<icons x="23" y="60" offsetX="150" offsetY="80"/>
 			<draggable horizontal="false" vertical="false"/>
+			<button click_action="15">
+				<position x="230" y="8"/>
+				<standby x="1054" y="705" w="23" h="22"/>
+				<OnMouse x="1084" y="705" w="23" h="22"/>
+				<OnClick x="1116" y="705" w="23" h="22"/>
+			</button>
 		</nextwavewindow>
 
 	<!-- in-game menu -->

@@ -183,6 +183,8 @@ bool j1Gui::PostUpdate()
 		if (!(*it_m)->active) continue;
 		for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++)
 		{
+			if (!(*it_e)->active)
+				continue;
 			if ((*it_e)->moving)
 			{
 				(*it_e)->Mouse_Drag();
@@ -571,6 +573,9 @@ Button* j1Gui::createButton(pugi::xml_node node, j1Module* callback, bool saveIn
 
 	Button* ret = new Button(x, y, texture, standby, OnMouse, OnClick, callback);
 
+	ret->clickAction = (actionType)node.attribute("click_action").as_int(0);
+	ret->releaseAction = (actionType)node.attribute("release_action").as_int(0);
+
 	if (saveIntoGUI)
 		Buttons.push_back(ret);
 
@@ -673,7 +678,12 @@ NextWaveWindow* j1Gui::createNextWaveWindow(pugi::xml_node node, j1Module* callb
 	int icons_offsetX = node.child("icons").attribute("offsetX").as_int();
 	int icons_offsetY = node.child("icons").attribute("offsetY").as_int();
 
-	NextWaveWindow* ret = new NextWaveWindow(texture, icon_atlas, x, y, section, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, callback);
+	Button* button = createButton(node.child("button"), App->uiscene, false);
+
+	int min_x = node.child("minimizedPosition").attribute("x").as_int();
+	int min_y = node.child("minimizedPosition").attribute("y").as_int();
+
+	NextWaveWindow* ret = new NextWaveWindow(texture, icon_atlas, button, x, y, min_x, min_y, section, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, callback);
 
 	nextWaveWindow = ret;
 
@@ -815,8 +825,7 @@ void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
 		uint id = actionButton.attribute("id").as_uint();
 		Button* button = createButton(actionButton, App->uiscene);
 		button->active = false;
-		button->clickAction = (actionType)actionButton.attribute("click_action").as_int(0);
-		button->releaseAction = (actionType)actionButton.attribute("release_action").as_int(0);
+		
 		pugi::xml_node info = actionButton.child("popUp").child("Info");
 		pugi::xml_node cost_node = actionButton.child("popUp").child("Cost");
 		if (info && info.attribute("cost").as_bool())
@@ -849,9 +858,7 @@ void j1Gui::LoadWorkersDisplayDB(pugi::xml_node node)
 {
 	pugi::xml_node workers = node.child("WorkersDisplay");
 	Button* assign = createButton(workers.child("assign"), App->uiscene, false);
-	assign->clickAction = (actionType)workers.child("assign").attribute("click_action").as_int(0);
 	Button* unassign = createButton(workers.child("unassign"), App->uiscene, false);
-	unassign->clickAction = (actionType)workers.child("unassign").attribute("click_action").as_int(0);
 	SDL_Rect icon = { workers.child("icon").attribute("x").as_int(), workers.child("icon").attribute("y").as_int() , workers.child("icon").attribute("w").as_int() , workers.child("icon").attribute("h").as_int() };
 	workersDisplayBase = new WorkersDisplay(icon, assign, unassign, nullptr);
 }

@@ -21,7 +21,8 @@ enum actionType
 	USE_ABILITY2,
 	USE_ABILITY3,
 	REPAIR_BUILDING,
-	DEMOLISH_BUILDING
+	DEMOLISH_BUILDING,
+	TOGGLE_NEXTWAVE
 };
 
 class j1ActionsController : public j1Module
