@@ -116,9 +116,7 @@ bool j1Gui::PreUpdate()
 			}
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
-		{
-			if (element->element_type != WORKERSDISPLAY)
-				rightClickedOnUI = true;
+		{			
 			if (element->callback != nullptr)
 			{
 				element->callback->OnUIEvent(element, MOUSE_LEFT_RELEASE);
@@ -131,6 +129,8 @@ bool j1Gui::PreUpdate()
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
+			if (element->element_type != WORKERSDISPLAY)
+				rightClickedOnUI = true;
 			if (element->callback != nullptr)
 				ret = element->callback->OnUIEvent(element, MOUSE_RIGHT_CLICK);
 		}
