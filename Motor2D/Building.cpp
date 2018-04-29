@@ -104,40 +104,34 @@ void Building::Destroy()
 	App->entitycontroller->selected_entities.remove(this);
 	current_sprite = &sprites[RUIN];
 
+
 	switch (type)
 	{
-		ex_state = DESTROYED;
-		App->entitycontroller->selected_entities.remove(this);
-		current_sprite = &sprites[RUIN];
-
-
-		switch (type)
+	case FARM:
+		for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
 		{
-		case FARM:
-			for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
-			{
-				(*it)->to_destroy = true;
-			}
-			break;
-		case LUMBER_MILL:
-			CalculateResourceProduction();
-			App->entitycontroller->GetTotalIncome();
-
-			break;
-		case TOWN_HALL:
-			for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
-			{
-				(*it)->to_destroy = true;
-			}
-			App->audio->PlayMusic(DEFEAT_THEME);
-			current_sprite = &sprites[4];
-			App->gui->Chronos->counter.PauseTimer();
-			App->scene->toRestart = true;
-			App->scene->Restart_timer.Start();
-			App->uiscene->toggleMenu(true, GAMEOVER_MENU);
-			break;
+			(*it)->to_destroy = true;
 		}
+		break;
+	case LUMBER_MILL:
+		CalculateResourceProduction();
+		App->entitycontroller->GetTotalIncome();
+
+		break;
+	case TOWN_HALL:
+		for (std::list<worker*>::iterator it = workers_inside.begin(); it != workers_inside.end(); it++)
+		{
+			(*it)->to_destroy = true;
+		}
+		App->audio->PlayMusic(DEFEAT_THEME);
+		current_sprite = &sprites[4];
+		App->gui->Chronos->counter.PauseTimer();
+		App->scene->toRestart = true;
+		App->scene->Restart_timer.Start();
+		App->uiscene->toggleMenu(true, GAMEOVER_MENU);
+		break;
 	}
+
 
 	timer.Start();
 	App->gui->entityDeleted(this);

@@ -83,9 +83,6 @@ bool Unit::Update(float dt)
 		return true;
 	}
 
-		if (timer.ReadSec() > DEATH_TIME)  return false;
-		else							   return true;
-	}
 
 	if (!commands.empty())
 	{

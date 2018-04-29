@@ -218,18 +218,8 @@ bool j1EntityController::PostUpdate()
 	for (int i = 0; i < entities_to_destroy.size(); i++)
 		DeleteEntity(entities_to_destroy[i]);
 
-<<<<<<< HEAD
 	for (int i = 0; i < squads_to_destroy.size(); i++)
 		DeleteSquad(squads_to_destroy[i]);
-=======
-			selected_squads.remove(*it);
-			Squad* squad = (*it);
-			squads.remove(*it);
-			//it--;
-			RELEASE(squad);
-		}
-	}
->>>>>>> 6030b68f033fd538472f0ea25500b816bcc5e887
 
 	if(selected_size != selected_entities.size())
 		App->gui->newSelectionDone();
@@ -419,11 +409,8 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 Building* j1EntityController::addBuilding(iPoint pos, Type type)
 {
 	Building* building = new Building(pos, *getBuildingFromDB(type));
-<<<<<<< HEAD
 	building->UID = last_UID++;
-=======
 	building->workersDisplay = App->gui->createWorkersDisplay(building);
->>>>>>> 6030b68f033fd538472f0ea25500b816bcc5e887
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
 

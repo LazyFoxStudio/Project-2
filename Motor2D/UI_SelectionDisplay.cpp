@@ -196,9 +196,12 @@ void TroopDisplay::Draw()
 
 SquadDisplay::SquadDisplay(Squad* squad, int x, int y)
 {
-	for (int i = 0; i < squad->units.size(); i++)
+	std::vector<Unit*> units;
+	squad->getUnits(units);
+
+	for (int i = 0; i < units.size(); i++)
 	{
-		Unit* unit = squad->units[i];
+		Unit* unit = units[i];
 
 		troopIcons.push_back(new TroopIcon(unit, x + (SQUAD_ICON_OFFSET*i), y));
 		//TODO update iconBorder
