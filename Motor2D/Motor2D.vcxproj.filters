@@ -151,6 +151,9 @@
     <ClCompile Include="UI_CooldownsDisplay.cpp">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClCompile>
+    <ClCompile Include="UI_TroopCreationQueue.cpp">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -314,6 +317,9 @@
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClInclude>
     <ClInclude Include="UI_CooldownsDisplay.h">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_TroopCreationQueue.h">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClInclude>
   </ItemGroup>
