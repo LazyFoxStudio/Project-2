@@ -10,6 +10,7 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <queue>
 
 // Modules
 class j1Window;

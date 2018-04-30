@@ -29,8 +29,10 @@ public:
 	std::vector<SDL_Rect> sprites;
 	SDL_Rect* current_sprite = nullptr;
 	bool producing_worker = false;
+	bool producing_unit = false;
 	j1Timer repair_timer;
 	bool recently_repaired = false;
+	std::queue<Type> unit_queue;
 	
 
 public:
@@ -43,10 +45,13 @@ public:
 
 	void HandleConstruction();
 	void HandleResourceProduction();
+	void AddUnitToQueue(Type type);
+	void HandleUnitProduction();
 	void CalculateResourceProduction();
 	void HandleWorkerProduction();
 	void RepairBuilding();
 	void DemolishBuilding();
+
 
 	void Destroy();
 };

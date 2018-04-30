@@ -81,7 +81,7 @@ bool j1ActionsController::Update(float dt)
 			if (!App->entitycontroller->selected_entities.empty())
 			{
 				if (App->entitycontroller->CheckCost(FOOTMAN) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
-					App->entitycontroller->AddSquad(FOOTMAN, newSquadPos);
+					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(FOOTMAN);
 			}
 			doingAction = false;
 			break;
@@ -89,7 +89,7 @@ bool j1ActionsController::Update(float dt)
 			if (!App->entitycontroller->selected_entities.empty())
 			{
 				if (App->entitycontroller->CheckCost(ARCHER) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
-					App->entitycontroller->AddSquad(ARCHER, newSquadPos);
+					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(ARCHER);
 			}
 			doingAction = false;
 			break;
@@ -97,7 +97,7 @@ bool j1ActionsController::Update(float dt)
 			if (!App->entitycontroller->selected_entities.empty())
 			{
 				if (App->entitycontroller->CheckCost(KNIGHT) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
-					App->entitycontroller->AddSquad(KNIGHT, newSquadPos);
+					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(KNIGHT);
 			}
 			doingAction = false;
 			break;
@@ -105,7 +105,7 @@ bool j1ActionsController::Update(float dt)
 			if (!App->entitycontroller->selected_entities.empty())
 			{
 				if (App->entitycontroller->CheckCost(GRYPHON) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
-					App->entitycontroller->AddSquad(GRYPHON, newSquadPos);
+					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(GRYPHON);
 			}
 			doingAction = false;
 			break;*/

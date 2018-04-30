@@ -20,6 +20,7 @@ class Quadtree;
 #define WOOD_PER_WORKER 2
 #define REPAIR_COST 10
 #define REPAIR_COOLDOWN 30
+#define UNIT_QUEUE_MAX_SIZE 6
 
 struct worker
 {

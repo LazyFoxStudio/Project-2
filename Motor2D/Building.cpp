@@ -182,6 +182,34 @@ void Building::HandleResourceProduction()
 	}
 }
 
+void Building::AddUnitToQueue(Type type)
+{
+	unit_queue.push(type);
+	if (unit_queue.size() == 1)
+	{
+		producing_unit = true;
+		timer.Start();
+	}
+}
+
+void Building::HandleUnitProduction()
+{
+	if (timer.ReadSec() >= App->entitycontroller->DataBase[unit_queue.front()]->cost.creation_time)
+	{
+		App->entitycontroller->AddSquad(FOOTMAN, App->actionscontroller->newSquadPos);
+		unit_queue.pop();
+		if (unit_queue.size() == 0)
+		{
+			producing_unit = false;
+		}
+		else
+		{
+			timer.Start();
+		}
+	}
+
+}
+
 void Building::CalculateResourceProduction()
 {
 	float production_modifier = WOOD_PER_WORKER * (1 - (float)((workers_inside.size() - 1) * 0.05f));
