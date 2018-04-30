@@ -64,7 +64,7 @@ void Unit::Draw(float dt)
 	SDL_Rect r = current_anim->GetCurrentFrame(dt);
 
 	if(dir == W  || dir == NW || dir == SW)
-		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r, true,SDL_FLIP_HORIZONTAL);
+		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r, true,false,(1.0F), SDL_FLIP_HORIZONTAL);
 	else
 		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r);
 	
