@@ -2667,7 +2667,7 @@
         <type value="23"/>
 
         <iconData x="544" y="72" w="72" h="59"/>
-        <texture value="Assets\Sprites\Alliance Sprites\Catapult_SpriteSheet.png"/>
+        <texture value="Assets\Sprites\Horde Sprites\Catapult_SpriteSheet.png"/>
         <Stats>
           <life value="80"/>
           <attack value="3"/>
@@ -2924,7 +2924,7 @@
         <name value="Juggernaut"/>
         <type value="24"/>
         <iconData x="392" y="136" w="71" h="59"/>
-        <texture value="Assets\Sprites\Alliance Sprites\Juggernaut_SpriteSheet.png"/>
+        <texture value="Assets\Sprites\Horde Sprites\Juggernaut_SpriteSheet.png"/>
         <Stats>
           <life value="80"/>
           <attack value="3"/>
