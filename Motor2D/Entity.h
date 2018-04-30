@@ -21,7 +21,7 @@ enum Type
 	HERO_1, /* ... */ HERO_X,
 
 	// Allies
-	FOOTMAN, ARCHER, KNIGHT, GRYPHON, /* ... */ ALLY_X,
+	FOOTMAN, ARCHER, KNIGHT, GRYPHON, BALLISTA, FLYING_MACHINE, /* ... */ ALLY_X,
 
 	//Enemies
 	GRUNT, AXE_THROWER, /* ... */ ENEMY_X,

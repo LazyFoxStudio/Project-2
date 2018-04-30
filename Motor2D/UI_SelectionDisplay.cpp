@@ -5,10 +5,18 @@
 #include "UI_LifeBar.h"
 #include "j1EntityController.h"
 #include "Squad.h"
+#include "UI_Text.h"
+#include "j1Fonts.h"
+
+SelectionDisplay::SelectionDisplay() : UI_element(0, 0, element_type::WINDOW, { 0,0,0,0 }, nullptr)
+{
+	moreSquads = new Text("", 950, 800, App->font->getFont(1), { 0,0,0,255 }, nullptr);
+}
 
 SelectionDisplay::~SelectionDisplay()
 {
 	cleanLists();
+	RELEASE(moreSquads);
 }
 
 void SelectionDisplay::newSelection()
@@ -37,6 +45,8 @@ void SelectionDisplay::newSelection()
 				counterX++;
 			}
 		}
+
+		setAdditionalSquads();
 	}
 	else
 	{
@@ -65,6 +75,7 @@ void SelectionDisplay::OrderDisplay()
 	{
 		for (std::list<SquadDisplay*>::iterator it_s = squads.begin(); it_s != squads.end(); it_s++)
 		{
+			(*it_s)->active = true;
 			for (int i = 0; i < (*it_s)->troopIcons.size(); i++)
 			{
 				(*it_s)->troopIcons[i]->image->localPosition = { position.x + (i*SQUAD_ICON_OFFSET) + (counterX*icon_offset.x), position.y + (counterY*icon_offset.y) };
@@ -136,7 +147,10 @@ void SelectionDisplay::deleteDisplay(Entity* entity)
 		if (unitFound)
 		{
 			if ((*it_s)->troopIcons.size() == 0)
+			{
 				squads.erase(it_s);
+				setAdditionalSquads();
+			}
 			break;
 		}
 	}
@@ -155,10 +169,31 @@ void SelectionDisplay::BlitElement()
 	}
 	else
 	{
+		int counter = 0;
 		for (std::list<SquadDisplay*>::iterator it_s = squads.begin(); it_s != squads.end(); it_s++)
 		{
 			(*it_s)->Draw();
+			counter++;
+			if (counter == 6)
+				break;
 		}
+		if (moreSquads->active)
+			moreSquads->BlitElement();
+	}
+}
+
+void SelectionDisplay::setAdditionalSquads()
+{
+	if (squads.size() > 6)
+	{
+		int amount = squads.size() - 6;
+		std::string text = "+ " + std::to_string(amount) + " squads";
+		moreSquads->setText(text);
+		moreSquads->active = true;
+	}
+	else
+	{
+		moreSquads->active = false;
 	}
 }
 
@@ -210,9 +245,12 @@ SquadDisplay::SquadDisplay(Squad* squad, int x, int y)
 
 void SquadDisplay::Draw()
 {
-	for (int i = 0; i < troopIcons.size(); i++)
+	if (active)
 	{
-		troopIcons[i]->updateColor();
-		troopIcons[i]->image->BlitElement();
+		for (int i = 0; i < troopIcons.size(); i++)
+		{
+			troopIcons[i]->updateColor();
+			troopIcons[i]->image->BlitElement();
+		}
 	}
 }
