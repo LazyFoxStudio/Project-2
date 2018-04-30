@@ -101,6 +101,14 @@ bool j1ActionsController::Update(float dt)
 			}
 			doingAction = false;
 			break;
+		/*case CREATE_GRYPHON:
+			if (!App->entitycontroller->selected_entities.empty())
+			{
+				if (App->entitycontroller->CheckCost(GRYPHON) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
+					App->entitycontroller->AddSquad(GRYPHON, newSquadPos);
+			}
+			doingAction = false;
+			break;*/
 		case USE_ABILITY1:
 			if (hero = (Hero*)App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID))
 			{

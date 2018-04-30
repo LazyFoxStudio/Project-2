@@ -975,7 +975,7 @@
       </Unit>
       <Unit>
             <name value="Grunt"/>
-            <type value="11"/> 
+            <type value="12"/> 
 			      <iconData x="239" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Horde Sprites\Grunt_SpriteSheet.png"/>
             <Stats>
@@ -1196,7 +1196,7 @@
       </Unit>
       <Unit>
          <name value="Axe Thrower"/>
-            <type value="12"/> 
+            <type value="13"/> 
 			      <iconData x="392" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Horde Sprites\Troll Axethrower_SpriteSheet.png"/>
             <Stats>
@@ -1708,6 +1708,16 @@
 			</popUp>
 			<hotkey key="D" font_id="3"/>
 			</createKnight>
+    <!--<createGryphon id="14" release_action="10">
+      <position x="0" y="0"/>
+      <standby x="693" y="507" w="66" h="66"/>
+      <OnMouse x="761" y="507" w="66" h="66"/>
+      <OnClick x="829" y="507" w="66" h="66"/>
+      <popUp>
+        <Info text="Create Gryphon Squad" cost="true" type="9"/>
+      </popUp>
+      <hotkey key="D" font_id="3"/>
+    </createGryphon>-->
 		<ability1 id="14" click_action="10">
 			<position x="0" y="0"/>
 			<standby x="897" y="507" w="66" h="66"/>
