@@ -26,6 +26,7 @@
 #include "UI_NextWaveWindow.h"
 #include "UI_WorkersDisplay.h"
 #include "j1Scene.h"
+#include "UI_CooldownsDisplay.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -56,6 +57,8 @@ bool j1Gui::Start()
 	//Create warning messages
 	warningMessages = new WarningMessages();
 	warningMessages->active = false;
+	cooldownsDisplay = new CooldownsDisplay();
+	cooldownsDisplay->active = true;
 	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
 	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
 	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
@@ -71,6 +74,9 @@ bool j1Gui::PreUpdate()
 	//SDL_SetTextureAlphaMod(atlas, alpha_value);
 
 	UI_element* element = nullptr;
+
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+		Chronos->restartChrono();
 
 	//Get element to interact with
 	if (draggingElement != nullptr)
@@ -214,7 +220,8 @@ bool j1Gui::PostUpdate()
 	if (warningMessages != nullptr && warningMessages->active)
 		warningMessages->BlitElement();
 
-
+	if(cooldownsDisplay->active)
+		cooldownsDisplay->BlitElement();
 
 	//minimap_
 	App->uiscene->minimap->DrawMinimap();

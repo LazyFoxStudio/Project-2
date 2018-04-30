@@ -7,6 +7,7 @@
 #include "Squad.h"
 #include "j1Gui.h"
 #include "j1Audio.h"
+#include "UI_CooldownsDisplay.h"
 
 #include "j1UIScene.h"
 
@@ -25,8 +26,17 @@ bool Hero::Update(float dt)
 {
 	if (current_HP <= 0)
 	{
-		if (isActive) Deactivate();
-		else if (timer.ReadSec() > HERO_REVIVE_COOLDOWN) { current_HP = max_HP;  setActive(true); App->gui->createLifeBar(this); }
+		if (isActive)
+		{
+			Deactivate();
+			App->gui->cooldownsDisplay->heroDead();
+		}
+		else if (timer.ReadSec() > HERO_REVIVE_COOLDOWN)
+		{
+			current_HP = max_HP; 
+			setActive(true);
+			App->gui->createLifeBar(this);
+		}
 		return true;
 	}
 
@@ -34,17 +44,32 @@ bool Hero::Update(float dt)
 	{
 	case 1: 
 		skill_one->DrawRange(); 
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_one->Ready())  skill_one->Activate(), App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_one->Ready())
+		{
+			skill_one->Activate();
+			App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
+			App->gui->cooldownsDisplay->skillUsed(1);
+		}
 		skill_one->toDraw.clear();
 		break;
 	case 2:
 		skill_two->DrawRange();
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready())  skill_two->Activate(), App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready())
+		{
+			skill_two->Activate();
+			App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
+			App->gui->cooldownsDisplay->skillUsed(2);
+		}
 		skill_two->toDraw.clear();		
 		break;
 	case 3:
 		skill_three->DrawRange();
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready())  skill_three->Activate(), App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready())
+		{
+			skill_three->Activate();
+			App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
+			App->gui->cooldownsDisplay->skillUsed(3);
+		}
 		skill_three->toDraw.clear();	
 		break;
 	default: 

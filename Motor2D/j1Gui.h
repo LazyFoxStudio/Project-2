@@ -29,6 +29,7 @@ class WarningMessages;
 class NextWaveWindow;
 class WorkersDisplay;
 class Building;
+class CooldownsDisplay;
 
 enum event_type
 {
@@ -145,6 +146,7 @@ public:
 	WarningMessages* warningMessages = nullptr;
 	Chrono* Chronos = nullptr;
 	NextWaveWindow* nextWaveWindow = nullptr;
+	CooldownsDisplay* cooldownsDisplay = nullptr;
 
 private:
 

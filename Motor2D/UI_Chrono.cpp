@@ -17,16 +17,8 @@ void Chrono::setAlarm(int alarm)
 void Chrono::restartChrono()
 {
 	counter.Start();
-	switch (this->type)
-	{
-	case TIMER:
-		time = start_value;
+	if (type == TIMER)
 		text->setColor(default_color);
-		break;
-	case STOPWATCH:
-		time = 0;
-		break;
-	}
 }
 
 void Chrono::Blink()
@@ -40,7 +32,7 @@ void Chrono::Blink()
 		if (text->color.r == 255 && text->color.g == 255 && text->color.b == 255)
 			text->setColor({ 255,0,0,255 });
 		else
-			text->setColor({ 255,255,255,255 });
+			text->setColor(default_color);
 		last_blink = counter.Read();
 	}
 }
