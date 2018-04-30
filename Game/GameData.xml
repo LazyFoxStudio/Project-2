@@ -3598,7 +3598,7 @@
 			<OnMouse x="557" y="507" w="66" h="66"/>
 			<OnClick x="625" y="507" w="66" h="66"/>
 			<popUp>
-				<Info text="Create Footman Squad" cost="true" type="7"/>
+				<Info text="Create Footman Squad" cost="true" type="12"/>
 			</popUp>
 			<hotkey key="A" font_id="3"/>
 		</createFootman>
@@ -3608,7 +3608,7 @@
 			<OnMouse x="761" y="507" w="66" h="66"/>
 			<OnClick x="829" y="507" w="66" h="66"/>
 			<popUp>
-				<Info text="Create Archer Squad" cost="true" type="8"/>
+				<Info text="Create Archer Squad" cost="true" type="13"/>
 			</popUp>
 			<hotkey key="S" font_id="3"/>
 		</createArcher>
@@ -3618,7 +3618,7 @@
 			<OnMouse x="761" y="507" w="66" h="66"/>
 			<OnClick x="829" y="507" w="66" h="66"/>
 			<popUp>
-				<Info text="Create Knight Squad" cost="true" type="9"/>
+				<Info text="Create Knight Squad" cost="true" type="14"/>
 			</popUp>
 			<hotkey key="D" font_id="3"/>
 			</createKnight>
@@ -3628,7 +3628,7 @@
       <OnMouse x="761" y="507" w="66" h="66"/>
       <OnClick x="829" y="507" w="66" h="66"/>
       <popUp>
-        <Info text="Create Gryphon" cost="true" type="9"/>
+        <Info text="Create Gryphon" cost="true" type="15"/>
       </popUp>
       <hotkey key="Z" font_id="3"/>
     </createGryphon>
