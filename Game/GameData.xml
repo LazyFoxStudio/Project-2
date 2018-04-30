@@ -2433,7 +2433,7 @@
           <height value="87"/>
           <Animation>
             <!--0- Idle North-->
-            <rows value="0"/>
+            <rows value="3"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="0"/>
@@ -2441,7 +2441,7 @@
           </Animation>
           <Animation>
             <!--1- Idle NorthEast-->
-            <rows value="0"/>
+            <rows value="3"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="1"/>
@@ -2449,7 +2449,7 @@
           </Animation>
           <Animation>
             <!--2- Idle East-->
-            <rows value="0"/>
+            <rows value="3"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="2"/>
@@ -2457,7 +2457,7 @@
           </Animation>
           <Animation>
             <!--3- Idle SouthEast-->
-            <rows value="0"/>
+            <rows value="3"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="3"/>
@@ -2465,7 +2465,7 @@
           </Animation>
           <Animation>
             <!--4- Idle South-->
-            <rows value="0"/>
+            <rows value="3"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="4"/>
@@ -2473,7 +2473,7 @@
           </Animation>
           <Animation>
             <!--5- Idle SouthWest-->
-            <rows value="0"/>
+            <rows value="3"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="3"/>
@@ -2481,7 +2481,7 @@
           </Animation>
           <Animation>
             <!--6- Idle West-->
-            <rows value="0"/>
+            <rows value="3"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="2"/>
@@ -2489,7 +2489,7 @@
           </Animation>
           <Animation>
             <!--7- Idle NorthWest-->
-            <rows value="0"/>
+            <rows value="3"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="1"/>
@@ -2499,7 +2499,7 @@
             <!--8- Walking North-->
             <rows value="3"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="0"/>
             <speed value="7"/>
           </Animation>
@@ -2507,7 +2507,7 @@
             <!--9- Walking NorthEast-->
             <rows value="3"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="1"/>
             <speed value="7"/>
           </Animation>
@@ -2515,7 +2515,7 @@
             <!--10- Walking East-->
             <rows value="3"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="2"/>
             <speed value="7"/>
           </Animation>
@@ -2523,7 +2523,7 @@
             <!--11- Walking SouthEast-->
             <rows value="3"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="3"/>
             <speed value="7"/>
           </Animation>
@@ -2531,7 +2531,7 @@
             <!--12- Walking South-->
             <rows value="3"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="4"/>
             <speed value="7"/>
           </Animation>
@@ -2539,7 +2539,7 @@
             <!--13- Walking SouthWest-->
             <rows value="3"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="3"/>
             <speed value="7"/>
           </Animation>
@@ -2547,7 +2547,7 @@
             <!--14- Walking West-->
             <rows value="3"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="2"/>
             <speed value="7"/>
           </Animation>
@@ -2555,106 +2555,97 @@
             <!--15- Walking NorthWest-->
             <rows value="3"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="1"/>
             <speed value="7"/>
           </Animation>
-          <Animation>
-            <!-- 16- AttackingNorth-->
-            <rows value="3"/>
+          <Animation> <!-- 16- AttackingNorth-->
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="4"/>
             <StartingColumn value="0"/>
             <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 17- AttackingNorthEast-->
-            <rows value="3"/>
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="4"/>
             <StartingColumn value="1"/>
             <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 18- AttackingEast-->
-            <rows value="3"/>
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="4"/>
             <StartingColumn value="2"/>
             <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 19- AttackingSouthEast-->
-            <rows value="3"/>
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="4"/>
             <StartingColumn value="3"/>
             <speed value="5"/>
           </Animation>
-          <Animation>
-            <!-- 20- AttackingSouth-->
-            <rows value="3"/>
+          <Animation> <!-- 20- AttackingSouth-->
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="4"/>
             <StartingColumn value="4"/>
             <speed value="5"/>
           </Animation>
-          <Animation>
-            <!-- 21- AttackingSouthWest-->
-            <rows value="3"/>
+          <Animation> <!-- 21- AttackingSouthWest-->
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="4"/>
             <StartingColumn value="3"/>
             <speed value="5"/>
           </Animation>
-          <Animation>
-            <!-- 22- AttackingWest-->
-            <rows value="3"/>
+          <Animation> <!-- 22- AttackingWest-->
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="4"/>
             <StartingColumn value="2"/>
             <speed value="5"/>
           </Animation>
-          <Animation>
-            <!-- 23- AttackingNorthWest-->
-            <rows value="3"/>
+          <Animation> <!-- 23- AttackingNorthWest-->
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="4"/>
             <StartingColumn value="1"/>
             <speed value="5"/>
           </Animation>
-          <Animation>
-            <!-- 24- DyingNorthEast-->
-            <rows value="0"/>
-            <columns value="2"/>
-            <StartingRow value="9"/>
+          <Animation> <!-- 24- DyingNorthEast-->
+            <rows value="4"/>
+            <columns value="1"/>
+            <StartingRow value="5"/>
             <StartingColumn value="0"/>
             <speed value="7"/>
             <loop value="false"/>
           </Animation>
-          <Animation>
-            <!-- 25- DyingSouthEast-->
-            <rows value="0"/>
-            <columns value="2"/>
-            <StartingRow value="10"/>
+          <Animation> <!-- 25- DyingSouthEast-->
+            <rows value="4"/>
+            <columns value="1"/>
+            <StartingRow value="5"/>
             <StartingColumn value="0"/>
             <speed value="7"/>
             <loop value="false"/>
           </Animation>
-          <Animation>
-            <!-- 26- DyingSouthWest-->
-            <rows value="0"/>
-            <columns value="2"/>
-            <StartingRow value="10"/>
+          <Animation> <!-- 26- DyingSouthWest-->
+            <rows value="4"/>
+            <columns value="1"/>
+            <StartingRow value="5"/>
             <StartingColumn value="0"/>
             <speed value="7"/>
             <loop value="false"/>
           </Animation>
-          <Animation>
-            <!-- 27- DyingNorthWest-->
-            <rows value="0"/>
-            <columns value="2"/>
-            <StartingRow value="9"/>
+          <Animation> <!-- 27- DyingNorthWest-->
+            <rows value="4"/>
+            <columns value="1"/>
+            <StartingRow value="5"/>
             <StartingColumn value="0"/>
             <speed value="7"/>
             <loop value="false"/>
