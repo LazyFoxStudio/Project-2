@@ -18,7 +18,9 @@ void Chrono::restartChrono()
 {
 	counter.Start();
 	if (type == TIMER)
+	{
 		text->setColor(default_color);
+	}
 }
 
 void Chrono::Blink()
@@ -70,9 +72,7 @@ void Chrono::BlitElement()
 				last_secs = secs;
 			}
 			break;
-		case TIMER:
-			if (time <= 5)
-				Blink();
+		case TIMER:			
 			if (start_value - time_elapsed != time && time != 0)
 			{
 				time = start_value - time_elapsed;
@@ -93,6 +93,8 @@ void Chrono::BlitElement()
 				section = text->section;
 				last_secs = secs;
 			}
+			if (time <= 5)
+				Blink();
 			break;
 		}
 
