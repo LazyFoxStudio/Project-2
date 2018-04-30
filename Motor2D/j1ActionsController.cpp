@@ -99,6 +99,8 @@ bool j1ActionsController::Update(float dt)
 				if (App->entitycontroller->CheckCost(KNIGHT) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->AddSquad(KNIGHT, newSquadPos);
 			}
+			doingAction = false;
+			break;
 		case USE_ABILITY1:
 			if (hero = (Hero*)App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID))
 			{
