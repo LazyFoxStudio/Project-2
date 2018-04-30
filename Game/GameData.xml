@@ -3354,7 +3354,7 @@
 		<line text="Use this building"/>
 		<line text="to collect gold"/>
 	  </Info>
-      <iconData x="621" y="200" w="72" h="59"/>
+      <iconData x="315" y="455" w="72" h="59"/>
       <size x="3" y="3"/>
     </Building>
     
@@ -3383,7 +3383,7 @@
 		<line text="This building"/>
 		<line text="attacks enemy units"/>
 	  </Info>
-      <iconData x="621" y="200" w="72" h="59"/>
+      <iconData x="9" y="391" w="72" h="59"/>
       <size x="2" y="2"/>
     </Building>
     
@@ -3413,7 +3413,7 @@
 		<line text="Use this building"/>
 		<line text="to train your troops"/>
 	  </Info>
-      <iconData x="621" y="200" w="72" h="59"/>
+      <iconData x="621" y="328" w="71" h="59"/>
       <size x="3" y="3"/>
     </Building>
     
@@ -3442,8 +3442,8 @@
 		<line text="Use this building"/>
 		<line text="to train your troops"/>
 	  </Info>
-      <iconData x="621" y="200" w="72" h="59"/>
-      <size x="3" y="3"/>
+      <iconData x="162" y="391" w="72" h="59"/>
+      <size x="3" y="3"/> 
     </Building>
     
        <Building>
@@ -3471,7 +3471,7 @@
 		<line text="Use this building"/>
 		<line text="to train your troops"/>
 	  </Info>
-      <iconData x="621" y="200" w="72" h="59"/>
+      <iconData x="468" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
     </Building>
     
