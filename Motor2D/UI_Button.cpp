@@ -18,15 +18,15 @@ void Button::BlitElement()
 		switch (state)
 		{
 		case STANDBY:
-			App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera, flip);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera, true, 1.0f, flip);
 			break;
 		case MOUSEOVER:
-			App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouse, use_camera, flip);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouse, use_camera, true, 1.0f, flip);
 			break;
 		case LOCKED:
 		case LOCKED_MOUSEOVER:
 		case CLICKED:
-			App->render->Blit(texture, globalPos.x, globalPos.y, &OnClick, use_camera, flip);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &OnClick, use_camera, true, 1.0f, flip);
 			break;
 		}
 

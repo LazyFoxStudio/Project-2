@@ -71,6 +71,12 @@ bool j1Gui::PreUpdate()
 {
 	bool ret = true;
 	
+	uint win_w, win_h;
+	App->win->GetWindowSize(win_w, win_h);
+	iPoint default_size = DEFAULT_RESOLUTION;
+	w_stretch = (float)win_w / (float)default_size.x;
+	h_stretch = (float)win_h / (float)default_size.y;
+
 	//SDL_SetTextureAlphaMod(atlas, alpha_value);
 
 	UI_element* element = nullptr;
@@ -322,7 +328,15 @@ bool j1Gui::checkMouseHovering(UI_element* element)
 	bool ret = false;
 
 	iPoint globalPos = element->calculateAbsolutePosition();
-	if (x >= globalPos.x && x <= globalPos.x + element->section.w / scale && y >= globalPos.y && y <= globalPos.y + element->section.h / scale && element->interactive)
+	SDL_Rect section = { globalPos.x, globalPos.y, element->section.w, element->section.h };
+	if (!element->use_camera)
+	{
+		section.x *= w_stretch;
+		section.y *= h_stretch;
+	}
+	section.w *= w_stretch;
+	section.h *= h_stretch;
+	if (x >= section.x && x <= section.x + section.w / scale && y >= section.y && y <= section.y + section.h / scale && element->interactive)
 	{
 		ret = true;
 	}
@@ -357,6 +371,13 @@ void j1Gui::UIDebugDraw()
 					box.x += App->render->camera.x;
 					box.y += App->render->camera.y;
 				}
+				else
+				{
+					box.x *= w_stretch;
+					box.y *= h_stretch;
+				}
+				box.w *= w_stretch;
+				box.h *= h_stretch;
 				App->render->DrawQuad(box, Red, false, false);
 				if ((*it_e)->childs.size() > 0)
 				{
@@ -366,10 +387,10 @@ void j1Gui::UIDebugDraw()
 						{
 							SDL_Rect box;
 							int scale = App->win->GetScale();
-							box.x = (*it_c)->calculateAbsolutePosition().x * scale;
-							box.y = (*it_c)->calculateAbsolutePosition().y * scale;
-							box.w = (*it_c)->section.w;
-							box.h = (*it_c)->section.h;
+							box.x = (*it_c)->calculateAbsolutePosition().x * scale* w_stretch;
+							box.y = (*it_c)->calculateAbsolutePosition().y * scale* h_stretch;
+							box.w = (*it_c)->section.w* w_stretch;
+							box.h = (*it_c)->section.h* h_stretch;
 							App->render->DrawQuad(box, Red, false, false);
 						}
 					}
@@ -995,16 +1016,16 @@ void j1Gui::moveElementToMouse(UI_element* element)
 		App->input->GetMousePosition(x, y);
 		int win_w = App->win->width;
 		int win_h = App->win->height;
-		if (x + element->section.w > win_w)
+		if (x + (element->section.w*w_stretch) > win_w)
 		{
-			x -= ((x + element->section.w) - win_w);
+			x -= ((x + (element->section.w*w_stretch)) - win_w);
 		}
 		x = x;
-		y -= element->section.h;
+		y -= element->section.h*h_stretch;
 		if (y < 0)
 		{
 			y = 0;
 		}
-		element->localPosition = { x, y };
+		element->localPosition = { (int)(x/w_stretch), (int)(y/h_stretch) };
 	}
 }
