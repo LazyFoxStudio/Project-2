@@ -720,7 +720,7 @@
       <Unit>
         <name value="Knight"/>
         <type value="9"/>
-        <iconData x="162" y="7" w="72" h="60"/>
+        <iconData x="392" y="72" w="71" h="59"/>
         <texture value="Assets\Sprites\Alliance Sprites\Knight_Spritesheet.png"/>
         <Stats>
           <life value="80"/>
@@ -739,8 +739,8 @@
         </Stats>
         <Info title="Knight Stats:"/>
         <Animations>
-          <width value="73"/>
-          <height value="65"/>
+          <width value="71"/>
+          <height value="67"/>
           <Animation>
             <!-- 0- IdleNorth -->
             <rows value="0"/>
@@ -2190,8 +2190,8 @@
       </Unit>
       <Unit>
          <name value="Death Knight"/>
-            <type value="15"/> 
-			      <iconData x="392" y="7" w="72" h="60"/>
+            <type value="15"/>
+            <iconData x="392" y="72" w="71" h="59"/>
             <texture value="Assets\Sprites\Horde Sprites\Death Knight_SpriteSheet.png"/>
             <Stats>
                 <life value="40"/>
@@ -2205,8 +2205,8 @@
                 <size x="1" y="1"/>
             </Stats>
         <Animations>
-              <width value="60"/>
-              <height value="58"/>
+              <width value="71"/>
+              <height value="67"/>
             <Animation> <!--0- Idle North-->
               <rows value="0"/>
               <columns value="0"/>
@@ -2377,7 +2377,7 @@
             </Animation>
             <Animation> <!-- 24- DyingNorthEast-->
               <rows value="0"/>
-              <columns value="2"/>
+              <columns value="3"/>
               <StartingRow value="9"/>
               <StartingColumn value="0"/>
               <speed value="7"/>
@@ -2385,23 +2385,23 @@
             </Animation>
             <Animation> <!-- 25- DyingSouthEast-->
               <rows value="0"/>
-              <columns value="2"/>
-              <StartingRow value="10"/>
+              <columns value="3"/>
+              <StartingRow value="9"/>
               <StartingColumn value="0"/>
               <speed value="7"/>
               <loop value="false"/>
             </Animation>
             <Animation> <!-- 26- DyingSouthWest-->
               <rows value="0"/>
-              <columns value="2"/>
-              <StartingRow value="10"/>
+              <columns value="3"/>
+              <StartingRow value="9"/>
               <StartingColumn value="0"/>
               <speed value="7"/>
               <loop value="false"/>
             </Animation>
             <Animation> <!-- 27- DyingNorthWest-->
               <rows value="0"/>
-              <columns value="2"/>
+              <columns value="3"/>
               <StartingRow value="9"/>
               <StartingColumn value="0"/>
               <speed value="7"/>
