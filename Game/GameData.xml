@@ -2416,7 +2416,7 @@
         <name value="Dragon"/>
         <type value="22"/>
         <iconData x="86" y="200" w="72" h="59"/>
-        <texture value="Assets\Sprites\Horde Sprites\Troll Axethrower_SpriteSheet.png"/>
+        <texture value="Assets\Sprites\Horde Sprites\Dragon_SpriteSheet.png"/>
         <Stats>
           <life value="40"/>
           <attack value="2"/>
