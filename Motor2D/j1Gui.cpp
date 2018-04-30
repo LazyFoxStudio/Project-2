@@ -27,6 +27,7 @@
 #include "UI_WorkersDisplay.h"
 #include "j1Scene.h"
 #include "UI_CooldownsDisplay.h"
+#include "UI_TroopCreationQueue.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -225,6 +226,14 @@ bool j1Gui::PostUpdate()
 
 	if(cooldownsDisplay->active)
 		cooldownsDisplay->BlitElement();
+
+	//Draw Troop creation queue
+	if (App->entitycontroller->selected_entities.size() > 0 && App->entitycontroller->selected_entities.front()->IsBuilding())
+	{
+		Building* building = (Building*)App->entitycontroller->selected_entities.front();
+		if (building->type == BARRACKS && building->queueDisplay != nullptr && building->ex_state == OPERATIVE)
+			building->queueDisplay->BlitElement();
+	}
 
 	//minimap_
 	App->uiscene->minimap->DrawMinimap();
@@ -730,6 +739,11 @@ WorkersDisplay* j1Gui::createWorkersDisplay(Building* building)
 	}
 
 	return ret;
+}
+
+TroopCreationQueue* j1Gui::createTroopCreationQueue()
+{
+	return new TroopCreationQueue();
 }
 
 //minimap_

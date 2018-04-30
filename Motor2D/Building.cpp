@@ -9,6 +9,7 @@
 #include "UI_Chrono.h"
 #include "UI_InfoTable.h"
 #include "UI_WorkersDisplay.h"
+#include "UI_TroopCreationQueue.h"
 
 Building::Building(iPoint pos, Building& building)
 {
@@ -53,6 +54,7 @@ Building::~Building()
 	sprites.clear();
 	//Should be cleared just once with the DB
 	//RELEASE(infoData);
+	RELEASE(queueDisplay);
 	App->gui->deleteElement(workersDisplay);
 }
 
@@ -189,6 +191,7 @@ void Building::HandleResourceProduction()
 void Building::AddUnitToQueue(Type type)
 {
 	unit_queue.push(type);
+	queueDisplay->pushTroop(type);
 	if (unit_queue.size() == 1)
 	{
 		producing_unit = true;
