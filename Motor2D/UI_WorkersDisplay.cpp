@@ -51,8 +51,14 @@ void WorkersDisplay::BlitElement()
 {
 	if (building != nullptr && building->ex_state == OPERATIVE && building->type == LUMBER_MILL)
 	{
+		//Hardcoded
+		icon->localPosition = { (int)(10 * App->gui->w_stretch), (int)(25 * App->gui->h_stretch) };
+		workers->localPosition = { (int)(45 * App->gui->w_stretch),(int)(22 * App->gui->h_stretch) };
+		increase->localPosition = { (int)(60 * App->gui->w_stretch),(int)(0 * App->gui->h_stretch) };
+		decrease->localPosition = { (int)(20 * App->gui->w_stretch), (int)(0 * App->gui->h_stretch) };
+		// ----------------------
 		iPoint offset = WORKERS_DISPLAY_OFFSET;
-		localPosition = { (int)building->position.x + offset.x, (int)building->position.y + offset.y };
+		localPosition = { (int)building->position.x + (int)(offset.x*App->gui->w_stretch), (int)building->position.y + (int)(offset.y*App->gui->h_stretch) };
 		icon->BlitElement();
 		std::string text = std::to_string(building->workers_inside.size()) + '/' + std::to_string(MAX_VILLAGERS_LUMBERMILL);
 		workers->setText(text);

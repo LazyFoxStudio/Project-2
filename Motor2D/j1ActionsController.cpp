@@ -101,14 +101,14 @@ bool j1ActionsController::Update(float dt)
 			}
 			doingAction = false;
 			break;
-		/*case CREATE_GRYPHON:
+		case CREATE_GRYPHON:
 			if (!App->entitycontroller->selected_entities.empty())
 			{
 				if (App->entitycontroller->CheckCost(GRYPHON) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(GRYPHON);
 			}
 			doingAction = false;
-			break;*/
+			break;
 		/*case CREATE_BALLISTA:
 			if (!App->entitycontroller->selected_entities.empty())
 			{

@@ -253,9 +253,9 @@
 				<action id="1"/>
 				<action id="10"/>
 				<action id="10"/>
-				<action id="14"/>
-				<action id="15"/>
-				<action id="16"/>
+				<action id="17"/>
+				<action id="18"/>
+				<action id="19"/>
 			</Actions>
         </Unit>
       <!-- Alliance-->
@@ -1748,7 +1748,9 @@
       <!-- Horde-->
       <Unit>
             <name value="Grunt"/>
-            <type value="18"/> 
+
+            <type value="19"/> 
+
 			      <iconData x="239" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Horde Sprites\Grunt_SpriteSheet.png"/>
             <Stats>
@@ -1969,7 +1971,8 @@
       </Unit>
       <Unit>
          <name value="Axe Thrower"/>
-            <type value="19"/> 
+            <type value="20"/> 
+
 			      <iconData x="392" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Horde Sprites\Troll Axethrower_SpriteSheet.png"/>
             <Stats>
@@ -2190,7 +2193,9 @@
       </Unit>
       <Unit>
          <name value="Death Knight"/>
-            <type value="20"/>
+
+            <type value="21"/>
+
             <iconData x="392" y="72" w="71" h="59"/>
             <texture value="Assets\Sprites\Horde Sprites\Death Knight_SpriteSheet.png"/>
             <Stats>
@@ -2411,7 +2416,9 @@
       </Unit>
       <Unit>
         <name value="Dragon"/>
-        <type value="21"/>
+
+        <type value="22"/>
+
         <iconData x="392" y="7" w="72" h="60"/>
         <texture value="Assets\Sprites\Horde Sprites\Troll Axethrower_SpriteSheet.png"/>
         <Stats>
@@ -2660,7 +2667,9 @@
       </Unit>
       <Unit>
         <name value="Catapult"/>
-        <type value="22"/>
+
+        <type value="23"/>
+
         <iconData x="162" y="7" w="72" h="60"/>
         <texture value="Assets\Sprites\Alliance Sprites\Catapult_SpriteSheet.png"/>
         <Stats>
@@ -2917,7 +2926,9 @@
       </Unit>
       <Unit>
         <name value="Juggernaut"/>
-        <type value="23"/>
+
+        <type value="24"/>
+
         <iconData x="162" y="7" w="72" h="60"/>
         <texture value="Assets\Sprites\Alliance Sprites\Juggernaut_SpriteSheet.png"/>
         <Stats>
@@ -3232,12 +3243,12 @@
 		<action id="11"/>
 		<action id="12"/>
 		<action id="13"/>
+		<action id="14"/>
 		<action id="10"/>
 		<action id="10"/>
+        <action id="20"/>
 		<action id="10"/>
-        <action id="17"/>
-		<action id="10"/>
-        <action id="18"/>
+        <action id="21"/>
 	  </Actions>
       <iconData x="162" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
@@ -3254,9 +3265,9 @@
 		 <action id="10"/>
 		 <action id="10"/>
 		 <action id="10"/>
-         <action id="17"/>
+         <action id="20"/>
 		 <action id="10"/>
-         <action id="18"/>
+         <action id="21"/>
        </Actions>
       <sprites>
         <sprite x="102" y="413" w="101" h="109"/>
@@ -3292,9 +3303,9 @@
 		<action id="10"/>
 		<action id="10"/>
 		<action id="10"/>
-		<action id="17"/>
+		<action id="20"/>
 		<action id="10"/>
-		<action id="18"/>
+		<action id="21"/>
       </Actions>
       <sprites>
         <sprite x="399" y="71" w="72"  h="70"/>
@@ -3613,17 +3624,37 @@
 			</popUp>
 			<hotkey key="D" font_id="3"/>
 			</createKnight>
-    <!--<createGryphon id="14" release_action="10">
+    <createGryphon id="14" release_action="10">
       <position x="0" y="0"/>
       <standby x="693" y="507" w="66" h="66"/>
       <OnMouse x="761" y="507" w="66" h="66"/>
       <OnClick x="829" y="507" w="66" h="66"/>
       <popUp>
-        <Info text="Create Gryphon Squad" cost="true" type="9"/>
+        <Info text="Create Gryphon" cost="true" type="9"/>
       </popUp>
-      <hotkey key="D" font_id="3"/>
-    </createGryphon>-->
-		<ability1 id="14" click_action="13">
+      <hotkey key="Z" font_id="3"/>
+    </createGryphon>
+    <!--<createBallista id="15" release_action="11">
+      <position x="0" y="0"/>
+      <standby x="693" y="507" w="66" h="66"/>
+      <OnMouse x="761" y="507" w="66" h="66"/>
+      <OnClick x="829" y="507" w="66" h="66"/>
+      <popUp>
+        <Info text="Create Ballista" cost="true" type="9"/>
+      </popUp>
+      <hotkey key="X" font_id="3"/>
+    </createBallista>-->
+    <!--<createFlyingMachine id="16" release_action="12">
+      <position x="0" y="0"/>
+      <standby x="693" y="507" w="66" h="66"/>
+      <OnMouse x="761" y="507" w="66" h="66"/>
+      <OnClick x="829" y="507" w="66" h="66"/>
+      <popUp>
+        <Info text="Create FlyingMachine" cost="true" type="9"/>
+      </popUp>
+      <hotkey key="C" font_id="3"/>
+    </createFlyingMachine>-->
+		<ability1 id="17" click_action="13">
 			<position x="0" y="0"/>
 			<standby x="897" y="507" w="66" h="66"/>
 			<OnMouse x="965" y="507" w="66" h="66"/>
@@ -3633,7 +3664,7 @@
 			</popUp>
 			<hotkey key="Q" font_id="3"/>
 		</ability1>
-		<ability2 id="15" click_action="14">
+		<ability2 id="18" click_action="14">
 			<position x="0" y="0"/>
 			<standby x="1101" y="507" w="66" h="66"/>
 			<OnMouse x="1169" y="507" w="66" h="66"/>
@@ -3643,7 +3674,7 @@
 			</popUp>
 			<hotkey key="W" font_id="3"/>
 		</ability2>
-		<ability3 id="16" click_action="15">
+		<ability3 id="19" click_action="15">
 			<position x="0" y="0"/>
 			<standby x="1305" y="507" w="66" h="66"/>
 			<OnMouse x="1373" y="507" w="66" h="66"/>
@@ -3653,7 +3684,7 @@
 			</popUp>
 			<hotkey key="E" font_id="3"/>
 		</ability3>
-		<repairBuilding id="17" click_action="16">
+		<repairBuilding id="20" click_action="16">
 			<position x="0" y="0"/>
 			<standby x="1101" y="588" w="66" h="66"/>
 			<OnMouse x="1169" y="588" w="66" h="66"/>
@@ -3663,7 +3694,7 @@
 				<Cost wood="200" gold="" oil="" workers="" time=""/>
 			</popUp>
 		</repairBuilding>
-		<demolishBuilding id="18" click_action="17">
+		<demolishBuilding id="21" click_action="17">
 			<position x="0" y="0"/>
 			<standby x="1305" y="588" w="66" h="66"/>
 			<OnMouse x="1373" y="588" w="66" h="66"/>

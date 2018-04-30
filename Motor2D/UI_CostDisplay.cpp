@@ -66,7 +66,7 @@ void CostDisplay::BlitElement()
 {
 	Color Dark_Grey = Color(75, 75, 75, 200);
 	iPoint globalPosition = calculateAbsolutePosition();
-	App->render->DrawQuad({ globalPosition.x - 10, globalPosition.y - 5, section.w, section.h }, Dark_Grey, true, use_camera);
+	App->render->DrawQuad({ globalPosition.x - 10, globalPosition.y - 5, section.w, section.h }, Dark_Grey, true, use_camera, true);
 
 	int offsetY = 36;
 

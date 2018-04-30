@@ -11,6 +11,8 @@
 #include <string>
 #include <list>
 
+#define DEFAULT_RESOLUTION {1680, 1050}
+
 struct _TTF_Font;
 struct SDL_Texture;
 class UI_element;
@@ -135,6 +137,9 @@ public:
 
 	SDL_Texture* atlas = nullptr;
 	SDL_Texture* icon_atlas = nullptr;
+
+	float w_stretch = 1.0f;
+	float h_stretch = 1.0f;
 
 	uint popUp_wait_time = 0;
 	bool UI_Debug = false;

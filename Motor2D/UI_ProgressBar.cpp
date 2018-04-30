@@ -38,7 +38,7 @@ void ProgressBar::BlitElement()
 		BROFILER_CATEGORY("Progress Bar Blit", Profiler::Color::Tan);
 
 		iPoint globalPos = calculateAbsolutePosition();
-		App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera);
+		App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera, true);
 
 		float bar_start;
 		float bar_end;
@@ -48,7 +48,7 @@ void ProgressBar::BlitElement()
 			full.w = section.w*progress;
 			bar_start = 0;
 			bar_end = full.w;
-			App->render->Blit(texture, globalPos.x, globalPos.y, &full, use_camera);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &full, use_camera, true);
 			if (!(head.w == 0 || head.h == 0))
 			{
 				head_pos.x = (int)(full.w) - (int)(head.w) / 2;
@@ -56,7 +56,7 @@ void ProgressBar::BlitElement()
 					head_pos.x = 1;
 				if (head_pos.x + head.w > section.w)
 					head_pos.x = section.w - head.w - 2;
-				App->render->Blit(texture, head_pos.x, head_pos.y, &head, use_camera);
+				App->render->Blit(texture, head_pos.x, head_pos.y, &head, use_camera, true);
 			}
 			break;
 		case DECREASING:
@@ -65,12 +65,12 @@ void ProgressBar::BlitElement()
 			full.x = section.w - full.w;
 			bar_start = (section.w) - (full.w);
 			bar_end = section.w;
-			App->render->Blit(texture, globalPos.x + (section.w) - (full.w), globalPos.y, &full, use_camera);
+			App->render->Blit(texture, globalPos.x + (section.w) - (full.w), globalPos.y, &full, use_camera, true);
 			if (!(head.w == 0 || head.h == 0))
 			{
 				head_pos.x = (int)(section.w) - (int)(full.w) - 3;
 				if (head_pos.x < (section.w) - head.w / 1.5f)
-					App->render->Blit(texture, head_pos.x, head_pos.y, &head, use_camera);
+					App->render->Blit(texture, head_pos.x, head_pos.y, &head, use_camera, true);
 			}
 			break;
 		}
