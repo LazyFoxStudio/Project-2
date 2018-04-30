@@ -75,9 +75,6 @@ bool j1Gui::PreUpdate()
 
 	UI_element* element = nullptr;
 
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
-		Chronos->restartChrono();
-
 	//Get element to interact with
 	if (draggingElement != nullptr)
 		element = draggingElement;
@@ -421,6 +418,7 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 	UI_element* element = nullptr;
 	for (; tmp; tmp = tmp.next_sibling())
 	{
+		element = nullptr;
 		std::string type = tmp.name();
 		if (type == "atlas_image")
 			element = createImageFromAtlas(tmp, callback, tmp.attribute("icon_atlas").as_bool(false));
@@ -447,32 +445,35 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 		else if (type == "minimap")
 			createMinimap(tmp, nullptr);
 
-		element->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
-		element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
-		element->active = tmp.attribute("active").as_bool(true);
-		element->clickAction = (actionType)tmp.attribute("click_action").as_int(0);
-		element->releaseAction = (actionType)tmp.attribute("release_action").as_int(0);
-		pugi::xml_node info = tmp.child("popUp").child("Info");
-		if (info)
+		if (element != nullptr)
 		{
-			createPopUpInfo(element, info.attribute("text").as_string());
-		}
+			element->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
+			element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
+			element->active = tmp.attribute("active").as_bool(true);
+			element->clickAction = (actionType)tmp.attribute("click_action").as_int(0);
+			element->releaseAction = (actionType)tmp.attribute("release_action").as_int(0);
+			pugi::xml_node info = tmp.child("popUp").child("Info");
+			if (info)
+			{
+				createPopUpInfo(element, info.attribute("text").as_string());
+			}
 
-		pugi::xml_node childs = tmp.child("childs");
-		if(childs)
-		{ 
-			Load_UIElements(childs, nullptr, callback, element);
-		}
-		
-		if (parent != nullptr)
-		{
-			parent->appendChild(element, tmp.attribute("center").as_bool());
-		}
+			pugi::xml_node childs = tmp.child("childs");
+			if (childs)
+			{
+				Load_UIElements(childs, nullptr, callback, element);
+			}
 
-		if (menu != nullptr)
-		{
-			menu->elements.push_back(element);
-			element->menu = menu->id;
+			if (parent != nullptr)
+			{
+				parent->appendChild(element, tmp.attribute("center").as_bool());
+			}
+
+			if (menu != nullptr)
+			{
+				menu->elements.push_back(element);
+				element->menu = menu->id;
+			}
 		}
 	}
 }
