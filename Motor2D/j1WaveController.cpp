@@ -126,7 +126,7 @@ void j1WaveController::Generate_Next_Wave()
 	
 	for (int i = 0; i < wave_score; i++)
 	{
-		int enemy = rand() % ((AXE_THROWER - GRUNT) + 1);    //   (last_enemy_type - first_enemy_type)
+		int enemy = rand() % ((JUGGERNAUT - GRUNT) + 1);    //   (last_enemy_type - first_enemy_type)
 		int position = rand() % spawns.size();
 
 		next_wave.push_back(new NextWave((Type)(GRUNT + enemy), spawns[position]));
