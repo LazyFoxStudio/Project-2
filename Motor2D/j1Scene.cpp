@@ -65,6 +65,7 @@ bool j1Scene::Start()
 	gameData = App->LoadFile(doc, "GameData.xml");
 	loadGameDB(gameData);
 	//App->entitycontroller->addUnit({ 2000, 2200 }, KNIGHT);
+	//App->entitycontroller->AddSquad(FOOTMAN, { 2000,2200 });
 
 	return true;
 }

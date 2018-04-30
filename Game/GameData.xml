@@ -977,7 +977,7 @@
       <Unit>
         <name value="Gryphon"/>
         <type value="15"/>
-        <iconData x="162" y="7" w="72" h="60"/>
+        <iconData x="9" y="200" w="72" h="60"/>
         <texture value="Assets\Sprites\Alliance Sprites\Gryphon Rider_SpriteSheet.png"/>
         <Stats>
           <life value="80"/>
@@ -1234,7 +1234,7 @@
       <Unit>
         <name value="Ballista"/>
         <type value="16"/>
-        <iconData x="315" y="7" w="72" h="60"/>
+        <iconData x="468" y="72" w="72" h="59"/>
         <texture value="Assets\Sprites\Alliance Sprites\Ballista_Spritesheet.png"/>
         <Stats>
           <life value="40"/>
@@ -1506,7 +1506,7 @@
           <workerCost value="3"/>
           <trainingTime value="10"/>
           <squadMembers value="4"/>
-          <size x="2" y="2"/>
+          <size x="1" y="1"/>
         </Stats>
         <Info title="Flying Machine Stats:"/>
         <Animations>
@@ -2419,7 +2419,7 @@
 
         <type value="22"/>
 
-        <iconData x="392" y="7" w="72" h="60"/>
+        <iconData x="86" y="200" w="72" h="59"/>
         <texture value="Assets\Sprites\Horde Sprites\Troll Axethrower_SpriteSheet.png"/>
         <Stats>
           <life value="40"/>
@@ -2433,8 +2433,8 @@
           <size x="1" y="1"/>
         </Stats>
         <Animations>
-          <width value="60"/>
-          <height value="58"/>
+          <width value="83"/>
+          <height value="87"/>
           <Animation>
             <!--0- Idle North-->
             <rows value="0"/>
@@ -2670,7 +2670,7 @@
 
         <type value="23"/>
 
-        <iconData x="162" y="7" w="72" h="60"/>
+        <iconData x="544" y="72" w="72" h="59"/>
         <texture value="Assets\Sprites\Alliance Sprites\Catapult_SpriteSheet.png"/>
         <Stats>
           <life value="80"/>
@@ -2926,10 +2926,8 @@
       </Unit>
       <Unit>
         <name value="Juggernaut"/>
-
         <type value="24"/>
-
-        <iconData x="162" y="7" w="72" h="60"/>
+        <iconData x="392" y="136" w="71" h="59"/>
         <texture value="Assets\Sprites\Alliance Sprites\Juggernaut_SpriteSheet.png"/>
         <Stats>
           <life value="80"/>
