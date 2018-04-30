@@ -3,7 +3,7 @@
     <Units>
       <Unit>
             <name value="Hero"/>
-            <type value="5"/>
+            <type value="10"/>
 			<iconData x="162" y="200" w="72" h="59"/>
             <texture value="Assets\Sprites\Alliance Sprites\MageHero_Spritesheet.png"/>
             <Stats>
@@ -261,7 +261,7 @@
       <!-- Alliance-->
       <Unit>
             <name value="Footman"/>
-            <type value="7"/>
+            <type value="12"/>
 			      <iconData x="162" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Alliance Sprites\Footman_Spritesheet.png"/>
             <Stats>
@@ -490,7 +490,7 @@
 		</Unit>
       <Unit>
             <name value="Archer"/>
-            <type value="8"/> 
+            <type value="13"/> 
 			      <iconData x="315" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Alliance Sprites\Elven archer_Spritesheet.png"/>
             <Stats>
@@ -719,7 +719,7 @@
 	  </Unit>
       <Unit>
         <name value="Knight"/>
-        <type value="9"/>
+        <type value="14"/>
         <iconData x="392" y="72" w="71" h="59"/>
         <texture value="Assets\Sprites\Alliance Sprites\Knight_Spritesheet.png"/>
         <Stats>
@@ -976,7 +976,7 @@
       </Unit>
       <Unit>
         <name value="Gryphon"/>
-        <type value="10"/>
+        <type value="15"/>
         <iconData x="162" y="7" w="72" h="60"/>
         <texture value="Assets\Sprites\Alliance Sprites\Gryphon Rider_SpriteSheet.png"/>
         <Stats>
@@ -1233,7 +1233,7 @@
       </Unit>
       <Unit>
         <name value="Ballista"/>
-        <type value="11"/>
+        <type value="16"/>
         <iconData x="315" y="7" w="72" h="60"/>
         <texture value="Assets\Sprites\Alliance Sprites\Ballista_Spritesheet.png"/>
         <Stats>
@@ -1490,7 +1490,7 @@
       </Unit>
       <Unit>
         <name value="FlyingMachine"/>
-        <type value="12"/>
+        <type value="17"/>
         <iconData x="315" y="7" w="72" h="60"/>
         <texture value="Assets\Sprites\Alliance Sprites\Flying Machine_Spritesheet.png"/>
         <Stats>
@@ -1748,7 +1748,7 @@
       <!-- Horde-->
       <Unit>
             <name value="Grunt"/>
-            <type value="13"/> 
+            <type value="18"/> 
 			      <iconData x="239" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Horde Sprites\Grunt_SpriteSheet.png"/>
             <Stats>
@@ -1969,7 +1969,7 @@
       </Unit>
       <Unit>
          <name value="Axe Thrower"/>
-            <type value="14"/> 
+            <type value="19"/> 
 			      <iconData x="392" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Horde Sprites\Troll Axethrower_SpriteSheet.png"/>
             <Stats>
@@ -2190,7 +2190,7 @@
       </Unit>
       <Unit>
          <name value="Death Knight"/>
-            <type value="15"/>
+            <type value="20"/>
             <iconData x="392" y="72" w="71" h="59"/>
             <texture value="Assets\Sprites\Horde Sprites\Death Knight_SpriteSheet.png"/>
             <Stats>
@@ -2411,7 +2411,7 @@
       </Unit>
       <Unit>
         <name value="Dragon"/>
-        <type value="16"/>
+        <type value="21"/>
         <iconData x="392" y="7" w="72" h="60"/>
         <texture value="Assets\Sprites\Horde Sprites\Troll Axethrower_SpriteSheet.png"/>
         <Stats>
@@ -2660,7 +2660,7 @@
       </Unit>
       <Unit>
         <name value="Catapult"/>
-        <type value="17"/>
+        <type value="22"/>
         <iconData x="162" y="7" w="72" h="60"/>
         <texture value="Assets\Sprites\Alliance Sprites\Catapult_SpriteSheet.png"/>
         <Stats>
@@ -2917,7 +2917,7 @@
       </Unit>
       <Unit>
         <name value="Juggernaut"/>
-        <type value="18"/>
+        <type value="23"/>
         <iconData x="162" y="7" w="72" h="60"/>
         <texture value="Assets\Sprites\Alliance Sprites\Juggernaut_SpriteSheet.png"/>
         <Stats>
@@ -3319,6 +3319,154 @@
       <iconData x="621" y="200" w="72" h="59"/>
       <size x="2" y="2"/>
     </Building>
+    
+      <Building>
+      <name value="Mine"/>
+      <type value="5"/>
+      <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
+      <Actions>
+
+      </Actions>
+      <sprites>
+        <sprite x="0" y="633" w="101"  h="109"/>
+        <sprite x="510" y="633" w="101" h="109"/>
+         <sprite x="0" y="633" w="101"  h="109"/>
+        <sprite x="545" y="0" w="72" h="70" />
+      </sprites>
+      <Stats>
+        <life value="300"/>
+        <villagers value="0"/>
+        <buildingTime value="5"/>
+        <defense value="20"/>
+        <woodCost value="350"/>
+        <goldCost value="0"/>
+      </Stats>
+	  <Info title="Mine:">
+		<line text="Use this building"/>
+		<line text="to collect gold"/>
+	  </Info>
+      <iconData x="621" y="200" w="72" h="59"/>
+      <size x="3" y="3"/>
+    </Building>
+    
+    <Building>
+      <name value="Turret"/>
+      <type value="6"/>
+      <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
+      <Actions>
+
+      </Actions>
+      <sprites>
+        <sprite x="472" y="71" w="72" h="70"/>
+        <sprite x="472" y="0" w="72"  h="70"/>
+         <sprite x="0" y="523" w="72"  h="69 "/>
+        <sprite x="545" y="0" w="72" h="70" />
+      </sprites>
+      <Stats>
+        <life value="200"/>
+        <villagers value="0"/>
+        <buildingTime value="5"/>
+        <defense value="20"/>
+        <woodCost value="350"/>
+        <goldCost value="0"/>
+      </Stats>
+	  <Info title=" Turret:">
+		<line text="This building"/>
+		<line text="attacks enemy units"/>
+	  </Info>
+      <iconData x="621" y="200" w="72" h="59"/>
+      <size x="2" y="2"/>
+    </Building>
+    
+    
+       <Building>
+      <name value="Gnome Hut"/>
+      <type value="7"/>
+      <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
+      <Actions>
+
+      </Actions>
+      <sprites>
+        <sprite x="408" y="633" w="101" h="109"/>
+        <sprite x="408" y="523" w="101"  h="109"/>
+         <sprite x="0" y="633" w="101"  h="109"/>
+        <sprite x="545" y="71" w="101" h="109" />
+      </sprites>
+      <Stats>
+        <life value="200"/>
+        <villagers value="0"/>
+        <buildingTime value="5"/>
+        <defense value="20"/>
+        <woodCost value="300"/>
+        <goldCost value="0"/>
+      </Stats>
+	  <Info title="Gnome Hut:">
+		<line text="Use this building"/>
+		<line text="to train your troops"/>
+	  </Info>
+      <iconData x="621" y="200" w="72" h="59"/>
+      <size x="3" y="3"/>
+    </Building>
+    
+       <Building>
+      <name value="Church"/>
+      <type value="8"/>
+      <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
+      <Actions>
+
+      </Actions>
+      <sprites>
+        <sprite x="306" y="413" w="101" h="109"/>
+        <sprite x="306" y="303" w="101"  h="109"/>
+         <sprite x="0" y="633" w="101"  h="109"/>
+        <sprite x="545" y="71" w="101" h="109" />
+      </sprites>
+      <Stats>
+        <life value="200"/>
+        <villagers value="0"/>
+        <buildingTime value="5"/>
+        <defense value="20"/>
+        <woodCost value="300"/>
+        <goldCost value="0"/>
+      </Stats>
+	  <Info title="Church:">
+		<line text="Use this building"/>
+		<line text="to train your troops"/>
+	  </Info>
+      <iconData x="621" y="200" w="72" h="59"/>
+      <size x="3" y="3"/>
+    </Building>
+    
+       <Building>
+      <name value="Blacksmith"/>
+      <type value="9"/>
+      <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
+      <Actions>
+
+      </Actions>
+      <sprites>
+        <sprite x="0" y="413" w="101" h="109"/>
+        <sprite x="0" y="303" w="101"  h="109"/>
+         <sprite x="0" y="633" w="101"  h="109"/>
+        <sprite x="545" y="71" w="101" h="109" />
+      </sprites>
+      <Stats>
+        <life value="200"/>
+        <villagers value="0"/>
+        <buildingTime value="5"/>
+        <defense value="20"/>
+        <woodCost value="300"/>
+        <goldCost value="0"/>
+      </Stats>
+	  <Info title="Gnome Hut:">
+		<line text="Use this building"/>
+		<line text="to train your troops"/>
+	  </Info>
+      <iconData x="621" y="200" w="72" h="59"/>
+      <size x="3" y="3"/>
+    </Building>
+    
+    
     
    
   </Buildings>

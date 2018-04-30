@@ -81,6 +81,10 @@ bool Building::Update(float dt)
 			HandleResourceProduction();
 		else if (type == FARM)
 			HandleWorkerProduction();
+		else if (type == BARRACKS || type == GNOME_HUT || type == CHURCH)
+		{
+			HandleUnitProduction();
+		}
 		break;
 		
 	case DESTROYED:
@@ -194,17 +198,21 @@ void Building::AddUnitToQueue(Type type)
 
 void Building::HandleUnitProduction()
 {
-	if (timer.ReadSec() >= App->entitycontroller->DataBase[unit_queue.front()]->cost.creation_time)
+	if (unit_queue.size() > 0)
 	{
-		App->entitycontroller->AddSquad(FOOTMAN, App->actionscontroller->newSquadPos);
-		unit_queue.pop();
-		if (unit_queue.size() == 0)
+		if (timer.ReadSec() >= App->entitycontroller->DataBase[unit_queue.front()]->cost.creation_time)
 		{
-			producing_unit = false;
-		}
-		else
-		{
-			timer.Start();
+			fPoint newSquadPos = { position.x, position.y + collider.h };
+			App->entitycontroller->AddSquad(unit_queue.front(), newSquadPos);
+			unit_queue.pop();
+			if (unit_queue.size() == 0)
+			{
+				producing_unit = false;
+			}
+			else
+			{
+				timer.Start();
+			}
 		}
 	}
 
