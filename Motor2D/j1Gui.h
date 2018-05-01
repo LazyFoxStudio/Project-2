@@ -100,7 +100,7 @@ public:
 	IngameMenu* createIngameMenu(pugi::xml_node node, j1Module* callback = nullptr);
 	NextWaveWindow* createNextWaveWindow(pugi::xml_node node, j1Module* callback = nullptr);
 	WorkersDisplay* createWorkersDisplay(Building* building);
-	TroopCreationQueue* createTroopCreationQueue();
+	TroopCreationQueue* createTroopCreationQueue(Building* building);
 
 	//minimap_
 	void createMinimap(pugi::xml_node node, j1Module* callback = nullptr);

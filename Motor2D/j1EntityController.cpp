@@ -426,7 +426,8 @@ Building* j1EntityController::addBuilding(iPoint pos, Type type)
 	Building* building = new Building(pos, *getBuildingFromDB(type));
 	building->UID = last_UID++;
 	building->workersDisplay = App->gui->createWorkersDisplay(building);
-	building->queueDisplay = App->gui->createTroopCreationQueue();
+	if (type == BARRACKS)
+		building->queueDisplay = App->gui->createTroopCreationQueue(building);
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
 
@@ -689,6 +690,8 @@ void j1EntityController::selectionControl()
 		break;
 	case KEY_UP:
 
+		for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
+			(*it_e)->isSelected = false;
 		selected_entities.clear();
 		selected_squads.clear();
 		bool buildings = false;
@@ -722,6 +725,7 @@ void j1EntityController::selectionControl()
 						if ((*it)->ex_state == OPERATIVE)
 						{
 							selected_entities.push_back(*it);
+							(*it)->isSelected = true;
 							App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
 							if (!buildings) buildings = true;
 						}
@@ -738,7 +742,10 @@ void j1EntityController::selectionControl()
 			(*it)->getUnits(units);
 
 			for (int i = 0; i < units.size(); i++)
+			{
 				selected_entities.push_back(units[i]);
+				units[i]->isSelected = true;
+			}
 		}
 
 		if (buildings && units)

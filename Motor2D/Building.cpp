@@ -54,13 +54,21 @@ Building::~Building()
 	sprites.clear();
 	//Should be cleared just once with the DB
 	//RELEASE(infoData);
-	RELEASE(queueDisplay);
+	App->gui->deleteElement(queueDisplay);
 	App->gui->deleteElement(workersDisplay);
 }
 
 
 bool Building::Update(float dt)
 {
+	if (queueDisplay != nullptr)
+	{
+		if (isSelected)
+			queueDisplay->active = true;
+		else
+			queueDisplay->active = false;
+	}
+
 	//minimap_
 	if (App->uiscene->minimap) 
 	{
@@ -190,7 +198,7 @@ void Building::HandleResourceProduction()
 
 void Building::AddUnitToQueue(Type type)
 {
-	unit_queue.push(type);
+	unit_queue.push_back(type);
 	queueDisplay->pushTroop(type);
 	if (unit_queue.size() == 1)
 	{
@@ -207,7 +215,7 @@ void Building::HandleUnitProduction()
 		{
 			fPoint newSquadPos = { position.x, position.y + collider.h };
 			App->entitycontroller->AddSquad(unit_queue.front(), newSquadPos);
-			unit_queue.pop();
+			unit_queue.pop_front();
 			if (unit_queue.size() == 0)
 			{
 				producing_unit = false;

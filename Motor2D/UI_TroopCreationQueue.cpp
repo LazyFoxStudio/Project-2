@@ -10,8 +10,9 @@
 #include "UI_Text.h"
 #include "j1Fonts.h"
 
-TroopCreationQueue::TroopCreationQueue(): UI_element(875,810,WINDOW, {0,0,0,0}, nullptr)
+TroopCreationQueue::TroopCreationQueue(Building* building): UI_element(875,810,PRODUCTIONDISPLAY, {0,0,200,220}, (j1Module*)App->uiscene)
 {
+	this->building = building;
 	text = new Text("Troops being created:", 660, 810, App->font->getFont(1), { 0,0,0,255 }, nullptr);
 }
 
@@ -36,6 +37,13 @@ void TroopCreationQueue::BlitElement()
 	int counter = 0;
 	for (std::list<troopCreation*>::iterator it_i = icons.begin(); it_i != icons.end(); it_i++)
 	{		
+		if ((*it_i)->icon->image->state == CLICKED)
+		{
+			RELEASE((*it_i));
+			icons.erase(it_i);
+			building->unit_queue.erase(building->unit_queue.begin()+counter);
+			continue;
+		}
 		if ((*it_i)->progress->progress == 1.0f)
 		{
 			RELEASE((*it_i));
@@ -44,7 +52,7 @@ void TroopCreationQueue::BlitElement()
 			if (it_i != icons.end())
 				(*it_i)->timer.Start();
 			it_i--;
-			break;
+			continue;
 		}
 		(*it_i)->icon->image->localPosition = { icon_offset.x*counterX, icon_offset.y*counterY };
 		(*it_i)->icon->image->BlitElement();
@@ -67,6 +75,8 @@ void TroopCreationQueue::pushTroop(Type type)
 	troopCreation* display = new troopCreation();
 	TroopIcon* icon = new TroopIcon(App->entitycontroller->getUnitFromDB(type), 0, 0);
 	icon->image->parent = this;
+	App->gui->createPopUpInfo(icon->image, "Click to remove squad");
+	icon->image->callback = App->uiscene;
 	display->icon = icon;
 
 	Entity* entity = (Entity*)App->entitycontroller->getUnitFromDB(type);
@@ -77,4 +87,20 @@ void TroopCreationQueue::pushTroop(Type type)
 
 	display->timer.Start();
 	icons.push_back(display);
+}
+
+UI_element* TroopCreationQueue::getMouseHoveringElement()
+{
+	UI_element* ret = this;
+
+	for (std::list<troopCreation*>::iterator it_i = icons.begin(); it_i != icons.end(); it_i++)
+	{
+		if (App->gui->checkMouseHovering((*it_i)->icon->image))
+		{
+			ret = (*it_i)->icon->image;
+			break;
+		}
+	}
+
+	return ret;
 }

@@ -58,6 +58,7 @@ public:
 
 	j1Timer timer;
 	Cost cost;
+	bool isSelected = false;
 
 	InfoData* infoData = nullptr;
 

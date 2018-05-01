@@ -205,6 +205,7 @@ bool j1Gui::PostUpdate()
 				(*it_e)->BlitElement();
 		}
 	}
+
 	//Draw PopUp
 	if (current_hovering_element != nullptr && current_hovering_element->blitPopUpInfo)
 	{
@@ -226,14 +227,6 @@ bool j1Gui::PostUpdate()
 
 	if(cooldownsDisplay->active)
 		cooldownsDisplay->BlitElement();
-
-	//Draw Troop creation queue
-	if (App->entitycontroller->selected_entities.size() > 0 && App->entitycontroller->selected_entities.front()->IsBuilding())
-	{
-		Building* building = (Building*)App->entitycontroller->selected_entities.front();
-		if (building->type == BARRACKS && building->queueDisplay != nullptr && building->ex_state == OPERATIVE)
-			building->queueDisplay->BlitElement();
-	}
 
 	//minimap_
 	App->uiscene->minimap->DrawMinimap();
@@ -741,9 +734,17 @@ WorkersDisplay* j1Gui::createWorkersDisplay(Building* building)
 	return ret;
 }
 
-TroopCreationQueue* j1Gui::createTroopCreationQueue()
+TroopCreationQueue* j1Gui::createTroopCreationQueue(Building* building)
 {
-	return new TroopCreationQueue();
+	TroopCreationQueue* ret = new TroopCreationQueue(building);
+	menu* menu = App->uiscene->getMenu(INGAME_MENU);
+	if (menu != nullptr)
+	{
+		menu->elements.push_back(ret);
+		ret->menu = INGAME_MENU;
+	}
+	ret->active = false;
+	return ret;
 }
 
 //minimap_
