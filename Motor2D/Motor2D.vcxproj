@@ -114,6 +114,7 @@
     <ClCompile Include="UI_CooldownsDisplay.cpp" />
     <ClCompile Include="UI_CostDisplay.cpp" />
     <ClCompile Include="UI_element.cpp" />
+    <ClCompile Include="UI_FarmWorkersManager.cpp" />
     <ClCompile Include="UI_Image.cpp" />
     <ClCompile Include="UI_InfoTable.cpp" />
     <ClCompile Include="UI_IngameMenu.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="UI_CooldownsDisplay.h" />
     <ClInclude Include="UI_CostDisplay.h" />
     <ClInclude Include="UI_element.h" />
+    <ClInclude Include="UI_FarmWorkersManager.h" />
     <ClInclude Include="UI_Image.h" />
     <ClInclude Include="UI_InfoTable.h" />
     <ClInclude Include="UI_IngameMenu.h" />

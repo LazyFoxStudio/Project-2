@@ -116,8 +116,12 @@ void Building::Destroy()
 {
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
+	isSelected = false;
 	current_sprite = &sprites[RUIN];
-
+	if (workersDisplay != nullptr)
+		workersDisplay->active = false;
+	if (queueDisplay != nullptr)
+		queueDisplay->active = false;
 
 	switch (type)
 	{

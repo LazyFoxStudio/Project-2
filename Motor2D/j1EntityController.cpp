@@ -230,15 +230,15 @@ bool j1EntityController::PostUpdate()
 		if (Entity* entity = getEntitybyID(entities_to_destroy[i]))
 		{
 			App->gui->entityDeleted(entity);
-			entities.remove(getEntitybyID(entities_to_destroy[i]));
 			DeleteEntity(entities_to_destroy[i]);
+			entities.remove(getEntitybyID(entities_to_destroy[i]));		
 		}
 	}
 
 	for (int i = 0; i < squads_to_destroy.size(); i++)
 	{
-		squads.remove(getSquadbyID(squads_to_destroy[i]));
 		DeleteSquad(squads_to_destroy[i]);
+		squads.remove(getSquadbyID(squads_to_destroy[i]));
 	}
 
 	if(selected_size != selected_entities.size())
