@@ -34,7 +34,7 @@ bool j1EntityController::Start()
 	addHero(iPoint(2000, 1950), HERO_1);
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
-	Building* town_hall = addBuilding(town_hall_pos, TOWN_HALL);
+	town_hall = addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
 	App->scene->InitialWorkers(town_hall);
 
@@ -120,6 +120,16 @@ bool j1EntityController::Update(float dt)
 		App->actionscontroller->activateAction(NO_ACTION);
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && town_hall != nullptr)
+	{
+		for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
+			(*it_e)->isSelected = false;
+		selected_entities.clear();
+
+		selected_entities.push_back(town_hall);
+		town_hall->isSelected = true;
+		App->gui->newSelectionDone();
+	}
 
 	return true;
 }

@@ -113,6 +113,8 @@ public:
 
 	uint last_UID = 0;
 	uint hero_UID = 0;
+
+	Building* town_hall = nullptr;
 /*
 	j1Timer time_slicer;
 	std::list<Entity*>::iterator entity_iterator;
