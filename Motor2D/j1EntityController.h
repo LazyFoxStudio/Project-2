@@ -37,6 +37,11 @@ struct worker
 	}
 };
 
+struct Forest
+{
+	std::list<iPoint> trees;
+};
+
 class j1EntityController : public j1Module
 {
 public:
@@ -98,6 +103,7 @@ public:
 	void DestroyWorkers();
 	void UnassignRandomWorker();
 
+	bool CreateForest(MapLayer* trees);
 
 public:
 
@@ -111,6 +117,8 @@ public:
 	std::vector<uint> squads_to_destroy;
 
 	std::map<uint, Entity*> DataBase;
+
+	std::list<Forest*> forests;
 
 	uint last_UID = 0;
 	uint hero_UID = 0;

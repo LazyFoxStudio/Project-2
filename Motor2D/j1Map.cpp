@@ -9,6 +9,7 @@
 #include "j1Scene.h"
 #include "j1Map.h"
 #include "Color.h"
+#include "j1EntityController.h"
 #include <math.h>
 
 j1Map::j1Map() { name = "map"; }
@@ -117,6 +118,18 @@ bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bo
 					tree_layer = layer;
 					break;
 				}
+			}
+		}
+
+		//give me the layer
+		for (int i = 0; i < data.layers.size(); i++)
+		{
+			MapLayer* layer = data.layers[i];
+
+			if (layer->name == "Resources")
+			{
+				App->entitycontroller->CreateForest(data.layers[i]);
+				break;
 			}
 		}
 

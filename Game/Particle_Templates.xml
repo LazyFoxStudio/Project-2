@@ -1,11 +1,23 @@
 <node>
    <particle>
-<!-- Test Arrow -->
+<!-- Archer Arrow -->
 	<template> 
 		<type value="1"/>
 		<anim>
-			<pushback x="322" y="5" w="13" h="46"/>
+			<pushback x="888" y="131" w="30" h="3"/>
 			<loop value="false"/>
+		</anim>
+	</template>
+<!-- Troll Axe -->
+	<template> 
+		<type value="2"/>
+		<anim>
+			<loop value="true"/>
+			<speed value="5"/>
+			<pushback x="959" y="17" w="20" h="20"/>
+			<pushback x="989" y="17" w="20" h="20"/>
+			<pushback x="1020" y="17" w="20" h="20"/>
+
 		</anim>
 	</template>
    </particle>

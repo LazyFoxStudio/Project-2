@@ -1088,3 +1088,47 @@ void j1EntityController::DeleteDB()
 
 	DataBase.clear();
 }
+
+bool j1EntityController::CreateForest(MapLayer* trees)
+{
+	bool ret = true;
+	for (int j = 0; j < trees->height; j++)
+	{
+		for (int i = 0; i < trees->width; i++)
+		{
+			if (trees->GetID(i, j) == 112)//found a core!
+			{
+				//start bfs
+				Forest f;
+				std::list<iPoint>borders_to_check;
+				iPoint p = { i, j};//32 is hardcoded
+				borders_to_check.push_back(p);
+				
+				while (borders_to_check.size() != 0)
+				{
+					iPoint curr = borders_to_check.front();
+					borders_to_check.remove(curr);
+					iPoint neighbors[4];
+					neighbors[0].create(curr.x + 1, curr.y + 0);
+					neighbors[1].create(curr.x + 0, curr.y + 1);
+					neighbors[2].create(curr.x - 1, curr.y + 0);
+					neighbors[3].create(curr.x + 0, curr.y - 1);
+
+					for (uint i = 0; i < 4; ++i)
+					{
+						if (!App->pathfinding->IsWalkable(neighbors[i]))
+						{
+							//add to the list of trees and to the borders
+							iPoint p = neighbors[i];
+							borders_to_check.push_back(p);
+							f.trees.push_back({p.x*32,p.y*32});
+						}
+					}
+					borders_to_check.remove(curr);
+				}
+				forests.push_back(&f);
+			}
+		}
+	}
+	return ret;
+}
