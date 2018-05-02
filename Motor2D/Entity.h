@@ -80,7 +80,7 @@ public:
 	bool IsEnemy() { return type >= GRUNT; };
 	bool IsUnit() { return type >= HERO_1; };
 	bool IsHero() { return (type >= HERO_1 && type <= HERO_X); }
-	bool IsBuilding() { return type <= FARM; };
+	bool IsBuilding() { return type <= BLACKSMITH; };
 };
 
 #endif

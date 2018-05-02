@@ -3206,6 +3206,11 @@
 		  <action id="5"/>
 		  <action id="6"/>
 		  <action id="7"/>
+      <action id="22"/>
+      <action id="23"/>
+      <action id="24"/>
+      <action id="25"/>
+      <action id="26"/>
 	  </Actions>
       <iconData x="9" y="264" w="72" h="59"/>
       <size x="4" y="4"/>
@@ -3697,6 +3702,56 @@
 				<Info text="Demolish Building"/>
 			</popUp>
 		</demolishBuilding>
+    <buildMine id="22" click_action="19">
+      <position x="0" y="0"/>
+      <standby x="1305" y="659" w="66" h="66"/>
+      <OnMouse x="1373" y="659" w="66" h="66"/>
+      <OnClick x="1441" y="659" w="66" h="66"/>
+      <popUp>
+        <Info text="Build Mine" cost="true" type="5"/>
+      </popUp>
+      <hotkey key="Z" font_id="3"/>
+    </buildMine>
+    <buildTurret id="23" click_action="20">
+      <position x="0" y="0"/>
+      <standby x="1305" y="729" w="66" h="66"/>
+      <OnMouse x="1373" y="729" w="66" h="66"/>
+      <OnClick x="1441" y="729" w="66" h="66"/>
+      <popUp>
+        <Info text="Build Turret" cost="true" type="6"/>
+      </popUp>
+      <hotkey key="X" font_id="3"/>
+    </buildTurret>
+    <buildGnomeHut id="24" click_action="21">
+      <position x="0" y="0"/>
+      <standby x="1305" y="799" w="66" h="66"/>
+      <OnMouse x="1373" y="799" w="66" h="66"/>
+      <OnClick x="1441" y="799" w="66" h="66"/>
+      <popUp>
+        <Info text="Build GnomeHut" cost="true" type="7"/>
+      </popUp>
+      <hotkey key="Q" font_id="3"/>
+    </buildGnomeHut>
+    <buildChurch id="25" click_action="22">
+      <position x="0" y="0"/>
+      <standby x="1305" y="869" w="66" h="66"/>
+      <OnMouse x="1373" y="869" w="66" h="66"/>
+      <OnClick x="1441" y="869" w="66" h="66"/>
+      <popUp>
+        <Info text="Build Church" cost="true" type="8"/>
+      </popUp>
+      <hotkey key="W" font_id="3"/>
+    </buildChurch>
+    <buildBlacksmith id="26" click_action="23">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Build Blacksmith" cost="true" type="9"/>
+      </popUp>
+      <hotkey key="E" font_id="3"/>
+    </buildBlacksmith>
 	</ActionButtons>
 	
 	<WorkersDisplay>
