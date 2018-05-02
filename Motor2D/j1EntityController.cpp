@@ -31,7 +31,6 @@ j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
 bool j1EntityController::Start()
 {
-
 	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
 
 	addHero(iPoint(2000, 1950), HERO_1);
@@ -40,7 +39,15 @@ bool j1EntityController::Start()
 	town_hall = addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
 	App->scene->InitialWorkers(town_hall);
+
 	AddSquad(FOOTMAN, fPoint(2200, 1950));
+
+	buildingArea.w = BUILDINGAREA;
+	buildingArea.h = BUILDINGAREA;
+	//buildingArea.x = -BUILDINGAREA / 2 + town_hall_pos.x / 2;
+	//buildingArea.y = -BUILDINGAREA / 2 + town_hall_pos.y / 2;
+	buildingArea.x = town_hall_pos.x - (BUILDINGAREA/2) + (town_hall->size.x*App->map->data.tile_width/2);
+	buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (town_hall->size.x*App->map->data.tile_height/2);
 /*
 	entity_iterator = entities.begin();
 	squad_iterator = all_squads.begin();*/
@@ -443,7 +450,7 @@ Building* j1EntityController::addBuilding(iPoint pos, Type type)
 	building->UID = last_UID++;
 	if (type == LUMBER_MILL)
 		building->workersDisplay = App->gui->createWorkersDisplay(building);
-	else if (type == BARRACKS)
+	else if (type == BARRACKS || type == GNOME_HUT || type == CHURCH)
 		building->queueDisplay = App->gui->createTroopCreationQueue(building);
 	/*else if (type == FARM)
 		building->workersManager = App->gui->createWorkersManager(building);*/
@@ -511,7 +518,7 @@ bool j1EntityController::placeBuilding(iPoint position)
 	std::vector<Entity*> collisions;
 	App->entitycontroller->CheckCollidingWith(building_col, collisions);
 
-	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && collisions.empty())
+	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && collisions.empty() && SDL_HasIntersection(&building_col,&buildingArea))
 	{
 		Building* tmp = addBuilding(pos, to_build_type);
 		worker* tmp2 = GetInactiveWorker();
@@ -530,12 +537,14 @@ bool j1EntityController::placeBuilding(iPoint position)
 
 void j1EntityController::buildingProcessDraw()
 {
+	App->render->DrawQuad(buildingArea, Transparent_Blue);
 	iPoint pos = { 0,0 };
 	App->input->GetMousePosition(pos.x, pos.y);
 	pos = App->render->ScreenToWorld(pos.x, pos.y);
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	pos = App->map->MapToWorld(pos.x, pos.y);
 	Building* to_build = getBuildingFromDB(to_build_type);
+	SDL_Rect building_col = { pos.x, pos.y, to_build->size.x*App->map->data.tile_width, to_build->size.y*App->map->data.tile_height };
 	bool enough_resources = true;
 
 	if (!CheckInactiveWorkers()) { App->gui->warningMessages->showMessage(NO_WORKERS); enough_resources = false; }
@@ -547,7 +556,7 @@ void j1EntityController::buildingProcessDraw()
 	App->gui->warningMessages->hideMessage(NO_TREES);
 
 
-	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && enough_resources)
+	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && enough_resources&& SDL_HasIntersection(&building_col, &buildingArea))
 		App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);
 	else
 		App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);
@@ -564,6 +573,8 @@ void j1EntityController::buildingProcessDraw()
 		else
 			App->render->DrawQuad({ (pos.x - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.w / 2),(pos.y - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.h / 2),to_build->additional_size.x*App->map->data.tile_width,to_build->additional_size.y*App->map->data.tile_height }, Transparent_Red);
 	}
+
+
 
 	App->render->Blit(to_build->texture, pos.x, pos.y, &to_build->sprites[COMPLETE]);
 
@@ -1083,4 +1094,48 @@ void j1EntityController::DeleteDB()
 	}
 
 	DataBase.clear();
+}
+
+bool j1EntityController::CreateForest(MapLayer* trees)
+{
+	bool ret = true;
+	for (int j = 0; j < trees->height; j++)
+	{
+		for (int i = 0; i < trees->width; i++)
+		{
+			if (trees->GetID(i, j) == 112)//found a core!
+			{
+				//start bfs
+				Forest f;
+				std::list<iPoint>borders_to_check;
+				iPoint p = { i, j};//32 is hardcoded
+				borders_to_check.push_back(p);
+				
+				while (borders_to_check.size() != 0)
+				{
+					iPoint curr = borders_to_check.front();
+					borders_to_check.remove(curr);
+					iPoint neighbors[4];
+					neighbors[0].create(curr.x + 1, curr.y + 0);
+					neighbors[1].create(curr.x + 0, curr.y + 1);
+					neighbors[2].create(curr.x - 1, curr.y + 0);
+					neighbors[3].create(curr.x + 0, curr.y - 1);
+
+					for (uint i = 0; i < 4; ++i)
+					{
+						if (!App->pathfinding->IsWalkable(neighbors[i]))
+						{
+							//add to the list of trees and to the borders
+							iPoint p = neighbors[i];
+							borders_to_check.push_back(p);
+							f.trees.push_back({p.x*32,p.y*32});
+						}
+					}
+					borders_to_check.remove(curr);
+				}
+				forests.push_back(&f);
+			}
+		}
+	}
+	return ret;
 }

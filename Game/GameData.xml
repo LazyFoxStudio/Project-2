@@ -994,7 +994,7 @@
           <squadMembers value="1"/>
           <size x="1" y="1"/>
         </Stats>
-        <Info title="Knight Stats:"/>
+        <Info title="Gryphon Stats:"/>
         <Animations>
           <width value="83"/>
           <height value="87"/>
@@ -1508,7 +1508,7 @@
           <squadMembers value="4"/>
           <size x="1" y="1"/>
         </Stats>
-        <Info title="Flying Machine Stats:"/>
+        <Info title="Gnomish Flying Machine Stats:"/>
         <Animations>
           <width value="67"/>
           <height value="67"/>
@@ -2673,201 +2673,201 @@
           <squadMembers value="1"/>
           <size x="1" y="1"/>
         </Stats>
-        <Info title="Knight Stats:"/>
+        <Info title="Catapult Stats:"/>
         <Animations>
           <width value="69"/>
           <height value="67"/>
           <Animation>
-            <!-- 0- IdleNorth -->
+            <!--0- Idle North-->
             <rows value="0"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="0"/>
-            <speed value="0"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 1- IdleNorthEast-->
+            <!--1- Idle NorthEast-->
             <rows value="0"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="1"/>
-            <speed value="0"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 2- IdleEast-->
+            <!--2- Idle East-->
             <rows value="0"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="2"/>
-            <speed value="0"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 3- IdleSouthEast-->
+            <!--3- Idle SouthEast-->
             <rows value="0"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="3"/>
-            <speed value="0"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 4- IdleSouth-->
+            <!--4- Idle South-->
             <rows value="0"/>
-            <columns value="4"/>
+            <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="4"/>
-            <speed value="0"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 5- IdleSouthWest-->
+            <!--5- Idle SouthWest-->
             <rows value="0"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="3"/>
-            <speed value="0"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 6- IdleWest-->
+            <!--6- Idle West-->
             <rows value="0"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="2"/>
-            <speed value="0"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 7- IdleNorthWest-->
+            <!--7- Idle NorthWest-->
             <rows value="0"/>
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="1"/>
-            <speed value="0"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 8- WalkingNorth-->
-            <rows value="3"/>
+            <!--8- Walking North-->
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="0"/>
-            <speed value="6"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 9- WalkingNorthEast-->
-            <rows value="3"/>
+            <!--9- Walking NorthEast-->
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="1"/>
-            <speed value="6"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 10- WalkingEast-->
-            <rows value="3"/>
+            <!--10- Walking East-->
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="2"/>
-            <speed value="6"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 11- WalkingSouthEast-->
-            <rows value="3"/>
+            <!--11- Walking SouthEast-->
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="3"/>
-            <speed value="6"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 12- WalkingSouth-->
-            <rows value="3"/>
+            <!--12- Walking South-->
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="4"/>
-            <speed value="6"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 13- WalkingSouthEast-->
-            <rows value="3"/>
+            <!--13- Walking SouthWest-->
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="3"/>
-            <speed value="6"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 14- WalkingEast-->
-            <rows value="3"/>
+            <!--14- Walking West-->
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="2"/>
-            <speed value="6"/>
+            <speed value="7"/>
           </Animation>
           <Animation>
-            <!-- 15- WalkingNorthEast-->
-            <rows value="3"/>
+            <!--15- Walking NorthWest-->
+            <rows value="0"/>
             <columns value="0"/>
-            <StartingRow value="1"/>
+            <StartingRow value="0"/>
             <StartingColumn value="1"/>
-            <speed value="6"/>
+            <speed value="10"/>
           </Animation>
           <Animation>
             <!-- 16- AttackingNorth-->
-            <rows value="3"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="0"/>
-            <speed value="6"/>
+            <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 17- AttackingNorthEast-->
-            <rows value="3"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="1"/>
-            <speed value="6"/>
+            <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 18- AttackingEast-->
-            <rows value="3"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="2"/>
-            <speed value="6"/>
+            <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 19- AttackingSouthEast-->
-            <rows value="3"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="3"/>
-            <speed value="6"/>
+            <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 20- AttackingSouth-->
-            <rows value="3"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="4"/>
-            <speed value="6"/>
+            <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 21- AttackingSouthWest-->
-            <rows value="3"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="3"/>
-            <speed value="6"/>
+            <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 22- AttackingWest-->
-            <rows value="3"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="2"/>
-            <speed value="6"/>
+            <speed value="5"/>
           </Animation>
           <Animation>
-            <!-- 23- WalkingNorthWest-->
-            <rows value="3"/>
+            <!-- 23- AttackingNorthWest-->
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="1"/>
-            <speed value="6"/>
+            <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 24- DyingNorthEast-->
@@ -2875,7 +2875,7 @@
             <columns value="2"/>
             <StartingRow value="9"/>
             <StartingColumn value="0"/>
-            <speed value="10"/>
+            <speed value="5"/>
             <loop value="false"/>
           </Animation>
           <Animation>
@@ -3196,6 +3196,11 @@
 		  <action id="5"/>
 		  <action id="6"/>
 		  <action id="7"/>
+      <action id="22"/>
+      <action id="23"/>
+      <action id="24"/>
+      <action id="25"/>
+      <action id="26"/>
 	  </Actions>
       <iconData x="9" y="264" w="72" h="59"/>
       <size x="4" y="4"/>
@@ -3226,10 +3231,8 @@
 	  <Actions>
 		<action id="11"/>
 		<action id="12"/>
-		<action id="13"/>
-		<action id="14"/>
-		<action id="15"/>
-		<action id="16"/>
+
+
         <action id="20"/>
 		<action id="10"/>
         <action id="21"/>
@@ -3379,7 +3382,8 @@
       <type value="7"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <Actions>
-
+        <action id="15"/>
+        <action id="16"/>
       </Actions>
       <sprites>
         <sprite x="408" y="633" w="101" h="109"/>
@@ -3408,7 +3412,8 @@
       <type value="8"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <Actions>
-
+        <action id="13"/>
+        <action id="14"/>
       </Actions>
       <sprites>
         <sprite x="306" y="413" w="101" h="109"/>
@@ -3687,6 +3692,56 @@
 				<Info text="Demolish Building"/>
 			</popUp>
 		</demolishBuilding>
+    <buildMine id="22" click_action="19">
+      <position x="0" y="0"/>
+      <standby x="1305" y="659" w="66" h="66"/>
+      <OnMouse x="1373" y="659" w="66" h="66"/>
+      <OnClick x="1441" y="659" w="66" h="66"/>
+      <popUp>
+        <Info text="Build Mine" cost="true" type="5"/>
+      </popUp>
+      <hotkey key="Z" font_id="3"/>
+    </buildMine>
+    <buildTurret id="23" click_action="20">
+      <position x="0" y="0"/>
+      <standby x="1305" y="729" w="66" h="66"/>
+      <OnMouse x="1373" y="729" w="66" h="66"/>
+      <OnClick x="1441" y="729" w="66" h="66"/>
+      <popUp>
+        <Info text="Build Turret" cost="true" type="6"/>
+      </popUp>
+      <hotkey key="X" font_id="3"/>
+    </buildTurret>
+    <buildGnomeHut id="24" click_action="21">
+      <position x="0" y="0"/>
+      <standby x="1305" y="799" w="66" h="66"/>
+      <OnMouse x="1373" y="799" w="66" h="66"/>
+      <OnClick x="1441" y="799" w="66" h="66"/>
+      <popUp>
+        <Info text="Build GnomeHut" cost="true" type="7"/>
+      </popUp>
+      <hotkey key="Q" font_id="3"/>
+    </buildGnomeHut>
+    <buildChurch id="25" click_action="22">
+      <position x="0" y="0"/>
+      <standby x="1305" y="869" w="66" h="66"/>
+      <OnMouse x="1373" y="869" w="66" h="66"/>
+      <OnClick x="1441" y="869" w="66" h="66"/>
+      <popUp>
+        <Info text="Build Church" cost="true" type="8"/>
+      </popUp>
+      <hotkey key="W" font_id="3"/>
+    </buildChurch>
+    <buildBlacksmith id="26" click_action="23">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Build Blacksmith" cost="true" type="9"/>
+      </popUp>
+      <hotkey key="E" font_id="3"/>
+    </buildBlacksmith>
 	</ActionButtons>
 	
 	<WorkersDisplay>
@@ -3709,5 +3764,6 @@
 		<font path="fonts/BebasNeue-Regular.ttf" size="23"/>
 		<font path="fonts/ABeeZee-Regular.ttf" size="25"/>
 		<font path="fonts/BebasNeue-Regular.ttf" size="50"/>
+		<font path="fonts/BebasNeue-Regular.ttf" size="18"/>
 	</fonts>
 </GameData>

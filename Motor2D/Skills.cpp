@@ -83,9 +83,11 @@ void Skill::Line()
 
 void Skill::Activate()
 { 
+	if (going && App->input->GetMouseButtonDown(1) == KEY_DOWN) going = false; 
+
 	if (!going && cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range)
 	{
-		going = false;
+		hero->squad->Halt();
 		iPoint cast_aux = App->map->WorldToMap(cast_pos.x, cast_pos.y);
 
 		for (std::list<Entity*>::iterator item = App->entitycontroller->entities.begin(); item != App->entitycontroller->entities.end(); item++)
@@ -151,6 +153,7 @@ void Skill::Activate()
 				}
 			}
 		}
+		hero->squad->Halt();
 		timer.Start();
 	}
 

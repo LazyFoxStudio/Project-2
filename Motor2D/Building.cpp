@@ -11,6 +11,7 @@
 #include "UI_WorkersDisplay.h"
 #include "UI_TroopCreationQueue.h"
 #include "UI_FarmWorkersManager.h"
+#include "UI_CooldownsDisplay.h"
 
 Building::Building(iPoint pos, Building& building)
 {
@@ -66,15 +67,11 @@ bool Building::Update(float dt)
 	{
 		if (queueDisplay != nullptr)
 			queueDisplay->active = true;
-		if (workersManager != nullptr)
-			workersManager->active = true;
 	}
 	else
 	{
 		if (queueDisplay != nullptr)
 			queueDisplay->active = false;
-		if (workersManager != nullptr)
-			workersManager->active = false;
 	}
 
 	//minimap_
@@ -152,6 +149,7 @@ void Building::Destroy()
 		App->audio->PlayMusic(DEFEAT_THEME);
 		current_sprite = &sprites[4];
 		App->gui->Chronos->counter.PauseTimer();
+		App->gui->cooldownsDisplay->Reset();
 		App->scene->toRestart = true;
 		App->scene->Restart_timer.Start();
 		App->uiscene->toggleMenu(true, GAMEOVER_MENU);
@@ -174,7 +172,6 @@ void Building::HandleConstruction()
 		if (type == FARM)
 		{
 			App->entitycontroller->CreateWorkers(this, 5);
-			workersManager = App->gui->createWorkersManager(this);
 		}
 		if (type != LUMBER_MILL)
 		{

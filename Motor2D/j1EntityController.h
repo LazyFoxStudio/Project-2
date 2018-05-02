@@ -21,6 +21,7 @@ class Quadtree;
 #define REPAIR_COST 10
 #define REPAIR_COOLDOWN 30
 #define UNIT_QUEUE_MAX_SIZE 6
+#define BUILDINGAREA 1750
 
 struct worker
 {
@@ -34,6 +35,11 @@ struct worker
 		working_at = nullptr;
 		to_destroy = false;
 	}
+};
+
+struct Forest
+{
+	std::list<iPoint> trees;
 };
 
 class j1EntityController : public j1Module
@@ -97,6 +103,7 @@ public:
 	void DestroyWorkers();
 	void UnassignRandomWorker();
 
+	bool CreateForest(MapLayer* trees);
 
 public:
 
@@ -110,6 +117,8 @@ public:
 	std::vector<uint> squads_to_destroy;
 
 	std::map<uint, Entity*> DataBase;
+
+	std::list<Forest*> forests;
 
 	uint last_UID = 0;
 	uint hero_UID = 0;
@@ -126,6 +135,7 @@ public:
 
 	Type to_build_type = NONE_ENTITY;
 	SDL_Rect selection_rect = { 0,0,0,0 };
+	SDL_Rect buildingArea;
 
 };
 #endif // !

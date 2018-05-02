@@ -1,5 +1,6 @@
 #include "Minimap.h"
 #include "j1App.h"
+#include "j1Audio.h"
 #include "j1Render.h"
 #include "j1Input.h"
 #include "p2Log.h"
@@ -99,6 +100,19 @@ void Minimap::DrawMinimap()
 				s = it_images->img;
 				r.w = s->w;//PROVISIONAL
 				r.h = s->h;
+
+				if (!(*it)->sound_played)
+				{
+					if ((*it)->type == DANGER)
+					{
+						App->audio->PlayFx(SFX_MAP_ATTACK);
+					}
+					else
+					{
+						App->audio->PlayFx(SFX_MAP_ASSIST);
+					}
+					(*it)->sound_played = true;
+				}
 				break;
 			}
 		}

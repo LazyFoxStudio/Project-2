@@ -7,9 +7,9 @@ class Unit;
 
 enum operation_sign
 {
-	PLUS_MINUS,
-	MULTIPLICATION_DIVISION,
-	OTHER,//maybe its another number
+	PLUS_MINUS,//means you want to add or subtract a number(+2,-2)
+	MULTIPLICATION_DIVISION,//means you want to multiply the value(x2,x1/2)
+	OTHER,//maybe its another kind of buff idk(none of these is in the code)
 	END
 };
 

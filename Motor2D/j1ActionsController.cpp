@@ -51,7 +51,32 @@ bool j1ActionsController::Update(float dt)
 		case BUILD_FARM:
 			if (doingAction)
 				App->entitycontroller->to_build_type = FARM;
-			
+
+			break;
+		case BUILD_MINE:
+			if (doingAction)
+				App->entitycontroller->to_build_type = MINE;
+
+			break;
+		case BUILD_TURRET:
+			if (doingAction)
+				App->entitycontroller->to_build_type = TURRET;
+
+			break;
+		case BUILD_GNOME_HUT:
+			if (doingAction)
+				App->entitycontroller->to_build_type = GNOME_HUT;
+
+			break;
+		case BUILD_CHURCH:
+			if (doingAction)
+				App->entitycontroller->to_build_type = CHURCH;
+
+			break;
+		case BUILD_BLACKSMITH:
+			if (doingAction)
+				App->entitycontroller->to_build_type = BLACKSMITH;
+
 			break;
 		case UNASSIGN_WORKER:
 			if (!App->entitycontroller->selected_entities.empty() && App->entitycontroller->selected_entities.front()->type == LUMBER_MILL)

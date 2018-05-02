@@ -61,6 +61,7 @@ bool j1Gui::Start()
 	warningMessages->active = false;
 	cooldownsDisplay = new CooldownsDisplay();
 	cooldownsDisplay->active = true;
+	workersManager = new FarmWorkersManager();
 	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
 	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
 	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
@@ -206,6 +207,8 @@ bool j1Gui::PostUpdate()
 				(*it_e)->BlitElement();
 		}
 	}
+
+	workersManager->BlitElement();
 
 	//Draw PopUp
 	if (current_hovering_element != nullptr && current_hovering_element->blitPopUpInfo)
@@ -745,20 +748,6 @@ TroopCreationQueue* j1Gui::createTroopCreationQueue(Building* building)
 		ret->menu = INGAME_MENU;
 	}
 	ret->active = false;
-	return ret;
-}
-
-FarmWorkersManager* j1Gui::createWorkersManager(Building * building)
-{
-	FarmWorkersManager* ret = new FarmWorkersManager(building);
-	menu* menu = App->uiscene->getMenu(INGAME_MENU);
-	if (menu != nullptr)
-	{
-		menu->elements.push_back(ret);
-		ret->menu = INGAME_MENU;
-	}
-	ret->active = false;
-
 	return ret;
 }
 

@@ -76,7 +76,14 @@ bool Hero::Update(float dt)
 		break;
 	}
 
-	if (App->input->GetMouseButtonDown(3) == KEY_DOWN && current_skill!=0)  current_skill=0;
+	if (App->input->GetMouseButtonDown(3) == KEY_DOWN && current_skill != 0)
+	{
+		skill_one->going = false;
+		skill_two->going = false;
+		skill_three->going = false;
+		current_skill = 0;
+	}
+
 
 	if (!commands.empty())
 	{

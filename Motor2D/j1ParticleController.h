@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "p2Animation.h"
+#include "j1Timer.h"
 
 #define MAX_ACTIVE_PARTICLES 500
 
@@ -13,21 +14,23 @@ enum particleType
 {
 	NO_TYPE,
 	ARROW,
+	TOMAHAWK,
 };
 
 struct Particle
 {
 	Animation anim;
 	fPoint position;
-	fPoint speed;
-	Uint32 born = 0;
+	fPoint speed = { 0,0 };
+	float angle;
+	j1Timer currentLife;
 	Uint32 life = 0;
 	particleType type;
 
 	Particle();
 	Particle(Particle& p);
 	~Particle() {};
-	bool Update();
+	bool Update(float dt);
 };
 
 class j1ParticleController : public j1Module
@@ -43,8 +46,12 @@ public:
 	void LoadParticlesFromXML();
 	particleType GetTypeFromInt(int posOnEnum);
 	Particle* FindParticleType(particleType type);
+	void AdjustDirection(Particle* p, fPoint objective, float speed);
+	
+	double GetAngleInDegrees(Particle* p);
 
-	void AddParticle(particleType type = NO_TYPE, int x = 0, int y = 0, int life = 0, float speed_x = 0.0f, float speed_y = 0.0f, bool using_camera = true);
+	void AddParticle(particleType type = NO_TYPE, fPoint position = { 0,0 }, bool using_camera = true);
+	void AddProjectile(particleType type = NO_TYPE, fPoint position = { 0,0 }, fPoint objective = { 0,0 },float speed = 0, bool using_camera = true);
 	//void DeleteParticle();
 
 private:

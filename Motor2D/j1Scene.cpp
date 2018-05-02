@@ -50,6 +50,7 @@ bool j1Scene::Start()
 	guiconfig = guiconfig.child("scene");
 	
 
+
 	App->render->camera.x = -1200;
 	App->render->camera.y = -1600;
 
@@ -97,10 +98,6 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
 		App->entitycontroller->UnassignRandomWorker();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
-	{
-		App->particle->AddParticle(particleType::ARROW, 100, 100, 10000);
 	}
 
 	workers_int = workers.size();

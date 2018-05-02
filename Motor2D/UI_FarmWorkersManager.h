@@ -16,32 +16,41 @@ enum worker_state
 {
 	UNASSIGNED,
 	WORKING,
-	PRODUCING,
+	GENERATING,
 	WAITING
 };
 
 struct workerIcon
 {
-	workerIcon(worker* worker);
+	workerIcon(int x, int y);
 	~workerIcon()
 	{
 		RELEASE(icon);
-		RELEASE(producing);
+		RELEASE(dark_icon);
+		RELEASE(generating);
 		RELEASE(waiting);
+		RELEASE(progress);
+		RELEASE(unassigned);
+		RELEASE(working);
 	}
 
+	void Draw(worker_state state);
+
 	Image* icon = nullptr;
-	Text* producing = nullptr;
+	Image* dark_icon = nullptr;
+	Text* unassigned = nullptr;
+	Text* working = nullptr;
+	Text* generating = nullptr;
 	Text* waiting = nullptr;
+	ProgressBar* progress = nullptr;
 	j1Timer timer;
-	worker_state state = UNASSIGNED;
-	worker* Worker = nullptr;
+	bool isGenerating = false;
 };
 
 class FarmWorkersManager : public UI_element
 {
 public:
-	FarmWorkersManager(Building* building);
+	FarmWorkersManager();
 	~FarmWorkersManager();
 
 	void BlitElement();

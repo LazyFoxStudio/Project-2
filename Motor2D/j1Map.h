@@ -110,6 +110,8 @@ public:
 	bool WalkabilityArea(int x, int y, int rows, int columns, bool modify = false, bool check_trees = false);
 
 	bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+
+
 private:
 
 	bool LoadMapProperties();

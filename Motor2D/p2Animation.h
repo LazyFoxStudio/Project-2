@@ -24,7 +24,7 @@ public:
 
 private:
 
-	float current_frame;
+	float current_frame = 0;
 	int last_frame = 0;
 	int loops = 0;
 	int last_loop = 0;
