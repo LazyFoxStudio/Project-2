@@ -34,8 +34,6 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	line_of_sight			= unit.line_of_sight;
 	range					= unit.range;
 
-	AddDamagebuff(10, 100 , MULTIPLICATION_DIVISION);
-
 	for (int i = 0; i < unit.animations.size(); i++)
 		animations.push_back(new Animation(*unit.animations[i]));
 
@@ -80,23 +78,24 @@ bool Unit::Update(float dt)
 	//take buffs out here
 	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
 	{
-		if (!((*it)->applied))
+		if ((*it)->applied)
 		{
 			(*it)->Remove();
 		}
 	}
 
 	//remove buffs here
-	//for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
-	//{
-	//	LOG("if %f > %f delete",(*it)->timer.ReadSec(), (*it)->duration);
-	//	if ((*it)->timer.ReadSec() > (*it)->duration);
-	//	{
-	//		Effect* to_del = (*it);
-	//		effects.remove(*it);
-	//		RELEASE(to_del);
-	//	}
-	//}
+	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+	{
+		float time_passed= (*it)->timer.ReadSec();
+		float max_time = (*it)->duration;
+		if ((int)time_passed > (int)max_time)
+		{
+			Effect* to_del = (*it);
+			effects.remove(*it);
+			RELEASE(to_del);
+		}
+	}
 
 	//apply buffs here
 	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
@@ -312,4 +311,121 @@ fPoint Unit::calculateSeparationVector()
 	}
 
 	return separation_v;
+}
+
+//buffs
+void Unit::AddDamagebuff(int duration, int amount, operation_sign sign)
+{
+	Effect*  ret = new DamageBuff(amount, duration, this, sign);
+	switch (sign)
+	{
+	case PLUS_MINUS:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	case MULTIPLICATION_DIVISION:
+	{
+		effects.push_front(ret);
+		break;
+	}
+	default:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	}
+
+}
+void Unit::AddPiercingDamagebuff(int duration, int amount, operation_sign sign)
+{
+	Effect*  ret = new PiercingDamageBuff(amount, duration, this, sign);
+	switch (sign)
+	{
+	case PLUS_MINUS:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	case MULTIPLICATION_DIVISION:
+	{
+		effects.push_front(ret);
+		break;
+	}
+	default:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	}
+
+}
+void Unit::AddSpeedbuff(int duration, int amount, operation_sign sign)
+{
+	Effect*  ret = new SpeedBuff(amount, duration, this, sign);
+	switch (sign)
+	{
+	case PLUS_MINUS:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	case MULTIPLICATION_DIVISION:
+	{
+		effects.push_front(ret);
+		break;
+	}
+	default:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	}
+
+}
+void Unit::AddDefensebuff(int duration, int amount, operation_sign sign)
+{
+	Effect*  ret = new DefenseBuff(amount, duration, this, sign);
+	switch (sign)
+	{
+	case PLUS_MINUS:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	case MULTIPLICATION_DIVISION:
+	{
+		effects.push_front(ret);
+		break;
+	}
+	default:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	}
+
+}
+void Unit::AddRangebuff(int duration, int amount, operation_sign sign)
+{
+	Effect*  ret = new DamageBuff(amount, duration, this, sign);
+	switch (sign)
+	{
+	case PLUS_MINUS:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	case MULTIPLICATION_DIVISION:
+	{
+		effects.push_front(ret);
+		break;
+	}
+	default:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	}
+
 }
