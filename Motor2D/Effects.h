@@ -45,6 +45,59 @@ public:
 	void Remove();
 };
 
+class PiercingDamageBuff : public Effect
+{
+public:
+	float buff = 0;
+
+public:
+	PiercingDamageBuff(int buff, int duration, Unit* unit, operation_sign sign_) : buff(buff), Effect(unit, duration, sign_) {};
+	~PiercingDamageBuff() { Remove(); };
+
+	void Apply();
+	void Remove();
+};
+
+class SpeedBuff : public Effect
+{
+public:
+	float buff = 0;
+	
+public:
+	SpeedBuff(int buff, int duration, Unit* unit, operation_sign sign_) : buff(buff), Effect(unit, duration, sign_) {};
+	~SpeedBuff() { Remove(); };
+
+	void Apply();
+	void Remove();
+};
+
+class DefenseBuff : public Effect
+{
+public:
+	float buff = 0;
+
+public:
+	DefenseBuff(int buff, int duration, Unit* unit, operation_sign sign_) : buff(buff), Effect(unit, duration, sign_) {};
+	~DefenseBuff() { Remove(); };
+
+	void Apply();
+	void Remove();
+};
+
+class RangeBuff : public Effect
+{
+public:
+	float buff = 0;
+
+public:
+	RangeBuff(int buff, int duration, Unit* unit, operation_sign sign_) : buff(buff), Effect(unit, duration, sign_) {};
+	~RangeBuff() { Remove(); };
+
+	void Apply();
+	void Remove();
+};
+
+
 //(...)
 
 #endif

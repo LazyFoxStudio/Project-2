@@ -51,29 +51,13 @@ public:
 	fPoint calculateSeparationVector();
 	Command_Type getCurrentCommand() { return (commands.empty() ? NOTHING : commands.front()->type); }
 
-	void AddDamagebuff(int duration,int amount, operation_sign sign)
-	{
-		Effect*  ret = new DamageBuff(amount, duration, this, sign);
-		switch (sign)
-		{
-		case PLUS_MINUS:
-			{
-				effects.push_front(ret);
-				break; 
-			}
-		case MULTIPLICATION_DIVISION:
-			{
-				effects.push_back(ret);
-				break;
-			}
-		default:
-			{
-				effects.push_back(ret);
-				break;
-			}
-		}
+	void AddDamagebuff(int duration, int amount, operation_sign sign);
+	void AddPiercingDamagebuff(int duration, int amount, operation_sign sign);
+	void AddSpeedbuff(int duration, int amount, operation_sign sign);
+	void AddDefensebuff(int duration, int amount, operation_sign sign);
+	void AddRangebuff(int duration, int amount, operation_sign sign);
 
-	}
+
 };
 
 #endif
