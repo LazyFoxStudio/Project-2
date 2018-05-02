@@ -52,7 +52,8 @@ bool j1WaveController::Start()
 
 void j1WaveController::updateFlowField()
 {
-	if (flow_field_aux) flow_field_aux->finished = true;
+	if (flow_field_aux) flow_field_aux->used_by = 0;
+
 	iPoint TownHall_pos = TOWN_HALL_POS;
 	TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
 	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
@@ -76,6 +77,9 @@ bool j1WaveController::Update(float dt)
 		Generate_Wave();
 	}
 
+	if (App->entitycontroller->debug)
+		flow_field->DebugDraw();
+
 	return true;
 }
 
@@ -91,9 +95,11 @@ bool j1WaveController::PostUpdate()
 			for (int i = 0; i < flow_field->width; i++)
 			{
 				for (int j = 0; j < flow_field->height; j++)
-					flow_field->field[i][j] = flow_field_aux->field[i][j];
+				{
+					flow_field->field[i][j].parent = &flow_field->field[flow_field_aux->field[i][j].parent->position.x][flow_field_aux->field[i][j].parent->position.y];
+				}
 			}
-			flow_field_aux->finished = true;
+			flow_field_aux->used_by = 0;
 			flow_field_aux = nullptr;
 		}
 	}

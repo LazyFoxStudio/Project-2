@@ -653,13 +653,17 @@ void j1EntityController::commandControl()
 
 	if (!entity)   // clicked on ground
 	{
-		FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
-		for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
+		if (!selected_squads.empty())
 		{
-			(*it)->Halt(); 
-			MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
-			new_order->flow_field = shared_flowfield;
-			(*it)->commands.push_back(new_order);
+			FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+			for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
+			{
+				(*it)->Halt();
+				MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
+				new_order->flow_field = shared_flowfield;
+				(*it)->commands.push_back(new_order);
+			}
+			shared_flowfield->used_by = selected_squads.size();
 		}
 	}
 	else
