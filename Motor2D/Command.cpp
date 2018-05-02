@@ -4,6 +4,7 @@
 #include "p2Log.h"
 #include "j1Pathfinding.h"
 #include "j1EntityController.h"
+#include "j1ParticleController.h"
 #include "j1Map.h"
 #include "j1Audio.h"
 #include "j1Scene.h"
@@ -88,6 +89,7 @@ bool Attack::OnUpdate(float dt)
 		else if (unit->current_anim->justFinished())
 		{ 
 			App->entitycontroller->HandleSFX(unit->type, 30);
+			App->particle->AddProjectile(particleType::TOMAHAWK, unit->position, enemy->position, 100);
 			enemy->current_HP -= MAX((RANDOM_FACTOR * (unit->piercing_atk + ((((int)unit->attack - (int)enemy->defense) <= 0) ? 0 : unit->attack - enemy->defense))), 1); //dmg
 
 			callRetaliation(enemy);

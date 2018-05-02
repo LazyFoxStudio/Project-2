@@ -99,7 +99,30 @@ bool j1Scene::Update(float dt)
 	}
 	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
 	{
-		App->particle->AddParticle(particleType::ARROW, 100, 100, 10000);
+		// 0-90
+		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 600,500 }, 100);
+		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 600,550 }, 100);
+		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 600,600 }, 100);
+		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 550,600 }, 100);
+
+		// 90-180
+		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 500,600 }, 100);
+		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 450,600 }, 100);
+		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 400,600 }, 100);
+		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 400,550 }, 100);
+
+		// 180-270
+		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 400,500 }, 100);
+		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 400,450 }, 100);
+		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 400,400 }, 100);
+		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 450,400 }, 100);
+
+		// 270-360
+		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 500,400 }, 100);
+		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 550,400 }, 100);
+		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 600,400 }, 100);
+		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 600,450 }, 100);
+
 	}
 
 	workers_int = workers.size();

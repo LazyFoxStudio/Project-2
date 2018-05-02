@@ -1,3 +1,4 @@
+#include <math.h>
 #include "j1App.h"
 #include "j1Textures.h"
 #include "j1Window.h"
@@ -51,6 +52,35 @@ bool j1ParticleController::CleanUp()
 	return true;
 }
 
+
+// Update: draw background
+bool j1ParticleController::Update(float dt)
+{
+	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
+	{
+		Particle* p = active[i];
+
+		if (p == nullptr)
+			continue;
+
+		if (p->Update(dt) == false)
+		{
+
+			delete p;
+			active[i] = nullptr;
+		}
+		else if (p->currentLife.Read() > 0)
+		{
+			App->render->Blit(graphics, p->position.x, p->position.y, &(p->anim.GetCurrentFrame(dt)), true, SDL_FLIP_NONE, 1, GetAngleInDegrees(p));
+		}
+
+
+	}
+
+	return true;
+}
+
+
 void j1ParticleController::LoadParticlesFromXML()
 {
 	pugi::xml_document Particledoc;
@@ -58,10 +88,12 @@ void j1ParticleController::LoadParticlesFromXML()
 
 	file = App->LoadFile(Particledoc, "Particle_Templates.xml");
 
-	Particle* tmp = new Particle();
+	Particle* tmp; 
 
 	for (pugi::xml_node part = file.child("particle").child("template"); part; part = part.next_sibling("template"))
 	{
+		tmp = new Particle();
+
 		tmp->type = GetTypeFromInt(part.child("type").attribute("value").as_int(0));
 
 		pugi::xml_node childNode = part.child("anim");
@@ -81,10 +113,10 @@ particleType j1ParticleController::GetTypeFromInt(int posOnEnum)
 {
 	switch (posOnEnum)
 	{
+	case 2:
+		return particleType::TOMAHAWK;
 	case 1:
-	{
 		return particleType::ARROW;
-	}
 	default:
 		return particleType::NO_TYPE;
 	}
@@ -99,52 +131,73 @@ Particle* j1ParticleController::FindParticleType(particleType type)
 
 }
 
-// Update: draw background
-bool j1ParticleController::Update(float dt)
+void j1ParticleController::AdjustDirection(Particle* p, fPoint objective, float speed)
 {
-	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
-	{
-		Particle* p = active[i];
+	fPoint vec = { objective.x - p->position.x, objective.y - p->position.y };
 
-		if (p == nullptr)
-			continue;
+	p->angle = asinf(vec.y/vec.GetModule());
+	float sinus = sinf(p->angle);
+	float cosinus = cosf(p->angle);
+	p->speed.y = speed * sinus;
+	p->speed.x = speed * cosinus;
 
-		if (p->Update() == false)
-		{
-
-			delete p;
-			active[i] = nullptr;
-		}
-		else if (SDL_GetTicks() >= p->born)
-		{
-			App->render->Blit(graphics, p->position.x, p->position.y, &(p->anim.GetCurrentFrame(dt)), false);
-		}
+	if (vec.x < 0)
+		p->speed.x *= -1;
 
 
-	}
-
-	return true;
+	p->life = (vec.GetModule() / speed)*1000;
 }
 
-void j1ParticleController::AddParticle(particleType type, int x, int y, int life, float speed_x, float speed_y, bool using_camera)
+double j1ParticleController::GetAngleInDegrees(Particle * p)
+{
+	double angle = p->angle * 180 / M_PI;
+
+	if (p->speed.x <= 0)
+		angle = 180 - angle;
+	
+	return angle;
+}
+
+
+void j1ParticleController::AddParticle(particleType type, fPoint position, bool using_camera)
 {
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
 		if (active[i] == nullptr)
 		{
 			Particle* p = new Particle(*FindParticleType(type));
-			p->born = SDL_GetTicks();
-			
-			if(speed_x != 0)
-			p->speed.x = speed_x;
-			if(speed_y != 0)
-			p->speed.y = speed_y;
-			if (life != 0)
-			p->life = life;
+			p->currentLife.Start();
 
-			p->position.x = x;
-			p->position.y = y;
+
+			p->position.x = position.x;
+			p->position.y = position.y;
+			p->speed.SetToZero();
+
+
+			active[i] = p;
+			break;
+		}
+	}
+}
+
+void j1ParticleController::AddProjectile(particleType type, fPoint position, fPoint objective, float speed, bool using_camera)
+{
+	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
+	{
+		if (active[i] == nullptr)
+		{
+			Particle* p = new Particle(*FindParticleType(type));
+			p->currentLife.Start();
+			
+
+			p->position.x = position.x;
+			p->position.y = position.y;
 		
+			if (speed != 0)
+				AdjustDirection(p, objective, speed);
+			else 
+				break;
+
 			active[i] = p;
 			break;
 		}
@@ -180,15 +233,15 @@ Particle::Particle()
 }
 
 Particle::Particle(Particle& p) :
-	anim(p.anim), position(p.position), speed(p.speed),
-	born(p.born), life(p.life), type(p.type)
+	anim(p.anim), position(p.position),
+	life(p.life), type(p.type)
 {}
 
 
-bool Particle::Update()
+bool Particle::Update(float dt)
 {
 	bool ret = true;
-	int aux = (SDL_GetTicks() - born);
+	int aux = (currentLife.Read());
 
 	if (life > 0)
 	{
@@ -196,17 +249,18 @@ bool Particle::Update()
 			ret = false;
 	}
 	else
+	{
 		if (anim.Finished())
 			ret = false;
+	}
+	
+	
+	position.x += speed.x*dt;
+	position.y += speed.y*dt;
+	
 
-	
-	
-	position.x += speed.x;
-	position.y += speed.y;
-	
-
-	if (position.x > App->win->width || position.x < 0 || position.y >  App->win->height || position.y < 0)
-		life = 0;
+	/*if (position.x > App->win->width || position.x < 0 || position.y >  App->win->height || position.y < 0)
+		life = 0;*/
 
 	return ret;
 }

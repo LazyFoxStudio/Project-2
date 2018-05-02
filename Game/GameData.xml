@@ -1201,7 +1201,7 @@
             <texture value="Assets\Sprites\Horde Sprites\Troll Axethrower_SpriteSheet.png"/>
             <Stats>
                 <life value="40"/>
-                <attack value="2"/>
+                <attack value="0"/>
                 <defense value="0"/>
                 <piercingDamage value="4"/>
                 <movementSpeed value="1.05"/>
