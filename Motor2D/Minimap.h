@@ -47,6 +47,7 @@ struct alert
 	int y;
 	alert_type type;
 	bool to_delete = false;
+	bool sound_played = false;
 };
 
 class Minimap
@@ -100,6 +101,7 @@ public:
 
 	//transforms a coordinate clicked in the minimap into a real map one
 	void Mouse_to_map(int& map_x, int& map_y);
+
 };
 
 
