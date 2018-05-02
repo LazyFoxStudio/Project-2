@@ -44,7 +44,7 @@ bool Hero::Update(float dt)
 	{
 	case 1: 
 		skill_one->DrawRange(); 
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_one->Ready())
+		if ((App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_one->Ready()) || skill_one->going)
 		{
 			skill_one->Activate();
 			App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
