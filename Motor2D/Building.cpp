@@ -10,6 +10,7 @@
 #include "UI_InfoTable.h"
 #include "UI_WorkersDisplay.h"
 #include "UI_TroopCreationQueue.h"
+#include "UI_FarmWorkersManager.h"
 
 Building::Building(iPoint pos, Building& building)
 {
@@ -61,18 +62,25 @@ Building::~Building()
 
 bool Building::Update(float dt)
 {
-	if (queueDisplay != nullptr)
+	if (isSelected)
 	{
-		if (isSelected)
+		if (queueDisplay != nullptr)
 			queueDisplay->active = true;
-		else
+		if (workersManager != nullptr)
+			workersManager->active = true;
+	}
+	else
+	{
+		if (queueDisplay != nullptr)
 			queueDisplay->active = false;
+		if (workersManager != nullptr)
+			workersManager->active = false;
 	}
 
 	//minimap_
-	if (App->uiscene->minimap) 
+	if (App->uiscene->minimap)
 	{
-		if(ex_state != DESTROYED)	App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
+		if (ex_state != DESTROYED)	App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
 		else						App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
 	}
 
@@ -96,7 +104,7 @@ bool Building::Update(float dt)
 			HandleUnitProduction();
 		}
 		break;
-		
+
 	case DESTROYED:
 		if (timer.ReadSec() > DEATH_TIME)
 			App->entitycontroller->entities_to_destroy.push_back(UID);
@@ -166,6 +174,7 @@ void Building::HandleConstruction()
 		if (type == FARM)
 		{
 			App->entitycontroller->CreateWorkers(this, 5);
+			workersManager = App->gui->createWorkersManager(this);
 		}
 		if (type != LUMBER_MILL)
 		{

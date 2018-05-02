@@ -10,11 +10,12 @@ class j1Timer;
 class Text;
 class Image;
 struct worker;
+class Building;
 
 enum worker_state
 {
 	UNASSIGNED,
-	ASSIGNED,
+	WORKING,
 	PRODUCING,
 	WAITING
 };
@@ -40,12 +41,14 @@ struct workerIcon
 class FarmWorkersManager : public UI_element
 {
 public:
-	FarmWorkersManager();
+	FarmWorkersManager(Building* building);
 	~FarmWorkersManager();
+
+	void BlitElement();
 
 public:
 
-	std::vector<workerIcon*> icon;
+	std::vector<workerIcon*> icons;
 };
 
 #endif //__UI_FARMWORKERSMANAGER_H__

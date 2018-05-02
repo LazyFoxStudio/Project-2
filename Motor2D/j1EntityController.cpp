@@ -435,9 +435,12 @@ Building* j1EntityController::addBuilding(iPoint pos, Type type)
 {
 	Building* building = new Building(pos, *getBuildingFromDB(type));
 	building->UID = last_UID++;
-	building->workersDisplay = App->gui->createWorkersDisplay(building);
-	if (type == BARRACKS)
+	if (type == LUMBER_MILL)
+		building->workersDisplay = App->gui->createWorkersDisplay(building);
+	else if (type == BARRACKS)
 		building->queueDisplay = App->gui->createTroopCreationQueue(building);
+	/*else if (type == FARM)
+		building->workersManager = App->gui->createWorkersManager(building);*/
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
 
