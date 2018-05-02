@@ -3231,10 +3231,8 @@
 	  <Actions>
 		<action id="11"/>
 		<action id="12"/>
-		<action id="13"/>
-		<action id="14"/>
-		<action id="15"/>
-		<action id="16"/>
+
+
         <action id="20"/>
 		<action id="10"/>
         <action id="21"/>
@@ -3384,7 +3382,8 @@
       <type value="7"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <Actions>
-
+        <action id="15"/>
+        <action id="16"/>
       </Actions>
       <sprites>
         <sprite x="408" y="633" w="101" h="109"/>
@@ -3413,7 +3412,8 @@
       <type value="8"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <Actions>
-
+        <action id="13"/>
+        <action id="14"/>
       </Actions>
       <sprites>
         <sprite x="306" y="413" w="101" h="109"/>

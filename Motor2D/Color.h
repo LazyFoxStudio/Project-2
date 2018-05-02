@@ -42,3 +42,4 @@ static Color Translucid_Grey	= Color(125, 125, 125, 125);
 
 static Color Transparent_Green  = Color(0, 255, 0, 75);
 static Color Transparent_Red    = Color(255, 0, 0, 75);
+static Color Transparent_Blue = Color(0, 255, 255, 40);

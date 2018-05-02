@@ -21,6 +21,7 @@ class Quadtree;
 #define REPAIR_COST 10
 #define REPAIR_COOLDOWN 30
 #define UNIT_QUEUE_MAX_SIZE 6
+#define BUILDINGAREA 1750
 
 struct worker
 {
@@ -126,6 +127,7 @@ public:
 
 	Type to_build_type = NONE_ENTITY;
 	SDL_Rect selection_rect = { 0,0,0,0 };
+	SDL_Rect buildingArea;
 
 };
 #endif // !
