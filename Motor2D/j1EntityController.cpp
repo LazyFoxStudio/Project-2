@@ -31,15 +31,16 @@ j1EntityController::j1EntityController() { name = "entitycontroller"; }
 
 bool j1EntityController::Start()
 {
+
+	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
+
 	addHero(iPoint(2000, 1950), HERO_1);
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	town_hall = addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
 	App->scene->InitialWorkers(town_hall);
-
-	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
-
+	AddSquad(FOOTMAN, fPoint(2200, 1950));
 /*
 	entity_iterator = entities.begin();
 	squad_iterator = all_squads.begin();*/
@@ -175,6 +176,11 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 		App->render->DrawQuad(r, White, false);
 		App->render->DrawCircle(unit->position.x, unit->position.y, unit->line_of_sight, Blue);
 		App->render->DrawLine(unit->position.x, unit->position.y, unit->position.x + unit->next_step.x, unit->position.y + unit->next_step.y, Red);
+		if (unit->squad)
+		{
+			fPoint offset = unit->squad->getOffset(unit->UID);
+			App->render->DrawCircle(offset.x + unit->squad->centroid.x, offset.y + unit->squad->centroid.y, 5, Yellow);
+		}
 	}
 }
 

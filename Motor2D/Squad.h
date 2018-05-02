@@ -12,13 +12,18 @@ class Entity;
 #include <vector>
 #include <deque>
 
+enum Formation{ SQUARE};
+
 class Squad
 {
 public:
 	std::vector<uint> units_id;
+	std::vector<fPoint> units_offsets;
 	std::deque<Command*> commands;
-
+	Formation formation = SQUARE;
+	fPoint centroid = { 0.0f,0.0f };
 	float max_speed = 0.0f;
+	fPoint squad_movement = { 0.0f,0.0f };
 	int UID = -1;
 
 public:
@@ -31,6 +36,10 @@ public:
 	Unit* getCommander();
 	
 	void removeUnit(uint unit_id);
+
+	void calculateCentroid();
+	void calculateOffsets();
+	fPoint getOffset(uint unit_UID);
 
 	void Halt();
 	bool Update(float dt);

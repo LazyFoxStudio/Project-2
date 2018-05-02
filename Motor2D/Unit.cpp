@@ -12,11 +12,17 @@
 //minimap_
 #include "j1UIScene.h"
 
-#define COLLIDER_MARGIN 10  // extra margin for separation calculations  // 10 ~ 30//
+#define SEPARATION_WEIGHT 1.5f   // the higher the stronger   // 1.0f ~ 10.0f//
+#define SPEED_CONSTANT 5.0f   // applied to all units            // 60 ~ 140 //
+#define STOP_TRESHOLD 0.5f			// 0.5f ~ 1.5f//
 
-#define SEPARATION_STRENGTH 1.25f   // the higher the stronger   // 1.0f ~ 10.0f//
-#define SPEED_CONSTANT 2.5f   // applied to all units            // 60 ~ 140 //
-#define STOP_TRESHOLD 0.3f										// 0.5f ~ 1.5f//
+#define COHESION_WEIGHT 1.5f
+#define COHESION_TRESHOLD 10.0f
+
+#define MOVEMENT_WEIGHT 5.0f
+#define ALIGNEMENT_WEIGHT 8.0f
+
+#define MINIMUM_TRESHOLD 0.2f
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
@@ -126,20 +132,20 @@ bool Unit::Update(float dt)
 		else		   App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
 	}
 
-
-	Move(dt);
-	
+	Move(dt);	
 
 	return true;
 }
 
 void Unit::Move(float dt)
 {
-	fPoint separation_v = calculateSeparationVector() * STEERING_FACTOR;
+	fPoint separation_v = calculateSeparationVector();
+	fPoint cohesion_v = calculateCohesionVector();
+	fPoint alignement_v = calculateAlignementVector();
 
-	if ((!commands.empty() ? commands.front()->type != ATTACK : false) || separation_v.GetModule() > STOP_TRESHOLD)
+	if ((!commands.empty() ? commands.front()->type != ATTACK : false) || separation_v.GetModule() > STOP_TRESHOLD || cohesion_v.GetModule()> STOP_TRESHOLD || alignement_v.GetModule() > STOP_TRESHOLD)
 	{
-		next_step = next_step + (separation_v * STEERING_FACTOR);
+		next_step = next_step + ((movement * MOVEMENT_WEIGHT) + separation_v + cohesion_v + alignement_v) * STEERING_FACTOR;
 
 		if (next_step.GetModule() > MAX_NEXT_STEP_MODULE)
 			next_step = next_step.Normalized() * MAX_NEXT_STEP_MODULE;
@@ -178,6 +184,86 @@ void Unit::lookAt(fPoint direction)
 		else dir = (direction.y < 0 ? N : S);
 	}
 }
+
+
+void Unit::Halt()
+{
+	for (std::deque<Command*>::iterator it = commands.begin(); it != commands.end(); it++)
+		(*it)->Restart();  // Restarting the order calls onStop(), which would be otherwise unaccesible
+
+	commands.clear();
+}
+
+void Unit::Destroy()
+{
+	timer.Start();
+	ex_state = DESTROYED;
+	App->entitycontroller->selected_entities.remove(this);
+}
+
+fPoint Unit::calculateSeparationVector()
+{
+	SDL_Rect r = { collider.x - COLLIDER_MARGIN, collider.y - COLLIDER_MARGIN , collider.w + COLLIDER_MARGIN , collider.h + COLLIDER_MARGIN };
+	std::vector<Entity*> collisions;
+	App->entitycontroller->CheckCollidingWith(r, collisions, this);
+
+	fPoint separation_v = { 0.0f,0.0f };
+
+	for (int i = 0; i < collisions.size(); i++)
+	{
+		if ((collisions[i])->IsEnemy() == IsEnemy())
+		{
+			separation_v += (position - collisions[i]->position);
+		}
+	}
+	separation_v = separation_v.Normalized() * SEPARATION_WEIGHT;
+
+	fPoint world_separation = position + separation_v;
+	iPoint map_separation = App->map->WorldToMap(world_separation.x, world_separation.y);
+
+	if (!App->pathfinding->IsWalkable(map_separation) || separation_v.GetModule() > MINIMUM_TRESHOLD)
+		return { 0.0f, 0.0f };
+
+	return separation_v;
+}
+
+fPoint Unit::calculateCohesionVector()
+{
+	fPoint cohesion_v = { 0.0f,0.0f };
+	if (squad ? (!squad->centroid.IsZero() && squad->units_id.size() > 1) : false)
+	{
+		cohesion_v = (squad->centroid + squad->getOffset(UID)) - position;
+		cohesion_v = cohesion_v.Normalized() * (cohesion_v.GetModule() / COHESION_TRESHOLD);
+		cohesion_v = { cohesion_v.x * COHESION_WEIGHT, cohesion_v.y * COHESION_WEIGHT };
+
+		fPoint world_offset = (squad->centroid + squad->getOffset(UID));
+		iPoint map_offset = App->map->WorldToMap(world_offset.x, world_offset.y);
+
+		if (!App->pathfinding->IsWalkable(map_offset) || cohesion_v.GetModule() < MINIMUM_TRESHOLD)
+			return { 0.0f, 0.0f };
+
+	}
+	return cohesion_v;
+}
+
+fPoint Unit::calculateAlignementVector()
+{
+	fPoint alignement_v = { 0.0f, 0.0f };
+
+	if (squad ? !squad->squad_movement.IsZero() : false)
+	{
+		alignement_v = ((squad->squad_movement * (squad->max_speed / 5)) * ALIGNEMENT_WEIGHT);
+
+		fPoint world_alignement = (squad->centroid + squad->getOffset(UID));
+		iPoint map_alignement = App->map->WorldToMap(world_alignement.x, world_alignement.y);
+
+		if (!App->pathfinding->IsWalkable(map_alignement) || alignement_v.GetModule() < MINIMUM_TRESHOLD)
+			return { 0.0f, 0.0f };
+	}
+
+	return alignement_v;
+}
+
 
 void Unit::animationController()
 {
@@ -269,48 +355,6 @@ void Unit::animationController()
 		current_anim->Reset();
 	}
 
-}
-
-void Unit::Halt()
-{
-	for (std::deque<Command*>::iterator it = commands.begin(); it != commands.end(); it++)
-		(*it)->Restart();  // Restarting the order calls onStop(), which would be otherwise unaccesible
-
-	commands.clear();
-}
-
-void Unit::Destroy()
-{
-	timer.Start();
-	ex_state = DESTROYED;
-	App->entitycontroller->selected_entities.remove(this);
-}
-
-fPoint Unit::calculateSeparationVector()
-{
-	SDL_Rect r = { collider.x - COLLIDER_MARGIN, collider.y - COLLIDER_MARGIN , collider.w + COLLIDER_MARGIN , collider.h + COLLIDER_MARGIN };
-	std::vector<Entity*> collisions;
-	App->entitycontroller->CheckCollidingWith(r, collisions, this);
-
-	fPoint separation_v = { 0,0 };
-
-	for (int i = 0; i < collisions.size(); i++)
-	{
-		if ((collisions[i])->IsEnemy() == IsEnemy())
-		{
-			fPoint current_separation = (position - collisions[i]->position);
-			separation_v += (position - collisions[i]->position).Normalized() * (1 / current_separation.GetModule());
-		}
-	}
-
-	separation_v *= SEPARATION_STRENGTH;
-	if (commands.empty() ? false : (commands.front()->type == ATTACKING_MOVETO || commands.front()->type == ATTACK))
-	{
-		if (separation_v.GetModule() > (STOP_TRESHOLD * 1.5f))
-			separation_v = separation_v.Normalized() * (STOP_TRESHOLD * 1.5f);
-	}
-
-	return separation_v;
 }
 
 //buffs

@@ -10,6 +10,10 @@
 
 enum direction { E, NE, SE, N, S, NW, W, SW};
 
+#define COLLIDER_MARGIN 5  // extra margin for separation calculations  // 10 ~ 30//
+
+#define STEERING_FACTOR 5.0f    // the higher the stiffer      // 4.0f ~ 10.0f//
+
 class Animation;
 class Squad;
 //class Effect;
@@ -24,7 +28,8 @@ public:
 	//Utilities
 	Squad* squad = nullptr;
 	bool flying = false;
-	fPoint next_step = { 0.0f,0.0f };
+	fPoint movement = { 0.0f,0.0f };
+	fPoint next_step = { 0.0f, 0.0f };
 	
 	Animation* current_anim = nullptr;
 	direction dir = S;
@@ -49,6 +54,8 @@ public:
 	void Destroy();
 
 	fPoint calculateSeparationVector();
+	fPoint calculateCohesionVector();
+	fPoint calculateAlignementVector();
 	Command_Type getCurrentCommand() { return (commands.empty() ? NOTHING : commands.front()->type); }
 
 	void AddDamagebuff(int duration, int amount, operation_sign sign);

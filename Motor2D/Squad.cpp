@@ -20,6 +20,9 @@ Squad::Squad(std::vector<uint>& units) : units_id(units)
 			squad_units[i]->squad = this;
 			if (squad_units[i]->speed < max_speed) max_speed = squad_units[i]->speed;
 		}
+
+		calculateCentroid();
+		calculateOffsets();
 	}
 }
 
@@ -31,11 +34,18 @@ Squad::~Squad()
 bool Squad::Update(float dt)
 {
 	if (units_id.empty()) { Destroy(); return false; }
-
-	if (!commands.empty())
+	else 
 	{
-		commands.front()->Execute(dt);
-		if (commands.front()->state == FINISHED) commands.pop_front();
+		if (!commands.empty())
+		{
+			fPoint last_pos = centroid;
+			calculateCentroid();
+			squad_movement = centroid - last_pos;
+
+			commands.front()->Execute(dt);
+			if (commands.front()->state == FINISHED) commands.pop_front();
+		}
+		else squad_movement = { 0.0f,0.0f };
 	}
 
 	return true;
@@ -47,8 +57,83 @@ void Squad::removeUnit(uint unit_ID)
 		if (units_id[i] == unit_ID)
 		{
 			units_id.erase(units_id.begin() + i);
+			units_offsets.erase(units_offsets.begin() + i);
+			calculateCentroid();
+			calculateOffsets();
 			return;
 		}
+}
+
+void Squad::calculateCentroid()
+{
+	std::vector<Unit*> squad_units;
+	getUnits(squad_units);
+
+	if (!squad_units.empty())
+	{
+		fPoint positions = { 0.0f, 0.0f };
+		for (int i = 0; i < squad_units.size(); i++)
+		{
+			positions += squad_units[i]->position;
+		}
+
+		centroid = positions.Normalized() * (positions.GetModule() / squad_units.size());
+	}
+}
+
+fPoint Squad::getOffset(uint unit_UID)
+{
+	if (!units_offsets.empty())
+	{
+		for (int i = 0; i < units_id.size(); i++)
+		{
+			if (units_id[i] == unit_UID) return units_offsets[i];
+		}
+	}
+	return { 0,0 };
+}
+
+void Squad::calculateOffsets()
+{
+	std::vector<Unit*> squad_units;
+	getUnits(squad_units);
+
+	int radius = 1;
+	int counter = 1;
+
+	if (!squad_units.empty())
+	{
+		units_offsets.push_back(fPoint(0.0f, 0.0f));
+		switch (formation)
+		{
+		case SQUARE:
+
+			while (counter < squad_units.size())
+			{
+				for (int i = -radius; i <= radius && counter < squad_units.size(); i++)
+					for (int j = -radius; j <= radius && counter < squad_units.size(); j++)
+						if (std::abs(i) == radius || j == std::abs(radius))
+						{
+							units_offsets.push_back(fPoint((i * squad_units[counter]->collider.w) * 1.2f, (j * squad_units[counter]->collider.h) * 1.2f));
+							counter++;
+						}
+				radius++;
+			}
+			
+			break;
+		default:
+			break;
+		}
+	}
+
+	fPoint offset_average = { 0.0f,0.0f};
+	for (int i = 0; i < units_offsets.size(); i++)
+		offset_average += units_offsets[i];
+
+	offset_average = offset_average.Normalized() * (offset_average.GetModule() / (float)units_offsets.size());
+
+	for (int i = 0; i < units_offsets.size(); i++)
+		units_offsets[i] -= offset_average;
 }
 
 bool Squad::isInSquadSight(fPoint position)

@@ -197,7 +197,7 @@ iPoint j1PathFinding::FirstWalkableAdjacent(iPoint map_pos, int max_distance)
 	{
 		for (int i = -radius; i <= radius; i++)
 			for (int j = -radius; j <= radius; j++)
-				if (std::abs(i) == radius || j == std::abs(j))
+				if (std::abs(i) == radius || std::abs(j) == radius)
 				{
 					ret.create(map_pos.x + i, map_pos.y + j);
 					if (App->pathfinding->IsWalkable(ret))

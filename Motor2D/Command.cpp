@@ -49,7 +49,7 @@ bool MoveTo::OnUpdate(float dt)
 	else if (flow_field->getNodeAt(map_p)->parent)
 	{
 		FieldNode* fn = flow_field->getNodeAt(map_p);
-		unit->next_step += ((fn->parent->position - map_p).Normalized() * STEERING_FACTOR);
+		unit->movement = (fn->parent->position - map_p).Normalized();
 	}
 		
 
@@ -59,7 +59,7 @@ bool MoveTo::OnUpdate(float dt)
 
 bool MoveTo::OnStop()
 {
-	unit->next_step = { 0,0 };
+	unit->movement.SetToZero();
 	return true;
 }
 
@@ -103,7 +103,7 @@ bool Attack::OnUpdate(float dt)
 		}
 
 		unit->lookAt((enemy->position - unit->position).Normalized() * MAX_NEXT_STEP_MODULE);
-		unit->next_step.SetToZero();
+		unit->movement.SetToZero();
 		return true;
 	}
 	else
@@ -116,7 +116,7 @@ bool Attack::OnUpdate(float dt)
 bool Attack::OnStop()
 {
 	type = ATTACKING_MOVETO;
-	unit->next_step = { 0,0 };
+	unit->movement.SetToZero();
 	return true;
 }
 
@@ -250,7 +250,7 @@ bool Attack::searchTarget()
 		{
 			Entity* new_target = App->entitycontroller->getEntitybyID(enemy_ids->at(i));
 
-			if (target->position.DistanceTo(unit->position) < new_target->position.DistanceTo(unit->position))
+			if (new_target->position.DistanceTo(unit->position) < target->position.DistanceTo(unit->position))
 				target = new_target;
 		}
 
@@ -276,7 +276,7 @@ void Attack::moveToTarget()
 	if (map_p == path.front())
 		path.pop_front();
 	else
-		unit->next_step += (path.front() - map_p).Normalized() * STEERING_FACTOR;
+		unit->movement += (path.front() - map_p).Normalized();;
 }
 
 void Attack::callRetaliation(Entity* enemy)
