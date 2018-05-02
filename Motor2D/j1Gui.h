@@ -102,7 +102,6 @@ public:
 	NextWaveWindow* createNextWaveWindow(pugi::xml_node node, j1Module* callback = nullptr);
 	WorkersDisplay* createWorkersDisplay(Building* building);
 	TroopCreationQueue* createTroopCreationQueue(Building* building);
-	FarmWorkersManager* createWorkersManager(Building* building);
 
 	//minimap_
 	void createMinimap(pugi::xml_node node, j1Module* callback = nullptr);
@@ -156,6 +155,7 @@ public:
 	Chrono* Chronos = nullptr;
 	NextWaveWindow* nextWaveWindow = nullptr;
 	CooldownsDisplay* cooldownsDisplay = nullptr;
+	FarmWorkersManager* workersManager = nullptr;
 
 private:
 

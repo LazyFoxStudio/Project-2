@@ -66,15 +66,11 @@ bool Building::Update(float dt)
 	{
 		if (queueDisplay != nullptr)
 			queueDisplay->active = true;
-		if (workersManager != nullptr)
-			workersManager->active = true;
 	}
 	else
 	{
 		if (queueDisplay != nullptr)
 			queueDisplay->active = false;
-		if (workersManager != nullptr)
-			workersManager->active = false;
 	}
 
 	//minimap_
@@ -174,7 +170,6 @@ void Building::HandleConstruction()
 		if (type == FARM)
 		{
 			App->entitycontroller->CreateWorkers(this, 5);
-			workersManager = App->gui->createWorkersManager(this);
 		}
 		if (type != LUMBER_MILL)
 		{
