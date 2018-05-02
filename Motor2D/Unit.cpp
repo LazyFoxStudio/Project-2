@@ -34,6 +34,8 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	line_of_sight			= unit.line_of_sight;
 	range					= unit.range;
 
+	AddDamagebuff(10, 100, PLUS_MINUS);
+
 	for (int i = 0; i < unit.animations.size(); i++)
 		animations.push_back(new Animation(*unit.animations[i]));
 
@@ -48,6 +50,7 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 
 	collider.x = pos.x - (collider.w / 2);
 	collider.y = pos.y - (collider.h / 2);
+
 }
 
 Unit::~Unit()
@@ -74,6 +77,15 @@ bool Unit::Update(float dt)
 {
 	animationController();
 
+	//take buffs out here
+	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+	{
+		if (!((*it)->applied))
+		{
+			(*it)->Remove();
+		}
+	};
+
 	if (current_HP <= 0)
 	{
 		if (ex_state != DESTROYED) { Destroy(); squad->removeUnit(UID); }
@@ -95,6 +107,24 @@ bool Unit::Update(float dt)
 		if (IsEnemy()) App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
 		else		   App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
 	}
+
+	//remove buffs here
+	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+	{
+		if ((*it)->started_at + (*it)->duration*1000 < SDL_GetTicks());
+		{
+			Effect* to_del = (*it);
+			effects.remove(*it);
+			RELEASE(to_del);
+		}
+	};
+
+	//apply buffs here
+	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+	{
+		(*it)->Apply();
+		(*it)->applied = true;
+	};
 
 	Move(dt);
 	

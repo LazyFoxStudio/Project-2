@@ -2,5 +2,35 @@
 #include "Unit.h"
 
 
-void DamageBuff::Apply() { unit->attack += buff; }
-void DamageBuff::Remove() { unit->attack -= buff; }
+void DamageBuff::Apply() 
+{ 
+	switch (sign)
+	{
+		case PLUS_MINUS:
+		{
+			unit->attack += buff;
+			break;
+		}
+		case MULTIPLICATION_DIVISION:
+		{
+			unit->attack = unit->attack*buff;
+			break;
+		}
+	}
+}
+void DamageBuff::Remove() 
+{ 
+	switch (sign)
+	{
+	case PLUS_MINUS:
+	{
+		unit->attack -= buff;
+		break;
+	}
+	case MULTIPLICATION_DIVISION:
+	{
+		unit->attack = unit->attack/buff;
+		break;
+	}
+	}
+}
