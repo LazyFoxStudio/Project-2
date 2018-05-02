@@ -68,21 +68,24 @@ bool Squad::getEnemiesInSight(std::vector<uint>& list_to_fill, int target_squad_
 
 	if (!units_id.empty())
 	{
-		bool isEnemy = App->entitycontroller->getEntitybyID(units_id[0])->IsEnemy();
-
-		for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+		if (Unit* commander = getCommander())
 		{
-			if ((*it)->isActive && isEnemy != (*it)->IsEnemy() && (*it)->ex_state != DESTROYED)
-				if (isInSquadSight((*it)->position))
-				{
-					if ((*it)->IsUnit())
-					{
-						if (target_squad_UID != -1 ? target_squad_UID != ((Unit*)*it)->squad->UID : false)
-							continue;
-					}
+			bool isEnemy = commander->IsEnemy();
 
-					list_to_fill.push_back((*it)->UID);
-				}
+			for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+			{
+				if ((*it)->isActive && isEnemy != (*it)->IsEnemy() && (*it)->ex_state != DESTROYED)
+					if (isInSquadSight((*it)->position))
+					{
+						if ((*it)->IsUnit())
+						{
+							if (target_squad_UID != -1 ? target_squad_UID != ((Unit*)*it)->squad->UID : false)
+								continue;
+						}
+
+						list_to_fill.push_back((*it)->UID);
+					}
+			}
 		}
 	}
 	return !list_to_fill.empty();

@@ -82,14 +82,20 @@ bool j1WaveController::Update(float dt)
 bool j1WaveController::PostUpdate()
 {
 	BROFILER_CATEGORY("WaveController postupdate", Profiler::Color::Maroon);
-	if (flow_field_aux ? (flow_field_aux->stage == COMPLETED && !flow_field_aux->finished) : false)
+	if (flow_field_aux)
 	{
-		for (int i = 0; i < flow_field->width; i++)
+		if (flow_field_aux->stage == FAILED)
+			updateFlowField();
+		else if (flow_field_aux->stage == COMPLETED)
 		{
-			for (int j = 0; j < flow_field->height; j++)
-				flow_field->field[i][j] = flow_field_aux->field[i][j];
+			for (int i = 0; i < flow_field->width; i++)
+			{
+				for (int j = 0; j < flow_field->height; j++)
+					flow_field->field[i][j] = flow_field_aux->field[i][j];
+			}
+			flow_field_aux->finished = true;
+			flow_field_aux = nullptr;
 		}
-		flow_field_aux->finished = true;
 	}
 	return true;
 }
