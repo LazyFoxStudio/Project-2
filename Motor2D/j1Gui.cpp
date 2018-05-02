@@ -28,6 +28,7 @@
 #include "j1Scene.h"
 #include "UI_CooldownsDisplay.h"
 #include "UI_TroopCreationQueue.h"
+#include "UI_FarmWorkersManager.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -744,6 +745,20 @@ TroopCreationQueue* j1Gui::createTroopCreationQueue(Building* building)
 		ret->menu = INGAME_MENU;
 	}
 	ret->active = false;
+	return ret;
+}
+
+FarmWorkersManager* j1Gui::createWorkersManager(Building * building)
+{
+	FarmWorkersManager* ret = new FarmWorkersManager(building);
+	menu* menu = App->uiscene->getMenu(INGAME_MENU);
+	if (menu != nullptr)
+	{
+		menu->elements.push_back(ret);
+		ret->menu = INGAME_MENU;
+	}
+	ret->active = false;
+
 	return ret;
 }
 

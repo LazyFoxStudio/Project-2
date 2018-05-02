@@ -6,6 +6,7 @@
 
 class WorkersDisplay;
 class TroopCreationQueue;
+class FarmWorkersManager;
 
 enum buildingSprites   // ATTENTION!: Town hall does not use this enum yet
 {
@@ -23,6 +24,7 @@ public:
 	
 	std::list<worker*> workers_inside;
 	WorkersDisplay* workersDisplay = nullptr;
+	FarmWorkersManager* workersManager = nullptr;
 	int resource_production = 0;
 
 	int last_frame_time = 0;
