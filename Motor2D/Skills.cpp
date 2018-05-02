@@ -151,6 +151,7 @@ void Skill::Activate()
 				}
 			}
 		}
+		hero->squad->Halt();
 		timer.Start();
 	}
 
