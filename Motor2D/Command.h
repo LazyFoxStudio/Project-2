@@ -69,14 +69,14 @@ class Attack : public Command
 public:
 
 	iPoint map_p = { 0,0 };
-	fPoint current_target = { 0.0f, 0.0f };
+	int current_target = -1;
 
 	j1Timer timer;
 	std::list<iPoint> path;
-	std::list<fPoint>* enemy_positions = nullptr;
+	std::vector<uint>* enemy_ids = nullptr;
 
 public:
-	Attack(Unit* unit, std::list<fPoint>* enemy_positions) : Command(unit, ATTACK), enemy_positions(enemy_positions) {};
+	Attack(Unit* unit, std::vector<uint>* enemy_ids) : Command(unit, ATTACK), enemy_ids(enemy_ids) {};
 
 private:
 	bool OnInit();
@@ -108,24 +108,25 @@ private:
 
 	bool OnInit();
 	virtual bool OnUpdate(float dt);
-	virtual bool OnStop();
+	bool OnStop();
 
 };
 
 class AttackingMoveToSquad : public MoveToSquad
 {
-	std::list<fPoint> enemy_positions;
-	bool enemies_in_sight = false;
+	std::vector<uint> enemy_ids;
+	int target_squad_id = -1;
 	bool hold = false;
-	bool just_attacked = false;
 	j1Timer timer;
 
 public:
-	AttackingMoveToSquad(Unit* commander, iPoint map_dest, bool hold = false) : MoveToSquad(commander, map_dest), hold(hold) { type = ATTACKING_MOVETO_SQUAD; };
+	AttackingMoveToSquad(Unit* commander, iPoint map_dest, bool hold = false, int target_squad_id = -1) : MoveToSquad(commander, map_dest), hold(hold), target_squad_id(target_squad_id) 
+		{ type = ATTACKING_MOVETO_SQUAD; };
 
 private:
 	bool OnUpdate(float dt);
-	bool OnStop();
+
+	bool checkSquadTarget();
 };
 
 class PatrolSquad : public Command

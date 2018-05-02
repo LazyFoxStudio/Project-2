@@ -71,7 +71,7 @@ bool j1ParticleController::Update(float dt)
 		}
 		else if (p->currentLife.Read() > 0)
 		{
-			App->render->Blit(graphics, p->position.x, p->position.y, &(p->anim.GetCurrentFrame(dt)), true, SDL_FLIP_NONE, 1, GetAngleInDegrees(p));
+			App->render->Blit(graphics, p->position.x, p->position.y, &(p->anim.GetCurrentFrame(dt)), true, false, 1, SDL_FLIP_NONE, 1, GetAngleInDegrees(p));
 		}
 
 

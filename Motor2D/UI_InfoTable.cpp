@@ -45,7 +45,7 @@ void InfoTable::cleanInfo()
 	lines.clear();
 }
 
-void InfoTable::BlitElement(bool use_camera)
+void InfoTable::BlitElement()
 {
 	if (title != nullptr)
 		title->BlitElement();

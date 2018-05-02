@@ -200,6 +200,22 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 	return ret;
 }
 
+menu* j1UIScene::getMenu(menu_id id)
+{
+	menu* ret = nullptr;
+
+	for (std::list<menu*>::iterator it_m = menus.begin(); it_m != menus.end(); it_m++)
+	{
+		if ((*it_m)->id == id)
+		{
+			ret = (*it_m);
+			break;
+		}
+	}
+
+	return ret;
+}
+
 void j1UIScene::toggleMenu(bool setActive, menu_id id)
 {
 	for (std::list<menu*>::iterator it_m = menus.begin(); it_m != menus.end(); it_m++)

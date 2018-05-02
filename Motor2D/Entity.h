@@ -15,16 +15,16 @@ enum Type
 	NONE_ENTITY,
 
 	//Building
-	TOWN_HALL, BARRACKS, LUMBER_MILL, FARM,
+	TOWN_HALL, BARRACKS, LUMBER_MILL, FARM, MINE, TURRET, GNOME_HUT, CHURCH, BLACKSMITH,
 
 	// Heroes
 	HERO_1, /* ... */ HERO_X,
 
 	// Allies
-	FOOTMAN, ARCHER, KNIGHT, /* ... */ ALLY_X,
+	FOOTMAN, ARCHER, KNIGHT, GRYPHON, BALLISTA, FLYING_MACHINE, /* ... */ ALLY_X,
 
 	//Enemies
-	GRUNT, AXE_THROWER, /* ... */ ENEMY_X,
+	GRUNT, AXE_THROWER, DEATH_KNIGHT, DRAGON, CATAPULT, JUGGERNAUT,/* ... */ ENEMY_X,
 };
 
 enum existence_state { BEING_BUILT, OPERATIVE, DESTROYED };
@@ -58,6 +58,7 @@ public:
 
 	j1Timer timer;
 	Cost cost;
+	bool isSelected = false;
 
 	InfoData* infoData = nullptr;
 
@@ -72,6 +73,7 @@ public:
 
 	virtual bool Update(float dt)	{ return true; };
 	virtual void Draw(float dt)		{};
+	virtual void Destroy() {};
 
 	virtual bool Save()		{ return true; };
 	virtual bool Load()		{ return true; };
@@ -79,7 +81,7 @@ public:
 	bool IsEnemy() { return type >= GRUNT; };
 	bool IsUnit() { return type >= HERO_1; };
 	bool IsHero() { return (type >= HERO_1 && type <= HERO_X); }
-	bool IsBuilding() { return type <= FARM; };
+	bool IsBuilding() { return type <= BLACKSMITH; };
 };
 
 #endif

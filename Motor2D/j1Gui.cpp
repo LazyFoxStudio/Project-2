@@ -24,7 +24,11 @@
 #include "UI_InfoTable.h"
 #include "UI_WarningMessages.h"
 #include "UI_NextWaveWindow.h"
+#include "UI_WorkersDisplay.h"
 #include "j1Scene.h"
+#include "UI_CooldownsDisplay.h"
+#include "UI_TroopCreationQueue.h"
+#include "UI_FarmWorkersManager.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -55,6 +59,9 @@ bool j1Gui::Start()
 	//Create warning messages
 	warningMessages = new WarningMessages();
 	warningMessages->active = false;
+	cooldownsDisplay = new CooldownsDisplay();
+	cooldownsDisplay->active = true;
+	workersManager = new FarmWorkersManager();
 	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
 	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
 	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
@@ -67,6 +74,12 @@ bool j1Gui::PreUpdate()
 {
 	bool ret = true;
 	
+	uint win_w, win_h;
+	App->win->GetWindowSize(win_w, win_h);
+	iPoint default_size = DEFAULT_RESOLUTION;
+	w_stretch = (float)win_w / (float)default_size.x;
+	h_stretch = (float)win_h / (float)default_size.y;
+
 	//SDL_SetTextureAlphaMod(atlas, alpha_value);
 
 	UI_element* element = nullptr;
@@ -97,9 +110,10 @@ bool j1Gui::PreUpdate()
 			if (element->callback != nullptr)
 				element->callback->OnUIEvent(element, MOUSE_ENTER);
 		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
-			clickedOnUI = true;
+			if (element->element_type != WORKERSDISPLAY)
+				leftClickedOnUI = true;
 			if (element->callback != nullptr)
 			{
 				ret = element->callback->OnUIEvent(element, MOUSE_LEFT_CLICK);
@@ -114,7 +128,7 @@ bool j1Gui::PreUpdate()
 			}
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
-		{
+		{			
 			if (element->callback != nullptr)
 			{
 				element->callback->OnUIEvent(element, MOUSE_LEFT_RELEASE);
@@ -127,6 +141,8 @@ bool j1Gui::PreUpdate()
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
+			if (element->element_type != WORKERSDISPLAY)
+				rightClickedOnUI = true;
 			if (element->callback != nullptr)
 				ret = element->callback->OnUIEvent(element, MOUSE_RIGHT_CLICK);
 		}
@@ -158,7 +174,10 @@ bool j1Gui::PostUpdate()
 	BROFILER_CATEGORY("GUI posupdate", Profiler::Color::Maroon);
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
-		clickedOnUI = false;
+		leftClickedOnUI = false;
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
+		rightClickedOnUI = false;
 
 	//Draw selection quads
 	for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
@@ -176,6 +195,8 @@ bool j1Gui::PostUpdate()
 		if (!(*it_m)->active) continue;
 		for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++)
 		{
+			if (!(*it_e)->active)
+				continue;
 			if ((*it_e)->moving)
 			{
 				(*it_e)->Mouse_Drag();
@@ -186,6 +207,9 @@ bool j1Gui::PostUpdate()
 				(*it_e)->BlitElement();
 		}
 	}
+
+	workersManager->BlitElement();
+
 	//Draw PopUp
 	if (current_hovering_element != nullptr && current_hovering_element->blitPopUpInfo)
 	{
@@ -205,7 +229,8 @@ bool j1Gui::PostUpdate()
 	if (warningMessages != nullptr && warningMessages->active)
 		warningMessages->BlitElement();
 
-
+	if(cooldownsDisplay->active)
+		cooldownsDisplay->BlitElement();
 
 	//minimap_
 	App->uiscene->minimap->DrawMinimap();
@@ -300,11 +325,24 @@ bool j1Gui::checkMouseHovering(UI_element* element)
 {
 	int x, y;
 	App->input->GetMousePosition(x, y);
+	if (element->use_camera)
+	{
+		x -= App->render->camera.x;
+		y -= App->render->camera.y;
+	}
 	int scale = App->win->GetScale();
 	bool ret = false;
 
 	iPoint globalPos = element->calculateAbsolutePosition();
-	if (x >= globalPos.x && x <= globalPos.x + element->section.w / scale && y >= globalPos.y && y <= globalPos.y + element->section.h / scale && element->interactive)
+	SDL_Rect section = { globalPos.x, globalPos.y, element->section.w, element->section.h };
+	if (!element->use_camera)
+	{
+		section.x *= w_stretch;
+		section.y *= h_stretch;
+	}
+	section.w *= w_stretch;
+	section.h *= h_stretch;
+	if (x >= section.x && x <= section.x + section.w / scale && y >= section.y && y <= section.y + section.h / scale && element->interactive)
 	{
 		ret = true;
 	}
@@ -334,6 +372,18 @@ void j1Gui::UIDebugDraw()
 				box.y = (*it_e)->calculateAbsolutePosition().y * scale;
 				box.w = (*it_e)->section.w;
 				box.h = (*it_e)->section.h;
+				if ((*it_e)->use_camera)
+				{
+					box.x += App->render->camera.x;
+					box.y += App->render->camera.y;
+				}
+				else
+				{
+					box.x *= w_stretch;
+					box.y *= h_stretch;
+				}
+				box.w *= w_stretch;
+				box.h *= h_stretch;
 				App->render->DrawQuad(box, Red, false, false);
 				if ((*it_e)->childs.size() > 0)
 				{
@@ -343,10 +393,10 @@ void j1Gui::UIDebugDraw()
 						{
 							SDL_Rect box;
 							int scale = App->win->GetScale();
-							box.x = (*it_c)->calculateAbsolutePosition().x * scale;
-							box.y = (*it_c)->calculateAbsolutePosition().y * scale;
-							box.w = (*it_c)->section.w;
-							box.h = (*it_c)->section.h;
+							box.x = (*it_c)->calculateAbsolutePosition().x * scale* w_stretch;
+							box.y = (*it_c)->calculateAbsolutePosition().y * scale* h_stretch;
+							box.w = (*it_c)->section.w* w_stretch;
+							box.h = (*it_c)->section.h* h_stretch;
 							App->render->DrawQuad(box, Red, false, false);
 						}
 					}
@@ -395,6 +445,7 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 	UI_element* element = nullptr;
 	for (; tmp; tmp = tmp.next_sibling())
 	{
+		element = nullptr;
 		std::string type = tmp.name();
 		if (type == "atlas_image")
 			element = createImageFromAtlas(tmp, callback, tmp.attribute("icon_atlas").as_bool(false));
@@ -416,34 +467,41 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 			element = createIngameMenu(tmp, callback);
 		else if (type == "nextwavewindow")
 			element = createNextWaveWindow(tmp, callback);
+
 		//minimap_
 		else if (type == "minimap")
 			createMinimap(tmp, nullptr);
 
-		element->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
-		element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
-		element->active = tmp.attribute("active").as_bool(true);
-		element->clickAction = (actionType)tmp.attribute("click_action").as_int(0);
-		element->releaseAction = (actionType)tmp.attribute("release_action").as_int(0);
-		pugi::xml_node info = tmp.child("popUp").child("Info");
-		if (info)
+		if (element != nullptr)
 		{
-			createPopUpInfo(element, info.attribute("text").as_string());
-		}
+			element->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
+			element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
+			element->active = tmp.attribute("active").as_bool(true);
+			element->clickAction = (actionType)tmp.attribute("click_action").as_int(0);
+			element->releaseAction = (actionType)tmp.attribute("release_action").as_int(0);
+			pugi::xml_node info = tmp.child("popUp").child("Info");
+			if (info)
+			{
+				createPopUpInfo(element, info.attribute("text").as_string());
+			}
 
-		pugi::xml_node childs = tmp.child("childs");
-		if(childs)
-		{ 
-			Load_UIElements(childs, nullptr, callback, element);
-		}
-		
-		if (parent != nullptr)
-		{
-			parent->appendChild(element, tmp.attribute("center").as_bool());
-		}
+			pugi::xml_node childs = tmp.child("childs");
+			if (childs)
+			{
+				Load_UIElements(childs, nullptr, callback, element);
+			}
 
-		if (menu != nullptr)
-			menu->elements.push_back(element);
+			if (parent != nullptr)
+			{
+				parent->appendChild(element, tmp.attribute("center").as_bool());
+			}
+
+			if (menu != nullptr)
+			{
+				menu->elements.push_back(element);
+				element->menu = menu->id;
+			}
+		}
 	}
 }
 
@@ -550,6 +608,9 @@ Button* j1Gui::createButton(pugi::xml_node node, j1Module* callback, bool saveIn
 
 	Button* ret = new Button(x, y, texture, standby, OnMouse, OnClick, callback);
 
+	ret->clickAction = (actionType)node.attribute("click_action").as_int(0);
+	ret->releaseAction = (actionType)node.attribute("release_action").as_int(0);
+
 	if (saveIntoGUI)
 		Buttons.push_back(ret);
 
@@ -652,10 +713,41 @@ NextWaveWindow* j1Gui::createNextWaveWindow(pugi::xml_node node, j1Module* callb
 	int icons_offsetX = node.child("icons").attribute("offsetX").as_int();
 	int icons_offsetY = node.child("icons").attribute("offsetY").as_int();
 
-	NextWaveWindow* ret = new NextWaveWindow(texture, icon_atlas, x, y, section, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, callback);
+	Button* button = createButton(node.child("button"), App->uiscene, false);
+
+	int min_x = node.child("minimizedPosition").attribute("x").as_int();
+	int min_y = node.child("minimizedPosition").attribute("y").as_int();
+
+	NextWaveWindow* ret = new NextWaveWindow(texture, icon_atlas, button, x, y, min_x, min_y, section, firstIcon_posX, firstIcon_posY, icons_offsetX, icons_offsetY, callback);
 
 	nextWaveWindow = ret;
 
+	return ret;
+}
+
+WorkersDisplay* j1Gui::createWorkersDisplay(Building* building)
+{
+	WorkersDisplay* ret = new WorkersDisplay(workersDisplayBase, building);
+	menu* menu = App->uiscene->getMenu(INGAME_MENU);
+	if (menu != nullptr)
+	{
+		menu->elements.push_back(ret);
+		ret->menu = INGAME_MENU;
+	}
+
+	return ret;
+}
+
+TroopCreationQueue* j1Gui::createTroopCreationQueue(Building* building)
+{
+	TroopCreationQueue* ret = new TroopCreationQueue(building);
+	menu* menu = App->uiscene->getMenu(INGAME_MENU);
+	if (menu != nullptr)
+	{
+		menu->elements.push_back(ret);
+		ret->menu = INGAME_MENU;
+	}
+	ret->active = false;
 	return ret;
 }
 
@@ -719,6 +811,23 @@ CostDisplay* j1Gui::createCostDisplay(std::string name, int wood_cost, int gold_
 	return ret;
 }
 
+void j1Gui::deleteElement(UI_element* element)
+{
+	if (element)
+	{
+		if (element->menu != NO_MENU)
+		{
+			menu* menu = App->uiscene->getMenu(element->menu);
+			if (menu != nullptr)
+			{
+				menu->elements.remove(element);
+			}
+		}
+	}
+
+	RELEASE(element);
+}
+
 void j1Gui::createPopUpInfo(UI_element* element, std::string info)
 {
 	Text* text = new Text(info, element->localPosition.x, element->localPosition.y - 10, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
@@ -767,8 +876,7 @@ void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
 		uint id = actionButton.attribute("id").as_uint();
 		Button* button = createButton(actionButton, App->uiscene);
 		button->active = false;
-		button->clickAction = (actionType)actionButton.attribute("click_action").as_int(0);
-		button->releaseAction = (actionType)actionButton.attribute("release_action").as_int(0);
+		
 		pugi::xml_node info = actionButton.child("popUp").child("Info");
 		pugi::xml_node cost_node = actionButton.child("popUp").child("Cost");
 		if (info && info.attribute("cost").as_bool())
@@ -795,6 +903,15 @@ void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
 			button->displayHotkey(true, App->font->getFont(hotkey.attribute("font_id").as_int()));
 		}
 	}
+}
+
+void j1Gui::LoadWorkersDisplayDB(pugi::xml_node node)
+{
+	pugi::xml_node workers = node.child("WorkersDisplay");
+	Button* assign = createButton(workers.child("assign"), App->uiscene, false);
+	Button* unassign = createButton(workers.child("unassign"), App->uiscene, false);
+	SDL_Rect icon = { workers.child("icon").attribute("x").as_int(), workers.child("icon").attribute("y").as_int() , workers.child("icon").attribute("w").as_int() , workers.child("icon").attribute("h").as_int() };
+	workersDisplayBase = new WorkersDisplay(icon, assign, unassign, nullptr);
 }
 
 void j1Gui::LoadFonts(pugi::xml_node node)
@@ -918,16 +1035,16 @@ void j1Gui::moveElementToMouse(UI_element* element)
 		App->input->GetMousePosition(x, y);
 		int win_w = App->win->width;
 		int win_h = App->win->height;
-		if (x + element->section.w > win_w)
+		if (x + (element->section.w*w_stretch) > win_w)
 		{
-			x -= ((x + element->section.w) - win_w);
+			x -= ((x + (element->section.w*w_stretch)) - win_w);
 		}
 		x = x;
-		y -= element->section.h;
+		y -= element->section.h*h_stretch;
 		if (y < 0)
 		{
 			y = 0;
 		}
-		element->localPosition = { x, y };
+		element->localPosition = { (int)(x/w_stretch), (int)(y/h_stretch) };
 	}
 }

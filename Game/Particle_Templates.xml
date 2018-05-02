@@ -13,10 +13,10 @@
 		<type value="2"/>
 		<anim>
 			<loop value="true"/>
-			<speed value="0.3"/>
+			<speed value="5"/>
 			<pushback x="959" y="17" w="20" h="20"/>
 			<pushback x="989" y="17" w="20" h="20"/>
-			<pushback x="1200" y="17" w="20" h="20"/>
+			<pushback x="1020" y="17" w="20" h="20"/>
 
 		</anim>
 	</template>

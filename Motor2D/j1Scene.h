@@ -10,6 +10,7 @@ class LifeBar;
 class Building;
 struct worker;
 
+
 #define INIT_WOOD 50000
 #define INIT_GOLD 500
 #define INIT_OIL 100

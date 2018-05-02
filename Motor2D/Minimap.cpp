@@ -3,6 +3,7 @@
 #include "j1Render.h"
 #include "j1Input.h"
 #include "p2Log.h"
+#include "j1Gui.h"
 
 Minimap::Minimap(const char* base_texture_path, int _window_position_x, int _window_position_y, int _width, int _height, int tex_width, int tex_height)
 {
@@ -135,7 +136,7 @@ void Minimap::DrawMinimap()
 	//we create the texture
 	SDL_Texture* texture_to_blit = SDL_CreateTextureFromSurface(App->render->renderer, manipulable);
 	// we blit it
-	App->render->Blit(texture_to_blit,window_position_x - App->render->camera.x, window_position_y - App->render->camera.y);
+	App->render->Blit(texture_to_blit,window_position_x, window_position_y, nullptr, false, true);
 	//free everything to avoid leaks
 	SDL_DestroyTexture(texture_to_blit);
 	SDL_FreeSurface(manipulable);
@@ -190,11 +191,16 @@ void Minimap::Mouse_to_map(int& map_x, int& map_y)// returns -1 in the variables
 	int mouse_x, mouse_y;
 	App->input->GetMousePosition(mouse_x, mouse_y);
 
-	if (	mouse_x > window_position_x && mouse_x < window_position_x + width
-		&&	mouse_y > window_position_y && mouse_y < window_position_y + height)
+	SDL_Rect section = { window_position_x, window_position_y, width, height };
+	section.x *= App->gui->w_stretch;
+	section.y *= App->gui->h_stretch;
+	section.w *= App->gui->w_stretch;
+	section.h *= App->gui->h_stretch;
+	if (	mouse_x > section.x && mouse_x < section.x + section.w
+		&&	mouse_y > section.y && mouse_y < section.y + section.h)
 	{
-		map_x = (mouse_x - window_position_x)/ ratio_x;
-		map_y = (mouse_y - window_position_y) / ratio_y;
+		map_x = (mouse_x - section.x)/ (ratio_x*App->gui->w_stretch);
+		map_y = (mouse_y - section.y) / (ratio_y*App->gui->h_stretch);
 	}
 	else
 	{

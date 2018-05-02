@@ -7,6 +7,7 @@ Animation::Animation(Animation& anim)
 
 	for (int i = 0; i < anim.last_frame; i++)
 	{
+		
 		PushBack(anim.frames[i]);
 	}
 }

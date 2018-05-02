@@ -52,7 +52,8 @@ bool j1WaveController::Start()
 
 void j1WaveController::updateFlowField()
 {
-	if (flow_field_aux) flow_field_aux->finished = true;
+	if (flow_field_aux) flow_field_aux->used_by = 0;
+
 	iPoint TownHall_pos = TOWN_HALL_POS;
 	TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
 	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
@@ -76,20 +77,31 @@ bool j1WaveController::Update(float dt)
 		Generate_Wave();
 	}
 
+	if (App->entitycontroller->debug)
+		flow_field->DebugDraw();
+
 	return true;
 }
 
 bool j1WaveController::PostUpdate()
 {
 	BROFILER_CATEGORY("WaveController postupdate", Profiler::Color::Maroon);
-	if (flow_field_aux ? flow_field_aux->stage == COMPLETED : false)
+	if (flow_field_aux)
 	{
-		for (int i = 0; i < flow_field->width; i++)
+		if (flow_field_aux->stage == FAILED)
+			updateFlowField();
+		else if (flow_field_aux->stage == COMPLETED)
 		{
-			for (int j = 0; j < flow_field->height; j++)
-				flow_field->field[i][j] = flow_field_aux->field[i][j];
+			for (int i = 0; i < flow_field->width; i++)
+			{
+				for (int j = 0; j < flow_field->height; j++)
+				{
+					flow_field->field[i][j].parent = &flow_field->field[flow_field_aux->field[i][j].parent->position.x][flow_field_aux->field[i][j].parent->position.y];
+				}
+			}
+			flow_field_aux->used_by = 0;
+			flow_field_aux = nullptr;
 		}
-		flow_field_aux->finished = true;
 	}
 	return true;
 }
@@ -126,7 +138,7 @@ void j1WaveController::Generate_Next_Wave()
 	
 	for (int i = 0; i < wave_score; i++)
 	{
-		int enemy = rand() % ((AXE_THROWER - GRUNT) + 1);    //   (last_enemy_type - first_enemy_type)
+		int enemy = rand() % ((JUGGERNAUT - GRUNT) + 1);    //   (last_enemy_type - first_enemy_type)
 		int position = rand() % spawns.size();
 
 		next_wave.push_back(new NextWave((Type)(GRUNT + enemy), spawns[position]));
@@ -144,7 +156,7 @@ void j1WaveController::Generate_Wave()
 		App->uiscene->minimap->AddAlert((*it)->spawn.x, (*it)->spawn.y, 5, alert_type::DANGER);
 
 
-		AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->commander, TOWN_HALL_POS);
+		AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->getCommander(), TOWN_HALL_POS);
 		new_atk_order->flow_field = flow_field;
 		squad->commands.push_back(new_atk_order);
 	}

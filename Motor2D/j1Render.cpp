@@ -4,6 +4,7 @@
 #include "j1Window.h"
 #include "j1Render.h"
 #include "j1Input.h"
+#include "j1Gui.h"
 
 #define VSYNC true
 
@@ -131,17 +132,23 @@ void j1Render::ResetViewPort()
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, bool use_camera, SDL_RendererFlip flip, float speed, double angle, int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, bool use_camera, bool isUI, float scale, SDL_RendererFlip flip, float speed, double angle, int pivot_x, int pivot_y) const
 {
-	uint scale = App->win->GetScale();
+	uint win_scale = App->win->GetScale();
 
 	SDL_Rect rect;
-	rect.x = x * scale;
-	rect.y = y * scale;
+	rect.x = x * win_scale * scale;
+	rect.y = y * win_scale * scale;
+	if (isUI)
+	{
+		rect.x *= App->gui->w_stretch;
+		rect.y *= App->gui->h_stretch;
+	}
+
 	if (use_camera)
 	{
-		rect.x = (int)(camera.x * speed) + x * scale;
-		rect.y = (int)(camera.y * speed) + y * scale;
+		rect.x = (int)(camera.x * speed) + x * win_scale;
+		rect.y = (int)(camera.y * speed) + y * win_scale;
 	}
 
 	if(!section)		
@@ -152,8 +159,14 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		rect.h = section->h;
 	}
 
-	rect.w *= scale;
-	rect.h *= scale;
+	rect.w *= win_scale * scale;
+	rect.h *= win_scale * scale;
+
+	if (isUI)
+	{
+		rect.w *= App->gui->w_stretch;
+		rect.h *= App->gui->h_stretch;
+	}
 
 	SDL_Point* p = NULL;
 
@@ -174,20 +187,35 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	return true;
 }
 
-bool j1Render::DrawQuad(SDL_Rect rect, Color& color, bool filled, bool use_camera) const
+bool j1Render::DrawQuad(SDL_Rect rect, Color& color, bool filled, bool use_camera, bool isUI, float scale) const
 {
-	uint scale = App->win->GetScale();
+	uint win_scale = App->win->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
 	if(use_camera)
 	{
-		rect.x = (int)(camera.x + rect.x * scale);
-		rect.y = (int)(camera.y + rect.y * scale);
-		rect.w *= scale, rect.h *= scale;
+		rect.x = (int)(camera.x + rect.x * win_scale);
+		rect.y = (int)(camera.y + rect.y * win_scale);		
+	}
+	else
+	{
+		rect.x *= win_scale * scale;
+		rect.y *= win_scale * scale;
+		if (isUI)
+		{
+			rect.x *= App->gui->w_stretch;
+			rect.y *= App->gui->h_stretch;
+		}
 	}
 
+	rect.w *= win_scale * scale, rect.h *= win_scale * scale;
+	if (isUI)
+	{
+		rect.w *= App->gui->w_stretch;
+		rect.h *= App->gui->h_stretch;
+	}
 	if((filled) ? SDL_RenderFillRect(renderer, &rect) : SDL_RenderDrawRect(renderer, &rect))
 	{
 		LOG("Cannot draw quad to screen. DrawQuad error: %s", SDL_GetError());

@@ -20,6 +20,7 @@ class Quadtree;
 #define WOOD_PER_WORKER 2
 #define REPAIR_COST 10
 #define REPAIR_COOLDOWN 30
+#define UNIT_QUEUE_MAX_SIZE 6
 
 struct worker
 {
@@ -33,6 +34,11 @@ struct worker
 		working_at = nullptr;
 		to_destroy = false;
 	}
+};
+
+struct Forest
+{
+	std::list<iPoint> trees;
 };
 
 class j1EntityController : public j1Module
@@ -51,8 +57,9 @@ public:
 
 	bool loadEntitiesDB(pugi::xml_node& data);
 
-	void DeleteEntity(Entity* entity);
-	bool DeleteDB() { return true; };
+	void DeleteEntity(uint UID);
+	void DeleteSquad(uint UID);
+	void DeleteDB();
 
 	Unit* addUnit(iPoint pos, Type type, Squad* squad = nullptr);
 	Hero* addHero(iPoint pos, Type type);
@@ -75,6 +82,8 @@ public:
 	void GetTotalIncome();
 	void TownHallLevelUp();
 
+	Entity* getEntitybyID(uint ID);
+	Squad* getSquadbyID(uint ID);
 
 	Unit* getUnitFromDB(Type type);
 	Hero* getHeroFromDB(Type type);
@@ -82,7 +91,6 @@ public:
 
 	Entity* CheckMouseHover(iPoint mouse_world);
 	void CheckCollidingWith(SDL_Rect collider, std::vector<Entity*>& list_to_fill, Entity* entity_to_ignore = nullptr);
-	Entity* getNearestEnemy(fPoint position, bool isEnemy);
 
 	//------Worker Related Functions--------
 	void SubstractRandomWorkers(int num);
@@ -94,6 +102,7 @@ public:
 	void DestroyWorkers();
 	void UnassignRandomWorker();
 
+	bool CreateForest(MapLayer* trees);
 
 public:
 
@@ -103,12 +112,17 @@ public:
 	std::list<Squad*> squads;
 	std::list<Squad*> selected_squads;
 
-	std::list<Entity*> entities_to_destroy;
+	std::vector<uint> entities_to_destroy;
+	std::vector<uint> squads_to_destroy;
 
 	std::map<uint, Entity*> DataBase;
 
+	std::list<Forest*> forests;
+
 	uint last_UID = 0;
 	uint hero_UID = 0;
+
+	Building* town_hall = nullptr;
 /*
 	j1Timer time_slicer;
 	std::list<Entity*>::iterator entity_iterator;
@@ -121,7 +135,6 @@ public:
 	Type to_build_type = NONE_ENTITY;
 	SDL_Rect selection_rect = { 0,0,0,0 };
 
-	Hero* hero = nullptr;
 };
 #endif // !
 

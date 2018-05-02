@@ -74,21 +74,21 @@ void IngameMenu::updateActionButtons()
 	}
 }
 
-void IngameMenu::BlitElement(bool use_camera)
+void IngameMenu::BlitElement()
 {
 	BROFILER_CATEGORY("In-game Menu Blit", Profiler::Color::Beige);
 
 	//Blit window
-	window->BlitElement(use_camera);
+	window->BlitElement();
 
 	//Blit selection display
-	selectionDisplay->BlitElement(use_camera);
+	selectionDisplay->BlitElement();
 
 	//Blit action butons
 	for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
 	{
 		if ((*it_b)->active)
-			(*it_b)->BlitElement(use_camera);
+			(*it_b)->BlitElement();
 	}
 
 	//Blit info table
@@ -98,11 +98,11 @@ void IngameMenu::BlitElement(bool use_camera)
 	//Blit workers on Lumber Mill
 	if (workers_title != nullptr && workers != nullptr && App->entitycontroller->selected_entities.size() > 0 && App->entitycontroller->selected_entities.front()->type == LUMBER_MILL)
 	{
-		workers_title->BlitElement(use_camera);
+		workers_title->BlitElement();
 		int workers_num = ((Building*)App->entitycontroller->selected_entities.front())->workers_inside.size();
 		std::string text = std::to_string(workers_num) + '/' + std::to_string(MAX_VILLAGERS_LUMBERMILL);
 		workers->setText(text);
-		workers->BlitElement(use_camera);
+		workers->BlitElement();
 	}
 }
 

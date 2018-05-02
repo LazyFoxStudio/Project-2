@@ -60,7 +60,7 @@ void WarningMessages::hideMessage(message_type type)
 		active = false;
 }
 
-void WarningMessages::BlitElement(bool use_camera)
+void WarningMessages::BlitElement()
 {
 	App->gui->moveElementToMouse(this);
 
@@ -71,7 +71,7 @@ void WarningMessages::BlitElement(bool use_camera)
 		{
 			warnings.at(i)->localPosition.x = localPosition.x;
 			warnings.at(i)->localPosition.y = localPosition.y - (warnings.at(i)->section.h*counterY);
-			warnings.at(i)->BlitElement(use_camera);
+			warnings.at(i)->BlitElement();
 			counterY++;
 		}
 	}

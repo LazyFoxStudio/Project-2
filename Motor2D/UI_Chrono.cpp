@@ -17,15 +17,9 @@ void Chrono::setAlarm(int alarm)
 void Chrono::restartChrono()
 {
 	counter.Start();
-	switch (this->type)
+	if (type == TIMER)
 	{
-	case TIMER:
-		time = start_value;
 		text->setColor(default_color);
-		break;
-	case STOPWATCH:
-		time = 0;
-		break;
 	}
 }
 
@@ -40,12 +34,12 @@ void Chrono::Blink()
 		if (text->color.r == 255 && text->color.g == 255 && text->color.b == 255)
 			text->setColor({ 255,0,0,255 });
 		else
-			text->setColor({ 255,255,255,255 });
+			text->setColor(default_color);
 		last_blink = counter.Read();
 	}
 }
 
-void Chrono::BlitElement(bool use_camera)
+void Chrono::BlitElement()
 {
 	if (active)
 	{
@@ -78,9 +72,7 @@ void Chrono::BlitElement(bool use_camera)
 				last_secs = secs;
 			}
 			break;
-		case TIMER:
-			if (time <= 5)
-				Blink();
+		case TIMER:			
 			if (start_value - time_elapsed != time && time != 0)
 			{
 				time = start_value - time_elapsed;
@@ -101,11 +93,13 @@ void Chrono::BlitElement(bool use_camera)
 				section = text->section;
 				last_secs = secs;
 			}
+			if (time <= 5)
+				Blink();
 			break;
 		}
 
 		text->BlitElement();
 
-		UI_element::BlitElement(use_camera);
+		UI_element::BlitElement();
 	}
 }

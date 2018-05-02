@@ -65,6 +65,7 @@ bool j1Scene::Start()
 	gameData = App->LoadFile(doc, "GameData.xml");
 	loadGameDB(gameData);
 	//App->entitycontroller->addUnit({ 2000, 2200 }, KNIGHT);
+	//App->entitycontroller->AddSquad(FOOTMAN, { 2000,2200 });
 
 	return true;
 }
@@ -96,33 +97,6 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
 		App->entitycontroller->UnassignRandomWorker();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
-	{
-		// 0-90
-		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 600,500 }, 100);
-		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 600,550 }, 100);
-		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 600,600 }, 100);
-		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 550,600 }, 100);
-
-		// 90-180
-		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 500,600 }, 100);
-		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 450,600 }, 100);
-		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 400,600 }, 100);
-		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 400,550 }, 100);
-
-		// 180-270
-		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 400,500 }, 100);
-		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 400,450 }, 100);
-		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 400,400 }, 100);
-		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 450,400 }, 100);
-
-		// 270-360
-		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 500,400 }, 100);
-		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 550,400 }, 100);
-		App->particle->AddProjectile(particleType::TOMAHAWK, { 500,500 }, { 600,400 }, 100);
-		App->particle->AddProjectile(particleType::ARROW, { 500,500 }, { 600,450 }, 100);
-
 	}
 
 	workers_int = workers.size();
@@ -190,39 +164,28 @@ void j1Scene::Restart_game()
 {
 
 	//DELETING ENTITIES-------------------------------------------------------
-	std::list<Entity*>::iterator it = App->entitycontroller->entities.begin();
-	while (it != App->entitycontroller->entities.end() && !App->entitycontroller->entities.empty() && (*it) != nullptr)
+	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
 	{
-		App->entitycontroller->DeleteEntity(*it);
-		it++;
+		App->gui->entityDeleted(*it);
+		App->entitycontroller->DeleteEntity((*it)->UID);
 	}
 
-	for (std::list<Squad*>::iterator it = App->entitycontroller->squads.begin(); it != App->entitycontroller->squads.end() && !App->entitycontroller->squads.empty() && (*it) != nullptr; it++)
-	{
-		if ((*it)->units.empty())
-		{/*
-			if (*App->entitycontroller->squad_iterator == (*it))
-				App->entitycontroller->squad_iterator = App->entitycontroller->all_squads.begin();*/
+	for (std::list<Squad*>::iterator it = App->entitycontroller->squads.begin(); it != App->entitycontroller->squads.end(); it++)
+		App->entitycontroller->DeleteSquad((*it)->UID);
 
-			App->entitycontroller->selected_squads.remove(*it);
-			Squad* squad = (*it);
-			App->entitycontroller->squads.remove(*it);
-
-			RELEASE(squad);
-		}
-	}
+	App->entitycontroller->last_UID = 0;
 
 	//CLEANING ENTITY LISTS---------------------------------------------------
-	App->entitycontroller->entities_to_destroy.clear();
-	App->entitycontroller->entities.clear();
 	App->entitycontroller->selected_entities.clear();
+	App->entitycontroller->selected_squads.clear();
+	App->entitycontroller->entities.clear();
 	App->entitycontroller->squads.clear();
-	App->entitycontroller->selected_squads.clear();/*
+		/*
 	App->entitycontroller->entity_iterator = App->entitycontroller->entities.begin();
 	App->entitycontroller->squad_iterator = App->entitycontroller->squads.begin();*/
 
 	//SATARTING ENTITIES-------------------------------------------------------
-	App->entitycontroller->hero = App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
+	App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	Building* town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
@@ -299,4 +262,7 @@ void j1Scene::loadGameDB(pugi::xml_node& data)
 
 	//Load action buttons
 	App->gui->LoadActionButtonsDB(data);
+
+	//Load workers display
+	App->gui->LoadWorkersDisplayDB(data);
 }

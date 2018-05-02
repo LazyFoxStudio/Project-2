@@ -64,7 +64,7 @@ void Text::setOutlineColor(SDL_Color newColor)
 		createTexture();
 }
 
-void Text::BlitElement(bool use_camera)
+void Text::BlitElement()
 {
 	if (active)
 	{
@@ -101,17 +101,17 @@ void Text::BlitElement(bool use_camera)
 			{
 				SDL_Rect rect = { globalPos.x -4 , globalPos.y - 1, section.w + 5, section.h +5};
 				Color bckg_color = { background_color.r, background_color.g, background_color.b, background_color.a };
-				App->render->DrawQuad(rect, bckg_color, true, use_camera);
+				App->render->DrawQuad(rect, bckg_color, true, use_camera, true);
 			}
 			if (outlined)
 			{
 				SDL_SetTextureAlphaMod(outline, App->gui->alpha_value);
-				App->render->Blit(outline, globalPos.x + outline_offset.x, globalPos.y + outline_offset.y, NULL, use_camera);
+				App->render->Blit(outline, globalPos.x + outline_offset.x, globalPos.y + outline_offset.y, NULL, use_camera, true);
 			}
-			App->render->Blit(texture, globalPos.x, globalPos.y, NULL, use_camera);
+			App->render->Blit(texture, globalPos.x, globalPos.y, NULL, use_camera, true);
 		}
 
-		UI_element::BlitElement(use_camera);
+		UI_element::BlitElement();
 	}
 }
 

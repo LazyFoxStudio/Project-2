@@ -7,6 +7,11 @@
 #include "j1Scene.h"
 #include "j1Audio.h"
 #include "UI_Chrono.h"
+#include "UI_InfoTable.h"
+#include "UI_WorkersDisplay.h"
+#include "UI_TroopCreationQueue.h"
+#include "UI_FarmWorkersManager.h"
+#include "UI_CooldownsDisplay.h"
 
 Building::Building(iPoint pos, Building& building)
 {
@@ -46,17 +51,37 @@ Building::Building(iPoint pos, Building& building)
 	timer.Start();
 }
 
+Building::~Building()
+{
+	sprites.clear();
+	//Should be cleared just once with the DB
+	//RELEASE(infoData);
+	App->gui->deleteElement(queueDisplay);
+	App->gui->deleteElement(workersDisplay);
+}
+
 
 bool Building::Update(float dt)
 {
-	//minimap_
-	if (App->uiscene->minimap) 
+	if (isSelected)
 	{
-		if(ex_state != DESTROYED)	App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
+		if (queueDisplay != nullptr)
+			queueDisplay->active = true;
+	}
+	else
+	{
+		if (queueDisplay != nullptr)
+			queueDisplay->active = false;
+	}
+
+	//minimap_
+	if (App->uiscene->minimap)
+	{
+		if (ex_state != DESTROYED)	App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
 		else						App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
 	}
 
-	if(current_HP <= 0 && ex_state != DESTROYED)   Destroy();
+	if (current_HP <= 0 && ex_state != DESTROYED)   Destroy();
 
 	switch (ex_state)
 	{
@@ -71,11 +96,15 @@ bool Building::Update(float dt)
 			HandleResourceProduction();
 		else if (type == FARM)
 			HandleWorkerProduction();
+		else if (type == BARRACKS || type == GNOME_HUT || type == CHURCH)
+		{
+			HandleUnitProduction();
+		}
 		break;
-		
+
 	case DESTROYED:
 		if (timer.ReadSec() > DEATH_TIME)
-			App->entitycontroller->entities_to_destroy.push_back(this);
+			App->entitycontroller->entities_to_destroy.push_back(UID);
 
 		break;
 	}
@@ -92,7 +121,12 @@ void Building::Destroy()
 {
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
+	isSelected = false;
 	current_sprite = &sprites[RUIN];
+	if (workersDisplay != nullptr)
+		workersDisplay->active = false;
+	if (queueDisplay != nullptr)
+		queueDisplay->active = false;
 
 	switch (type)
 	{
@@ -115,11 +149,13 @@ void Building::Destroy()
 		App->audio->PlayMusic(DEFEAT_THEME);
 		current_sprite = &sprites[4];
 		App->gui->Chronos->counter.PauseTimer();
+		App->gui->cooldownsDisplay->Reset();
 		App->scene->toRestart = true;
 		App->scene->Restart_timer.Start();
 		App->uiscene->toggleMenu(true, GAMEOVER_MENU);
 		break;
 	}
+
 
 	timer.Start();
 	App->gui->entityDeleted(this);
@@ -132,7 +168,6 @@ void Building::HandleConstruction()
 	if (current_time >= cost.creation_time)
 	{
 		current_HP = max_HP;
-		
 		
 		if (type == FARM)
 		{
@@ -169,6 +204,39 @@ void Building::HandleResourceProduction()
 		if(!App->map->WalkabilityArea(position.x - (additional_size.x * App->map->data.tile_width / 2) + collider.w / 2, (position.y - (additional_size.x * App->map->data.tile_width / 2)) + collider.h / 2, additional_size.x, additional_size.y, false, true))
 			App->scene->wood += resource_production;
 	}
+}
+
+void Building::AddUnitToQueue(Type type)
+{
+	unit_queue.push_back(type);
+	queueDisplay->pushTroop(type);
+	if (unit_queue.size() == 1)
+	{
+		producing_unit = true;
+		timer.Start();
+	}
+}
+
+void Building::HandleUnitProduction()
+{
+	if (unit_queue.size() > 0)
+	{
+		if (timer.ReadSec() >= App->entitycontroller->DataBase[unit_queue.front()]->cost.creation_time)
+		{
+			fPoint newSquadPos = { position.x, position.y + collider.h };
+			App->entitycontroller->AddSquad(unit_queue.front(), newSquadPos);
+			unit_queue.pop_front();
+			if (unit_queue.size() == 0)
+			{
+				producing_unit = false;
+			}
+			else
+			{
+				timer.Start();
+			}
+		}
+	}
+
 }
 
 void Building::CalculateResourceProduction()

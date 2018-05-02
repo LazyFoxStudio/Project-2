@@ -18,7 +18,7 @@ public:
 	~Button()
 	{}
 
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
 	void displayHotkey(bool display, _TTF_Font* font = nullptr);
 	void setHotkey(SDL_Scancode hotkey);
 	SDL_Scancode getHotkey() const;

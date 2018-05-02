@@ -36,7 +36,7 @@ public:
 		delete text;
 	}
 
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
 	void setStartValue(int new_start_value);
 	void setAlarm(int alarm);
 	void restartChrono();

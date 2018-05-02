@@ -12,6 +12,7 @@ class Image;
 class LifeBar;
 class Entity;
 class Squad;
+class Text;
 
 struct TroopIcon
 {
@@ -56,14 +57,14 @@ struct SquadDisplay
 
 	void Draw();
 
+	bool active = true;
 	std::vector<TroopIcon*> troopIcons;
 };
 
 class SelectionDisplay : public UI_element
 {
 public:
-	SelectionDisplay(): UI_element(0,0,element_type::WINDOW, {0,0,0,0}, nullptr)
-	{}
+	SelectionDisplay();
 	~SelectionDisplay();
 
 	void newSelection();
@@ -71,13 +72,15 @@ public:
 	void cleanLists();
 	void deleteDisplay(Entity* entity);
 
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
+	void setAdditionalSquads();
 
 public:
 
 	std::list<TroopDisplay*> troops; //Being created/destroyed
 	std::list<SquadDisplay*> squads; //Being created/destroyed
 
+	Text* moreSquads = nullptr;
 	bool severalSquads = false;
 };
 

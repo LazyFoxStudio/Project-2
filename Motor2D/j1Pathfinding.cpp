@@ -3,6 +3,7 @@
 #include "j1PathFinding.h"
 #include "j1EntityController.h"
 #include "j1Map.h"
+#include "j1Render.h"
 #include "SDL/include/SDL.h"
 
 j1PathFinding::j1PathFinding() : j1Module(), map(nullptr),width(0), height(0)
@@ -27,7 +28,7 @@ bool j1PathFinding::PostUpdate()
 	if (!path_pool.empty())
 	{
 		for (std::list<PathProcessor*>::iterator it = path_pool.begin(); it != path_pool.end(); it++)
-			if ((*it)->flow_field->finished) { path_pool.erase(it); it--; }
+			if ((*it)->flow_field->used_by == 0) { RELEASE(*it);  path_pool.erase(it); it--; }
 
 		timer.Start();
 		for (std::list<PathProcessor*>::iterator it = path_pool.begin(); it != path_pool.end(); it++)
@@ -363,6 +364,20 @@ void FlowField::ClearTo(int value)
 	
 }
 
+void FlowField::DebugDraw()
+{
+	for (int x = 0; x < width; x++)
+		for (int y = 0; y < height; y++)
+		{
+			if (field[x][y].parent)
+			{
+				iPoint world_pos_1 = App->map->MapToWorld(field[x][y].position.x, field[x][y].position.y);
+				iPoint world_pos_2 = App->map->MapToWorld(field[x][y].parent->position.x, field[x][y].parent->position.y);
+				App->render->DrawLine(world_pos_1.x, world_pos_1.y, world_pos_2.x, world_pos_2.y, Blue);
+			}
+		}
+}
+
 FieldNode* FlowField::getNodeAt(iPoint p) 
 {
 	if (App->pathfinding->CheckBoundaries(p))
@@ -375,6 +390,7 @@ FlowField* j1PathFinding::RequestFlowField(iPoint destination)
 {
 	PathProcessor* pp = new PathProcessor(destination);
 	App->pathfinding->path_pool.push_back(pp);
+	pp->flow_field->used_by++;
 	return pp->flow_field;
 }
 

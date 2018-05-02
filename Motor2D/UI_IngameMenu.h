@@ -24,7 +24,7 @@ public:
 
 	void updateActionButtons();
 
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
 
 	UI_element* getMouseHoveringElement();
 

@@ -3,33 +3,39 @@
 #include "j1Render.h"
 #include "Brofiler\Brofiler.h"
 
-void Button::BlitElement(bool use_camera)
+void Button::BlitElement()
 {
 	if (active)
 	{
+		SDL_RendererFlip flip = SDL_FLIP_NONE;
+		if (flipHorizontal)
+			flip = SDL_FLIP_HORIZONTAL;
+		else if (flipVertical)
+			flip = SDL_FLIP_VERTICAL;
+
 		BROFILER_CATEGORY("Button Blit", Profiler::Color::DarkKhaki);
 		iPoint globalPos = calculateAbsolutePosition();
 		switch (state)
 		{
 		case STANDBY:
-			App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera, true, 1.0f, flip);
 			break;
 		case MOUSEOVER:
-			App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouse, use_camera);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouse, use_camera, true, 1.0f, flip);
 			break;
 		case LOCKED:
 		case LOCKED_MOUSEOVER:
 		case CLICKED:
-			App->render->Blit(texture, globalPos.x, globalPos.y, &OnClick, use_camera);
+			App->render->Blit(texture, globalPos.x, globalPos.y, &OnClick, use_camera, true, 1.0f, flip);
 			break;
 		}
 
 		if (displayingHotkey && hotkey_text != nullptr)
 		{
-			hotkey_text->BlitElement(use_camera);
+			hotkey_text->BlitElement();
 		}
 
-		UI_element::BlitElement(use_camera);
+		UI_element::BlitElement();
 	}
 }
 

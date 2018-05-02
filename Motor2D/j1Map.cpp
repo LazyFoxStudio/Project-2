@@ -9,6 +9,7 @@
 #include "j1Scene.h"
 #include "j1Map.h"
 #include "Color.h"
+#include "j1EntityController.h"
 #include <math.h>
 
 j1Map::j1Map() { name = "map"; }
@@ -21,6 +22,8 @@ void j1Map::Draw()
 	iPoint starting_tile = App->map->WorldToMap(App->render->culling_camera.x, App->render->culling_camera.y);
 	iPoint last_tile = { starting_tile.x + (App->render->culling_camera.w / data.tile_width), starting_tile.y + (App->render->culling_camera.h / data.tile_height) };
 
+	if (starting_tile.x < 0) starting_tile.x = 0;
+	if (starting_tile.y < 0) starting_tile.y = 0;
 
 	for (uint b = 0; b < data.tilesets.size(); b++)
 		for (uint i = starting_tile.y; i < last_tile.y; i++)
@@ -28,12 +31,14 @@ void j1Map::Draw()
 			{
 				// TODO
 				int tile_id = data.layers[0]->GetID(j, i);
+				if (tile_id != 0)
+				{
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
+					SDL_Rect r = tileset->GetTileRect(tile_id);
+					iPoint tileWorld = MapToWorld(j, i);
 
-				TileSet* tileset = GetTilesetFromTileId(tile_id);
-				SDL_Rect r = tileset->GetTileRect(tile_id);
-				iPoint tileWorld = MapToWorld(j, i);
-
-				App->render->Blit(tileset->texture, tileWorld.x, tileWorld.y, &r);
+					App->render->Blit(tileset->texture, tileWorld.x, tileWorld.y, &r);
+				}
 
 				tile_id = data.layers[1]->GetID(j, i);
 				if (tile_id > 0)
@@ -113,6 +118,18 @@ bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bo
 					tree_layer = layer;
 					break;
 				}
+			}
+		}
+
+		//give me the layer
+		for (int i = 0; i < data.layers.size(); i++)
+		{
+			MapLayer* layer = data.layers[i];
+
+			if (layer->name == "Resources")
+			{
+				App->entitycontroller->CreateForest(data.layers[i]);
+				break;
 			}
 		}
 

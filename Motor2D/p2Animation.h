@@ -27,7 +27,7 @@ private:
 	float current_frame = 0;
 	int last_frame = 0;
 	int loops = 0;
-	bool last_loop = 0;
+	int last_loop = 0;
 
 public:
 	Animation() {};

@@ -18,7 +18,7 @@ public:
 	~Image()
 	{}
 
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
 
 	void setBorder(bool border, Color color = White, int thickness = 4);
 

@@ -6,16 +6,24 @@
 #include "j1WaveController.h"
 #include "UI_Image.h"
 #include "j1EntityController.h"
+#include "UI_Button.h"
 
-NextWaveWindow::NextWaveWindow(SDL_Texture* atlas, SDL_Texture* icon_atlas, int x, int y, SDL_Rect section, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, j1Module* callback): UI_element(x, y, MENU, section, callback, atlas),
+NextWaveWindow::NextWaveWindow(SDL_Texture* atlas, SDL_Texture* icon_atlas, Button* button, int x, int y, int min_x, int min_y, SDL_Rect section, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, j1Module* callback): UI_element(x, y, MENU, section, callback, atlas),
 firstIcon_pos({firstIcon_posX, firstIcon_posY}),
 icons_offset({icons_offsetX, icons_offsetY}),
-icon_atlas(icon_atlas)
+icon_atlas(icon_atlas),
+button(button),
+default_pos({x,y}),
+minimized_pos({min_x, min_y})
 {
-	window = new Window(texture, x, y, section, callback);
-	text = new Text("Next Wave in:", x+10, y+4, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
-	timer = new Chrono(x+200, y+4, TIMER, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
+	window = new Window(texture, 0, 0, section, callback);
+	window->parent = this;
+	text = new Text("Next Wave in:", 10, 4, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
+	text->parent = this;
+	timer = new Chrono(150, 4, TIMER, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
+	timer->parent = this;
 	timer->setStartValue(App->wavecontroller->initial_wait);
+	button->parent = this;
 }
 
 NextWaveWindow::~NextWaveWindow()
@@ -23,29 +31,39 @@ NextWaveWindow::~NextWaveWindow()
 	RELEASE(window);
 	RELEASE(text);
 	RELEASE(timer);
+	RELEASE(button);
 
 	cleanIcons();
 }
 
-void NextWaveWindow::BlitElement(bool use_camera)
+void NextWaveWindow::BlitElement()
 {
-	window->BlitElement(use_camera);
-	text->BlitElement(use_camera);
-	timer->BlitElement(use_camera);
+	if (timer->time == 10 && minimized)
+		toggle();
+
+	window->BlitElement();
+	text->BlitElement();
+	timer->BlitElement();
+	if (!minimized)
+		button->flipVertical = true;
+	else
+		button->flipVertical = false;
+	button->BlitElement();
 
 	for (std::list<TroopIcon*>::iterator it_i = enemiesIcons.begin(); it_i != enemiesIcons.end(); it_i++)
 	{
-		(*it_i)->image->BlitElement(use_camera);
+		(*it_i)->image->BlitElement();
 	}
 
 	for (std::list<Text*>::iterator it_t = squads.begin(); it_t != squads.end(); it_t++)
 	{
-		(*it_t)->BlitElement(use_camera);
+		(*it_t)->BlitElement();
 	}
 }
 
 void NextWaveWindow::updateWave()
 {
+	counterX = counterY = 0;
 	if (App->wavecontroller->current_wave > 0 && timer->start_value == App->wavecontroller->initial_wait)
 		timer->setStartValue(App->wavecontroller->wait_between_waves);
 
@@ -53,10 +71,12 @@ void NextWaveWindow::updateWave()
 
 	cleanIcons();
 
-	int counterX = 0;
-	int counterY = 0;
 	int gruntSquads = 0;
 	int axeThrowerSquads = 0;
+	int deathKnightSquads = 0;
+	int dragonSquads = 0;
+	int catapultSquads = 0;
+	int juggernautSquads = 0;
 	for (std::list<NextWave*>::iterator it_e = App->wavecontroller->next_wave.begin(); it_e != App->wavecontroller->next_wave.end(); it_e++)
 	{
 		switch ((*it_e)->type)
@@ -67,30 +87,54 @@ void NextWaveWindow::updateWave()
 		case AXE_THROWER:
 			axeThrowerSquads++;
 			break;
+		case DEATH_KNIGHT:
+			deathKnightSquads++;
+			break;
+		case DRAGON:
+			dragonSquads++;
+			break;
+		case CATAPULT:
+			catapultSquads++;
+			break;
+		case JUGGERNAUT:
+			juggernautSquads++;
+			break;
 		}
 	}
-
 	
-	if (gruntSquads > 0)
+	createIncomingEnemy(GRUNT, gruntSquads);
+	createIncomingEnemy(AXE_THROWER, axeThrowerSquads);
+	createIncomingEnemy(DEATH_KNIGHT, deathKnightSquads);
+	createIncomingEnemy(DRAGON, dragonSquads);
+	createIncomingEnemy(CATAPULT, catapultSquads);
+	createIncomingEnemy(JUGGERNAUT, juggernautSquads);
+}
+
+bool NextWaveWindow::createIncomingEnemy(Type type, int amount)
+{
+	bool ret = false;
+	
+	if (amount > 0)
 	{
-		TroopIcon* enemyIcon = new TroopIcon(App->entitycontroller->getUnitFromDB(GRUNT), firstIcon_pos.x + (icons_offset.x*counterX), firstIcon_pos.y + (icons_offset.y*counterY));
+		TroopIcon* enemyIcon = new TroopIcon(App->entitycontroller->getUnitFromDB(type), firstIcon_pos.x + (icons_offset.x*counterX), firstIcon_pos.y + (icons_offset.y*counterY));
+		enemyIcon->image->parent = this;
 		enemiesIcons.push_back(enemyIcon);
 
-		Text* num = new Text(("x" + std::to_string(gruntSquads * App->entitycontroller->getUnitFromDB(GRUNT)->squad_members)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 10, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
+		Text* num = new Text(("x" + std::to_string(amount * App->entitycontroller->getUnitFromDB(type)->squad_members)), firstIcon_pos.x + (icons_offset.x*counterX) + 80, firstIcon_pos.y + (icons_offset.y*counterY) + 10, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
+		num->parent = this;
 		squads.push_back(num);
-
+		
 		counterY++;
-	}
-	if (axeThrowerSquads > 0)
-	{
-		TroopIcon* enemyIcon = new TroopIcon(App->entitycontroller->getUnitFromDB(AXE_THROWER), firstIcon_pos.x + (icons_offset.x*counterX), firstIcon_pos.y + (icons_offset.y*counterY));
-		enemiesIcons.push_back(enemyIcon);
+		if (counterY == 3)
+		{
+			counterY = 0;
+			counterX++;
+		}
 
-		Text* num = new Text(("x" + std::to_string(axeThrowerSquads * App->entitycontroller->getUnitFromDB(AXE_THROWER)->squad_members)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 15, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
-		squads.push_back(num);
-
-		counterY++;
+		ret = true;
 	}
+
+	return ret;
 }
 
 void NextWaveWindow::cleanIcons()
@@ -110,4 +154,24 @@ void NextWaveWindow::cleanIcons()
 		it_t++;
 	}
 	squads.clear();
+}
+
+void NextWaveWindow::toggle()
+{
+	minimized = !minimized;
+	if (minimized)
+		localPosition = minimized_pos;
+	else
+		localPosition = default_pos;
+	button->state = STANDBY;
+}
+
+UI_element* NextWaveWindow::getMouseHoveringElement()
+{
+	UI_element* ret = this;
+
+	if (App->gui->checkMouseHovering(button))
+		ret = button;
+
+	return ret;
 }

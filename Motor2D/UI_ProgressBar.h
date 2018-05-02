@@ -21,7 +21,7 @@ public:
 	void setProgress(float newProgress);
 	float getProgress() const;
 	void enterCurrentValue(float current_value);
-	void BlitElement(bool use_camera = false);
+	void BlitElement();
 
 public:
 

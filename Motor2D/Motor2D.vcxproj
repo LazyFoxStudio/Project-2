@@ -14,14 +14,14 @@
     <ProjectGuid>{2AF9969B-F202-497B-AF30-7BEF9CE8005E}</ProjectGuid>
     <RootNamespace>programacio_2</RootNamespace>
     <ProjectName>Project2</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -111,8 +111,10 @@
     <ClCompile Include="Squad.cpp" />
     <ClCompile Include="UI_Button.cpp" />
     <ClCompile Include="UI_Chrono.cpp" />
+    <ClCompile Include="UI_CooldownsDisplay.cpp" />
     <ClCompile Include="UI_CostDisplay.cpp" />
     <ClCompile Include="UI_element.cpp" />
+    <ClCompile Include="UI_FarmWorkersManager.cpp" />
     <ClCompile Include="UI_Image.cpp" />
     <ClCompile Include="UI_InfoTable.cpp" />
     <ClCompile Include="UI_IngameMenu.cpp" />
@@ -121,8 +123,10 @@
     <ClCompile Include="UI_ProgressBar.cpp" />
     <ClCompile Include="UI_SelectionDisplay.cpp" />
     <ClCompile Include="UI_Text.cpp" />
+    <ClCompile Include="UI_TroopCreationQueue.cpp" />
     <ClCompile Include="UI_WarningMessages.cpp" />
     <ClCompile Include="UI_Window.cpp" />
+    <ClCompile Include="UI_WorkersDisplay.cpp" />
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,8 +170,10 @@
     <ClInclude Include="Squad.h" />
     <ClInclude Include="UI_Button.h" />
     <ClInclude Include="UI_Chrono.h" />
+    <ClInclude Include="UI_CooldownsDisplay.h" />
     <ClInclude Include="UI_CostDisplay.h" />
     <ClInclude Include="UI_element.h" />
+    <ClInclude Include="UI_FarmWorkersManager.h" />
     <ClInclude Include="UI_Image.h" />
     <ClInclude Include="UI_InfoTable.h" />
     <ClInclude Include="UI_IngameMenu.h" />
@@ -176,8 +182,10 @@
     <ClInclude Include="UI_ProgressBar.h" />
     <ClInclude Include="UI_SelectionDisplay.h" />
     <ClInclude Include="UI_Text.h" />
+    <ClInclude Include="UI_TroopCreationQueue.h" />
     <ClInclude Include="UI_WarningMessages.h" />
     <ClInclude Include="UI_Window.h" />
+    <ClInclude Include="UI_WorkersDisplay.h" />
     <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>
