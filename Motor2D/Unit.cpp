@@ -34,7 +34,7 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	line_of_sight			= unit.line_of_sight;
 	range					= unit.range;
 
-	AddDamagebuff(10, 100, PLUS_MINUS);
+	AddDamagebuff(10, 100 , MULTIPLICATION_DIVISION);
 
 	for (int i = 0; i < unit.animations.size(); i++)
 		animations.push_back(new Animation(*unit.animations[i]));
@@ -84,7 +84,27 @@ bool Unit::Update(float dt)
 		{
 			(*it)->Remove();
 		}
-	};
+	}
+
+	//remove buffs here
+	//for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+	//{
+	//	LOG("if %f > %f delete",(*it)->timer.ReadSec(), (*it)->duration);
+	//	if ((*it)->timer.ReadSec() > (*it)->duration);
+	//	{
+	//		Effect* to_del = (*it);
+	//		effects.remove(*it);
+	//		RELEASE(to_del);
+	//	}
+	//}
+
+	//apply buffs here
+	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+	{
+		(*it)->Apply();
+		(*it)->applied = true;
+	}
+
 
 	if (current_HP <= 0)
 	{
@@ -93,7 +113,6 @@ bool Unit::Update(float dt)
 		else if (timer.ReadSec() > DEATH_TIME)  return false;
 		return true;
 	}
-
 
 	if (!commands.empty())
 	{
@@ -108,23 +127,6 @@ bool Unit::Update(float dt)
 		else		   App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
 	}
 
-	//remove buffs here
-	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
-	{
-		if ((*it)->started_at + (*it)->duration*1000 < SDL_GetTicks());
-		{
-			Effect* to_del = (*it);
-			effects.remove(*it);
-			RELEASE(to_del);
-		}
-	};
-
-	//apply buffs here
-	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
-	{
-		(*it)->Apply();
-		(*it)->applied = true;
-	};
 
 	Move(dt);
 	

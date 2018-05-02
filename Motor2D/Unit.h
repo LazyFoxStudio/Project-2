@@ -53,7 +53,7 @@ public:
 
 	void AddDamagebuff(int duration,int amount, operation_sign sign)
 	{
-		Effect*  ret = new DamageBuff(duration, amount, this, sign);
+		Effect*  ret = new DamageBuff(amount, duration, this, sign);
 		switch (sign)
 		{
 		case PLUS_MINUS:
