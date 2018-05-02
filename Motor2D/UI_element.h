@@ -24,7 +24,8 @@ enum element_type
 	PROGRESSBAR,
 	MENU,
 	COSTDISPLAY,
-	WORKERSDISPLAY
+	WORKERSDISPLAY,
+	PRODUCTIONDISPLAY
 };
 
 enum element_state

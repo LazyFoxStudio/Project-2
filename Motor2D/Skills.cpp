@@ -5,6 +5,7 @@
 #include "Hero.h"
 #include "j1Pathfinding.h"
 #include "j1Map.h"
+#include "Squad.h"
 
 Skill::Skill(Hero* hero, uint _radius, int _damage, uint _range, uint _cooldown, rangeType _type) : hero(hero), radius(_radius), damage(_damage), range(_range) , cooldown(_cooldown)
 {
@@ -81,9 +82,10 @@ void Skill::Line()
 }
 
 void Skill::Activate()
-{
-	if (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range)
+{ 
+	if (!going && cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range)
 	{
+		going = false;
 		iPoint cast_aux = App->map->WorldToMap(cast_pos.x, cast_pos.y);
 
 		for (std::list<Entity*>::iterator item = App->entitycontroller->entities.begin(); item != App->entitycontroller->entities.end(); item++)
@@ -114,5 +116,57 @@ void Skill::Activate()
 			}
 		}
 		timer.Start();
+	}
+	
+	//HARDCODED Moveto()
+	else if (going && last_cast.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range)
+	{
+		going = false;
+		iPoint cast_aux = App->map->WorldToMap(last_cast.x, last_cast.y);
+
+		for (std::list<Entity*>::iterator item = App->entitycontroller->entities.begin(); item != App->entitycontroller->entities.end(); item++)
+		{
+			if ((*item)->IsEnemy())
+			{
+				if (type == AREA || type == NONE_RANGE)
+				{
+					iPoint pos = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
+
+					if (cast_aux.DistanceTo(pos) < radius)
+						(*item)->current_HP -= damage;
+				}
+				else if (type == LINE)
+				{
+					SDL_Point enemy_pos = { ((Unit*)(*item))->position.x, ((Unit*)(*item))->position.y };
+
+					for (std::list<iPoint>::iterator it = toDraw.begin(); it != toDraw.end(); it++)
+					{
+						iPoint rect_point = App->map->WorldToMap((*it).x, (*it).y);
+						rect_point = App->map->MapToWorld(rect_point.x, rect_point.y);
+						SDL_Rect r = { rect_point.x,rect_point.y,32,32 };
+
+						if (SDL_PointInRect(&enemy_pos, &r))
+							(*item)->current_HP -= damage;
+					}
+				}
+			}
+		}
+		hero->squad->Halt();
+		timer.Start();
+	}
+
+	else if(cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) > range && !going)
+	{
+		//go to that position if it's walkbale
+		last_cast = cast_pos;
+		going = true;
+		iPoint map_p = App->map->WorldToMap(cast_pos.x, cast_pos.y);
+		FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+
+		hero->squad->Halt();
+		MoveToSquad* new_order = new MoveToSquad(hero->squad->getCommander(), cast_pos);
+		new_order->flow_field = shared_flowfield;
+		hero->squad->commands.push_back(new_order);
+		LOG("Out of range");
 	}
 }

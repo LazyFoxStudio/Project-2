@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "Command.h"
+#include "Effects.h"
 #include <list>
 #include <vector>
 #include <deque>
@@ -11,7 +12,7 @@ enum direction { E, NE, SE, N, S, NW, W, SW};
 
 class Animation;
 class Squad;
-class Effect;
+//class Effect;
 
 class Unit : public Entity
 {
@@ -29,7 +30,7 @@ public:
 	direction dir = S;
 	
 	std::vector<Animation*> animations;
-	std::vector<Effect*> effects;
+	std::list<Effect*> effects;
 	std::deque<Command*> commands;
 
 public:
@@ -49,6 +50,14 @@ public:
 
 	fPoint calculateSeparationVector();
 	Command_Type getCurrentCommand() { return (commands.empty() ? NOTHING : commands.front()->type); }
+
+	void AddDamagebuff(int duration, int amount, operation_sign sign);
+	void AddPiercingDamagebuff(int duration, int amount, operation_sign sign);
+	void AddSpeedbuff(int duration, int amount, operation_sign sign);
+	void AddDefensebuff(int duration, int amount, operation_sign sign);
+	void AddRangebuff(int duration, int amount, operation_sign sign);
+
+
 };
 
 #endif

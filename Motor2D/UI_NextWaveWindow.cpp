@@ -63,6 +63,7 @@ void NextWaveWindow::BlitElement()
 
 void NextWaveWindow::updateWave()
 {
+	counterX = counterY = 0;
 	if (App->wavecontroller->current_wave > 0 && timer->start_value == App->wavecontroller->initial_wait)
 		timer->setStartValue(App->wavecontroller->wait_between_waves);
 
@@ -70,10 +71,12 @@ void NextWaveWindow::updateWave()
 
 	cleanIcons();
 
-	int counterX = 0;
-	int counterY = 0;
 	int gruntSquads = 0;
 	int axeThrowerSquads = 0;
+	int deathKnightSquads = 0;
+	int dragonSquads = 0;
+	int catapultSquads = 0;
+	int juggernautSquads = 0;
 	for (std::list<NextWave*>::iterator it_e = App->wavecontroller->next_wave.begin(); it_e != App->wavecontroller->next_wave.end(); it_e++)
 	{
 		switch ((*it_e)->type)
@@ -84,34 +87,54 @@ void NextWaveWindow::updateWave()
 		case AXE_THROWER:
 			axeThrowerSquads++;
 			break;
+		case DEATH_KNIGHT:
+			deathKnightSquads++;
+			break;
+		case DRAGON:
+			dragonSquads++;
+			break;
+		case CATAPULT:
+			catapultSquads++;
+			break;
+		case JUGGERNAUT:
+			juggernautSquads++;
+			break;
 		}
 	}
-
 	
-	if (gruntSquads > 0)
+	createIncomingEnemy(GRUNT, gruntSquads);
+	createIncomingEnemy(AXE_THROWER, axeThrowerSquads);
+	createIncomingEnemy(DEATH_KNIGHT, deathKnightSquads);
+	createIncomingEnemy(DRAGON, dragonSquads);
+	createIncomingEnemy(CATAPULT, catapultSquads);
+	createIncomingEnemy(JUGGERNAUT, juggernautSquads);
+}
+
+bool NextWaveWindow::createIncomingEnemy(Type type, int amount)
+{
+	bool ret = false;
+	
+	if (amount > 0)
 	{
-		TroopIcon* enemyIcon = new TroopIcon(App->entitycontroller->getUnitFromDB(GRUNT), firstIcon_pos.x + (icons_offset.x*counterX), firstIcon_pos.y + (icons_offset.y*counterY));
+		TroopIcon* enemyIcon = new TroopIcon(App->entitycontroller->getUnitFromDB(type), firstIcon_pos.x + (icons_offset.x*counterX), firstIcon_pos.y + (icons_offset.y*counterY));
 		enemyIcon->image->parent = this;
 		enemiesIcons.push_back(enemyIcon);
 
-		Text* num = new Text(("x" + std::to_string(gruntSquads * App->entitycontroller->getUnitFromDB(GRUNT)->squad_members)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 10, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
+		Text* num = new Text(("x" + std::to_string(amount * App->entitycontroller->getUnitFromDB(type)->squad_members)), firstIcon_pos.x + (icons_offset.x*counterX) + 80, firstIcon_pos.y + (icons_offset.y*counterY) + 10, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
 		num->parent = this;
 		squads.push_back(num);
-
+		
 		counterY++;
-	}
-	if (axeThrowerSquads > 0)
-	{
-		TroopIcon* enemyIcon = new TroopIcon(App->entitycontroller->getUnitFromDB(AXE_THROWER), firstIcon_pos.x + (icons_offset.x*counterX), firstIcon_pos.y + (icons_offset.y*counterY));
-		enemyIcon->image->parent = this;
-		enemiesIcons.push_back(enemyIcon);
+		if (counterY == 3)
+		{
+			counterY = 0;
+			counterX++;
+		}
 
-		Text* num = new Text(("x" + std::to_string(axeThrowerSquads * App->entitycontroller->getUnitFromDB(AXE_THROWER)->squad_members)), firstIcon_pos.x + 100, firstIcon_pos.y + (icons_offset.y*counterY) + 15, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
-		num->parent = this;
-		squads.push_back(num);
-
-		counterY++;
+		ret = true;
 	}
+
+	return ret;
 }
 
 void NextWaveWindow::cleanIcons()

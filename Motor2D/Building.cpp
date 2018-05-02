@@ -9,6 +9,9 @@
 #include "UI_Chrono.h"
 #include "UI_InfoTable.h"
 #include "UI_WorkersDisplay.h"
+#include "UI_TroopCreationQueue.h"
+#include "UI_FarmWorkersManager.h"
+#include "UI_CooldownsDisplay.h"
 
 Building::Building(iPoint pos, Building& building)
 {
@@ -53,16 +56,28 @@ Building::~Building()
 	sprites.clear();
 	//Should be cleared just once with the DB
 	//RELEASE(infoData);
+	App->gui->deleteElement(queueDisplay);
 	App->gui->deleteElement(workersDisplay);
 }
 
 
 bool Building::Update(float dt)
 {
-	//minimap_
-	if (App->uiscene->minimap) 
+	if (isSelected)
 	{
-		if(ex_state != DESTROYED)	App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
+		if (queueDisplay != nullptr)
+			queueDisplay->active = true;
+	}
+	else
+	{
+		if (queueDisplay != nullptr)
+			queueDisplay->active = false;
+	}
+
+	//minimap_
+	if (App->uiscene->minimap)
+	{
+		if (ex_state != DESTROYED)	App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
 		else						App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
 	}
 
@@ -86,7 +101,7 @@ bool Building::Update(float dt)
 			HandleUnitProduction();
 		}
 		break;
-		
+
 	case DESTROYED:
 		if (timer.ReadSec() > DEATH_TIME)
 			App->entitycontroller->entities_to_destroy.push_back(UID);
@@ -106,8 +121,12 @@ void Building::Destroy()
 {
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
+	isSelected = false;
 	current_sprite = &sprites[RUIN];
-
+	if (workersDisplay != nullptr)
+		workersDisplay->active = false;
+	if (queueDisplay != nullptr)
+		queueDisplay->active = false;
 
 	switch (type)
 	{
@@ -130,6 +149,7 @@ void Building::Destroy()
 		App->audio->PlayMusic(DEFEAT_THEME);
 		current_sprite = &sprites[4];
 		App->gui->Chronos->counter.PauseTimer();
+		App->gui->cooldownsDisplay->Reset();
 		App->scene->toRestart = true;
 		App->scene->Restart_timer.Start();
 		App->uiscene->toggleMenu(true, GAMEOVER_MENU);
@@ -188,7 +208,8 @@ void Building::HandleResourceProduction()
 
 void Building::AddUnitToQueue(Type type)
 {
-	unit_queue.push(type);
+	unit_queue.push_back(type);
+	queueDisplay->pushTroop(type);
 	if (unit_queue.size() == 1)
 	{
 		producing_unit = true;
@@ -204,7 +225,7 @@ void Building::HandleUnitProduction()
 		{
 			fPoint newSquadPos = { position.x, position.y + collider.h };
 			App->entitycontroller->AddSquad(unit_queue.front(), newSquadPos);
-			unit_queue.pop();
+			unit_queue.pop_front();
 			if (unit_queue.size() == 0)
 			{
 				producing_unit = false;

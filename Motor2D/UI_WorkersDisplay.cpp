@@ -63,7 +63,7 @@ void WorkersDisplay::BlitElement()
 		std::string text = std::to_string(building->workers_inside.size()) + '/' + std::to_string(MAX_VILLAGERS_LUMBERMILL);
 		workers->setText(text);
 		workers->BlitElement();
-		if (state == element_state::MOUSEOVER || state == element_state::CLICKED)
+		if (state == element_state::MOUSEOVER || state == element_state::CLICKED || building->isSelected)
 		{
 			increase->BlitElement();
 			decrease->BlitElement();

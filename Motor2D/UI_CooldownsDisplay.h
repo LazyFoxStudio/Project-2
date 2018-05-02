@@ -16,6 +16,8 @@ public:
 	void heroDead();
 	void skillUsed(int skill);
 
+	void Reset();
+
 public:
 
 	Text* hero = nullptr;

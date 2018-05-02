@@ -5,6 +5,8 @@
 #include "j1Timer.h"
 
 class WorkersDisplay;
+class TroopCreationQueue;
+class FarmWorkersManager;
 
 enum buildingSprites   // ATTENTION!: Town hall does not use this enum yet
 {
@@ -32,8 +34,8 @@ public:
 	bool producing_unit = false;
 	j1Timer repair_timer;
 	bool recently_repaired = false;
-	std::queue<Type> unit_queue;
-	
+	std::deque<Type> unit_queue;
+	TroopCreationQueue* queueDisplay = nullptr;
 
 public:
 	Building() {};

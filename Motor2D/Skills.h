@@ -28,10 +28,13 @@ public:
 	int					damage = 0;
 	uint				range = 0;
 	iPoint				cast_pos = { 0,0 };
+	iPoint				last_cast = { 0,0 };
 
 	rangeType			type=NONE_RANGE;
 	Color				tile_color;
 	Hero*				hero = nullptr;
+
+	bool				going = false;
 	
 	std::list<iPoint>	toDraw;
 

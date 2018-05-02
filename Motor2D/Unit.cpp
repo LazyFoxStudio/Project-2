@@ -48,6 +48,7 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 
 	collider.x = pos.x - (collider.w / 2);
 	collider.y = pos.y - (collider.h / 2);
+
 }
 
 Unit::~Unit()
@@ -64,7 +65,7 @@ void Unit::Draw(float dt)
 	SDL_Rect r = current_anim->GetCurrentFrame(dt);
 
 	if(dir == W  || dir == NW || dir == SW)
-		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r, true,SDL_FLIP_HORIZONTAL);
+		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r, true,false,(1.0F), SDL_FLIP_HORIZONTAL);
 	else
 		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r);
 	
@@ -74,6 +75,36 @@ bool Unit::Update(float dt)
 {
 	animationController();
 
+	//take buffs out here
+	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+	{
+		if ((*it)->applied)
+		{
+			(*it)->Remove();
+		}
+	}
+
+	//remove buffs here
+	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+	{
+		float time_passed= (*it)->timer.ReadSec();
+		float max_time = (*it)->duration;
+		if ((int)time_passed > (int)max_time)
+		{
+			Effect* to_del = (*it);
+			effects.remove(*it);
+			RELEASE(to_del);
+		}
+	}
+
+	//apply buffs here
+	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+	{
+		(*it)->Apply();
+		(*it)->applied = true;
+	}
+
+
 	if (current_HP <= 0)
 	{
 		if (ex_state != DESTROYED) { Destroy(); squad->removeUnit(UID); }
@@ -81,7 +112,6 @@ bool Unit::Update(float dt)
 		else if (timer.ReadSec() > DEATH_TIME)  return false;
 		return true;
 	}
-
 
 	if (!commands.empty())
 	{
@@ -95,6 +125,7 @@ bool Unit::Update(float dt)
 		if (IsEnemy()) App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
 		else		   App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
 	}
+
 
 	Move(dt);
 	
@@ -280,4 +311,121 @@ fPoint Unit::calculateSeparationVector()
 	}
 
 	return separation_v;
+}
+
+//buffs
+void Unit::AddDamagebuff(int duration, int amount, operation_sign sign)
+{
+	Effect*  ret = new DamageBuff(amount, duration, this, sign);
+	switch (sign)
+	{
+	case PLUS_MINUS:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	case MULTIPLICATION_DIVISION:
+	{
+		effects.push_front(ret);
+		break;
+	}
+	default:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	}
+
+}
+void Unit::AddPiercingDamagebuff(int duration, int amount, operation_sign sign)
+{
+	Effect*  ret = new PiercingDamageBuff(amount, duration, this, sign);
+	switch (sign)
+	{
+	case PLUS_MINUS:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	case MULTIPLICATION_DIVISION:
+	{
+		effects.push_front(ret);
+		break;
+	}
+	default:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	}
+
+}
+void Unit::AddSpeedbuff(int duration, int amount, operation_sign sign)
+{
+	Effect*  ret = new SpeedBuff(amount, duration, this, sign);
+	switch (sign)
+	{
+	case PLUS_MINUS:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	case MULTIPLICATION_DIVISION:
+	{
+		effects.push_front(ret);
+		break;
+	}
+	default:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	}
+
+}
+void Unit::AddDefensebuff(int duration, int amount, operation_sign sign)
+{
+	Effect*  ret = new DefenseBuff(amount, duration, this, sign);
+	switch (sign)
+	{
+	case PLUS_MINUS:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	case MULTIPLICATION_DIVISION:
+	{
+		effects.push_front(ret);
+		break;
+	}
+	default:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	}
+
+}
+void Unit::AddRangebuff(int duration, int amount, operation_sign sign)
+{
+	Effect*  ret = new DamageBuff(amount, duration, this, sign);
+	switch (sign)
+	{
+	case PLUS_MINUS:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	case MULTIPLICATION_DIVISION:
+	{
+		effects.push_front(ret);
+		break;
+	}
+	default:
+	{
+		effects.push_back(ret);
+		break;
+	}
+	}
+
 }

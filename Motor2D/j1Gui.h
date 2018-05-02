@@ -32,6 +32,8 @@ class NextWaveWindow;
 class WorkersDisplay;
 class Building;
 class CooldownsDisplay;
+class TroopCreationQueue;
+class FarmWorkersManager;
 
 enum event_type
 {
@@ -99,6 +101,7 @@ public:
 	IngameMenu* createIngameMenu(pugi::xml_node node, j1Module* callback = nullptr);
 	NextWaveWindow* createNextWaveWindow(pugi::xml_node node, j1Module* callback = nullptr);
 	WorkersDisplay* createWorkersDisplay(Building* building);
+	TroopCreationQueue* createTroopCreationQueue(Building* building);
 
 	//minimap_
 	void createMinimap(pugi::xml_node node, j1Module* callback = nullptr);
@@ -152,6 +155,7 @@ public:
 	Chrono* Chronos = nullptr;
 	NextWaveWindow* nextWaveWindow = nullptr;
 	CooldownsDisplay* cooldownsDisplay = nullptr;
+	FarmWorkersManager* workersManager = nullptr;
 
 private:
 

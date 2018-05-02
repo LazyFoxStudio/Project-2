@@ -108,7 +108,7 @@ private:
 
 	bool OnInit();
 	virtual bool OnUpdate(float dt);
-	virtual bool OnStop();
+	bool OnStop();
 
 };
 
@@ -125,7 +125,6 @@ public:
 
 private:
 	bool OnUpdate(float dt);
-	bool OnStop();
 
 	bool checkSquadTarget();
 };

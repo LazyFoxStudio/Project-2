@@ -91,3 +91,12 @@ void CooldownsDisplay::skillUsed(int skill)
 		break;
 	}
 }
+
+void CooldownsDisplay::Reset()
+{
+	hero_timer->active = false;
+	hero->active = false;
+	skill1->active = false;
+	skill2->active = false;
+	skill3->active = false;
+}

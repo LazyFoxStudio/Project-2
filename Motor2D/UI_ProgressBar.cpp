@@ -29,6 +29,8 @@ void ProgressBar::enterCurrentValue(float current_value)
 		progress = 0.0f;
 	else if (current_value <= max_value)
 		progress = current_value / max_value;
+	else
+		progress = 1.0f;
 }
 
 void ProgressBar::BlitElement()

@@ -19,6 +19,7 @@ public:
 	void BlitElement();
 
 	void updateWave();
+	bool createIncomingEnemy(Type type, int amount);
 	void cleanIcons();
 	void toggle();
 
@@ -34,6 +35,9 @@ public:
 	Chrono* timer = nullptr;
 	Button* button = nullptr;
 	bool minimized = false;
+
+	int counterX = 0;
+	int counterY = 0;
 
 	iPoint firstIcon_pos = { 0,0 };
 	iPoint icons_offset = { 0,0 };

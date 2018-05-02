@@ -154,6 +154,9 @@
     <ClCompile Include="UI_TroopCreationQueue.cpp">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClCompile>
+    <ClCompile Include="UI_FarmWorkersManager.cpp">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -320,6 +323,9 @@
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClInclude>
     <ClInclude Include="UI_TroopCreationQueue.h">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_FarmWorkersManager.h">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClInclude>
   </ItemGroup>

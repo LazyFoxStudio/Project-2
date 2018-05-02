@@ -34,7 +34,7 @@ bool j1EntityController::Start()
 	addHero(iPoint(2000, 1950), HERO_1);
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
-	Building* town_hall = addBuilding(town_hall_pos, TOWN_HALL);
+	town_hall = addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
 	App->scene->InitialWorkers(town_hall);
 
@@ -120,6 +120,16 @@ bool j1EntityController::Update(float dt)
 		App->actionscontroller->activateAction(NO_ACTION);
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && town_hall != nullptr)
+	{
+		for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
+			(*it_e)->isSelected = false;
+		selected_entities.clear();
+
+		selected_entities.push_back(town_hall);
+		town_hall->isSelected = true;
+		App->gui->newSelectionDone();
+	}
 
 	return true;
 }
@@ -220,15 +230,15 @@ bool j1EntityController::PostUpdate()
 		if (Entity* entity = getEntitybyID(entities_to_destroy[i]))
 		{
 			App->gui->entityDeleted(entity);
-			entities.remove(getEntitybyID(entities_to_destroy[i]));
 			DeleteEntity(entities_to_destroy[i]);
+			entities.remove(getEntitybyID(entities_to_destroy[i]));		
 		}
 	}
 
 	for (int i = 0; i < squads_to_destroy.size(); i++)
 	{
-		squads.remove(getSquadbyID(squads_to_destroy[i]));
 		DeleteSquad(squads_to_destroy[i]);
+		squads.remove(getSquadbyID(squads_to_destroy[i]));
 	}
 
 	if(selected_size != selected_entities.size())
@@ -425,7 +435,12 @@ Building* j1EntityController::addBuilding(iPoint pos, Type type)
 {
 	Building* building = new Building(pos, *getBuildingFromDB(type));
 	building->UID = last_UID++;
-	building->workersDisplay = App->gui->createWorkersDisplay(building);
+	if (type == LUMBER_MILL)
+		building->workersDisplay = App->gui->createWorkersDisplay(building);
+	else if (type == BARRACKS)
+		building->queueDisplay = App->gui->createTroopCreationQueue(building);
+	/*else if (type == FARM)
+		building->workersManager = App->gui->createWorkersManager(building);*/
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
 
@@ -638,13 +653,17 @@ void j1EntityController::commandControl()
 
 	if (!entity)   // clicked on ground
 	{
-		FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
-		for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
+		if (!selected_squads.empty())
 		{
-			(*it)->Halt(); 
-			MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
-			new_order->flow_field = shared_flowfield;
-			(*it)->commands.push_back(new_order);
+			FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+			for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
+			{
+				(*it)->Halt();
+				MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
+				new_order->flow_field = shared_flowfield;
+				(*it)->commands.push_back(new_order);
+			}
+			shared_flowfield->used_by = selected_squads.size();
 		}
 	}
 	else
@@ -688,6 +707,8 @@ void j1EntityController::selectionControl()
 		break;
 	case KEY_UP:
 
+		for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
+			(*it_e)->isSelected = false;
 		selected_entities.clear();
 		selected_squads.clear();
 		bool buildings = false;
@@ -721,6 +742,7 @@ void j1EntityController::selectionControl()
 						if ((*it)->ex_state == OPERATIVE)
 						{
 							selected_entities.push_back(*it);
+							(*it)->isSelected = true;
 							App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
 							if (!buildings) buildings = true;
 						}
@@ -737,7 +759,10 @@ void j1EntityController::selectionControl()
 			(*it)->getUnits(units);
 
 			for (int i = 0; i < units.size(); i++)
+			{
 				selected_entities.push_back(units[i]);
+				units[i]->isSelected = true;
+			}
 		}
 
 		if (buildings && units)

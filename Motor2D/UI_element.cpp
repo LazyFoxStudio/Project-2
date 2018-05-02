@@ -77,7 +77,8 @@ void UI_element::BlitChilds()
 {
 	for (std::list<UI_element*>::iterator it_e = childs.begin(); it_e != childs.end(); it_e++)
 	{
-		(*it_e)->BlitElement();
+		if ((*it_e)->active)
+			(*it_e)->BlitElement();
 	}
 }
 

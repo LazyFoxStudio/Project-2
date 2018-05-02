@@ -20,7 +20,7 @@ enum PathProcessStage { REQUESTED, PROCESSING, COMPLETED, FAILED};
 struct FieldNode
 {
 	int score = FLOWFIELD_MAX;
-	FieldNode* parent = nullptr;
+	FieldNode* parent = this;
 	iPoint position = { 0,0 };
 	int g = 0;
 	int h = 0;
@@ -34,12 +34,13 @@ struct FlowField
 	FieldNode** field = nullptr;
 	uint width = 0; uint height = 0;
 	PathProcessStage stage = REQUESTED;
-	bool finished = false;
+	int used_by = 0;
 
 	FlowField(uint width, uint heigth, int init_to = FLOWFIELD_MAX);
 	~FlowField();
 
 	void ClearTo(int value = FLOWFIELD_MAX);
+	void DebugDraw();
 	FieldNode* getNodeAt(iPoint p);
 
 };

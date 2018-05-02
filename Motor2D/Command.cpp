@@ -46,8 +46,12 @@ bool MoveTo::OnUpdate(float dt)
 
 	if (map_p.DistanceManhattan(dest) < PROXIMITY_FACTOR || flow_field->stage == FAILED)
 		Stop();
-	else if(flow_field->getNodeAt(map_p)->parent)
-		unit->next_step += ((flow_field->getNodeAt(map_p)->parent->position - map_p).Normalized() * STEERING_FACTOR);
+	else if (flow_field->getNodeAt(map_p)->parent)
+	{
+		FieldNode* fn = flow_field->getNodeAt(map_p);
+		unit->next_step += ((fn->parent->position - map_p).Normalized() * STEERING_FACTOR);
+	}
+		
 
 	return true; 
 }
@@ -166,7 +170,7 @@ bool MoveToSquad::OnUpdate(float dt)
 
 bool MoveToSquad::OnStop()
 {
-	if(!unit->IsEnemy() && flow_field) flow_field->finished = true;
+	if(!unit->IsEnemy() && flow_field) flow_field->used_by--;
 
 	return true;
 }
@@ -193,12 +197,6 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 	return true;
 }
 
-bool AttackingMoveToSquad::OnStop()
-{
-	if (!unit->IsEnemy() && flow_field) flow_field->finished = true;
-
-	return true;
-}
 
 
 bool PatrolSquad::OnUpdate(float dt)

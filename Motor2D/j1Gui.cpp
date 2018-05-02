@@ -27,6 +27,8 @@
 #include "UI_WorkersDisplay.h"
 #include "j1Scene.h"
 #include "UI_CooldownsDisplay.h"
+#include "UI_TroopCreationQueue.h"
+#include "UI_FarmWorkersManager.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -59,6 +61,7 @@ bool j1Gui::Start()
 	warningMessages->active = false;
 	cooldownsDisplay = new CooldownsDisplay();
 	cooldownsDisplay->active = true;
+	workersManager = new FarmWorkersManager();
 	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
 	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
 	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
@@ -204,6 +207,9 @@ bool j1Gui::PostUpdate()
 				(*it_e)->BlitElement();
 		}
 	}
+
+	workersManager->BlitElement();
+
 	//Draw PopUp
 	if (current_hovering_element != nullptr && current_hovering_element->blitPopUpInfo)
 	{
@@ -729,6 +735,19 @@ WorkersDisplay* j1Gui::createWorkersDisplay(Building* building)
 		ret->menu = INGAME_MENU;
 	}
 
+	return ret;
+}
+
+TroopCreationQueue* j1Gui::createTroopCreationQueue(Building* building)
+{
+	TroopCreationQueue* ret = new TroopCreationQueue(building);
+	menu* menu = App->uiscene->getMenu(INGAME_MENU);
+	if (menu != nullptr)
+	{
+		menu->elements.push_back(ret);
+		ret->menu = INGAME_MENU;
+	}
+	ret->active = false;
 	return ret;
 }
 
