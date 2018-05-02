@@ -11,6 +11,7 @@
 #include "UI_WorkersDisplay.h"
 #include "UI_TroopCreationQueue.h"
 #include "UI_FarmWorkersManager.h"
+#include "UI_CooldownsDisplay.h"
 
 Building::Building(iPoint pos, Building& building)
 {
@@ -148,6 +149,7 @@ void Building::Destroy()
 		App->audio->PlayMusic(DEFEAT_THEME);
 		current_sprite = &sprites[4];
 		App->gui->Chronos->counter.PauseTimer();
+		App->gui->cooldownsDisplay->Reset();
 		App->scene->toRestart = true;
 		App->scene->Restart_timer.Start();
 		App->uiscene->toggleMenu(true, GAMEOVER_MENU);
