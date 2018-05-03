@@ -53,9 +53,9 @@ public:
 	void Halt();
 	void Destroy();
 
-	fPoint calculateSeparationVector();
-	fPoint calculateCohesionVector();
-	fPoint calculateAlignementVector();
+	void calculateSeparationVector(fPoint& separation_v, int& weight);
+	void calculateCohesionVector(fPoint& cohesion_v, int& weight);
+	void calculateAlignementVector(fPoint& alignement_v, int& weight);
 	Command_Type getCurrentCommand() { return (commands.empty() ? NOTHING : commands.front()->type); }
 
 	void AddDamagebuff(int duration, int amount, operation_sign sign);

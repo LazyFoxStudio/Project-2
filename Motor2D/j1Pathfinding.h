@@ -20,7 +20,7 @@ enum PathProcessStage { REQUESTED, PROCESSING, COMPLETED, FAILED};
 struct FieldNode
 {
 	int score = FLOWFIELD_MAX;
-	FieldNode* parent = this;
+	FieldNode* parent = nullptr;
 	iPoint position = { 0,0 };
 	int g = 0;
 	int h = 0;

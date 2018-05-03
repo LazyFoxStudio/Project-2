@@ -3,8 +3,6 @@
 #define _COMMAND_H_
 
 #define PROXIMITY_FACTOR 2  // the higher the sooner units will reach destination (in tiles)  // 1 ~ 5//
-#define ATK_PROXIMITY_FACTOR 30  // the higher the further the units will approach their enemies (in pixels)
-#define MAX_NEXT_STEP_MODULE 25.0f   // max value for the next_step vector, for steering calculations  // 10 ~ 50//
 
 #include <list>
 #include <vector>

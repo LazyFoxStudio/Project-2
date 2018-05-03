@@ -96,7 +96,8 @@ bool j1WaveController::PostUpdate()
 			{
 				for (int j = 0; j < flow_field->height; j++)
 				{
-					flow_field->field[i][j].parent = &flow_field->field[flow_field_aux->field[i][j].parent->position.x][flow_field_aux->field[i][j].parent->position.y];
+					iPoint parent_position = flow_field_aux->field[i][j].parent->position;
+					flow_field->field[i][j].parent = &flow_field->field[parent_position.x][parent_position.y];
 				}
 			}
 			flow_field_aux->used_by = 0;
