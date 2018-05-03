@@ -34,6 +34,7 @@ class Building;
 class CooldownsDisplay;
 class TroopCreationQueue;
 class FarmWorkersManager;
+class Minimap;
 
 enum event_type
 {
@@ -156,6 +157,7 @@ public:
 	NextWaveWindow* nextWaveWindow = nullptr;
 	CooldownsDisplay* cooldownsDisplay = nullptr;
 	FarmWorkersManager* workersManager = nullptr;
+	Minimap* minimap = nullptr;
 
 private:
 

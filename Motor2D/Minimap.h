@@ -86,8 +86,12 @@ public:
 
 	~Minimap();
 
+	SDL_Texture* createTexture();
+
 	//and this one draws it directly
 	void DrawMinimap();
+
+	void moveCamera();
 	
 	//used to add a point to the map
 	void Addpoint (SDL_Rect rect, Color color);

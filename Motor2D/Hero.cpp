@@ -8,8 +8,7 @@
 #include "j1Gui.h"
 #include "j1Audio.h"
 #include "UI_CooldownsDisplay.h"
-
-#include "j1UIScene.h"
+#include "Minimap.h"
 
 Hero::~Hero()
 {
@@ -95,8 +94,8 @@ bool Hero::Update(float dt)
 	animationController();
 
 	//minimap_
-	if (App->uiscene->minimap)
-		App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,75,75 }, White);
+	if (App->gui->minimap)
+		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,75,75 }, White);
 
 	return true;
 }

@@ -56,8 +56,7 @@ Minimap::~Minimap()
 	sprite_queue.clear();
 }
 
-
-void Minimap::DrawMinimap()
+SDL_Texture * Minimap::createTexture()
 {
 	//this is the texture we will be blitting, a copy of the actual base, so that way we are not modifying it
 	SDL_Surface* manipulable = new SDL_Surface();
@@ -130,32 +129,76 @@ void Minimap::DrawMinimap()
 		if ((*it)->to_delete)
 		{
 			RELEASE(*it)
-			alert_queue.remove(*it);
+				alert_queue.remove(*it);
 			//it--;
 		}
 	}
 	//now we will blit the viewport representation on the minimap
-	SDL_Rect up = {-App->render->camera.x * ratio_x,-App->render->camera.y * ratio_y ,App->render->camera.w * ratio_x, 1};
+	SDL_Rect up = { -App->render->camera.x * ratio_x,-App->render->camera.y * ratio_y ,App->render->camera.w * ratio_x, 1 };
 	SDL_FillRect(manipulable, &up, SDL_MapRGB(manipulable->format, 255, 255, 255));
 
-	SDL_Rect down = {-App->render->camera.x * ratio_x,-(App->render->camera.y-App->render->camera.h) * ratio_y -1 ,App->render->camera.w * ratio_x, 1 };
+	SDL_Rect down = { -App->render->camera.x * ratio_x,-(App->render->camera.y - App->render->camera.h) * ratio_y - 1 ,App->render->camera.w * ratio_x, 1 };
 	SDL_FillRect(manipulable, &down, SDL_MapRGB(manipulable->format, 255, 255, 255));
 
-	SDL_Rect left = {-App->render->camera.x * ratio_x,-App->render->camera.y * ratio_y ,1 , App->render->camera.h * ratio_y };
+	SDL_Rect left = { -App->render->camera.x * ratio_x,-App->render->camera.y * ratio_y ,1 , App->render->camera.h * ratio_y };
 	SDL_FillRect(manipulable, &left, SDL_MapRGB(manipulable->format, 255, 255, 255));
 
-	SDL_Rect right = {-(App->render->camera.x -App->render->camera.w) * ratio_x - 1 , - App->render->camera.y * ratio_y ,1, App->render->camera.h* ratio_y };
+	SDL_Rect right = { -(App->render->camera.x - App->render->camera.w) * ratio_x - 1 , -App->render->camera.y * ratio_y ,1, App->render->camera.h* ratio_y };
 	SDL_FillRect(manipulable, &right, SDL_MapRGB(manipulable->format, 255, 255, 255));
-	
+
 	//we create the texture
-	SDL_Texture* texture_to_blit = SDL_CreateTextureFromSurface(App->render->renderer, manipulable);
-	// we blit it
-	App->render->Blit(texture_to_blit,window_position_x, window_position_y, nullptr, false, true);
-	//free everything to avoid leaks
-	SDL_DestroyTexture(texture_to_blit);
+	SDL_Texture* ret = SDL_CreateTextureFromSurface(App->render->renderer, manipulable);
 	SDL_FreeSurface(manipulable);
 	manipulable = nullptr;
+	
+	return ret;
 }
+
+void Minimap::DrawMinimap()
+{
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+		moveCamera();
+
+	//We get the texture
+	SDL_Texture* texture_to_blit = createTexture();
+	
+	// we blit it
+	App->render->Blit(texture_to_blit,window_position_x, window_position_y, nullptr, false, true);
+
+	//Free the texture we just created
+	SDL_DestroyTexture(texture_to_blit);	
+}
+
+void Minimap::moveCamera()
+{
+	int camx, camy;
+	Mouse_to_map(camx, camy);
+
+	if (camx != -1 && camy != -1)
+	{
+		App->render->camera.y = -camy + App->render->camera.h / 2;
+		App->render->camera.x = -camx + App->render->camera.w / 2;
+
+		if (camx - App->render->camera.w / 2 > 4096 - App->render->camera.w) {
+			LOG("TOP RIGHT");
+			App->render->camera.x = -4096 + App->render->camera.w;
+		}
+		else if (camx - App->render->camera.w / 2 < 0) {
+			LOG("TOP LEFT");
+			App->render->camera.x = 0;
+		}
+
+		if (camy - App->render->camera.h / 2 > 4096 - App->render->camera.h) {
+			LOG("TOP DOWN");
+			App->render->camera.y = -4096 + App->render->camera.h;
+		}
+		else if (camy - App->render->camera.h / 2 < 0) {
+			LOG("TOP UP");
+			App->render->camera.y = 0;
+		}
+	}
+}
+
 void Minimap::Addpoint(SDL_Rect rect, Color color) 
 {
 	point p;

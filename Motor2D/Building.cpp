@@ -1,7 +1,8 @@
 #include "Building.h"
 #include "j1Render.h"
 #include "j1Scene.h"
-#include "j1UIScene.h"
+#include "j1Gui.h"
+#include "Minimap.h"
 #include "j1EntityController.h"
 #include "j1Input.h"
 #include "j1Scene.h"
@@ -75,10 +76,10 @@ bool Building::Update(float dt)
 	}
 
 	//minimap_
-	if (App->uiscene->minimap)
+	if (App->gui->minimap)
 	{
-		if (ex_state != DESTROYED)	App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
-		else						App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
+		if (ex_state != DESTROYED)	App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
+		else						App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
 	}
 
 	if (current_HP <= 0 && ex_state != DESTROYED)   Destroy();
