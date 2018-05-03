@@ -29,6 +29,7 @@
 #include "UI_CooldownsDisplay.h"
 #include "UI_TroopCreationQueue.h"
 #include "UI_FarmWorkersManager.h"
+#include "Minimap.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -206,8 +207,11 @@ bool j1Gui::PostUpdate()
 			if ((*it_e)->parent == nullptr) //If it has a parent, the parent will be responsible for drawing it
 				(*it_e)->BlitElement();
 		}
+		if ((*it_m)->id == INGAME_MENU)
+			minimap->DrawMinimap(); //Draw minimap
 	}
 
+	//Draw workers manager
 	workersManager->BlitElement();
 
 	//Draw PopUp
@@ -225,15 +229,15 @@ bool j1Gui::PostUpdate()
 			if (current_hovering_element->conditionMessage != nullptr)
 				current_hovering_element->conditionMessage->BlitElement();
 		}
-	}		
+	}
+
+	//Draw warning messages
 	if (warningMessages != nullptr && warningMessages->active)
 		warningMessages->BlitElement();
 
+	//Draw cooldowns display
 	if(cooldownsDisplay->active)
 		cooldownsDisplay->BlitElement();
-
-	//minimap_
-	App->uiscene->minimap->DrawMinimap();
 
 	//Draw Debug
 	if (UI_Debug)
@@ -317,6 +321,10 @@ bool j1Gui::CleanUp()
 	LifeBars.clear();
 
 	RELEASE(warningMessages);
+	RELEASE(nextWaveWindow);
+	RELEASE(cooldownsDisplay);
+	RELEASE(workersManager);
+	RELEASE(minimap);
 
 	return true;
 }
@@ -751,7 +759,6 @@ TroopCreationQueue* j1Gui::createTroopCreationQueue(Building* building)
 	return ret;
 }
 
-//minimap_
 void j1Gui::createMinimap(pugi::xml_node node, j1Module* callback)
 {
 	int position_x = node.child("position").attribute("x").as_int();
@@ -759,12 +766,12 @@ void j1Gui::createMinimap(pugi::xml_node node, j1Module* callback)
 	int map_width = node.child("map").attribute("width").as_int();;
 	int map_height= node.child("map").attribute("height").as_int();;
 
-	App->uiscene->minimap = new Minimap(node.child("base_image").attribute("path").as_string(),position_x,position_y,map_width,map_height);
+	minimap = new Minimap(node.child("base_image").attribute("path").as_string(),position_x,position_y,map_width,map_height);
 	
 	pugi::xml_node iterator;
 	for (iterator = node.child("alerts").child("path"); iterator; iterator = iterator.next_sibling("path"))
 	{
-		App->uiscene->minimap->AddAlertDef(iterator.attribute("value").as_string(),(alert_type)iterator.attribute("type").as_int());
+		minimap->AddAlertDef(iterator.attribute("value").as_string(),(alert_type)iterator.attribute("type").as_int());
 	}
 
 }

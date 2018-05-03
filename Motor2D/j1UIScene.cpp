@@ -25,7 +25,6 @@ j1UIScene::j1UIScene() { name = "introscene";}
 
 j1UIScene::~j1UIScene() {}
 
-
 bool j1UIScene::Start()
 {
 	pugi::xml_document	Gui_config_file;
@@ -70,46 +69,7 @@ bool j1UIScene::Start()
 
 bool j1UIScene::Update(float dt)
 {
-	iPoint mouse_test;
 
-	App->input->GetMousePosition(mouse_test.x, mouse_test.y);
-	mouse_test=App->render->ScreenToWorld(mouse_test.x, mouse_test.y);
-	
-	int x = mouse_test.x;
-	int y = mouse_test.y;
-
-	//minimap_
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
-	{
-		int camx, camy;
-		minimap->Mouse_to_map(camx, camy);
-
-		if (camx != -1 && camy != -1)
-		{
-		
-			App->render->camera.y = -camy + App->render->camera.h / 2;
-			App->render->camera.x = -camx + App->render->camera.w / 2;
-
-			if (camx- App->render->camera.w/2 > 4096 - App->render->camera.w) {
-				LOG("TOP RIGHT");
-				App->render->camera.x = -4096 + App->render->camera.w;
-			}
-			else if (camx - App->render->camera.w / 2 < 0) {
-				LOG("TOP LEFT");
-				App->render->camera.x = 0;
-			}
-
-			if (camy - App->render->camera.h/2 > 4096 - App->render->camera.h){
-				LOG("TOP DOWN");
-				App->render->camera.y = -4096 + App->render->camera.h;
-			}
-			else if (camy - App->render->camera.h / 2 < 0) {
-				LOG("TOP UP");
-				App->render->camera.y = 0;
-			}
-
-		}
-	}
 
 	return true;
 }
@@ -140,7 +100,7 @@ void j1UIScene::LoadUI(pugi::xml_node node)
 
 bool j1UIScene::CleanUp()
 {
-	minimap->~Minimap();
+
 	return true;
 }
 

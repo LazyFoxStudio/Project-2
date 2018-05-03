@@ -6,7 +6,7 @@
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 #include "j1Gui.h"
-#include "j1UIScene.h"
+#include "Minimap.h"
 #include "UI_NextWaveWindow.h"
 
 #include <time.h>
@@ -153,7 +153,7 @@ void j1WaveController::Generate_Wave()
 	{
 		Squad* squad = App->entitycontroller->AddSquad((*it)->type, (*it)->spawn);
 		//minimap_
-		App->uiscene->minimap->AddAlert((*it)->spawn.x, (*it)->spawn.y, 5, alert_type::DANGER);
+		App->gui->minimap->AddAlert((*it)->spawn.x, (*it)->spawn.y, 5, alert_type::DANGER);
 
 
 		AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->getCommander(), TOWN_HALL_POS);

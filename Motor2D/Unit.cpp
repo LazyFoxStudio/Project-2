@@ -8,9 +8,7 @@
 #include "j1EntityController.h"
 #include "Skills.h"
 #include "j1Gui.h"
-
-//minimap_
-#include "j1UIScene.h"
+#include "Minimap.h"
 
 #define SPEED_CONSTANT 5.0f   // applied to all units            // 60 ~ 140 //
 #define STOP_TRESHOLD 0.2f			// 0.5f ~ 1.5f//
@@ -124,10 +122,10 @@ bool Unit::Update(float dt)
 	}
 
 	//minimap_
-	if (App->uiscene->minimap)
+	if (App->gui->minimap)
 	{
-		if (IsEnemy()) App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
-		else		   App->uiscene->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
+		if (IsEnemy()) App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
+		else		   App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
 	}
 
 	Move(dt);	

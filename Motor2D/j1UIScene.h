@@ -4,9 +4,6 @@
 #include "j1Module.h"
 #include <list>
 
-//minimap_
-#include "Minimap.h"
-
 enum menu_id
 {
 	START_MENU,
@@ -56,9 +53,6 @@ public:
 public:
 
 	std::list<menu*> menus;
-
-	//minimap_
-	Minimap* minimap = nullptr;
 };
 
 #endif
