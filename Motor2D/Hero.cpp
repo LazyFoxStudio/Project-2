@@ -102,6 +102,8 @@ bool Hero::Update(float dt)
 
 void Hero::Deactivate()
 {
+	Halt();
+	next_step.SetToZero();
 	setActive(false);
 	timer.Start();
 	App->entitycontroller->selected_squads.remove(squad);

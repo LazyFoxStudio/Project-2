@@ -8,17 +8,22 @@
 #include "j1EntityController.h"
 #include "Skills.h"
 #include "j1Gui.h"
+#include "Quadtree.h"
 #include "Minimap.h"
 
-#define SPEED_CONSTANT 5.0f   // applied to all units            // 60 ~ 140 //
-#define STOP_TRESHOLD 0.2f			// 0.5f ~ 1.5f//
+#define SPEED_CONSTANT 1.2f   // applied to all units       
+#define STOP_TRESHOLD 5.0f			
 
-#define SEPARATION_WEIGHT 15.0f   // the higher the stronger   // 1.0f ~ 10.0f//
+#define MAX_MOVEMENT_WEIGHT 100.0f   // max value for the next_step vector, for steering calculations  /
+#define MAX_SEPARATION_WEIGHT 200.0f   
+#define MAX_COHESION_WEIGHT 80.0f
+#define MAX_ALIGNEMENT_WEIGHT 50.0f
 
-#define COHESION_WEIGHT 15.0f
-#define COHESION_TRESHOLD 10.0f
+#define SEPARATION_STRENGTH 8.0f
+#define COHESION_STRENGTH 1.0f    // the lower the stronger
+#define ALIGNEMENT_STRENGTH 5.0    // the lower the stronger
 
-#define ALIGNEMENT_WEIGHT 20.0f
+#define STEERING_FACTOR 1.5f
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
@@ -137,52 +142,57 @@ void Unit::Move(float dt)
 {
 	if ((!commands.empty() ? commands.front()->type != ATTACK : true))
 	{
-		fPoint separation_v = calculateSeparationVector();
-		fPoint cohesion_v = calculateCohesionVector();
-		fPoint alignement_v = calculateAlignementVector();
+		fPoint separation_v, cohesion_v, alignement_v;
+		int separation_w, cohesion_w, alignement_w;
 
-		next_step = ((movement * MAX_NEXT_STEP_MODULE) + separation_v + cohesion_v + alignement_v);
+		calculateSeparationVector(separation_v, separation_w);
+		calculateCohesionVector(cohesion_v, cohesion_w);
+		calculateAlignementVector(alignement_v, alignement_w);
 
-		if (next_step.GetModule() > MAX_NEXT_STEP_MODULE)
-			next_step = next_step.Normalized() * MAX_NEXT_STEP_MODULE;
-		else if (next_step.GetModule() < STOP_TRESHOLD)
-			{ next_step.SetToZero(); return; }
+		fPoint displacement = ((movement * MAX_MOVEMENT_WEIGHT) + (separation_v * separation_w) + (cohesion_v * cohesion_w) + (alignement_v * alignement_w));
+		
+		if (displacement.GetModule() < STOP_TRESHOLD)
+		{
+			if (displacement.GetModule() < 1)
+				next_step.SetToZero();
+			else
+				next_step = { next_step.x * 0.9f, next_step.y * 0.9f };
+		}
+		else
+			next_step = (next_step * STEERING_FACTOR) + displacement;
 
-		fPoint last_pos = position;
-		fPoint displacement = { 0.0f, 0.0f };
+		if (next_step.GetModule() > MAX_MOVEMENT_WEIGHT)
+			next_step = next_step.Normalized() * MAX_MOVEMENT_WEIGHT;
 
-		if (squad)	displacement = (next_step * squad->max_speed * dt * SPEED_CONSTANT);
-		else		displacement = (next_step * speed * dt * SPEED_CONSTANT);
+		displacement = (next_step * (squad ? squad->max_speed : speed) * dt * SPEED_CONSTANT);
 
-		if(displacement.GetModule() > 5)
+		if (displacement.GetModule() > 5)
 			displacement = displacement.Normalized() * 5;
 
-		position += displacement;
+		if (App->pathfinding->IsWalkable(App->map->WorldToMap(position.x + displacement.x, position.y + displacement.y)))
+		{
+			position += displacement;
 
-		if (!App->pathfinding->IsWalkable(App->map->WorldToMap(position.x, position.y))) 
-		{ 
-			position = last_pos;
-			next_step.SetToZero();
+			collider.x = position.x - (collider.w / 2);
+			collider.y = position.y - (collider.h / 2);
 		}
-
-		collider.x = position.x - (collider.w / 2);
-		collider.y = position.y - (collider.h / 2);
 	}
 	else if (!next_step.IsZero()) next_step.SetToZero();
 }
 
 void Unit::lookAt(fPoint direction)
 {
+	float v_module = direction.GetModule();
 	if (direction.x != 0 || direction.y != 0)
 	{
-		if (direction.x < -MAX_NEXT_STEP_MODULE / 2)
+		if (direction.x < -v_module / 2)
 		{
-			if (direction.y < MAX_NEXT_STEP_MODULE / 4 && direction.y > -MAX_NEXT_STEP_MODULE / 4) dir = W;
+			if (direction.y < v_module / 4 && direction.y > -v_module / 4) dir = W;
 			else dir = (direction.y < 0 ? NW : SW);
 		}
-		else if (direction.x > MAX_NEXT_STEP_MODULE / 2)
+		else if (direction.x > v_module / 2)
 		{
-			if (direction.y < MAX_NEXT_STEP_MODULE / 4 && direction.y > -MAX_NEXT_STEP_MODULE / 4) dir = E;
+			if (direction.y < v_module / 4 && direction.y > -v_module / 4) dir = E;
 			else dir = (direction.y < 0 ? NE : SE);
 		}
 		else dir = (direction.y < 0 ? N : S);
@@ -206,75 +216,96 @@ void Unit::Destroy()
 	App->entitycontroller->selected_entities.remove(this);
 }
 
-fPoint Unit::calculateSeparationVector()
+void Unit::calculateSeparationVector(fPoint& separation_v, int& weight)
 {
-	SDL_Rect r = { collider.x - COLLIDER_MARGIN, collider.y - COLLIDER_MARGIN , collider.w + COLLIDER_MARGIN , collider.h + COLLIDER_MARGIN };
 	std::vector<Entity*> collisions;
-	App->entitycontroller->CheckCollidingWith(r, collisions, this);
+	App->entitycontroller->colliderQT->FillCollisionVector(collisions, collider);
 
-	fPoint separation_v = { 0.0f,0.0f };
+	separation_v = { 0.0f,0.0f };
+	weight = 0;
 
 	for (int i = 0; i < collisions.size(); i++)
 	{
-		if ((collisions[i])->IsEnemy() == IsEnemy())
+		if(collisions[i]->ex_state != DESTROYED && collisions[i]->isActive && collisions[i]->IsEnemy() == IsEnemy() && collisions[i] != this)
 		{
-			separation_v += (position - collisions[i]->position);
+			fPoint current_separation = (position - collisions[i]->position);
+			if (current_separation.GetModule() < (collider.w / 2.0f))
+			{
+				current_separation = current_separation.Normalized() * (collider.w * SEPARATION_STRENGTH / current_separation.GetModule());
+				separation_v += current_separation;
+			}
 		}
 	}
-	separation_v = separation_v.Normalized() * SEPARATION_WEIGHT;
 
-	fPoint world_separation = position + separation_v;
-	iPoint map_separation = App->map->WorldToMap(world_separation.x, world_separation.y);
+	if (!separation_v.IsZero())
+	{
+		weight = separation_v.GetModule();
 
-	if (!App->pathfinding->IsWalkable(map_separation))
-		return { 0.0f, 0.0f };
+		if (weight > MAX_SEPARATION_WEIGHT)
+			weight = MAX_SEPARATION_WEIGHT;
 
-	return separation_v;
+		separation_v.Normalize();
+		fPoint world_separation = position + (separation_v * weight);
+		iPoint map_separation = App->map->WorldToMap(world_separation.x, world_separation.y);
+
+		if (!App->pathfinding->IsWalkable(map_separation))
+			weight = 0;
+	}
 }
 
-fPoint Unit::calculateCohesionVector()
+void Unit::calculateCohesionVector(fPoint& cohesion_v, int& weight)
 {
-	fPoint cohesion_v = { 0.0f,0.0f };
+	cohesion_v = { 0.0f,0.0f };
+	weight = 0;
 
 	if (getCurrentCommand() != ATTACKING_MOVETO)
 	{
 		if (squad ? (!squad->centroid.IsZero() && squad->units_id.size() > 1) : false)
 		{
-			if ((squad->centroid + squad->getOffset(UID)).DistanceTo(position) > COHESION_TRESHOLD)
+			cohesion_v = ((squad->centroid + squad->getOffset(UID)) - position);
+			if (cohesion_v.GetModule() > collider.w / 4)
 			{
-				cohesion_v = ((squad->centroid + squad->getOffset(UID)) - position).Normalized();
-				cohesion_v = { cohesion_v.x * COHESION_WEIGHT, cohesion_v.y * COHESION_WEIGHT };
+				weight = cohesion_v.GetModule() / COHESION_STRENGTH;
+				cohesion_v.Normalize();
 
-				fPoint world_offset = (position + cohesion_v);
+				if (weight > MAX_COHESION_WEIGHT)
+					weight = MAX_COHESION_WEIGHT;
+
+				fPoint world_offset = (position + (cohesion_v * weight));
 				iPoint map_offset = App->map->WorldToMap(world_offset.x, world_offset.y);
 
-				if (!App->pathfinding->IsWalkable(map_offset) || getCurrentCommand() == ATTACKING_MOVETO)
-					return { 0.0f, 0.0f };
+				if (!App->pathfinding->IsWalkable(map_offset))
+					weight = 0;
 			}
+			else
+				cohesion_v.SetToZero();
 		}
 	}
-	return cohesion_v;
 }
 
-fPoint Unit::calculateAlignementVector()
+void Unit::calculateAlignementVector(fPoint& alignement_v, int& weight)
 {
-	fPoint alignement_v = { 0.0f, 0.0f };
+	alignement_v = { 0.0f, 0.0f };
+	weight = 0;
 
 	if (getCurrentCommand() != ATTACKING_MOVETO)
 	{
-		if (squad ? !squad->squad_movement.IsZero() : false)
+		if (squad ? !squad->squad_movement.GetModule() > 1.0f : false)
 		{
-			alignement_v = (squad->squad_movement.Normalized() * ALIGNEMENT_WEIGHT);
+			alignement_v = squad->squad_movement.Normalized();
+			weight = (squad->squad_movement.GetModule() / ALIGNEMENT_STRENGTH) * MAX_ALIGNEMENT_WEIGHT;
 
-			fPoint world_alignement = (position + alignement_v);
+			if (weight > MAX_ALIGNEMENT_WEIGHT)
+				weight = MAX_ALIGNEMENT_WEIGHT;
+
+			fPoint world_alignement = (position + (alignement_v * weight));
 			iPoint map_alignement = App->map->WorldToMap(world_alignement.x, world_alignement.y);
 
 			if (!App->pathfinding->IsWalkable(map_alignement))
-				return { 0.0f, 0.0f };
+				weight = 0;
 		}
 	}
 
-	return alignement_v;
 }
 
 
@@ -285,7 +316,7 @@ void Unit::animationController()
 	animationType new_animation = IDLE_S;
 	if (ex_state != DESTROYED)
 	{
-		if (!next_step.IsZero())
+		if (next_step.GetModule() > STOP_TRESHOLD)
 		{
 			switch (commands.empty() ? MOVETO : commands.front()->type)
 			{

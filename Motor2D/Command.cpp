@@ -47,12 +47,8 @@ bool MoveTo::OnUpdate(float dt)
 
 	if (map_p.DistanceManhattan(dest) < PROXIMITY_FACTOR || flow_field->stage == FAILED)
 		Stop();
-	else if (flow_field->getNodeAt(map_p)->parent)
-	{
-		FieldNode* fn = flow_field->getNodeAt(map_p);
-		unit->movement = (fn->parent->position - map_p).Normalized();
-	}
-		
+	else if (FieldNode* parent = flow_field->getNodeAt(map_p)->parent)
+		unit->movement = (parent->position - map_p).Normalized();	
 
 	return true; 
 }
@@ -104,7 +100,7 @@ bool Attack::OnUpdate(float dt)
 			timer.Start();
 		}
 
-		unit->lookAt((enemy->position - unit->position).Normalized() * MAX_NEXT_STEP_MODULE);
+		unit->lookAt(enemy->position - unit->position);
 		unit->movement.SetToZero();
 		return true;
 	}
@@ -278,7 +274,7 @@ void Attack::moveToTarget()
 	if (map_p == path.front())
 		path.pop_front();
 	else
-		unit->movement += (path.front() - map_p).Normalized();;
+		unit->movement += (path.front() - map_p).Normalized();
 }
 
 void Attack::callRetaliation(Entity* enemy)

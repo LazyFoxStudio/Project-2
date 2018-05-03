@@ -40,7 +40,7 @@ bool j1EntityController::Start()
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
 	App->scene->InitialWorkers(town_hall);*/
 
-	//AddSquad(FOOTMAN, fPoint(2200, 1950));
+	AddSquad(FOOTMAN, fPoint(2200, 1950));
 
 /*
 	entity_iterator = entities.begin();
