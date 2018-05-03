@@ -40,7 +40,7 @@ bool j1EntityController::Start()
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
 	App->scene->InitialWorkers(town_hall);
 
-	AddSquad(FOOTMAN, fPoint(2200, 1950));
+	//AddSquad(FOOTMAN, fPoint(2200, 1950));
 
 	buildingArea.w = BUILDINGAREA;
 	buildingArea.h = BUILDINGAREA;
@@ -242,7 +242,6 @@ bool j1EntityController::PostUpdate()
 	{
 		if (Entity* entity = getEntitybyID(entities_to_destroy[i]))
 		{
-			App->gui->entityDeleted(entity);
 			DeleteEntity(entities_to_destroy[i]);
 			entities.remove(getEntitybyID(entities_to_destroy[i]));		
 		}

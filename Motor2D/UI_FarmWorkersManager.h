@@ -43,8 +43,6 @@ struct workerIcon
 	Text* generating = nullptr;
 	Text* waiting = nullptr;
 	ProgressBar* progress = nullptr;
-	j1Timer timer;
-	bool isGenerating = false;
 };
 
 class FarmWorkersManager : public UI_element

@@ -731,7 +731,7 @@ WorkersDisplay* j1Gui::createWorkersDisplay(Building* building)
 	menu* menu = App->uiscene->getMenu(INGAME_MENU);
 	if (menu != nullptr)
 	{
-		menu->elements.push_back(ret);
+		menu->elements.push_front(ret);
 		ret->menu = INGAME_MENU;
 	}
 

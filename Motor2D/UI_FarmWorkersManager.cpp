@@ -100,6 +100,7 @@ workerIcon::workerIcon(int x, int y)
 
 void workerIcon::Draw(worker_state state)
 {
+	Building* building = (Building*)App->entitycontroller->selected_entities.front();
 	SDL_Rect section = { icon->calculateAbsolutePosition().x, icon->calculateAbsolutePosition().y, icon->section.w, icon->section.h };
 	Color color = { 200,200,200,150 };
 	unassigned->active = false;
@@ -109,8 +110,6 @@ void workerIcon::Draw(worker_state state)
 	switch (state)
 	{
 	case UNASSIGNED:
-		if (isGenerating)
-			isGenerating = false;
 		unassigned->active = true;
 		icon->BlitElement();
 		break;
@@ -119,12 +118,7 @@ void workerIcon::Draw(worker_state state)
 		icon->BlitElement();
 		break;
 	case GENERATING:
-		if (!isGenerating)
-		{
-			isGenerating = true;
-			timer.Start();
-		}
-		progress->enterCurrentValue(timer.ReadSec());
+		progress->enterCurrentValue(building->timer.ReadSec());
 		generating->active = true;
 		dark_icon->BlitElement();
 		break;

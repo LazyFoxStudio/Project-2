@@ -197,6 +197,7 @@ void Unit::Halt()
 void Unit::Destroy()
 {
 	timer.Start();
+	App->gui->entityDeleted(this);
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
 }
