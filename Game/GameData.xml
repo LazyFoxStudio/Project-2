@@ -1492,7 +1492,7 @@
         <name value="Gnomish Flying Machine"/>
         <type value="17"/>
         <iconData x="621" y="136" w="72" h="60"/>
-        <texture value="Assets\Sprites\Alliance Sprites\Gnomish Flying Machine_SpriteSheet.png"/>
+        <texture value="Assets\Sprites\Alliance Sprites\Flying Machine_SpriteSheet.png"/>
         <Stats>
           <life value="40"/>
           <attack value="2"/>
@@ -1510,8 +1510,8 @@
         </Stats>
         <Info title="Gnomish Flying Machine Stats:"/>
         <Animations>
-          <width value="67"/>
-          <height value="67"/>
+          <width value="72"/>
+          <height value="72"/>
           <Animation>
             <!--0- Idle North-->
             <rows value="1"/>
