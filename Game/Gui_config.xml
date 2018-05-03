@@ -51,7 +51,31 @@ The id of the fonts will be ordered as they are in the file, starting with 1
 Resolution of the screen: 1680x 1050y
 -->
 <config>
-	<menu type="2" active="true">	
+	<menu type="0" active="true">
+		<image path="gui/menu_bckg.png">
+			<position x="0" y="0"/>
+		</image>
+		<atlas_image>
+			<position x="525" y="30"/>
+			<section x="37" y="1067" w="612" h="301"/>
+		</atlas_image>
+		<button click_action="24">
+			<position x="600" y="400"/>
+			<standby x="687" y="1139" w="469" h="101"/>
+			<OnMouse x="687" y="1139" w="469" h="101"/>
+			<OnClick x="687" y="1139" w="469" h="101"/>
+			<childs>
+				<text text="NEW GAME" center="true" counter="false">
+					<position x="0" y="0"/>
+					<font id="6"/>
+					<color r="255" g="255" b="0" a="255"/>
+					<interactive value="false"/>
+				</text>
+			</childs>
+		</button>
+	</menu>
+
+	<menu type="2" active="false">	
 	<!-- Resources Display -->
 		<atlas_image icon_atlas="false" active="true">
 			<position x="0" y="0"/>
@@ -164,7 +188,7 @@ Resolution of the screen: 1680x 1050y
 		
 	</menu>
 
-  <menu type="4" active="false">
+	<menu type="4" active="false">
     
     <!--Dead Image-->
     <atlas_image icon_atlas="false" active="true">

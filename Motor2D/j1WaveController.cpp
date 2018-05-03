@@ -42,10 +42,10 @@ bool j1WaveController::Start()
 	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
 	flow_field = App->pathfinding->RequestFlowField(TownHall_pos);
 	
-	wave_timer.Start();
+	/*wave_timer.Start();
 
 	current_wave = 0;
-	Generate_Next_Wave();
+	Generate_Next_Wave();*/
 
 	return ret;
 }

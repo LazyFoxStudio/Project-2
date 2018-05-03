@@ -30,7 +30,9 @@ enum actionType
 	BUILD_TURRET,
 	BUILD_GNOME_HUT,
 	BUILD_CHURCH,
-	BUILD_BLACKSMITH
+	BUILD_BLACKSMITH,
+
+	NEW_GAME
 };
 
 class j1ActionsController : public j1Module
