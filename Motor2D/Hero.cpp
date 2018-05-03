@@ -39,6 +39,8 @@ bool Hero::Update(float dt)
 		return true;
 	}
 
+	animationController();
+
 	switch (current_skill)
 	{
 	case 1: 
@@ -90,8 +92,11 @@ bool Hero::Update(float dt)
 		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
 
-	Move(dt);
-	animationController();
+	if (!movement_target.IsZero())
+		SquadMove(dt);
+	else
+		Move(dt);
+
 
 	//minimap_
 	if (App->gui->minimap)

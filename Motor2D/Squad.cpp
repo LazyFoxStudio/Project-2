@@ -38,12 +38,16 @@ bool Squad::Update(float dt)
 	{
 		if (!commands.empty())
 		{
-			fPoint last_pos = centroid;
-			calculateCentroid();
-			squad_movement = centroid - last_pos;
-
 			commands.front()->Execute(dt);
 			if (commands.front()->state == FINISHED) commands.pop_front();
+
+			calculateCentroid();
+			centroid = centroid + squad_movement;
+			if (squad_movement.GetModule() > 1.0f)
+			{
+				squad_direction = squad_movement.Normalized();
+				calculateOffsets();
+			}
 		}
 		else squad_movement = { 0.0f,0.0f };
 	}
@@ -73,9 +77,7 @@ void Squad::calculateCentroid()
 	{
 		fPoint positions = { 0.0f, 0.0f };
 		for (int i = 0; i < squad_units.size(); i++)
-		{
 			positions += squad_units[i]->position;
-		}
 
 		centroid = positions.Normalized() * (positions.GetModule() / squad_units.size());
 	}
@@ -100,9 +102,11 @@ void Squad::calculateOffsets()
 
 	int radius = 1;
 	int counter = 1;
+	float angle = squad_direction.GetAngle();
 
 	if (!squad_units.empty())
 	{
+		units_offsets.clear();
 		units_offsets.push_back(fPoint(0.0f, 0.0f));
 		switch (formation)
 		{
@@ -114,7 +118,8 @@ void Squad::calculateOffsets()
 					for (int j = -radius; j <= radius && counter < squad_units.size(); j++)
 						if (std::abs(i) == radius || j == std::abs(radius))
 						{
-							units_offsets.push_back(fPoint((i * squad_units[counter]->collider.w) * 1.2f, (j * squad_units[counter]->collider.h) * 1.2f));
+							fPoint p = { (i * squad_units[counter]->collider.w) * 1.2f, (j * squad_units[counter]->collider.h) * 1.2f };
+							units_offsets.push_back({ p.x * cos(angle) - p.y * sin(angle) , p.y * cos(angle) + p.x * sin(angle) });
 							counter++;
 						}
 				radius++;

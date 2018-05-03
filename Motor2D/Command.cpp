@@ -43,12 +43,19 @@ bool MoveTo::OnInit()
 
 bool MoveTo::OnUpdate(float dt)
 {
-	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
+	fPoint desired_place = getDesiredPlace();
 
-	if (map_p.DistanceManhattan(dest) < PROXIMITY_FACTOR || flow_field->stage == FAILED)
-		Stop();
-	else if (FieldNode* parent = flow_field->getNodeAt(map_p)->parent)
-		unit->movement = (parent->position - map_p).Normalized();	
+	if (!desired_place.IsZero())
+		unit->movement_target = desired_place;
+	else
+	{
+		map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
+
+		if (map_p.DistanceManhattan(dest) < PROXIMITY_FACTOR || flow_field->stage == FAILED)
+			Stop();
+		else if (FieldNode* parent = flow_field->getNodeAt(map_p)->parent)
+			unit->displacement = (parent->position - map_p).Normalized();
+	}
 
 	return true; 
 }
@@ -56,7 +63,8 @@ bool MoveTo::OnUpdate(float dt)
 
 bool MoveTo::OnStop()
 {
-	unit->movement.SetToZero();
+	unit->displacement.SetToZero();
+	unit->movement_target.SetToZero();
 	return true;
 }
 
@@ -101,7 +109,7 @@ bool Attack::OnUpdate(float dt)
 		}
 
 		unit->lookAt(enemy->position - unit->position);
-		unit->movement.SetToZero();
+		unit->displacement.SetToZero();
 		return true;
 	}
 	else
@@ -114,7 +122,7 @@ bool Attack::OnUpdate(float dt)
 bool Attack::OnStop()
 {
 	type = ATTACKING_MOVETO;
-	unit->movement.SetToZero();
+	unit->displacement.SetToZero();
 	return true;
 }
 
@@ -142,6 +150,7 @@ bool MoveToSquad::OnInit()
 		{
 			std::vector<Unit*> squad_units;
 			squad->getUnits(squad_units);
+			squad->squad_movement.SetToZero();
 
 			if (!squad_units.empty())
 			{
@@ -161,6 +170,23 @@ bool MoveToSquad::OnInit()
 bool MoveToSquad::OnUpdate(float dt)
 {
 	if (allIdle()) Stop();
+	else {
+		if (Unit* commander = squad->getCommander())
+		{
+			iPoint map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
+
+			if (map_p.DistanceManhattan(dest) < PROXIMITY_FACTOR || flow_field->stage == FAILED)
+				Stop();
+			else if (FieldNode* parent = flow_field->getNodeAt(map_p)->parent)
+			{
+				fPoint movement = (parent->position - map_p).Normalized() * dt * squad->max_speed * SPEED_CONSTANT * MAX_MOVEMENT_WEIGHT;
+				squad->squad_movement = ((squad->squad_movement * 25.0f) + movement);
+				if (squad->squad_movement.GetModule() > movement.GetModule())
+					squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
+			}
+				
+		}
+	}
 
 	return true;
 }
@@ -169,6 +195,7 @@ bool MoveToSquad::OnUpdate(float dt)
 bool MoveToSquad::OnStop()
 {
 	if(!unit->IsEnemy() && flow_field) flow_field->used_by--;
+	squad->squad_movement.SetToZero();
 
 	return true;
 }
@@ -190,7 +217,17 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 		}
 
 	}
-	else if(!hold && allIdle()) Stop();
+	else if(!hold && allIdle()) 
+		Stop();
+	else if (Unit* commander = squad->getCommander())
+	{
+		iPoint map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
+
+		if (map_p.DistanceManhattan(dest) < PROXIMITY_FACTOR || flow_field->stage == FAILED)
+			Stop();
+		else if (FieldNode* parent = flow_field->getNodeAt(map_p)->parent)
+			squad->squad_movement = (parent->position - map_p).Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
+	}
 
 	return true;
 }
@@ -224,7 +261,20 @@ bool PatrolSquad::OnUpdate(float dt)
 
 
 // UTILITY METHODS
-
+fPoint MoveTo::getDesiredPlace()
+{
+	if (unit->squad)
+	{
+		fPoint place = unit->squad->centroid + unit->squad->getOffset(unit->UID);
+		if (!place.IsZero())
+		{
+			iPoint map_place = App->map->WorldToMap(place.x, place.y);
+			if (App->pathfinding->IsWalkable(map_place))
+				return place;
+		}
+	}
+	return { 0.0f, 0.0f };
+}
 
 bool AttackingMoveToSquad::checkSquadTarget()
 {
@@ -274,7 +324,7 @@ void Attack::moveToTarget()
 	if (map_p == path.front())
 		path.pop_front();
 	else
-		unit->movement += (path.front() - map_p).Normalized();
+		unit->displacement += (path.front() - map_p).Normalized();
 }
 
 void Attack::callRetaliation(Entity* enemy)

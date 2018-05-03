@@ -59,6 +59,8 @@ private:
 	virtual bool OnUpdate(float dt);
 	bool OnStop();
 
+	fPoint getDesiredPlace();
+
 };
 
 class Attack : public Command

@@ -24,6 +24,7 @@ public:
 	fPoint centroid = { 0.0f,0.0f };
 	float max_speed = 0.0f;
 	fPoint squad_movement = { 0.0f,0.0f };
+	fPoint squad_direction = { 0.0f,1.0f };
 	int UID = -1;
 
 public:
