@@ -146,7 +146,7 @@ void Building::Destroy()
 		{
 			(*it)->to_destroy = true;
 		}
-		App->audio->PlayMusic(DEFEAT_THEME);
+		App->audio->PlayMusic(DEFEAT_THEME, 0);
 		current_sprite = &sprites[4];
 		App->gui->Chronos->counter.PauseTimer();
 		App->gui->cooldownsDisplay->Reset();
