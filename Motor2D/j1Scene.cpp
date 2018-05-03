@@ -188,8 +188,8 @@ void j1Scene::Restart_game()
 	//SATARTING ENTITIES-------------------------------------------------------
 	App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
 	iPoint town_hall_pos = TOWN_HALL_POS;
-	Building* town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
-	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
+	App->entitycontroller->town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
+	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, App->entitycontroller->town_hall->size.x, App->entitycontroller->town_hall->size.y, true, false);
 	App->wavecontroller->updateFlowField();
 
 	//RESTARTING WAVES---------------------------------------------------------
@@ -202,7 +202,7 @@ void j1Scene::Restart_game()
 	wood = INIT_WOOD;
 	gold = INIT_GOLD;
 	//inactive_workers = workers = INIT_WORKERS;
-	InitialWorkers(town_hall);
+	InitialWorkers(App->entitycontroller->town_hall);
 	town_hall_lvl = INIT_TOWNHALL_LVL;
 
 	//RESTART LOCKED ACTION BUTTONS
