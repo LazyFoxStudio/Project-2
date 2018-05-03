@@ -17,7 +17,7 @@ class FlowField;
 class Entity;
 
 enum Command_State { TO_INIT, UPDATE, TO_STOP, FINISHED };
-enum Command_Type { NOTHING, MOVETO, ATTACKING_MOVETO, ATTACK, PATROL, HOLD, MOVETOSQUAD, ATTACKING_MOVETO_SQUAD, ATTACK_SQUAD};
+enum Command_Type { NOTHING, MOVETO, ATTACKING_MOVETO, ATTACK, PATROL, MOVETOSQUAD, ATTACKING_MOVETO_SQUAD};
 
 //  BASE CLASSES: =======================
 
@@ -113,7 +113,6 @@ private:
 
 class AttackingMoveToSquad : public MoveToSquad
 {
-	std::vector<uint> enemy_ids;
 	int target_squad_id = -1;
 	bool hold = false;
 	j1Timer timer;
@@ -121,6 +120,8 @@ class AttackingMoveToSquad : public MoveToSquad
 public:
 	AttackingMoveToSquad(Unit* commander, iPoint map_dest, bool hold = false, int target_squad_id = -1) : MoveToSquad(commander, map_dest), hold(hold), target_squad_id(target_squad_id) 
 		{ type = ATTACKING_MOVETO_SQUAD; };
+
+	std::vector<uint> enemy_ids;
 
 private:
 	bool OnUpdate(float dt);

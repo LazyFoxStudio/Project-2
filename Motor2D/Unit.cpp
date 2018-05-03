@@ -12,17 +12,15 @@
 //minimap_
 #include "j1UIScene.h"
 
-#define SEPARATION_WEIGHT 1.5f   // the higher the stronger   // 1.0f ~ 10.0f//
 #define SPEED_CONSTANT 5.0f   // applied to all units            // 60 ~ 140 //
-#define STOP_TRESHOLD 0.5f			// 0.5f ~ 1.5f//
+#define STOP_TRESHOLD 0.2f			// 0.5f ~ 1.5f//
 
-#define COHESION_WEIGHT 1.5f
+#define SEPARATION_WEIGHT 15.0f   // the higher the stronger   // 1.0f ~ 10.0f//
+
+#define COHESION_WEIGHT 15.0f
 #define COHESION_TRESHOLD 10.0f
 
-#define MOVEMENT_WEIGHT 5.0f
-#define ALIGNEMENT_WEIGHT 8.0f
-
-#define MINIMUM_TRESHOLD 0.2f
+#define ALIGNEMENT_WEIGHT 20.0f
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
@@ -139,21 +137,29 @@ bool Unit::Update(float dt)
 
 void Unit::Move(float dt)
 {
-	fPoint separation_v = calculateSeparationVector();
-	fPoint cohesion_v = calculateCohesionVector();
-	fPoint alignement_v = calculateAlignementVector();
-
-	if ((!commands.empty() ? commands.front()->type != ATTACK : false) || separation_v.GetModule() > STOP_TRESHOLD || cohesion_v.GetModule()> STOP_TRESHOLD || alignement_v.GetModule() > STOP_TRESHOLD)
+	if ((!commands.empty() ? commands.front()->type != ATTACK : true))
 	{
-		next_step = next_step + ((movement * MOVEMENT_WEIGHT) + separation_v + cohesion_v + alignement_v) * STEERING_FACTOR;
+		fPoint separation_v = calculateSeparationVector();
+		fPoint cohesion_v = calculateCohesionVector();
+		fPoint alignement_v = calculateAlignementVector();
+
+		next_step = ((movement * MAX_NEXT_STEP_MODULE) + separation_v + cohesion_v + alignement_v);
 
 		if (next_step.GetModule() > MAX_NEXT_STEP_MODULE)
 			next_step = next_step.Normalized() * MAX_NEXT_STEP_MODULE;
+		else if (next_step.GetModule() < STOP_TRESHOLD)
+			{ next_step.SetToZero(); return; }
 
 		fPoint last_pos = position;
+		fPoint displacement = { 0.0f, 0.0f };
 
-		if (squad)	position += (next_step * squad->max_speed * dt * SPEED_CONSTANT);
-		else		position += (next_step * speed * dt * SPEED_CONSTANT);
+		if (squad)	displacement = (next_step * squad->max_speed * dt * SPEED_CONSTANT);
+		else		displacement = (next_step * speed * dt * SPEED_CONSTANT);
+
+		if(displacement.GetModule() > 5)
+			displacement = displacement.Normalized() * 5;
+
+		position += displacement;
 
 		if (!App->pathfinding->IsWalkable(App->map->WorldToMap(position.x, position.y))) 
 		{ 
@@ -222,7 +228,7 @@ fPoint Unit::calculateSeparationVector()
 	fPoint world_separation = position + separation_v;
 	iPoint map_separation = App->map->WorldToMap(world_separation.x, world_separation.y);
 
-	if (!App->pathfinding->IsWalkable(map_separation) || separation_v.GetModule() > MINIMUM_TRESHOLD)
+	if (!App->pathfinding->IsWalkable(map_separation))
 		return { 0.0f, 0.0f };
 
 	return separation_v;
@@ -231,18 +237,23 @@ fPoint Unit::calculateSeparationVector()
 fPoint Unit::calculateCohesionVector()
 {
 	fPoint cohesion_v = { 0.0f,0.0f };
-	if (squad ? (!squad->centroid.IsZero() && squad->units_id.size() > 1) : false)
+
+	if (getCurrentCommand() != ATTACKING_MOVETO)
 	{
-		cohesion_v = (squad->centroid + squad->getOffset(UID)) - position;
-		cohesion_v = cohesion_v.Normalized() * (cohesion_v.GetModule() / COHESION_TRESHOLD);
-		cohesion_v = { cohesion_v.x * COHESION_WEIGHT, cohesion_v.y * COHESION_WEIGHT };
+		if (squad ? (!squad->centroid.IsZero() && squad->units_id.size() > 1) : false)
+		{
+			if ((squad->centroid + squad->getOffset(UID)).DistanceTo(position) > COHESION_TRESHOLD)
+			{
+				cohesion_v = ((squad->centroid + squad->getOffset(UID)) - position).Normalized();
+				cohesion_v = { cohesion_v.x * COHESION_WEIGHT, cohesion_v.y * COHESION_WEIGHT };
 
-		fPoint world_offset = (squad->centroid + squad->getOffset(UID));
-		iPoint map_offset = App->map->WorldToMap(world_offset.x, world_offset.y);
+				fPoint world_offset = (position + cohesion_v);
+				iPoint map_offset = App->map->WorldToMap(world_offset.x, world_offset.y);
 
-		if (!App->pathfinding->IsWalkable(map_offset) || cohesion_v.GetModule() < MINIMUM_TRESHOLD)
-			return { 0.0f, 0.0f };
-
+				if (!App->pathfinding->IsWalkable(map_offset) || getCurrentCommand() == ATTACKING_MOVETO)
+					return { 0.0f, 0.0f };
+			}
+		}
 	}
 	return cohesion_v;
 }
@@ -251,15 +262,18 @@ fPoint Unit::calculateAlignementVector()
 {
 	fPoint alignement_v = { 0.0f, 0.0f };
 
-	if (squad ? !squad->squad_movement.IsZero() : false)
+	if (getCurrentCommand() != ATTACKING_MOVETO)
 	{
-		alignement_v = ((squad->squad_movement * (squad->max_speed / 5)) * ALIGNEMENT_WEIGHT);
+		if (squad ? !squad->squad_movement.IsZero() : false)
+		{
+			alignement_v = (squad->squad_movement.Normalized() * ALIGNEMENT_WEIGHT);
 
-		fPoint world_alignement = (squad->centroid + squad->getOffset(UID));
-		iPoint map_alignement = App->map->WorldToMap(world_alignement.x, world_alignement.y);
+			fPoint world_alignement = (position + alignement_v);
+			iPoint map_alignement = App->map->WorldToMap(world_alignement.x, world_alignement.y);
 
-		if (!App->pathfinding->IsWalkable(map_alignement) || alignement_v.GetModule() < MINIMUM_TRESHOLD)
-			return { 0.0f, 0.0f };
+			if (!App->pathfinding->IsWalkable(map_alignement))
+				return { 0.0f, 0.0f };
+		}
 	}
 
 	return alignement_v;
