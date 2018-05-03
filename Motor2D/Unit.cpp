@@ -83,7 +83,7 @@ bool Unit::Update(float dt)
 	animationController();
 
 	//take buffs out here
-	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+ 	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
 	{
 		if ((*it)->applied)
 		{
