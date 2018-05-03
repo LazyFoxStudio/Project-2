@@ -55,10 +55,10 @@ bool j1Scene::Start()
 	App->render->camera.y = -1600;
 
 	restart_time = 10;
-	wood = INIT_WOOD;
-	gold = INIT_GOLD;
+	//wood = INIT_WOOD;
+	//gold = INIT_GOLD;
 	//inactive_workers = workers = INIT_WORKERS;
-	town_hall_lvl = INIT_TOWNHALL_LVL;
+	//town_hall_lvl = INIT_TOWNHALL_LVL;
 
 	pugi::xml_document doc;
 	pugi::xml_node gameData;
@@ -123,7 +123,7 @@ bool j1Scene::PostUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN )
 		return false;
 
-	if (toRestart && Restart_timer.ReadSec() >= restart_time) Restart_game();
+	if (toRestart && Restart_timer.ReadSec() >= restart_time) Start_game();
 	return true;
 }
 
@@ -161,7 +161,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 //	return ret;
 //}
 
-void j1Scene::Restart_game()
+void j1Scene::Start_game()
 {
 
 	//DELETING ENTITIES-------------------------------------------------------
@@ -191,6 +191,13 @@ void j1Scene::Restart_game()
 	App->entitycontroller->town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, App->entitycontroller->town_hall->size.x, App->entitycontroller->town_hall->size.y, true, false);
 	App->wavecontroller->updateFlowField();
+	App->entitycontroller->buildingArea.w = BUILDINGAREA;
+	App->entitycontroller->buildingArea.h = BUILDINGAREA;
+	//buildingArea.x = -BUILDINGAREA / 2 + town_hall_pos.x / 2;
+	//buildingArea.y = -BUILDINGAREA / 2 + town_hall_pos.y / 2;
+	App->entitycontroller->buildingArea.x = town_hall_pos.x - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_width / 2);
+	App->entitycontroller->buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_height / 2);
+
 
 	//RESTARTING WAVES---------------------------------------------------------
 	App->gui->Chronos->counter.Restart();

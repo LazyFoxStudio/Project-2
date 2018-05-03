@@ -9,6 +9,7 @@
 #include "UI_WarningMessages.h"
 #include "UI_WorkersDisplay.h"
 #include "UI_NextWaveWindow.h"
+#include "j1WaveController.h"
 
 bool j1ActionsController::Update(float dt)
 {
@@ -194,6 +195,14 @@ bool j1ActionsController::Update(float dt)
 		case TOGGLE_NEXTWAVE:
 			App->gui->nextWaveWindow->toggle();
 			doingAction = false;
+			break;
+		case NEW_GAME:
+			App->scene->active = true;
+			App->entitycontroller->active = true;
+			App->wavecontroller->active = true;
+			App->uiscene->toggleMenu(false, START_MENU);
+			App->uiscene->toggleMenu(true, INGAME_MENU);
+			App->scene->Start_game();
 			break;
 		}
 		

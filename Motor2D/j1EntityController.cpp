@@ -36,18 +36,12 @@ bool j1EntityController::Start()
 	addHero(iPoint(2000, 1950), HERO_1);
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
-	town_hall = addBuilding(town_hall_pos, TOWN_HALL);
+	/*town_hall = addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
-	App->scene->InitialWorkers(town_hall);
+	App->scene->InitialWorkers(town_hall);*/
 
 	AddSquad(FOOTMAN, fPoint(2200, 1950));
 
-	buildingArea.w = BUILDINGAREA;
-	buildingArea.h = BUILDINGAREA;
-	//buildingArea.x = -BUILDINGAREA / 2 + town_hall_pos.x / 2;
-	//buildingArea.y = -BUILDINGAREA / 2 + town_hall_pos.y / 2;
-	buildingArea.x = town_hall_pos.x - (BUILDINGAREA/2) + (town_hall->size.x*App->map->data.tile_width/2);
-	buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (town_hall->size.x*App->map->data.tile_height/2);
 /*
 	entity_iterator = entities.begin();
 	squad_iterator = all_squads.begin();*/
@@ -339,6 +333,14 @@ void j1EntityController::DeleteEntity(uint UID)
 		{
 			Building* building_to_remove = (Building*)(entity);
 			App->map->WalkabilityArea(building_to_remove->position.x, building_to_remove->position.y, building_to_remove->size.x, building_to_remove->size.y, true);
+
+			if (App->scene->toRestart)
+			{
+				for (std::list<worker*>::iterator it = building_to_remove->workers_inside.begin(); it != building_to_remove->workers_inside.end(); it++)
+				{
+					(*it)->to_destroy = true;
+				}
+			}
 
 			if(!App->scene->toRestart)
 				App->wavecontroller->updateFlowField();

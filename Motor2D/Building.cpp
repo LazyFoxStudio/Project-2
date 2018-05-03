@@ -140,6 +140,11 @@ void Building::Destroy()
 	case LUMBER_MILL:
 		CalculateResourceProduction();
 		App->entitycontroller->GetTotalIncome();
+		
+		while(workers_inside.size() > 0)
+		{
+			App->entitycontroller->HandleWorkerAssignment(false, this);
+		}
 
 		break;
 	case TOWN_HALL:

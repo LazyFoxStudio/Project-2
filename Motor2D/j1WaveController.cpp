@@ -42,10 +42,10 @@ bool j1WaveController::Start()
 	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
 	flow_field = App->pathfinding->RequestFlowField(TownHall_pos);
 	
-	wave_timer.Start();
+	/*wave_timer.Start();
 
 	current_wave = 0;
-	Generate_Next_Wave();
+	Generate_Next_Wave();*/
 
 	return ret;
 }
@@ -96,8 +96,11 @@ bool j1WaveController::PostUpdate()
 			{
 				for (int j = 0; j < flow_field->height; j++)
 				{
-					iPoint parent_position = flow_field_aux->field[i][j].parent->position;
-					flow_field->field[i][j].parent = &flow_field->field[parent_position.x][parent_position.y];
+					if (flow_field_aux->field[i][j].parent != nullptr) //TEMPORAL ?
+					{
+						iPoint parent_position = flow_field_aux->field[i][j].parent->position;
+						flow_field->field[i][j].parent = &flow_field->field[parent_position.x][parent_position.y];
+					}
 				}
 			}
 			flow_field_aux->used_by = 0;
