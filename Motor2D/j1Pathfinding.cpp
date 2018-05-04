@@ -373,7 +373,7 @@ void FlowField::DebugDraw()
 			{
 				iPoint world_pos_1 = App->map->MapToWorld(field[x][y].position.x, field[x][y].position.y);
 				iPoint world_pos_2 = App->map->MapToWorld(field[x][y].parent->position.x, field[x][y].parent->position.y);
-				App->render->DrawLine(world_pos_1.x, world_pos_1.y, world_pos_2.x, world_pos_2.y, Blue);
+				App->render->DrawLine(world_pos_1.x + App->map->data.tile_width / 2, world_pos_1.y + App->map->data.tile_height / 2, world_pos_2.x + App->map->data.tile_width / 2, world_pos_2.y + App->map->data.tile_height / 2, Blue);
 			}
 		}
 }

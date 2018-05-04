@@ -92,10 +92,7 @@ bool Hero::Update(float dt)
 		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
 
-	if (!movement_target.IsZero())
-		SquadMove(dt);
-	else
-		Move(dt);
+	Move(dt);
 
 
 	//minimap_
@@ -108,7 +105,8 @@ bool Hero::Update(float dt)
 void Hero::Deactivate()
 {
 	Halt();
-	next_step.SetToZero();
+	mov_direction.SetToZero();
+	mov_module = 0.0f;
 	setActive(false);
 	timer.Start();
 	App->entitycontroller->selected_squads.remove(squad);

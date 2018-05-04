@@ -103,6 +103,9 @@ public:
 	MoveToSquad(Unit* commander, iPoint map_dest);
 
 	bool allIdle();
+	void Launch();
+	
+	bool launched = false;
 private:
 
 	bool OnInit();
@@ -115,6 +118,7 @@ class AttackingMoveToSquad : public MoveToSquad
 {
 	int target_squad_id = -1;
 	bool hold = false;
+	bool enemies_found = false;
 	j1Timer timer;
 
 public:

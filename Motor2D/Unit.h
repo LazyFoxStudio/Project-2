@@ -10,7 +10,7 @@
 
 enum direction { E, NE, SE, N, S, NW, W, SW};
 
-#define SPEED_CONSTANT 1.2f   // applied to all units   
+#define SPEED_CONSTANT 100.0f   // applied to all units   
 #define MAX_MOVEMENT_WEIGHT 100.0f   // max value for the next_step vector, for steering calculations  /
 #define STEERING_FACTOR 1.5f
 
@@ -30,9 +30,9 @@ public:
 	Squad* squad = nullptr;
 	bool flying = false;
 
-	fPoint displacement = { 0.0f,0.0f };
-	fPoint next_step = { 0.0f, 0.0f };
-	fPoint movement_target = { 0.0f, 0.0f };
+	fPoint mov_direction = { 0.0f,0.0f };
+	float mov_module = 0.0f;
+	fPoint mov_target = { 0.0f, 0.0f };
 	
 	Animation* current_anim = nullptr;
 	direction dir = S;
@@ -49,7 +49,6 @@ public:
 	bool Update(float dt);
 	void Draw(float dt);
 	void Move(float dt);
-	void SquadMove(float dt);
 
 	void lookAt(fPoint direction);
 	void animationController();
@@ -57,7 +56,7 @@ public:
 	void Halt();
 	void Destroy();
 
-	void calculateSeparationVector(fPoint& separation_v, int& weight);
+	void calculateSeparationVector(fPoint& separation_v, float& weight);
 	Command_Type getCurrentCommand() { return (commands.empty() ? NOTHING : commands.front()->type); }
 
 	void AddDamagebuff(int duration, int amount, operation_sign sign);

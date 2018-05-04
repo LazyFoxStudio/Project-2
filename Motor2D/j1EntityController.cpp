@@ -176,12 +176,7 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 
 		App->render->DrawQuad(r, White, false);
 		App->render->DrawCircle(unit->position.x, unit->position.y, unit->line_of_sight, Blue);
-		App->render->DrawLine(unit->position.x, unit->position.y, unit->position.x + unit->next_step.x, unit->position.y + unit->next_step.y, Red);
-		if (unit->squad)
-		{
-			fPoint offset = unit->squad->getOffset(unit->UID);
-			App->render->DrawCircle(offset.x + unit->squad->centroid.x, offset.y + unit->squad->centroid.y, 5, Yellow);
-		}
+		App->render->DrawCircle(unit->mov_target.x, unit->mov_target.y, 5, Red);
 	}
 }
 
@@ -420,6 +415,7 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 
 	hero->position.x = pos.x;
 	hero->position.y = pos.y;
+	hero->mov_target = hero->position;
 
 	hero->collider.x = pos.x - (hero->collider.w / 2);
 	hero->collider.y = pos.y - (hero->collider.h / 2);
