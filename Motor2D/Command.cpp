@@ -37,6 +37,7 @@ void Command::Restart() { OnStop(); state = TO_INIT; }
 bool MoveTo::OnInit()
 {
 	if (!flow_field) Stop();
+	else flow_field->used_by++;
 
 	return true;
 }
@@ -50,7 +51,7 @@ bool MoveTo::OnUpdate(float dt)
 		fPoint desired_place = getDesiredPlace();
 		map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
-		if (!desired_place.IsZero() && (unit->squad ? unit->squad->units_id.size() > 1 : false))
+		if (!desired_place.IsZero() && desired_place.DistanceTo(unit->position) < 100 && (unit->squad ? unit->squad->units_id.size() > 1 : false))
 		{
 			unit->mov_target = desired_place;
 			if (unit->squad->squad_movement.IsZero() && unit->mov_target.DistanceTo(unit->position) < 5)
@@ -79,6 +80,8 @@ bool MoveTo::OnStop()
 	unit->mov_target = unit->position;
 	if(unit->squad) 
 		unit->mov_direction = unit->squad->squad_direction;
+
+	if(flow_field) flow_field->used_by++;
 	return true;
 }
 
@@ -312,7 +315,7 @@ fPoint MoveTo::getDesiredPlace()
 {
 	if (unit->squad)
 	{
-		fPoint place = unit->squad->centroid + unit->squad->getOffset(unit->UID);
+		fPoint place = unit->squad->commander_pos + unit->squad->getOffset(unit->UID);
 		if (!place.IsZero())
 		{
 			iPoint map_place = App->map->WorldToMap(place.x, place.y);
