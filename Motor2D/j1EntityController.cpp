@@ -153,6 +153,17 @@ void j1EntityController::buildingCalculations()
 				barracks->Unlock();
 				Button* farms = App->gui->GetActionButton(7);
 				farms->Unlock();
+				Button* mine = App->gui->GetActionButton(22);
+				mine->Unlock();
+				Button* turret = App->gui->GetActionButton(23);
+				turret->Unlock();
+				Button* hut = App->gui->GetActionButton(24);
+				hut->Unlock();
+				Button* church = App->gui->GetActionButton(25);
+				church->Unlock();
+				Button* blacksmith = App->gui->GetActionButton(26);
+				blacksmith->Unlock();
+
 
 				App->gui->warningMessages->hideMessage(NO_TREES);
 				App->entitycontroller->SpendCost(to_build_type);
