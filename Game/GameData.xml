@@ -3742,6 +3742,72 @@
       </popUp>
       <hotkey key="E" font_id="3"/>
     </buildBlacksmith>
+
+    <meleeAttackUpgrade  id="27" click_action="24">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Increase the attack of the melee troops" cost="true" type="10"/>
+      </popUp>
+      <hotkey key="Q" font_id="3"/>
+    </meleeAttackUpgrade>
+
+    <meleeArmorUpgrade  id="28" click_action="25">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Increase the defense of the melee troops" cost="true" type="11"/>
+      </popUp>
+      <hotkey key="E" font_id="3"/>
+    </meleeArmorUpgrade>
+
+    <rangedAttackUpgrade  id="29" click_action="26">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Increase the attack of ranged troops" cost="true" type="12"/>
+      </popUp>
+      <hotkey key="A" font_id="3"/>
+    </rangedAttackUpgrade>
+
+    <rangedArmorUpgrade  id="30" click_action="27">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Increase the defense of ranged troops" cost="true" type="13"/>
+      </popUp>
+      <hotkey key="D" font_id="3"/>
+    </rangedArmorUpgrade>
+
+    <flyingAttackUpgrade  id="31" click_action="28">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Increase the attack of the flying troops" cost="true" type="14"/>
+      </popUp>
+      <hotkey key="Z" font_id="3"/>
+    </flyingAttackUpgrade>
+
+    <flyingArmorUpgrade  id="32" click_action="29">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Increase the defense of the melee troops" cost="true" type="15"/>
+      </popUp>
+      <hotkey key="C" font_id="3"/>
+    </flyingArmorUpgrade>
 	</ActionButtons>
 	
 	<WorkersDisplay>
