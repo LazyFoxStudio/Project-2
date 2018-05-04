@@ -261,7 +261,7 @@
       <!-- Alliance-->
       <Unit>
             <name value="Footman"/>
-            <type value="12"/>
+            <type value="11"/>
 			      <iconData x="162" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Alliance Sprites\Footman_Spritesheet.png"/>
             <Stats>
@@ -490,7 +490,7 @@
 		</Unit>
       <Unit>
             <name value="Archer"/>
-            <type value="13"/> 
+            <type value="12"/> 
 			      <iconData x="315" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Alliance Sprites\Elven archer_Spritesheet.png"/>
             <Stats>
@@ -719,7 +719,7 @@
 	  </Unit>
       <Unit>
         <name value="Knight"/>
-        <type value="14"/>
+        <type value="13"/>
         <iconData x="315" y="72" w="71" h="59"/>
         <texture value="Assets\Sprites\Alliance Sprites\Knight_Spritesheet.png"/>
         <Stats>
@@ -976,7 +976,7 @@
       </Unit>
       <Unit>
         <name value="Gryphon"/>
-        <type value="15"/>
+        <type value="14"/>
         <iconData x="9" y="200" w="72" h="60"/>
         <texture value="Assets\Sprites\Alliance Sprites\Gryphon Rider_SpriteSheet.png"/>
         <Stats>
@@ -1233,7 +1233,7 @@
       </Unit>
       <Unit>
         <name value="Ballista"/>
-        <type value="16"/>
+        <type value="15"/>
         <iconData x="468" y="72" w="72" h="59"/>
         <texture value="Assets\Sprites\Alliance Sprites\Ballista_Spritesheet.png"/>
         <Stats>
@@ -1490,7 +1490,7 @@
       </Unit>
       <Unit>
         <name value="Gnomish Flying Machine"/>
-        <type value="17"/>
+        <type value="16"/>
         <iconData x="621" y="136" w="72" h="60"/>
         <texture value="Assets\Sprites\Alliance Sprites\Flying Machine_SpriteSheet.png"/>
         <Stats>
@@ -1748,7 +1748,7 @@
       <Unit>
             <name value="Grunt"/>
 
-            <type value="19"/> 
+            <type value="17"/> 
 
 			      <iconData x="239" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Horde Sprites\Grunt_SpriteSheet.png"/>
@@ -1970,7 +1970,7 @@
       </Unit>
       <Unit>
          <name value="Axe Thrower"/>
-            <type value="20"/> 
+            <type value="18"/> 
 
 			      <iconData x="392" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Horde Sprites\Troll Axethrower_SpriteSheet.png"/>
@@ -2192,7 +2192,7 @@
       </Unit>
       <Unit>
          <name value="Death Knight"/>
-            <type value="21"/>
+            <type value="19"/>
             <iconData x="392" y="72" w="71" h="59"/>
             <texture value="Assets\Sprites\Horde Sprites\Death Knight_SpriteSheet.png"/>
             <Stats>
@@ -2413,7 +2413,7 @@
       </Unit>
       <Unit>
         <name value="Dragon"/>
-        <type value="22"/>
+        <type value="20"/>
         <iconData x="86" y="200" w="72" h="59"/>
         <texture value="Assets\Sprites\Horde Sprites\Dragon_SpriteSheet.png"/>
         <Stats>
@@ -2654,7 +2654,7 @@
       <Unit>
         <name value="Catapult"/>
 
-        <type value="23"/>
+        <type value="21"/>
 
         <iconData x="544" y="72" w="72" h="59"/>
         <texture value="Assets\Sprites\Horde Sprites\Catapult_SpriteSheet.png"/>
@@ -2912,7 +2912,7 @@
       </Unit>
       <Unit>
         <name value="Juggernaut"/>
-        <type value="24"/>
+        <type value="22"/>
         <iconData x="392" y="136" w="71" h="59"/>
         <texture value="Assets\Sprites\Horde Sprites\Juggernaut_SpriteSheet.png"/>
         <Stats>

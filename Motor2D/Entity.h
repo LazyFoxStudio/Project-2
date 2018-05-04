@@ -18,13 +18,13 @@ enum Type
 	TOWN_HALL, BARRACKS, LUMBER_MILL, FARM, MINE, TURRET, GNOME_HUT, CHURCH, BLACKSMITH,
 
 	// Heroes
-	HERO_1, /* ... */ HERO_X,
+	HERO_1, /* ... */
 
 	// Allies
-	FOOTMAN, ARCHER, KNIGHT, GRYPHON, BALLISTA, FLYING_MACHINE, /* ... */ ALLY_X,
+	FOOTMAN, ARCHER, KNIGHT, GRYPHON, BALLISTA, FLYING_MACHINE,/* ... */
 
 	//Enemies
-	GRUNT, AXE_THROWER, DEATH_KNIGHT, DRAGON, CATAPULT, JUGGERNAUT,/* ... */ ENEMY_X,
+	GRUNT, AXE_THROWER, DEATH_KNIGHT, DRAGON, CATAPULT, JUGGERNAUT,/* ... */
 };
 
 enum existence_state { BEING_BUILT, OPERATIVE, DESTROYED };
@@ -80,7 +80,7 @@ public:
 
 	bool IsEnemy() { return type >= GRUNT; };
 	bool IsUnit() { return type >= HERO_1; };
-	bool IsHero() { return (type >= HERO_1 && type <= HERO_X); }
+	bool IsHero() { return (type >= HERO_1 && type < FOOTMAN); }
 	bool IsBuilding() { return type <= BLACKSMITH; };
 };
 
