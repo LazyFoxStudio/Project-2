@@ -261,7 +261,7 @@
       <!-- Alliance-->
       <Unit>
             <name value="Footman"/>
-            <type value="12"/>
+            <type value="11"/>
 			      <iconData x="162" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Alliance Sprites\Footman_Spritesheet.png"/>
             <Stats>
@@ -490,7 +490,7 @@
 		</Unit>
       <Unit>
             <name value="Archer"/>
-            <type value="13"/> 
+            <type value="12"/> 
 			      <iconData x="315" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Alliance Sprites\Elven archer_Spritesheet.png"/>
             <Stats>
@@ -719,7 +719,7 @@
 	  </Unit>
       <Unit>
         <name value="Knight"/>
-        <type value="14"/>
+        <type value="13"/>
         <iconData x="315" y="72" w="71" h="59"/>
         <texture value="Assets\Sprites\Alliance Sprites\Knight_Spritesheet.png"/>
         <Stats>
@@ -976,7 +976,7 @@
       </Unit>
       <Unit>
         <name value="Gryphon"/>
-        <type value="15"/>
+        <type value="14"/>
         <iconData x="9" y="200" w="72" h="60"/>
         <texture value="Assets\Sprites\Alliance Sprites\Gryphon Rider_SpriteSheet.png"/>
         <Stats>
@@ -1233,7 +1233,7 @@
       </Unit>
       <Unit>
         <name value="Ballista"/>
-        <type value="16"/>
+        <type value="15"/>
         <iconData x="468" y="72" w="72" h="59"/>
         <texture value="Assets\Sprites\Alliance Sprites\Ballista_Spritesheet.png"/>
         <Stats>
@@ -1490,7 +1490,7 @@
       </Unit>
       <Unit>
         <name value="Gnomish Flying Machine"/>
-        <type value="17"/>
+        <type value="16"/>
         <iconData x="621" y="136" w="72" h="60"/>
         <texture value="Assets\Sprites\Alliance Sprites\Flying Machine_SpriteSheet.png"/>
         <Stats>
@@ -1748,7 +1748,7 @@
       <Unit>
             <name value="Grunt"/>
 
-            <type value="19"/> 
+            <type value="17"/> 
 
 			      <iconData x="239" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Horde Sprites\Grunt_SpriteSheet.png"/>
@@ -1970,7 +1970,7 @@
       </Unit>
       <Unit>
          <name value="Axe Thrower"/>
-            <type value="20"/> 
+            <type value="18"/> 
 
 			      <iconData x="392" y="7" w="72" h="60"/>
             <texture value="Assets\Sprites\Horde Sprites\Troll Axethrower_SpriteSheet.png"/>
@@ -2192,7 +2192,7 @@
       </Unit>
       <Unit>
          <name value="Death Knight"/>
-            <type value="21"/>
+            <type value="19"/>
             <iconData x="392" y="72" w="71" h="59"/>
             <texture value="Assets\Sprites\Horde Sprites\Death Knight_SpriteSheet.png"/>
             <Stats>
@@ -2413,7 +2413,7 @@
       </Unit>
       <Unit>
         <name value="Dragon"/>
-        <type value="22"/>
+        <type value="20"/>
         <iconData x="86" y="200" w="72" h="59"/>
         <texture value="Assets\Sprites\Horde Sprites\Dragon_SpriteSheet.png"/>
         <Stats>
@@ -2654,7 +2654,7 @@
       <Unit>
         <name value="Catapult"/>
 
-        <type value="23"/>
+        <type value="21"/>
 
         <iconData x="544" y="72" w="72" h="59"/>
         <texture value="Assets\Sprites\Horde Sprites\Catapult_SpriteSheet.png"/>
@@ -2912,7 +2912,7 @@
       </Unit>
       <Unit>
         <name value="Juggernaut"/>
-        <type value="24"/>
+        <type value="22"/>
         <iconData x="392" y="136" w="71" h="59"/>
         <texture value="Assets\Sprites\Horde Sprites\Juggernaut_SpriteSheet.png"/>
         <Stats>
@@ -3543,7 +3543,7 @@
 			<popUp>
 				<Info text="Build Barracks" cost="true" type="2"/>
 			</popUp>
-			<hotkey key="A" font_id="3"/>
+			<hotkey key="Q" font_id="3"/>
 		</buildBarrack>
 		<buildMill id="6" release_action="3">
 			<position x="0" y="0"/>
@@ -3553,7 +3553,7 @@
 			<popUp>
 				<Info text="Build Lumber Mill" cost="true" type="3"/>
 			</popUp>
-			<hotkey key="S" font_id="3"/>
+			<hotkey key="W" font_id="3"/>
 		</buildMill>
 		<buildFarm id="7" release_action="4">
 			<position x="0" y="0"/>
@@ -3563,7 +3563,7 @@
 			<popUp>
 				<Info text="Build Farm" cost="true" type="4"/>
 			</popUp>
-			<hotkey key="D" font_id="3"/>
+			<hotkey key="E" font_id="3"/>
 		</buildFarm>
 		<unassignWorker id="8" click_action="5">
 			<position x="0" y="0"/>
@@ -3591,7 +3591,7 @@
 			<popUp>
 				<Info text="Create Footman Squad" cost="true" type="12"/>
 			</popUp>
-			<hotkey key="A" font_id="3"/>
+			<hotkey key="Q" font_id="3"/>
 		</createFootman>
 		<createArcher id="12" release_action="8">
 			<position x="0" y="0"/>
@@ -3601,47 +3601,47 @@
 			<popUp>
 				<Info text="Create Archer Squad" cost="true" type="13"/>
 			</popUp>
-			<hotkey key="S" font_id="3"/>
+			<hotkey key="W" font_id="3"/>
 		</createArcher>
 		<createKnight id="13" release_action="9">
 			<position x="0" y="0"/>
-			<standby x="693" y="507" w="66" h="66"/>
-			<OnMouse x="761" y="507" w="66" h="66"/>
-			<OnClick x="829" y="507" w="66" h="66"/>
+			<standby x="1305" y="1082" w="66" h="66"/>
+			<OnMouse x="1372" y="1082" w="66" h="66"/>
+			<OnClick x="1441" y="1082" w="66" h="66"/>
 			<popUp>
 				<Info text="Create Knight Squad" cost="true" type="14"/>
 			</popUp>
-			<hotkey key="D" font_id="3"/>
+			<hotkey key="Q" font_id="3"/>
 			</createKnight>
     <createGryphon id="14" release_action="10">
       <position x="0" y="0"/>
-      <standby x="693" y="507" w="66" h="66"/>
-      <OnMouse x="761" y="507" w="66" h="66"/>
-      <OnClick x="829" y="507" w="66" h="66"/>
+      <standby x="1305" y="1152" w="66" h="66"/>
+      <OnMouse x="1372" y="1152" w="66" h="66"/>
+      <OnClick x="1441" y="1152" w="66" h="66"/>
       <popUp>
         <Info text="Create Gryphon" cost="true" type="15"/>
       </popUp>
-      <hotkey key="Z" font_id="3"/>
+      <hotkey key="W" font_id="3"/>
     </createGryphon>
     <createBallista id="15" release_action="11">
       <position x="0" y="0"/>
-      <standby x="693" y="507" w="66" h="66"/>
-      <OnMouse x="761" y="507" w="66" h="66"/>
-      <OnClick x="829" y="507" w="66" h="66"/>
+      <standby x="1305" y="1292" w="66" h="66"/>
+      <OnMouse x="1372" y="1292" w="66" h="66"/>
+      <OnClick x="1441" y="1292" w="66" h="66"/>
       <popUp>
         <Info text="Create Ballista" cost="true" type="16"/>
       </popUp>
-      <hotkey key="X" font_id="3"/>
+      <hotkey key="Q" font_id="3"/>
     </createBallista>
     <createFlyingMachine id="16" release_action="12">
       <position x="0" y="0"/>
-      <standby x="693" y="507" w="66" h="66"/>
-      <OnMouse x="761" y="507" w="66" h="66"/>
-      <OnClick x="829" y="507" w="66" h="66"/>
+      <standby x="1305" y="1222" w="66" h="66"/>
+      <OnMouse x="1372" y="1222" w="66" h="66"/>
+      <OnClick x="1441" y="1222" w="66" h="66"/>
       <popUp>
         <Info text="Create FlyingMachine" cost="true" type="17"/>
       </popUp>
-      <hotkey key="C" font_id="3"/>
+      <hotkey key="W" font_id="3"/>
     </createFlyingMachine>
 		<ability1 id="17" click_action="13">
 			<position x="0" y="0"/>
@@ -3700,7 +3700,7 @@
       <popUp>
         <Info text="Build Mine" cost="true" type="5"/>
       </popUp>
-      <hotkey key="Z" font_id="3"/>
+      <hotkey key="A" font_id="3"/>
     </buildMine>
     <buildTurret id="23" click_action="20">
       <position x="0" y="0"/>
@@ -3710,7 +3710,7 @@
       <popUp>
         <Info text="Build Turret" cost="true" type="6"/>
       </popUp>
-      <hotkey key="X" font_id="3"/>
+      <hotkey key="S" font_id="3"/>
     </buildTurret>
     <buildGnomeHut id="24" click_action="21">
       <position x="0" y="0"/>
@@ -3720,7 +3720,7 @@
       <popUp>
         <Info text="Build GnomeHut" cost="true" type="7"/>
       </popUp>
-      <hotkey key="Q" font_id="3"/>
+      <hotkey key="D" font_id="3"/>
     </buildGnomeHut>
     <buildChurch id="25" click_action="22">
       <position x="0" y="0"/>
@@ -3730,7 +3730,7 @@
       <popUp>
         <Info text="Build Church" cost="true" type="8"/>
       </popUp>
-      <hotkey key="W" font_id="3"/>
+      <hotkey key="Z" font_id="3"/>
     </buildChurch>
     <buildBlacksmith id="26" click_action="23">
       <position x="0" y="0"/>
@@ -3740,8 +3740,74 @@
       <popUp>
         <Info text="Build Blacksmith" cost="true" type="9"/>
       </popUp>
-      <hotkey key="E" font_id="3"/>
+      <hotkey key="X" font_id="3"/>
     </buildBlacksmith>
+
+    <meleeAttackUpgrade  id="27" click_action="24">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Increase the attack of the melee troops" cost="true" type="10"/>
+      </popUp>
+      <hotkey key="Q" font_id="3"/>
+    </meleeAttackUpgrade>
+
+    <meleeArmorUpgrade  id="28" click_action="25">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Increase the defense of the melee troops" cost="true" type="11"/>
+      </popUp>
+      <hotkey key="E" font_id="3"/>
+    </meleeArmorUpgrade>
+
+    <rangedAttackUpgrade  id="29" click_action="26">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Increase the attack of ranged troops" cost="true" type="12"/>
+      </popUp>
+      <hotkey key="A" font_id="3"/>
+    </rangedAttackUpgrade>
+
+    <rangedArmorUpgrade  id="30" click_action="27">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Increase the defense of ranged troops" cost="true" type="13"/>
+      </popUp>
+      <hotkey key="D" font_id="3"/>
+    </rangedArmorUpgrade>
+
+    <flyingAttackUpgrade  id="31" click_action="28">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Increase the attack of the flying troops" cost="true" type="14"/>
+      </popUp>
+      <hotkey key="Z" font_id="3"/>
+    </flyingAttackUpgrade>
+
+    <flyingArmorUpgrade  id="32" click_action="29">
+      <position x="0" y="0"/>
+      <standby x="1305" y="939" w="66" h="66"/>
+      <OnMouse x="1373" y="939" w="66" h="66"/>
+      <OnClick x="1441" y="939" w="66" h="66"/>
+      <popUp>
+        <Info text="Increase the defense of the melee troops" cost="true" type="15"/>
+      </popUp>
+      <hotkey key="C" font_id="3"/>
+    </flyingArmorUpgrade>
 	</ActionButtons>
 	
 	<WorkersDisplay>
