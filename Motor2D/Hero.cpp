@@ -97,7 +97,6 @@ bool Hero::Update(float dt)
 	else
 		Move(dt);
 
-
 	//minimap_
 	if (App->gui->minimap)
 		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,75,75 }, White);

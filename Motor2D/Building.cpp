@@ -13,6 +13,7 @@
 #include "UI_TroopCreationQueue.h"
 #include "UI_FarmWorkersManager.h"
 #include "UI_CooldownsDisplay.h"
+#include "Unit.h"
 
 Building::Building(iPoint pos, Building& building)
 {
@@ -100,6 +101,23 @@ bool Building::Update(float dt)
 		else if (type == BARRACKS || type == GNOME_HUT || type == CHURCH)
 		{
 			HandleUnitProduction();
+		}
+		else if (type == TOWN_HALL)
+		{
+			Entity* hero = App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID);
+
+			iPoint TH_center = { (int)position.x + collider.w / 2, (int)position.y + collider.h / 2 };
+
+			if (hero->isSelected)
+			{
+				App->render->DrawCircle(TH_center.x, TH_center.y, 250, Green);
+			}
+
+			if (TH_center.DistanceTo(iPoint(hero->position.x,hero->position.y)) < 250 && hero->current_HP<hero->max_HP)
+			{
+				hero->current_HP++;
+			}
+			
 		}
 		break;
 
