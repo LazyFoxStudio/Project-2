@@ -3543,7 +3543,7 @@
 			<popUp>
 				<Info text="Build Barracks" cost="true" type="2"/>
 			</popUp>
-			<hotkey key="A" font_id="3"/>
+			<hotkey key="Q" font_id="3"/>
 		</buildBarrack>
 		<buildMill id="6" release_action="3">
 			<position x="0" y="0"/>
@@ -3553,7 +3553,7 @@
 			<popUp>
 				<Info text="Build Lumber Mill" cost="true" type="3"/>
 			</popUp>
-			<hotkey key="S" font_id="3"/>
+			<hotkey key="W" font_id="3"/>
 		</buildMill>
 		<buildFarm id="7" release_action="4">
 			<position x="0" y="0"/>
@@ -3563,7 +3563,7 @@
 			<popUp>
 				<Info text="Build Farm" cost="true" type="4"/>
 			</popUp>
-			<hotkey key="D" font_id="3"/>
+			<hotkey key="E" font_id="3"/>
 		</buildFarm>
 		<unassignWorker id="8" click_action="5">
 			<position x="0" y="0"/>
@@ -3700,7 +3700,7 @@
       <popUp>
         <Info text="Build Mine" cost="true" type="5"/>
       </popUp>
-      <hotkey key="Z" font_id="3"/>
+      <hotkey key="A" font_id="3"/>
     </buildMine>
     <buildTurret id="23" click_action="20">
       <position x="0" y="0"/>
@@ -3710,7 +3710,7 @@
       <popUp>
         <Info text="Build Turret" cost="true" type="6"/>
       </popUp>
-      <hotkey key="X" font_id="3"/>
+      <hotkey key="S" font_id="3"/>
     </buildTurret>
     <buildGnomeHut id="24" click_action="21">
       <position x="0" y="0"/>
@@ -3720,7 +3720,7 @@
       <popUp>
         <Info text="Build GnomeHut" cost="true" type="7"/>
       </popUp>
-      <hotkey key="Q" font_id="3"/>
+      <hotkey key="D" font_id="3"/>
     </buildGnomeHut>
     <buildChurch id="25" click_action="22">
       <position x="0" y="0"/>
@@ -3730,7 +3730,7 @@
       <popUp>
         <Info text="Build Church" cost="true" type="8"/>
       </popUp>
-      <hotkey key="W" font_id="3"/>
+      <hotkey key="Z" font_id="3"/>
     </buildChurch>
     <buildBlacksmith id="26" click_action="23">
       <position x="0" y="0"/>
@@ -3740,7 +3740,7 @@
       <popUp>
         <Info text="Build Blacksmith" cost="true" type="9"/>
       </popUp>
-      <hotkey key="E" font_id="3"/>
+      <hotkey key="X" font_id="3"/>
     </buildBlacksmith>
 
     <meleeAttackUpgrade  id="27" click_action="24">
