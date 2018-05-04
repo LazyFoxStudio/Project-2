@@ -485,8 +485,16 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 			element->setDragable(tmp.child("draggable").attribute("horizontal").as_bool(false), tmp.child("draggable").attribute("vertical").as_bool(false));
 			element->interactive = tmp.child("interactive").attribute("value").as_bool(true);
 			element->active = tmp.attribute("active").as_bool(true);
-			element->clickAction = (actionType)tmp.attribute("click_action").as_int(0);
-			element->releaseAction = (actionType)tmp.attribute("release_action").as_int(0);
+			if (tmp.attribute("click_action"))
+			{
+				element->clickAction = (actionType)tmp.attribute("click_action").as_int(0);
+				element->hasClickAction = true;
+			}
+			if (tmp.attribute("release_action"))
+			{
+				element->releaseAction = (actionType)tmp.attribute("release_action").as_int(0);
+				element->hasReleaseAction = true;
+			}
 			pugi::xml_node info = tmp.child("popUp").child("Info");
 			if (info)
 			{
@@ -616,8 +624,16 @@ Button* j1Gui::createButton(pugi::xml_node node, j1Module* callback, bool saveIn
 
 	Button* ret = new Button(x, y, texture, standby, OnMouse, OnClick, callback);
 
-	ret->clickAction = (actionType)node.attribute("click_action").as_int(0);
-	ret->releaseAction = (actionType)node.attribute("release_action").as_int(0);
+	if (node.attribute("click_action"))
+	{
+		ret->clickAction = (actionType)node.attribute("click_action").as_int(0);
+		ret->hasClickAction = true;
+	}
+	if (node.attribute("release_action"))
+	{
+		ret->releaseAction = (actionType)node.attribute("release_action").as_int(0);
+		ret->hasReleaseAction = true;
+	}
 
 	if (saveIntoGUI)
 		Buttons.push_back(ret);

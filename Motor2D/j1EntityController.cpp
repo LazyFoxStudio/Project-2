@@ -168,7 +168,7 @@ void j1EntityController::buildingCalculations()
 				App->gui->warningMessages->hideMessage(NO_TREES);
 				App->entitycontroller->SpendCost(to_build_type);
 
-				if (App->actionscontroller->action_type == to_build_type && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT)
+				if (App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT)
 					App->actionscontroller->doingAction = false;
 
 				to_build_type = NONE_ENTITY;

@@ -147,14 +147,16 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 		{
 			element->state = CLICKED;
 
-			App->actionscontroller->activateAction(element->clickAction);
+			if (element->hasClickAction)
+				App->actionscontroller->activateAction(element->clickAction);
 		}
 		else if (event_type == MOUSE_LEFT_RELEASE)
 		{
 			if (element->state == CLICKED)
 				element->state = MOUSEOVER;
 
-			App->actionscontroller->activateAction(element->releaseAction);
+			if (element->hasReleaseAction)
+				App->actionscontroller->activateAction(element->releaseAction);
 		}
 		else if (event_type == MOUSE_RIGHT_CLICK)
 		{}
