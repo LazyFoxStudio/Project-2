@@ -3605,9 +3605,9 @@
 		</createArcher>
 		<createKnight id="13" release_action="9">
 			<position x="0" y="0"/>
-			<standby x="693" y="507" w="66" h="66"/>
-			<OnMouse x="761" y="507" w="66" h="66"/>
-			<OnClick x="829" y="507" w="66" h="66"/>
+			<standby x="1305" y="1082" w="66" h="66"/>
+			<OnMouse x="1372" y="1082" w="66" h="66"/>
+			<OnClick x="1441" y="1082" w="66" h="66"/>
 			<popUp>
 				<Info text="Create Knight Squad" cost="true" type="14"/>
 			</popUp>
@@ -3615,9 +3615,9 @@
 			</createKnight>
     <createGryphon id="14" release_action="10">
       <position x="0" y="0"/>
-      <standby x="693" y="507" w="66" h="66"/>
-      <OnMouse x="761" y="507" w="66" h="66"/>
-      <OnClick x="829" y="507" w="66" h="66"/>
+      <standby x="1305" y="1152" w="66" h="66"/>
+      <OnMouse x="1372" y="1152" w="66" h="66"/>
+      <OnClick x="1441" y="1152" w="66" h="66"/>
       <popUp>
         <Info text="Create Gryphon" cost="true" type="15"/>
       </popUp>
@@ -3625,9 +3625,9 @@
     </createGryphon>
     <createBallista id="15" release_action="11">
       <position x="0" y="0"/>
-      <standby x="693" y="507" w="66" h="66"/>
-      <OnMouse x="761" y="507" w="66" h="66"/>
-      <OnClick x="829" y="507" w="66" h="66"/>
+      <standby x="1305" y="1292" w="66" h="66"/>
+      <OnMouse x="1372" y="1292" w="66" h="66"/>
+      <OnClick x="1441" y="1292" w="66" h="66"/>
       <popUp>
         <Info text="Create Ballista" cost="true" type="16"/>
       </popUp>
@@ -3635,9 +3635,9 @@
     </createBallista>
     <createFlyingMachine id="16" release_action="12">
       <position x="0" y="0"/>
-      <standby x="693" y="507" w="66" h="66"/>
-      <OnMouse x="761" y="507" w="66" h="66"/>
-      <OnClick x="829" y="507" w="66" h="66"/>
+      <standby x="1305" y="1222" w="66" h="66"/>
+      <OnMouse x="1372" y="1222" w="66" h="66"/>
+      <OnClick x="1441" y="1222" w="66" h="66"/>
       <popUp>
         <Info text="Create FlyingMachine" cost="true" type="17"/>
       </popUp>
