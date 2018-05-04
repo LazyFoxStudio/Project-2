@@ -3591,7 +3591,7 @@
 			<popUp>
 				<Info text="Create Footman Squad" cost="true" type="12"/>
 			</popUp>
-			<hotkey key="A" font_id="3"/>
+			<hotkey key="Q" font_id="3"/>
 		</createFootman>
 		<createArcher id="12" release_action="8">
 			<position x="0" y="0"/>
@@ -3601,7 +3601,7 @@
 			<popUp>
 				<Info text="Create Archer Squad" cost="true" type="13"/>
 			</popUp>
-			<hotkey key="S" font_id="3"/>
+			<hotkey key="W" font_id="3"/>
 		</createArcher>
 		<createKnight id="13" release_action="9">
 			<position x="0" y="0"/>
@@ -3611,7 +3611,7 @@
 			<popUp>
 				<Info text="Create Knight Squad" cost="true" type="14"/>
 			</popUp>
-			<hotkey key="D" font_id="3"/>
+			<hotkey key="Q" font_id="3"/>
 			</createKnight>
     <createGryphon id="14" release_action="10">
       <position x="0" y="0"/>
@@ -3621,7 +3621,7 @@
       <popUp>
         <Info text="Create Gryphon" cost="true" type="15"/>
       </popUp>
-      <hotkey key="Z" font_id="3"/>
+      <hotkey key="W" font_id="3"/>
     </createGryphon>
     <createBallista id="15" release_action="11">
       <position x="0" y="0"/>
@@ -3631,7 +3631,7 @@
       <popUp>
         <Info text="Create Ballista" cost="true" type="16"/>
       </popUp>
-      <hotkey key="X" font_id="3"/>
+      <hotkey key="Q" font_id="3"/>
     </createBallista>
     <createFlyingMachine id="16" release_action="12">
       <position x="0" y="0"/>
@@ -3641,7 +3641,7 @@
       <popUp>
         <Info text="Create FlyingMachine" cost="true" type="17"/>
       </popUp>
-      <hotkey key="C" font_id="3"/>
+      <hotkey key="W" font_id="3"/>
     </createFlyingMachine>
 		<ability1 id="17" click_action="13">
 			<position x="0" y="0"/>
