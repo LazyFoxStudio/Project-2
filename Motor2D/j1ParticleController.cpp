@@ -89,12 +89,16 @@ void j1ParticleController::LoadParticlesFromXML()
 	file = App->LoadFile(Particledoc, "Particle_Templates.xml");
 
 	Particle* tmp; 
+	int type = 1;
 
 	for (pugi::xml_node part = file.child("particle").child("template"); part; part = part.next_sibling("template"))
 	{
 		tmp = new Particle();
 
-		tmp->type = GetTypeFromInt(part.child("type").attribute("value").as_int(0));
+		tmp->type = GetTypeFromInt(type++);
+
+		tmp->width = part.child("width").attribute("value").as_int(0);
+		tmp->height = part.child("height").attribute("value").as_int(0);
 
 		pugi::xml_node childNode = part.child("anim");
 
@@ -113,14 +117,26 @@ particleType j1ParticleController::GetTypeFromInt(int posOnEnum)
 {
 	switch (posOnEnum)
 	{
+	case 9:
+		return particleType::PJUGGERNAUT;
+	case 8:
+		return particleType::PCATAPULT;
+	case 7:
+		return particleType::PDRAGON;
+	case 6:
+		return particleType::PDEATHKNIGHT;
+	case 5:
+		return particleType::PFLYINGMACHINE;
+	case 4:
+		return particleType::PBALLISTA;
 	case 3:
-		return particleType::YAHMAM_AA;
+		return particleType::PYAHMAM_AA;
 	case 2:
-		return particleType::TOMAHAWK;
+		return particleType::PTOMAHAWK;
 	case 1:
-		return particleType::ARROW;
+		return particleType::PARROW;
 	default:
-		return particleType::NO_TYPE;
+		return particleType::PNO_TYPE;
 	}
 }
 
@@ -135,7 +151,7 @@ Particle* j1ParticleController::FindParticleType(particleType type)
 
 void j1ParticleController::AdjustDirection(Particle* p, fPoint objective, float speed)
 {
-	fPoint vec = { objective.x - p->position.x, objective.y - p->position.y };
+	fPoint vec = { objective.x - p->position.x + (p->width/2), objective.y - p->position.y + (p->height / 2) };
 
 	p->angle = asinf(vec.y/vec.GetModule());
 	float sinus = sinf(p->angle);
@@ -261,8 +277,8 @@ bool Particle::Update(float dt)
 	position.y += speed.y*dt;
 	
 
-	/*if (position.x > App->win->width || position.x < 0 || position.y >  App->win->height || position.y < 0)
-		life = 0;*/
+	if (position.x > (App->win->width + -App->render->camera.x) || position.x < -App->win->width || position.y > (App->win->height + -App->render->camera.y) || position.y < -App->win->height)
+		life = 1;
 
 	return ret;
 }

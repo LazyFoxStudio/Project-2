@@ -250,14 +250,25 @@ void j1EntityController::HandleSFX(Type type, int volume)
 		App->audio->PlayFx(SFX_MISCELLANEOUS_BALLISTA, volume);
 		break;
 	case Type::FLYING_MACHINE:
-		App->audio->PlayFx(SFX_MISCELLANEOUS_SWORD_CLASH, volume);
+		App->audio->PlayFx(SFX_MISCELLANEOUS_FLYINGMACHINE, volume);
 		break;
 	case Type::GRUNT:
-		// May be changed if a better sfx is found (for free)
 		App->audio->PlayFx(SFX_MISCELLANEOUS_SWORD_CLASH, volume);
 		break;
 	case Type::AXE_THROWER:
 		App->audio->PlayFx(SFX_MISCELLANEOUS_AXETHROW, volume);
+		break;
+	case Type::DEATH_KNIGHT:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_DEATH_KNIGHT, volume);
+		break;
+	case Type::DRAGON:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_DRAGON, volume);
+		break;
+	case Type::CATAPULT:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_CATAPULT, volume);
+		break;
+	case Type::JUGGERNAUT:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_JUGGERNAUT, volume);
 		break;
 	default:
 		break;
@@ -270,13 +281,31 @@ void j1EntityController::HandleParticles(Type type, fPoint pos, fPoint obj, floa
 	case NONE_ENTITY:
 		break;
 	case HERO_1:
-		App->particle->AddProjectile(particleType::YAHMAM_AA, pos, obj, speed);
+		App->particle->AddProjectile(particleType::PYAHMAM_AA, pos, obj, speed);
 		break;
 	case ARCHER:
-		App->particle->AddProjectile(particleType::ARROW, pos, obj, speed);
+		App->particle->AddProjectile(particleType::PARROW, pos, obj, speed);
+		break;
+	case BALLISTA:
+		App->particle->AddProjectile(particleType::PBALLISTA, pos, obj, speed);
+		break;
+	case Type::FLYING_MACHINE:
+		App->particle->AddProjectile(particleType::PFLYINGMACHINE, pos, obj, speed);
 		break;
 	case AXE_THROWER:
-		App->particle->AddProjectile(particleType::TOMAHAWK, pos, obj, speed);
+		App->particle->AddProjectile(particleType::PTOMAHAWK, pos, obj, speed);
+		break;
+	case Type::DEATH_KNIGHT:
+		App->particle->AddProjectile(particleType::PDEATHKNIGHT, pos, obj, speed);
+		break;
+	case Type::DRAGON:
+		//App->particle->AddProjectile(particleType::PDRAGON, pos, obj, speed);
+		break;
+	case Type::CATAPULT:
+		App->particle->AddProjectile(particleType::PCATAPULT, pos, obj, speed);
+		break;
+	case Type::JUGGERNAUT:
+		App->particle->AddProjectile(particleType::PJUGGERNAUT, pos, obj, speed);
 		break;
 	default:
 		break;

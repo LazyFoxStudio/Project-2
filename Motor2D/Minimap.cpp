@@ -104,11 +104,11 @@ SDL_Texture * Minimap::createTexture()
 				{
 					if ((*it)->type == DANGER)
 					{
-						App->audio->PlayFx(SFX_MAP_ATTACK);
+						App->audio->PlayFx(SFX_MAP_ATTACK, 60);
 					}
 					else
 					{
-						App->audio->PlayFx(SFX_MAP_ASSIST);
+						App->audio->PlayFx(SFX_MAP_ASSIST, 60);
 					}
 					(*it)->sound_played = true;
 				}
