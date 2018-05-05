@@ -80,6 +80,7 @@ public:
 	bool SpendCost(Type type);
 	void debugDrawEntity(Entity* entity);
 	void HandleSFX(Type type, int volume = 128);
+	void HandleParticles(Type type, fPoint pos, fPoint obj, float speed = 300);
 	void GetTotalIncome();
 	void TownHallLevelUp();
 

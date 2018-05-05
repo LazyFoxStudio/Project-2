@@ -20,6 +20,15 @@
 
 		</anim>
 	</template>
+<!-- Yahmam AutoAttack -->
+	<template> 
+		<type value="3"/>
+		<anim>
+			<pushback x="882" y="63" w="32" h="18"/>
+			<loop value="false"/>
+		</anim>
+	</template>
+
    </particle>
 </node>
 

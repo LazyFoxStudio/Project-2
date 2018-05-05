@@ -15,6 +15,7 @@ enum particleType
 	NO_TYPE,
 	ARROW,
 	TOMAHAWK,
+	YAHMAM_AA,
 };
 
 struct Particle
