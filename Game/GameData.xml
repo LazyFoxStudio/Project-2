@@ -264,10 +264,10 @@
         <iconData x="162" y="200" w="72" h="59"/>
         <texture value="Assets\Sprites\Alliance Sprites\MageHero_Spritesheet.png"/>
         <Stats>
-          <life value="250"/>
-          <attack value="1"/>
-          <defense value="6"/>
-          <piercingDamage value="15"/>
+          <life value="360"/>
+          <attack value="20"/>
+          <defense value="10"/>
+          <piercingDamage value="10"/>
           <movementSpeed value="1.1"/>
           <range value="80"/>
           <lineOfSight value="500"/>
