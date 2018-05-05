@@ -26,20 +26,32 @@ void Skill::DrawRange()
 	iPoint mouse_pos;
 	App->input->GetMousePosition(mouse_pos.x, mouse_pos.y);
 	cast_pos = App->render->ScreenToWorld(mouse_pos.x, mouse_pos.y);
-
-	if (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range)
+	
+	if (type == AREA || type == NONE_RANGE)
 	{
-		if (type == AREA || type == NONE_RANGE)
-			BFS();
-		else if (type == LINE)
-			Line();
-
+		BFS();
+		
 		for (std::list<iPoint>::iterator item = toDraw.begin(); item != toDraw.end(); item++)
 		{
 			SDL_Rect r = { (*item).x,(*item).y, App->map->data.tile_width,App->map->data.tile_height };
-			App->render->DrawQuad(r, Ready() ? tile_color : Translucid_Grey);
+			App->render->DrawQuad(r, Ready() ? (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range ? tile_color : Translucid_Grey) : Translucid_Grey);
+		}
+
+	}
+	else if (type == LINE)
+	{
+		if (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range)
+		{
+			Line();
+
+			for (std::list<iPoint>::iterator item = toDraw.begin(); item != toDraw.end(); item++)
+			{
+				SDL_Rect r = { (*item).x,(*item).y, App->map->data.tile_width,App->map->data.tile_height };
+				App->render->DrawQuad(r, Ready() ? tile_color : Translucid_Grey);
+			}
 		}
 	}
+	
 }
 
 void Skill::BFS()
