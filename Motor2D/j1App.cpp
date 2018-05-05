@@ -23,6 +23,8 @@
 #include "j1Gui.h"
 #include "j1Console.h"
 #include "j1WaveController.h"
+#include "UI_Chrono.h"
+#include "UI_NextWaveWindow.h"
 
 #include <time.h>
 
@@ -216,7 +218,7 @@ bool j1App::PreUpdate()
 
 	for (std::list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
-		if ((*it)->active)
+		if ((*it)->active && (!(*it)->pausable || !paused))
 			if (!(*it)->PreUpdate()) return false;
 	}
 
@@ -230,7 +232,7 @@ bool j1App::DoUpdate()
 
 	for (std::list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
-		if ((*it)->active)
+		if ((*it)->active && (!(*it)->pausable || !paused))
 			if (!(*it)->Update(DeltaTime)) return false;
 	}
 
@@ -244,7 +246,7 @@ bool j1App::PostUpdate()
 
 	for (std::list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
-		if ((*it)->active)
+		if ((*it)->active && (!(*it)->pausable || !paused))
 			if (!(*it)->PostUpdate()) return false;
 	}
 
@@ -344,6 +346,27 @@ bool j1App::SavegameNow() const
 	data.reset();
 	want_to_save = false;
 	return ret;
+}
+
+void j1App::pauseGame()
+{
+	paused = true;
+	wavecontroller->wave_timer.PauseTimer();
+	gui->Chronos->counter.PauseTimer();
+	gui->nextWaveWindow->timer->counter.PauseTimer();
+}
+
+void j1App::resumeGame()
+{
+	paused = false;
+	wavecontroller->wave_timer.Start();
+	gui->Chronos->counter.Start();
+	gui->nextWaveWindow->timer->counter.Start();
+}
+
+bool j1App::isPaused() const
+{
+	return paused;
 }
 
 

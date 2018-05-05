@@ -65,6 +65,10 @@ public:
 	void LoadGame();
 	void SaveGame() const;
 
+	void pauseGame();
+	void resumeGame();
+	bool isPaused() const;
+
 	// Load config file
 	pugi::xml_node LoadFile(pugi::xml_document&, char* file) const;
 
@@ -90,7 +94,6 @@ private:
 	// Load / Save
 	bool LoadGameNow();
 	bool SavegameNow() const;
-
 
 public:
 
@@ -127,6 +130,8 @@ private:
 
 	mutable bool		want_to_save = false;
 	bool				want_to_load = false;
+
+	bool				paused = false;
 
 	mutable std::string	save_game;
 

@@ -34,6 +34,7 @@
 j1Gui::j1Gui() : j1Module()
 {
 	name = "gui";
+	pausable = false;
 }
 
 // Destructor
