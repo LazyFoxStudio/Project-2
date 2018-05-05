@@ -113,6 +113,8 @@ particleType j1ParticleController::GetTypeFromInt(int posOnEnum)
 {
 	switch (posOnEnum)
 	{
+	case 3:
+		return particleType::YAHMAM_AA;
 	case 2:
 		return particleType::TOMAHAWK;
 	case 1:

@@ -202,7 +202,21 @@ Resolution of the screen: 1680x 1050y
 				</text>
 			</childs>
 		</button>
-		<button click_action="33">
+      <button click_action="31"><!--SETTINGS-->
+        <position x="600" y="550"/>
+        <standby x="687" y="1139" w="469" h="101"/>
+        <OnMouse x="687" y="1139" w="469" h="101"/>
+        <OnClick x="687" y="1139" w="469" h="101"/>
+        <childs>
+          <text text="SETTINGS" center="true" counter="false">
+            <position x="0" y="0"/>
+            <font id="6"/>
+            <color r="255" g="255" b="0" a="255"/>
+            <interactive value="false"/>
+          </text>
+        </childs>
+      </button>
+		<button click_action="33"> <!--CREDITS-->
 			<position x="600" y="700"/>
 			<standby x="687" y="1139" w="469" h="101"/>
 			<OnMouse x="687" y="1139" w="469" h="101"/>
@@ -216,17 +230,27 @@ Resolution of the screen: 1680x 1050y
 				</text>
 			</childs>
 		</button>
+      <button click_action="34"><!--EXIT-->
+        <position x="600" y="850"/>
+        <standby x="687" y="1139" w="469" h="101"/>
+        <OnMouse x="687" y="1139" w="469" h="101"/>
+        <OnClick x="687" y="1139" w="469" h="101"/>
+        <childs>
+          <text text="EXIT" center="true" counter="false">
+            <position x="0" y="0"/>
+            <font id="6"/>
+            <color r="255" g="255" b="0" a="255"/>
+            <interactive value="false"/>
+          </text>
+        </childs>
+      </button>
 	</menu>
   
     <!-- CREDITS-->
     <menu type="5" active="false">
 		<image path="gui/credits.png">
-		<position x="0" y="0"/>
+		  <position x="0" y="0"/>
 		</image>
-		<atlas_image>
-			<position x="525" y="30"/>
-			<section x="37" y="1067" w="612" h="301"/>
-		</atlas_image>
 		<button click_action="32">
 			<position x="200" y="800"/>
 			<standby x="687" y="1139" w="469" h="101"/>
@@ -242,6 +266,63 @@ Resolution of the screen: 1680x 1050y
 			</childs>
 		</button>
     </menu>
+
+  <!-- SETTINGS-->
+  <menu type="1" active="false">
+    <image path="gui/settings.png">
+      <position x="0" y="0"/>
+    </image>
+    <text text="Audio" center="true" counter="false">
+      <position x="350" y="200"/>
+      <font id="4"/>
+      <color r="0" g="0" b="0" a="255"/>
+      <interactive value="false"/>
+    </text>
+    <text text="Music" center="true" counter="false">
+      <position x="400" y="275"/>
+      <font id="3"/>
+      <color r="0" g="0" b="0" a="255"/>
+      <interactive value="false"/>
+    </text>
+    <text text="Effects" center="true" counter="false">
+      <position x="400" y="375"/>
+      <font id="3"/>
+      <color r="0" g="0" b="0" a="255"/>
+      <interactive value="false"/>
+    </text>
+    <text text="Video" center="true" counter="false">
+      <position x="350" y="500"/>
+      <font id="4"/>
+      <color r="0" g="0" b="0" a="255"/>
+      <interactive value="false"/>
+    </text>
+    <text text="Fullscreen" center="true" counter="false">
+      <position x="400" y="575"/>
+      <font id="3"/>
+      <color r="0" g="0" b="0" a="255"/>
+      <interactive value="false"/>
+    </text>
+    <text text="Frame Cap" center="true" counter="false">
+      <position x="400" y="675"/>
+      <font id="3"/>
+      <color r="0" g="0" b="0" a="255"/>
+      <interactive value="false"/>
+    </text>
+    <button click_action="32">
+      <position x="200" y="800"/>
+      <standby x="687" y="1139" w="469" h="101"/>
+      <OnMouse x="687" y="1139" w="469" h="101"/>
+      <OnClick x="687" y="1139" w="469" h="101"/>
+      <childs>
+        <text text="BACK" center="true" counter="false">
+          <position x="0" y="0"/>
+          <font id="6"/>
+          <color r="255" g="255" b="0" a="255"/>
+          <interactive value="false"/>
+        </text>
+      </childs>
+    </button>
+  </menu>
 
 </config>
 

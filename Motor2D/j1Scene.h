@@ -12,9 +12,9 @@ struct worker;
 
 
 #define INIT_WOOD 50000
-#define INIT_GOLD 500
+#define INIT_GOLD 50000
 #define INIT_OIL 100
-#define INIT_WORKERS 3
+#define INIT_WORKERS 300
 
 #define INIT_TOWNHALL_LVL 0
 

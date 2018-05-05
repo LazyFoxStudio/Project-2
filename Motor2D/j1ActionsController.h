@@ -42,6 +42,7 @@ enum actionType
 	SETTINGS,
 	BACK_MENU,
 	CREDITS,
+	EXIT
 };
 
 class j1ActionsController : public j1Module
