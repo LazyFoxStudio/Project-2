@@ -142,7 +142,8 @@ bool j1EntityController::Update(float dt)
 		selected_entities.clear();
 
 		selected_entities.push_back(town_hall);
-		App->tutorial->taskCompleted(SELECT_TOWN_HALL);
+		if (App->tutorial->doingTutorial)
+			App->tutorial->taskCompleted(SELECT_TOWN_HALL);
 		town_hall->isSelected = true;
 		App->gui->newSelectionDone();
 		
@@ -864,7 +865,7 @@ void j1EntityController::selectionControl()
 						if ((*it)->ex_state == OPERATIVE)
 						{
 							selected_entities.push_back(*it);
-							if ((*it)->type == TOWN_HALL)
+							if ((*it)->type == TOWN_HALL && App->tutorial->doingTutorial)
 								App->tutorial->taskCompleted(SELECT_TOWN_HALL);
 							(*it)->isSelected = true;
 							App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
