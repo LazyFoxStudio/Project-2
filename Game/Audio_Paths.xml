@@ -56,8 +56,12 @@
 	<path sfx="Misc/Axe.wav"/>
 	<path sfx="Misc/Bowfire.wav"/>
 	<path sfx="Misc/Ballfire.wav"/>
+	<path sfx="Misc/Thunk.wav"/>
 	<path sfx="Misc/Catapult.wav"/>
 	<path sfx="Spells/Thunder.wav"/>
+	<path sfx="Spells/Iokilrog.wav"/>
+	<path sfx="Misc/Burning.wav"/>
+	<path sfx="Misc/Explode.wav"/>
 
 <!-- UI/Map -->
 	<path sfx="Map/Massist.wav"/>

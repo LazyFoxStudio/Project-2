@@ -6,6 +6,7 @@
 #include "j1EntityController.h"
 #include "j1ParticleController.h"
 #include "j1Map.h"
+#include "j1Window.h"
 #include "j1Audio.h"
 #include "j1Scene.h"
 // BASE CLASSES: =========================
@@ -118,8 +119,11 @@ bool Attack::OnUpdate(float dt)
 			{ type = ATTACK; timer.Start(); }
 		else if (unit->current_anim->justFinished())
 		{ 
-			App->entitycontroller->HandleSFX(unit->type, 30);
-			App->entitycontroller->HandleParticles(unit->type, unit->position, enemy->position);
+			if (unit->position.x > App->win->width || unit->position.x < 0 || unit->position.y >  App->win->height || unit->position.y < 0)
+				App->entitycontroller->HandleSFX(unit->type, 30);
+
+			App->entitycontroller->HandleParticles(unit->type, unit->position, { enemy->position.x + (enemy->collider.w / 2), enemy->position.y + (enemy->collider.h / 2) });
+
 			enemy->current_HP -= MAX((RANDOM_FACTOR * (unit->piercing_atk + ((((int)unit->attack - (int)enemy->defense) <= 0) ? 0 : unit->attack - enemy->defense))), 1); //dmg
 
 			if (enemy->current_HP < 0) enemy->Destroy();
