@@ -131,6 +131,9 @@ int j1WaveController::CalculateWaveScore()
 	int ret = 0;
 	ret = (current_wave+1) * 2;
 
+	if (current_wave % 2 == 0 && difficulty<(JUGGERNAUT - GRUNT))
+		difficulty++;
+
 	return ret;
 }
 
@@ -142,7 +145,8 @@ void j1WaveController::Generate_Next_Wave()
 	
 	for (int i = 0; i < wave_score; i++)
 	{
-		int enemy = rand() % ((JUGGERNAUT - GRUNT) + 1);    //   (last_enemy_type - first_enemy_type)
+		int enemy = JUGGERNAUT - GRUNT;
+		enemy= rand() % ((enemy-(enemy-difficulty)) + 1);    //   (last_enemy_type - first_enemy_type)
 		int position = rand() % spawns.size();
 
 		next_wave.push_back(new NextWave((Type)(GRUNT + enemy), spawns[position]));
