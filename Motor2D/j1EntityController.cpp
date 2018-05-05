@@ -49,11 +49,16 @@ bool j1EntityController::Start()
 	return true;
 }
 
+bool CompareSquad(Squad* s1, Squad* s2)
+{
+	return s1 == s2;
+}
+
 bool j1EntityController::Update(float dt)
 {
 	BROFILER_CATEGORY("Entites update", Profiler::Color::Maroon);
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 	Hero* hero = (Hero*)getEntitybyID(hero_UID);
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
@@ -125,12 +130,36 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && town_hall != nullptr)
 	{
+		if (town_hall->isSelected == true) //center camera
+		{
+			App->render->camera.x = - town_hall->position.x + App->render->camera.w/2;
+			App->render->camera.y = - town_hall->position.y + App->render->camera.h/3;
+		}
+		
 		for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
 			(*it_e)->isSelected = false;
 		selected_entities.clear();
 
 		selected_entities.push_back(town_hall);
 		town_hall->isSelected = true;
+		App->gui->newSelectionDone();
+		
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr)
+	{
+		
+		for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
+		{
+			(*it_e)->isSelected = false;
+		}
+		selected_entities.clear();
+		selected_squads.clear();
+
+		selected_entities.push_back(hero);
+		selected_squads.push_back(hero->squad);
+		hero->isSelected = true;
+	
 		App->gui->newSelectionDone();
 	}
 
@@ -169,7 +198,7 @@ void j1EntityController::buildingCalculations()
 				App->gui->warningMessages->hideMessage(NO_TREES);
 				App->entitycontroller->SpendCost(to_build_type);
 
-				if (App->actionscontroller->action_type == to_build_type && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT)
+				if (App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT)
 					App->actionscontroller->doingAction = false;
 
 				to_build_type = NONE_ENTITY;
@@ -188,12 +217,7 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 
 		App->render->DrawQuad(r, White, false);
 		App->render->DrawCircle(unit->position.x, unit->position.y, unit->line_of_sight, Blue);
-		App->render->DrawLine(unit->position.x, unit->position.y, unit->position.x + unit->next_step.x, unit->position.y + unit->next_step.y, Red);
-		if (unit->squad)
-		{
-			fPoint offset = unit->squad->getOffset(unit->UID);
-			App->render->DrawCircle(offset.x + unit->squad->centroid.x, offset.y + unit->squad->centroid.y, 5, Yellow);
-		}
+		App->render->DrawCircle(unit->mov_target.x, unit->mov_target.y, 5, Red);
 	}
 }
 
@@ -461,6 +485,7 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 
 	hero->position.x = pos.x;
 	hero->position.y = pos.y;
+	hero->mov_target = hero->position;
 
 	hero->collider.x = pos.x - (hero->collider.w / 2);
 	hero->collider.y = pos.y - (hero->collider.h / 2);
@@ -744,11 +769,6 @@ void j1EntityController::commandControl()
 	}
 }
 
-bool CompareSquad(Squad* s1, Squad* s2)
-{
-	return s1 == s2;
-}
-
 void j1EntityController::selectionControl()
 {
 	int mouseX, mouseY;
@@ -827,7 +847,18 @@ void j1EntityController::selectionControl()
 		if (buildings && units)
 		{
 			for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
-				if ((*it)->IsBuilding()) { selected_entities.erase(it); it--; }
+				if ((*it)->IsBuilding())
+				{ 
+					(*it)->isSelected = false;
+					selected_entities.erase(it);
+					it--;
+				}
+		}
+		else if (buildings && selected_entities.size() > 1)
+		{
+			Entity* first_selected = selected_entities.front();
+			selected_entities.clear();
+			selected_entities.push_back(first_selected);
 		}
 
 		App->gui->newSelectionDone();

@@ -108,7 +108,9 @@ public:
 	element_type element_type;
 	element_state state = STANDBY;
 	actionType clickAction = NO_ACTION;
+	bool hasClickAction = false;
 	actionType releaseAction = NO_ACTION;
+	bool hasReleaseAction = false;
 	j1Module* callback = nullptr;
 	UI_element* parent = nullptr;
 	std::list<UI_element*> childs;

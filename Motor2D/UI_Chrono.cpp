@@ -21,6 +21,7 @@ void Chrono::restartChrono()
 	{
 		text->setColor(default_color);
 	}
+	time = -1;
 }
 
 void Chrono::Blink()

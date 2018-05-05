@@ -3605,44 +3605,44 @@
 		</createArcher>
 		<createKnight id="13" release_action="9">
 			<position x="0" y="0"/>
-			<standby x="693" y="507" w="66" h="66"/>
-			<OnMouse x="761" y="507" w="66" h="66"/>
-			<OnClick x="829" y="507" w="66" h="66"/>
+			<standby x="1305" y="1011" w="66" h="66"/>
+			<OnMouse x="1372" y="1011" w="66" h="66"/>
+			<OnClick x="1441" y="1011" w="66" h="66"/>
 			<popUp>
 				<Info text="Create Knight Squad" cost="true" type="14"/>
 			</popUp>
 			<hotkey key="Q" font_id="3"/>
-			</createKnight>
-    <createGryphon id="14" release_action="10">
-      <position x="0" y="0"/>
-      <standby x="693" y="507" w="66" h="66"/>
-      <OnMouse x="761" y="507" w="66" h="66"/>
-      <OnClick x="829" y="507" w="66" h="66"/>
-      <popUp>
-        <Info text="Create Gryphon" cost="true" type="15"/>
-      </popUp>
-      <hotkey key="W" font_id="3"/>
-    </createGryphon>
-    <createBallista id="15" release_action="11">
-      <position x="0" y="0"/>
-      <standby x="693" y="507" w="66" h="66"/>
-      <OnMouse x="761" y="507" w="66" h="66"/>
-      <OnClick x="829" y="507" w="66" h="66"/>
-      <popUp>
-        <Info text="Create Ballista" cost="true" type="16"/>
-      </popUp>
-      <hotkey key="Q" font_id="3"/>
-    </createBallista>
-    <createFlyingMachine id="16" release_action="12">
-      <position x="0" y="0"/>
-      <standby x="693" y="507" w="66" h="66"/>
-      <OnMouse x="761" y="507" w="66" h="66"/>
-      <OnClick x="829" y="507" w="66" h="66"/>
-      <popUp>
-        <Info text="Create FlyingMachine" cost="true" type="17"/>
-      </popUp>
-      <hotkey key="W" font_id="3"/>
-    </createFlyingMachine>
+		</createKnight>
+		<createGryphon id="14" release_action="10">
+			<position x="0" y="0"/>
+			<standby x="1305" y="1083" w="66" h="66"/>
+			<OnMouse x="1372" y="1083" w="66" h="66"/>
+			<OnClick x="1441" y="1083" w="66" h="66"/>
+			<popUp>
+				<Info text="Create Gryphon" cost="true" type="15"/>
+			</popUp>
+			<hotkey key="W" font_id="3"/>
+		</createGryphon>
+		<createBallista id="15" release_action="11">
+			<position x="0" y="0"/>
+			<standby x="1305" y="1224" w="66" h="66"/>
+			<OnMouse x="1372" y="1224" w="66" h="66"/>
+			<OnClick x="1441" y="1224" w="66" h="66"/>
+			<popUp>
+				<Info text="Create Ballista" cost="true" type="16"/>
+			</popUp>
+			<hotkey key="Q" font_id="3"/>
+		</createBallista>
+		<createFlyingMachine id="16" release_action="12">
+			<position x="0" y="0"/>
+			<standby x="1305" y="1153" w="66" h="66"/>
+			<OnMouse x="1372" y="1153" w="66" h="66"/>
+			<OnClick x="1441" y="1153" w="66" h="66"/>
+			<popUp>
+				<Info text="Create FlyingMachine" cost="true" type="17"/>
+			</popUp>
+			<hotkey key="W" font_id="3"/>
+		</createFlyingMachine>
 		<ability1 id="17" click_action="13">
 			<position x="0" y="0"/>
 			<standby x="897" y="507" w="66" h="66"/>
@@ -3692,7 +3692,7 @@
 				<Info text="Demolish Building"/>
 			</popUp>
 		</demolishBuilding>
-    <buildMine id="22" click_action="19">
+    <buildMine id="22" release_action="19">
       <position x="0" y="0"/>
       <standby x="1305" y="659" w="66" h="66"/>
       <OnMouse x="1373" y="659" w="66" h="66"/>
@@ -3702,7 +3702,7 @@
       </popUp>
       <hotkey key="A" font_id="3"/>
     </buildMine>
-    <buildTurret id="23" click_action="20">
+    <buildTurret id="23" release_action="20">
       <position x="0" y="0"/>
       <standby x="1305" y="729" w="66" h="66"/>
       <OnMouse x="1373" y="729" w="66" h="66"/>
@@ -3712,7 +3712,7 @@
       </popUp>
       <hotkey key="S" font_id="3"/>
     </buildTurret>
-    <buildGnomeHut id="24" click_action="21">
+    <buildGnomeHut id="24" release_action="21">
       <position x="0" y="0"/>
       <standby x="1305" y="799" w="66" h="66"/>
       <OnMouse x="1373" y="799" w="66" h="66"/>
@@ -3722,7 +3722,7 @@
       </popUp>
       <hotkey key="D" font_id="3"/>
     </buildGnomeHut>
-    <buildChurch id="25" click_action="22">
+    <buildChurch id="25" release_action="22">
       <position x="0" y="0"/>
       <standby x="1305" y="869" w="66" h="66"/>
       <OnMouse x="1373" y="869" w="66" h="66"/>
@@ -3732,7 +3732,7 @@
       </popUp>
       <hotkey key="Z" font_id="3"/>
     </buildChurch>
-    <buildBlacksmith id="26" click_action="23">
+    <buildBlacksmith id="26" release_action="23">
       <position x="0" y="0"/>
       <standby x="1305" y="939" w="66" h="66"/>
       <OnMouse x="1373" y="939" w="66" h="66"/>

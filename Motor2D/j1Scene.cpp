@@ -198,6 +198,7 @@ void j1Scene::Start_game()
 	App->entitycontroller->buildingArea.x = town_hall_pos.x - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_width / 2);
 	App->entitycontroller->buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_height / 2);
 
+	App->entitycontroller->AddSquad(FOOTMAN, { 2200, 1950 });
 
 	//RESTARTING WAVES---------------------------------------------------------
 	App->gui->Chronos->counter.Restart();
@@ -220,6 +221,21 @@ void j1Scene::Start_game()
 	Button* farms = App->gui->GetActionButton(7);
 	farms->setCondition("Build first a Lumber Mill");
 	farms->Lock();
+	Button* mine = App->gui->GetActionButton(22);
+	mine->setCondition("Build first a Lumber Mill");
+	mine->Lock();
+	Button* turret = App->gui->GetActionButton(23);
+	turret->setCondition("Build first a Lumber Mill");
+	turret->Lock();
+	Button* hut = App->gui->GetActionButton(24);
+	hut->setCondition("Build first a Lumber Mill");
+	hut->Lock();
+	Button* church = App->gui->GetActionButton(25);
+	church->setCondition("Build first a Lumber Mill");
+	church->Lock();
+	Button* blacksmith = App->gui->GetActionButton(26);
+	blacksmith->setCondition("Build first a Lumber Mill");
+	blacksmith->Lock();
 
 	//CANCEL IF BUILDING
 	App->entitycontroller->to_build_type = NONE_ENTITY;

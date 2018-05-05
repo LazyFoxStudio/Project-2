@@ -61,6 +61,7 @@ public:
 
 	std::string	name="";
 	bool		active=false;
+	bool		pausable = true;
 
 };
 

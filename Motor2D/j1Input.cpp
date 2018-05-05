@@ -10,6 +10,7 @@
 j1Input::j1Input() : j1Module()
 {
 	name = "input";
+	pausable = false;
 
 	windowEvents[WE_QUIT] = false;
 	windowEvents[WE_HIDE] = false;

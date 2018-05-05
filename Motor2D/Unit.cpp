@@ -13,7 +13,7 @@
     
 #define STOP_TRESHOLD 5.0f			
 
-#define MAX_SEPARATION_WEIGHT 80.0f   
+#define MAX_SEPARATION_WEIGHT 2.0f   
 #define MAX_COHESION_WEIGHT 150.0f
 #define MAX_ALIGNEMENT_WEIGHT 50.0f
 
@@ -48,6 +48,7 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	infoData = unit.infoData;
 
 	position.x = pos.x; position.y = pos.y;
+	mov_target = position;
 
 	collider.x = pos.x - (collider.w / 2);
 	collider.y = pos.y - (collider.h / 2);
@@ -121,6 +122,7 @@ bool Unit::Update(float dt)
 		commands.front()->Execute(dt);
 		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
+	else if (squad ? squad->commander_pos + squad->getOffset(UID) != mov_target : false) mov_target = squad->commander_pos + squad->getOffset(UID);
 
 	//minimap_
 	if (App->gui->minimap)
@@ -129,97 +131,59 @@ bool Unit::Update(float dt)
 		else		   App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
 	}
 
-	if (!movement_target.IsZero())
-		SquadMove(dt);
-	else
-		Move(dt);	
+
+	Move(dt);	
 
 	return true;
 }
 
+
+
 void Unit::Move(float dt)
 {
-	if ((!commands.empty() ? commands.front()->type != ATTACK : true))
+	float max_step = dt * speed * SPEED_CONSTANT;
+
+	fPoint separation_v = { 0.0f, 0.0f };
+	float separation_w = 0.0f;
+
+	calculateSeparationVector(separation_v, separation_w);
+
+	if ((mov_target - position).GetModule() > 0 && (!commands.empty() ? commands.front()->type != ATTACK : false))
 	{
-		fPoint separation_v = { 0.0f, 0.0f };
-		int separation_w = 0;
-
-		calculateSeparationVector(separation_v, separation_w);
-
-		displacement = (displacement * MAX_MOVEMENT_WEIGHT + (separation_v * separation_w));
-		
-		if (displacement.GetModule() < STOP_TRESHOLD)
+		if (getCurrentCommand() != NOTHING || separation_w == 0)
 		{
-			if (displacement.GetModule() < 1)
-				next_step.SetToZero();
+			mov_direction = (mov_target - position);
+
+			if (mov_direction.GetModule() < max_step)
+				mov_module = mov_direction.GetModule() / max_step;
 			else
-				next_step = { next_step.x * 0.9f, next_step.y * 0.9f };
-		}
-		else
-			next_step = (next_step * STEERING_FACTOR) + displacement;
+				mov_module = 1.2f;
 
-		if (next_step.GetModule() > MAX_MOVEMENT_WEIGHT)
-			next_step = next_step.Normalized() * MAX_MOVEMENT_WEIGHT;
-
-		displacement = (next_step * (squad ? squad->max_speed : speed) * dt * SPEED_CONSTANT);
-
-		if (displacement.GetModule() > 5)
-			displacement = displacement.Normalized() * 5;
-
-		if (App->pathfinding->IsWalkable(App->map->WorldToMap(position.x + displacement.x, position.y + displacement.y)))
-		{
-			position += displacement;
-
-			collider.x = position.x - (collider.w / 2);
-			collider.y = position.y - (collider.h / 2);
+			mov_direction.Normalize();
 		}
 	}
-	else if (!next_step.IsZero()) next_step.SetToZero();
-
-	displacement.SetToZero();
-}
-
-void Unit::SquadMove(float dt)
-{
-	if ((!commands.empty() ? commands.front()->type != ATTACK : true))
+	else
 	{
-		float max_step = dt * squad->max_speed * SPEED_CONSTANT * MAX_MOVEMENT_WEIGHT;
-
-		displacement = (movement_target - position);
-
-		if (displacement.GetModule() > max_step)
-			displacement = displacement.Normalized() * max_step;
-
-		fPoint separation_v = { 0.0f, 0.0f };
-		int separation_w = 0;
-
-		calculateSeparationVector(separation_v, separation_w);
-
-		separation_v = separation_v * separation_w;
-
-		if (separation_v.GetModule() > STOP_TRESHOLD)
-		{
-			separation_v = (separation_v * squad->max_speed * dt * SPEED_CONSTANT);
-
-			if (separation_v.GetModule() > max_step)
-				separation_v = separation_v.Normalized() * max_step;
-
-			displacement = displacement + separation_v;
-
-			if (displacement.GetModule() > max_step)
-				displacement = displacement.Normalized() * max_step;
-		}
-
-		if (App->pathfinding->IsWalkable(App->map->WorldToMap(position.x + displacement.x, position.y + displacement.y)))
-		{
-			position += displacement;
-			next_step = displacement.Normalized() * (displacement.GetModule() / max_step) * MAX_MOVEMENT_WEIGHT;
-
-			collider.x = position.x - (collider.w / 2);
-			collider.y = position.y - (collider.h / 2);
-		}
+		mov_target = position;
+		mov_module = 0;
 	}
+
+	fPoint movement = (((mov_direction * mov_module) + (separation_v * separation_w)) * max_step);
+
+	if (movement.GetModule() > max_step * 1.2)
+		movement = movement.Normalized() * max_step * 1.2;
+
+	if (App->pathfinding->IsWalkable(App->map->WorldToMap(position.x + movement.x, position.y + movement.y)))
+	{
+		position += movement;
+
+		collider.x = position.x - (collider.w / 2);
+		collider.y = position.y - (collider.h / 2);
+	}
+
 }
+
+
 
 void Unit::lookAt(fPoint direction)
 {
@@ -257,7 +221,7 @@ void Unit::Destroy()
 	App->entitycontroller->selected_entities.remove(this);
 }
 
-void Unit::calculateSeparationVector(fPoint& separation_v, int& weight)
+void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)
 {
 	std::vector<Entity*> collisions;
 	App->entitycontroller->colliderQT->FillCollisionVector(collisions, collider);
@@ -270,17 +234,15 @@ void Unit::calculateSeparationVector(fPoint& separation_v, int& weight)
 		if(collisions[i]->ex_state != DESTROYED && collisions[i]->isActive && collisions[i]->IsEnemy() == IsEnemy() && collisions[i] != this)
 		{
 			fPoint current_separation = (position - collisions[i]->position);
-			if (current_separation.GetModule() < (collider.w / 2.0f))
-			{
-				current_separation = current_separation.Normalized() * (collider.w * SEPARATION_STRENGTH / current_separation.GetModule());
-				separation_v += current_separation;
-			}
+
+			if (current_separation.GetModule() < collider.w)
+				separation_v += (current_separation.Normalized() * (current_separation.GetModule() - collider.w)).Negate();
 		}
 	}
 
 	if (!separation_v.IsZero())
 	{
-		weight = separation_v.GetModule();
+		weight = separation_v.GetModule() / 64;
 
 		if (weight > MAX_SEPARATION_WEIGHT)
 			weight = MAX_SEPARATION_WEIGHT;
@@ -296,12 +258,12 @@ void Unit::calculateSeparationVector(fPoint& separation_v, int& weight)
 
 void Unit::animationController()
 {
-	lookAt(next_step);
+	lookAt(mov_direction);
 
 	animationType new_animation = IDLE_S;
 	if (ex_state != DESTROYED)
 	{
-		if (next_step.GetModule() > STOP_TRESHOLD)
+		if (mov_module > 0.5)
 		{
 			switch (commands.empty() ? MOVETO : commands.front()->type)
 			{
@@ -378,12 +340,16 @@ void Unit::animationController()
 		}
 	}
 
-	if (animations[new_animation] != current_anim)
+	if (last_anim == new_animation)
 	{
-		current_anim = animations[new_animation];
-		current_anim->Reset();
+		if (animations[new_animation] != current_anim)
+		{
+			current_anim = animations[new_animation];
+			current_anim->Reset();
+		}
 	}
 
+	last_anim = new_animation;
 }
 
 //buffs

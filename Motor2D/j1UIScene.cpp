@@ -21,7 +21,7 @@
 #include "UI_CostDisplay.h"
 #include "j1WaveController.h"
 
-j1UIScene::j1UIScene() { name = "introscene";}
+j1UIScene::j1UIScene() { name = "introscene"; pausable = false; }
 
 j1UIScene::~j1UIScene() {}
 
@@ -37,22 +37,22 @@ bool j1UIScene::Start()
 	LoadUI(guiconfig);
 
 	//Set resource counters
-	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 1);
+	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 0);
 	text_position_y->convertIntoCounter(&App->scene->inactive_workers_int);
 
-	Text* gold_display = (Text*)App->gui->GetElement(TEXT, 3);
+	Text* gold_display = (Text*)App->gui->GetElement(TEXT, 2);
 	gold_display->convertIntoCounter(&App->scene->workers_int);
 
-	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 4);
+	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 3);
 	wood_display->convertIntoCounter(&App->scene->wood);
 
-	Text* wood_sec = (Text*)App->gui->GetElement(TEXT, 5);
+	Text* wood_sec = (Text*)App->gui->GetElement(TEXT, 4);
 	wood_sec->convertIntoCounter(&App->scene->wood_production_per_second);
 
-	Text* waves = (Text*)App->gui->GetElement(TEXT, 7);
+	Text* waves = (Text*)App->gui->GetElement(TEXT, 6);
 	waves->convertIntoCounter(&App->wavecontroller->current_wave);
 
-	Text* survived_waves = (Text*)App->gui->GetElement(TEXT, 8);
+	Text* survived_waves = (Text*)App->gui->GetElement(TEXT, 7);
 	survived_waves->convertIntoCounter(&App->wavecontroller->current_wave);
 
 	//Hardcoded
@@ -84,6 +84,11 @@ bool j1UIScene::Start()
 
 bool j1UIScene::Update(float dt)
 {
+
+	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+		App->pauseGame();
+	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
+		App->resumeGame();
 
 	return true;
 }
@@ -147,14 +152,16 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 		{
 			element->state = CLICKED;
 
-			App->actionscontroller->activateAction(element->clickAction);
+			if (element->hasClickAction)
+				App->actionscontroller->activateAction(element->clickAction);
 		}
 		else if (event_type == MOUSE_LEFT_RELEASE)
 		{
 			if (element->state == CLICKED)
 				element->state = MOUSEOVER;
 
-			App->actionscontroller->activateAction(element->releaseAction);
+			if (element->hasReleaseAction)
+				App->actionscontroller->activateAction(element->releaseAction);
 		}
 		else if (event_type == MOUSE_RIGHT_CLICK)
 		{}

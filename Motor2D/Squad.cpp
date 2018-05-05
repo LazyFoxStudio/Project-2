@@ -14,6 +14,7 @@ Squad::Squad(std::vector<uint>& units) : units_id(units)
 	if (!squad_units.empty())
 	{
 		max_speed = squad_units[0]->speed;
+		commander_pos = squad_units[0]->position;
 
 		for (int i = 0; i < squad_units.size(); i++)
 		{
@@ -21,7 +22,6 @@ Squad::Squad(std::vector<uint>& units) : units_id(units)
 			if (squad_units[i]->speed < max_speed) max_speed = squad_units[i]->speed;
 		}
 
-		calculateCentroid();
 		calculateOffsets();
 	}
 }
@@ -41,12 +41,24 @@ bool Squad::Update(float dt)
 			commands.front()->Execute(dt);
 			if (commands.front()->state == FINISHED) commands.pop_front();
 
-			calculateCentroid();
-			centroid = centroid + squad_movement;
-			if (squad_movement.GetModule() > 1.0f)
+			if (!squad_movement.IsZero())
 			{
-				squad_direction = squad_movement.Normalized();
-				calculateOffsets();
+				std::vector<Unit*> units;
+				getUnits(units);
+
+				if (!units.empty())
+				{
+					bool everyone_in_position = true;
+					for(int i = 0; i < units.size(); i++)
+						if (units[i]->position.DistanceTo(units[i]->mov_target) > 50) { everyone_in_position = false; break; }
+
+					commander_pos = units[0]->position + (everyone_in_position ? squad_movement : squad_movement * 0.5f);
+					if (squad_movement.GetModule() > 1.0f)
+					{
+						squad_direction = squad_movement.Normalized();
+						calculateOffsets();
+					}
+				}
 			}
 		}
 		else squad_movement = { 0.0f,0.0f };
@@ -62,25 +74,9 @@ void Squad::removeUnit(uint unit_ID)
 		{
 			units_id.erase(units_id.begin() + i);
 			units_offsets.erase(units_offsets.begin() + i);
-			calculateCentroid();
 			calculateOffsets();
 			return;
 		}
-}
-
-void Squad::calculateCentroid()
-{
-	std::vector<Unit*> squad_units;
-	getUnits(squad_units);
-
-	if (!squad_units.empty())
-	{
-		fPoint positions = { 0.0f, 0.0f };
-		for (int i = 0; i < squad_units.size(); i++)
-			positions += squad_units[i]->position;
-
-		centroid = positions.Normalized() * (positions.GetModule() / squad_units.size());
-	}
 }
 
 fPoint Squad::getOffset(uint unit_UID)

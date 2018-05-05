@@ -38,7 +38,10 @@ enum actionType
 	RESEARCH_FLYING_ATTACK,
 	RESEARCH_FLYGIN_DEFENSE,
 
-	NEW_GAME
+	NEW_GAME,
+	SETTINGS,
+	BACK_MENU,
+	CREDITS,
 };
 
 class j1ActionsController : public j1Module

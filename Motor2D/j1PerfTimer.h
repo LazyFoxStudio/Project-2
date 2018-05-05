@@ -12,10 +12,17 @@ public:
 
 	void Start();
 	double ReadMs() const;
+	float ReadSec() const;
 	uint64 ReadTicks() const;
+	void PauseTimer();
+
+public:
+
+	bool isPaused = false;
 
 private:
 	uint64	started_at;
+	uint64  paused_at;
 	static uint64 frequency;
 };
 
