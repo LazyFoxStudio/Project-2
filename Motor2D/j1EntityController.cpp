@@ -824,6 +824,12 @@ void j1EntityController::selectionControl()
 					it--;
 				}
 		}
+		else if (buildings && selected_entities.size() > 1)
+		{
+			Entity* first_selected = selected_entities.front();
+			selected_entities.clear();
+			selected_entities.push_back(first_selected);
+		}
 
 		App->gui->newSelectionDone();
 			
