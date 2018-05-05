@@ -73,6 +73,20 @@ Resolution of the screen: 1680x 1050y
 				</text>
 			</childs>
 		</button>
+    <button click_action="33">
+      <position x="600" y="700"/>
+      <standby x="687" y="1139" w="469" h="101"/>
+      <OnMouse x="687" y="1139" w="469" h="101"/>
+      <OnClick x="687" y="1139" w="469" h="101"/>
+      <childs>
+        <text text="CREDITS" center="true" counter="false">
+          <position x="0" y="0"/>
+          <font id="6"/>
+          <color r="255" g="255" b="0" a="255"/>
+          <interactive value="false"/>
+        </text>
+      </childs>
+    </button>
 	</menu>
 
 	<menu type="2" active="false">	
@@ -203,6 +217,31 @@ Resolution of the screen: 1680x 1050y
 	</text>
     
    </menu>
+  
+  <!-- CREDITS-->
+  <menu type="5" active="false">
+    <image path="gui/credits.png">
+      <position x="0" y="0"/>
+    </image>
+    <atlas_image>
+      <position x="525" y="30"/>
+      <section x="37" y="1067" w="612" h="301"/>
+    </atlas_image>
+    <button click_action="32">
+      <position x="200" y="800"/>
+      <standby x="687" y="1139" w="469" h="101"/>
+      <OnMouse x="687" y="1139" w="469" h="101"/>
+      <OnClick x="687" y="1139" w="469" h="101"/>
+      <childs>
+        <text text="BACK" center="true" counter="false">
+          <position x="0" y="0"/>
+          <font id="6"/>
+          <color r="255" g="255" b="0" a="255"/>
+          <interactive value="false"/>
+        </text>
+      </childs>
+    </button>
+  </menu>
 
 </config>
 
