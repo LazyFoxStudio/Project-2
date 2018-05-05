@@ -205,6 +205,7 @@ bool j1ActionsController::Update(float dt)
 			App->scene->Start_game();
 			break;
 		case SETTINGS:
+			doingAction = false;
 			break;
 		case BACK_MENU:
 			App->uiscene->toggleMenu(false, CREDITS_MENU);
@@ -212,6 +213,7 @@ bool j1ActionsController::Update(float dt)
 			doingAction = false;
 			break;
 		case CREDITS:
+			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, CREDITS_MENU);
 			doingAction = false;
 			break;
