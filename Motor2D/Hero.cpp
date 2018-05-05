@@ -55,7 +55,7 @@ bool Hero::Update(float dt)
 		break;
 	case 2:
 		skill_two->DrawRange();
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready())
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready() || skill_two->going)
 		{
 			skill_two->Activate();
 			App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
@@ -65,7 +65,7 @@ bool Hero::Update(float dt)
 		break;
 	case 3:
 		skill_three->DrawRange();
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready())
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready() || skill_three->going)
 		{
 			skill_three->Activate();
 			App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);

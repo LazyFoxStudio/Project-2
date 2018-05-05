@@ -21,7 +21,7 @@
 #include "UI_CostDisplay.h"
 #include "j1WaveController.h"
 
-j1UIScene::j1UIScene() { name = "introscene";}
+j1UIScene::j1UIScene() { name = "introscene"; pausable = false; }
 
 j1UIScene::~j1UIScene() {}
 
@@ -84,6 +84,11 @@ bool j1UIScene::Start()
 
 bool j1UIScene::Update(float dt)
 {
+
+	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+		App->pauseGame();
+	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
+		App->resumeGame();
 
 	return true;
 }
