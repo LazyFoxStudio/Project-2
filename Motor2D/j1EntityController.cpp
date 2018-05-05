@@ -129,6 +129,12 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && town_hall != nullptr)
 	{
+		if (town_hall->isSelected == true) //center camera
+		{
+			App->render->camera.x = - town_hall->position.x + App->render->camera.w/2;
+			App->render->camera.y = - town_hall->position.y + App->render->camera.h/3;
+		}
+		
 		for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
 			(*it_e)->isSelected = false;
 		selected_entities.clear();
@@ -136,6 +142,7 @@ bool j1EntityController::Update(float dt)
 		selected_entities.push_back(town_hall);
 		town_hall->isSelected = true;
 		App->gui->newSelectionDone();
+		
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr)
