@@ -12,6 +12,10 @@
 // BASE CLASSES: =========================
 
 #define RANDOM_FACTOR (1.0f - (((float)(rand() % 6)) / 10.0f))
+#define STEERING_FACTOR 10.0f
+
+#define PROXIMITY_FACTOR_TILES 2  // the higher the sooner units will reach destination (in tiles)  // 1 ~ 5//
+#define PROXIMITY_FACTOR_PIXELS 5
 
 void Command::Execute(float dt)
 {
@@ -52,15 +56,15 @@ bool MoveTo::OnUpdate(float dt)
 		fPoint desired_place = getDesiredPlace();
 		map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
-		if (!desired_place.IsZero() && desired_place.DistanceTo(unit->position) < 100 && (unit->squad ? unit->squad->units_id.size() > 1 : false))
+		if (!desired_place.IsZero() && desired_place.DistanceTo(unit->position) < SQUAD_UNATTACH_DISTANCE && (unit->squad ? unit->squad->units_id.size() > 1 : false))
 		{
 			unit->mov_target = desired_place;
-			if (unit->squad->squad_movement.IsZero() && unit->mov_target.DistanceTo(unit->position) < 5)
+			if (unit->squad->squad_movement.IsZero() && unit->mov_target.DistanceTo(unit->position) < PROXIMITY_FACTOR_PIXELS)
 				Stop();
 		}
 		else
 		{
-			if (map_p.DistanceTo(dest) < 2)
+			if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR_TILES)
 				Stop();
 			else if (FieldNode* parent = flow_field->getNodeAt(map_p)->parent)
 			{
@@ -186,7 +190,7 @@ bool MoveToSquad::OnUpdate(float dt)
 			if (FieldNode* parent = flow_field->getNodeAt(map_p)->parent)
 			{
 				fPoint movement = (parent->position - map_p).Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
-				squad->squad_movement = ((squad->squad_movement * 10.0f) + movement);
+				squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
 
 				if (squad->squad_movement.GetModule() > movement.GetModule())
 					squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
@@ -242,7 +246,7 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 				if (FieldNode* parent = flow_field->getNodeAt(map_p)->parent)
 				{
 					fPoint movement = (parent->position - map_p).Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
-					squad->squad_movement = ((squad->squad_movement * 10.0f) + movement);
+					squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
 
 					if (squad->squad_movement.GetModule() > movement.GetModule())
 						squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();

@@ -25,6 +25,7 @@
 #include "j1WaveController.h"
 #include "UI_Chrono.h"
 #include "UI_NextWaveWindow.h"
+#include "j1Tutorial.h"
 
 #include <time.h>
 
@@ -50,6 +51,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	font				= new j1Fonts();
 	gui					= new j1Gui();
 	wavecontroller		= new j1WaveController();
+	tutorial			= new j1Tutorial();
 	
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -65,6 +67,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entitycontroller, false);
 	AddModule(gui);
 	AddModule(uiscene);
+	AddModule(tutorial, false);
 	AddModule(sceneswitch);
 	AddModule(particle);
 	AddModule(actionscontroller);

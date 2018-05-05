@@ -10,6 +10,7 @@
 #include "UI_WorkersDisplay.h"
 #include "UI_NextWaveWindow.h"
 #include "j1WaveController.h"
+#include "j1Tutorial.h"
 
 bool j1ActionsController::Update(float dt)
 {
@@ -203,12 +204,12 @@ bool j1ActionsController::Update(float dt)
 			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, INGAME_MENU);
 			App->scene->Start_game();
-			break;
-		case SETTINGS:
-			doingAction = false;
+			if (App->tutorial->active)
+				App->tutorial->startTutorial();
 			break;
 		case BACK_MENU:
 			App->uiscene->toggleMenu(false, CREDITS_MENU);
+			App->uiscene->toggleMenu(false, SETTINGS_MENU);
 			App->uiscene->toggleMenu(true, START_MENU);
 			doingAction = false;
 			break;
@@ -216,6 +217,15 @@ bool j1ActionsController::Update(float dt)
 			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, CREDITS_MENU);
 			doingAction = false;
+			break;
+		case SETTINGS:
+			App->uiscene->toggleMenu(false, START_MENU);
+			App->uiscene->toggleMenu(true, SETTINGS_MENU);
+			doingAction = false;
+			break;
+		case EXIT:
+			doingAction = false;
+			return false;
 			break;
 		}
 		

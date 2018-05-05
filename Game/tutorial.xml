@@ -1,0 +1,16 @@
+<tutorial>
+	<step duration="3000">
+		<text x="100" y="100">
+			<line text="This is a"/>
+			<line text="test text"/>
+		</text>
+		<arrow x="100" y="300" rotation="90"/>
+	</step>
+	<step duration="3000">
+		<text x="300" y="300">
+			<line text="And this is"/>
+			<line text="another one"/>
+		</text>
+		<arrow x="500" y="300" rotation="0"/>
+	</step>
+</tutorial>

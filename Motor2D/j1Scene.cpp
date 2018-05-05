@@ -247,7 +247,7 @@ void j1Scene::Start_game()
 	App->gui->warningMessages->hideMessage(NO_TREES);
 
 	//CHANGING MUSIC BACK TO WAVE ONE-----------------------------------------
-	App->audio->PlayMusic(INGAME_THEME);
+	App->audio->PlayMusic(INGAME_THEME, 0);
 
 	App->entitycontroller->GetTotalIncome();
 

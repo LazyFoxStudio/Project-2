@@ -27,6 +27,7 @@ public:
 	bool border = false;
 	Color border_color;
 	int border_thickness=0;
+	float rotation = 0;
 };
 
 #endif // !__UI_IMAGE__

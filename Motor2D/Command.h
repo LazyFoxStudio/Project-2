@@ -2,8 +2,6 @@
 #ifndef _COMMAND_H_
 #define _COMMAND_H_
 
-#define PROXIMITY_FACTOR 2  // the higher the sooner units will reach destination (in tiles)  // 1 ~ 5//
-
 #include <list>
 #include <vector>
 #include "p2Point.h"

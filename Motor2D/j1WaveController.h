@@ -50,6 +50,7 @@ public:
 	int					initial_wait = 0;
 	int					wait_between_waves = 0;
 	int					current_wave = 0;
+	int					difficulty = 0;
 	
 	j1Timer				wave_timer;
 	
