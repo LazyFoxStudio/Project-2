@@ -50,9 +50,10 @@ bool Squad::Update(float dt)
 				{
 					bool everyone_in_position = true;
 					for(int i = 0; i < units.size(); i++)
-						if (units[i]->position.DistanceTo(units[i]->mov_target) > 50) { everyone_in_position = false; break; }
+						if (units[i]->position.DistanceTo(units[i]->mov_target) > SQUAD_UNATTACH_DISTANCE)
+							{ everyone_in_position = false; break; }
 
-					commander_pos = units[0]->position + (everyone_in_position ? squad_movement : squad_movement * 0.5f);
+					commander_pos = units[0]->position + (everyone_in_position ? squad_movement : squad_movement * MIN_NEXT_STEP_MULTIPLIER);
 					if (squad_movement.GetModule() > 1.0f)
 					{
 						squad_direction = squad_movement.Normalized();
@@ -126,7 +127,7 @@ void Squad::calculateOffsets()
 			break;
 		}
 	}
-
+/*
 	fPoint offset_average = { 0.0f,0.0f};
 	for (int i = 0; i < units_offsets.size(); i++)
 		offset_average += units_offsets[i];
@@ -134,7 +135,7 @@ void Squad::calculateOffsets()
 	offset_average = offset_average.Normalized() * (offset_average.GetModule() / (float)units_offsets.size());
 
 	for (int i = 0; i < units_offsets.size(); i++)
-		units_offsets[i] -= offset_average;
+		units_offsets[i] -= offset_average;*/
 }
 
 bool Squad::isInSquadSight(fPoint position)

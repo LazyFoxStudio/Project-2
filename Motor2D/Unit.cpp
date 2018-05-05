@@ -11,15 +11,7 @@
 #include "Quadtree.h"
 #include "Minimap.h"
     
-#define STOP_TRESHOLD 5.0f			
-
 #define MAX_SEPARATION_WEIGHT 2.0f   
-#define MAX_COHESION_WEIGHT 150.0f
-#define MAX_ALIGNEMENT_WEIGHT 50.0f
-
-#define SEPARATION_STRENGTH 4.0f
-#define COHESION_STRENGTH 0.5f    // the lower the stronger
-#define ALIGNEMENT_STRENGTH 4.0    // the lower the stronger
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
@@ -157,7 +149,7 @@ void Unit::Move(float dt)
 			if (mov_direction.GetModule() < max_step)
 				mov_module = mov_direction.GetModule() / max_step;
 			else
-				mov_module = 1.2f;
+				mov_module = MAX_NEXT_STEP_MULTIPLIER;
 
 			mov_direction.Normalize();
 		}
@@ -166,21 +158,21 @@ void Unit::Move(float dt)
 	{
 		mov_target = position;
 		mov_module = 0;
+		separation_w *= 2;
 	}
 
 	fPoint movement = (((mov_direction * mov_module) + (separation_v * separation_w)) * max_step);
 
-	if (movement.GetModule() > max_step * 1.2)
-		movement = movement.Normalized() * max_step * 1.2;
+	if (movement.GetModule() > max_step * MAX_NEXT_STEP_MULTIPLIER)
+		movement = movement.Normalized() * max_step * MAX_NEXT_STEP_MULTIPLIER;
 
 	if (App->pathfinding->IsWalkable(App->map->WorldToMap(position.x + movement.x, position.y + movement.y)))
-	{
 		position += movement;
+	else
+		position -= movement * 0.3f;
 
-		collider.x = position.x - (collider.w / 2);
-		collider.y = position.y - (collider.h / 2);
-	}
-
+	collider.x = position.x - (collider.w / 2);
+	collider.y = position.y - (collider.h / 2);
 }
 
 
@@ -242,7 +234,7 @@ void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)
 
 	if (!separation_v.IsZero())
 	{
-		weight = separation_v.GetModule() / 64;
+		weight = separation_v.GetModule() / (collider.w * 2);
 
 		if (weight > MAX_SEPARATION_WEIGHT)
 			weight = MAX_SEPARATION_WEIGHT;
