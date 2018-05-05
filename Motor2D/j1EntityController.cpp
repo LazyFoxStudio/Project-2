@@ -48,11 +48,16 @@ bool j1EntityController::Start()
 	return true;
 }
 
+bool CompareSquad(Squad* s1, Squad* s2)
+{
+	return s1 == s2;
+}
+
 bool j1EntityController::Update(float dt)
 {
 	BROFILER_CATEGORY("Entites update", Profiler::Color::Maroon);
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 	Hero* hero = (Hero*)getEntitybyID(hero_UID);
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
@@ -130,6 +135,23 @@ bool j1EntityController::Update(float dt)
 
 		selected_entities.push_back(town_hall);
 		town_hall->isSelected = true;
+		App->gui->newSelectionDone();
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr)
+	{
+		
+		for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
+		{
+			(*it_e)->isSelected = false;
+		}
+		selected_entities.clear();
+		selected_squads.clear();
+
+		selected_entities.push_back(hero);
+		selected_squads.push_back(hero->squad);
+		hero->isSelected = true;
+	
 		App->gui->newSelectionDone();
 	}
 
@@ -708,11 +730,6 @@ void j1EntityController::commandControl()
 		}
 		
 	}
-}
-
-bool CompareSquad(Squad* s1, Squad* s2)
-{
-	return s1 == s2;
 }
 
 void j1EntityController::selectionControl()
