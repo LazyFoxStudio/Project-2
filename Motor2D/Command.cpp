@@ -119,7 +119,7 @@ bool Attack::OnUpdate(float dt)
 		else if (unit->current_anim->justFinished())
 		{ 
 			App->entitycontroller->HandleSFX(unit->type, 30);
-			//App->particle->AddProjectile(particleType::TOMAHAWK, unit->position, enemy->position, 200);
+			App->entitycontroller->HandleParticles(unit->type, unit->position, enemy->position);
 			enemy->current_HP -= MAX((RANDOM_FACTOR * (unit->piercing_atk + ((((int)unit->attack - (int)enemy->defense) <= 0) ? 0 : unit->attack - enemy->defense))), 1); //dmg
 
 			if (enemy->current_HP < 0) enemy->Destroy();

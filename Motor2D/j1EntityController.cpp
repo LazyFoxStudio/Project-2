@@ -15,6 +15,7 @@
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 #include "j1ActionsController.h"
+#include "j1ParticleController.h"
 #include "UI_WarningMessages.h"
 #include "j1WaveController.h"
 #include "UI_Button.h"
@@ -224,25 +225,54 @@ void j1EntityController::HandleSFX(Type type, int volume)
 {
 	switch (type)
 	{
-	case NONE_ENTITY:
+	case Type::NONE_ENTITY:
 		break;
-	case HERO_1:
+	case Type::HERO_1:
 		App->audio->PlayFx(SFX_HERO_YHAMAM_BASICATTACK, volume);
 		break;
-	case FOOTMAN:
+	case Type::FOOTMAN:
 		App->audio->PlayFx(SFX_MISCELLANEOUS_SWORD_CLASH, volume);
 		break;
-	case ARCHER:
+	case Type::ARCHER:
 		App->audio->PlayFx(SFX_MISCELLANEOUS_ARROW, volume);
 		break;
-	case KNIGHT:
-		App->audio->PlayFx(SFX_MISCELLANEOUS_ARROW, volume);
-	case GRUNT:
+	case Type::KNIGHT:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_SWORD_CLASH, volume);
+		break;
+	case Type::GRYPHON:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_GRYPHON, volume);
+		break;
+	case Type::BALLISTA:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_BALLISTA, volume);
+		break;
+	case Type::FLYING_MACHINE:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_SWORD_CLASH, volume);
+		break;
+	case Type::GRUNT:
 		// May be changed if a better sfx is found (for free)
 		App->audio->PlayFx(SFX_MISCELLANEOUS_SWORD_CLASH, volume);
 		break;
-	case AXE_THROWER:
+	case Type::AXE_THROWER:
 		App->audio->PlayFx(SFX_MISCELLANEOUS_AXETHROW, volume);
+		break;
+	default:
+		break;
+	}
+}
+void j1EntityController::HandleParticles(Type type, fPoint pos, fPoint obj, float speed)
+{
+	switch (type)
+	{
+	case NONE_ENTITY:
+		break;
+	case HERO_1:
+		App->particle->AddProjectile(particleType::YAHMAM_AA, pos, obj, speed);
+		break;
+	case ARCHER:
+		App->particle->AddProjectile(particleType::ARROW, pos, obj, speed);
+		break;
+	case AXE_THROWER:
+		App->particle->AddProjectile(particleType::TOMAHAWK, pos, obj, speed);
 		break;
 	default:
 		break;
