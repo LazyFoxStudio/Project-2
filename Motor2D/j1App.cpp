@@ -191,7 +191,7 @@ void j1App::FinishUpdate()
 	if(want_to_save) SavegameNow();
 	if(want_to_load) LoadGameNow();
 
-	if (last_sec_frame_time.Read() > 1000)
+	if (last_sec_frame_time.ReadMs() > 1000)
 	{
 		last_sec_frame_time.Start();
 		prev_last_sec_frame_count = last_sec_frame_count;
@@ -200,7 +200,7 @@ void j1App::FinishUpdate()
 
 	float avg_fps = float(frame_count) / startup_time.ReadSec();
 	float seconds_since_startup = startup_time.ReadSec();
-	uint32 last_frame_ms = frame_time.Read();
+	uint32 last_frame_ms = frame_time.ReadMs();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
 	static char title[256];
@@ -351,17 +351,13 @@ bool j1App::SavegameNow() const
 void j1App::pauseGame()
 {
 	paused = true;
-	wavecontroller->wave_timer.PauseTimer();
-	gui->Chronos->counter.PauseTimer();
-	gui->nextWaveWindow->timer->counter.PauseTimer();
+	gameTime.PauseTimer();
 }
 
 void j1App::resumeGame()
 {
 	paused = false;
-	wavecontroller->wave_timer.Start();
-	gui->Chronos->counter.Start();
-	gui->nextWaveWindow->timer->counter.Start();
+	gameTime.Start();
 }
 
 bool j1App::isPaused() const

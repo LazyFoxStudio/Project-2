@@ -37,22 +37,22 @@ bool j1UIScene::Start()
 	LoadUI(guiconfig);
 
 	//Set resource counters
-	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 1);
+	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 0);
 	text_position_y->convertIntoCounter(&App->scene->inactive_workers_int);
 
-	Text* gold_display = (Text*)App->gui->GetElement(TEXT, 3);
+	Text* gold_display = (Text*)App->gui->GetElement(TEXT, 2);
 	gold_display->convertIntoCounter(&App->scene->workers_int);
 
-	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 4);
+	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 3);
 	wood_display->convertIntoCounter(&App->scene->wood);
 
-	Text* wood_sec = (Text*)App->gui->GetElement(TEXT, 5);
+	Text* wood_sec = (Text*)App->gui->GetElement(TEXT, 4);
 	wood_sec->convertIntoCounter(&App->scene->wood_production_per_second);
 
-	Text* waves = (Text*)App->gui->GetElement(TEXT, 7);
+	Text* waves = (Text*)App->gui->GetElement(TEXT, 6);
 	waves->convertIntoCounter(&App->wavecontroller->current_wave);
 
-	Text* survived_waves = (Text*)App->gui->GetElement(TEXT, 8);
+	Text* survived_waves = (Text*)App->gui->GetElement(TEXT, 7);
 	survived_waves->convertIntoCounter(&App->wavecontroller->current_wave);
 
 	//Hardcoded
