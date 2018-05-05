@@ -40,13 +40,14 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
-	void loadTutorial(const char* path);
+	void loadTutorial(char* path);
 	void startTutorial();
 	void finishStep();
 
 public:
 
 	Image* arrow = nullptr;
+	Step* activeStep = nullptr;
 	std::list<Step*> missing_steps;
 	std::list<Step*> steps;
 	bool doingTutorial = false;

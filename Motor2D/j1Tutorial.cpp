@@ -22,18 +22,6 @@ bool j1Tutorial::Start()
 
 	arrow = new Image(App->gui->atlas, 0, 0, { 991, 809, 149, 113 }, nullptr);
 
-	Step* step = new Step();
-	step->duration = -1;
-	TextBox* text =  new TextBox(100, 100, 0, 0);
-	text->addTextLine("Hola");
-	text->addTextLine("adeu");
-	step->text = text;
-	ArrowInfo* info = new ArrowInfo();
-	info->pointAt = { 150, 200 };
-	info->rotation = 90;
-	step->arrowInfo = info;
-	steps.push_back(step);
-
 	return true;
 }
 
@@ -41,29 +29,61 @@ bool j1Tutorial::Update(float dt)
 {
 	if (doingTutorial)
 	{
-		if (missing_steps.size() == 0)
+		if (missing_steps.size() == 0 && activeStep == nullptr)
 		{
 			doingTutorial = false;
 			active = false;
 			return true;
 		}
-		for (std::list<Step*>::iterator it_s = missing_steps.begin(); it_s != missing_steps.end(); it_s++)
+		if (activeStep == nullptr)
 		{
-			(*it_s)->Draw();
-			if ((*it_s)->isFinished())
-			{
-				missing_steps.erase(it_s);
-				timer.Start();
-			}
+			activeStep = missing_steps.front();
+			missing_steps.remove(activeStep);
+			timer.Start();
+		}
+		else
+		{
+			activeStep->Draw();
+			if (activeStep->isFinished())
+				activeStep = nullptr;
 		}
 	}
 
 	return true;
 }
 
-void j1Tutorial::loadTutorial(const char* path)
+void j1Tutorial::loadTutorial(char* path)
 {
+	pugi::xml_document tutorialDoc;
+	pugi::xml_node tutorial = App->LoadFile(tutorialDoc, path);
 
+	if (tutorial)
+	{
+		for (pugi::xml_node stepN = tutorial.child("step"); stepN; stepN = stepN.next_sibling("step"))
+		{
+			Step* step = new Step();
+			step->duration = stepN.attribute("duration").as_int();
+			pugi::xml_node textN = stepN.child("text");
+			if (textN)
+			{
+				TextBox* text = new TextBox(textN.attribute("x").as_int(), textN.attribute("y").as_int(), 0, 0);
+				for (pugi::xml_node line = textN.child("line"); line; line = line.next_sibling("line"))
+				{
+					text->addTextLine(line.attribute("text").as_string());
+				}
+				step->text = text;
+			}
+			pugi::xml_node arrowN = stepN.child("arrow");
+			if (arrowN)
+			{
+				ArrowInfo* info = new ArrowInfo();
+				info->pointAt = { arrowN.attribute("x").as_int(), arrowN.attribute("y").as_int() };
+				info->rotation = arrowN.attribute("rotation").as_int();
+				step->arrowInfo = info;
+			}
+			steps.push_back(step);
+		}
+	}
 }
 
 void j1Tutorial::startTutorial()
@@ -78,11 +98,8 @@ void j1Tutorial::startTutorial()
 
 void j1Tutorial::finishStep()
 {
-	if (missing_steps.size() > 0)
-	{
-		missing_steps.erase(missing_steps.begin());
-		timer.Start();
-	}
+	if (activeStep != nullptr)
+		activeStep = nullptr;
 }
 
 void Step::Draw()
