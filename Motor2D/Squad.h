@@ -21,7 +21,7 @@ public:
 	std::vector<fPoint> units_offsets;
 	std::deque<Command*> commands;
 	Formation formation = SQUARE;
-	fPoint centroid = { 0.0f,0.0f };
+	fPoint commander_pos = { 0.0f,0.0f };
 	float max_speed = 0.0f;
 	fPoint squad_movement = { 0.0f,0.0f };
 	fPoint squad_direction = { 0.0f,1.0f };
@@ -38,7 +38,6 @@ public:
 	
 	void removeUnit(uint unit_id);
 
-	void calculateCentroid();
 	void calculateOffsets();
 	fPoint getOffset(uint unit_UID);
 

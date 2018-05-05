@@ -35,6 +35,7 @@ public:
 	fPoint mov_target = { 0.0f, 0.0f };
 	
 	Animation* current_anim = nullptr;
+	animationType last_anim = IDLE_S;
 	direction dir = S;
 	
 	std::vector<Animation*> animations;

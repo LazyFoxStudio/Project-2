@@ -32,6 +32,27 @@ CooldownsDisplay::~CooldownsDisplay()
 
 void CooldownsDisplay::BlitElement()
 {
+	hero->BlitElement();
+	hero_timer->BlitElement();
+
+	Hero* heroE = (Hero*)App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID);
+
+	if (heroE->current_skill == 1 && !heroE->skill_one->Ready())
+	{
+		App->gui->moveElementToMouse(skill1);
+		skill1->BlitElement();
+	}
+	else if (heroE->current_skill == 2 && !heroE->skill_two->Ready())
+	{
+		App->gui->moveElementToMouse(skill2);
+		skill2->BlitElement();
+	}
+	else if (heroE->current_skill == 3 && !heroE->skill_three->Ready())
+	{
+		App->gui->moveElementToMouse(skill3);
+		skill3->BlitElement();
+	}
+
 	if (hero_timer->time == 0)
 	{
 		hero_timer->active = false;
@@ -43,27 +64,6 @@ void CooldownsDisplay::BlitElement()
 		skill2->active = false;
 	if (skill3->time == 0)
 		skill3->active = false;
-
-	hero->BlitElement();
-	hero_timer->BlitElement();
-
-	Hero* hero = (Hero*)App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID);
-
-	if (hero->current_skill == 1 && !hero->skill_one->Ready())
-	{
-		App->gui->moveElementToMouse(skill1);
-		skill1->BlitElement();
-	}
-	else if (hero->current_skill == 2 && !hero->skill_two->Ready())
-	{
-		App->gui->moveElementToMouse(skill2);
-		skill2->BlitElement();
-	}
-	else if (hero->current_skill == 3 && !hero->skill_three->Ready())
-	{
-		App->gui->moveElementToMouse(skill3);
-		skill3->BlitElement();
-	}
 }
 
 void CooldownsDisplay::heroDead()

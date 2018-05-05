@@ -166,7 +166,8 @@ void Skill::Activate()
 		FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
 
 		hero->squad->Halt();
-		MoveToSquad* new_order = new MoveToSquad(hero->squad->getCommander(), cast_pos);
+		iPoint map_pos = App->map->WorldToMap(cast_pos.x, cast_pos.y);
+		MoveToSquad* new_order = new MoveToSquad(hero->squad->getCommander(), map_pos);
 		new_order->flow_field = shared_flowfield;
 		hero->squad->commands.push_back(new_order);
 		LOG("Out of range");

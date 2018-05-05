@@ -122,7 +122,7 @@ bool Unit::Update(float dt)
 		commands.front()->Execute(dt);
 		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
-	else if (mov_target != position) mov_target = position;
+	else if (squad ? squad->commander_pos + squad->getOffset(UID) != mov_target : false) mov_target = squad->commander_pos + squad->getOffset(UID);
 
 	//minimap_
 	if (App->gui->minimap)
@@ -263,7 +263,7 @@ void Unit::animationController()
 	animationType new_animation = IDLE_S;
 	if (ex_state != DESTROYED)
 	{
-		if (mov_module > 0)
+		if (mov_module > 0.5)
 		{
 			switch (commands.empty() ? MOVETO : commands.front()->type)
 			{
@@ -340,12 +340,16 @@ void Unit::animationController()
 		}
 	}
 
-	if (animations[new_animation] != current_anim)
+	if (last_anim == new_animation)
 	{
-		current_anim = animations[new_animation];
-		current_anim->Reset();
+		if (animations[new_animation] != current_anim)
+		{
+			current_anim = animations[new_animation];
+			current_anim->Reset();
+		}
 	}
 
+	last_anim = new_animation;
 }
 
 //buffs
