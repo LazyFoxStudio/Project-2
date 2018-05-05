@@ -47,8 +47,11 @@ bool j1ActionsController::Update(float dt)
 			break;
 		case BUILD_LUMBER_MILL:
 			if (doingAction)
+			{
 				App->entitycontroller->to_build_type = LUMBER_MILL;
-			
+				if (App->tutorial->doingTutorial)
+					App->tutorial->taskCompleted(PICK_LUMBER_MILL);
+			}
 			break;
 		case BUILD_FARM:
 			if (doingAction)

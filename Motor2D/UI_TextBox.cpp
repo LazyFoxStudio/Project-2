@@ -19,7 +19,7 @@ void TextBox::BlitElement()
 {
 	iPoint globalPosition = calculateAbsolutePosition();
 
-	App->render->DrawQuad({ globalPosition.x, globalPosition.y, section.w, section.h }, DEFAULT_COLOR, true, false);
+	App->render->DrawQuad({ globalPosition.x, globalPosition.y, section.w, section.h }, DEFAULT_COLOR, true, use_camera, true);
 
 	for (std::list<Text*>::iterator it_t = textLines.begin(); it_t != textLines.end(); it_t++)
 	{
@@ -31,6 +31,7 @@ void TextBox::addTextLine(std::string text)
 {
 	Text* line = new Text(text, BOX_MARGIN, BOX_MARGIN + getLinesHeight(), App->font->getFont(1), { 255,255,255,255 }, nullptr);
 	line->parent = this;
+	line->use_camera = use_camera;
 
 	textLines.push_back(line);
 

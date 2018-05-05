@@ -93,8 +93,10 @@ void Skill::Line()
 
 }
 
-void Skill::Activate()
+bool Skill::Activate()
 { 
+	bool ret = false;
+
 	if (going && App->input->GetMouseButtonDown(1) == KEY_DOWN) going = false; 
 
 	if (!going && cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range)
@@ -111,7 +113,10 @@ void Skill::Activate()
 					iPoint pos = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
 
 					if (cast_aux.DistanceTo(pos) < radius)
+					{
 						(*item)->current_HP -= damage;
+						ret = true;
+					}
 				}
 				else if (type == LINE)
 				{
@@ -124,7 +129,10 @@ void Skill::Activate()
 						SDL_Rect r = { rect_point.x,rect_point.y,32,32 };
 
 						if (SDL_PointInRect(&enemy_pos, &r))
+						{
 							(*item)->current_HP -= damage;
+							ret = true;
+						}
 					}
 				}
 			}
@@ -147,7 +155,10 @@ void Skill::Activate()
 					iPoint pos = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
 
 					if (cast_aux.DistanceTo(pos) < radius)
+					{
 						(*item)->current_HP -= damage;
+						ret = true;
+					}
 				}
 				else if (type == LINE)
 				{
@@ -160,7 +171,10 @@ void Skill::Activate()
 						SDL_Rect r = { rect_point.x,rect_point.y,32,32 };
 
 						if (SDL_PointInRect(&enemy_pos, &r))
+						{
 							(*item)->current_HP -= damage;
+							ret = true;
+						}
 					}
 				}
 			}
@@ -184,4 +198,6 @@ void Skill::Activate()
 		hero->squad->commands.push_back(new_order);
 		LOG("Out of range");
 	}
+
+	return ret;
 }

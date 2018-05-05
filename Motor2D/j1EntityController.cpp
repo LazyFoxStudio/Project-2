@@ -22,6 +22,7 @@
 #include "Building.h"
 #include "Quadtree.h"
 #include "UI_InfoTable.h"
+#include "j1Tutorial.h"
 
 #define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
@@ -141,6 +142,7 @@ bool j1EntityController::Update(float dt)
 		selected_entities.clear();
 
 		selected_entities.push_back(town_hall);
+		App->tutorial->taskCompleted(SELECT_TOWN_HALL);
 		town_hall->isSelected = true;
 		App->gui->newSelectionDone();
 		
@@ -157,6 +159,8 @@ bool j1EntityController::Update(float dt)
 		selected_squads.clear();
 
 		selected_entities.push_back(hero);
+		if (App->tutorial->doingTutorial)
+			App->tutorial->taskCompleted(SELECT_HERO);
 		selected_squads.push_back(hero->squad);
 		hero->isSelected = true;
 	
@@ -516,11 +520,19 @@ Building* j1EntityController::addBuilding(iPoint pos, Type type)
 	Building* building = new Building(pos, *getBuildingFromDB(type));
 	building->UID = last_UID++;
 	if (type == LUMBER_MILL)
+	{
 		building->workersDisplay = App->gui->createWorkersDisplay(building);
+		if (App->tutorial->doingTutorial)
+			App->tutorial->taskCompleted(PLACE_LUMBER_MILL);
+	}
 	else if (type == BARRACKS || type == GNOME_HUT || type == CHURCH)
+	{
 		building->queueDisplay = App->gui->createTroopCreationQueue(building);
-	/*else if (type == FARM)
-		building->workersManager = App->gui->createWorkersManager(building);*/
+		if (type == BARRACKS && App->tutorial->doingTutorial)
+			App->tutorial->taskCompleted(PLACE_BARRACKS);
+	}
+	else if (type == FARM && App->tutorial->doingTutorial)
+		App->tutorial->taskCompleted(PLACE_FARM);
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
 
@@ -740,6 +752,8 @@ void j1EntityController::commandControl()
 		if (!selected_squads.empty())
 		{
 			FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+			if (App->tutorial->doingTutorial)
+				App->tutorial->taskCompleted(MOVE_TROOPS);
 			for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 			{
 				(*it)->Halt();
@@ -821,6 +835,8 @@ void j1EntityController::selectionControl()
 						if ((*it)->ex_state == OPERATIVE)
 						{
 							selected_entities.push_back(*it);
+							if ((*it)->type == TOWN_HALL)
+								App->tutorial->taskCompleted(SELECT_TOWN_HALL);
 							(*it)->isSelected = true;
 							App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
 							if (!buildings) buildings = true;
@@ -840,6 +856,8 @@ void j1EntityController::selectionControl()
 			for (int i = 0; i < units.size(); i++)
 			{
 				selected_entities.push_back(units[i]);
+				if (units[i]->type == HERO_1 && App->tutorial->doingTutorial)
+					App->tutorial->taskCompleted(SELECT_HERO);
 				units[i]->isSelected = true;
 			}
 		}

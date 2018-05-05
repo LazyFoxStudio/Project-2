@@ -21,6 +21,7 @@ bool j1Tutorial::Start()
 	loadTutorial("tutorial.xml");
 
 	arrow = new Image(App->gui->atlas, 0, 0, { 991, 809, 149, 113 }, nullptr);
+	arrow->use_camera = true;
 
 	return true;
 }
@@ -38,15 +39,25 @@ bool j1Tutorial::Update(float dt)
 		if (activeStep == nullptr)
 		{
 			activeStep = missing_steps.front();
+			if (activeStep->isUI)
+				arrow->use_camera = false;
+			else
+				arrow->use_camera = true;
 			missing_steps.remove(activeStep);
 			timer.Start();
 		}
-		else
-		{
-			activeStep->Draw();
-			if (activeStep->isFinished())
-				activeStep = nullptr;
-		}
+	}
+
+	return true;
+}
+
+bool j1Tutorial::PostUpdate()
+{
+	if (doingTutorial && activeStep != nullptr)
+	{
+		activeStep->Draw();
+		if (activeStep->isFinished())
+			activeStep = nullptr;
 	}
 
 	return true;
@@ -61,16 +72,18 @@ void j1Tutorial::loadTutorial(char* path)
 	{
 		for (pugi::xml_node stepN = tutorial.child("step"); stepN; stepN = stepN.next_sibling("step"))
 		{
-			Step* step = new Step();
-			step->duration = stepN.attribute("duration").as_int();
+			Step* step = new Step((Task)stepN.attribute("task").as_int() , stepN.attribute("duration").as_int());
+			step->isUI = stepN.attribute("UI").as_bool();
 			pugi::xml_node textN = stepN.child("text");
 			if (textN)
 			{
 				TextBox* text = new TextBox(textN.attribute("x").as_int(), textN.attribute("y").as_int(), 0, 0);
+				if (!step->isUI)
+					text->use_camera = true;
 				for (pugi::xml_node line = textN.child("line"); line; line = line.next_sibling("line"))
 				{
 					text->addTextLine(line.attribute("text").as_string());
-				}
+				}				
 				step->text = text;
 			}
 			pugi::xml_node arrowN = stepN.child("arrow");
@@ -100,6 +113,12 @@ void j1Tutorial::finishStep()
 {
 	if (activeStep != nullptr)
 		activeStep = nullptr;
+}
+
+void j1Tutorial::taskCompleted(Task task)
+{
+	if (activeStep->task == task)
+		finishStep();
 }
 
 void Step::Draw()

@@ -9,6 +9,20 @@
 #define ARROW_MOVEMENT 50
 #define ARROW_SPEED 8
 
+enum Task
+{
+	NO_TASK,
+
+	SELECT_TOWN_HALL,
+	PICK_LUMBER_MILL,
+	PLACE_LUMBER_MILL,
+	PLACE_FARM,
+	SELECT_HERO,
+	MOVE_TROOPS,
+	KILL_ENEMIES,
+	PLACE_BARRACKS
+};
+
 class TextBox;
 class Image;
 
@@ -20,9 +34,14 @@ struct ArrowInfo
 
 struct Step
 {
+	Step(Task task, int duration): task(task), duration(duration)
+	{}
+
 	int duration = 0;
 	TextBox* text = nullptr;
 	ArrowInfo* arrowInfo = nullptr;
+	Task task = NO_TASK;
+	bool isUI = true;
 
 	void Draw();
 	bool isFinished();
@@ -40,9 +59,12 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
+	bool PostUpdate();
+
 	void loadTutorial(char* path);
 	void startTutorial();
 	void finishStep();
+	void taskCompleted(Task task);
 
 public:
 
