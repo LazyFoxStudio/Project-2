@@ -95,7 +95,7 @@ void j1ParticleController::LoadParticlesFromXML()
 	{
 		tmp = new Particle();
 
-		tmp->type = GetTypeFromInt(type++);
+		tmp->type = (particleType)type++;
 
 		tmp->width = part.child("width").attribute("value").as_int(0);
 		tmp->height = part.child("height").attribute("value").as_int(0);
@@ -113,32 +113,32 @@ void j1ParticleController::LoadParticlesFromXML()
 
 }
 
-particleType j1ParticleController::GetTypeFromInt(int posOnEnum)
-{
-	switch (posOnEnum)
-	{
-	case 9:
-		return particleType::PJUGGERNAUT;
-	case 8:
-		return particleType::PCATAPULT;
-	case 7:
-		return particleType::PDRAGON;
-	case 6:
-		return particleType::PDEATHKNIGHT;
-	case 5:
-		return particleType::PFLYINGMACHINE;
-	case 4:
-		return particleType::PBALLISTA;
-	case 3:
-		return particleType::PYAHMAM_AA;
-	case 2:
-		return particleType::PTOMAHAWK;
-	case 1:
-		return particleType::PARROW;
-	default:
-		return particleType::PNO_TYPE;
-	}
-}
+//particleType j1ParticleController::GetTypeFromInt(int posOnEnum)
+//{
+//	switch (posOnEnum)
+//	{
+//	case 9:
+//		return particleType::PJUGGERNAUT;
+//	case 8:
+//		return particleType::PCATAPULT;
+//	case 7:
+//		return particleType::PDRAGON;
+//	case 6:
+//		return particleType::PDEATHKNIGHT;
+//	case 5:
+//		return particleType::PFLYINGMACHINE;
+//	case 4:
+//		return particleType::PBALLISTA;
+//	case 3:
+//		return particleType::PYAHMAM_AA;
+//	case 2:
+//		return particleType::PTOMAHAWK;
+//	case 1:
+//		return particleType::PARROW;
+//	default:
+//		return particleType::PNO_TYPE;
+//	}
+//}
 
 Particle* j1ParticleController::FindParticleType(particleType type)
 {
