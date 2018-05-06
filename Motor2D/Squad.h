@@ -11,6 +11,7 @@ class Entity;
 #include <list>
 #include <vector>
 #include <deque>
+#include "j1Audio.h"
 
 enum Formation{ SQUARE};
 
@@ -26,6 +27,7 @@ public:
 	fPoint squad_movement = { 0.0f,0.0f };
 	fPoint squad_direction = { 0.0f,1.0f };
 	int UID = -1;
+	SFXList FollowingOrdersSFX = SFXList::SFX_NO_SFX;
 
 public:
 	Squad(std::vector<uint>& units);

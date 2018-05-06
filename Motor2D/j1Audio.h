@@ -2,7 +2,7 @@
 #define __j1AUDIO_H__
 
 #include "j1Module.h"
-
+#include "j1Timer.h"
 #include <vector>
 
 #define DEFAULT_MUSIC_FADE_TIME 2
@@ -57,6 +57,7 @@ private:
 	std::vector<_Mix_Music*>	music;
 
 public:
+	j1Timer followOrdersCooldown;
 
 };
 
@@ -94,11 +95,11 @@ enum SFXList
 	SFX_KNIGHT_FOLLOWING_ORDERS,
 	SFX_KNIGHT_PISSED,
 
-	//Griffon SFX 
-	SFX_GRIFFON_READY,
-	SFX_GRIFFON_WAITING_FOR_ORDERS,
-	SFX_GRIFFON_FOLLOWING_ORDERS,
-	SFX_GRIFFON_PISSED,
+	//Gryphon SFX 
+	SFX_GRYPHON_READY,
+	SFX_GRYPHON_WAITING_FOR_ORDERS,
+	SFX_GRYPHON_FOLLOWING_ORDERS,
+	SFX_GRYPHON_PISSED,
 
 	//Flying Machine SFX 
 	SFX_FLYING_MACHINE_READY,
@@ -127,6 +128,12 @@ enum SFXList
 	//UI
 	SFX_BUTTON_CLICKED, // Isn't yet on the xml (temporary Map assist sfx)
 	SFX_MAP_ASSIST,
-	SFX_MAP_ATTACK
+	SFX_MAP_ATTACK,
+
+
+
+
+
+	SFX_NO_SFX
 };
 #endif // __j1AUDIO_H__
