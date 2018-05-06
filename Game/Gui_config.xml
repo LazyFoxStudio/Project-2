@@ -251,6 +251,33 @@ Resolution of the screen: 1680x 1050y
 		<image path="gui/credits.png">
 		  <position x="0" y="0"/>
 		</image>
+      <text text=" The Prime Minister of Sweden" center="true" counter="false">
+        <position x="350" y="200"/>
+      </text>
+      <text text=" visited Washington today as my" center="true" counter="false">
+        <position x="350" y="225"/>
+      </text>
+      <text text=" little tiny nipples moved to France-" center="true" counter="false">
+        <position x="350" y="250"/>
+      </text>
+      <text text=" The White House reception committee" center="true" counter="false">
+        <position x="350" y="275"/>
+      </text>
+      <text text=" greeted the Prime Rib Roast" center="true" counter="false">
+        <position x="350" y="300"/>
+      </text>
+      <text text=" Minister and I do the cha cha like" center="true" counter="false">
+        <position x="350" y="325"/>
+      </text>
+      <text text=" a sissy girl..." center="true" counter="false">
+        <position x="350" y="350"/>
+      </text>
+      <text text=" (urged to keep going, so continues slowly)" center="true" counter="false">
+        <position x="350" y="375"/>
+      </text>
+      <text text=" I lika do da cha cha..." center="true" counter="false">
+        <position x="350" y="400"/>
+      </text>
 		<button click_action="32">
 			<position x="200" y="800"/>
 			<standby x="687" y="1139" w="469" h="101"/>
