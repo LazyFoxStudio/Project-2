@@ -201,14 +201,14 @@ bool j1ActionsController::Update(float dt)
 			doingAction = false;
 			break;
 		case NEW_GAME:
+			if (App->tutorial->active)
+				App->tutorial->startTutorial();
 			App->scene->active = true;
 			App->entitycontroller->active = true;
 			App->wavecontroller->active = true;
 			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, INGAME_MENU);
 			App->scene->Start_game();
-			if (App->tutorial->active)
-				App->tutorial->startTutorial();
 			break;
 		case BACK_MENU:
 			App->uiscene->toggleMenu(false, CREDITS_MENU);

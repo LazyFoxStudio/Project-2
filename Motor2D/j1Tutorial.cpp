@@ -4,8 +4,10 @@
 #include "UI_element.h"
 #include "j1App.h"
 #include "j1Gui.h"
-//---- TEMP
-#include "j1Input.h"
+#include "j1EntityController.h"
+#include "UI_NextWaveWindow.h"
+#include "UI_Chrono.h"
+#include "j1WaveController.h"
 
 j1Tutorial::j1Tutorial()
 {
@@ -34,6 +36,8 @@ bool j1Tutorial::Update(float dt)
 		{
 			doingTutorial = false;
 			active = false;
+			App->wavecontroller->wave_timer.Start();
+			App->gui->nextWaveWindow->timer->counter.Start();
 			return true;
 		}
 		if (activeStep == nullptr)
@@ -119,6 +123,22 @@ void j1Tutorial::taskCompleted(Task task)
 {
 	if (activeStep->task == task)
 		finishStep();
+
+	if (task == PLACE_FARM)
+	{
+		App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
+		App->wavecontroller->forceNextWave();
+		App->gui->nextWaveWindow->timer->counter.PauseTimer();
+	}
+	else if (task == SELECT_HERO)
+	{
+		App->wavecontroller->wave_timer.PauseTimer();
+	}
+	else if (task == KILL_ENEMIES)
+	{
+		App->gui->nextWaveWindow->active = true;
+		App->gui->nextWaveWindow->toggle();
+	}
 }
 
 void Step::Draw()

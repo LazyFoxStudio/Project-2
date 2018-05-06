@@ -60,6 +60,13 @@ void j1WaveController::updateFlowField()
 	flow_field_aux = App->pathfinding->RequestFlowField(TownHall_pos);
 }
 
+void j1WaveController::forceNextWave()
+{
+	current_wave += 1;
+	wave_timer.Start();
+	Generate_Wave();
+}
+
 bool j1WaveController::Update(float dt)
 {	
 	BROFILER_CATEGORY("Waves Update", Profiler::Color::Black);

@@ -20,13 +20,13 @@
 			<line text="to get as much wood as possible"/>
 		</text>
 	</step>
-	<step duration="3000" task="0" UI="true">
+	<step duration="3500" task="0" UI="true">
 		<text x="100" y="300">
 			<line text="Here you can see your total wood"/>
 		</text>
 		<arrow x="175" y="100" rotation="270"/>
 	</step>
-	<step duration="3000" task="0" UI="true">
+	<step duration="3500" task="0" UI="true">
 		<text x="150" y="300">
 			<line text="And the amount that you collect every 3 seconds"/>
 		</text>
@@ -63,14 +63,14 @@
 			<line text="Use the buttons or press: 1, 2 or 3"/>
 		</text>
 	</step>
-	<step duration="3000" task="0" UI="true">
+	<step duration="3500" task="0" UI="true">
 		<text x="1300" y="150">
 			<line text="Here you can see the enemies that"/>
 			<line text="will come in the next wave and when"/>
 		</text>
 		<arrow x="1450" y="300" rotation="90"/>
 	</step>
-	<step duration="3000" task="0" UI="true">
+	<step duration="3500" task="0" UI="true">
 		<text x="750" y="150">
 			<line text="Before they come we have to prepare an army"/>
 		</text>
@@ -80,13 +80,13 @@
 			<line text="Build the barracks"/>
 		</text>
 	</step>
-	<step duration="3000" task="0" UI="true">
+	<step duration="3500" task="0" UI="true">
 		<text x="750" y="150">
 			<line text="In that building, you can train"/>
 			<line text="your workers to become soldiers"/>
 		</text>
 	</step>
-	<step duration="4500" task="0" UI="true">
+	<step duration="5000" task="0" UI="true">
 		<text x="750" y="150">
 			<line text="I have to go to defend Storm Wind!"/>
 			<line text="Now that you know the basics"/>
