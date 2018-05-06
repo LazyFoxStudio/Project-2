@@ -30,7 +30,7 @@ public:
 
 	//Utilities
 	Squad* squad = nullptr;
-	bool flying = false;
+
 
 	fPoint mov_direction = { 0.0f,0.0f };
 	float mov_module = 0.0f;

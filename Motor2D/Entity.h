@@ -55,6 +55,7 @@ public:
 	uint piercing_atk		= 0;
 	uint line_of_sight		= 0;
 	uint range				= 0;
+	bool flying = false;
 
 	j1Timer timer;
 	Cost cost;

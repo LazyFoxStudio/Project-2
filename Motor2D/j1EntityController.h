@@ -22,6 +22,7 @@ class Quadtree;
 #define REPAIR_COOLDOWN 30
 #define UNIT_QUEUE_MAX_SIZE 6
 #define BUILDINGAREA 1750
+#define MATCHUP_MODIFIER 1.2
 
 struct worker
 {
@@ -137,6 +138,14 @@ public:
 	Type to_build_type = NONE_ENTITY;
 	SDL_Rect selection_rect = { 0,0,0,0 };
 	SDL_Rect buildingArea;
+
+	int m_dmg_lvl = 0;
+	int m_armor_lvl = 0;
+	int r_dmg_lvl = 0;
+	int r_armor_lvl = 0;
+	int f_dmg_lvl = 0;
+	int f_armor_lvl = 0;
+
 
 };
 #endif // !

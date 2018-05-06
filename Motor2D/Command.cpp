@@ -128,7 +128,7 @@ bool Attack::OnUpdate(float dt)
 
 			App->entitycontroller->HandleParticles(unit->type, unit->position, { enemy->position.x + (enemy->collider.w / 2), enemy->position.y + (enemy->collider.h / 2) });
 
-			enemy->current_HP -= MAX((RANDOM_FACTOR * (unit->piercing_atk + ((((int)unit->attack - (int)enemy->defense) <= 0) ? 0 : unit->attack - enemy->defense))), 1); //dmg
+			enemy->current_HP -= dealDamage(unit, enemy); //dmg
 
 			if (enemy->current_HP < 0) enemy->Destroy();
 			else					   callRetaliation(enemy);
@@ -397,6 +397,40 @@ void Attack::callRetaliation(Entity* enemy)
 		if (enemy_action != ATTACKING_MOVETO_SQUAD)
 			((Unit*)enemy)->squad->commands.push_back(new AttackingMoveToSquad((Unit*)enemy, map_p));
 	}
+}
+
+int Attack::dealDamage(Entity * attacker, Entity * defender)
+{
+	int ret = 0;
+	
+		if (favorableMatchup(attacker, defender))
+		{
+			ret = MATCHUP_MODIFIER * MAX((RANDOM_FACTOR * (attacker->piercing_atk + ((((int)attacker->attack - (int)defender->defense) <= 0) ? 0 : attacker->attack - defender->defense))), 1);
+		}
+
+		else
+		{
+			ret = MAX((RANDOM_FACTOR * (attacker->piercing_atk + ((((int)attacker->attack - (int)defender->defense) <= 0) ? 0 : attacker->attack - defender->defense))), 1);
+		}
+	return ret;
+}
+
+bool Attack::favorableMatchup(Entity * attacker, Entity * defender)
+{
+	bool ret = false;
+	if (attacker->range == 40 && defender->range < 40 && !defender->flying)
+	{
+		ret = true;
+	}
+	else if (attacker->range < 40 && !attacker->flying && defender->flying)
+	{
+		ret = true;
+	}
+	else if (attacker->flying && !defender->flying && defender->range == 40)
+	{
+		ret = true;
+	}
+	return ret;
 }
 
 

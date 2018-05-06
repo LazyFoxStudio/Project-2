@@ -83,6 +83,9 @@ private:
 	bool searchTarget();
 	void moveToTarget();
 	void callRetaliation(Entity* enemy);
+	
+	int dealDamage(Entity* attacker, Entity* defender);
+	bool favorableMatchup(Entity* attacker, Entity* defender);
 
 };
 
