@@ -125,8 +125,7 @@ bool j1EntityController::Update(float dt)
 
 	if (to_build_type != NONE_ENTITY)
 		buildingCalculations();
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->actionscontroller->doingAction_lastFrame && (hero ? hero->current_skill == 0 : true) && !App->gui->leftClickedOnUI)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->actionscontroller->doingAction_lastFrame && (hero ? hero->current_skill == 0 : true) && !App->gui->leftClickedOnUI)
 		selectionControl();
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction_lastFrame && !App->gui->rightClickedOnUI)
 	{
