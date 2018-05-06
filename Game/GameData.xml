@@ -1510,8 +1510,8 @@
         </Stats>
         <Info title="Ballista Stats:"/>
         <Animations>
-          <width value="66"/>
-          <height value="65"/>
+          <width value="67"/>
+          <height value="66"/>
           <Animation>
             <!--0- Idle North-->
             <rows value="0"/>
@@ -1642,65 +1642,65 @@
           </Animation>
           <Animation>
             <!-- 16- AttackingNorth-->
-            <rows value="1"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="0"/>
             <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 17- AttackingNorthEast-->
-            <rows value="1"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="1"/>
             <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 18- AttackingEast-->
-            <rows value="1"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="2"/>
             <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 19- AttackingSouthEast-->
-            <rows value="1"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="3"/>
             <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 20- AttackingSouth-->
-            <rows value="1"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="4"/>
             <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 21- AttackingSouthWest-->
-            <rows value="1"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="3"/>
             <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 22- AttackingWest-->
-            <rows value="1"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="2"/>
             <speed value="5"/>
           </Animation>
           <Animation>
             <!-- 23- AttackingNorthWest-->
-            <rows value="1"/>
+            <rows value="2"/>
             <columns value="0"/>
-            <StartingRow value="5"/>
+            <StartingRow value="1"/>
             <StartingColumn value="1"/>
             <speed value="5"/>
           </Animation>
