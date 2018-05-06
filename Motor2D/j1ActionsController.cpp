@@ -89,7 +89,7 @@ bool j1ActionsController::Update(float dt)
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(false, (Building*)*App->entitycontroller->selected_entities.begin());
 			}
-			else
+			else if (App->gui->current_hovering_element != nullptr)
 			{
 				App->entitycontroller->HandleWorkerAssignment(false, ((WorkersDisplay*)App->gui->current_hovering_element->parent)->building);
 			}
@@ -101,7 +101,7 @@ bool j1ActionsController::Update(float dt)
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(true, (Building*)*App->entitycontroller->selected_entities.begin());
 			}
-			else
+			else if (App->gui->current_hovering_element != nullptr)
 			{
 				App->entitycontroller->HandleWorkerAssignment(true, ((WorkersDisplay*)App->gui->current_hovering_element->parent)->building);
 			}

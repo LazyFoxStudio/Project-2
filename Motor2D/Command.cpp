@@ -124,7 +124,7 @@ bool Attack::OnUpdate(float dt)
 		else if (unit->current_anim->justFinished())
 		{ 
 			if (unit->position.x > App->win->width || unit->position.x < 0 || unit->position.y >  App->win->height || unit->position.y < 0)
-				App->entitycontroller->HandleSFX(unit->type, 30);
+				App->entitycontroller->HandleAttackSFX(unit->type, 30);
 
 			App->entitycontroller->HandleParticles(unit->type, unit->position, { enemy->position.x + (enemy->collider.w / 2), enemy->position.y + (enemy->collider.h / 2) });
 

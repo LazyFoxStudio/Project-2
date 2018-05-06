@@ -37,7 +37,7 @@
 			<line text="Now build a farm to get more workers"/>
 		</text>
 	</step>
-	<step duration="3500" task="0" UI="true">
+	<step duration="4500" task="0" UI="true">
 		<text x="10" y="450">
 			<line text="Some enemies have appeared"/>
 			<line text="They will try to destroy your village"/>
@@ -63,7 +63,7 @@
 			<line text="Use the buttons or press: Q, W or E"/>
 		</text>
 	</step>
-	<step duration="3500" task="0" UI="true">
+	<step duration="4000" task="0" UI="true">
 		<text x="1300" y="150">
 			<line text="Here you can see the enemies that"/>
 			<line text="will come in the next wave and when"/>
@@ -80,13 +80,13 @@
 			<line text="Build the barracks"/>
 		</text>
 	</step>
-	<step duration="3500" task="0" UI="true">
+	<step duration="4000" task="0" UI="true">
 		<text x="750" y="150">
 			<line text="In that building, you can train"/>
 			<line text="your workers to become soldiers"/>
 		</text>
 	</step>
-	<step duration="5000" task="0" UI="true">
+	<step duration="5500" task="0" UI="true">
 		<text x="750" y="150">
 			<line text="I have to go to defend Storm Wind!"/>
 			<line text="Now that you know the basics"/>

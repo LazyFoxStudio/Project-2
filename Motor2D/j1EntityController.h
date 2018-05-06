@@ -5,6 +5,7 @@
 #include "Building.h"
 #include "Unit.h"
 #include "Hero.h"
+#include "j1Audio.h"
 
 #include <list>
 #include <map>
@@ -80,7 +81,10 @@ public:
 	Cost getCost(Type type);
 	bool SpendCost(Type type);
 	void debugDrawEntity(Entity* entity);
-	void HandleSFX(Type type, int volume = 128);
+	SFXList GetOrdersSFXFromType(Type type);
+	void HandleAttackSFX(Type type, int volume = 128);
+	void HandleReadySFX(Type type, int volume = 128);
+	void HandleOrdersSFX();
 	void HandleParticles(Type type, fPoint pos, fPoint obj, float speed = 300);
 	void GetTotalIncome();
 	void TownHallLevelUp();

@@ -23,6 +23,7 @@
 #include "Quadtree.h"
 #include "UI_InfoTable.h"
 #include "j1Tutorial.h"
+#include <algorithm>
 
 #define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
@@ -42,7 +43,7 @@ bool j1EntityController::Start()
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
 	App->scene->InitialWorkers(town_hall);*/
 
-	AddSquad(FOOTMAN, fPoint(2200, 1950));
+	//AddSquad(FOOTMAN, fPoint(2200, 1950));
 
 /*
 	entity_iterator = entities.begin();
@@ -124,8 +125,14 @@ bool j1EntityController::Update(float dt)
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->actionscontroller->doingAction_lastFrame && (hero ? hero->current_skill == 0 : true) && !App->gui->leftClickedOnUI)
 		selectionControl();
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction_lastFrame && !App->gui->rightClickedOnUI)
+	{
 		commandControl();
-
+		if (App->audio->followOrdersCooldown.ReadSec() > 5)
+		{
+			App->audio->followOrdersCooldown.Restart();
+			HandleOrdersSFX();
+		}
+	}
 	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && to_build_type != NONE_ENTITY && App->actionscontroller->doingAction)
 	{
 		to_build_type = NONE_ENTITY;
@@ -245,7 +252,36 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 	}
 }
 
-void j1EntityController::HandleSFX(Type type, int volume)
+SFXList j1EntityController::GetOrdersSFXFromType(Type type)
+{
+	switch (type)
+	{
+	case Type::NONE_ENTITY:
+		break;
+	case Type::FOOTMAN:
+		return SFXList::SFX_FOOTMAN_FOLLOWING_ORDERS;
+		break;
+	case Type::ARCHER:
+		return SFXList::SFX_ARCHER_FOLLOWING_ORDERS;
+		break;
+	case Type::KNIGHT:
+		return SFXList::SFX_KNIGHT_FOLLOWING_ORDERS;
+		break;
+	case Type::GRYPHON:
+		return SFXList::SFX_GRYPHON_FOLLOWING_ORDERS;
+		break;
+	case Type::BALLISTA:
+		//App->audio->PlayFx(SFXList::SFX_BALLISTA_READY, volume);
+		break;
+	case Type::FLYING_MACHINE:
+		return SFXList::SFX_FLYING_MACHINE_FOLLOWING_ORDERS;
+		break;
+	default:
+		break;
+	}
+}
+
+void j1EntityController::HandleAttackSFX(Type type, int volume)
 {
 	switch (type)
 	{
@@ -292,6 +328,41 @@ void j1EntityController::HandleSFX(Type type, int volume)
 		break;
 	default:
 		break;
+	}
+}
+void j1EntityController::HandleReadySFX(Type type, int volume)
+{
+	switch (type)
+	{
+	case Type::NONE_ENTITY:
+		break;
+	case Type::FOOTMAN:
+		App->audio->PlayFx(SFXList::SFX_FOOTMAN_READY, volume);
+		break;
+	case Type::ARCHER:
+		App->audio->PlayFx(SFXList::SFX_ARCHER_READY, volume);
+		break;
+	case Type::KNIGHT:
+		App->audio->PlayFx(SFXList::SFX_KNIGHT_READY, volume);
+		break;
+	case Type::GRYPHON:
+		App->audio->PlayFx(SFXList::SFX_GRYPHON_READY, volume);
+		break;
+	case Type::BALLISTA:
+		//App->audio->PlayFx(SFXList::SFX_BALLISTA_READY, volume);
+		break;
+	case Type::FLYING_MACHINE:
+		App->audio->PlayFx(SFXList::SFX_FLYING_MACHINE_READY, volume);
+		break;
+	default:
+		break;
+	}
+}
+void j1EntityController::HandleOrdersSFX()
+{
+	for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
+	{
+		App->audio->PlayFx((*it)->FollowingOrdersSFX, 50);
 	}
 }
 void j1EntityController::HandleParticles(Type type, fPoint pos, fPoint obj, float speed)
@@ -549,8 +620,8 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	}
 	if (type == HERO_2)
 	{
-		hero->skill_one = new Skill(hero, 3, 50, 300, 10, PLACE);		//Icicle Crash
-		hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
+		hero->skill_one = new Skill(hero, 3, 50, 3000000, 10, PLACE);		//Icicle Crash
+		hero->skill_two = new Skill(hero, 3, 50, 700, 2, HEAL);	//Overflow
 		hero->skill_three = new Skill(hero, 0, 200, 250, 2, LINE);		//Dragon Breath
 	}
 
@@ -603,6 +674,8 @@ Squad* j1EntityController::AddSquad(Type type, fPoint position)
 	Squad* new_squad = nullptr;
 	Unit* unit_template = getUnitFromDB(type);
 
+	HandleReadySFX(type, 50);
+
 	if (App->pathfinding->GatherWalkableAdjacents(map_p, getUnitFromDB(type)->squad_members, positions))
 	{
 		for (int i = 0; i < unit_template->squad_members; ++i)
@@ -613,6 +686,7 @@ Squad* j1EntityController::AddSquad(Type type, fPoint position)
 		new_squad = new Squad(squad_vector);
 		if (!unit_template->IsEnemy())
 		{
+			new_squad->FollowingOrdersSFX = GetOrdersSFXFromType(type);
 			App->scene->wood -= unit_template->cost.wood_cost;
 			SubstractRandomWorkers(unit_template->cost.worker_cost);
 		}
@@ -1261,7 +1335,7 @@ bool j1EntityController::CreateForest(MapLayer* trees)
 
 					for (uint i = 0; i < 4; ++i)
 					{
-						if (!App->pathfinding->IsWalkable(neighbors[i]))
+						if (!App->pathfinding->IsWalkable(neighbors[i]) && std::find(f.trees.begin(), f.trees.end(), neighbors[i]) != f.trees.end())
 						{
 							//add to the list of trees and to the borders
 							iPoint p = neighbors[i];
