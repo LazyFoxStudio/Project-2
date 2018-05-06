@@ -163,6 +163,9 @@
     <ClCompile Include="UI_TextBox.cpp">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClCompile>
+    <ClCompile Include="UI_Slider.cpp">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -338,6 +341,9 @@
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
     <ClInclude Include="UI_TextBox.h">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Slider.h">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClInclude>
   </ItemGroup>

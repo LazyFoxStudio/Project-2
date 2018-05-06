@@ -123,6 +123,7 @@
     <ClCompile Include="UI_NextWaveWindow.cpp" />
     <ClCompile Include="UI_ProgressBar.cpp" />
     <ClCompile Include="UI_SelectionDisplay.cpp" />
+    <ClCompile Include="UI_Slider.cpp" />
     <ClCompile Include="UI_Text.cpp" />
     <ClCompile Include="UI_TextBox.cpp" />
     <ClCompile Include="UI_TroopCreationQueue.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="UI_NextWaveWindow.h" />
     <ClInclude Include="UI_ProgressBar.h" />
     <ClInclude Include="UI_SelectionDisplay.h" />
+    <ClInclude Include="UI_Slider.h" />
     <ClInclude Include="UI_Text.h" />
     <ClInclude Include="UI_TextBox.h" />
     <ClInclude Include="UI_TroopCreationQueue.h" />
