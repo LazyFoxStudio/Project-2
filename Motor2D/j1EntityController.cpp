@@ -23,6 +23,7 @@
 #include "Quadtree.h"
 #include "UI_InfoTable.h"
 #include "j1Tutorial.h"
+#include <algorithm>
 
 #define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
@@ -1334,7 +1335,7 @@ bool j1EntityController::CreateForest(MapLayer* trees)
 
 					for (uint i = 0; i < 4; ++i)
 					{
-						if (!App->pathfinding->IsWalkable(neighbors[i]))
+						if (!App->pathfinding->IsWalkable(neighbors[i]) && std::find(f.trees.begin(), f.trees.end(), neighbors[i]) != f.trees.end())
 						{
 							//add to the list of trees and to the borders
 							iPoint p = neighbors[i];
