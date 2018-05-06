@@ -249,6 +249,15 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 		App->render->DrawQuad(r, White, false);
 		App->render->DrawCircle(unit->position.x, unit->position.y, unit->line_of_sight, Blue);
 		App->render->DrawCircle(unit->mov_target.x, unit->mov_target.y, 5, Red);
+
+		if (unit->squad ? !unit->squad->atk_slots.empty() : false)
+		{
+			for (std::list<iPoint>::iterator it = unit->squad->atk_slots.begin(); it != unit->squad->atk_slots.end(); it++)
+			{
+				iPoint world_p = App->map->MapToWorld((*it).x, (*it).y);
+				App->render->DrawCircle(world_p.x, world_p.y, 5, Blue);
+			}
+		}
 	}
 }
 
@@ -1024,6 +1033,25 @@ void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entit
 			if (SDL_HasIntersection(&collider, &QT_entities[i]->collider)) list_to_fill.push_back(QT_entities[i]);
 	}
 
+}
+
+Entity* j1EntityController::getNearestEnemy(Entity* entity)
+{
+	Entity* ret = nullptr;
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED)
+		{
+			if (!ret) ret = *it;
+			else
+			{
+				if ((*it)->position.DistanceTo(entity->position) < ret->position.DistanceTo(entity->position))
+					ret = *it;
+			}
+		}
+	}
+
+	return ret;
 }
 
 void j1EntityController::TownHallLevelUp()
