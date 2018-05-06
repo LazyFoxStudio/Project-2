@@ -213,16 +213,13 @@ bool j1ActionsController::Update(float dt)
 		case BACK_MENU:
 			App->uiscene->toggleMenu(false, CREDITS_MENU);
 			App->uiscene->toggleMenu(false, SETTINGS_MENU);
-			App->uiscene->toggleMenu(true, START_MENU);
 			doingAction = false;
 			break;
 		case CREDITS:
-			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, CREDITS_MENU);
 			doingAction = false;
 			break;
 		case SETTINGS:
-			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, SETTINGS_MENU);
 			doingAction = false;
 			break;
