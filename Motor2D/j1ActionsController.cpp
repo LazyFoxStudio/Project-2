@@ -227,6 +227,15 @@ bool j1ActionsController::Update(float dt)
 			doingAction = false;
 			return false;
 			break;
+		case CROSS_MENU:
+			App->uiscene->toggleMenu(false, CREDITS_MENU);
+			App->uiscene->toggleMenu(false, SETTINGS_MENU);
+			doingAction = false;
+			break;
+		case CHANGE_HOTKEYS:
+			App->uiscene->toggleMenu(true, CHANGE_HOTKEYS_MENU);
+			doingAction = false;
+			break;
 		}
 		
 	}

@@ -177,9 +177,9 @@ Resolution of the screen: 1680x 1050y
 		<color r="255" g="255" b="255" a="255"/>
 		<interactive value="false"/>
 	</text>
-    
+
    </menu>
-  
+    <!-- MAIN_MENU  -->
     <menu type="0" active="true">
 		<image path="gui/menu_bckg.png">
 			<position x="0" y="0"/>
@@ -279,24 +279,39 @@ Resolution of the screen: 1680x 1050y
       <text text=" I lika do da cha cha..." center="true" counter="false">
         <position x="350" y="400"/>
       </text>
-		<button click_action="32">
-			<position x="200" y="800"/>
-			<standby x="687" y="1139" w="469" h="101"/>
-			<OnMouse x="687" y="1139" w="469" h="101"/>
-			<OnClick x="687" y="1139" w="469" h="101"/>
+		<button click_action="32"> <!--Back-->
+			<position x="190" y="875"/>
+			<standby x="687" y="1282" w="189" h="70"/>
+			<OnMouse x="687" y="1282" w="189" h="70"/>
+			<OnClick x="687" y="1282" w="189" h="70"/>
 			<childs>
 				<text text="BACK" center="true" counter="false">
 					<position x="0" y="0"/>
-					<font id="6"/>
+					<font id="4"/>
 					<color r="255" g="255" b="0" a="255"/>
 					<interactive value="false"/>
 				</text>
 			</childs>
 		</button>
+    <button click_action="35"><!--X-->
+      <position x="190" y="125"/>
+      <standby x="687" y="1541" w="56" h="56"/>
+      <OnMouse x="687" y="1541" w="56" h="56"/>
+      <OnClick x="687" y="1541" w="56" h="56"/>
+      <childs>
+        <text text="X" center="true" counter="false">
+          <position x="0" y="0"/>
+          <font id="4"/>
+          <color r="255" g="255" b="0" a="255"/>
+          <interactive value="false"/>
+        </text>
+      </childs>
+    </button>
+
     </menu>
 
-  <!-- SETTINGS-->
-  <menu type="1" active="false">
+    <!-- SETTINGS-->
+    <menu type="1" active="false">
     <image path="gui/settings.png">
       <position x="0" y="0"/>
     </image>
@@ -336,11 +351,11 @@ Resolution of the screen: 1680x 1050y
       <color r="0" g="0" b="0" a="255"/>
       <interactive value="false"/>
     </text>
-    <button click_action="32">
-      <position x="200" y="800"/>
-      <standby x="687" y="1139" w="469" h="101"/>
-      <OnMouse x="687" y="1139" w="469" h="101"/>
-      <OnClick x="687" y="1139" w="469" h="101"/>
+    <button click_action="32"> <!--BACK-->
+      <position x="190" y="875"/>
+      <standby x="687" y="1282" w="189" h="70"/>
+      <OnMouse x="687" y="1282" w="189" h="70"/>
+      <OnClick x="687" y="1282" w="189" h="70"/>
       <childs>
         <text text="BACK" center="true" counter="false">
           <position x="0" y="0"/>
@@ -350,7 +365,100 @@ Resolution of the screen: 1680x 1050y
         </text>
       </childs>
     </button>
-  </menu>
+    <button click_action="35"><!--X-->
+      <position x="190" y="125"/>
+      <standby x="687" y="1541" w="56" h="56"/>
+      <OnMouse x="687" y="1541" w="56" h="56"/>
+      <OnClick x="687" y="1541" w="56" h="56"/>
+      <childs>
+        <text text="X" center="true" counter="false">
+          <position x="0" y="0"/>
+          <font id="4"/>
+          <color r="255" g="255" b="0" a="255"/>
+          <interactive value="false"/>
+        </text>
+      </childs>
+    </button>
+      <button click_action="36"><!--CHANGE_HOTKEYS-->
+        <position x="600" y="750"/>
+        <standby x="687" y="1456" w="469" h="72"/>
+        <OnMouse x="687" y="1456" w="469" h="72"/>
+        <OnClick x="687" y="1456" w="469" h="72"/>
+        <childs>
+          <text text="Change Hotkeys" center="true" counter="false">
+            <position x="0" y="0"/>
+            <font id="4"/>
+            <color r="0" g="0" b="0" a="255"/>
+            <interactive value="false"/>
+          </text>
+        </childs>
+      </button>
+    </menu>
+
+    <!-- CHANGE_HOTKEYS_MENU-->
+    <menu type="7" active="false">
+      <image path="gui/credits.png">
+        <position x="0" y="0"/>
+      </image>
+      <text text=" The Prime Minister of Sweden" center="true" counter="false">
+        <position x="350" y="200"/>
+      </text>
+      <text text=" visited Washington today as my" center="true" counter="false">
+        <position x="350" y="225"/>
+      </text>
+      <text text=" little tiny nipples moved to France-" center="true" counter="false">
+        <position x="350" y="250"/>
+      </text>
+      <text text=" The White House reception committee" center="true" counter="false">
+        <position x="350" y="275"/>
+      </text>
+      <text text=" greeted the Prime Rib Roast" center="true" counter="false">
+        <position x="350" y="300"/>
+      </text>
+      <text text=" Minister and I do the cha cha like" center="true" counter="false">
+        <position x="350" y="325"/>
+      </text>
+      <text text=" a sissy girl..." center="true" counter="false">
+        <position x="350" y="350"/>
+      </text>
+      <text text=" (urged to keep going, so continues slowly)" center="true" counter="false">
+        <position x="350" y="375"/>
+      </text>
+      <text text=" I lika do da cha cha..." center="true" counter="false">
+        <position x="350" y="400"/>
+      </text>
+      <button click_action="32">
+        <!--Back-->
+        <position x="190" y="875"/>
+        <standby x="687" y="1282" w="189" h="70"/>
+        <OnMouse x="687" y="1282" w="189" h="70"/>
+        <OnClick x="687" y="1282" w="189" h="70"/>
+        <childs>
+          <text text="BACK" center="true" counter="false">
+            <position x="0" y="0"/>
+            <font id="4"/>
+            <color r="255" g="255" b="0" a="255"/>
+            <interactive value="false"/>
+          </text>
+        </childs>
+      </button>
+      <button click_action="35">
+        <!--X-->
+        <position x="190" y="125"/>
+        <standby x="687" y="1541" w="56" h="56"/>
+        <OnMouse x="687" y="1541" w="56" h="56"/>
+        <OnClick x="687" y="1541" w="56" h="56"/>
+        <childs>
+          <text text="X" center="true" counter="false">
+            <position x="0" y="0"/>
+            <font id="4"/>
+            <color r="255" g="255" b="0" a="255"/>
+            <interactive value="false"/>
+          </text>
+        </childs>
+      </button>
+
+    </menu>
 
 </config>
 
