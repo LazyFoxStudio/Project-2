@@ -91,7 +91,7 @@ bool j1Gui::PreUpdate()
 		element = draggingElement;
 	else
 	{
-		for (std::list<menu*>::reverse_iterator it_m = App->uiscene->menus.rbegin(); it_m != App->uiscene->menus.rend(); it_m++) //Go through menus
+		for (std::list<menu*>::iterator it_m = App->uiscene->menus.begin(); it_m != App->uiscene->menus.end(); it_m++) //Go through menus
 		{
 			if ((*it_m) == nullptr) break;
 			if ((*it_m)->active == false) continue;

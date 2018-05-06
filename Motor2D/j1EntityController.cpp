@@ -35,7 +35,7 @@ bool j1EntityController::Start()
 {
 	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
 
-	addHero(iPoint(2000, 1950), HERO_1);
+	addHero(iPoint(2000, 1950), HERO_2);
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	/*town_hall = addBuilding(town_hall_pos, TOWN_HALL);
@@ -527,6 +527,12 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	if (type == HERO_1)
 	{
 		hero->skill_one = new Skill(hero, 3, 100, 300, 6, AREA);		//Icicle Crash
+		hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
+		hero->skill_three = new Skill(hero, 0, 200, 250, 2, LINE);		//Dragon Breath
+	}
+	if (type == HERO_2)
+	{
+		hero->skill_one = new Skill(hero, 3, 50, 300, 10, PLACE);		//Icicle Crash
 		hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
 		hero->skill_three = new Skill(hero, 0, 200, 250, 2, LINE);		//Dragon Breath
 	}

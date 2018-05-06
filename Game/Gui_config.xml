@@ -183,6 +183,7 @@ Resolution of the screen: 1680x 1050y
     <menu type="0" active="true">
 		<image path="gui/menu_bckg.png">
 			<position x="0" y="0"/>
+			<interactive value="false"/>
 		</image>
 		<atlas_image>
 			<position x="525" y="30"/>
