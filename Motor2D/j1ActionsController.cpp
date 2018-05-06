@@ -196,6 +196,11 @@ bool j1ActionsController::Update(float dt)
 			}
 			doingAction = false;
 			break;
+		case RESEARCH_MELEE_ATTACK:
+			if (App->entitycontroller->ChechUpgradeCost(MELEE_ATTACK_UPGRADE))
+			{
+
+			}
 		case TOGGLE_NEXTWAVE:
 			App->gui->nextWaveWindow->toggle();
 			doingAction = false;
