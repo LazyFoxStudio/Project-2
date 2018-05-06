@@ -8,7 +8,7 @@
 #include "j1EntityController.h"
 #include "UI_Button.h"
 
-NextWaveWindow::NextWaveWindow(SDL_Texture* atlas, SDL_Texture* icon_atlas, Button* button, int x, int y, int min_x, int min_y, SDL_Rect section, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, j1Module* callback): UI_element(x, y, MENU, section, callback, atlas),
+NextWaveWindow::NextWaveWindow(SDL_Texture* atlas, SDL_Texture* icon_atlas, Button* button, int x, int y, int min_x, int min_y, SDL_Rect section, int firstIcon_posX, int firstIcon_posY, int icons_offsetX, int icons_offsetY, j1Module* callback): UI_element(min_x, min_y, MENU, section, callback, atlas),
 firstIcon_pos({firstIcon_posX, firstIcon_posY}),
 icons_offset({icons_offsetX, icons_offsetY}),
 icon_atlas(icon_atlas),

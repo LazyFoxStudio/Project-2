@@ -1,0 +1,97 @@
+<tutorial>
+	<step duration="-1" task="1" UI="false">
+		<text x="1800" y="1850">
+			<line text="This is your town hall"/>
+			<line text="Click it or press space"/>
+			<line text="to select it"/>
+		</text>
+		<arrow x="2000" y="1850" rotation="90"/>
+	</step>
+	<step duration="-1" task="2" UI="true">
+		<text x="1300" y="450">
+			<line text="Here you can create more buildings"/>
+			<line text="Start by building your first Lumber Mill"/>
+		</text>
+		<arrow x="1450" y="600" rotation="90"/>
+	</step>
+	<step duration="-1" task="3" UI="true">
+		<text x="750" y="150">
+			<line text="You have to place it near to a forest"/>
+			<line text="to get as much wood as possible"/>
+		</text>
+	</step>
+	<step duration="3500" task="0" UI="true">
+		<text x="100" y="300">
+			<line text="Here you can see your total wood"/>
+		</text>
+		<arrow x="175" y="100" rotation="270"/>
+	</step>
+	<step duration="3500" task="0" UI="true">
+		<text x="150" y="300">
+			<line text="And the amount that you collect every 3 seconds"/>
+		</text>
+		<arrow x="220" y="100" rotation="270"/>
+	</step>
+	<step duration="-1" task="4" UI="true">
+		<text x="750" y="150">
+			<line text="Now build a farm to get more workers"/>
+		</text>
+	</step>
+	<step duration="4500" task="0" UI="true">
+		<text x="10" y="450">
+			<line text="Some enemies have appeared"/>
+			<line text="They will try to destroy your village"/>
+		</text>
+		<arrow x="50" y="600" rotation="90"/>
+	</step>
+	<step duration="-1" task="5" UI="false">
+		<text x="1650" y="1750">
+			<line text="Select your hero by clicking it"/>
+			<line text="or pressing F1"/>
+		</text>
+		<arrow x="1925" y="1750" rotation="90"/>
+	</step>
+	<step duration="-1" task="6" UI="true">
+		<text x="750" y="150">
+			<line text="Right click on a position to move"/>
+			<line text="your selected troops there"/>
+		</text>
+	</step>
+	<step duration="-1" task="7" UI="true">
+		<text x="750" y="150">
+			<line text="Defeat the enemies using your abilities"/>
+			<line text="Use the buttons or press: Q, W or E"/>
+		</text>
+	</step>
+	<step duration="4000" task="0" UI="true">
+		<text x="1300" y="150">
+			<line text="Here you can see the enemies that"/>
+			<line text="will come in the next wave and when"/>
+		</text>
+		<arrow x="1450" y="300" rotation="90"/>
+	</step>
+	<step duration="3500" task="0" UI="true">
+		<text x="750" y="150">
+			<line text="Before they come we have to prepare an army"/>
+		</text>
+	</step>
+	<step duration="-1" task="8" UI="true">
+		<text x="750" y="150">
+			<line text="Build the barracks"/>
+		</text>
+	</step>
+	<step duration="4000" task="0" UI="true">
+		<text x="750" y="150">
+			<line text="In that building, you can train"/>
+			<line text="your workers to become soldiers"/>
+		</text>
+	</step>
+	<step duration="5500" task="0" UI="true">
+		<text x="750" y="150">
+			<line text="I have to go to defend Storm Wind!"/>
+			<line text="Now that you know the basics"/>
+			<line text="you can defend the village"/>
+			<line text="Good luck!"/>
+		</text>
+	</step>
+</tutorial>

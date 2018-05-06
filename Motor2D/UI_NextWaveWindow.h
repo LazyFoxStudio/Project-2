@@ -34,7 +34,7 @@ public:
 	Text* text = nullptr;
 	Chrono* timer = nullptr;
 	Button* button = nullptr;
-	bool minimized = false;
+	bool minimized = true;
 
 	int counterX = 0;
 	int counterY = 0;

@@ -30,7 +30,7 @@ public:
 
 	//Utilities
 	Squad* squad = nullptr;
-	bool flying = false;
+
 
 	fPoint mov_direction = { 0.0f,0.0f };
 	float mov_module = 0.0f;
@@ -39,7 +39,7 @@ public:
 	Animation* current_anim = nullptr;
 	animationType last_anim = IDLE_S;
 	direction dir = S;
-	
+
 	std::vector<Animation*> animations;
 	std::list<Effect*> effects;
 	std::deque<Command*> commands;

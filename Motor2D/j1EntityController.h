@@ -5,6 +5,7 @@
 #include "Building.h"
 #include "Unit.h"
 #include "Hero.h"
+#include "j1Audio.h"
 
 #include <list>
 #include <map>
@@ -22,6 +23,7 @@ class Quadtree;
 #define REPAIR_COOLDOWN 30
 #define UNIT_QUEUE_MAX_SIZE 6
 #define BUILDINGAREA 1750
+#define MATCHUP_MODIFIER 1.2
 
 struct worker
 {
@@ -79,7 +81,10 @@ public:
 	Cost getCost(Type type);
 	bool SpendCost(Type type);
 	void debugDrawEntity(Entity* entity);
-	void HandleSFX(Type type, int volume = 128);
+	SFXList GetOrdersSFXFromType(Type type);
+	void HandleAttackSFX(Type type, int volume = 128);
+	void HandleReadySFX(Type type, int volume = 128);
+	void HandleOrdersSFX();
 	void HandleParticles(Type type, fPoint pos, fPoint obj, float speed = 300);
 	void GetTotalIncome();
 	void TownHallLevelUp();
@@ -138,6 +143,14 @@ public:
 	Type to_build_type = NONE_ENTITY;
 	SDL_Rect selection_rect = { 0,0,0,0 };
 	SDL_Rect buildingArea;
+
+	int m_dmg_lvl = 0;
+	int m_armor_lvl = 0;
+	int r_dmg_lvl = 0;
+	int r_armor_lvl = 0;
+	int f_dmg_lvl = 0;
+	int f_armor_lvl = 0;
+
 
 };
 #endif // !

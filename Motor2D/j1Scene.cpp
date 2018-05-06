@@ -24,8 +24,9 @@
 #include "Squad.h"
 #include "j1ActionsController.h"
 #include "UI_WarningMessages.h"
+#include "j1Tutorial.h"
 
-j1Scene::j1Scene() : j1Module() { name = "scene"; }
+j1Scene::j1Scene() : j1Module() { name = "scene"; pausable = false; }
 
 // Destructor
 j1Scene::~j1Scene() {}
@@ -48,8 +49,6 @@ bool j1Scene::Start()
 
 	guiconfig = App->LoadFile(Gui_config_file, "Gui_config.xml");
 	guiconfig = guiconfig.child("scene");
-	
-
 
 	App->render->camera.x = -1200;
 	App->render->camera.y = -1600;
@@ -186,7 +185,8 @@ void j1Scene::Start_game()
 	App->entitycontroller->squad_iterator = App->entitycontroller->squads.begin();*/
 
 	//SATARTING ENTITIES-------------------------------------------------------
-	App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
+	if (!App->tutorial->doingTutorial)
+		App->entitycontroller->addHero(iPoint(2000, 1950), HERO_2);
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	App->entitycontroller->town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, App->entitycontroller->town_hall->size.x, App->entitycontroller->town_hall->size.y, true, false);
@@ -198,13 +198,19 @@ void j1Scene::Start_game()
 	App->entitycontroller->buildingArea.x = town_hall_pos.x - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_width / 2);
 	App->entitycontroller->buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_height / 2);
 
-	App->entitycontroller->AddSquad(FOOTMAN, { 2200, 1950 });
+	//App->entitycontroller->AddSquad(FOOTMAN, { 2200, 1950 });
 
 	//RESTARTING WAVES---------------------------------------------------------
 	App->gui->Chronos->counter.Restart();
 	App->wavecontroller->Restart_Wave_Sys();
 	App->gui->nextWaveWindow->timer->start_value = 0;
 	App->gui->nextWaveWindow->timer->setStartValue(App->wavecontroller->initial_wait);
+	if (App->tutorial->doingTutorial)
+	{
+		App->wavecontroller->wave_timer.PauseTimer();
+		App->gui->nextWaveWindow->active = false;
+		App->gui->nextWaveWindow->timer->counter.PauseTimer();
+	}
 
 	//RESTARTING RESOURCES-----------------------------------------------------
 	wood = INIT_WOOD;

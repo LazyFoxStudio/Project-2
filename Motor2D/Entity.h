@@ -18,7 +18,7 @@ enum Type
 	TOWN_HALL, BARRACKS, LUMBER_MILL, FARM, MINE, TURRET, GNOME_HUT, CHURCH, BLACKSMITH,
 
 	// Heroes
-	HERO_1, /* ... */
+	HERO_1, HERO_2,/* ... */
 
 	// Allies
 	FOOTMAN, ARCHER, KNIGHT, GRYPHON, BALLISTA, FLYING_MACHINE,/* ... */
@@ -55,6 +55,7 @@ public:
 	uint piercing_atk		= 0;
 	uint line_of_sight		= 0;
 	uint range				= 0;
+	bool flying = false;
 
 	j1Timer timer;
 	Cost cost;

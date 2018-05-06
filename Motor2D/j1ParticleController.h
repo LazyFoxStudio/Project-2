@@ -12,10 +12,17 @@ struct SDL_Texture;
 
 enum particleType
 {
-	NO_TYPE,
-	ARROW,
-	TOMAHAWK,
-	YAHMAM_AA,
+	PNO_TYPE,
+	PARROW,
+	PTOMAHAWK,
+	PYAHMAM_AA,
+	PBALLISTA,
+	PFLYINGMACHINE,
+	PDEATHKNIGHT,
+	PDRAGON,
+	PCATAPULT,
+	PJUGGERNAUT
+
 };
 
 struct Particle
@@ -27,6 +34,8 @@ struct Particle
 	j1Timer currentLife;
 	Uint32 life = 0;
 	particleType type;
+	int width = 0;
+	int height = 0;
 
 	Particle();
 	Particle(Particle& p);
@@ -51,8 +60,8 @@ public:
 	
 	double GetAngleInDegrees(Particle* p);
 
-	void AddParticle(particleType type = NO_TYPE, fPoint position = { 0,0 }, bool using_camera = true);
-	void AddProjectile(particleType type = NO_TYPE, fPoint position = { 0,0 }, fPoint objective = { 0,0 },float speed = 0, bool using_camera = true);
+	void AddParticle(particleType type = PNO_TYPE, fPoint position = { 0,0 }, bool using_camera = true);
+	void AddProjectile(particleType type = PNO_TYPE, fPoint position = { 0,0 }, fPoint objective = { 0,0 },float speed = 0, bool using_camera = true);
 	//void DeleteParticle();
 
 private:

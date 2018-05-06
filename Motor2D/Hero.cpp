@@ -9,6 +9,7 @@
 #include "j1Audio.h"
 #include "UI_CooldownsDisplay.h"
 #include "Minimap.h"
+#include "j1Tutorial.h"
 
 Hero::~Hero()
 {
@@ -47,7 +48,8 @@ bool Hero::Update(float dt)
 		skill_one->DrawRange(); 
 		if ((App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_one->Ready()) || skill_one->going)
 		{
-			skill_one->Activate();
+			if (skill_one->Activate() && App->tutorial->doingTutorial)
+				App->tutorial->taskCompleted(KILL_ENEMIES);
 			if(!skill_one->going)
 				App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
 			App->gui->cooldownsDisplay->skillUsed(1);
@@ -58,7 +60,8 @@ bool Hero::Update(float dt)
 		skill_two->DrawRange();
 		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready() || skill_two->going)
 		{
-			skill_two->Activate();
+			if (skill_two->Activate() && App->tutorial->doingTutorial)
+				App->tutorial->taskCompleted(KILL_ENEMIES);
 			if (!skill_two->going)
 				App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
 			App->gui->cooldownsDisplay->skillUsed(2);
@@ -69,7 +72,8 @@ bool Hero::Update(float dt)
 		skill_three->DrawRange();
 		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready() || skill_three->going)
 		{
-			skill_three->Activate();
+			if (skill_three->Activate() && App->tutorial->doingTutorial)
+				App->tutorial->taskCompleted(KILL_ENEMIES);
 			if (!skill_three->going)
 				App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
 			App->gui->cooldownsDisplay->skillUsed(3);

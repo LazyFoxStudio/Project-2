@@ -10,6 +10,7 @@
 #include "UI_WorkersDisplay.h"
 #include "UI_NextWaveWindow.h"
 #include "j1WaveController.h"
+#include "j1Tutorial.h"
 
 bool j1ActionsController::Update(float dt)
 {
@@ -46,8 +47,11 @@ bool j1ActionsController::Update(float dt)
 			break;
 		case BUILD_LUMBER_MILL:
 			if (doingAction)
+			{
 				App->entitycontroller->to_build_type = LUMBER_MILL;
-			
+				if (App->tutorial->doingTutorial)
+					App->tutorial->taskCompleted(PICK_LUMBER_MILL);
+			}
 			break;
 		case BUILD_FARM:
 			if (doingAction)
@@ -85,7 +89,7 @@ bool j1ActionsController::Update(float dt)
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(false, (Building*)*App->entitycontroller->selected_entities.begin());
 			}
-			else
+			else if (App->gui->current_hovering_element != nullptr)
 			{
 				App->entitycontroller->HandleWorkerAssignment(false, ((WorkersDisplay*)App->gui->current_hovering_element->parent)->building);
 			}
@@ -97,7 +101,7 @@ bool j1ActionsController::Update(float dt)
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(true, (Building*)*App->entitycontroller->selected_entities.begin());
 			}
-			else
+			else if (App->gui->current_hovering_element != nullptr)
 			{
 				App->entitycontroller->HandleWorkerAssignment(true, ((WorkersDisplay*)App->gui->current_hovering_element->parent)->building);
 			}
@@ -197,32 +201,63 @@ bool j1ActionsController::Update(float dt)
 			doingAction = false;
 			break;
 		case NEW_GAME:
+			if (App->tutorial->active)
+				App->tutorial->startTutorial();
 			App->scene->active = true;
 			App->entitycontroller->active = true;
 			App->wavecontroller->active = true;
 			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, INGAME_MENU);
 			App->scene->Start_game();
+			doingAction = false;
 			break;
+		case CROSS_MENU:
 		case BACK_MENU:
-			App->uiscene->toggleMenu(false, CREDITS_MENU);
-			App->uiscene->toggleMenu(false, SETTINGS_MENU);
-			App->uiscene->toggleMenu(true, START_MENU);
+			if (App->uiscene->getMenu(CHANGE_HOTKEYS_MENU)->active)
+				App->uiscene->toggleMenu(false, CHANGE_HOTKEYS_MENU);
+			else if (App->uiscene->getMenu(PAUSE_MENU)->active && !App->uiscene->getMenu(SETTINGS_MENU)->active)
+			{
+				App->uiscene->toggleMenu(false, PAUSE_MENU);
+				App->resumeGame();
+			}
+			else
+			{
+				App->uiscene->toggleMenu(false, CREDITS_MENU);
+				App->uiscene->toggleMenu(false, SETTINGS_MENU);
+			}
+			
 			doingAction = false;
 			break;
 		case CREDITS:
-			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, CREDITS_MENU);
 			doingAction = false;
 			break;
 		case SETTINGS:
-			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, SETTINGS_MENU);
 			doingAction = false;
 			break;
 		case EXIT:
 			doingAction = false;
 			return false;
+			break;
+		case CHANGE_HOTKEYS:
+			App->uiscene->toggleMenu(true, CHANGE_HOTKEYS_MENU);
+			doingAction = false;
+			break;
+		case PAUSE:
+			App->uiscene->toggleMenu(true, PAUSE_MENU);
+			App->pauseGame();
+			doingAction = false;
+			break;
+		case START_SCENE:
+			App->resumeGame();
+			App->scene->active = false;
+			App->entitycontroller->active = false;
+			App->wavecontroller->active = false;
+			App->uiscene->toggleMenu(true, START_MENU);
+			App->uiscene->toggleMenu(false, INGAME_MENU);
+			App->uiscene->toggleMenu(false, PAUSE_MENU);
+			doingAction = false;
 			break;
 		}
 		

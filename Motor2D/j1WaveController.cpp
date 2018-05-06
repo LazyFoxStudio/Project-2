@@ -8,6 +8,7 @@
 #include "j1Gui.h"
 #include "Minimap.h"
 #include "UI_NextWaveWindow.h"
+#include "j1Tutorial.h"
 
 #include <time.h>
 
@@ -60,10 +61,16 @@ void j1WaveController::updateFlowField()
 	flow_field_aux = App->pathfinding->RequestFlowField(TownHall_pos);
 }
 
+void j1WaveController::forceNextWave()
+{
+	wave_timer.Start();
+	Generate_Wave();
+}
+
 bool j1WaveController::Update(float dt)
 {	
 	BROFILER_CATEGORY("Waves Update", Profiler::Color::Black);
-	if (current_wave == 0 && wave_timer.ReadSec() > initial_wait && flow_field->stage == COMPLETED)
+	if (current_wave == 0 && wave_timer.ReadSec() > initial_wait && flow_field->stage == COMPLETED && !App->tutorial->doingTutorial)
 	{
 		current_wave += 1;
 		wave_timer.Start();
@@ -140,15 +147,29 @@ int j1WaveController::CalculateWaveScore()
 void j1WaveController::Generate_Next_Wave()
 {
 	srand(time(NULL));
-	int wave_score = CalculateWaveScore();
-	next_wave.clear();
-	
-	for (int i = 0; i < wave_score; i++)
-	{
-		int enemy= rand() % ((difficulty) + 1);    //   (last_enemy_type - first_enemy_type)
-		int position = rand() % spawns.size();
 
-		next_wave.push_back(new NextWave((Type)(GRUNT + enemy), spawns[position]));
+	next_wave.clear();
+
+	LOG("current wave %d", current_wave);
+	
+	if (!tutorial)
+	{
+		int wave_score = CalculateWaveScore();
+
+		for (int i = 0; i < wave_score; i++)
+		{
+			int enemy = rand() % ((difficulty)+1);    //   (last_enemy_type - first_enemy_type)
+			int position = rand() % spawns.size();
+
+			next_wave.push_back(new NextWave((Type)(GRUNT + enemy), spawns[position]));
+		}
+	}
+	else
+	{
+		tutorial = false;
+		int position = rand() % spawns.size();
+		next_wave.push_back(new NextWave((Type)(GRUNT), spawns[position]));
+		current_wave = 0;
 	}
 
 	App->gui->newWave();
