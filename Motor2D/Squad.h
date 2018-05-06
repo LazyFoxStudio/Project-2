@@ -19,6 +19,7 @@ class Squad
 public:
 	std::vector<uint> units_id;
 	std::vector<fPoint> units_offsets;
+	std::list<iPoint> atk_slots;
 	std::deque<Command*> commands;
 	Formation formation = SQUARE;
 	fPoint commander_pos = { 0.0f,0.0f };
@@ -32,7 +33,7 @@ public:
 	~Squad();
 
 	bool isInSquadSight(fPoint position);
-	bool getEnemiesInSight(std::vector<uint>& list_to_fill, int target_squad_UID = -1);
+	bool findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_UID = -1);
 	void getUnits(std::vector<Unit*>& list_to_fill);
 	Unit* getCommander();
 	
@@ -40,6 +41,7 @@ public:
 
 	void calculateOffsets();
 	fPoint getOffset(uint unit_UID);
+	void calculateAttackSlots();
 
 	void Halt();
 	bool Update(float dt);

@@ -69,6 +69,8 @@ void Unit::Draw(float dt)
 
 bool Unit::Update(float dt)
 {
+	if (!squad) return false;
+
 	animationController();
 
 	//take buffs out here
@@ -114,7 +116,7 @@ bool Unit::Update(float dt)
 		commands.front()->Execute(dt);
 		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
-	else if (squad ? squad->commander_pos + squad->getOffset(UID) != mov_target : false) mov_target = squad->commander_pos + squad->getOffset(UID);
+	else if (squad->commander_pos + squad->getOffset(UID) != mov_target) mov_target = squad->commander_pos + squad->getOffset(UID);
 
 	//minimap_
 	if (App->gui->minimap)

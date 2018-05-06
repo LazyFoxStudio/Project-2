@@ -66,14 +66,13 @@ class Attack : public Command
 public:
 
 	iPoint map_p = { 0,0 };
-	int current_target = -1;
+	iPoint current_target = { 0,0 };
 
-	j1Timer timer;
 	std::list<iPoint> path;
-	std::vector<uint>* enemy_ids = nullptr;
+	std::vector<iPoint>* enemy_atk_slots = nullptr;
 
 public:
-	Attack(Unit* unit, std::vector<uint>* enemy_ids) : Command(unit, ATTACK), enemy_ids(enemy_ids) {};
+	Attack(Unit* unit, std::vector<iPoint>* enemy_atk_slots) : Command(unit, ATTACK), enemy_atk_slots(enemy_atk_slots) {};
 
 private:
 	bool OnInit();
@@ -117,18 +116,15 @@ class AttackingMoveToSquad : public MoveToSquad
 	int target_squad_id = -1;
 	bool hold = false;
 	bool enemies_found = false;
-	j1Timer timer;
+	std::vector<iPoint> enemy_atk_slots;
 
 public:
 	AttackingMoveToSquad(Unit* commander, iPoint map_dest, bool hold = false, int target_squad_id = -1) : MoveToSquad(commander, map_dest), hold(hold), target_squad_id(target_squad_id) 
-		{ type = ATTACKING_MOVETO_SQUAD; };
-
-	std::vector<uint> enemy_ids;
+		{ type = ATTACKING_MOVETO_SQUAD;};
 
 private:
 	bool OnUpdate(float dt);
 
-	bool checkSquadTarget();
 };
 
 class PatrolSquad : public Command

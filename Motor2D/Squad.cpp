@@ -48,17 +48,15 @@ bool Squad::Update(float dt)
 
 				if (!units.empty())
 				{
+					calculateAttackSlots();
+
 					bool everyone_in_position = true;
 					for(int i = 0; i < units.size(); i++)
 						if (units[i]->position.DistanceTo(units[i]->mov_target) > SQUAD_UNATTACH_DISTANCE)
 							{ everyone_in_position = false; break; }
 
 					commander_pos = units[0]->position + (everyone_in_position ? squad_movement : squad_movement * MIN_NEXT_STEP_MULTIPLIER);
-					if (squad_movement.GetModule() > 1.0f)
-					{
-						squad_direction = squad_movement.Normalized();
-						calculateOffsets();
-					}
+					squad_direction = squad_movement.Normalized();
 				}
 			}
 		}
@@ -86,7 +84,11 @@ fPoint Squad::getOffset(uint unit_UID)
 	{
 		for (int i = 0; i < units_id.size(); i++)
 		{
-			if (units_id[i] == unit_UID) return units_offsets[i];
+			if (units_id[i] == unit_UID)
+			{
+				float angle = squad_direction.GetAngle();
+				return { units_offsets[i].x * cos(angle) - units_offsets[i].y * sin(angle) , units_offsets[i].y * cos(angle) + units_offsets[i].x * sin(angle) };
+			}
 		}
 	}
 	return { 0,0 };
@@ -99,7 +101,6 @@ void Squad::calculateOffsets()
 
 	int radius = 1;
 	int counter = 1;
-	float angle = squad_direction.GetAngle();
 
 	if (!squad_units.empty())
 	{
@@ -115,8 +116,7 @@ void Squad::calculateOffsets()
 					for (int j = -radius; j <= radius && counter < squad_units.size(); j++)
 						if (std::abs(i) == radius || j == std::abs(radius))
 						{
-							fPoint p = { (i * squad_units[counter]->collider.w) * 1.2f, (j * squad_units[counter]->collider.h) * 1.2f };
-							units_offsets.push_back({ p.x * cos(angle) - p.y * sin(angle) , p.y * cos(angle) + p.x * sin(angle) });
+							units_offsets.push_back({ (i * squad_units[counter]->collider.w) * 1.2f, (j * squad_units[counter]->collider.h) * 1.2f });
 							counter++;
 						}
 				radius++;
@@ -127,15 +127,8 @@ void Squad::calculateOffsets()
 			break;
 		}
 	}
-/*
-	fPoint offset_average = { 0.0f,0.0f};
-	for (int i = 0; i < units_offsets.size(); i++)
-		offset_average += units_offsets[i];
 
-	offset_average = offset_average.Normalized() * (offset_average.GetModule() / (float)units_offsets.size());
-
-	for (int i = 0; i < units_offsets.size(); i++)
-		units_offsets[i] -= offset_average;*/
+	calculateAttackSlots();
 }
 
 bool Squad::isInSquadSight(fPoint position)
@@ -149,32 +142,33 @@ bool Squad::isInSquadSight(fPoint position)
 	return false;
 }
 
-bool Squad::getEnemiesInSight(std::vector<uint>& list_to_fill, int target_squad_UID)
+bool Squad::findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_UID)
 {
 	list_to_fill.clear();
 
-	if (!units_id.empty())
+	if (Unit* commander = getCommander())
 	{
-		if (Unit* commander = getCommander())
+		bool isEnemy = commander->IsEnemy();
+
+		for (std::list<Squad*>::iterator it = App->entitycontroller->squads.begin(); it != App->entitycontroller->squads.end(); it++)
 		{
-			bool isEnemy = commander->IsEnemy();
-
-			for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+			if ((*it)->UID != target_squad_UID)
 			{
-				if ((*it)->isActive && isEnemy != (*it)->IsEnemy() && (*it)->ex_state != DESTROYED)
-					if (isInSquadSight((*it)->position))
-					{
-						if ((*it)->IsUnit())
-						{
-							if (target_squad_UID != -1 ? target_squad_UID != ((Unit*)*it)->squad->UID : false)
-								continue;
-						}
+				Unit* enemy_commander = (*it)->getCommander();
 
-						list_to_fill.push_back((*it)->UID);
+				if (enemy_commander ? enemy_commander->IsEnemy() != isEnemy : false)
+				{
+					for (std::list<iPoint>::iterator it2 = (*it)->atk_slots.begin(); it2 != (*it)->atk_slots.end(); it2++)
+					{
+						iPoint world_p = App->map->MapToWorld((*it2).x, (*it2).y);
+						if (isInSquadSight({ (float)world_p.x, (float)world_p.y }))
+							list_to_fill.push_back(world_p);
 					}
+				}
 			}
 		}
 	}
+
 	return !list_to_fill.empty();
 }
 
@@ -224,6 +218,38 @@ Unit* Squad::getCommander()
 		removeUnit(to_erase[j]);
 
 	return ret;
+}
+
+bool ComparePoints(iPoint p1, iPoint p2)
+{ return (p1 == p2); }
+
+void Squad::calculateAttackSlots()
+{
+	atk_slots.clear();
+	std::vector<Unit*> squad_units;
+	std::vector<iPoint> units_map_p;
+	getUnits(squad_units);
+
+	for (int i = 0; i < squad_units.size(); i++)
+	{
+		if (squad_units[i]->isActive == false || squad_units[i]->ex_state == DESTROYED) 
+			continue;
+
+		iPoint map_p = App->map->WorldToMap(squad_units[i]->position.x, squad_units[i]->position.y);
+		atk_slots.push_back({map_p.x + 1, map_p.y});
+		atk_slots.push_back({map_p.x - 1, map_p.y});
+		atk_slots.push_back({map_p.x, map_p.y + 1});
+		atk_slots.push_back({map_p.x, map_p.y - 1});
+		units_map_p.push_back(map_p);
+	}
+
+	atk_slots.unique(ComparePoints);
+
+	for (std::list<iPoint>::iterator it = atk_slots.begin(); it != atk_slots.end(); it++)
+	{
+		for (int i = 0; i < units_map_p.size(); i++)
+			if (units_map_p[i] == *it) { atk_slots.erase(it); it--; break; }
+	}
 }
 
 void Squad::Destroy()
