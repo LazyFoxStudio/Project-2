@@ -1220,11 +1220,17 @@ void j1EntityController::UpgradeUnits(UpgradeType type)
 	}
 }
 
-Entity* j1EntityController::getNearestEnemy(Entity* entity)
+Entity* j1EntityController::getNearestEnemy(Entity* entity, int target_squad)
 {
 	Entity* ret = nullptr;
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
+		if (target_squad != -1)
+		{
+			if (!(*it)->IsUnit()) continue;
+			else if (((Unit*)(*it))->squad->UID != target_squad) continue;
+		}
+
 		if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED)
 		{
 			if (!ret) ret = *it;

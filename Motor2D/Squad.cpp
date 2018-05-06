@@ -157,7 +157,7 @@ bool Squad::findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_
 
 		for (std::list<Squad*>::iterator it = App->entitycontroller->squads.begin(); it != App->entitycontroller->squads.end(); it++)
 		{
-			if ((*it)->UID != target_squad_UID)
+			if (target_squad_UID != -1 ? target_squad_UID == (*it)->UID : true)
 			{
 				Unit* enemy_commander = (*it)->getCommander();
 
@@ -169,6 +169,18 @@ bool Squad::findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_
 						if (isInSquadSight({ (float)world_p.x, (float)world_p.y }))
 							list_to_fill.push_back(world_p);
 					}
+				}
+			}
+		}
+
+		if (isEnemy)
+		{
+			for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+			{
+				if ((*it)->IsBuilding())
+				{
+					if (isInSquadSight((*it)->position))
+						list_to_fill.push_back({ (int)(*it)->position.x, (int)(*it)->position.x });
 				}
 			}
 		}
