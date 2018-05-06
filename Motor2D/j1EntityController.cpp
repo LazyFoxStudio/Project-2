@@ -1039,6 +1039,188 @@ void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entit
 
 }
 
+
+bool j1EntityController::ChechUpgradeCost(UpgradeType type) const
+{
+	bool ret = false;
+	switch (type)
+	{
+	case MELEE_ATTACK_UPGRADE:
+		if (m_dmg_lvl == 0 && App->scene->wood >= MELEE_1_UPGRADE_COST && App->scene->gold >= MELEE_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (m_dmg_lvl == 1 && App->scene->wood >= MELEE_2_UPGRADE_COST && App->scene->gold >= MELEE_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case MELEE_DEFENSE_UPGRADE:
+		if (m_armor_lvl == 0 && App->scene->wood >= MELEE_1_UPGRADE_COST && App->scene->gold >= MELEE_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (m_armor_lvl == 1 && App->scene->wood >= MELEE_2_UPGRADE_COST && App->scene->gold >= MELEE_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case RANGED_ATTACK_UPGRADE:
+		if (r_dmg_lvl == 0 && App->scene->wood >= RANGED_1_UPGRADE_COST && App->scene->gold >= RANGED_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (r_dmg_lvl == 1 && App->scene->wood >= RANGED_2_UPGRADE_COST && App->scene->gold >= RANGED_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case RANGED_DEFENSE_UPGRADE:
+		if (r_armor_lvl == 0 && App->scene->wood >= RANGED_1_UPGRADE_COST && App->scene->gold >= RANGED_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (r_armor_lvl == 1 && App->scene->wood >= RANGED_2_UPGRADE_COST && App->scene->gold >= RANGED_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case FLYING_ATTACK_UPGRADE:
+		if (f_dmg_lvl == 0 && App->scene->wood >= FLYING_1_UPGRADE_COST && App->scene->gold >= FLYING_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (f_dmg_lvl == 1 && App->scene->wood >= FLYING_2_UPGRADE_COST && App->scene->gold >= FLYING_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case FLYING_DEFENSE_UPGRADE:
+		if (f_armor_lvl == 0 && App->scene->wood >= FLYING_1_UPGRADE_COST && App->scene->gold >= FLYING_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (f_armor_lvl == 1 && App->scene->wood >= FLYING_2_UPGRADE_COST && App->scene->gold >= FLYING_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	default:
+		break;
+	}
+	return ret;
+}
+
+void j1EntityController::SpendUpgradeResources(UpgradeType type)
+{
+	switch (type)
+	{
+	case MELEE_ATTACK_UPGRADE:
+		if (m_dmg_lvl == 0)
+		{
+			App->scene->wood -= MELEE_1_UPGRADE_COST;
+			App->scene->gold -= MELEE_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= MELEE_2_UPGRADE_COST;
+			App->scene->gold -= MELEE_2_UPGRADE_COST;
+		}
+		break;
+	case MELEE_DEFENSE_UPGRADE:
+		if (m_armor_lvl == 0)
+		{
+			App->scene->wood -= MELEE_1_UPGRADE_COST;
+			App->scene->gold -= MELEE_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= MELEE_2_UPGRADE_COST;
+			App->scene->gold -= MELEE_2_UPGRADE_COST;
+		}
+		break;
+	case RANGED_ATTACK_UPGRADE:
+		if (r_dmg_lvl == 0)
+		{
+			App->scene->wood -= RANGED_1_UPGRADE_COST;
+			App->scene->gold -= RANGED_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= RANGED_2_UPGRADE_COST;
+			App->scene->gold -= RANGED_2_UPGRADE_COST;
+		}
+		break;
+	case RANGED_DEFENSE_UPGRADE:
+		if (r_armor_lvl == 0)
+		{
+			App->scene->wood -= RANGED_1_UPGRADE_COST;
+			App->scene->gold -= RANGED_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= RANGED_2_UPGRADE_COST;
+			App->scene->gold -= RANGED_2_UPGRADE_COST;
+		}
+		break;
+	case FLYING_ATTACK_UPGRADE:
+		if (f_dmg_lvl == 0)
+		{
+			App->scene->wood -= FLYING_1_UPGRADE_COST;
+			App->scene->gold -= FLYING_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= FLYING_2_UPGRADE_COST;
+			App->scene->gold -= FLYING_2_UPGRADE_COST;
+		}
+		break;
+	case FLYING_DEFENSE_UPGRADE:
+		if (f_armor_lvl == 0)
+		{
+			App->scene->wood -= FLYING_1_UPGRADE_COST;
+			App->scene->gold -= FLYING_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= FLYING_2_UPGRADE_COST;
+			App->scene->gold -= FLYING_2_UPGRADE_COST;
+		}
+		break;
+	}
+}
+
+void j1EntityController::UpgradeUnits(UpgradeType type)
+{
+	switch (type)
+	{
+	case MELEE_ATTACK_UPGRADE:
+		DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		break;
+	case MELEE_DEFENSE_UPGRADE:
+		DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[KNIGHT]->defense += DEFENSE_UPGRADE_GROWTH;
+		break;
+	case RANGED_ATTACK_UPGRADE:
+		DataBase[ARCHER]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[BALLISTA]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		break;
+	case RANGED_DEFENSE_UPGRADE:
+		DataBase[ARCHER]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[BALLISTA]->defense += DEFENSE_UPGRADE_GROWTH;
+		break;
+	case FLYING_ATTACK_UPGRADE:
+		DataBase[FLYING_MACHINE]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[GRYPHON]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		break;
+	case FLYING_DEFENSE_UPGRADE:
+		DataBase[FLYING_MACHINE]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[GRYPHON]->defense += DEFENSE_UPGRADE_GROWTH;
+		break;
+	}
+}
+
 Entity* j1EntityController::getNearestEnemy(Entity* entity)
 {
 	Entity* ret = nullptr;
@@ -1056,6 +1238,7 @@ Entity* j1EntityController::getNearestEnemy(Entity* entity)
 	}
 
 	return ret;
+
 }
 
 void j1EntityController::TownHallLevelUp()

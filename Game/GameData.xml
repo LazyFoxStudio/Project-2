@@ -2458,7 +2458,7 @@
                 <defense value="0"/>
                 <piercingDamage value="4"/>
                 <movementSpeed value="1.05"/>
-                <range value="160"/>
+                <range value="40"/>
                 <lineOfSight value="250"/>
                 <squadMembers value="4"/>
                 <size x="1" y="1"/>
@@ -3462,8 +3462,7 @@
       <iconData x="9" y="264" w="72" h="59"/>
       <size x="4" y="4"/>
     </Building>
-  
-     <Building>
+    <Building>
       <name value="Barracks"/>
       <type value="2"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
@@ -3497,8 +3496,7 @@
       <iconData x="162" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
     </Building>
-    
-     <Building>
+    <Building>
       <name value="Lumber Mill"/>
       <type value="3"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
@@ -3535,7 +3533,6 @@
       <size x="3" y="3"/>
       <additionalSize x="11" y="11"/>
     </Building>
-    
     <Building>
       <name value="Farm"/>
       <type value="4"/>
@@ -3574,8 +3571,7 @@
       <iconData x="621" y="200" w="72" h="59"/>
       <size x="2" y="2"/>
     </Building>
-    
-      <Building>
+    <Building>
       <name value="Mine"/>
       <type value="5"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
@@ -3603,7 +3599,6 @@
       <iconData x="315" y="455" w="72" h="59"/>
       <size x="3" y="3"/>
     </Building>
-    
     <Building>
       <name value="Turret"/>
       <type value="6"/>
@@ -3632,9 +3627,7 @@
       <iconData x="9" y="391" w="72" h="59"/>
       <size x="2" y="2"/>
     </Building>
-    
-    
-       <Building>
+    <Building>
       <name value="Gnome Hut"/>
       <type value="7"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
@@ -3663,8 +3656,7 @@
       <iconData x="621" y="328" w="71" h="59"/>
       <size x="3" y="3"/>
     </Building>
-    
-       <Building>
+    <Building>
       <name value="Church"/>
       <type value="8"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
@@ -3693,13 +3685,20 @@
       <iconData x="162" y="391" w="72" h="59"/>
       <size x="3" y="3"/> 
     </Building>
-    
-       <Building>
+    <Building>
       <name value="Blacksmith"/>
       <type value="9"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <Actions>
-
+        <action id="27"/>
+        <action id ="10"/>
+        <action id="28"/>
+        <action id="29"/>
+        <action id ="10"/>
+        <action id="30"/>
+        <action id="31"/>
+        <action id ="10"/>
+        <action id="32"/>
       </Actions>
       <sprites>
         <sprite x="0" y="413" w="101" h="109"/>
@@ -3722,10 +3721,6 @@
       <iconData x="468" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
     </Building>
-    
-    
-    
-   
   </Buildings>
   <Nature>
     <Resource>
@@ -4010,7 +4005,6 @@
       </popUp>
       <hotkey key="Q" font_id="3"/>
     </meleeAttackUpgrade>
-
     <meleeArmorUpgrade  id="28" click_action="25">
       <position x="0" y="0"/>
       <standby x="1305" y="939" w="66" h="66"/>
@@ -4021,7 +4015,6 @@
       </popUp>
       <hotkey key="E" font_id="3"/>
     </meleeArmorUpgrade>
-
     <rangedAttackUpgrade  id="29" click_action="26">
       <position x="0" y="0"/>
       <standby x="1305" y="939" w="66" h="66"/>
@@ -4032,7 +4025,6 @@
       </popUp>
       <hotkey key="A" font_id="3"/>
     </rangedAttackUpgrade>
-
     <rangedArmorUpgrade  id="30" click_action="27">
       <position x="0" y="0"/>
       <standby x="1305" y="939" w="66" h="66"/>
@@ -4043,7 +4035,6 @@
       </popUp>
       <hotkey key="D" font_id="3"/>
     </rangedArmorUpgrade>
-
     <flyingAttackUpgrade  id="31" click_action="28">
       <position x="0" y="0"/>
       <standby x="1305" y="939" w="66" h="66"/>
@@ -4054,7 +4045,6 @@
       </popUp>
       <hotkey key="Z" font_id="3"/>
     </flyingAttackUpgrade>
-
     <flyingArmorUpgrade  id="32" click_action="29">
       <position x="0" y="0"/>
       <standby x="1305" y="939" w="66" h="66"/>

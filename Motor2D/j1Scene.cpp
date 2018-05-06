@@ -259,6 +259,13 @@ void j1Scene::Start_game()
 
 	App->gui->newSelectionDone();
 	App->uiscene->toggleMenu(false, GAMEOVER_MENU);
+
+	pugi::xml_document doc;
+	pugi::xml_node gameData;
+
+	gameData = App->LoadFile(doc, "GameData.xml");
+	loadGameDB(gameData);
+
 	toRestart = false;
 
 }
