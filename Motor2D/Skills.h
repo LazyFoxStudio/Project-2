@@ -14,7 +14,8 @@ enum rangeType
 {
 	NONE_RANGE,
 	AREA,
-	LINE
+	LINE,
+	PLACE
 };
 
 class Skill

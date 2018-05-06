@@ -27,7 +27,7 @@ void Skill::DrawRange()
 	App->input->GetMousePosition(mouse_pos.x, mouse_pos.y);
 	cast_pos = App->render->ScreenToWorld(mouse_pos.x, mouse_pos.y);
 	
-	if (type == AREA || type == NONE_RANGE)
+	if (type == AREA || type == NONE_RANGE || type==PLACE)
 	{
 		BFS();
 		
@@ -62,8 +62,18 @@ void Skill::BFS()
 	{
 		for (int j = 0; j < App->map->data.width; j++)
 		{
+			iPoint world_tile_cast;
 			iPoint world_tile = { i,j } /*= App->map->MapToWorld(i, j)*/;
-			iPoint world_tile_cast = App->map->WorldToMap(cast_pos.x, cast_pos.y);
+			
+			if (type == PLACE)
+			{
+				world_tile_cast = App->map->WorldToMap((int)hero->position.x, (int)hero->position.y);
+			}
+			else 
+			{
+				world_tile_cast = App->map->WorldToMap(cast_pos.x, cast_pos.y);
+			}
+
 			if (world_tile.DistanceTo(world_tile_cast) < radius && App->pathfinding->IsWalkable(iPoint(i, j)))
 			{
 				toDraw.push_back(App->map->MapToWorld(world_tile.x,world_tile.y));
@@ -108,8 +118,13 @@ bool Skill::Activate()
 		{
 			if ((*item)->IsEnemy())
 			{
-				if (type == AREA || type == NONE_RANGE)
+				if (type == AREA || type == NONE_RANGE || type == PLACE)
 				{
+					if (type == PLACE)
+					{
+						cast_aux = App->map->WorldToMap((int)hero->position.x, (int)hero->position.y);
+					}
+
 					iPoint pos = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
 
 					if (cast_aux.DistanceTo(pos) < radius)
@@ -139,7 +154,7 @@ bool Skill::Activate()
 		}
 		timer.Start();
 	}
-	
+
 	//HARDCODED Moveto()
 	else if (going && last_cast.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range)
 	{
@@ -152,6 +167,10 @@ bool Skill::Activate()
 			{
 				if (type == AREA || type == NONE_RANGE)
 				{
+					if (type == PLACE)
+					{
+						cast_aux = App->map->WorldToMap((int)hero->position.x, (int)hero->position.y);
+					}
 					iPoint pos = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
 
 					if (cast_aux.DistanceTo(pos) < radius)
@@ -183,7 +202,7 @@ bool Skill::Activate()
 		timer.Start();
 	}
 
-	else if(cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) > range && !going)
+	else if (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) > range && !going)
 	{
 		//go to that position if it's walkbale
 		last_cast = cast_pos;
@@ -198,6 +217,7 @@ bool Skill::Activate()
 		hero->squad->commands.push_back(new_order);
 		LOG("Out of range");
 	}
+	
 
 	return ret;
 }
