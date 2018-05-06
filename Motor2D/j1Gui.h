@@ -35,6 +35,7 @@ class CooldownsDisplay;
 class TroopCreationQueue;
 class FarmWorkersManager;
 class Minimap;
+class Slider;
 
 enum event_type
 {
@@ -103,6 +104,8 @@ public:
 	NextWaveWindow* createNextWaveWindow(pugi::xml_node node, j1Module* callback = nullptr);
 	WorkersDisplay* createWorkersDisplay(Building* building);
 	TroopCreationQueue* createTroopCreationQueue(Building* building);
+	Slider* j1Gui::createSlider(int x, int y, SDL_Rect empty, SDL_Rect full, Button* button, float default_progress, j1Module * callback);
+
 
 	//minimap_
 	void createMinimap(pugi::xml_node node, j1Module* callback = nullptr);

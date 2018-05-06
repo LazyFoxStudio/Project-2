@@ -65,17 +65,6 @@ Building::~Building()
 
 bool Building::Update(float dt)
 {
-	if (isSelected)
-	{
-		if (queueDisplay != nullptr)
-			queueDisplay->active = true;
-	}
-	else
-	{
-		if (queueDisplay != nullptr)
-			queueDisplay->active = false;
-	}
-
 	//minimap_
 	if (App->gui->minimap)
 	{

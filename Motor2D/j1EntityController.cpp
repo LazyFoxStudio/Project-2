@@ -43,7 +43,7 @@ bool j1EntityController::Start()
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
 	App->scene->InitialWorkers(town_hall);*/
 
-	AddSquad(FOOTMAN, fPoint(2200, 1950));
+	//AddSquad(FOOTMAN, fPoint(2200, 1950));
 
 /*
 	entity_iterator = entities.begin();
@@ -58,7 +58,7 @@ bool CompareSquad(Squad* s1, Squad* s2)
 
 bool j1EntityController::Update(float dt)
 {
-	BROFILER_CATEGORY("Entites update", Profiler::Color::Maroon);
+	BROFILER_CATEGORY("Entites update", Profiler::Color::Bisque);
 
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 	Hero* hero = (Hero*)getEntitybyID(hero_UID);
@@ -85,6 +85,8 @@ bool j1EntityController::Update(float dt)
 	if (App->isPaused())
 		return true;
 
+
+	BROFILER_CATEGORY("Squad update", Profiler::Color::BurlyWood);
 	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end() && !App->scene->toRestart; it++)
 	{
 		if (!(*it)->Update(dt)) squads_to_destroy.push_back((*it)->UID);
@@ -118,6 +120,8 @@ bool j1EntityController::Update(float dt)
 
 		}
 	}*/
+
+	BROFILER_CATEGORY("Entity controller update", Profiler::Color::Maroon);
 
 	if (to_build_type != NONE_ENTITY)
 		buildingCalculations();
@@ -249,6 +253,15 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 		App->render->DrawQuad(r, White, false);
 		App->render->DrawCircle(unit->position.x, unit->position.y, unit->line_of_sight, Blue);
 		App->render->DrawCircle(unit->mov_target.x, unit->mov_target.y, 5, Red);
+
+		if (unit->squad ? !unit->squad->atk_slots.empty() : false)
+		{
+			for (std::list<iPoint>::iterator it = unit->squad->atk_slots.begin(); it != unit->squad->atk_slots.end(); it++)
+			{
+				iPoint world_p = App->map->MapToWorld((*it).x, (*it).y);
+				App->render->DrawCircle(world_p.x, world_p.y, 5, Blue);
+			}
+		}
 	}
 }
 
@@ -620,8 +633,8 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	}
 	if (type == HERO_2)
 	{
-		hero->skill_one = new Skill(hero, 3, 50, 300, 10, PLACE);		//Icicle Crash
-		hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
+		hero->skill_one = new Skill(hero, 3, 50, 3000000, 10, PLACE);		//Icicle Crash
+		hero->skill_two = new Skill(hero, 3, 50, 700, 2, HEAL);	//Overflow
 		hero->skill_three = new Skill(hero, 0, 200, 250, 2, LINE);		//Dragon Breath
 	}
 
@@ -1023,6 +1036,208 @@ void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entit
 		if (QT_entities[i] != entity_to_ignore && QT_entities[i]->ex_state !=  DESTROYED && QT_entities[i]->isActive)
 			if (SDL_HasIntersection(&collider, &QT_entities[i]->collider)) list_to_fill.push_back(QT_entities[i]);
 	}
+
+}
+
+
+bool j1EntityController::ChechUpgradeCost(UpgradeType type) const
+{
+	bool ret = false;
+	switch (type)
+	{
+	case MELEE_ATTACK_UPGRADE:
+		if (m_dmg_lvl == 0 && App->scene->wood >= MELEE_1_UPGRADE_COST && App->scene->gold >= MELEE_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (m_dmg_lvl == 1 && App->scene->wood >= MELEE_2_UPGRADE_COST && App->scene->gold >= MELEE_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case MELEE_DEFENSE_UPGRADE:
+		if (m_armor_lvl == 0 && App->scene->wood >= MELEE_1_UPGRADE_COST && App->scene->gold >= MELEE_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (m_armor_lvl == 1 && App->scene->wood >= MELEE_2_UPGRADE_COST && App->scene->gold >= MELEE_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case RANGED_ATTACK_UPGRADE:
+		if (r_dmg_lvl == 0 && App->scene->wood >= RANGED_1_UPGRADE_COST && App->scene->gold >= RANGED_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (r_dmg_lvl == 1 && App->scene->wood >= RANGED_2_UPGRADE_COST && App->scene->gold >= RANGED_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case RANGED_DEFENSE_UPGRADE:
+		if (r_armor_lvl == 0 && App->scene->wood >= RANGED_1_UPGRADE_COST && App->scene->gold >= RANGED_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (r_armor_lvl == 1 && App->scene->wood >= RANGED_2_UPGRADE_COST && App->scene->gold >= RANGED_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case FLYING_ATTACK_UPGRADE:
+		if (f_dmg_lvl == 0 && App->scene->wood >= FLYING_1_UPGRADE_COST && App->scene->gold >= FLYING_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (f_dmg_lvl == 1 && App->scene->wood >= FLYING_2_UPGRADE_COST && App->scene->gold >= FLYING_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case FLYING_DEFENSE_UPGRADE:
+		if (f_armor_lvl == 0 && App->scene->wood >= FLYING_1_UPGRADE_COST && App->scene->gold >= FLYING_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (f_armor_lvl == 1 && App->scene->wood >= FLYING_2_UPGRADE_COST && App->scene->gold >= FLYING_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	default:
+		break;
+	}
+	return ret;
+}
+
+void j1EntityController::SpendUpgradeResources(UpgradeType type)
+{
+	switch (type)
+	{
+	case MELEE_ATTACK_UPGRADE:
+		if (m_dmg_lvl == 0)
+		{
+			App->scene->wood -= MELEE_1_UPGRADE_COST;
+			App->scene->gold -= MELEE_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= MELEE_2_UPGRADE_COST;
+			App->scene->gold -= MELEE_2_UPGRADE_COST;
+		}
+		break;
+	case MELEE_DEFENSE_UPGRADE:
+		if (m_armor_lvl == 0)
+		{
+			App->scene->wood -= MELEE_1_UPGRADE_COST;
+			App->scene->gold -= MELEE_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= MELEE_2_UPGRADE_COST;
+			App->scene->gold -= MELEE_2_UPGRADE_COST;
+		}
+		break;
+	case RANGED_ATTACK_UPGRADE:
+		if (r_dmg_lvl == 0)
+		{
+			App->scene->wood -= RANGED_1_UPGRADE_COST;
+			App->scene->gold -= RANGED_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= RANGED_2_UPGRADE_COST;
+			App->scene->gold -= RANGED_2_UPGRADE_COST;
+		}
+		break;
+	case RANGED_DEFENSE_UPGRADE:
+		if (r_armor_lvl == 0)
+		{
+			App->scene->wood -= RANGED_1_UPGRADE_COST;
+			App->scene->gold -= RANGED_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= RANGED_2_UPGRADE_COST;
+			App->scene->gold -= RANGED_2_UPGRADE_COST;
+		}
+		break;
+	case FLYING_ATTACK_UPGRADE:
+		if (f_dmg_lvl == 0)
+		{
+			App->scene->wood -= FLYING_1_UPGRADE_COST;
+			App->scene->gold -= FLYING_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= FLYING_2_UPGRADE_COST;
+			App->scene->gold -= FLYING_2_UPGRADE_COST;
+		}
+		break;
+	case FLYING_DEFENSE_UPGRADE:
+		if (f_armor_lvl == 0)
+		{
+			App->scene->wood -= FLYING_1_UPGRADE_COST;
+			App->scene->gold -= FLYING_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= FLYING_2_UPGRADE_COST;
+			App->scene->gold -= FLYING_2_UPGRADE_COST;
+		}
+		break;
+	}
+}
+
+void j1EntityController::UpgradeUnits(UpgradeType type)
+{
+	switch (type)
+	{
+	case MELEE_ATTACK_UPGRADE:
+		DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		break;
+	case MELEE_DEFENSE_UPGRADE:
+		DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[KNIGHT]->defense += DEFENSE_UPGRADE_GROWTH;
+		break;
+	case RANGED_ATTACK_UPGRADE:
+		DataBase[ARCHER]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[BALLISTA]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		break;
+	case RANGED_DEFENSE_UPGRADE:
+		DataBase[ARCHER]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[BALLISTA]->defense += DEFENSE_UPGRADE_GROWTH;
+		break;
+	case FLYING_ATTACK_UPGRADE:
+		DataBase[FLYING_MACHINE]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[GRYPHON]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		break;
+	case FLYING_DEFENSE_UPGRADE:
+		DataBase[FLYING_MACHINE]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[GRYPHON]->defense += DEFENSE_UPGRADE_GROWTH;
+		break;
+	}
+}
+
+Entity* j1EntityController::getNearestEnemy(Entity* entity)
+{
+	Entity* ret = nullptr;
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED)
+		{
+			if (!ret) ret = *it;
+			else
+			{
+				if ((*it)->position.DistanceTo(entity->position) < ret->position.DistanceTo(entity->position))
+					ret = *it;
+			}
+		}
+	}
+
+	return ret;
 
 }
 

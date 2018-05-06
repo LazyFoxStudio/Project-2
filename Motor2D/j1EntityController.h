@@ -23,7 +23,32 @@ class Quadtree;
 #define REPAIR_COOLDOWN 30
 #define UNIT_QUEUE_MAX_SIZE 6
 #define BUILDINGAREA 1750
+#define MATCHUP_MODIFIER 1.2
 
+ 
+//------------Upgrades section----------
+#define ATTACK_UPGRADE_GROWTH 2
+#define DEFENSE_UPGRADE_GROWTH 2
+
+#define MELEE_1_UPGRADE_COST 400
+#define MELEE_2_UPGRADE_COST 800
+
+#define RANGED_1_UPGRADE_COST 500
+#define RANGED_2_UPGRADE_COST 1000
+
+#define FLYING_1_UPGRADE_COST 600
+#define FLYING_2_UPGRADE_COST 1200
+
+enum UpgradeType
+{
+	NO_TYPE,
+	MELEE_ATTACK_UPGRADE,
+	MELEE_DEFENSE_UPGRADE,
+	RANGED_ATTACK_UPGRADE,
+	RANGED_DEFENSE_UPGRADE,
+	FLYING_ATTACK_UPGRADE,
+	FLYING_DEFENSE_UPGRADE
+};
 struct worker
 {
 	Building* farm = nullptr;
@@ -97,7 +122,11 @@ public:
 
 	Entity* CheckMouseHover(iPoint mouse_world);
 	void CheckCollidingWith(SDL_Rect collider, std::vector<Entity*>& list_to_fill, Entity* entity_to_ignore = nullptr);
+	Entity* getNearestEnemy(Entity* entity);
 
+	bool ChechUpgradeCost(UpgradeType type) const;
+	void SpendUpgradeResources(UpgradeType type);
+	void UpgradeUnits(UpgradeType type);
 	//------Worker Related Functions--------
 	void SubstractRandomWorkers(int num);
 	void DeleteWorkers();
@@ -141,6 +170,14 @@ public:
 	Type to_build_type = NONE_ENTITY;
 	SDL_Rect selection_rect = { 0,0,0,0 };
 	SDL_Rect buildingArea;
+
+	int m_dmg_lvl = 0;
+	int m_armor_lvl = 0;
+	int r_dmg_lvl = 0;
+	int r_armor_lvl = 0;
+	int f_dmg_lvl = 0;
+	int f_armor_lvl = 0;
+
 
 };
 #endif // !

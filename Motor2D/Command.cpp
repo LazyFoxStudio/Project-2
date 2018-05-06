@@ -8,6 +8,7 @@
 #include "j1Map.h"
 #include "j1Window.h"
 #include "j1Audio.h"
+#include "j1Render.h"
 #include "j1Scene.h"
 // BASE CLASSES: =========================
 
@@ -56,7 +57,7 @@ bool MoveTo::OnUpdate(float dt)
 		fPoint desired_place = getDesiredPlace();
 		map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
-		if (!desired_place.IsZero() && desired_place.DistanceTo(unit->position) < SQUAD_UNATTACH_DISTANCE && (unit->squad ? unit->squad->units_id.size() > 1 : false))
+		if (!desired_place.IsZero() && desired_place.DistanceTo(unit->position) < SQUAD_UNATTACH_DISTANCE && unit->squad->units_id.size() > 1)
 		{
 			unit->mov_target = desired_place;
 			if (unit->squad->squad_movement.IsZero() && unit->mov_target.DistanceTo(unit->position) < PROXIMITY_FACTOR_PIXELS)
@@ -95,7 +96,7 @@ bool MoveTo::OnStop()
 
 bool Attack::OnInit()
 {
-	if (enemy_ids->empty()) Stop();
+	if (enemy_atk_slots->empty() || !unit->squad) Stop();
 
 	return true;
 }
@@ -104,44 +105,43 @@ bool Attack::OnUpdate(float dt)
 {
 	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 
-	if (current_target == -1)
-	{
-		if (!searchTarget()) Stop();
-		return true;
-	}
+	bool enemy_moved = true;
+	for(int i = 0; i < enemy_atk_slots->size(); i++)
+		if (current_target == enemy_atk_slots->at(i)){ enemy_moved = false; break; }
+
+	if (current_target.IsZero() || enemy_moved)
+		if (!searchTarget()) 
+			Stop();
 	
-	Entity* enemy = App->entitycontroller->getEntitybyID(current_target);
-
-	if (!enemy)												   { Stop(); return true; }
-	else if (enemy->ex_state == DESTROYED || !enemy->isActive) { current_target = -1; return true; }
-
-	SDL_Rect r = { unit->position.x - unit->range, unit->position.y - unit->range, unit->range * 2, unit->range * 2};
-
-	if(SDL_HasIntersection(&r, &enemy->collider) && enemy->isActive)
+	if (Entity* enemy = App->entitycontroller->getNearestEnemy(unit))
 	{
-		if (type == ATTACKING_MOVETO) 
-			{ type = ATTACK; timer.Start(); }
-		else if (unit->current_anim->justFinished())
-		{ 
-			if (unit->position.x > App->win->width || unit->position.x < 0 || unit->position.y >  App->win->height || unit->position.y < 0)
-				App->entitycontroller->HandleAttackSFX(unit->type, 30);
+		SDL_Rect r = { unit->position.x - unit->range, unit->position.y - unit->range, unit->range * 2, unit->range * 2 };
 
-			App->entitycontroller->HandleParticles(unit->type, unit->position, { enemy->position.x + (enemy->collider.w / 2), enemy->position.y + (enemy->collider.h / 2) });
+		if (SDL_HasIntersection(&r, &enemy->collider) && enemy->isActive)
+		{
+			if (type == ATTACKING_MOVETO)
+				type = ATTACK; 
+			else if (unit->current_anim->justFinished())
+			{
+				if(App->render->CullingCam(unit->position))
+					App->entitycontroller->HandleAttackSFX(unit->type, 30);
 
-			enemy->current_HP -= MAX((RANDOM_FACTOR * (unit->piercing_atk + ((((int)unit->attack - (int)enemy->defense) <= 0) ? 0 : unit->attack - enemy->defense))), 1); //dmg
+				App->entitycontroller->HandleParticles(unit->type, unit->position, { enemy->position.x + (enemy->collider.w / 2), enemy->position.y + (enemy->collider.h / 2) });
+				enemy->current_HP -= dealDamage(unit, enemy); //dmg
 
-			if (enemy->current_HP < 0) enemy->Destroy();
-			else					   callRetaliation(enemy);
+				if (enemy->current_HP < 0) enemy->Destroy();
+				else					   callRetaliation(enemy);
+			}
 
-			timer.Start();
+			unit->lookAt(enemy->position - unit->position);
+			unit->mov_module = 0;
+			return true;
 		}
-
-		unit->lookAt(enemy->position - unit->position);
-		unit->mov_module = 0;
-		return true;
+		else
+			moveToTarget();
 	}
-	else
-		moveToTarget();
+	else Stop();
+
 
 	type = ATTACKING_MOVETO;
 	return true;
@@ -218,9 +218,9 @@ bool MoveToSquad::OnStop()
 
 bool AttackingMoveToSquad::OnUpdate(float dt)
 {
-	squad->getEnemiesInSight(enemy_ids, target_squad_id);
+	squad->findAttackSlots(enemy_atk_slots, target_squad_id);
 
-	if (!enemy_ids.empty())
+	if (!enemy_atk_slots.empty())
 	{
 		if (target_squad_id != -1) target_squad_id = -1;
 		enemies_found = true;
@@ -231,13 +231,13 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 		for (int i = 0; i < units.size(); i++)
 		{
 			if (units[i]->commands.empty() ? true : (units[i]->getCurrentCommand() != ATTACK && units[i]->getCurrentCommand() != ATTACKING_MOVETO))
-				units[i]->commands.push_front(new Attack(units[i], &enemy_ids));
+				units[i]->commands.push_front(new Attack(units[i], &enemy_atk_slots));
 		}
 
 	}
 	else
 	{
-		if (!enemies_found || unit->IsEnemy())
+		if (!enemies_found || (unit->IsEnemy() || hold))
 		{
 			if (Unit* commander = squad->getCommander())
 			{
@@ -321,53 +321,53 @@ void MoveToSquad::Launch()
 
 fPoint MoveTo::getDesiredPlace()
 {
-	if (unit->squad)
-	{
-		fPoint place = unit->squad->commander_pos + unit->squad->getOffset(unit->UID);
-		if (!place.IsZero())
-		{
-			iPoint map_place = App->map->WorldToMap(place.x, place.y);
-			if (App->pathfinding->IsWalkable(map_place))
-				return place;
-		}
-	}
-	return { 0.0f, 0.0f };
-}
 
-bool AttackingMoveToSquad::checkSquadTarget()
-{
-	for (int i = 0; i < enemy_ids.size(); i++)
+	fPoint place = unit->squad->commander_pos + unit->squad->getOffset(unit->UID);
+	if (!place.IsZero())
 	{
-		Entity* enemy = App->entitycontroller->getEntitybyID(enemy_ids[i]);
-		if (enemy->IsUnit() ? ((Unit*)enemy)->squad->UID == target_squad_id : false)
-			return true;
+		iPoint map_place = App->map->WorldToMap(place.x, place.y);
+		if (App->pathfinding->IsWalkable(map_place))
+			return place;
 	}
-	return true;
+
+	return { 0.0f, 0.0f };
 }
 
 bool Attack::searchTarget()
 {
-	if (enemy_ids->empty()) { Stop(); return false; }
-	
-	Entity* target = App->entitycontroller->getEntitybyID(enemy_ids->front());
-	if (target != nullptr)
+	if (enemy_atk_slots->empty()) { Stop(); return false; }
+
+	std::vector<iPoint> slots_in_use;
+	std::vector<Unit*> units;
+	unit->squad->getUnits(units);
+
+	for (int i = 0; i < units.size(); i++)
 	{
-		for (int i = 1; i < enemy_ids->size(); i++)
-		{
-			Entity* new_target = App->entitycontroller->getEntitybyID(enemy_ids->at(i));
-
-			if (new_target->position.DistanceTo(unit->position) < target->position.DistanceTo(unit->position))
-				target = new_target;
-		}
-
-		iPoint targetMap_p = App->map->WorldToMap(target->position.x, target->position.y);
-		if (!App->pathfinding->CreatePath(map_p, targetMap_p) >= 0) path = *App->pathfinding->GetLastPath();
-		else { Stop(); return false; }
+		if (units[i]->getCurrentCommand() == ATTACK || units[i]->getCurrentCommand() == ATTACKING_MOVETO)
+			slots_in_use.push_back(((Attack*)units[i]->commands.front())->current_target);
 	}
-	else 
-		{ Stop(); return false; }
 
-	current_target = target->UID;
+	current_target = enemy_atk_slots->front();
+	
+	for (int i = 1; i < enemy_atk_slots->size(); i++)
+	{
+		bool used = false;
+		for (int j = 0; j < slots_in_use.size(); j++)
+		{
+			if(slots_in_use[j] == enemy_atk_slots->at(i) && i < enemy_atk_slots->size() - 1)
+				{ used = true; break;}
+		}
+		if (used) continue;
+
+		if (map_p.DistanceTo(enemy_atk_slots->at(i)) < map_p.DistanceTo(current_target))
+			current_target = enemy_atk_slots->at(i);
+
+	}
+
+	iPoint targetMap_p = App->map->WorldToMap(current_target.x, current_target.y);
+	if (!App->pathfinding->CreatePath(map_p, targetMap_p) >= 0) path = *App->pathfinding->GetLastPath();
+	else { Stop(); return false; }
+
 	return true;
 }
 
@@ -375,7 +375,7 @@ void Attack::moveToTarget()
 {
 	if (path.empty())
 	{
-		current_target = -1;
+		current_target.SetToZero();
 		return;
 	}
 
@@ -397,6 +397,40 @@ void Attack::callRetaliation(Entity* enemy)
 		if (enemy_action != ATTACKING_MOVETO_SQUAD)
 			((Unit*)enemy)->squad->commands.push_back(new AttackingMoveToSquad((Unit*)enemy, map_p));
 	}
+}
+
+int Attack::dealDamage(Entity * attacker, Entity * defender)
+{
+	int ret = 0;
+	
+		if (favorableMatchup(attacker, defender))
+		{
+			ret = MATCHUP_MODIFIER * MAX((RANDOM_FACTOR * (attacker->piercing_atk + ((((int)attacker->attack - (int)defender->defense) <= 0) ? 0 : attacker->attack - defender->defense))), 1);
+		}
+
+		else
+		{
+			ret = MAX((RANDOM_FACTOR * (attacker->piercing_atk + ((((int)attacker->attack - (int)defender->defense) <= 0) ? 0 : attacker->attack - defender->defense))), 1);
+		}
+	return ret;
+}
+
+bool Attack::favorableMatchup(Entity * attacker, Entity * defender)
+{
+	bool ret = false;
+	if (attacker->range == 40 && defender->range < 40 && !defender->flying)
+	{
+		ret = true;
+	}
+	else if (attacker->range < 40 && !attacker->flying && defender->flying)
+	{
+		ret = true;
+	}
+	else if (attacker->flying && !defender->flying && defender->range == 40)
+	{
+		ret = true;
+	}
+	return ret;
 }
 
 

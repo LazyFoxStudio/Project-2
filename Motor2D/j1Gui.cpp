@@ -30,6 +30,7 @@
 #include "UI_TroopCreationQueue.h"
 #include "UI_FarmWorkersManager.h"
 #include "Minimap.h"
+#include "UI_Slider.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -192,6 +193,11 @@ bool j1Gui::PostUpdate()
 		(*it_l)->BlitElement();
 	}
 	//Draw elements of active menus
+	if (draggingElement != nullptr && draggingElement->moving)
+	{
+		draggingElement->Mouse_Drag();
+		draggingElement->state = CLICKED;
+	}
 	for (std::list<menu*>::iterator it_m = App->uiscene->menus.begin(); it_m != App->uiscene->menus.end(); it_m++)
 	{
 		if ((*it_m) == nullptr) break;
@@ -200,11 +206,6 @@ bool j1Gui::PostUpdate()
 		{
 			if (!(*it_e)->active)
 				continue;
-			if ((*it_e)->moving)
-			{
-				(*it_e)->Mouse_Drag();
-				(*it_e)->state = CLICKED;
-			}
 
 			if ((*it_e)->parent == nullptr) //If it has a parent, the parent will be responsible for drawing it
 				(*it_e)->BlitElement();
@@ -773,7 +774,38 @@ TroopCreationQueue* j1Gui::createTroopCreationQueue(Building* building)
 		menu->elements.push_back(ret);
 		ret->menu = INGAME_MENU;
 	}
-	ret->active = false;
+
+	return ret;
+}
+
+Slider* j1Gui::createSlider(int x, int y, SDL_Rect empty, SDL_Rect full, Button* button, float default_progress, j1Module* callback)
+{
+
+	Slider* ret = new Slider(x, y, atlas, empty, full, default_progress, callback);
+
+	if (full.w > full.h)
+	{
+		button->setDragable(true, false);
+		button->setLimits(empty.w / (2 / w_stretch), empty.w / (2 / w_stretch), -1, -1);
+	}
+	else
+	{
+		button->setDragable(false, true);
+		button->setLimits(-1, -1, empty.h / (2 / h_stretch), empty.h / (2 / h_stretch));
+	}
+
+	ret->appendChild(button, true);
+	button->setOriginalPos(((empty.w * w_stretch) - 7 - button->section.w / (2 / w_stretch)) * 0.5f, y);
+
+	ret->setDragable(true, true);
+
+	menu* menu = App->uiscene->getMenu(INGAME_MENU);
+	if (menu != nullptr)
+	{
+		menu->elements.push_back(ret);
+		ret->menu = INGAME_MENU;
+	}
+
 	return ret;
 }
 
