@@ -24,7 +24,8 @@ TroopCreationQueue::~TroopCreationQueue()
 
 void TroopCreationQueue::BlitElement()
 {
-	text->BlitElement();
+	if (building != nullptr && building->isSelected)
+		text->BlitElement();
 
 	int counterX = 0;
 	int counterY = 0;
@@ -54,18 +55,22 @@ void TroopCreationQueue::BlitElement()
 			it_i--;
 			continue;
 		}
-		(*it_i)->icon->image->localPosition = { icon_offset.x*counterX, icon_offset.y*counterY };
-		(*it_i)->icon->image->BlitElement();
-		(*it_i)->progress->localPosition = { icon_offset.x*counterX, icon_offset.y*counterY +63};
-		(*it_i)->progress->BlitElement();
-		counterY++;
-		counter++;
-		if (counter == 6)
-			break;
-		if (counterY == 3)
+
+		if (building != nullptr && building->isSelected)
 		{
-			counterY = 0;
-			counterX++;
+			(*it_i)->icon->image->localPosition = { icon_offset.x*counterX, icon_offset.y*counterY };
+			(*it_i)->icon->image->BlitElement();
+			(*it_i)->progress->localPosition = { icon_offset.x*counterX, icon_offset.y*counterY + 63 };
+			(*it_i)->progress->BlitElement();
+			counterY++;
+			counter++;
+			if (counter == 6)
+				break;
+			if (counterY == 3)
+			{
+				counterY = 0;
+				counterX++;
+			}
 		}
 	}
 }

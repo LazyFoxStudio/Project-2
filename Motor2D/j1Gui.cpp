@@ -774,7 +774,7 @@ TroopCreationQueue* j1Gui::createTroopCreationQueue(Building* building)
 		menu->elements.push_back(ret);
 		ret->menu = INGAME_MENU;
 	}
-	ret->active = false;
+
 	return ret;
 }
 
