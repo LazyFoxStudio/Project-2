@@ -49,8 +49,6 @@ bool j1Scene::Start()
 
 	guiconfig = App->LoadFile(Gui_config_file, "Gui_config.xml");
 	guiconfig = guiconfig.child("scene");
-	
-
 
 	App->render->camera.x = -1200;
 	App->render->camera.y = -1600;
@@ -188,7 +186,7 @@ void j1Scene::Start_game()
 
 	//SATARTING ENTITIES-------------------------------------------------------
 	if (!App->tutorial->doingTutorial)
-		App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
+		App->entitycontroller->addHero(iPoint(2000, 1950), HERO_2);
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	App->entitycontroller->town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, App->entitycontroller->town_hall->size.x, App->entitycontroller->town_hall->size.y, true, false);
