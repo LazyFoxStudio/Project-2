@@ -87,7 +87,7 @@ bool MoveTo::OnStop()
 	if(unit->squad) 
 		unit->mov_direction = unit->squad->squad_direction;
 
-	if(flow_field) flow_field->used_by++;
+	if(flow_field) flow_field->used_by--;
 	return true;
 }
 
