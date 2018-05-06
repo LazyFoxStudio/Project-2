@@ -24,6 +24,7 @@ Squad::Squad(std::vector<uint>& units) : units_id(units)
 
 		calculateOffsets();
 	}
+	timer.Start();
 }
 
 Squad::~Squad()
@@ -48,7 +49,11 @@ bool Squad::Update(float dt)
 
 				if (!units.empty())
 				{
-					calculateAttackSlots();
+					if (timer.ReadSec() > 0.5f)
+					{
+						calculateAttackSlots();
+						timer.Start();
+					}
 
 					bool everyone_in_position = true;
 					for(int i = 0; i < units.size(); i++)

@@ -29,6 +29,7 @@ public:
 	fPoint squad_direction = { 0.0f,1.0f };
 	int UID = -1;
 	SFXList FollowingOrdersSFX = SFXList::SFX_NO_SFX;
+	j1Timer timer;
 
 public:
 	Squad(std::vector<uint>& units);

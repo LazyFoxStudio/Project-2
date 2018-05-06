@@ -58,7 +58,7 @@ bool CompareSquad(Squad* s1, Squad* s2)
 
 bool j1EntityController::Update(float dt)
 {
-	BROFILER_CATEGORY("Entites update", Profiler::Color::Maroon);
+	BROFILER_CATEGORY("Entites update", Profiler::Color::Bisque);
 
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 	Hero* hero = (Hero*)getEntitybyID(hero_UID);
@@ -85,6 +85,8 @@ bool j1EntityController::Update(float dt)
 	if (App->isPaused())
 		return true;
 
+
+	BROFILER_CATEGORY("Squad update", Profiler::Color::BurlyWood);
 	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end() && !App->scene->toRestart; it++)
 	{
 		if (!(*it)->Update(dt)) squads_to_destroy.push_back((*it)->UID);
@@ -118,6 +120,8 @@ bool j1EntityController::Update(float dt)
 
 		}
 	}*/
+
+	BROFILER_CATEGORY("Entity controller update", Profiler::Color::Maroon);
 
 	if (to_build_type != NONE_ENTITY)
 		buildingCalculations();
