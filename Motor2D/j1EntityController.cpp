@@ -621,7 +621,7 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	if (type == HERO_2)
 	{
 		hero->skill_one = new Skill(hero, 3, 50, 3000000, 10, PLACE);		//Icicle Crash
-		hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
+		hero->skill_two = new Skill(hero, 3, 50, 700, 2, HEAL);	//Overflow
 		hero->skill_three = new Skill(hero, 0, 200, 250, 2, LINE);		//Dragon Breath
 	}
 

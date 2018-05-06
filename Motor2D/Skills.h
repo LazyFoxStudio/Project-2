@@ -15,7 +15,8 @@ enum rangeType
 	NONE_RANGE,
 	AREA,
 	LINE,
-	PLACE
+	PLACE,
+	HEAL
 };
 
 class Skill
