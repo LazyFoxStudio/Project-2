@@ -124,9 +124,6 @@ Resolution of the screen: 1680x 1050y
 			<standby x="285" y="271" w="143" h="53"/>
 			<OnMouse x="437" y="271" w="143" h="53"/>
 			<OnClick x="589" y="271" w="143" h="53"/>
-			<popUp>
-				<Info text="Press 'O' to lower volume and 'P' to raise it. Press 'K' to lower SFX and 'L' to raise it."/>
-			</popUp>
 		</button>
 
 	<!-- Wave Window -->

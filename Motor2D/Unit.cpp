@@ -10,6 +10,7 @@
 #include "j1Gui.h"
 #include "Quadtree.h"
 #include "Minimap.h"
+#include "j1Tutorial.h"
     
 #define MAX_SEPARATION_WEIGHT 2.0f   
 
@@ -211,6 +212,11 @@ void Unit::Destroy()
 	App->gui->entityDeleted(this);
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
+	if (App->tutorial->doingTutorial && this->IsEnemy())
+	{
+		if (squad->units_id.size() == 1) //It was last enemy
+			App->tutorial->taskCompleted(KILL_ENEMIES);
+	}
 }
 
 void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)
