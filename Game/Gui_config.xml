@@ -307,8 +307,8 @@ Resolution of the screen: 1680x 1050y
 
     </menu>
 
-	<!-- PAUSE MENU-->
-	<menu type="3" active="false">
+	  <!-- PAUSE MENU-->
+	  <menu type="3" active="false">
 		<image path="gui/pause.png">
 			<position x="700" y="250"/>
 			<childs>
@@ -407,7 +407,7 @@ Resolution of the screen: 1680x 1050y
       <childs>
         <text text="BACK" center="true" counter="false">
           <position x="0" y="0"/>
-          <font id="6"/>
+          <font id="4"/>
           <color r="255" g="255" b="0" a="255"/>
           <interactive value="false"/>
         </text>
