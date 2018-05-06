@@ -400,6 +400,9 @@
     <Xml Include="..\Game\GameData.xml">
       <Filter>Desenvolupament  ========\Files</Filter>
     </Xml>
+    <Xml Include="..\Game\tutorial.xml">
+      <Filter>Desenvolupament  ========\Files</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Project2.rc" />

@@ -68,13 +68,14 @@ public:
 
 public:
 
-	Image* arrow = nullptr;
-	Step* activeStep = nullptr;
-	std::list<Step*> missing_steps;
-	std::list<Step*> steps;
-	bool doingTutorial = false;
+	Image*				arrow = nullptr;
+	Step*				activeStep = nullptr;
+	std::list<Step*>	missing_steps;
+	std::list<Step*>	steps;
+	bool				doingTutorial = false;
+	bool				builded = false;
 
-	j1Timer timer;
+	j1Timer				timer;
 };
 
 #endif //__J1TUTORIAL_H__

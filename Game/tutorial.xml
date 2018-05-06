@@ -60,7 +60,7 @@
 	<step duration="-1" task="7" UI="true">
 		<text x="750" y="150">
 			<line text="Defeat the enemies using your abilities"/>
-			<line text="Use the buttons or press: 1, 2 or 3"/>
+			<line text="Use the buttons or press: Q, W or E"/>
 		</text>
 	</step>
 	<step duration="3500" task="0" UI="true">

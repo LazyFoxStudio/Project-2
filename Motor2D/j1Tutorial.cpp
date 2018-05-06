@@ -109,6 +109,7 @@ void j1Tutorial::startTutorial()
 	{
 		missing_steps = steps;
 		doingTutorial = true;
+		App->wavecontroller->tutorial = true;
 		timer.Start();
 	}
 }
@@ -124,11 +125,12 @@ void j1Tutorial::taskCompleted(Task task)
 	if (activeStep->task == task)
 		finishStep();
 
-	if (task == PLACE_FARM)
+	if (task == PLACE_FARM && !builded)
 	{
 		App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
 		App->wavecontroller->forceNextWave();
 		App->gui->nextWaveWindow->timer->counter.PauseTimer();
+		builded = true;
 	}
 	else if (task == SELECT_HERO)
 	{

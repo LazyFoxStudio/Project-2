@@ -53,6 +53,8 @@ public:
 	int					wait_between_waves = 0;
 	int					current_wave = 0;
 	int					difficulty = 0;
+
+	bool				tutorial = false;
 	
 	j1Timer				wave_timer;
 	
