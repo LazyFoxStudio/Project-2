@@ -70,9 +70,10 @@ public:
 
 	std::list<iPoint> path;
 	std::vector<iPoint>* enemy_atk_slots = nullptr;
+	int* squad_target = nullptr;
 
 public:
-	Attack(Unit* unit, std::vector<iPoint>* enemy_atk_slots) : Command(unit, ATTACK), enemy_atk_slots(enemy_atk_slots) {};
+	Attack(Unit* unit, std::vector<iPoint>* enemy_atk_slots, int* squad_target) : Command(unit, ATTACK), enemy_atk_slots(enemy_atk_slots), squad_target(squad_target) {};
 
 private:
 	bool OnInit();
@@ -81,7 +82,7 @@ private:
 
 	bool searchTarget();
 	void moveToTarget();
-	void callRetaliation(Entity* enemy);
+	void callRetaliation(Entity* enemy, uint squad_UID);
 	
 	int dealDamage(Entity* attacker, Entity* defender);
 	bool favorableMatchup(Entity* attacker, Entity* defender);

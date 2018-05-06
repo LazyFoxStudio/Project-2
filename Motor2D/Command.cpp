@@ -96,7 +96,7 @@ bool MoveTo::OnStop()
 
 bool Attack::OnInit()
 {
-	if (enemy_atk_slots->empty() || !unit->squad) Stop();
+	if (enemy_atk_slots->empty() || !unit->squad || !squad_target) Stop();
 
 	return true;
 }
@@ -113,11 +113,11 @@ bool Attack::OnUpdate(float dt)
 		if (!searchTarget()) 
 			Stop();
 	
-	if (Entity* enemy = App->entitycontroller->getNearestEnemy(unit))
+	if (Entity* enemy = App->entitycontroller->getNearestEnemy(unit, *squad_target))
 	{
 		SDL_Rect r = { unit->position.x - unit->range, unit->position.y - unit->range, unit->range * 2, unit->range * 2 };
 
-		if (SDL_HasIntersection(&r, &enemy->collider) && enemy->isActive)
+		if (SDL_HasIntersection(&r, &enemy->collider))
 		{
 			if (type == ATTACKING_MOVETO)
 				type = ATTACK; 
@@ -130,7 +130,7 @@ bool Attack::OnUpdate(float dt)
 				enemy->current_HP -= dealDamage(unit, enemy); //dmg
 
 				if (enemy->current_HP < 0) enemy->Destroy();
-				else					   callRetaliation(enemy);
+				else					   callRetaliation(enemy, unit->squad->UID);
 			}
 
 			unit->lookAt(enemy->position - unit->position);
@@ -222,7 +222,6 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 
 	if (!enemy_atk_slots.empty())
 	{
-		if (target_squad_id != -1) target_squad_id = -1;
 		enemies_found = true;
 
 		std::vector<Unit*> units;
@@ -231,7 +230,7 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 		for (int i = 0; i < units.size(); i++)
 		{
 			if (units[i]->commands.empty() ? true : (units[i]->getCurrentCommand() != ATTACK && units[i]->getCurrentCommand() != ATTACKING_MOVETO))
-				units[i]->commands.push_front(new Attack(units[i], &enemy_atk_slots));
+				units[i]->commands.push_front(new Attack(units[i], &enemy_atk_slots, &target_squad_id));
 		}
 
 	}
@@ -253,6 +252,8 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 				}
 			}
 		}
+		else if (enemies_found && target_squad_id != -1)
+			target_squad_id = -1;
 		else
 		{
 			std::vector<Unit*> units;
@@ -389,13 +390,13 @@ void Attack::moveToTarget()
 		
 }
 
-void Attack::callRetaliation(Entity* enemy)
+void Attack::callRetaliation(Entity* enemy, uint squad_UID)
 {
 	if (enemy->IsUnit())
 	{
 		Command_Type enemy_action = ((Unit*)enemy)->squad->getCurrentCommand();
 		if (enemy_action != ATTACKING_MOVETO_SQUAD)
-			((Unit*)enemy)->squad->commands.push_back(new AttackingMoveToSquad((Unit*)enemy, map_p));
+			((Unit*)enemy)->squad->commands.push_back(new AttackingMoveToSquad((Unit*)enemy, map_p, false, squad_UID));
 	}
 }
 
