@@ -4,6 +4,7 @@
 #include "Color.h"
 #include "Command.h"
 #include "j1EntityController.h"
+#include "j1ParticleController.h"
 #include "Squad.h"
 #include "j1Gui.h"
 #include "j1Audio.h"
@@ -50,8 +51,14 @@ bool Hero::Update(float dt)
 		{
 			if (skill_one->Activate() && App->tutorial->doingTutorial)
 				App->tutorial->taskCompleted(KILL_ENEMIES);
-			if(!skill_one->going)
+			if (!skill_one->going)
+			{
+				iPoint tmp;
+				App->input->GetMousePosition(tmp.x,tmp.y);
+				fPoint tmp2(tmp.x, tmp.y);
 				App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
+				App->particle->AddParticle(PICICLE_CRASH, tmp2);
+			}
 			App->gui->cooldownsDisplay->skillUsed(1);
 		}
 		skill_one->toDraw.clear();

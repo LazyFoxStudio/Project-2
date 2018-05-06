@@ -97,6 +97,21 @@
 			<loop value="false"/>
 		</anim>
 	</template>
+
+<!-- Icicle Crash -->
+	<template> 
+		<width value="140"/>
+		<height value="140"/>
+		<anim>
+			<loop value="false"/>
+			<speed value="6"/>
+			<pushback x="0" y="350" w="140" h="140"/>
+			<pushback x="140" y="350" w="140" h="140"/>
+			<pushback x="280" y="350" w="140" h="140"/>
+			<pushback x="420" y="350" w="140" h="140"/>
+			<pushback x="560" y="350" w="140" h="140"/>
+		</anim>
+	</template>
    </particle>
 </node>
 

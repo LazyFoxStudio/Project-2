@@ -362,7 +362,7 @@ void j1EntityController::HandleOrdersSFX()
 {
 	for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 	{
-		App->audio->PlayFx((*it)->FollowingOrdersSFX, 50);
+		App->audio->PlayFx((*it)->FollowingOrdersSFX, 70);
 	}
 }
 void j1EntityController::HandleParticles(Type type, fPoint pos, fPoint obj, float speed)
@@ -614,7 +614,7 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 
 	if (type == HERO_1)
 	{
-		hero->skill_one = new Skill(hero, 3, 100, 300, 6, AREA);		//Icicle Crash
+		hero->skill_one = new Skill(hero, 3, 100, 300, 1, AREA);		//Icicle Crash
 		hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
 		hero->skill_three = new Skill(hero, 0, 200, 250, 2, LINE);		//Dragon Breath
 	}
@@ -674,7 +674,7 @@ Squad* j1EntityController::AddSquad(Type type, fPoint position)
 	Squad* new_squad = nullptr;
 	Unit* unit_template = getUnitFromDB(type);
 
-	HandleReadySFX(type, 50);
+	HandleReadySFX(type, 70);
 
 	if (App->pathfinding->GatherWalkableAdjacents(map_p, getUnitFromDB(type)->squad_members, positions))
 	{

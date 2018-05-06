@@ -21,7 +21,10 @@ enum particleType
 	PDEATHKNIGHT,
 	PDRAGON,
 	PCATAPULT,
-	PJUGGERNAUT
+	PJUGGERNAUT,
+	PICICLE_CRASH,
+	POVERFLOW,
+	PFLAMETHROWER
 
 };
 
@@ -54,7 +57,7 @@ public:
 	bool CleanUp();
 
 	void LoadParticlesFromXML();
-	particleType GetTypeFromInt(int posOnEnum);
+	//particleType GetTypeFromInt(int posOnEnum);
 	Particle* FindParticleType(particleType type);
 	void AdjustDirection(Particle* p, fPoint objective, float speed);
 	

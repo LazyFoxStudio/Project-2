@@ -71,7 +71,8 @@ bool j1ParticleController::Update(float dt)
 		}
 		else if (p->currentLife.Read() > 0)
 		{
-			App->render->Blit(graphics, p->position.x, p->position.y, &(p->anim.GetCurrentFrame(dt)), true, false, 1, SDL_FLIP_NONE, 1, GetAngleInDegrees(p));
+			if (p->position.x > (App->win->width + -App->render->camera.x) || p->position.x < -App->win->width || p->position.y >(App->win->height + -App->render->camera.y) || p->position.y < -App->win->height)
+				App->render->Blit(graphics, p->position.x, p->position.y, &(p->anim.GetCurrentFrame(dt)), true, false, 1, SDL_FLIP_NONE, 1, GetAngleInDegrees(p));
 		}
 
 
@@ -187,8 +188,8 @@ void j1ParticleController::AddParticle(particleType type, fPoint position, bool 
 			p->currentLife.Start();
 
 
-			p->position.x = position.x;
-			p->position.y = position.y;
+			p->position.x = position.x - App->render->camera.x;
+			p->position.y = position.y - App->render->camera.y;
 			p->speed.SetToZero();
 
 
@@ -276,9 +277,6 @@ bool Particle::Update(float dt)
 	position.x += speed.x*dt;
 	position.y += speed.y*dt;
 	
-
-	if (position.x > (App->win->width + -App->render->camera.x) || position.x < -App->win->width || position.y > (App->win->height + -App->render->camera.y) || position.y < -App->win->height)
-		life = 1;
 
 	return ret;
 }
