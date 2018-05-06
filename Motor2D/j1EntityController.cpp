@@ -39,15 +39,6 @@ bool j1EntityController::Start()
 	addHero(iPoint(2000, 1950), HERO_2);
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
-	/*town_hall = addBuilding(town_hall_pos, TOWN_HALL);
-	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
-	App->scene->InitialWorkers(town_hall);*/
-
-	//AddSquad(FOOTMAN, fPoint(2200, 1950));
-
-/*
-	entity_iterator = entities.begin();
-	squad_iterator = all_squads.begin();*/
 	return true;
 }
 

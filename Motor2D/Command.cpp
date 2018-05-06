@@ -392,12 +392,19 @@ void Attack::moveToTarget()
 
 void Attack::callRetaliation(Entity* enemy, uint squad_UID)
 {
-	if (enemy->IsUnit())
+	for (std::list<Squad*>::iterator it = App->entitycontroller->squads.begin(); it != App->entitycontroller->squads.end(); it++)
 	{
-		Command_Type enemy_action = ((Unit*)enemy)->squad->getCurrentCommand();
-		if (enemy_action != ATTACKING_MOVETO_SQUAD)
-			((Unit*)enemy)->squad->commands.push_back(new AttackingMoveToSquad((Unit*)enemy, map_p, false, squad_UID));
+		if (Unit* enemy_commander = (*it)->getCommander())
+		{
+			if (enemy_commander->IsEnemy() == enemy->IsEnemy() && enemy_commander->position.DistanceTo(enemy->position) < enemy_commander->line_of_sight * 1.5f)
+			{
+				Command_Type enemy_action = (*it)->getCurrentCommand();
+				if (enemy_action == NOTHING)
+					(*it)->commands.push_back(new AttackingMoveToSquad(enemy_commander, map_p, false, squad_UID));
+			}
+		}
 	}
+
 }
 
 int Attack::dealDamage(Entity * attacker, Entity * defender)
