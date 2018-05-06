@@ -122,6 +122,7 @@ public:
 
 	Entity* CheckMouseHover(iPoint mouse_world);
 	void CheckCollidingWith(SDL_Rect collider, std::vector<Entity*>& list_to_fill, Entity* entity_to_ignore = nullptr);
+	Entity* getNearestEnemy(Entity* entity);
 
 	bool ChechUpgradeCost(UpgradeType type) const;
 	void SpendUpgradeResources(UpgradeType type);

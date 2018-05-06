@@ -36,6 +36,9 @@ bool j1UIScene::Start()
 
 	LoadUI(guiconfig);
 
+	/*Button* button = new Button(0, 0, App->gui->atlas, { 755, 1545, 49, 48 }, { 755, 1545, 49, 48 }, { 755, 1545, 49, 48 }, App->uiscene);
+	App->gui->createSlider(100, 100, { 684, 1610, 885, 55 }, { 684, 1610, 885, 55 }, button, 0.5, App->uiscene);*/
+
 	//Set resource counters
 	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 0);
 	text_position_y->convertIntoCounter(&App->scene->inactive_workers_int);

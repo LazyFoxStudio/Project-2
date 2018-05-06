@@ -249,6 +249,15 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 		App->render->DrawQuad(r, White, false);
 		App->render->DrawCircle(unit->position.x, unit->position.y, unit->line_of_sight, Blue);
 		App->render->DrawCircle(unit->mov_target.x, unit->mov_target.y, 5, Red);
+
+		if (unit->squad ? !unit->squad->atk_slots.empty() : false)
+		{
+			for (std::list<iPoint>::iterator it = unit->squad->atk_slots.begin(); it != unit->squad->atk_slots.end(); it++)
+			{
+				iPoint world_p = App->map->MapToWorld((*it).x, (*it).y);
+				App->render->DrawCircle(world_p.x, world_p.y, 5, Blue);
+			}
+		}
 	}
 }
 
@@ -1026,6 +1035,7 @@ void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entit
 
 }
 
+
 bool j1EntityController::ChechUpgradeCost(UpgradeType type) const
 {
 	bool ret = false;
@@ -1181,16 +1191,16 @@ void j1EntityController::UpgradeUnits(UpgradeType type)
 	switch (type)
 	{
 	case MELEE_ATTACK_UPGRADE:
-			DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
-			DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		break;
 	case MELEE_DEFENSE_UPGRADE:
-			DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
-			DataBase[KNIGHT]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[KNIGHT]->defense += DEFENSE_UPGRADE_GROWTH;
 		break;
 	case RANGED_ATTACK_UPGRADE:
-			DataBase[ARCHER]->piercing_atk += ATTACK_UPGRADE_GROWTH;
-			DataBase[BALLISTA]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[ARCHER]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[BALLISTA]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		break;
 	case RANGED_DEFENSE_UPGRADE:
 		DataBase[ARCHER]->defense += DEFENSE_UPGRADE_GROWTH;
@@ -1205,6 +1215,26 @@ void j1EntityController::UpgradeUnits(UpgradeType type)
 		DataBase[GRYPHON]->defense += DEFENSE_UPGRADE_GROWTH;
 		break;
 	}
+}
+
+Entity* j1EntityController::getNearestEnemy(Entity* entity)
+{
+	Entity* ret = nullptr;
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED)
+		{
+			if (!ret) ret = *it;
+			else
+			{
+				if ((*it)->position.DistanceTo(entity->position) < ret->position.DistanceTo(entity->position))
+					ret = *it;
+			}
+		}
+	}
+
+	return ret;
+
 }
 
 void j1EntityController::TownHallLevelUp()
