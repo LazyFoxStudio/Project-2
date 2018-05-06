@@ -21,7 +21,10 @@ Skill::Skill(Hero* hero, uint _radius, int _damage, uint _range, uint _cooldown,
 
 void Skill::DrawRange()
 {
-	App->render->DrawCircle(hero->position.x, hero->position.y, range, Red, true);
+	if(type!=PLACE)
+	{
+		App->render->DrawCircle(hero->position.x, hero->position.y, range, Red, true);
+	}
 
 	iPoint mouse_pos;
 	App->input->GetMousePosition(mouse_pos.x, mouse_pos.y);
@@ -167,10 +170,6 @@ bool Skill::Activate()
 			{
 				if (type == AREA || type == NONE_RANGE)
 				{
-					if (type == PLACE)
-					{
-						cast_aux = App->map->WorldToMap((int)hero->position.x, (int)hero->position.y);
-					}
 					iPoint pos = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
 
 					if (cast_aux.DistanceTo(pos) < radius)
