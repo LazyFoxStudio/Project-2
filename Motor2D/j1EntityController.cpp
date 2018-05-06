@@ -137,7 +137,7 @@ bool j1EntityController::Update(float dt)
 		if (town_hall->isSelected == true) //center camera
 		{
 			App->render->camera.x = - town_hall->position.x + App->render->camera.w/2;
-			App->render->camera.y = - town_hall->position.y + App->render->camera.h/3;
+			App->render->camera.y = - town_hall->position.y + App->render->camera.h *0.3;
 		}
 		
 		for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
@@ -154,7 +154,11 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr)
 	{
-		
+		if (hero->isSelected == true) //center camera
+		{
+			App->render->camera.x = -hero->position.x + App->render->camera.w / 2;
+			App->render->camera.y = -hero->position.y + App->render->camera.h * 0.4;
+		}
 		for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
 		{
 			(*it_e)->isSelected = false;
@@ -169,6 +173,18 @@ bool j1EntityController::Update(float dt)
 		hero->isSelected = true;
 	
 		App->gui->newSelectionDone();
+	}
+	//Group Control
+	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && hero != nullptr)
+	{
+		if (selected_entities.size() > 0)
+		{
+			for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
+			{
+
+			}
+		}
+
 	}
 
 	return true;
@@ -388,7 +404,7 @@ bool j1EntityController::CleanUp()
 
 	last_UID = 0;
 	RELEASE(colliderQT);
-/*
+	/*
 	entity_iterator = entities.begin();
 	squad_iterator = squads.begin();*/
 
@@ -408,7 +424,6 @@ bool j1EntityController::Load(pugi::xml_node& file)
 	//TODO
 	return true;
 }
-
 
 void j1EntityController::DeleteEntity(uint UID)
 {
@@ -490,7 +505,6 @@ Unit* j1EntityController::addUnit(iPoint pos, Type type, Squad* squad)
 	// if(App->render->CullingCam(unit->position))  App->audio->PlayFx(UNIT_CREATED_FX);
 	return unit;
 }
-
 
 Hero* j1EntityController::addHero(iPoint pos, Type type)
 {
@@ -622,7 +636,6 @@ Building* j1EntityController::getBuildingFromDB(Type type)
 {
 	return (DataBase[type]->IsBuilding() ? (Building*)DataBase[type] : nullptr);
 }
-
 
 bool j1EntityController::placeBuilding(iPoint position)
 {
@@ -925,8 +938,6 @@ void j1EntityController::selectionControl()
 	}
 }
 
-
-
 void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entity*>& list_to_fill, Entity* entity_to_ignore)
 {
 	std::vector<Entity*> QT_entities;
@@ -941,7 +952,6 @@ void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entit
 
 }
 
-
 void j1EntityController::TownHallLevelUp()
 {
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
@@ -953,7 +963,6 @@ void j1EntityController::TownHallLevelUp()
 		}
 	}
 }
-
 
 void j1EntityController::SubstractRandomWorkers(int num)
 {
@@ -1077,7 +1086,6 @@ void j1EntityController::UnassignRandomWorker()
 		}
 	}
 }
-
 
 bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 {
