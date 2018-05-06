@@ -26,7 +26,7 @@
 #include "UI_WarningMessages.h"
 #include "j1Tutorial.h"
 
-j1Scene::j1Scene() : j1Module() { name = "scene"; }
+j1Scene::j1Scene() : j1Module() { name = "scene"; pausable = false; }
 
 // Destructor
 j1Scene::~j1Scene() {}

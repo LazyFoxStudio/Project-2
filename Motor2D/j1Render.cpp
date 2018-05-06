@@ -11,6 +11,7 @@
 j1Render::j1Render() : j1Module()
 {
 	name = "renderer";
+	pausable = false;
 	background.r = background.g = background.b = 0; background.a = 255;   //  black
 }
 

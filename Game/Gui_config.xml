@@ -119,7 +119,7 @@ Resolution of the screen: 1680x 1050y
 		</atlas_image>
 		
 	<!-- Options Button -->
-		<button>
+		<button click_action="37">
 			<position x="0" y="0"/>
 			<standby x="285" y="271" w="143" h="53"/>
 			<OnMouse x="437" y="271" w="143" h="53"/>
@@ -310,6 +310,57 @@ Resolution of the screen: 1680x 1050y
 
     </menu>
 
+	<!-- PAUSE MENU-->
+	<menu type="3" active="false">
+		<image path="gui/pause.png">
+			<position x="700" y="250"/>
+			<childs>
+				<button click_action="32">
+					<position x="37" y="38"/>
+					<standby x="91" y="1371" w="294" h="89"/>
+					<OnMouse x="91" y="1371" w="294" h="89"/>
+					<OnClick x="91" y="1371" w="294" h="89"/>
+					<childs>
+						<text text="RESUME" center="true" counter="false">
+							<position x="0" y="0"/>
+							<font id="4"/>
+							<color r="0" g="0" b="0" a="255"/>
+							<interactive value="false"/>
+						</text>
+					</childs>
+				</button>
+				<button click_action="31">
+					<position x="37" y="154"/>
+					<standby x="91" y="1371" w="294" h="89"/>
+					<OnMouse x="91" y="1371" w="294" h="89"/>
+					<OnClick x="91" y="1371" w="294" h="89"/>
+					<childs>
+						<text text="SETTINGS" center="true" counter="false">
+							<position x="0" y="0"/>
+							<font id="4"/>
+							<color r="0" g="0" b="0" a="255"/>
+							<interactive value="false"/>
+						</text>
+					</childs>
+				</button>
+				<button click_action="38">
+					<position x="37" y="272"/>
+					<standby x="91" y="1371" w="294" h="89"/>
+					<OnMouse x="91" y="1371" w="294" h="89"/>
+					<OnClick x="91" y="1371" w="294" h="89"/>
+					<childs>
+						<text text="EXIT" center="true" counter="false">
+							<position x="0" y="0"/>
+							<font id="4"/>
+							<color r="0" g="0" b="0" a="255"/>
+							<interactive value="false"/>
+						</text>
+					</childs>
+				</button>
+			</childs>
+		</image>
+	</menu>
+	
     <!-- SETTINGS-->
     <menu type="1" active="false">
     <image path="gui/settings.png">
@@ -459,6 +510,6 @@ Resolution of the screen: 1680x 1050y
       </button>
 
     </menu>
-
+	
 </config>
 

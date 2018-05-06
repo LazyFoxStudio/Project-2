@@ -45,6 +45,8 @@ enum actionType
 	EXIT,
 	CROSS_MENU,
 	CHANGE_HOTKEYS,
+	PAUSE,
+	START_SCENE
 };
 
 class j1ActionsController : public j1Module
@@ -54,6 +56,7 @@ public:
 	j1ActionsController()
 	{
 		name = "actionscontroller";
+		pausable = false;
 	}
 
 	~j1ActionsController()

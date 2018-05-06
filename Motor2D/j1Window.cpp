@@ -11,6 +11,7 @@ j1Window::j1Window() : j1Module()
 	window = nullptr;
 	screen_surface = nullptr;
 	name = "window";
+	pausable = false;
 }
 
 // Destructor

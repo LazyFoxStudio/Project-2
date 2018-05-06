@@ -29,7 +29,7 @@
 
 #define MOUSE_RADIUS 15 //(in pixels)
 
-j1EntityController::j1EntityController() { name = "entitycontroller"; }
+j1EntityController::j1EntityController() { name = "entitycontroller"; pausable = false; }
 
 bool j1EntityController::Start()
 {
@@ -80,6 +80,9 @@ bool j1EntityController::Update(float dt)
 			}
 		}
 	}
+
+	if (App->isPaused())
+		return true;
 
 	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end() && !App->scene->toRestart; it++)
 	{

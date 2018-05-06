@@ -95,6 +95,7 @@ bool j1Gui::PreUpdate()
 		{
 			if ((*it_m) == nullptr) break;
 			if ((*it_m)->active == false) continue;
+			if ((*it_m)->id == INGAME_MENU && App->isPaused()) continue;
 			for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++) //Go through elements
 			{
 				if ((*it_e)->active  && (*it_e)->interactive && checkMouseHovering((*it_e)))
