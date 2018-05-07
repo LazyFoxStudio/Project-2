@@ -3,6 +3,7 @@
 #include "j1Gui.h"
 #include "UI_Image.h"
 #include "UI_LifeBar.h"
+#include "UI_ProgressBar.h"
 #include "j1EntityController.h"
 #include "Squad.h"
 #include "UI_Text.h"
@@ -93,7 +94,13 @@ void SelectionDisplay::OrderDisplay()
 		for (std::list<TroopDisplay*>::iterator it_t = troops.begin(); it_t != troops.end(); it_t++)
 		{
 			(*it_t)->icon->image->localPosition = { position.x + (counterX*icon_offset.x), position.y + (counterY*icon_offset.y) };
-			(*it_t)->lifeBar->localPosition = { position.x + (counterX*icon_offset.x) + lifeBar_offset.x, position.y + (counterY*icon_offset.y) + lifeBar_offset.y };
+			(*it_t)->lifeBar->bar->localPosition = { position.x + (counterX*icon_offset.x) + lifeBar_offset.x, position.y + (counterY*icon_offset.y) + lifeBar_offset.y };
+			counterY++;
+			if (counterY == 3)
+			{
+				counterX++;
+				counterY = 0;
+			}
 		}
 	}
 }

@@ -199,7 +199,7 @@ void j1Scene::Start_game()
 	App->entitycontroller->buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_height / 2);
 
 	App->entitycontroller->AddSquad(FOOTMAN, fPoint(2200, 1950));
-	App->entitycontroller->AddSquad(FOOTMAN, fPoint(2200, 2150));
+	//App->entitycontroller->AddSquad(FOOTMAN, fPoint(2200, 2150));
 
 	//RESTARTING WAVES---------------------------------------------------------
 	App->gui->Chronos->counter.Restart();
@@ -260,12 +260,6 @@ void j1Scene::Start_game()
 
 	App->gui->newSelectionDone();
 	App->uiscene->toggleMenu(false, GAMEOVER_MENU);
-
-	pugi::xml_document doc;
-	pugi::xml_node gameData;
-
-	gameData = App->LoadFile(doc, "GameData.xml");
-	loadGameDB(gameData);
 
 	toRestart = false;
 

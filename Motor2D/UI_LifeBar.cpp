@@ -85,6 +85,8 @@ void LifeBar::BlitElement()
 	{
 		if (entity->IsEnemy())
 			bar->full = App->gui->GetLifeBarRect("R_full");
+		else if (entity->IsBuilding())
+			bar->full = App->gui->GetLifeBarRect("Y_full");
 		else
 			bar->full = App->gui->GetLifeBarRect("G_full");
 	}

@@ -36,15 +36,15 @@ bool j1UIScene::Start()
 
 	LoadUI(guiconfig);
 
-	/*Button* button = new Button(0, 0, App->gui->atlas, { 755, 1545, 49, 48 }, { 755, 1545, 49, 48 }, { 755, 1545, 49, 48 }, App->uiscene);
-	App->gui->createSlider(100, 100, { 684, 1610, 885, 55 }, { 684, 1610, 885, 55 }, button, 0.5, App->uiscene);*/
+	/*Button* button = new Button(0, 0, App->gui->atlas, { 1182, 1188, 49, 48 }, { 1182, 1188, 49, 48 }, { 1182, 1188, 49, 48 }, App->uiscene);
+	App->gui->createSlider(100, 100, { 739, 1297, 775, 55 }, { 739, 1297, 775, 55 }, button, 0.5, App->uiscene);*/
 
 	//Set resource counters
 	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 0);
 	text_position_y->convertIntoCounter(&App->scene->inactive_workers_int);
 
-	Text* gold_display = (Text*)App->gui->GetElement(TEXT, 2);
-	gold_display->convertIntoCounter(&App->scene->workers_int);
+	Text* workers_display = (Text*)App->gui->GetElement(TEXT, 2);
+	workers_display->convertIntoCounter(&App->scene->workers_int);
 
 	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 3);
 	wood_display->convertIntoCounter(&App->scene->wood);
@@ -52,10 +52,16 @@ bool j1UIScene::Start()
 	Text* wood_sec = (Text*)App->gui->GetElement(TEXT, 4);
 	wood_sec->convertIntoCounter(&App->scene->wood_production_per_second);
 
-	Text* waves = (Text*)App->gui->GetElement(TEXT, 6);
+	Text* gold_display = (Text*)App->gui->GetElement(TEXT, 5);
+	gold_display->convertIntoCounter(&App->scene->gold);
+
+	Text* gold_sec = (Text*)App->gui->GetElement(TEXT, 6);
+	//gold_sec->convertIntoCounter(&App->scene->gold_production_per_second);
+
+	Text* waves = (Text*)App->gui->GetElement(TEXT, 8);
 	waves->convertIntoCounter(&App->wavecontroller->current_wave);
 
-	Text* survived_waves = (Text*)App->gui->GetElement(TEXT, 7);
+	Text* survived_waves = (Text*)App->gui->GetElement(TEXT, 9);
 	survived_waves->convertIntoCounter(&App->wavecontroller->current_wave);
 
 	//Hardcoded
