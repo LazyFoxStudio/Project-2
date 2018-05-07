@@ -6,6 +6,7 @@
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 #include "Squad.h"
+#include "Effects.h"
 
 Skill::Skill(Hero* hero, uint _radius, int _damage, uint _range, uint _cooldown, rangeType _type) : hero(hero), radius(_radius), damage(_damage), range(_range) , cooldown(_cooldown)
 {
@@ -30,7 +31,7 @@ void Skill::DrawRange()
 	App->input->GetMousePosition(mouse_pos.x, mouse_pos.y);
 	cast_pos = App->render->ScreenToWorld(mouse_pos.x, mouse_pos.y);
 	
-	if (type == AREA || type == NONE_RANGE || type==PLACE || type== HEAL)
+	if (type == AREA || type == NONE_RANGE || type==PLACE || type== HEAL || type == BUFF)
 	{
 		BFS();
 		
@@ -68,7 +69,7 @@ void Skill::BFS()
 			iPoint world_tile_cast;
 			iPoint world_tile = { i,j } /*= App->map->MapToWorld(i, j)*/;
 			
-			if (type == PLACE)
+			if (type == PLACE || type==BUFF)
 			{
 				world_tile_cast = App->map->WorldToMap((int)hero->position.x, (int)hero->position.y);
 			}
@@ -123,9 +124,9 @@ bool Skill::Activate()
 			{
 				if ((*item)->IsEnemy())
 				{
-					if (type == AREA || type == NONE_RANGE || type == PLACE)
+					if (type == AREA || type == NONE_RANGE || type == PLACE || type == BUFF)
 					{
-						if (type == PLACE)
+						if (type == PLACE || type==BUFF)
 						{
 							cast_aux = App->map->WorldToMap((int)hero->position.x, (int)hero->position.y);
 						}
@@ -135,6 +136,12 @@ bool Skill::Activate()
 						if (cast_aux.DistanceTo(pos) < radius)
 						{
 							(*item)->current_HP -= damage;
+
+							if (type == BUFF)
+							{
+								((Unit*)(*item))->AddDefensebuff(15, -5, PLUS_MINUS);
+							}
+							
 							ret = true;
 						}
 					}
@@ -158,13 +165,25 @@ bool Skill::Activate()
 				}
 				else
 				{
+					iPoint pos = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
+
 					if (type == HEAL)
 					{
-						iPoint pos = App->map->WorldToMap((*item)->position.x, (*item)->position.y);
-
 						if (cast_aux.DistanceTo(pos) < radius)
 						{
 							(*item)->current_HP += damage;
+							ret = true;
+						}
+					}
+					else if (type == BUFF)
+					{
+						cast_aux = App->map->WorldToMap((int)hero->position.x, (int)hero->position.y);
+						
+						
+						if (cast_aux.DistanceTo(pos) < radius)
+						{
+							((Unit*)(*item))->AddDefensebuff(15, 5, PLUS_MINUS);
+							((Unit*)(*item))->AddPiercingDamagebuff(15, 7, PLUS_MINUS);
 							ret = true;
 						}
 					}

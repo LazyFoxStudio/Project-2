@@ -16,7 +16,8 @@ enum rangeType
 	AREA,
 	LINE,
 	PLACE,
-	HEAL
+	HEAL,
+	BUFF
 };
 
 class Skill
