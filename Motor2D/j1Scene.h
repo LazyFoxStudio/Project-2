@@ -69,6 +69,7 @@ public:
 	int town_hall_lvl = 0;
 	
 	int wood_production_per_second = 0;
+	int gold_production_per_second = 0;
 };
 
 #endif // __j1SCENE_H__

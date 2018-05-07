@@ -408,12 +408,15 @@ void j1EntityController::HandleParticles(Type type, fPoint pos, fPoint obj, floa
 void j1EntityController::GetTotalIncome()
 {
 	App->scene->wood_production_per_second = 0;
+	App->scene->gold_production_per_second = 0;
 	for (std::list<Entity*>::iterator tmp = entities.begin(); tmp != entities.end(); tmp++)
 	{
 		if ((*tmp)->IsBuilding())
 		{
 			if ((*tmp)->type == LUMBER_MILL && (*tmp)->ex_state != DESTROYED)
-				App->scene->wood_production_per_second += ((Building*)(*tmp))->resource_production;			
+				App->scene->wood_production_per_second += ((Building*)(*tmp))->resource_production;
+			else if ((*tmp)->type == MINE && (*tmp)->ex_state != DESTROYED)
+				App->scene->gold_production_per_second += ((Building*)(*tmp))->resource_production;
 		}		
 	}
 }
@@ -523,7 +526,10 @@ void j1EntityController::DeleteEntity(uint UID)
 		else   // is building
 		{
 			Building* building_to_remove = (Building*)(entity);
-			App->map->WalkabilityArea(building_to_remove->position.x, building_to_remove->position.y, building_to_remove->size.x, building_to_remove->size.y, true);
+			if (building_to_remove->type != MINE)
+			{
+				App->map->WalkabilityArea(building_to_remove->position.x, building_to_remove->position.y, building_to_remove->size.x, building_to_remove->size.y, true);
+			}
 
 			if (App->scene->toRestart)
 			{
@@ -652,6 +658,10 @@ Building* j1EntityController::addBuilding(iPoint pos, Type type)
 		if (App->tutorial->doingTutorial)
 			App->tutorial->taskCompleted(PLACE_LUMBER_MILL);
 	}
+	else if (type == MINE)
+	{
+		building->workersDisplay = App->gui->createWorkersDisplay(building);
+	}
 	else if (type == BARRACKS || type == GNOME_HUT || type == CHURCH)
 	{
 		building->queueDisplay = App->gui->createTroopCreationQueue(building);
@@ -726,7 +736,7 @@ bool j1EntityController::placeBuilding(iPoint position)
 	std::vector<Entity*> collisions;
 	App->entitycontroller->CheckCollidingWith(building_col, collisions);
 
-	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && collisions.empty() && SDL_HasIntersection(&building_col,&buildingArea))
+	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && collisions.empty() && SDL_HasIntersection(&building_col,&buildingArea) && to_build->type != MINE)
 	{
 		Building* tmp = addBuilding(pos, to_build_type);
 		worker* tmp2 = GetInactiveWorker();
@@ -736,6 +746,16 @@ bool j1EntityController::placeBuilding(iPoint position)
 		
 		App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, true,false);
 		App->wavecontroller->updateFlowField();
+
+		return true;
+	}
+	else if (!App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, false, false, true) && collisions.empty() && SDL_HasIntersection(&building_col, &buildingArea) && to_build->type == MINE)
+	{
+		Building* tmp = addBuilding(pos, to_build_type);
+		worker* tmp2 = GetInactiveWorker();
+
+		tmp->workers_inside.push_back(tmp2);
+		tmp2->working_at = tmp;
 
 		return true;
 	}
@@ -763,25 +783,37 @@ void j1EntityController::buildingProcessDraw()
 
 	App->gui->warningMessages->hideMessage(NO_TREES);
 
-
-	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && enough_resources&& SDL_HasIntersection(&building_col, &buildingArea))
-		App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);
-	else
-		App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);
-
-	if (to_build_type == LUMBER_MILL)
+	if (to_build_type != MINE)
 	{
-		bool treesAround = !App->map->WalkabilityArea((pos.x - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.w / 2), (pos.y - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.h / 2), to_build->additional_size.x, to_build->additional_size.y, false, true);
-
-		if (!treesAround)
-			App->gui->warningMessages->showMessage(NO_TREES);
-
-		if (treesAround && enough_resources)
-			App->render->DrawQuad({ (pos.x - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.w / 2),(pos.y - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.h / 2),to_build->additional_size.x*App->map->data.tile_width, to_build->additional_size.y*App->map->data.tile_height }, Transparent_Green);
+		if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && enough_resources && SDL_HasIntersection(&building_col, &buildingArea))
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);
 		else
-			App->render->DrawQuad({ (pos.x - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.w / 2),(pos.y - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.h / 2),to_build->additional_size.x*App->map->data.tile_width,to_build->additional_size.y*App->map->data.tile_height }, Transparent_Red);
-	}
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);
 
+		if (to_build_type == LUMBER_MILL)
+		{
+			bool treesAround = !App->map->WalkabilityArea((pos.x - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.w / 2), (pos.y - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.h / 2), to_build->additional_size.x, to_build->additional_size.y, false, true);
+
+			if (!treesAround)
+				App->gui->warningMessages->showMessage(NO_TREES);
+
+			if (treesAround && enough_resources)
+				App->render->DrawQuad({ (pos.x - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.w / 2),(pos.y - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.h / 2),to_build->additional_size.x*App->map->data.tile_width, to_build->additional_size.y*App->map->data.tile_height }, Transparent_Green);
+			else
+				App->render->DrawQuad({ (pos.x - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.w / 2),(pos.y - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.h / 2),to_build->additional_size.x*App->map->data.tile_width,to_build->additional_size.y*App->map->data.tile_height }, Transparent_Red);
+		}
+	}
+	else
+	{
+		if (!App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, false, false, true) && enough_resources && SDL_HasIntersection(&building_col, &buildingArea))
+		{
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);
+		}
+		else
+		{
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);
+		}
+	}
 
 
 	App->render->Blit(to_build->texture, pos.x, pos.y, &to_build->sprites[COMPLETE]);
@@ -792,7 +824,7 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 {	
 	if (building)
 	{
-		if (building->type == LUMBER_MILL)
+		if (building->type == LUMBER_MILL || building->type == MINE)
 		{
 			if (to_assign)
 			{

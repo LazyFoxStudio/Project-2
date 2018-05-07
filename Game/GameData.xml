@@ -3576,7 +3576,15 @@
       <type value="5"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <Actions>
-
+ <action id="8"/>
+		     <action id="10"/>
+         <action id="9"/>
+		 <action id="10"/>
+		 <action id="10"/>
+		 <action id="10"/>
+         <action id="20"/>
+		 <action id="10"/>
+         <action id="21"/>
       </Actions>
       <sprites>
         <sprite x="0" y="633" w="101"  h="109"/>

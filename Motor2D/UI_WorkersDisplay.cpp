@@ -49,7 +49,7 @@ WorkersDisplay::~WorkersDisplay()
 
 void WorkersDisplay::BlitElement()
 {
-	if (building != nullptr && building->ex_state == OPERATIVE && building->type == LUMBER_MILL)
+	if (building != nullptr && building->ex_state == OPERATIVE && (building->type == LUMBER_MILL || building->type == MINE))
 	{
 		//Hardcoded
 		icon->localPosition = { (int)(10 * App->gui->w_stretch), (int)(25 * App->gui->h_stretch) };

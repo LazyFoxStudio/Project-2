@@ -83,7 +83,7 @@ bool Building::Update(float dt)
 		break;
 	case OPERATIVE:
 
-		if (type == LUMBER_MILL)
+		if (type == LUMBER_MILL || type == MINE)
 			HandleResourceProduction();
 		else if (type == FARM)
 			HandleWorkerProduction();
@@ -144,6 +144,7 @@ void Building::Destroy()
 			(*it)->to_destroy = true;
 		}
 		break;
+	case MINE:
 	case LUMBER_MILL:
 		CalculateResourceProduction();
 		App->entitycontroller->GetTotalIncome();
@@ -186,7 +187,7 @@ void Building::HandleConstruction()
 		{
 			App->entitycontroller->CreateWorkers(this, 5);
 		}
-		if (type != LUMBER_MILL)
+		if (type != LUMBER_MILL || type != MINE)
 		{
 			workers_inside.back()->working_at = nullptr;
 			workers_inside.pop_back();
@@ -214,7 +215,11 @@ void Building::HandleResourceProduction()
 	if (timer.ReadSec() >= 3)
 	{
 		timer.Start();
-		if(!App->map->WalkabilityArea(position.x - (additional_size.x * App->map->data.tile_width / 2) + collider.w / 2, (position.y - (additional_size.x * App->map->data.tile_width / 2)) + collider.h / 2, additional_size.x, additional_size.y, false, true))
+		if (type == MINE)
+		{
+			App->scene->gold += resource_production;
+		}
+		else if(!App->map->WalkabilityArea(position.x - (additional_size.x * App->map->data.tile_width / 2) + collider.w / 2, (position.y - (additional_size.x * App->map->data.tile_width / 2)) + collider.h / 2, additional_size.x, additional_size.y, false, true) && type == LUMBER_MILL)
 			App->scene->wood += resource_production;
 	}
 }
@@ -254,8 +259,16 @@ void Building::HandleUnitProduction()
 
 void Building::CalculateResourceProduction()
 {
-	float production_modifier = WOOD_PER_WORKER * (1 - (float)((workers_inside.size() - 1) * 0.05f));
-	resource_production = 3 * workers_inside.size() * production_modifier;
+	if (type == LUMBER_MILL)
+	{
+		float production_modifier = WOOD_PER_WORKER * (1 - (float)((workers_inside.size() - 1) * 0.05f));
+		resource_production = 3 * workers_inside.size() * production_modifier;
+	}
+	if (type == MINE)
+	{
+		float production_modifier = GOLD_PER_WORKER * (1 - (float)((workers_inside.size() - 1) * 0.05f));
+		resource_production = 3 * workers_inside.size() * production_modifier;
+	}
 }
 
 void Building::HandleWorkerProduction()

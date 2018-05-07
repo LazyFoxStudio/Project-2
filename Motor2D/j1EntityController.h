@@ -19,6 +19,7 @@ class Quadtree;
 #define FARM_WORKER_PRODUCTION_SECONDS 5
 #define DEATH_TIME 5
 #define WOOD_PER_WORKER 2
+#define GOLD_PER_WORKER 3
 #define REPAIR_COST 10
 #define REPAIR_COOLDOWN 30
 #define UNIT_QUEUE_MAX_SIZE 6
@@ -127,6 +128,8 @@ public:
 	bool ChechUpgradeCost(UpgradeType type) const;
 	void SpendUpgradeResources(UpgradeType type);
 	void UpgradeUnits(UpgradeType type);
+
+	void CheckMine();
 	//------Worker Related Functions--------
 	void SubstractRandomWorkers(int num);
 	void DeleteWorkers();
