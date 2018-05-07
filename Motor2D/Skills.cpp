@@ -182,6 +182,7 @@ bool Skill::Activate()
 						
 						if (cast_aux.DistanceTo(pos) < radius)
 						{
+							LOG("defense %d", ((Unit*)(*item))->defense);
 							((Unit*)(*item))->AddDefensebuff(15, 5, PLUS_MINUS);
 							((Unit*)(*item))->AddPiercingDamagebuff(15, 7, PLUS_MINUS);
 							ret = true;
