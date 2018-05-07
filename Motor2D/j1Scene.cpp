@@ -185,7 +185,7 @@ void j1Scene::Start_game()
 	App->entitycontroller->squad_iterator = App->entitycontroller->squads.begin();*/
 
 	//SATARTING ENTITIES-------------------------------------------------------
-	if (!App->tutorial->doingTutorial)
+	//if (!App->tutorial->doingTutorial)
 		App->entitycontroller->addHero(iPoint(2000, 1950), HERO_2);
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	App->entitycontroller->town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
@@ -198,7 +198,7 @@ void j1Scene::Start_game()
 	App->entitycontroller->buildingArea.x = town_hall_pos.x - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_width / 2);
 	App->entitycontroller->buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_height / 2);
 
-	App->entitycontroller->AddSquad(FOOTMAN, fPoint(2200, 1950));
+	//App->entitycontroller->AddSquad(FOOTMAN, fPoint(2200, 1950));
 	//App->entitycontroller->AddSquad(FOOTMAN, fPoint(2200, 2150));
 
 	//RESTARTING WAVES---------------------------------------------------------
