@@ -211,7 +211,6 @@ void Unit::Halt()
 void Unit::Destroy()
 {
 	timer.Start();
-	App->gui->entityDeleted(this);
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
 	if (App->tutorial->doingTutorial && this->IsEnemy())
@@ -219,6 +218,7 @@ void Unit::Destroy()
 		if (squad->units_id.size() == 1) //It was last enemy
 			App->tutorial->taskCompleted(KILL_ENEMIES);
 	}
+	App->gui->entityDeleted(this);
 }
 
 void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)

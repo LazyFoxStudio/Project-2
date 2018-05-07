@@ -20,7 +20,7 @@ public:
 
 	void setProgress(float newProgress);
 	float getProgress() const;
-	void enterCurrentValue(float current_value);
+	bool enterCurrentValue(float current_value);
 	void BlitElement();
 
 public:

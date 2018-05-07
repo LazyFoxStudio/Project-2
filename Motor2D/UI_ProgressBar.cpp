@@ -23,14 +23,23 @@ float ProgressBar::getProgress() const
 	return progress;
 }
 
-void ProgressBar::enterCurrentValue(float current_value)
+bool ProgressBar::enterCurrentValue(float current_value)
 {
+	float newProgress;
 	if (current_value == 0)
-		progress = 0.0f;
+		newProgress = 0.0f;
 	else if (current_value <= max_value)
-		progress = current_value / max_value;
+		newProgress = current_value / max_value;
 	else
-		progress = 1.0f;
+		newProgress = 1.0f;
+
+	if (newProgress != progress)
+	{
+		progress = newProgress;
+		return true;
+	}
+	else
+		return false;
 }
 
 void ProgressBar::BlitElement()

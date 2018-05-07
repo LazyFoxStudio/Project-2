@@ -58,19 +58,19 @@ Resolution of the screen: 1680x 1050y
 			<section x="285" y="332" w="874" h="54"/>
 			<childs>
 				<text text="inactive_workers" center="false" counter="true">
-					<position x="390" y="10"/>
+					<position x="565" y="10"/>
 					<font id="1"/>
 					<color r="255" g="255" b="255" a="255"/>
 					<interactive value="false"/>
 				</text>
 				<text text="/" center="false" counter="false">
-					<position x="435" y="10"/>
+					<position x="610" y="10"/>
 					<font id="1"/>
 					<color r="255" g="255" b="255" a="255"/>
 					<interactive value="false"/>
 				</text>
 				<text text="toatl_workers" center="false" counter="true">
-					<position x="450" y="10"/>
+					<position x="625" y="10"/>
 					<font id="1"/>
 					<color r="255" g="255" b="255" a="255"/>
 					<interactive value="false"/>
@@ -88,6 +88,21 @@ Resolution of the screen: 1680x 1050y
 					<interactive value="true"/>
 					<popUp>
 						<Info text="Wood every 3 seconds"/>
+					</popUp>
+				</text>
+				<text text="gold" center="false" counter="true">
+					<position x="390" y="10"/>
+					<font id="1"/>
+					<color r="255" g="255" b="255" a="255"/>
+					<interactive value="false"/>
+				</text>
+				<text text="0" center="false" counter="false" prefix="+">
+					<position x="475" y="13"/>
+					<font id="2"/>
+					<color r="255" g="255" b="0" a="255"/>
+					<interactive value="true"/>
+					<popUp>
+						<Info text="Gold every 3 seconds"/>
 					</popUp>
 				</text>
 			</childs>
@@ -143,14 +158,14 @@ Resolution of the screen: 1680x 1050y
 
 	<!-- in-game menu -->
 		<ingamemenu>
-			<position x="0" y="795"/>
-			<section x="0" y="0" w="1680" h="255"/>
-			<buttons x="1399" y="809" offsetX="81" offsetY="81"/>
+			<position x="0" y="750"/>
+			<section x="0" y="1379" w="1680" h="301"/>
+			<buttons x="1408" y="810" offsetX="81" offsetY="81"/>
 		</ingamemenu>
     
     <!-- Minimap -->
 		<minimap>
-			<position x="6" y="800"/>
+			<position x="22" y="784"/>
 			<base_image path ="Assets/Sprites/Minimap Sprites/minimap_base.png"/>
 			<map width ="4096" height ="4096"/>
 			<alerts>
@@ -188,9 +203,9 @@ Resolution of the screen: 1680x 1050y
 		</atlas_image>
 		<button click_action="30">
 			<position x="600" y="400"/>
-			<standby x="687" y="1139" w="469" h="101"/>
-			<OnMouse x="687" y="1139" w="469" h="101"/>
-			<OnClick x="687" y="1139" w="469" h="101"/>
+			<standby x="687" y="1062" w="469" h="101"/>
+			<OnMouse x="687" y="1062" w="469" h="101"/>
+			<OnClick x="687" y="1062" w="469" h="101"/>
 			<childs>
 				<text text="NEW GAME" center="true" counter="false">
 					<position x="0" y="0"/>
@@ -202,9 +217,9 @@ Resolution of the screen: 1680x 1050y
 		</button>
       <button click_action="31"><!--SETTINGS-->
         <position x="600" y="550"/>
-        <standby x="687" y="1139" w="469" h="101"/>
-        <OnMouse x="687" y="1139" w="469" h="101"/>
-        <OnClick x="687" y="1139" w="469" h="101"/>
+        <standby x="687" y="1062" w="469" h="101"/>
+        <OnMouse x="687" y="1062" w="469" h="101"/>
+        <OnClick x="687" y="1062" w="469" h="101"/>
         <childs>
           <text text="SETTINGS" center="true" counter="false">
             <position x="0" y="0"/>
@@ -216,9 +231,9 @@ Resolution of the screen: 1680x 1050y
       </button>
 		<button click_action="33"> <!--CREDITS-->
 			<position x="600" y="700"/>
-			<standby x="687" y="1139" w="469" h="101"/>
-			<OnMouse x="687" y="1139" w="469" h="101"/>
-			<OnClick x="687" y="1139" w="469" h="101"/>
+			<standby x="687" y="1062" w="469" h="101"/>
+			<OnMouse x="687" y="1062" w="469" h="101"/>
+			<OnClick x="687" y="1062" w="469" h="101"/>
 			<childs>
 				<text text="CREDITS" center="true" counter="false">
 					<position x="0" y="0"/>
@@ -230,9 +245,9 @@ Resolution of the screen: 1680x 1050y
 		</button>
       <button click_action="34"><!--EXIT-->
         <position x="600" y="850"/>
-        <standby x="687" y="1139" w="469" h="101"/>
-        <OnMouse x="687" y="1139" w="469" h="101"/>
-        <OnClick x="687" y="1139" w="469" h="101"/>
+        <standby x="687" y="1062" w="469" h="101"/>
+        <OnMouse x="687" y="1062" w="469" h="101"/>
+        <OnClick x="687" y="1062" w="469" h="101"/>
         <childs>
           <text text="EXIT" center="true" counter="false">
             <position x="0" y="0"/>
@@ -278,9 +293,9 @@ Resolution of the screen: 1680x 1050y
       </text>
 		<button click_action="32"> <!--Back-->
 			<position x="190" y="875"/>
-			<standby x="687" y="1282" w="189" h="70"/>
-			<OnMouse x="687" y="1282" w="189" h="70"/>
-			<OnClick x="687" y="1282" w="189" h="70"/>
+			<standby x="26" y="726" w="187" h="69"/>
+			<OnMouse x="26" y="726" w="187" h="69"/>
+			<OnClick x="26" y="726" w="187" h="69"/>
 			<childs>
 				<text text="BACK" center="true" counter="false">
 					<position x="0" y="0"/>
@@ -292,9 +307,9 @@ Resolution of the screen: 1680x 1050y
 		</button>
     <button click_action="35"><!--X-->
       <position x="190" y="125"/>
-      <standby x="687" y="1541" w="56" h="56"/>
-      <OnMouse x="687" y="1541" w="56" h="56"/>
-      <OnClick x="687" y="1541" w="56" h="56"/>
+      <standby x="26" y="805" w="56" h="56"/>
+      <OnMouse x="26" y="805" w="56" h="56"/>
+      <OnClick x="26" y="805" w="56" h="56"/>
       <childs>
         <text text="X" center="true" counter="false">
           <position x="0" y="0"/>
@@ -314,9 +329,9 @@ Resolution of the screen: 1680x 1050y
 			<childs>
 				<button click_action="32">
 					<position x="37" y="38"/>
-					<standby x="91" y="1371" w="294" h="89"/>
-					<OnMouse x="91" y="1371" w="294" h="89"/>
-					<OnClick x="91" y="1371" w="294" h="89"/>
+					<standby x="992" y="928" w="294" h="89"/>
+					<OnMouse x="992" y="928" w="294" h="89"/>
+					<OnClick x="992" y="928" w="294" h="89"/>
 					<childs>
 						<text text="RESUME" center="true" counter="false">
 							<position x="0" y="0"/>
@@ -328,9 +343,9 @@ Resolution of the screen: 1680x 1050y
 				</button>
 				<button click_action="31">
 					<position x="37" y="154"/>
-					<standby x="91" y="1371" w="294" h="89"/>
-					<OnMouse x="91" y="1371" w="294" h="89"/>
-					<OnClick x="91" y="1371" w="294" h="89"/>
+					<standby x="992" y="928" w="294" h="89"/>
+					<OnMouse x="992" y="928" w="294" h="89"/>
+					<OnClick x="992" y="928" w="294" h="89"/>
 					<childs>
 						<text text="SETTINGS" center="true" counter="false">
 							<position x="0" y="0"/>
@@ -342,9 +357,9 @@ Resolution of the screen: 1680x 1050y
 				</button>
 				<button click_action="38">
 					<position x="37" y="272"/>
-					<standby x="91" y="1371" w="294" h="89"/>
-					<OnMouse x="91" y="1371" w="294" h="89"/>
-					<OnClick x="91" y="1371" w="294" h="89"/>
+					<standby x="992" y="928" w="294" h="89"/>
+					<OnMouse x="992" y="928" w="294" h="89"/>
+					<OnClick x="992" y="928" w="294" h="89"/>
 					<childs>
 						<text text="EXIT" center="true" counter="false">
 							<position x="0" y="0"/>
@@ -401,9 +416,9 @@ Resolution of the screen: 1680x 1050y
     </text>
     <button click_action="32"> <!--BACK-->
       <position x="190" y="875"/>
-      <standby x="687" y="1282" w="189" h="70"/>
-      <OnMouse x="687" y="1282" w="189" h="70"/>
-      <OnClick x="687" y="1282" w="189" h="70"/>
+      <standby x="26" y="726" w="187" h="69"/>
+	  <OnMouse x="26" y="726" w="187" h="69"/>
+	  <OnClick x="26" y="726" w="187" h="69"/>
       <childs>
         <text text="BACK" center="true" counter="false">
           <position x="0" y="0"/>
@@ -415,9 +430,9 @@ Resolution of the screen: 1680x 1050y
     </button>
     <button click_action="35"><!--X-->
       <position x="190" y="125"/>
-      <standby x="687" y="1541" w="56" h="56"/>
-      <OnMouse x="687" y="1541" w="56" h="56"/>
-      <OnClick x="687" y="1541" w="56" h="56"/>
+      <standby x="26" y="805" w="56" h="56"/>
+      <OnMouse x="26" y="805" w="56" h="56"/>
+      <OnClick x="26" y="805" w="56" h="56"/>
       <childs>
         <text text="X" center="true" counter="false">
           <position x="0" y="0"/>
@@ -429,9 +444,9 @@ Resolution of the screen: 1680x 1050y
     </button>
       <button click_action="36"><!--CHANGE_HOTKEYS-->
         <position x="600" y="750"/>
-        <standby x="687" y="1456" w="469" h="72"/>
-        <OnMouse x="687" y="1456" w="469" h="72"/>
-        <OnClick x="687" y="1456" w="469" h="72"/>
+        <standby x="687" y="1177" w="469" h="72"/>
+        <OnMouse x="687" y="1177" w="469" h="72"/>
+        <OnClick x="687" y="1177" w="469" h="72"/>
         <childs>
           <text text="Change Hotkeys" center="true" counter="false">
             <position x="0" y="0"/>
@@ -478,9 +493,9 @@ Resolution of the screen: 1680x 1050y
       <button click_action="32">
         <!--Back-->
         <position x="190" y="875"/>
-        <standby x="687" y="1282" w="189" h="70"/>
-        <OnMouse x="687" y="1282" w="189" h="70"/>
-        <OnClick x="687" y="1282" w="189" h="70"/>
+        <standby x="26" y="726" w="187" h="69"/>
+		<OnMouse x="26" y="726" w="187" h="69"/>
+		<OnClick x="26" y="726" w="187" h="69"/>
         <childs>
           <text text="BACK" center="true" counter="false">
             <position x="0" y="0"/>
@@ -493,9 +508,9 @@ Resolution of the screen: 1680x 1050y
       <button click_action="35">
         <!--X-->
         <position x="190" y="125"/>
-        <standby x="687" y="1541" w="56" h="56"/>
-        <OnMouse x="687" y="1541" w="56" h="56"/>
-        <OnClick x="687" y="1541" w="56" h="56"/>
+        <standby x="26" y="805" w="56" h="56"/>
+		<OnMouse x="26" y="805" w="56" h="56"/>
+		<OnClick x="26" y="805" w="56" h="56"/>
         <childs>
           <text text="X" center="true" counter="false">
             <position x="0" y="0"/>

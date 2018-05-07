@@ -19,7 +19,7 @@ void InfoTable::newSelection()
 		InfoData* data = App->entitycontroller->selected_entities.front()->infoData;
 		if (data != nullptr)
 		{
-			title = new Text(data->title, position.x, position.y, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
+			title = new Text(data->title, position.x, position.y, App->font->fonts.front(), DEFAULT_INFO_COLOR, nullptr);
 
 			int counterY = 1;
 			for (std::list<InfoLineData*>::iterator it_l = data->linesData.begin(); it_l != data->linesData.end(); it_l++)
@@ -59,9 +59,9 @@ void InfoTable::BlitElement()
 InfoLine::InfoLine(const InfoLineData* data, int x, int y)
 {
 	type = data->type;
-	text = new Text(data->text, x, y, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
+	text = new Text(data->text, x, y, App->font->fonts.front(), DEFAULT_INFO_COLOR, nullptr);
 	if (type == STAT)
-		value = new Text(std::to_string(data->value), x + STATS_VALUE_OFFSET, y, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
+		value = new Text(std::to_string(data->value), x + STATS_VALUE_OFFSET, y, App->font->fonts.front(), DEFAULT_INFO_COLOR, nullptr);
 }
 
 void InfoLine::Draw()

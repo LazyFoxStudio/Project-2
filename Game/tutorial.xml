@@ -1,7 +1,8 @@
 <tutorial>
 	<step duration="-1" task="1" UI="false">
-		<text x="1800" y="1850">
+		<text x="1750" y="1825">
 			<line text="This is your town hall"/>
+			<line text="Your objective is to defend it"/>
 			<line text="Click it or press space"/>
 			<line text="to select it"/>
 		</text>
@@ -18,6 +19,12 @@
 		<text x="750" y="150">
 			<line text="You have to place it near to a forest"/>
 			<line text="to get as much wood as possible"/>
+		</text>
+	</step>
+	<step duration="4000" task="0" UI="true">
+		<text x="750" y="150">
+			<line text="You can assign workers to this building"/>
+			<line text="to increase your production"/>
 		</text>
 	</step>
 	<step duration="3500" task="0" UI="true">
