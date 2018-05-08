@@ -74,7 +74,9 @@ bool j1Scene::Start()
 bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene update", Profiler::Color::Chocolate);
-	App->render->MouseCameraMovement(dt);
+	if (!App->isPaused())
+		App->render->MouseCameraMovement(dt);
+	
 	App->map->Draw();
 
 	//Music and SFX modifiers (temporal for Vertical Slice)
@@ -94,10 +96,10 @@ bool j1Scene::Update(float dt)
 	{
 		App->audio->ModifySFXVolume(-10);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	/*if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
 		App->entitycontroller->UnassignRandomWorker();
-	}
+	}*/
 
 	workers_int = workers.size();
 	GetTotalInactiveWorkers();
