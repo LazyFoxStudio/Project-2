@@ -21,6 +21,7 @@ enum Task
 	MOVE_TROOPS,
 	KILL_ENEMIES,
 	PLACE_BARRACKS,
+	MOVE_CAMERA,
 
 	UNLOCK_FARM = 15,
 	UNLOCK_BARRACKS
@@ -48,6 +49,8 @@ struct Step
 
 	void Draw();
 	bool isFinished();
+
+	bool finished = false;
 };
 
 class j1Tutorial : public j1Module
@@ -81,6 +84,8 @@ public:
 	bool				builded = false;
 
 	j1Timer				timer;
+	j1Timer				completed_delay_timer;
+	uint64				completed_delay = 250;
 };
 
 #endif //__J1TUTORIAL_H__

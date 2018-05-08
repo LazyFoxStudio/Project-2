@@ -19,7 +19,7 @@ void TextBox::BlitElement()
 {
 	iPoint globalPosition = calculateAbsolutePosition();
 
-	App->render->DrawQuad({ globalPosition.x, globalPosition.y, section.w, section.h }, DEFAULT_COLOR, true, use_camera, true);
+	App->render->DrawQuad({ globalPosition.x, globalPosition.y, section.w, section.h }, color, true, use_camera, true);
 
 	for (std::list<Text*>::iterator it_t = textLines.begin(); it_t != textLines.end(); it_t++)
 	{
@@ -53,4 +53,9 @@ int TextBox::getLinesHeight()
 	}
 
 	return height;
+}
+
+void TextBox::changeColor(Color color)
+{
+	this->color = color;
 }

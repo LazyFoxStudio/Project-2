@@ -21,9 +21,11 @@ public:
 
 	void addTextLine(std::string text);
 	int getLinesHeight();
+	void changeColor(Color color);
 
 public:
 
+	Color color = DEFAULT_COLOR;
 	std::list<Text*> textLines;
 };
 

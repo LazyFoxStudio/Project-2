@@ -188,7 +188,11 @@ void j1Scene::Close_game()
 
 void j1Scene::Start_game()
 {
-	//Close_game();
+	if (App->tutorial->doingTutorial)
+	{
+		App->render->camera.x = 0;
+		App->render->camera.y = -3200;
+	}
 
 	//SATARTING ENTITIES-------------------------------------------------------
 	//if (!App->tutorial->doingTutorial)

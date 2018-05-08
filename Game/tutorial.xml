@@ -1,4 +1,17 @@
 <tutorial>
+	<step duration="-1" task="9" UI="true">
+		<text x="700" y="300">
+			<line text="To move the camera you can"/>
+			<line text="place the mouse at the borders"/>
+			<line text="of the screen or use the arrow keys"/>
+		</text>
+	</step>
+	<step duration="3000" task="0" UI="true">
+		<text x="700" y="300">
+			<line text="Now go to your town hall"/>
+			<line text="It is at the center of the map"/>
+		</text>
+	</step>
 	<step duration="-1" task="1" UI="false">
 		<text x="1750" y="1825">
 			<line text="This is your town hall"/>

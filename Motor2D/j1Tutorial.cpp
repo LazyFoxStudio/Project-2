@@ -67,6 +67,14 @@ bool j1Tutorial::PostUpdate()
 			finishRequirement(activeStep->task);
 			activeStep = nullptr;
 		}
+		else if (activeStep->finished)
+		{
+			if (completed_delay_timer.Read() >= completed_delay)
+			{
+				finishRequirement(activeStep->task);
+				activeStep = nullptr;
+			}
+		}
 	}
 
 	return true;
@@ -154,7 +162,11 @@ void j1Tutorial::stopTutorial(bool skip)
 void j1Tutorial::finishStep()
 {
 	if (activeStep != nullptr)
-		activeStep = nullptr;
+	{
+		activeStep->finished = true;
+		activeStep->text->changeColor(Translucid_Green);
+		completed_delay_timer.Start();		
+	}
 }
 
 void j1Tutorial::taskCompleted(Task task)
