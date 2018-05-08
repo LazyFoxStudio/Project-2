@@ -36,6 +36,13 @@ j1EntityController::j1EntityController() { name = "entitycontroller"; pausable =
 bool j1EntityController::Start()
 {
 	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
+	
+	lose_game = App->console->AddFunction("lose_game",this,0,0);
+	reset_hero_cd = App->console->AddFunction("reset_hero_cd", this, 0, 0);;
+	new_cost = App->console->AddFunction("change_cost", this, 2, 2);;
+	complete_buildings = App->console->AddFunction("fast_building", this, 0, 0);
+	kill_selected = App->console->AddFunction("kill_selected",this,0,0);
+	change_stat = App->console->AddFunction("change_stat", this, 0, 0);
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	return true;
@@ -1569,44 +1576,204 @@ void j1EntityController::DeleteDB()
 
 bool j1EntityController::CreateForest(MapLayer* trees)
 {
-	bool ret = true;
-	for (int j = 0; j < trees->height; j++)
+	return true;
+}
+bool j1EntityController::Console_Interaction(std::string& function, std::vector<int>& arguments)
+{
+	//complete_buildings = App->console->AddFunction("fast_building", this, 0, 0);
+	//kill_selected = App->console->AddFunction("kill_selected", this, 0, 0);
+	if (function == lose_game->name)
 	{
-		for (int i = 0; i < trees->width; i++)
-		{
-			if (trees->GetID(i, j) == 112)//found a core!
-			{
-				//start bfs
-				Forest f;
-				std::list<iPoint>borders_to_check;
-				iPoint p = { i, j};//32 is hardcoded
-				borders_to_check.push_back(p);
-				
-				while (borders_to_check.size() != 0)
-				{
-					iPoint curr = borders_to_check.front();
-					borders_to_check.remove(curr);
-					iPoint neighbors[4];
-					neighbors[0].create(curr.x + 1, curr.y + 0);
-					neighbors[1].create(curr.x + 0, curr.y + 1);
-					neighbors[2].create(curr.x - 1, curr.y + 0);
-					neighbors[3].create(curr.x + 0, curr.y - 1);
+		town_hall->current_HP -= 9000;
+	}
 
-					for (uint i = 0; i < 4; ++i)
-					{
-						if (!App->pathfinding->IsWalkable(neighbors[i]) && std::find(f.trees.begin(), f.trees.end(), neighbors[i]) != f.trees.end())
-						{
-							//add to the list of trees and to the borders
-							iPoint p = neighbors[i];
-							borders_to_check.push_back(p);
-							f.trees.push_back({p.x*32,p.y*32});
-						}
-					}
-					borders_to_check.remove(curr);
-				}
-				forests.push_back(&f);
+	if (function == reset_hero_cd->name)
+	{
+		(Hero*)getEntitybyID(hero_UID);//help
+	}
+
+	if (function == change_stat->name)
+	{
+		////attack
+		//if (arguments.end == 0)
+		//{
+		//	switch (arguments.begin)
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->attack = arguments.end;
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->attack = arguments.end;
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->attack = arguments.end;
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->attack = arguments.end;
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->attack = arguments.end;
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->attack = arguments.end;
+		//		break;
+		//	default:
+		//		break;
+
+		//	}
+		//}
+		////piercing attack
+		//if (arguments.end == 1)
+		//{
+		//	switch (arguments.begin)
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->piercing_atk = arguments.end;
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->piercing_atk = arguments.end;
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->piercing_atk = arguments.end;
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->piercing_atk = arguments.end;
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->piercing_atk = arguments.end;
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->piercing_atk = arguments.end;
+		//		break;
+		//	default:
+		//		break;
+
+		//	}
+		//}
+		////defense
+		//if (arguments.end == 2)
+		//{
+		//	switch (arguments.begin)
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->defense = arguments.end;
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->defense = arguments.end;
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->defense = arguments.end;
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->defense = arguments.end;
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->defense = arguments.end;
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->defense = arguments.end;
+		//		break;
+		//	default:
+		//		break;
+
+		//	}
+		//}
+		////sight
+		//if (arguments.end == 3)
+		//{
+		//	switch (arguments.begin)
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->line_of_sight = arguments.end;
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->line_of_sight = arguments.end;
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->line_of_sight = arguments.end;
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->line_of_sight = arguments.end;
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->line_of_sight = arguments.end;
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->line_of_sight = arguments.end;
+		//		break;
+		//	default:
+		//		break;
+
+		//	}
+		//}
+		////range
+		//if (arguments.end == 4)
+		//{
+		//	switch (arguments.begin)
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->range = arguments.end;
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->range = arguments.end;
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->range = arguments.end;
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->range = arguments.end;
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->range = arguments.end;
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->range = arguments.end;
+		//		break;
+		//	default:
+		//		break;
+
+		//	}
+		//}
+
+	}
+
+	if (function == new_cost->name)
+	{
+		//switch (arguments.begin)
+		//{
+		//case 0:
+		//	DataBase[FOOTMAN]->cost = arguments.end;
+		//	break;
+		//case 1:
+		//	DataBase[ARCHER]->cost = arguments.end;
+		//	break;
+		//case 2:
+		//	DataBase[KNIGHT]->cost = arguments.end;
+		//	break;
+		//case 3:
+		//	DataBase[GRYPHON]->cost = arguments.end;
+		//	break;
+		//case 4:
+		//	DataBase[BALLISTA]->cost = arguments.end;
+		//	break;
+		//case 5:
+		//	DataBase[FLYING_MACHINE]->cost = arguments.end;
+		//	break;
+		//default:
+		//	break;
+		//}
+	}
+
+	if (function == kill_selected->name)
+	{
+		for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
+		{
+			if ((*it)->IsUnit() && !(*it)->IsHero())
+			{
+				LOG("deleted %d via comand", (*it)->UID);
+				DeleteEntity((*it)->UID);
 			}
 		}
 	}
-	return ret;
+	return true;
 }

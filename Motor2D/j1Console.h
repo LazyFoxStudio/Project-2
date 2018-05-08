@@ -42,11 +42,10 @@ public:
 	//UITextbox* input = nullptr;
 
 	std::list<function*> functions;
-	int AddFunction(const char*, j1Module* ,int, int);
 
-	std::string function_1 = "";
-	std::string exit = "";
-	std::string help = "";
+	function* AddFunction(const char*, j1Module* ,int, int);
+
+	function* help;
 
 	bool Console_Interaction(std::string& function, std::vector<int>& arguments);
 

@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include "j1Timer.h"
+#include "j1Console.h"
 
 struct SDL_Texture;
 class Window;
@@ -51,6 +52,8 @@ public:
 
 	void loadGameDB(pugi::xml_node& data);
 
+	bool Console_Interaction(std::string& function, std::vector<int>& arguments);
+
 public:
 
 	j1Timer Restart_timer;
@@ -71,6 +74,12 @@ public:
 	
 	int wood_production_per_second = 0;
 	int gold_production_per_second = 0;
+
+	function* set_wood_second;
+	function* set_gold_second;
+	function* set_wood;
+	function* set_gold;
+
 };
 
 #endif // __j1SCENE_H__

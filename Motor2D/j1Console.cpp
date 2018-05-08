@@ -18,8 +18,6 @@ j1Console::j1Console()
 
 bool j1Console::Start()
 {
-	function_1 = AddFunction("name1",this,1,2);
-	exit = AddFunction("exit", this, 0, 0);
 	help = AddFunction("help", this, 0, 0);
 
 	return true;
@@ -29,6 +27,10 @@ bool j1Console::CleanUp()
 {
 	BROFILER_CATEGORY("CleanUp_Console", Profiler::Color::DarkOliveGreen);
 	logs.clear();
+	for (std::list<function*>::iterator it = functions.begin(); it != functions.end(); it++)
+	{
+		RELEASE(*it);
+	}
 	functions.clear();
 
 	return true;
@@ -211,7 +213,7 @@ bool j1Console::Usefunction(/*UIelement* element*/)
 	return ret;
 }
 
-int j1Console::AddFunction(const char* name, j1Module* callback, int min_args, int max_args)
+function* j1Console::AddFunction(const char* name, j1Module* callback, int min_args, int max_args)
 {
 	function* new_func = new function();
 
@@ -222,20 +224,13 @@ int j1Console::AddFunction(const char* name, j1Module* callback, int min_args, i
 
 	functions.push_back(new_func);
 
-	return functions.size() - 1;
+	return new_func;
 
 }
 
 bool j1Console::Console_Interaction(std::string& _function, std::vector<int>& arguments)
 {
-	if (_function == "function_1")
-		LOG("works");
-	else if (_function == "exit")
-	{
-		LOG("Exiting from console");
-		return false;
-	}
-	else if (_function == "help")
+	if (_function == "help")
 	{
 		logs.push_back("The avalible commands are the following:");
 		for (std::list<function*>::iterator it = functions.begin(); it != functions.end(); it++)

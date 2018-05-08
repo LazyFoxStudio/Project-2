@@ -67,6 +67,11 @@ bool j1Scene::Start()
 	//App->entitycontroller->addUnit({ 2000, 2200 }, KNIGHT);
 	//App->entitycontroller->AddSquad(FOOTMAN, { 2000,2200 });
 
+	set_wood = App->console->AddFunction("set_wood", this, 1, 1);
+	set_gold = App->console->AddFunction("set_gold", this, 1, 1);
+	set_wood_second = App->console->AddFunction("set_wood_second", this, 1, 1);
+	set_gold_second = App->console->AddFunction("set_gold_second", this, 1, 1);
+
 	return true;
 }
 
@@ -313,4 +318,29 @@ void j1Scene::loadGameDB(pugi::xml_node& data)
 
 	//Load workers display
 	App->gui->LoadWorkersDisplayDB(data);
+}
+
+bool j1Scene::Console_Interaction(std::string& function, std::vector<int>& arguments)
+{
+	if (function == set_gold->name)
+	{
+		gold = arguments.data()[0];
+	}
+
+	if (function == set_wood->name)
+	{
+		wood = arguments.data()[0];
+
+	}
+	if (function == set_gold_second->name)
+	{
+		gold_production_per_second = arguments.data()[0];
+
+	}
+	if (function == set_wood_second->name)
+	{
+		wood_production_per_second = arguments.data()[0];
+	}
+
+	return true;
 }
