@@ -152,7 +152,7 @@ bool j1EntityController::Update(float dt)
 		
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr)
+	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr)
 	{
 		if (hero->isSelected == true) //center camera
 		{
