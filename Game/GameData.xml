@@ -3447,7 +3447,7 @@
 	  <Info title="Town Hall:">
 		<line text="This is the center"/>
 		<line text="of your village."/>
-		<line text="You have to defent it."/>
+		<line text="You have to defend it."/>
 	  </Info>
 	  <Actions>
 		  <action id="5"/>
