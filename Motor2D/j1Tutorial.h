@@ -20,7 +20,10 @@ enum Task
 	SELECT_HERO,
 	MOVE_TROOPS,
 	KILL_ENEMIES,
-	PLACE_BARRACKS
+	PLACE_BARRACKS,
+
+	UNLOCK_FARM = 15,
+	UNLOCK_BARRACKS
 };
 
 class TextBox;
@@ -63,8 +66,10 @@ public:
 
 	void loadTutorial(char* path);
 	void startTutorial();
+	void stopTutorial(bool skip = false);
 	void finishStep();
 	void taskCompleted(Task task);
+	void finishRequirement(Task task);
 
 public:
 

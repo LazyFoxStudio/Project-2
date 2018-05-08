@@ -160,9 +160,8 @@ bool j1Scene::Save(pugi::xml_node& data) const
 //	return ret;
 //}
 
-void j1Scene::Start_game()
+void j1Scene::Close_game()
 {
-
 	//DELETING ENTITIES-------------------------------------------------------
 	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
 	{
@@ -180,9 +179,14 @@ void j1Scene::Start_game()
 	App->entitycontroller->selected_squads.clear();
 	App->entitycontroller->entities.clear();
 	App->entitycontroller->squads.clear();
-		/*
-	App->entitycontroller->entity_iterator = App->entitycontroller->entities.begin();
-	App->entitycontroller->squad_iterator = App->entitycontroller->squads.begin();*/
+
+	if (App->tutorial->active)
+		App->tutorial->stopTutorial();
+}
+
+void j1Scene::Start_game()
+{
+	//Close_game();
 
 	//SATARTING ENTITIES-------------------------------------------------------
 	//if (!App->tutorial->doingTutorial)
@@ -222,26 +226,32 @@ void j1Scene::Start_game()
 
 	//RESTART LOCKED ACTION BUTTONS
 	//Hardcoded
+	std::string condition = "Build first a Lumber Mill";
+	if (App->tutorial->doingTutorial)
+		condition = "First finish the tutorial";
+
 	Button* barracks = App->gui->GetActionButton(5);
-	barracks->setCondition("Build first a Lumber Mill");
+	barracks->setCondition(condition);
 	barracks->Lock();
+	Button* lumber = App->gui->GetActionButton(6);
+	lumber->setCondition(condition);
 	Button* farms = App->gui->GetActionButton(7);
-	farms->setCondition("Build first a Lumber Mill");
+	farms->setCondition(condition);
 	farms->Lock();
 	Button* mine = App->gui->GetActionButton(22);
-	mine->setCondition("Build first a Lumber Mill");
+	mine->setCondition(condition);
 	mine->Lock();
 	Button* turret = App->gui->GetActionButton(23);
-	turret->setCondition("Build first a Lumber Mill");
+	turret->setCondition(condition);
 	turret->Lock();
 	Button* hut = App->gui->GetActionButton(24);
-	hut->setCondition("Build first a Lumber Mill");
+	hut->setCondition(condition);
 	hut->Lock();
 	Button* church = App->gui->GetActionButton(25);
-	church->setCondition("Build first a Lumber Mill");
+	church->setCondition(condition);
 	church->Lock();
 	Button* blacksmith = App->gui->GetActionButton(26);
-	blacksmith->setCondition("Build first a Lumber Mill");
+	blacksmith->setCondition(condition);
 	blacksmith->Lock();
 
 	//CANCEL IF BUILDING

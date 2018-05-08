@@ -206,7 +206,7 @@ bool j1ActionsController::Update(float dt)
 			App->gui->nextWaveWindow->toggle();
 			doingAction = false;
 			break;
-		case NEW_GAME:
+		case NEW_GAME:		
 			if (App->tutorial->active)
 				App->tutorial->startTutorial();
 			App->scene->active = true;
@@ -264,6 +264,7 @@ bool j1ActionsController::Update(float dt)
 			App->uiscene->toggleMenu(false, INGAME_MENU);
 			App->uiscene->toggleMenu(false, PAUSE_MENU);
 			doingAction = false;
+			App->scene->Close_game();
 			break;
 		}
 		
