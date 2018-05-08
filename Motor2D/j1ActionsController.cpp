@@ -81,7 +81,9 @@ bool j1ActionsController::Update(float dt)
 
 			break;
 		case UNASSIGN_WORKER:
-			if (!App->entitycontroller->selected_entities.empty() && (App->entitycontroller->selected_entities.front()->type == LUMBER_MILL|| App->entitycontroller->selected_entities.front()->type == MINE) && App->gui->current_hovering_element != nullptr && App->gui->current_hovering_element->parent != nullptr && ((Building*)App->entitycontroller->selected_entities.front())->workersDisplay == App->gui->current_hovering_element->parent)
+			if (!App->entitycontroller->selected_entities.empty() &&
+				(App->entitycontroller->selected_entities.front()->type == LUMBER_MILL|| App->entitycontroller->selected_entities.front()->type == MINE) &&
+				App->gui->current_hovering_element != nullptr && (App->gui->current_hovering_element->parent == nullptr || App->gui->current_hovering_element->parent->element_type != WORKERSDISPLAY))
 			{
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(false, (Building*)*App->entitycontroller->selected_entities.begin());
@@ -93,7 +95,9 @@ bool j1ActionsController::Update(float dt)
 			doingAction = false;
 			break;
 		case ASSIGN_WORKER:
-			if (!App->entitycontroller->selected_entities.empty() && (App->entitycontroller->selected_entities.front()->type == LUMBER_MILL || App->entitycontroller->selected_entities.front()->type == MINE) && App->gui->current_hovering_element != nullptr && App->gui->current_hovering_element->parent != nullptr && ((Building*)App->entitycontroller->selected_entities.front())->workersDisplay == App->gui->current_hovering_element->parent)
+			if (!App->entitycontroller->selected_entities.empty() &&
+				(App->entitycontroller->selected_entities.front()->type == LUMBER_MILL || App->entitycontroller->selected_entities.front()->type == MINE) &&
+				App->gui->current_hovering_element != nullptr && (App->gui->current_hovering_element->parent == nullptr || App->gui->current_hovering_element->parent->element_type != WORKERSDISPLAY))
 			{
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(true, (Building*)*App->entitycontroller->selected_entities.begin());
