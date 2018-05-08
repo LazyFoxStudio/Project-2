@@ -912,32 +912,45 @@ void j1EntityController::commandControl()
 	{
 		if (!selected_squads.empty())
 		{
-			FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+			FlowField* shared_flowfield = nullptr;
 			if (App->tutorial->doingTutorial)
 				App->tutorial->taskCompleted(MOVE_TROOPS);
 			for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 			{
 				(*it)->Halt();
-				MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
-				new_order->flow_field = shared_flowfield;
-				(*it)->commands.push_back(new_order);
+				if((*it)->isFlying())
+					(*it)->commands.push_back(new MoveToSquadFlying((*it)->getCommander(), map_p));
+				else
+				{
+					if (shared_flowfield)
+						shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+
+					MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
+					new_order->flow_field = shared_flowfield;
+					(*it)->commands.push_back(new_order);
+				}
 			}
-			shared_flowfield->used_by = selected_squads.size();
 		}
 	}
 	else
 	{
 		if (entity->IsEnemy() && entity->ex_state != DESTROYED && entity->isActive)    //clicked on a enemy
 		{
-			FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+			FlowField* shared_flowfield = nullptr;
 			for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 			{
 				(*it)->Halt();
-				AttackingMoveToSquad* new_order = nullptr;
-				new_order = new AttackingMoveToSquad((*it)->getCommander(), map_p, false, ((Unit*)entity)->squad->UID);
+				if ((*it)->isFlying())
+					(*it)->commands.push_back(new AttackingMoveToSquadFlying((*it)->getCommander(), map_p));
+				else
+				{
+					if (shared_flowfield)
+						shared_flowfield = App->pathfinding->RequestFlowField(map_p);
 
-				new_order->flow_field = shared_flowfield;
-				(*it)->commands.push_back(new_order);
+					MoveToSquad* new_order = new AttackingMoveToSquad((*it)->getCommander(), map_p);
+					new_order->flow_field = shared_flowfield;
+					(*it)->commands.push_back(new_order);
+				}
 			}
 		}
 		
@@ -1254,7 +1267,7 @@ Entity* j1EntityController::getNearestEnemy(Entity* entity, int target_squad)
 			else if (((Unit*)(*it))->squad->UID != target_squad) continue;
 		}
 
-		if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED)
+		if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED && !(entity->IsMelee() && (*it)->IsFlying()))
 		{
 			if (!ret) ret = *it;
 			else

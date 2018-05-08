@@ -159,15 +159,16 @@ bool Squad::findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_
 		{
 			if (target_squad_UID != -1 ? target_squad_UID == (*it)->UID : true)
 			{
-				Unit* enemy_commander = (*it)->getCommander();
-
-				if (enemy_commander ? enemy_commander->IsEnemy() != isEnemy : false)
+				if (Unit* enemy_commander = (*it)->getCommander())
 				{
-					for (std::list<iPoint>::iterator it2 = (*it)->atk_slots.begin(); it2 != (*it)->atk_slots.end(); it2++)
+					if (enemy_commander->IsEnemy() != isEnemy && !(commander->IsMelee() && enemy_commander->IsFlying()))
 					{
-						iPoint world_p = App->map->MapToWorld((*it2).x, (*it2).y);
-						if (isInSquadSight({ (float)world_p.x, (float)world_p.y }))
-							list_to_fill.push_back(world_p);
+						for (std::list<iPoint>::iterator it2 = (*it)->atk_slots.begin(); it2 != (*it)->atk_slots.end(); it2++)
+						{
+							iPoint world_p = App->map->MapToWorld((*it2).x, (*it2).y);
+							if (isInSquadSight({ (float)world_p.x, (float)world_p.y }))
+								list_to_fill.push_back(world_p);
+						}
 					}
 				}
 			}
@@ -267,6 +268,14 @@ void Squad::calculateAttackSlots()
 		for (int i = 0; i < units_map_p.size(); i++)
 			if (units_map_p[i] == *it) { atk_slots.erase(it); it--; break; }
 	}
+}
+
+bool Squad::isFlying()
+{
+	if (Unit* commander = getCommander())
+		return commander->IsFlying();
+	
+	return true;
 }
 
 void Squad::Destroy()

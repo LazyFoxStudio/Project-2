@@ -67,7 +67,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entitycontroller, false);
 	AddModule(gui);
 	AddModule(uiscene);
-	AddModule(tutorial);
+	AddModule(tutorial, false);
 	AddModule(sceneswitch);
 	AddModule(particle);
 	AddModule(actionscontroller);

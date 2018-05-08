@@ -50,6 +50,8 @@ public:
 	bool Update(float dt);
 	void Destroy();
 
+	bool isFlying();
+
 	Command_Type getCurrentCommand() { return (commands.empty() ? NOTHING : commands.front()->type); }
 
 };

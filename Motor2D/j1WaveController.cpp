@@ -183,10 +183,19 @@ void j1WaveController::Generate_Wave()
 		//minimap_
 		App->gui->minimap->AddAlert((*it)->spawn.x, (*it)->spawn.y, 5, alert_type::DANGER);
 
-
-		AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->getCommander(), TOWN_HALL_POS);
-		new_atk_order->flow_field = flow_field;
-		squad->commands.push_back(new_atk_order);
+		if (squad->isFlying())
+		{
+			iPoint TownHall_pos = TOWN_HALL_POS;
+			TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
+			TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
+			squad->commands.push_back(new AttackingMoveToSquadFlying(squad->getCommander(), TownHall_pos));
+		}
+		else
+		{
+			AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->getCommander(), TOWN_HALL_POS);
+			new_atk_order->flow_field = flow_field;
+			squad->commands.push_back(new_atk_order);
+		}
 	}
 
 	Generate_Next_Wave();

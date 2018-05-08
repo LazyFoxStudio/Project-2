@@ -91,6 +91,31 @@ bool MoveTo::OnStop()
 	return true;
 }
 
+bool MoveToFlying::OnUpdate(float dt)
+{
+	fPoint desired_place = getDesiredPlace();
+	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
+
+	if (!desired_place.IsZero())
+	{
+		unit->mov_target = desired_place;
+		if (unit->squad->squad_movement.IsZero() && map_p.DistanceTo(dest) < PROXIMITY_FACTOR_TILES)
+			Stop();
+	}
+
+	return true;
+}
+
+bool MoveToFlying::OnStop()
+{
+	unit->mov_module = 0;
+	unit->mov_target = unit->position;
+	if (unit->squad)
+		unit->mov_direction = unit->squad->squad_direction;
+
+	return true;
+}
+
 
 // ATTACK
 
@@ -215,6 +240,56 @@ bool MoveToSquad::OnStop()
 	return true;
 }
 
+bool MoveToSquadFlying::OnInit()
+{
+	if (!unit->squad) { Stop(); return true; }
+	else {
+		squad = unit->squad;
+
+		std::vector<Unit*> squad_units;
+		squad->getUnits(squad_units);
+		squad->squad_movement.SetToZero();
+
+		if (!squad_units.empty())
+		{
+			for (int i = 0; i < squad_units.size(); i++)
+			{
+				MoveToFlying* new_move_order = new MoveToFlying(squad_units[i], dest);
+				squad_units[i]->commands.push_back(new_move_order);
+			}
+		}
+	}
+
+	return true;
+}
+
+bool MoveToSquadFlying::OnUpdate(float dt)
+{
+	if (allIdle()) Stop();
+	else {
+		if (Unit* commander = squad->getCommander())
+		{
+			iPoint map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
+
+			fPoint movement = (dest - map_p).Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
+			squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
+
+			if (squad->squad_movement.GetModule() > movement.GetModule())
+				squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
+
+		}
+	}
+
+	return true;
+}
+
+bool MoveToSquadFlying::OnStop()
+{
+	if (squad) squad->squad_movement.SetToZero();
+
+	return true;
+}
+
 
 bool AttackingMoveToSquad::OnUpdate(float dt)
 {
@@ -272,6 +347,57 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 	return true;
 }
 
+
+
+bool AttackingMoveToSquadFlying::OnUpdate(float dt)
+{
+	squad->findAttackSlots(enemy_atk_slots, target_squad_id);
+
+	if (!enemy_atk_slots.empty())
+	{
+		enemies_found = true;
+
+		std::vector<Unit*> units;
+		squad->getUnits(units);
+
+		for (int i = 0; i < units.size(); i++)
+		{
+			if (units[i]->commands.empty() ? true : (units[i]->getCurrentCommand() != ATTACK && units[i]->getCurrentCommand() != ATTACKING_MOVETO))
+				units[i]->commands.push_front(new Attack(units[i], &enemy_atk_slots, &target_squad_id));
+		}
+
+	}
+	else
+	{
+		if (!enemies_found || (unit->IsEnemy() || hold))
+		{
+			if (Unit* commander = squad->getCommander())
+			{
+				iPoint map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
+
+				fPoint movement = (dest - map_p).Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
+				squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
+
+				if (squad->squad_movement.GetModule() > movement.GetModule())
+					squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
+			}
+		}
+		else if (enemies_found && target_squad_id != -1)
+			target_squad_id = -1;
+		else
+		{
+			std::vector<Unit*> units;
+			squad->getUnits(units);
+
+			for (int i = 0; i < units.size(); i++)
+				units[i]->Halt();
+
+			Stop();
+		}
+	}
+
+	return true;
+}
 
 
 bool PatrolSquad::OnUpdate(float dt)
@@ -334,6 +460,11 @@ fPoint MoveTo::getDesiredPlace()
 	return { 0.0f, 0.0f };
 }
 
+fPoint MoveToFlying::getDesiredPlace()
+{
+	return unit->squad->commander_pos + unit->squad->getOffset(unit->UID);
+}
+
 bool Attack::searchTarget()
 {
 	if (enemy_atk_slots->empty()) { Stop(); return false; }
@@ -365,28 +496,45 @@ bool Attack::searchTarget()
 
 	}
 
-	iPoint targetMap_p = App->map->WorldToMap(current_target.x, current_target.y);
-	if (!App->pathfinding->CreatePath(map_p, targetMap_p) >= 0) path = *App->pathfinding->GetLastPath();
-	else { Stop(); return false; }
+	if (!unit->IsFlying())
+	{
+		iPoint targetMap_p = App->map->WorldToMap(current_target.x, current_target.y);
+
+		if (!App->pathfinding->IsWalkable(targetMap_p) && unit->IsRanged())
+		{
+			targetMap_p = App->pathfinding->FirstWalkableAdjacent(targetMap_p);
+			iPoint world_p = App->map->MapToWorld(targetMap_p.x, targetMap_p.y);
+
+			if(world_p.DistanceTo(current_target) > (unit->range - App->map->data.tile_width))
+				{ Stop(); return true; }
+		}
+
+		if (!App->pathfinding->CreatePath(map_p, targetMap_p) >= 0) path = *App->pathfinding->GetLastPath();
+		else { Stop(); return true; }
+	}
 
 	return true;
 }
 
 void Attack::moveToTarget()
 {
-	if (path.empty())
+	if (!unit->IsFlying())
 	{
-		current_target.SetToZero();
-		return;
+		if (path.empty())
+			current_target.SetToZero();
+		else
+		{
+			if (map_p == path.front())
+				path.pop_front();
+			else
+			{
+				iPoint world_p = App->map->MapToWorld(path.front().x, path.front().y);
+				unit->mov_target = { (float)world_p.x + App->map->data.tile_width / 2, (float)world_p.y + App->map->data.tile_height / 2 };
+			}
+		}
 	}
-
-	if (map_p == path.front())
-		path.pop_front();
 	else
-	{
-		iPoint world_p = App->map->MapToWorld(path.front().x, path.front().y);
-		unit->mov_target = { (float)world_p.x + App->map->data.tile_width / 2, (float)world_p.y + App->map->data.tile_height /2};
-	}
+		unit->mov_target = { (float)current_target.x, (float)current_target.y };
 		
 }
 
@@ -396,7 +544,7 @@ void Attack::callRetaliation(Entity* enemy, uint squad_UID)
 	{
 		if (Unit* enemy_commander = (*it)->getCommander())
 		{
-			if (enemy_commander->IsEnemy() == enemy->IsEnemy() && enemy_commander->position.DistanceTo(enemy->position) < enemy_commander->line_of_sight * 1.5f)
+			if (enemy_commander->IsEnemy() == enemy->IsEnemy() && enemy_commander->position.DistanceTo(enemy->position) < enemy_commander->line_of_sight)
 			{
 				Command_Type enemy_action = (*it)->getCurrentCommand();
 				if (enemy_action == NOTHING)
@@ -444,6 +592,17 @@ bool Attack::favorableMatchup(Entity * attacker, Entity * defender)
 
 
 bool MoveToSquad::allIdle()
+{
+	std::vector<Unit*> units;
+	squad->getUnits(units);
+
+	for (int i = 0; i < units.size(); i++)
+		if (!units[i]->commands.empty()) return false;
+
+	return true;
+}
+
+bool MoveToSquadFlying::allIdle()
 {
 	std::vector<Unit*> units;
 	squad->getUnits(units);

@@ -74,15 +74,18 @@ public:
 
 	virtual bool Update(float dt)	{ return true; };
 	virtual void Draw(float dt)		{};
-	virtual void Destroy() {};
+	virtual void Destroy()			{};
 
-	virtual bool Save()		{ return true; };
-	virtual bool Load()		{ return true; };
+	virtual bool Save()	{ return true; };
+	virtual bool Load()	{ return true; };
 
-	bool IsEnemy() { return type >= GRUNT; };
-	bool IsUnit() { return type >= HERO_1; };
-	bool IsHero() { return (type >= HERO_1 && type < FOOTMAN); }
-	bool IsBuilding() { return type <= BLACKSMITH; };
+	bool IsEnemy()		{ return type >= GRUNT; };
+	bool IsUnit()		{ return type >= HERO_1; };
+	bool IsHero()		{ return (type >= HERO_1 && type < FOOTMAN); }
+	bool IsBuilding()	{ return type <= BLACKSMITH; };
+	bool IsFlying()		{ return (type == DRAGON || type == FLYING_MACHINE || type == GRYPHON); }
+	bool IsMelee()		{ return (type == FOOTMAN || type == KNIGHT || type == GRUNT); }
+	bool IsRanged()		{ return !IsMelee(); }
 };
 
 #endif
