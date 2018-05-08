@@ -86,6 +86,7 @@ public:
 	bool IsFlying()		{ return (type == DRAGON || type == FLYING_MACHINE || type == GRYPHON); }
 	bool IsMelee()		{ return (type == FOOTMAN || type == KNIGHT || type == GRUNT); }
 	bool IsRanged()		{ return !IsMelee(); }
+	bool HasAoEDamage() { return (type == DRAGON || type == BALLISTA || type == CATAPULT || type == JUGGERNAUT); }
 };
 
 #endif

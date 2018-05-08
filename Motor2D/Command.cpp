@@ -152,10 +152,16 @@ bool Attack::OnUpdate(float dt)
 					App->entitycontroller->HandleAttackSFX(unit->type, 30);
 
 				App->entitycontroller->HandleParticles(unit->type, unit->position, { enemy->position.x + (enemy->collider.w / 2), enemy->position.y + (enemy->collider.h / 2) });
-				enemy->current_HP -= dealDamage(unit, enemy); //dmg
 
-				if (enemy->current_HP < 0) enemy->Destroy();
-				else					   callRetaliation(enemy, unit->squad->UID);
+				if (unit->HasAoEDamage())
+					AoE_Damage(enemy);
+				else
+				{
+					enemy->current_HP -= dealDamage(unit, enemy); //dmg
+
+					if (enemy->current_HP < 0) enemy->Destroy();
+					else					   callRetaliation(enemy, unit->squad->UID);
+				}
 			}
 
 			unit->lookAt(enemy->position - unit->position);
@@ -569,6 +575,26 @@ int Attack::dealDamage(Entity * attacker, Entity * defender)
 			ret = MAX((RANDOM_FACTOR * (attacker->piercing_atk + ((((int)attacker->attack - (int)defender->defense) <= 0) ? 0 : attacker->attack - defender->defense))), 1);
 		}
 	return ret;
+}
+
+void Attack::AoE_Damage(Entity* enemy)
+{
+	int distance = App->map->data.tile_width * 3;
+	SDL_Rect damage_area = { enemy->position.x - distance / 2, enemy->position.y - distance / 2, distance, distance };
+
+	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+	{
+		if (SDL_HasIntersection(&damage_area, &(*it)->collider))
+		{
+			if ((*it)->IsUnit() && (*it)->IsEnemy() != unit->IsEnemy() && (*it)->ex_state != DESTROYED && (*it)->isActive)
+			{
+				(*it)->current_HP -= dealDamage(unit, (*it)); //dmg
+
+				if ((*it)->current_HP < 0)   (*it)->Destroy();
+				else						  callRetaliation((*it), unit->squad->UID);
+			}
+		}
+	}
 }
 
 bool Attack::favorableMatchup(Entity * attacker, Entity * defender)

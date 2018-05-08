@@ -102,6 +102,7 @@ private:
 	void callRetaliation(Entity* enemy, uint squad_UID);
 	
 	int dealDamage(Entity* attacker, Entity* defender);
+	void AoE_Damage(Entity* enemy);
 	bool favorableMatchup(Entity* attacker, Entity* defender);
 
 };
