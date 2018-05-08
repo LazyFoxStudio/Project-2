@@ -128,7 +128,7 @@ void j1Tutorial::taskCompleted(Task task)
 
 		if (task == PLACE_FARM && !builded)
 		{
-			App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
+			//App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
 			App->wavecontroller->forceNextWave();
 			App->gui->nextWaveWindow->timer->counter.PauseTimer();
 			builded = true;

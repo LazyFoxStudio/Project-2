@@ -895,8 +895,10 @@ void j1Gui::createPopUpInfo(UI_element* element, std::string info)
 void j1Gui::LoadLifeBarsDB(pugi::xml_node node)
 {
 	//Load textures
-	atlas = App->tex->Load(atlas_file_name.c_str());
-	icon_atlas = App->tex->Load(icon_atlas_file_name.c_str());
+	if(atlas == nullptr)
+		atlas = App->tex->Load(atlas_file_name.c_str());
+	if (icon_atlas == nullptr)
+		icon_atlas = App->tex->Load(icon_atlas_file_name.c_str());
 
 	//Load life bars
 	pugi::xml_node lifebar;
