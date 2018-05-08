@@ -252,6 +252,7 @@ void Step::Draw()
 		{
 			arrow_pos.x = App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID)->position.x - App->tutorial->arrow->section.w/2;
 			arrow_pos.y = App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID)->position.y - App->tutorial->arrow->section.h - ARROW_MOVEMENT - 10;
+			App->tutorial->arrow->use_camera = true;
 		}
 		if (arrowInfo->rotation == 0 || arrowInfo->rotation == 180)
 			arrow_pos.x += ARROW_MOVEMENT * sin(App->tutorial->timer.ReadSec()* ARROW_SPEED);

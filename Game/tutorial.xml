@@ -13,11 +13,11 @@
 		</text>
 	</step>
 	<step duration="-1" task="1" UI="false">
-		<text x="1750" y="1825">
+		<text x="1650" y="1825">
 			<line text="This is your town hall"/>
 			<line text="Your objective is to defend it"/>
-			<line text="Click it or press space"/>
-			<line text="to select it"/>
+			<line text="Click it or press space to select it"/>
+			<line text="Press space twice to center the camera"/>
 		</text>
 		<arrow x="2000" y="1850" rotation="90"/>
 	</step>
@@ -64,10 +64,11 @@
 		</text>
 		<arrow x="50" y="590" rotation="90"/>
 	</step>
-	<step duration="-1" task="5" UI="false">
-		<text x="1650" y="1750">
+	<step duration="-1" task="5" UI="true">
+		<text x="725" y="150">
 			<line text="Select your hero by clicking it"/>
-			<line text="or pressing F1"/>
+			<line text="or pressing TAB"/>
+			<line text="Press TAB twice to center the camera"/>
 		</text>
 		<arrow x="1925" y="1750" rotation="90"/>
 	</step>
@@ -84,7 +85,7 @@
 		</text>
 	</step>
 	<step duration="4000" task="0" UI="true">
-		<text x="1300" y="150">
+		<text x="1300" y="117">
 			<line text="Here you can see the enemies that"/>
 			<line text="will come in the next wave and when"/>
 		</text>
