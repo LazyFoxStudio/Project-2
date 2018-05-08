@@ -143,8 +143,8 @@ Resolution of the screen: 1680x 1050y
 
 	<!-- Wave Window -->
 		<nextwavewindow icon_atlas="false">
-			<position x="1408" y="462"/>
-			<minimizedPosition x="1408" y="758"/>
+			<position x="1408" y="429"/>
+			<minimizedPosition x="1408" y="725"/>
 			<section x="0" y="271" w="272" h="336"/>
 			<icons x="23" y="70" offsetX="125" offsetY="80"/>
 			<draggable horizontal="false" vertical="false"/>

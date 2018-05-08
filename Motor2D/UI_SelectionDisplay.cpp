@@ -11,7 +11,7 @@
 
 SelectionDisplay::SelectionDisplay() : UI_element(0, 0, element_type::WINDOW, { 0,0,0,0 }, nullptr)
 {
-	moreSquads = new Text("", 950, 800, App->font->getFont(1), { 0,0,0,255 }, nullptr);
+	moreSquads = new Text("", 935, 800, App->font->getFont(1), { 255,255,255,255 }, nullptr);
 }
 
 SelectionDisplay::~SelectionDisplay()
@@ -206,7 +206,7 @@ void SelectionDisplay::setAdditionalSquads()
 
 TroopIcon::TroopIcon(Entity* entity, int x, int y)
 {
-	image = new Image(App->gui->icon_atlas, x, y, App->gui->GetIconRect(entity), nullptr);
+	image = new Image(App->gui->icon_atlas, x, y, App->gui->GetIconRect(entity), App->uiscene);
 	image->setBorder(true, White, 4);
 	
 	this->entity = entity;

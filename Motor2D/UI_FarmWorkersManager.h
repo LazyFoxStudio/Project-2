@@ -3,8 +3,6 @@
 
 #include "UI_element.h"
 
-#define ICONS_OFFSET {100, 80}
-
 class ProgressBar;
 class j1Timer;
 class Text;
