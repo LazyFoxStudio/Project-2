@@ -163,6 +163,7 @@ void j1Tutorial::finishStep()
 {
 	if (activeStep != nullptr)
 	{
+		App->audio->PlayFx(SFX_TUTORIAL_STEP);
 		activeStep->finished = true;
 		activeStep->text->changeColor(Translucid_Green);
 		completed_delay_timer.Start();		
@@ -171,7 +172,7 @@ void j1Tutorial::finishStep()
 
 void j1Tutorial::taskCompleted(Task task)
 {
-	if (activeStep != nullptr && activeStep->task == task)
+	if (activeStep != nullptr && activeStep->task == task && !activeStep->finished)
 	{
 		finishStep();
 

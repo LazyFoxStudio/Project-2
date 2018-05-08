@@ -129,6 +129,7 @@ enum SFXList
 	SFX_BUTTON_CLICKED, // Isn't yet on the xml (temporary Map assist sfx)
 	SFX_MAP_ASSIST,
 	SFX_MAP_ATTACK,
+	SFX_TUTORIAL_STEP,
 
 
 
