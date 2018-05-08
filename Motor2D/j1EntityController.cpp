@@ -23,6 +23,7 @@
 #include "Quadtree.h"
 #include "UI_InfoTable.h"
 #include "j1Tutorial.h"
+#include "UI_CooldownsDisplay.h"
 #include <algorithm>
 
 #define SQUAD_MAX_FRAMETIME 0.1f
@@ -35,8 +36,6 @@ j1EntityController::j1EntityController() { name = "entitycontroller"; pausable =
 bool j1EntityController::Start()
 {
 	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
-
-	addHero(iPoint(2000, 1950), HERO_2);
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	return true;
@@ -153,7 +152,7 @@ bool j1EntityController::Update(float dt)
 		
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr)
+	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr)
 	{
 		if (hero->isSelected == true) //center camera
 		{
@@ -203,22 +202,24 @@ void j1EntityController::buildingCalculations()
 			App->input->GetMousePosition(position.x, position.y);
 			if (placeBuilding(position))
 			{
-				//Hardcoded
-				Button* barracks = App->gui->GetActionButton(5);
-				barracks->Unlock();
-				Button* farms = App->gui->GetActionButton(7);
-				farms->Unlock();
-				Button* mine = App->gui->GetActionButton(22);
-				mine->Unlock();
-				Button* turret = App->gui->GetActionButton(23);
-				turret->Unlock();
-				Button* hut = App->gui->GetActionButton(24);
-				hut->Unlock();
-				Button* church = App->gui->GetActionButton(25);
-				church->Unlock();
-				Button* blacksmith = App->gui->GetActionButton(26);
-				blacksmith->Unlock();
-
+				if (to_build_type == LUMBER_MILL && !App->tutorial->doingTutorial)
+				{
+					//Hardcoded
+					Button* barracks = App->gui->GetActionButton(5);
+					barracks->Unlock();					
+					Button* farms = App->gui->GetActionButton(7);
+					farms->Unlock();
+					Button* mine = App->gui->GetActionButton(22);
+					mine->Unlock();
+					Button* turret = App->gui->GetActionButton(23);
+					turret->Unlock();
+					Button* hut = App->gui->GetActionButton(24);
+					hut->Unlock();
+					Button* church = App->gui->GetActionButton(25);
+					church->Unlock();
+					Button* blacksmith = App->gui->GetActionButton(26);
+					blacksmith->Unlock();
+				}
 
 				App->gui->warningMessages->hideMessage(NO_TREES);
 				App->entitycontroller->SpendCost(to_build_type);
@@ -635,6 +636,8 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	}
 
 	App->gui->createLifeBar(hero);
+
+	App->gui->cooldownsDisplay->heroChoosen(hero);
 
 	entities.push_back(hero);
 

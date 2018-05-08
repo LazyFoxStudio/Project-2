@@ -364,6 +364,16 @@ bool j1Gui::checkMouseHovering(UI_element* element)
 			element->callback->OnUIEvent(element, MOUSE_LEAVE);
 	}
 
+	if (!ret && element->childs.size() > 0)
+	{
+		for (std::list<UI_element*>::iterator it_c = element->childs.begin(); it_c != element->childs.end(); it_c++)
+		{
+			ret = App->gui->checkMouseHovering((*it_c));
+			if (ret)
+				break;
+		}
+	}
+
 	return ret;
 }
 

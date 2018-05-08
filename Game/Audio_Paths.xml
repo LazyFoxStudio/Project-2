@@ -67,6 +67,7 @@
 	<path sfx="Map/Massist.wav"/>
 	<path sfx="Map/Massist.wav"/>
 	<path sfx="Map/Mattack.wav"/>
+	<path sfx="Misc/Tutorial_step.wav"/>
    </SFX>
    <Music>
 	<path track="Main_Theme.ogg"/>

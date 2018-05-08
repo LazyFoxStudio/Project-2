@@ -47,11 +47,8 @@ bool j1ActionsController::Update(float dt)
 			break;
 		case BUILD_LUMBER_MILL:
 			if (doingAction)
-			{
-				App->entitycontroller->to_build_type = LUMBER_MILL;
-				if (App->tutorial->doingTutorial)
-					App->tutorial->taskCompleted(PICK_LUMBER_MILL);
-			}
+				App->entitycontroller->to_build_type = LUMBER_MILL;				
+
 			break;
 		case BUILD_FARM:
 			if (doingAction)
@@ -84,7 +81,9 @@ bool j1ActionsController::Update(float dt)
 
 			break;
 		case UNASSIGN_WORKER:
-			if (!App->entitycontroller->selected_entities.empty() && (App->entitycontroller->selected_entities.front()->type == LUMBER_MILL|| App->entitycontroller->selected_entities.front()->type == MINE) && App->gui->current_hovering_element != nullptr && App->gui->current_hovering_element->parent != nullptr && ((Building*)App->entitycontroller->selected_entities.front())->workersDisplay == App->gui->current_hovering_element->parent)
+			if (!App->entitycontroller->selected_entities.empty() &&
+				(App->entitycontroller->selected_entities.front()->type == LUMBER_MILL|| App->entitycontroller->selected_entities.front()->type == MINE) &&
+				App->gui->current_hovering_element != nullptr && (App->gui->current_hovering_element->parent == nullptr || App->gui->current_hovering_element->parent->element_type != WORKERSDISPLAY))
 			{
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(false, (Building*)*App->entitycontroller->selected_entities.begin());
@@ -96,7 +95,9 @@ bool j1ActionsController::Update(float dt)
 			doingAction = false;
 			break;
 		case ASSIGN_WORKER:
-			if (!App->entitycontroller->selected_entities.empty() && (App->entitycontroller->selected_entities.front()->type == LUMBER_MILL || App->entitycontroller->selected_entities.front()->type == MINE) && App->gui->current_hovering_element != nullptr && App->gui->current_hovering_element->parent != nullptr && ((Building*)App->entitycontroller->selected_entities.front())->workersDisplay == App->gui->current_hovering_element->parent)
+			if (!App->entitycontroller->selected_entities.empty() &&
+				(App->entitycontroller->selected_entities.front()->type == LUMBER_MILL || App->entitycontroller->selected_entities.front()->type == MINE) &&
+				App->gui->current_hovering_element != nullptr && (App->gui->current_hovering_element->parent == nullptr || App->gui->current_hovering_element->parent->element_type != WORKERSDISPLAY))
 			{
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(true, (Building*)*App->entitycontroller->selected_entities.begin());
@@ -206,7 +207,7 @@ bool j1ActionsController::Update(float dt)
 			App->gui->nextWaveWindow->toggle();
 			doingAction = false;
 			break;
-		case NEW_GAME:
+		case NEW_GAME:		
 			if (App->tutorial->active)
 				App->tutorial->startTutorial();
 			App->scene->active = true;
@@ -264,6 +265,7 @@ bool j1ActionsController::Update(float dt)
 			App->uiscene->toggleMenu(false, INGAME_MENU);
 			App->uiscene->toggleMenu(false, PAUSE_MENU);
 			doingAction = false;
+			App->scene->Close_game();
 			break;
 		}
 		
@@ -294,7 +296,12 @@ void j1ActionsController::activateAction(actionType type)
 		}
 	}
 	else
+	{
 		doingAction = true;
+		if (type == BUILD_LUMBER_MILL)
+			if (App->tutorial->doingTutorial)
+				App->tutorial->taskCompleted(PICK_LUMBER_MILL);
+	}
 
 	action_type = type;
 }

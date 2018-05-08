@@ -8,13 +8,13 @@
 #include "j1Fonts.h"
 #include "j1Render.h"
 
-FarmWorkersManager::FarmWorkersManager(): UI_element(1375, 825, PRODUCTIONDISPLAY, { 0,0,200,220 }, (j1Module*)App->uiscene)
+FarmWorkersManager::FarmWorkersManager(): UI_element(1400, 825, PRODUCTIONDISPLAY, { 0,0,200,220 }, (j1Module*)App->uiscene)
 {
 	int counterX = 0;
 	int counterY = 0;
 	for (int i = 0; i < MAX_VILLAGERS_FARM; i++)
 	{
-		workerIcon* icon = new workerIcon(0 + (105*counterX), 0 + (75*counterY));
+		workerIcon* icon = new workerIcon(0 + (85*counterX), 0 + (80*counterY));
 		icon->icon->parent = this;
 		icon->dark_icon->parent = this;
 		icons.push_back(icon);

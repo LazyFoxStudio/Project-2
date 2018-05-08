@@ -5,6 +5,7 @@
 
 class Text;
 class Chrono;
+class Hero;
 
 class CooldownsDisplay : public UI_element
 {
@@ -17,6 +18,7 @@ public:
 	void skillUsed(int skill);
 
 	void Reset();
+	void heroChoosen(Hero* hero);
 
 public:
 

@@ -156,7 +156,7 @@ SDL_Texture * Minimap::createTexture()
 
 void Minimap::DrawMinimap()
 {
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && !App->isPaused())
 		moveCamera();
 
 	//We get the texture

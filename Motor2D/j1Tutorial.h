@@ -20,7 +20,11 @@ enum Task
 	SELECT_HERO,
 	MOVE_TROOPS,
 	KILL_ENEMIES,
-	PLACE_BARRACKS
+	PLACE_BARRACKS,
+	MOVE_CAMERA,
+
+	UNLOCK_FARM = 15,
+	UNLOCK_BARRACKS
 };
 
 class TextBox;
@@ -45,6 +49,8 @@ struct Step
 
 	void Draw();
 	bool isFinished();
+
+	bool finished = false;
 };
 
 class j1Tutorial : public j1Module
@@ -63,8 +69,10 @@ public:
 
 	void loadTutorial(char* path);
 	void startTutorial();
+	void stopTutorial(bool skip = false);
 	void finishStep();
 	void taskCompleted(Task task);
+	void finishRequirement(Task task);
 
 public:
 
@@ -76,6 +84,8 @@ public:
 	bool				builded = false;
 
 	j1Timer				timer;
+	j1Timer				completed_delay_timer;
+	uint64				completed_delay = 250;
 };
 
 #endif //__J1TUTORIAL_H__

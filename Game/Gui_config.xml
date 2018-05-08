@@ -143,8 +143,8 @@ Resolution of the screen: 1680x 1050y
 
 	<!-- Wave Window -->
 		<nextwavewindow icon_atlas="false">
-			<position x="1408" y="462"/>
-			<minimizedPosition x="1408" y="758"/>
+			<position x="1408" y="429"/>
+			<minimizedPosition x="1408" y="725"/>
 			<section x="0" y="271" w="272" h="336"/>
 			<icons x="23" y="70" offsetX="125" offsetY="80"/>
 			<draggable horizontal="false" vertical="false"/>
@@ -176,9 +176,8 @@ Resolution of the screen: 1680x 1050y
 		
 	</menu>
 
+	<!-- GAME OVER MENU -->
 	<menu type="4" active="false">
-    
-    <!--Dead Image-->
     <atlas_image icon_atlas="false" active="true">
       <position x="494" y="350"/>
       <section x="285" y="794" w="692" h="255"/>
@@ -191,7 +190,8 @@ Resolution of the screen: 1680x 1050y
 	</text>
 
    </menu>
-    <!-- MAIN_MENU  -->
+    
+	<!-- MAIN_MENU  -->
     <menu type="0" active="true">
 		<image path="gui/menu_bckg.png">
 			<position x="0" y="0"/>
@@ -361,7 +361,7 @@ Resolution of the screen: 1680x 1050y
 					<OnMouse x="992" y="928" w="294" h="89"/>
 					<OnClick x="992" y="928" w="294" h="89"/>
 					<childs>
-						<text text="EXIT" center="true" counter="false">
+						<text text="MAIN MENU" center="true" counter="false">
 							<position x="0" y="0"/>
 							<font id="4"/>
 							<color r="0" g="0" b="0" a="255"/>
