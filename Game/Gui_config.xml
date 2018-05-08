@@ -96,7 +96,7 @@ Resolution of the screen: 1680x 1050y
 					<color r="255" g="255" b="255" a="255"/>
 					<interactive value="false"/>
 				</text>
-				<text text="0" center="false" counter="false" prefix="+">
+				<text text="golf_sec" center="false" counter="true" prefix="+">
 					<position x="475" y="13"/>
 					<font id="2"/>
 					<color r="255" g="255" b="0" a="255"/>

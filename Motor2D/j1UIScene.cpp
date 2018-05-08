@@ -56,7 +56,7 @@ bool j1UIScene::Start()
 	gold_display->convertIntoCounter(&App->scene->gold);
 
 	Text* gold_sec = (Text*)App->gui->GetElement(TEXT, 6);
-	//gold_sec->convertIntoCounter(&App->scene->gold_production_per_second);
+	gold_sec->convertIntoCounter(&App->scene->gold_production_per_second);
 
 	Text* waves = (Text*)App->gui->GetElement(TEXT, 8);
 	waves->convertIntoCounter(&App->wavecontroller->current_wave);

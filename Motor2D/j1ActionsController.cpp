@@ -84,24 +84,24 @@ bool j1ActionsController::Update(float dt)
 
 			break;
 		case UNASSIGN_WORKER:
-			if (!App->entitycontroller->selected_entities.empty() && (App->entitycontroller->selected_entities.front()->type == LUMBER_MILL|| App->entitycontroller->selected_entities.front()->type == MINE))
+			if (!App->entitycontroller->selected_entities.empty() && (App->entitycontroller->selected_entities.front()->type == LUMBER_MILL|| App->entitycontroller->selected_entities.front()->type == MINE) && App->gui->current_hovering_element != nullptr && App->gui->current_hovering_element->parent != nullptr && ((Building*)App->entitycontroller->selected_entities.front())->workersDisplay == App->gui->current_hovering_element->parent)
 			{
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(false, (Building*)*App->entitycontroller->selected_entities.begin());
 			}
-			else if (App->gui->current_hovering_element != nullptr)
+			else if (App->gui->current_hovering_element != nullptr && App->gui->current_hovering_element->parent != nullptr)
 			{
 				App->entitycontroller->HandleWorkerAssignment(false, ((WorkersDisplay*)App->gui->current_hovering_element->parent)->building);
 			}
 			doingAction = false;
 			break;
 		case ASSIGN_WORKER:
-			if (!App->entitycontroller->selected_entities.empty() && (App->entitycontroller->selected_entities.front()->type == LUMBER_MILL || App->entitycontroller->selected_entities.front()->type == MINE))
+			if (!App->entitycontroller->selected_entities.empty() && (App->entitycontroller->selected_entities.front()->type == LUMBER_MILL || App->entitycontroller->selected_entities.front()->type == MINE) && App->gui->current_hovering_element != nullptr && App->gui->current_hovering_element->parent != nullptr && ((Building*)App->entitycontroller->selected_entities.front())->workersDisplay == App->gui->current_hovering_element->parent)
 			{
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					App->entitycontroller->HandleWorkerAssignment(true, (Building*)*App->entitycontroller->selected_entities.begin());
 			}
-			else if (App->gui->current_hovering_element != nullptr)
+			else if (App->gui->current_hovering_element != nullptr && App->gui->current_hovering_element->parent != nullptr)
 			{
 				App->entitycontroller->HandleWorkerAssignment(true, ((WorkersDisplay*)App->gui->current_hovering_element->parent)->building);
 			}
