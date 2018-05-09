@@ -31,6 +31,18 @@ j1Scene::j1Scene() : j1Module() { name = "scene"; pausable = false; }
 // Destructor
 j1Scene::~j1Scene() {}
 
+bool j1Scene::Awake(pugi::xml_node& conf)
+{
+	LOG("Loading GUI atlas");
+	bool ret = true;
+
+	i_wood = conf.child("Wood").attribute("value").as_int(0);
+	i_gold = conf.child("Gold").attribute("value").as_int(0);
+	i_workers = conf.child("Workers").attribute("value").as_int(0);
+	i_oil = conf.child("Oil").attribute("value").as_int(0);
+
+	return ret;
+}
 
 // Called before the first frame
 bool j1Scene::Start()
@@ -66,6 +78,11 @@ bool j1Scene::Start()
 	loadGameDB(gameData);
 	//App->entitycontroller->addUnit({ 2000, 2200 }, KNIGHT);
 	//App->entitycontroller->AddSquad(FOOTMAN, { 2000,2200 });
+
+	set_wood = App->console->AddFunction("set_wood", this, 1, 1, "amount");
+	set_gold = App->console->AddFunction("set_gold", this, 1, 1, "amount");
+	set_wood_second = App->console->AddFunction("set_wood_second", this, 1, 1, "amount");
+	set_gold_second = App->console->AddFunction("set_gold_second", this, 1, 1, "amount");
 
 	return true;
 }
@@ -208,7 +225,7 @@ void j1Scene::Start_game()
 	App->entitycontroller->buildingArea.x = town_hall_pos.x - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_width / 2);
 	App->entitycontroller->buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_height / 2);
 
-	//App->entitycontroller->AddSquad(FOOTMAN, fPoint(2200, 1950));
+	App->entitycontroller->AddSquad(BALLISTA, fPoint(2200, 1950));
 	//App->entitycontroller->AddSquad(FOOTMAN, fPoint(2200, 2150));
 
 	//RESTARTING WAVES---------------------------------------------------------
@@ -224,8 +241,8 @@ void j1Scene::Start_game()
 	}
 
 	//RESTARTING RESOURCES-----------------------------------------------------
-	wood = INIT_WOOD;
-	gold = INIT_GOLD;
+	wood = i_wood;
+	gold = i_gold;
 	//inactive_workers = workers = INIT_WORKERS;
 	InitialWorkers(App->entitycontroller->town_hall);
 	town_hall_lvl = INIT_TOWNHALL_LVL;
@@ -313,4 +330,29 @@ void j1Scene::loadGameDB(pugi::xml_node& data)
 
 	//Load workers display
 	App->gui->LoadWorkersDisplayDB(data);
+}
+
+bool j1Scene::Console_Interaction(std::string& function, std::vector<int>& arguments)
+{
+	if (function == set_gold->name)
+	{
+		gold = arguments.data()[0];
+	}
+
+	if (function == set_wood->name)
+	{
+		wood = arguments.data()[0];
+
+	}
+	if (function == set_gold_second->name)
+	{
+		gold_production_per_second = arguments.data()[0];
+
+	}
+	if (function == set_wood_second->name)
+	{
+		wood_production_per_second = arguments.data()[0];
+	}
+
+	return true;
 }

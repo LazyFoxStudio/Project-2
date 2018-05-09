@@ -169,7 +169,7 @@ void Unit::Move(float dt)
 	if (movement.GetModule() > max_step * MAX_NEXT_STEP_MULTIPLIER)
 		movement = movement.Normalized() * max_step * MAX_NEXT_STEP_MULTIPLIER;
 
-	if (App->pathfinding->IsWalkable(App->map->WorldToMap(position.x + movement.x, position.y + movement.y)))
+	if (App->pathfinding->IsWalkable(App->map->WorldToMap(position.x + movement.x, position.y + movement.y)) || IsFlying())
 		position += movement;
 	else
 		position -= movement * 0.3f;

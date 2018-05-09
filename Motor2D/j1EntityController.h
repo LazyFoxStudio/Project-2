@@ -6,6 +6,7 @@
 #include "Unit.h"
 #include "Hero.h"
 #include "j1Audio.h"
+#include "j1Console.h"
 
 #include <list>
 #include <map>
@@ -141,6 +142,8 @@ public:
 	void UnassignRandomWorker();
 
 	bool CreateForest(MapLayer* trees);
+	bool Console_Interaction(std::string& function, std::vector<int>& arguments);
+
 
 public:
 
@@ -180,6 +183,17 @@ public:
 	int r_armor_lvl = 0;
 	int f_dmg_lvl = 0;
 	int f_armor_lvl = 0;
+
+	function* lose_game;
+	function* reset_hero_cd;
+	function* new_worker_cost;
+	function* new_wood_cost;
+	function* new_gold_cost;
+	function* new_oil_cost;
+	function* complete_buildings;
+	function* kill_selected;
+	function* change_stat;
+	function* next_wave;
 
 
 };

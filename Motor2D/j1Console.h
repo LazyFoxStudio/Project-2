@@ -13,6 +13,7 @@ struct function
 	j1Module* callback;
 	int min_args;
 	int max_args;
+	std::string help;
 };
 
 class j1Console : public j1Module
@@ -39,21 +40,18 @@ public:
 	//text being written in the console
 	std::string editable_text;
 
-	//UITextbox* input = nullptr;
-
 	std::list<function*> functions;
-	int AddFunction(const char*, j1Module* ,int, int);
 
-	std::string function_1 = "";
-	std::string exit = "";
-	std::string help = "";
+	function* AddFunction(const char*, j1Module* ,int, int, const char* = "");
+
+	function* help;
 
 	bool Console_Interaction(std::string& function, std::vector<int>& arguments);
 
 public:
 	bool console_active = false;
 private:
-	int textpos;
+	int textpos = 0;
 
 };
 #endif // !__J1ENTITIES_H__

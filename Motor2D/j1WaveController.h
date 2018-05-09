@@ -39,6 +39,7 @@ public:
 	void Generate_Next_Wave();
 	void Generate_Wave();
 	void Restart_Wave_Sys();
+	void entity_selector(int);
 
 	void updateFlowField();
 
@@ -53,6 +54,7 @@ public:
 	int					wait_between_waves = 0;
 	int					current_wave = 0;
 	int					difficulty = 0;
+	int					points=0;
 
 	bool				tutorial = false;
 	

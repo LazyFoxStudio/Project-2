@@ -43,6 +43,7 @@ bool j1WaveController::Start()
 	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
 	flow_field = App->pathfinding->RequestFlowField(TownHall_pos);
 	
+	points = 100;
 	/*wave_timer.Start();
 
 	current_wave = 0;
@@ -183,10 +184,19 @@ void j1WaveController::Generate_Wave()
 		//minimap_
 		App->gui->minimap->AddAlert((*it)->spawn.x, (*it)->spawn.y, 5, alert_type::DANGER);
 
-
-		AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->getCommander(), TOWN_HALL_POS);
-		new_atk_order->flow_field = flow_field;
-		squad->commands.push_back(new_atk_order);
+		if (squad->isFlying())
+		{
+			iPoint TownHall_pos = TOWN_HALL_POS;
+			TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
+			TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
+			squad->commands.push_back(new AttackingMoveToSquadFlying(squad->getCommander(), TownHall_pos));
+		}
+		else
+		{
+			AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->getCommander(), TOWN_HALL_POS);
+			new_atk_order->flow_field = flow_field;
+			squad->commands.push_back(new_atk_order);
+		}
 	}
 
 	Generate_Next_Wave();
@@ -198,4 +208,25 @@ void j1WaveController::Restart_Wave_Sys()
 	Generate_Next_Wave();
 	wave_timer.Start();
 
+}
+
+void j1WaveController::entity_selector(int num)
+{
+	srand(time(NULL));
+
+	while (points > 0)
+	{
+		int enemy = rand() % (num)+1;
+		int position = rand() % spawns.size();
+
+		/*if(points<entity.cost)
+		{
+		num-=enemy;
+		}
+		else
+		{
+		next_wave.push_back(new NextWave((Type)(GRUNT + enemy), spawns[position]));
+		points-=entity.cost;
+		}*/
+	}
 }

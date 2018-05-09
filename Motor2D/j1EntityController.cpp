@@ -36,6 +36,18 @@ j1EntityController::j1EntityController() { name = "entitycontroller"; pausable =
 bool j1EntityController::Start()
 {
 	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
+	
+	lose_game = App->console->AddFunction("lose_game",this,0,0);
+	reset_hero_cd = App->console->AddFunction("reset_hero_cd", this, 0, 0);;
+	complete_buildings = App->console->AddFunction("creation_speed", this, 1, 2, " entity , time_to_create");
+	kill_selected = App->console->AddFunction("kill_selected",this,0,0);
+	change_stat = App->console->AddFunction("change_stat", this, 3, 3, " entity , stat , value");
+	next_wave = App->console->AddFunction("next_wave", this, 0, 0);
+
+	new_wood_cost = App->console->AddFunction("change_wood_cost", this, 2, 2, "entity, cost");
+	new_worker_cost = App->console->AddFunction("change_worker_cost", this, 2, 2, "entity, cost");;
+	new_gold_cost = App->console->AddFunction("change_gold_cost", this, 2, 2, "entity, cost");;
+	new_oil_cost = App->console->AddFunction("change_oil_cost", this, 2, 2, "entity, cost");;
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	return true;
@@ -915,32 +927,45 @@ void j1EntityController::commandControl()
 	{
 		if (!selected_squads.empty())
 		{
-			FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+			FlowField* shared_flowfield = nullptr;
 			if (App->tutorial->doingTutorial)
 				App->tutorial->taskCompleted(MOVE_TROOPS);
 			for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 			{
 				(*it)->Halt();
-				MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
-				new_order->flow_field = shared_flowfield;
-				(*it)->commands.push_back(new_order);
+				if((*it)->isFlying())
+					(*it)->commands.push_back(new MoveToSquadFlying((*it)->getCommander(), map_p));
+				else
+				{
+					if (shared_flowfield)
+						shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+
+					MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
+					new_order->flow_field = shared_flowfield;
+					(*it)->commands.push_back(new_order);
+				}
 			}
-			shared_flowfield->used_by = selected_squads.size();
 		}
 	}
 	else
 	{
 		if (entity->IsEnemy() && entity->ex_state != DESTROYED && entity->isActive)    //clicked on a enemy
 		{
-			FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+			FlowField* shared_flowfield = nullptr;
 			for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 			{
 				(*it)->Halt();
-				AttackingMoveToSquad* new_order = nullptr;
-				new_order = new AttackingMoveToSquad((*it)->getCommander(), map_p, false, ((Unit*)entity)->squad->UID);
+				if ((*it)->isFlying())
+					(*it)->commands.push_back(new AttackingMoveToSquadFlying((*it)->getCommander(), map_p));
+				else
+				{
+					if (shared_flowfield)
+						shared_flowfield = App->pathfinding->RequestFlowField(map_p);
 
-				new_order->flow_field = shared_flowfield;
-				(*it)->commands.push_back(new_order);
+					MoveToSquad* new_order = new AttackingMoveToSquad((*it)->getCommander(), map_p);
+					new_order->flow_field = shared_flowfield;
+					(*it)->commands.push_back(new_order);
+				}
 			}
 		}
 		
@@ -1257,7 +1282,7 @@ Entity* j1EntityController::getNearestEnemy(Entity* entity, int target_squad)
 			else if (((Unit*)(*it))->squad->UID != target_squad) continue;
 		}
 
-		if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED)
+		if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED && !(entity->IsMelee() && (*it)->IsFlying()))
 		{
 			if (!ret) ret = *it;
 			else
@@ -1556,44 +1581,355 @@ void j1EntityController::DeleteDB()
 
 bool j1EntityController::CreateForest(MapLayer* trees)
 {
-	bool ret = true;
-	for (int j = 0; j < trees->height; j++)
+	return true;
+}
+bool j1EntityController::Console_Interaction(std::string& function, std::vector<int>& arguments)
+{
+	if (function == lose_game->name)
 	{
-		for (int i = 0; i < trees->width; i++)
-		{
-			if (trees->GetID(i, j) == 112)//found a core!
-			{
-				//start bfs
-				Forest f;
-				std::list<iPoint>borders_to_check;
-				iPoint p = { i, j};//32 is hardcoded
-				borders_to_check.push_back(p);
-				
-				while (borders_to_check.size() != 0)
-				{
-					iPoint curr = borders_to_check.front();
-					borders_to_check.remove(curr);
-					iPoint neighbors[4];
-					neighbors[0].create(curr.x + 1, curr.y + 0);
-					neighbors[1].create(curr.x + 0, curr.y + 1);
-					neighbors[2].create(curr.x - 1, curr.y + 0);
-					neighbors[3].create(curr.x + 0, curr.y - 1);
+		town_hall->current_HP -= 9000;
+	}
 
-					for (uint i = 0; i < 4; ++i)
-					{
-						if (!App->pathfinding->IsWalkable(neighbors[i]) && std::find(f.trees.begin(), f.trees.end(), neighbors[i]) != f.trees.end())
-						{
-							//add to the list of trees and to the borders
-							iPoint p = neighbors[i];
-							borders_to_check.push_back(p);
-							f.trees.push_back({p.x*32,p.y*32});
-						}
-					}
-					borders_to_check.remove(curr);
-				}
-				forests.push_back(&f);
+	if (function == reset_hero_cd->name)
+	{
+		(Hero*)getEntitybyID(hero_UID);//help
+	}
+
+	if (function == change_stat->name)
+	{
+		if (arguments.data()[0] >= Type::FOOTMAN && arguments.data()[0] <= Type::FLYING_MACHINE)
+		{
+			switch (arguments.data()[1])
+			{
+			case 0:
+				DataBase[arguments.data()[0]]->attack = arguments.data()[2];
+				LOG("changed attack to %d", arguments.data()[2]);
+				break;
+			case 1:
+				DataBase[arguments.data()[0]]->piercing_atk = arguments.data()[2];
+				LOG("changed piercing_atk to %d", arguments.data()[2]);
+				break;
+			case 2:
+				DataBase[arguments.data()[0]]->defense = arguments.data()[2];
+				LOG("changed defense to %d", arguments.data()[2]);
+				break;
+			case 3:
+				DataBase[arguments.data()[0]]->line_of_sight = arguments.data()[2];
+				LOG("changed line of sight to %d", arguments.data()[2]);
+				break;
+			case 4:
+				DataBase[arguments.data()[0]]->range = arguments.data()[2];
+				LOG("changed range to %d", arguments.data()[2]);
+				break;
+			default:
+				break;
+			}
+		}
+		////attack
+		//if (arguments.data()[1] == 0)
+		//{
+		//	switch (arguments.data()[0])
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->attack = arguments.data()[2];
+		//		LOG("changed footman attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->attack = arguments.data()[2];
+		//		LOG("changed archer attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->attack = arguments.data()[2];
+		//		LOG("changed knight attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->attack = arguments.data()[2];
+		//		LOG("changed gryphon attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->attack = arguments.data()[2];
+		//		LOG("changed ballista attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->attack = arguments.data()[2];
+		//		LOG("changed flying machine attack to %d", arguments.data()[2]);
+		//		break;
+		//	default:
+		//		break;
+		//	}
+		//}
+		////piercing attack
+		//if (arguments.data()[1] == 1)
+		//{
+		//	switch (arguments.data()[0])
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->piercing_atk = arguments.data()[2];
+		//		LOG("changed footman piercing attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->piercing_atk = arguments.data()[2];
+		//		LOG("changed archer piercing attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->piercing_atk = arguments.data()[2];
+		//		LOG("changed knight piercing attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->piercing_atk = arguments.data()[2];
+		//		LOG("changed gryphon piercing attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->piercing_atk = arguments.data()[2];
+		//		LOG("changed ballista piercing attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->piercing_atk = arguments.data()[2];
+		//		LOG("changed flying machine piercing attack to %d", arguments.data()[2]);
+		//		break;
+		//	default:
+		//		break;
+		//	}
+		//}
+		////defense
+		//if (arguments.data()[1] == 2)
+		//{
+		//	switch (arguments.data()[0])
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->defense = arguments.data()[2];
+		//		LOG("changed footman defense to %d", arguments.data()[2]);
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->defense = arguments.data()[2];
+		//		LOG("changed archer defense to %d", arguments.data()[2]);
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->defense = arguments.data()[2];
+		//		LOG("changed knight defense to %d", arguments.data()[2]);
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->defense = arguments.data()[2];
+		//		LOG("changed gryphon defense to %d", arguments.data()[2]);
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->defense = arguments.data()[2];
+		//		LOG("changed ballista defense to %d", arguments.data()[2]);
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->defense = arguments.data()[2];
+		//		LOG("changed flying machine defense to %d", arguments.data()[2]);
+		//		break;
+		//	default:
+		//		break;
+		//	}
+		//}
+		////sight
+		//if (arguments.data()[1] == 3)
+		//{
+		//	switch (arguments.data()[0])
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->line_of_sight = arguments.data()[2];
+		//		LOG("changed footman sight %d", arguments.data()[2]);
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->line_of_sight = arguments.data()[2];
+		//		LOG("changed archer sight %d", arguments.data()[2]);
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->line_of_sight = arguments.data()[2];
+		//		LOG("changed knight sight %d", arguments.data()[2]);
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->line_of_sight = arguments.data()[2];
+		//		LOG("changed gryphon sight %d", arguments.data()[2]);
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->line_of_sight = arguments.data()[2];
+		//		LOG("changed ballista sight %d", arguments.data()[2]);
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->line_of_sight = arguments.data()[2];
+		//		LOG("changed flying machine sight %d", arguments.data()[2]);
+		//		break;
+		//	default:
+		//		break;
+		//	}
+		//}
+		////range
+		//if (arguments.data()[1] == 4)
+		//{
+		//	switch (arguments.data()[0])
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->range = arguments.data()[2];
+		//		LOG("changed footman range %d", arguments.data()[2]);
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->range = arguments.data()[2];
+		//		LOG("changed archer range %d", arguments.data()[2]);
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->range = arguments.data()[2];
+		//		LOG("changed knight range %d", arguments.data()[2]);
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->range = arguments.data()[2];
+		//		LOG("changed gryphon range %d", arguments.data()[2]);
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->range = arguments.data()[2];
+		//		LOG("changed ballista range %d", arguments.data()[2]);
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->range = arguments.data()[2];
+		//		LOG("changed flying machine range %d", arguments.data()[2]);
+		//		break;
+		//	default:
+		//		break;
+		//	}
+		//}
+
+	}
+
+	if (function == new_wood_cost->name)
+	{
+		switch (arguments.data()[0])
+		{
+		case 0:
+			DataBase[FOOTMAN]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 1:
+			DataBase[ARCHER]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 2:
+			DataBase[KNIGHT]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 3:
+			DataBase[GRYPHON]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 4:
+			DataBase[BALLISTA]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 5:
+			DataBase[FLYING_MACHINE]->cost.wood_cost = arguments.data()[1];
+			break;
+		default:
+			break;
+		}
+	}
+	if (function == new_gold_cost->name)
+	{
+		switch (arguments.data()[0])
+		{
+		case 0:
+			DataBase[FOOTMAN]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 1:
+			DataBase[ARCHER]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 2:
+			DataBase[KNIGHT]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 3:
+			DataBase[GRYPHON]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 4:
+			DataBase[BALLISTA]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 5:
+			DataBase[FLYING_MACHINE]->cost.gold_cost = arguments.data()[1];
+			break;
+		default:
+			break;
+		}
+	}
+	if (function == new_oil_cost->name)
+	{
+		switch (arguments.data()[0])
+		{
+		case 0:
+			DataBase[FOOTMAN]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 1:
+			DataBase[ARCHER]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 2:
+			DataBase[KNIGHT]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 3:
+			DataBase[GRYPHON]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 4:
+			DataBase[BALLISTA]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 5:
+			DataBase[FLYING_MACHINE]->cost.oil_cost = arguments.data()[1];
+			break;
+		default:
+			break;
+		}
+	}
+	if (function == new_worker_cost->name)
+	{
+		switch (arguments.data()[0])
+		{
+		case 0:
+			DataBase[FOOTMAN]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 1:
+			DataBase[ARCHER]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 2:
+			DataBase[KNIGHT]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 3:
+			DataBase[GRYPHON]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 4:
+			DataBase[BALLISTA]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 5:
+			DataBase[FLYING_MACHINE]->cost.worker_cost = arguments.data()[1];
+			break;
+		default:
+			break;
+		}
+	}
+
+	if (function == kill_selected->name)
+	{
+		for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
+		{
+			if ((*it)->IsUnit() && !(*it)->IsHero())
+			{
+				LOG("deleted %d via comand", (*it)->UID);
+				DeleteEntity((*it)->UID);
 			}
 		}
 	}
-	return ret;
+
+	if (function == complete_buildings->name)
+	{
+		if (arguments.data()[0] < Type::GRUNT)
+		{
+			if (arguments.size() == 2)
+				DataBase[arguments.data()[0]]->cost.creation_time = arguments.data()[1];
+			else if (arguments.size() == 1)
+				DataBase[arguments.data()[0]]->cost.creation_time = 0;
+		}
+	}
+
+	if (function == next_wave->name)
+	{
+		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			if ((*it)->type >= Type::GRUNT && (*it)->type <= Type::JUGGERNAUT)
+			{
+				DeleteEntity((*it)->UID);
+			}
+		}
+	}
+	return true;
 }

@@ -61,6 +61,23 @@ private:
 
 };
 
+class MoveToFlying : public Command
+{
+public:
+	iPoint dest = { 0,0 };
+	iPoint map_p = { 0,0 };
+
+public:
+	MoveToFlying(Unit* unit, iPoint destination) : Command(unit, MOVETO), dest(destination) {};
+
+private:
+	bool OnUpdate(float dt);
+	bool OnStop();
+
+	fPoint getDesiredPlace();
+
+};
+
 class Attack : public Command
 {
 public:
@@ -85,6 +102,7 @@ private:
 	void callRetaliation(Entity* enemy, uint squad_UID);
 	
 	int dealDamage(Entity* attacker, Entity* defender);
+	void AoE_Damage(Entity* enemy);
 	bool favorableMatchup(Entity* attacker, Entity* defender);
 
 };
@@ -115,6 +133,26 @@ private:
 
 };
 
+class MoveToSquadFlying : public Command
+{
+public:
+	Squad * squad = nullptr;
+	iPoint dest = { -1,-1 };
+	FlowField* flow_field = nullptr;
+
+public:
+
+	MoveToSquadFlying(Unit* commander, iPoint map_dest) : Command(commander, MOVETOSQUAD), dest(map_dest) {};
+
+	bool allIdle();
+private:
+
+	bool OnInit();
+	virtual bool OnUpdate(float dt);
+	bool OnStop();
+
+};
+
 class AttackingMoveToSquad : public MoveToSquad
 {
 	int target_squad_id = -1;
@@ -125,6 +163,25 @@ class AttackingMoveToSquad : public MoveToSquad
 public:
 	AttackingMoveToSquad(Unit* commander, iPoint map_dest, bool hold = false, int target_squad_id = -1) : MoveToSquad(commander, map_dest), hold(hold), target_squad_id(target_squad_id) 
 		{ type = ATTACKING_MOVETO_SQUAD;};
+
+private:
+	bool OnUpdate(float dt);
+
+};
+
+
+class AttackingMoveToSquadFlying : public MoveToSquadFlying
+{
+	int target_squad_id = -1;
+	bool hold = false;
+	bool enemies_found = false;
+	std::vector<iPoint> enemy_atk_slots;
+
+public:
+	AttackingMoveToSquadFlying(Unit* commander, iPoint map_dest, bool hold = false, int target_squad_id = -1) : MoveToSquadFlying(commander, map_dest), hold(hold), target_squad_id(target_squad_id)
+	{
+		type = ATTACKING_MOVETO_SQUAD;
+	};
 
 private:
 	bool OnUpdate(float dt);
