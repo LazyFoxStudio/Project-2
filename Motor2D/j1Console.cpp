@@ -119,7 +119,7 @@ bool j1Console::PostUpdate()
 		SDL_Rect r = { -App->render->camera.x,-App->render->camera.y,App->win->screen_surface->w ,App->win->screen_surface->h / 2 };
 		//SDL_Rect r = { 0,0,App->win->screen_surface->w ,App->win->screen_surface->h / 2 };
 
-		App->render->DrawQuad(r, Grey,true,true);
+		App->render->DrawQuad(r, Translucid_Grey,true,true);
 
 		SDL_Color color = { Black.r, Black.g, Black.b, Black.a };
 
@@ -160,7 +160,6 @@ bool j1Console::Usefunction(/*UIelement* element*/)
 {
 	bool ret = true;
 
-	//UITextbox* textbox = (UITextbox*)element;
 	std::string new_string = editable_text;
 	editable_text.clear();
 
@@ -213,7 +212,7 @@ bool j1Console::Usefunction(/*UIelement* element*/)
 	return ret;
 }
 
-function* j1Console::AddFunction(const char* name, j1Module* callback, int min_args, int max_args)
+function* j1Console::AddFunction(const char* name, j1Module* callback, int min_args, int max_args, const char* _help)
 {
 	function* new_func = new function();
 
@@ -221,6 +220,7 @@ function* j1Console::AddFunction(const char* name, j1Module* callback, int min_a
 	new_func->min_args = min_args;
 	new_func->max_args = max_args;
 	new_func->callback = callback;
+	new_func->help = _help;
 
 	functions.push_back(new_func);
 
@@ -235,9 +235,16 @@ bool j1Console::Console_Interaction(std::string& _function, std::vector<int>& ar
 		logs.push_back("The avalible commands are the following:");
 		for (std::list<function*>::iterator it = functions.begin(); it != functions.end(); it++)
 		{
-			logs.push_back((*it)->name.c_str());
+			std::string help = "";
+			if ((*it)->help == "")
+				help = (*it)->name ;
+			else
+				help = (*it)->name + " (" + (*it)->help + ")";
+
+			logs.push_back(help.c_str());
 			LOG("%s", (*it)->name.c_str());
 		}
+		logs.push_back("");
 	}
 	return true;
 }

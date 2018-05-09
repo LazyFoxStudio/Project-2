@@ -79,10 +79,10 @@ bool j1Scene::Start()
 	//App->entitycontroller->addUnit({ 2000, 2200 }, KNIGHT);
 	//App->entitycontroller->AddSquad(FOOTMAN, { 2000,2200 });
 
-	set_wood = App->console->AddFunction("set_wood", this, 1, 1);
-	set_gold = App->console->AddFunction("set_gold", this, 1, 1);
-	set_wood_second = App->console->AddFunction("set_wood_second", this, 1, 1);
-	set_gold_second = App->console->AddFunction("set_gold_second", this, 1, 1);
+	set_wood = App->console->AddFunction("set_wood", this, 1, 1, "amount");
+	set_gold = App->console->AddFunction("set_gold", this, 1, 1, "amount");
+	set_wood_second = App->console->AddFunction("set_wood_second", this, 1, 1, "amount");
+	set_gold_second = App->console->AddFunction("set_gold_second", this, 1, 1, "amount");
 
 	return true;
 }

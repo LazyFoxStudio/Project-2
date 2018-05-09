@@ -39,15 +39,15 @@ bool j1EntityController::Start()
 	
 	lose_game = App->console->AddFunction("lose_game",this,0,0);
 	reset_hero_cd = App->console->AddFunction("reset_hero_cd", this, 0, 0);;
-	complete_buildings = App->console->AddFunction("creation_speed", this, 1, 2);
+	complete_buildings = App->console->AddFunction("creation_speed", this, 1, 2, " entity , time_to_create");
 	kill_selected = App->console->AddFunction("kill_selected",this,0,0);
-	change_stat = App->console->AddFunction("change_stat", this, 3, 3);
+	change_stat = App->console->AddFunction("change_stat", this, 3, 3, " entity , stat , value");
 	next_wave = App->console->AddFunction("next_wave", this, 0, 0);
 
-	new_wood_cost = App->console->AddFunction("change_wood_cost", this, 2, 2);
-	new_worker_cost = App->console->AddFunction("change_worker_cost", this, 2, 2);;
-	new_gold_cost = App->console->AddFunction("change_gold_cost", this, 2, 2);;
-	new_oil_cost = App->console->AddFunction("change_oil_cost", this, 2, 2);;
+	new_wood_cost = App->console->AddFunction("change_wood_cost", this, 2, 2, "entity, cost");
+	new_worker_cost = App->console->AddFunction("change_worker_cost", this, 2, 2, "entity, cost");;
+	new_gold_cost = App->console->AddFunction("change_gold_cost", this, 2, 2, "entity, cost");;
+	new_oil_cost = App->console->AddFunction("change_oil_cost", this, 2, 2, "entity, cost");;
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	return true;
@@ -1925,8 +1925,9 @@ bool j1EntityController::Console_Interaction(std::string& function, std::vector<
 	{
 		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 		{
-			if ((*it)->type < Type::GRUNT)
+			if ((*it)->type >= Type::GRUNT && (*it)->type <= Type::JUGGERNAUT)
 			{
+				DeleteEntity((*it)->UID);
 			}
 		}
 	}
