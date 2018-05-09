@@ -43,6 +43,7 @@ bool j1WaveController::Start()
 	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
 	flow_field = App->pathfinding->RequestFlowField(TownHall_pos);
 	
+	points = 100;
 	/*wave_timer.Start();
 
 	current_wave = 0;
@@ -207,4 +208,25 @@ void j1WaveController::Restart_Wave_Sys()
 	Generate_Next_Wave();
 	wave_timer.Start();
 
+}
+
+void j1WaveController::entity_selector(int num)
+{
+	srand(time(NULL));
+
+	while (points > 0)
+	{
+		int enemy = rand() % (num)+1;
+		int position = rand() % spawns.size();
+
+		/*if(points<entity.cost)
+		{
+		num-=enemy;
+		}
+		else
+		{
+		next_wave.push_back(new NextWave((Type)(GRUNT + enemy), spawns[position]));
+		points-=entity.cost;
+		}*/
+	}
 }
