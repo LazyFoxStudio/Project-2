@@ -28,6 +28,8 @@ public:
 	// Destructor
 	virtual ~j1Scene();
 
+	bool Awake(pugi::xml_node&);
+
 	// Called before the first frame
 	bool Start();
 
@@ -63,6 +65,11 @@ public:
 	int wood = 0;
 	int gold = 0;
 	int oil = 0;
+	
+	int i_wood = 0;
+	int i_gold = 0;
+	int i_oil = 0;
+	int i_workers = 0;
 
 	std::list<worker*> workers;
 	int workers_int = 0;
