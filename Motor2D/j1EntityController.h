@@ -186,10 +186,14 @@ public:
 
 	function* lose_game;
 	function* reset_hero_cd;
-	function* new_cost;
+	function* new_worker_cost;
+	function* new_wood_cost;
+	function* new_gold_cost;
+	function* new_oil_cost;
 	function* complete_buildings;
 	function* kill_selected;
 	function* change_stat;
+	function* next_wave;
 
 
 };

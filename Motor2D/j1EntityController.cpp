@@ -39,10 +39,15 @@ bool j1EntityController::Start()
 	
 	lose_game = App->console->AddFunction("lose_game",this,0,0);
 	reset_hero_cd = App->console->AddFunction("reset_hero_cd", this, 0, 0);;
-	new_cost = App->console->AddFunction("change_cost", this, 2, 2);;
-	complete_buildings = App->console->AddFunction("fast_building", this, 0, 0);
+	complete_buildings = App->console->AddFunction("creation_speed", this, 1, 2);
 	kill_selected = App->console->AddFunction("kill_selected",this,0,0);
-	change_stat = App->console->AddFunction("change_stat", this, 0, 0);
+	change_stat = App->console->AddFunction("change_stat", this, 3, 3);
+	next_wave = App->console->AddFunction("next_wave", this, 0, 0);
+
+	new_wood_cost = App->console->AddFunction("change_wood_cost", this, 2, 2);
+	new_worker_cost = App->console->AddFunction("change_worker_cost", this, 2, 2);;
+	new_gold_cost = App->console->AddFunction("change_gold_cost", this, 2, 2);;
+	new_oil_cost = App->console->AddFunction("change_oil_cost", this, 2, 2);;
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	return true;
@@ -1580,8 +1585,6 @@ bool j1EntityController::CreateForest(MapLayer* trees)
 }
 bool j1EntityController::Console_Interaction(std::string& function, std::vector<int>& arguments)
 {
-	//complete_buildings = App->console->AddFunction("fast_building", this, 0, 0);
-	//kill_selected = App->console->AddFunction("kill_selected", this, 0, 0);
 	if (function == lose_game->name)
 	{
 		town_hall->current_HP -= 9000;
@@ -1594,174 +1597,305 @@ bool j1EntityController::Console_Interaction(std::string& function, std::vector<
 
 	if (function == change_stat->name)
 	{
+		if (arguments.data()[0] >= Type::FOOTMAN && arguments.data()[0] <= Type::FLYING_MACHINE)
+		{
+			switch (arguments.data()[1])
+			{
+			case 0:
+				DataBase[arguments.data()[0]]->attack = arguments.data()[2];
+				LOG("changed attack to %d", arguments.data()[2]);
+				break;
+			case 1:
+				DataBase[arguments.data()[0]]->piercing_atk = arguments.data()[2];
+				LOG("changed piercing_atk to %d", arguments.data()[2]);
+				break;
+			case 2:
+				DataBase[arguments.data()[0]]->defense = arguments.data()[2];
+				LOG("changed defense to %d", arguments.data()[2]);
+				break;
+			case 3:
+				DataBase[arguments.data()[0]]->line_of_sight = arguments.data()[2];
+				LOG("changed line of sight to %d", arguments.data()[2]);
+				break;
+			case 4:
+				DataBase[arguments.data()[0]]->range = arguments.data()[2];
+				LOG("changed range to %d", arguments.data()[2]);
+				break;
+			default:
+				break;
+			}
+		}
 		////attack
-		//if (arguments.end == 0)
+		//if (arguments.data()[1] == 0)
 		//{
-		//	switch (arguments.begin)
+		//	switch (arguments.data()[0])
 		//	{
 		//	case 0:
-		//		DataBase[FOOTMAN]->attack = arguments.end;
+		//		DataBase[FOOTMAN]->attack = arguments.data()[2];
+		//		LOG("changed footman attack to %d", arguments.data()[2]);
 		//		break;
 		//	case 1:
-		//		DataBase[ARCHER]->attack = arguments.end;
+		//		DataBase[ARCHER]->attack = arguments.data()[2];
+		//		LOG("changed archer attack to %d", arguments.data()[2]);
 		//		break;
 		//	case 2:
-		//		DataBase[KNIGHT]->attack = arguments.end;
+		//		DataBase[KNIGHT]->attack = arguments.data()[2];
+		//		LOG("changed knight attack to %d", arguments.data()[2]);
 		//		break;
 		//	case 3:
-		//		DataBase[GRYPHON]->attack = arguments.end;
+		//		DataBase[GRYPHON]->attack = arguments.data()[2];
+		//		LOG("changed gryphon attack to %d", arguments.data()[2]);
 		//		break;
 		//	case 4:
-		//		DataBase[BALLISTA]->attack = arguments.end;
+		//		DataBase[BALLISTA]->attack = arguments.data()[2];
+		//		LOG("changed ballista attack to %d", arguments.data()[2]);
 		//		break;
 		//	case 5:
-		//		DataBase[FLYING_MACHINE]->attack = arguments.end;
+		//		DataBase[FLYING_MACHINE]->attack = arguments.data()[2];
+		//		LOG("changed flying machine attack to %d", arguments.data()[2]);
 		//		break;
 		//	default:
 		//		break;
-
 		//	}
 		//}
 		////piercing attack
-		//if (arguments.end == 1)
+		//if (arguments.data()[1] == 1)
 		//{
-		//	switch (arguments.begin)
+		//	switch (arguments.data()[0])
 		//	{
 		//	case 0:
-		//		DataBase[FOOTMAN]->piercing_atk = arguments.end;
+		//		DataBase[FOOTMAN]->piercing_atk = arguments.data()[2];
+		//		LOG("changed footman piercing attack to %d", arguments.data()[2]);
 		//		break;
 		//	case 1:
-		//		DataBase[ARCHER]->piercing_atk = arguments.end;
+		//		DataBase[ARCHER]->piercing_atk = arguments.data()[2];
+		//		LOG("changed archer piercing attack to %d", arguments.data()[2]);
 		//		break;
 		//	case 2:
-		//		DataBase[KNIGHT]->piercing_atk = arguments.end;
+		//		DataBase[KNIGHT]->piercing_atk = arguments.data()[2];
+		//		LOG("changed knight piercing attack to %d", arguments.data()[2]);
 		//		break;
 		//	case 3:
-		//		DataBase[GRYPHON]->piercing_atk = arguments.end;
+		//		DataBase[GRYPHON]->piercing_atk = arguments.data()[2];
+		//		LOG("changed gryphon piercing attack to %d", arguments.data()[2]);
 		//		break;
 		//	case 4:
-		//		DataBase[BALLISTA]->piercing_atk = arguments.end;
+		//		DataBase[BALLISTA]->piercing_atk = arguments.data()[2];
+		//		LOG("changed ballista piercing attack to %d", arguments.data()[2]);
 		//		break;
 		//	case 5:
-		//		DataBase[FLYING_MACHINE]->piercing_atk = arguments.end;
+		//		DataBase[FLYING_MACHINE]->piercing_atk = arguments.data()[2];
+		//		LOG("changed flying machine piercing attack to %d", arguments.data()[2]);
 		//		break;
 		//	default:
 		//		break;
-
 		//	}
 		//}
 		////defense
-		//if (arguments.end == 2)
+		//if (arguments.data()[1] == 2)
 		//{
-		//	switch (arguments.begin)
+		//	switch (arguments.data()[0])
 		//	{
 		//	case 0:
-		//		DataBase[FOOTMAN]->defense = arguments.end;
+		//		DataBase[FOOTMAN]->defense = arguments.data()[2];
+		//		LOG("changed footman defense to %d", arguments.data()[2]);
 		//		break;
 		//	case 1:
-		//		DataBase[ARCHER]->defense = arguments.end;
+		//		DataBase[ARCHER]->defense = arguments.data()[2];
+		//		LOG("changed archer defense to %d", arguments.data()[2]);
 		//		break;
 		//	case 2:
-		//		DataBase[KNIGHT]->defense = arguments.end;
+		//		DataBase[KNIGHT]->defense = arguments.data()[2];
+		//		LOG("changed knight defense to %d", arguments.data()[2]);
 		//		break;
 		//	case 3:
-		//		DataBase[GRYPHON]->defense = arguments.end;
+		//		DataBase[GRYPHON]->defense = arguments.data()[2];
+		//		LOG("changed gryphon defense to %d", arguments.data()[2]);
 		//		break;
 		//	case 4:
-		//		DataBase[BALLISTA]->defense = arguments.end;
+		//		DataBase[BALLISTA]->defense = arguments.data()[2];
+		//		LOG("changed ballista defense to %d", arguments.data()[2]);
 		//		break;
 		//	case 5:
-		//		DataBase[FLYING_MACHINE]->defense = arguments.end;
+		//		DataBase[FLYING_MACHINE]->defense = arguments.data()[2];
+		//		LOG("changed flying machine defense to %d", arguments.data()[2]);
 		//		break;
 		//	default:
 		//		break;
-
 		//	}
 		//}
 		////sight
-		//if (arguments.end == 3)
+		//if (arguments.data()[1] == 3)
 		//{
-		//	switch (arguments.begin)
+		//	switch (arguments.data()[0])
 		//	{
 		//	case 0:
-		//		DataBase[FOOTMAN]->line_of_sight = arguments.end;
+		//		DataBase[FOOTMAN]->line_of_sight = arguments.data()[2];
+		//		LOG("changed footman sight %d", arguments.data()[2]);
 		//		break;
 		//	case 1:
-		//		DataBase[ARCHER]->line_of_sight = arguments.end;
+		//		DataBase[ARCHER]->line_of_sight = arguments.data()[2];
+		//		LOG("changed archer sight %d", arguments.data()[2]);
 		//		break;
 		//	case 2:
-		//		DataBase[KNIGHT]->line_of_sight = arguments.end;
+		//		DataBase[KNIGHT]->line_of_sight = arguments.data()[2];
+		//		LOG("changed knight sight %d", arguments.data()[2]);
 		//		break;
 		//	case 3:
-		//		DataBase[GRYPHON]->line_of_sight = arguments.end;
+		//		DataBase[GRYPHON]->line_of_sight = arguments.data()[2];
+		//		LOG("changed gryphon sight %d", arguments.data()[2]);
 		//		break;
 		//	case 4:
-		//		DataBase[BALLISTA]->line_of_sight = arguments.end;
+		//		DataBase[BALLISTA]->line_of_sight = arguments.data()[2];
+		//		LOG("changed ballista sight %d", arguments.data()[2]);
 		//		break;
 		//	case 5:
-		//		DataBase[FLYING_MACHINE]->line_of_sight = arguments.end;
+		//		DataBase[FLYING_MACHINE]->line_of_sight = arguments.data()[2];
+		//		LOG("changed flying machine sight %d", arguments.data()[2]);
 		//		break;
 		//	default:
 		//		break;
-
 		//	}
 		//}
 		////range
-		//if (arguments.end == 4)
+		//if (arguments.data()[1] == 4)
 		//{
-		//	switch (arguments.begin)
+		//	switch (arguments.data()[0])
 		//	{
 		//	case 0:
-		//		DataBase[FOOTMAN]->range = arguments.end;
+		//		DataBase[FOOTMAN]->range = arguments.data()[2];
+		//		LOG("changed footman range %d", arguments.data()[2]);
 		//		break;
 		//	case 1:
-		//		DataBase[ARCHER]->range = arguments.end;
+		//		DataBase[ARCHER]->range = arguments.data()[2];
+		//		LOG("changed archer range %d", arguments.data()[2]);
 		//		break;
 		//	case 2:
-		//		DataBase[KNIGHT]->range = arguments.end;
+		//		DataBase[KNIGHT]->range = arguments.data()[2];
+		//		LOG("changed knight range %d", arguments.data()[2]);
 		//		break;
 		//	case 3:
-		//		DataBase[GRYPHON]->range = arguments.end;
+		//		DataBase[GRYPHON]->range = arguments.data()[2];
+		//		LOG("changed gryphon range %d", arguments.data()[2]);
 		//		break;
 		//	case 4:
-		//		DataBase[BALLISTA]->range = arguments.end;
+		//		DataBase[BALLISTA]->range = arguments.data()[2];
+		//		LOG("changed ballista range %d", arguments.data()[2]);
 		//		break;
 		//	case 5:
-		//		DataBase[FLYING_MACHINE]->range = arguments.end;
+		//		DataBase[FLYING_MACHINE]->range = arguments.data()[2];
+		//		LOG("changed flying machine range %d", arguments.data()[2]);
 		//		break;
 		//	default:
 		//		break;
-
 		//	}
 		//}
 
 	}
 
-	if (function == new_cost->name)
+	if (function == new_wood_cost->name)
 	{
-		//switch (arguments.begin)
-		//{
-		//case 0:
-		//	DataBase[FOOTMAN]->cost = arguments.end;
-		//	break;
-		//case 1:
-		//	DataBase[ARCHER]->cost = arguments.end;
-		//	break;
-		//case 2:
-		//	DataBase[KNIGHT]->cost = arguments.end;
-		//	break;
-		//case 3:
-		//	DataBase[GRYPHON]->cost = arguments.end;
-		//	break;
-		//case 4:
-		//	DataBase[BALLISTA]->cost = arguments.end;
-		//	break;
-		//case 5:
-		//	DataBase[FLYING_MACHINE]->cost = arguments.end;
-		//	break;
-		//default:
-		//	break;
-		//}
+		switch (arguments.data()[0])
+		{
+		case 0:
+			DataBase[FOOTMAN]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 1:
+			DataBase[ARCHER]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 2:
+			DataBase[KNIGHT]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 3:
+			DataBase[GRYPHON]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 4:
+			DataBase[BALLISTA]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 5:
+			DataBase[FLYING_MACHINE]->cost.wood_cost = arguments.data()[1];
+			break;
+		default:
+			break;
+		}
+	}
+	if (function == new_gold_cost->name)
+	{
+		switch (arguments.data()[0])
+		{
+		case 0:
+			DataBase[FOOTMAN]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 1:
+			DataBase[ARCHER]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 2:
+			DataBase[KNIGHT]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 3:
+			DataBase[GRYPHON]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 4:
+			DataBase[BALLISTA]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 5:
+			DataBase[FLYING_MACHINE]->cost.gold_cost = arguments.data()[1];
+			break;
+		default:
+			break;
+		}
+	}
+	if (function == new_oil_cost->name)
+	{
+		switch (arguments.data()[0])
+		{
+		case 0:
+			DataBase[FOOTMAN]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 1:
+			DataBase[ARCHER]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 2:
+			DataBase[KNIGHT]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 3:
+			DataBase[GRYPHON]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 4:
+			DataBase[BALLISTA]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 5:
+			DataBase[FLYING_MACHINE]->cost.oil_cost = arguments.data()[1];
+			break;
+		default:
+			break;
+		}
+	}
+	if (function == new_worker_cost->name)
+	{
+		switch (arguments.data()[0])
+		{
+		case 0:
+			DataBase[FOOTMAN]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 1:
+			DataBase[ARCHER]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 2:
+			DataBase[KNIGHT]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 3:
+			DataBase[GRYPHON]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 4:
+			DataBase[BALLISTA]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 5:
+			DataBase[FLYING_MACHINE]->cost.worker_cost = arguments.data()[1];
+			break;
+		default:
+			break;
+		}
 	}
 
 	if (function == kill_selected->name)
@@ -1772,6 +1906,27 @@ bool j1EntityController::Console_Interaction(std::string& function, std::vector<
 			{
 				LOG("deleted %d via comand", (*it)->UID);
 				DeleteEntity((*it)->UID);
+			}
+		}
+	}
+
+	if (function == complete_buildings->name)
+	{
+		if (arguments.data()[0] < Type::GRUNT)
+		{
+			if (arguments.size() == 2)
+				DataBase[arguments.data()[0]]->cost.creation_time = arguments.data()[1];
+			else if (arguments.size() == 1)
+				DataBase[arguments.data()[0]]->cost.creation_time = 0;
+		}
+	}
+
+	if (function == next_wave->name)
+	{
+		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			if ((*it)->type < Type::GRUNT)
+			{
 			}
 		}
 	}
