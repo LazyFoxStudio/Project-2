@@ -25,6 +25,12 @@
 	<popUps time="100"/>
   </gui>
 
+  <scene>
+    <Wood value="200"/>
+    <Gold value="300"/>
+    <Workers value="0"/>
+    <Oil value="0"/>
+  </scene>
 
   <wavecontroller>
     <initialWait value="1"/>

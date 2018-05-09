@@ -31,6 +31,18 @@ j1Scene::j1Scene() : j1Module() { name = "scene"; pausable = false; }
 // Destructor
 j1Scene::~j1Scene() {}
 
+bool j1Scene::Awake(pugi::xml_node& conf)
+{
+	LOG("Loading GUI atlas");
+	bool ret = true;
+
+	i_wood = conf.child("Wood").attribute("value").as_int(0);
+	i_gold = conf.child("Gold").attribute("value").as_int(0);
+	i_workers = conf.child("Workers").attribute("value").as_int(0);
+	i_oil = conf.child("Oil").attribute("value").as_int(0);
+
+	return ret;
+}
 
 // Called before the first frame
 bool j1Scene::Start()
@@ -229,8 +241,8 @@ void j1Scene::Start_game()
 	}
 
 	//RESTARTING RESOURCES-----------------------------------------------------
-	wood = INIT_WOOD;
-	gold = INIT_GOLD;
+	wood = i_wood;
+	gold = i_gold;
 	//inactive_workers = workers = INIT_WORKERS;
 	InitialWorkers(App->entitycontroller->town_hall);
 	town_hall_lvl = INIT_TOWNHALL_LVL;
