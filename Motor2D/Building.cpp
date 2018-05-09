@@ -15,6 +15,9 @@
 #include "UI_CooldownsDisplay.h"
 #include "Unit.h"
 
+#define TURRET_ROF 1.0f
+#define RANDOM_FACTOR (1.0f - (((float)(rand() % 6)) / 10.0f))
+
 Building::Building(iPoint pos, Building& building)
 {
 	texture				= building.texture;
@@ -23,6 +26,9 @@ Building::Building(iPoint pos, Building& building)
 
 	current_HP = max_HP	= building.max_HP;
 	defense				= building.defense;
+	attack				= building.attack;
+	piercing_atk		= building.piercing_atk;
+	range				= building.range;
 
 	collider.x = position.x = pos.x;
 	collider.y = position.y	= pos.y;
@@ -87,6 +93,8 @@ bool Building::Update(float dt)
 			HandleResourceProduction();
 		else if (type == FARM)
 			HandleWorkerProduction();
+		else if (type == TURRET)
+			turretBehavior();
 		else if (type == BARRACKS || type == GNOME_HUT || type == CHURCH)
 		{
 			HandleUnitProduction();
@@ -189,8 +197,11 @@ void Building::HandleConstruction()
 		}
 		if (type != LUMBER_MILL || type != MINE)
 		{
-			workers_inside.back()->working_at = nullptr;
-			workers_inside.pop_back();
+			if (!workers_inside.empty())
+			{
+				workers_inside.back()->working_at = nullptr;
+				workers_inside.pop_back();
+			}
 		}
 		else
 		{
@@ -311,4 +322,32 @@ void Building::DemolishBuilding()
 void Building::Draw(float dt)
 {
 	App->render->Blit(texture, position.x, position.y, current_sprite);
+}
+
+void Building::turretBehavior()
+{
+	if (timer.ReadSec() > TURRET_ROF)
+	{
+		fPoint building_center = { position.x + collider.w / 2, position.y + collider.h / 2 };
+
+		for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+		{
+			if ((*it)->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED)
+			{
+				if (building_center.DistanceTo((*it)->position) < range)
+				{
+					if (App->render->CullingCam(position))
+						App->entitycontroller->HandleAttackSFX(ARCHER, 30);
+
+					App->entitycontroller->HandleParticles(ARCHER, position, { (*it)->position.x + ((*it)->collider.w / 2), (*it)->position.y + ((*it)->collider.h / 2) });
+
+					(*it)->current_HP -= MAX((RANDOM_FACTOR * (piercing_atk + ((((int)attack - (int)(*it)->defense) <= 0) ? 0 : attack - (*it)->defense))), 1);
+					
+					if ((*it)->current_HP < 0) ((Unit*)(*it))->Destroy();
+					timer.Start();
+					break;
+				}
+			}
+		}
+	}
 }

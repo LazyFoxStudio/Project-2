@@ -937,7 +937,7 @@ void j1EntityController::commandControl()
 					(*it)->commands.push_back(new MoveToSquadFlying((*it)->getCommander(), map_p));
 				else
 				{
-					if (shared_flowfield)
+					if (!shared_flowfield)
 						shared_flowfield = App->pathfinding->RequestFlowField(map_p);
 
 					MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
@@ -957,9 +957,13 @@ void j1EntityController::commandControl()
 				(*it)->Halt();
 				if ((*it)->isFlying())
 					(*it)->commands.push_back(new AttackingMoveToSquadFlying((*it)->getCommander(), map_p));
-				else
+				else 
 				{
-					if (shared_flowfield)
+					if (Unit* commander = (*it)->getCommander())
+						if (commander->IsMelee() && entity->IsFlying())
+							continue;
+
+					if (!shared_flowfield)
 						shared_flowfield = App->pathfinding->RequestFlowField(map_p);
 
 					MoveToSquad* new_order = new AttackingMoveToSquad((*it)->getCommander(), map_p);
@@ -1509,6 +1513,9 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		buildingTemplate->current_HP = buildingTemplate->max_HP = NodeInfo.child("Stats").child("life").attribute("value").as_int(0);
 		//buildingTemplate->workers_inside = NodeInfo.child("Stats").child("villagers").attribute("value").as_int(0);
 		buildingTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
+		buildingTemplate->attack = NodeInfo.child("Stats").child("attack").attribute("value").as_int(0);
+		buildingTemplate->range = NodeInfo.child("Stats").child("range").attribute("value").as_int(0);
+		buildingTemplate->piercing_atk = NodeInfo.child("Stats").child("piercingDamage").attribute("value").as_int(0);
 		buildingTemplate->cost.creation_time = NodeInfo.child("Stats").child("buildingTime").attribute("value").as_int(0);
 		buildingTemplate->cost.wood_cost = NodeInfo.child("Stats").child("woodCost").attribute("value").as_int(0);
 		buildingTemplate->cost.gold_cost = NodeInfo.child("Stats").child("goldCost").attribute("value").as_int(0);

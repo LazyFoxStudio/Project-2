@@ -12,7 +12,7 @@
 #include "j1Scene.h"
 // BASE CLASSES: =========================
 
-#define RANDOM_FACTOR (1.0f - (((float)(rand() % 6)) / 10.0f))
+#define RANDOM_FACTOR (1.0f - (((float)(rand() % 6)) / 10.0f))  // must be the same in Building.cpp
 #define STEERING_FACTOR 10.0f
 
 #define PROXIMITY_FACTOR_TILES 2  // the higher the sooner units will reach destination (in tiles)  // 1 ~ 5//

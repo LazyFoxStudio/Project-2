@@ -3624,6 +3624,9 @@
         <life value="200"/>
         <villagers value="0"/>
         <buildingTime value="5"/>
+        <attack value="2"/>
+        <piercingDamage value="4"/>
+        <range value="210"/>
         <defense value="20"/>
         <woodCost value="350"/>
         <goldCost value="0"/>
