@@ -144,7 +144,7 @@ bool j1EntityController::Update(float dt)
 		App->actionscontroller->activateAction(NO_ACTION);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && town_hall != nullptr)
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && town_hall != nullptr && (!App->tutorial->doingTutorial || App->tutorial->allowTHSelection))
 	{
 		if (town_hall->isSelected == true) //center camera
 		{
@@ -164,7 +164,7 @@ bool j1EntityController::Update(float dt)
 		
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr)
+	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr && (!App->tutorial->doingTutorial || App->tutorial->allowHeroSelection))
 	{
 		if (hero->isSelected == true) //center camera
 		{
@@ -236,7 +236,7 @@ void j1EntityController::buildingCalculations()
 				App->gui->warningMessages->hideMessage(NO_TREES);
 				App->entitycontroller->SpendCost(to_build_type);
 
-				if (App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT)
+				if ((App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT) || App->tutorial->doingTutorial)
 					App->actionscontroller->doingAction = false;
 
 				to_build_type = NONE_ENTITY;

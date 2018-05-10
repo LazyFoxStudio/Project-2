@@ -21,10 +21,7 @@ enum Task
 	MOVE_TROOPS,
 	KILL_ENEMIES,
 	PLACE_BARRACKS,
-	MOVE_CAMERA,
-
-	UNLOCK_FARM = 15,
-	UNLOCK_BARRACKS
+	MOVE_CAMERA
 };
 
 class TextBox;
@@ -72,7 +69,7 @@ public:
 	void stopTutorial(bool skip = false);
 	void finishStep();
 	void taskCompleted(Task task);
-	void finishRequirement(Task task);
+	void stepStarted(Task task);
 
 public:
 
@@ -81,7 +78,9 @@ public:
 	std::list<Step*>	missing_steps;
 	std::list<Step*>	steps;
 	bool				doingTutorial = false;
-	bool				builded = false;
+	bool				enemiesKilled = false;
+	bool				allowTHSelection = false;
+	bool				allowHeroSelection = false;
 
 	j1Timer				timer;
 	j1Timer				completed_delay_timer;

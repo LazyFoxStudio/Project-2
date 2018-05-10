@@ -45,6 +45,7 @@ bool j1Tutorial::Update(float dt)
 		if (activeStep == nullptr)
 		{
 			activeStep = missing_steps.front();
+			stepStarted(activeStep->task);
 			if (activeStep->isUI)
 				arrow->use_camera = false;
 			else
@@ -64,14 +65,12 @@ bool j1Tutorial::PostUpdate()
 		activeStep->Draw();
 		if (activeStep->isFinished())
 		{
-			finishRequirement(activeStep->task);
 			activeStep = nullptr;
 		}
 		else if (activeStep->finished)
 		{
 			if (completed_delay_timer.Read() >= completed_delay)
-			{
-				finishRequirement(activeStep->task);
+			{				
 				activeStep = nullptr;
 			}
 		}
@@ -124,6 +123,8 @@ void j1Tutorial::startTutorial()
 		doingTutorial = true;
 		App->wavecontroller->tutorial = true;
 		timer.Start();
+		allowTHSelection = false;
+		allowHeroSelection = false;
 	}
 }
 
@@ -186,58 +187,75 @@ void j1Tutorial::taskCompleted(Task task)
 			Button* barracks = App->gui->GetActionButton(5);
 			barracks->Lock();
 		}
-		else if (task == PLACE_FARM && !builded)
+		else if (task == PLACE_FARM)
 		{
 			Button* farms = App->gui->GetActionButton(7);
 			farms->Lock();
 			App->wavecontroller->forceNextWave();
 			App->gui->nextWaveWindow->timer->counter.PauseTimer();
-			builded = true;
 		}
 		else if (task == SELECT_HERO)
 		{
 			App->wavecontroller->wave_timer.PauseTimer();
-		}
+		}	
 		else if (task == KILL_ENEMIES)
 		{
 			App->gui->nextWaveWindow->active = true;
 			App->gui->nextWaveWindow->toggle();
 		}
+		else if (task == MOVE_CAMERA)
+		{
+			allowTHSelection = true;
+		}
+	}
+	else if (activeStep != nullptr && !activeStep->finished) //to avoid skiping steps and bugging the tutorial
+	{
+		if (task == KILL_ENEMIES)
+			enemiesKilled = true;
 	}
 }
 
-void j1Tutorial::finishRequirement(Task task)
+void j1Tutorial::stepStarted(Task task)
 {
+	Button* lumber = nullptr;
 	Button* farms = nullptr;
 	Button* barracks = nullptr;
 
 	switch (task)
 	{
 	case SELECT_TOWN_HALL:
+		if (App->entitycontroller->selected_entities.size() > 0 && App->entitycontroller->selected_entities.front()->type == TOWN_HALL)
+			taskCompleted(SELECT_TOWN_HALL);
 		break;
 	case PICK_LUMBER_MILL:
+		lumber = App->gui->GetActionButton(6);
+		lumber->Unlock();
 		break;
 	case PLACE_LUMBER_MILL:
 		break;
 	case PLACE_FARM:
+		farms = App->gui->GetActionButton(7);
+		farms->Unlock();
 		break;
 	case SELECT_HERO:
+		allowHeroSelection = true;
+		if (App->entitycontroller->selected_entities.size() > 0 && App->entitycontroller->selected_entities.front()->IsHero())
+			taskCompleted(SELECT_HERO);
 		break;
 	case MOVE_TROOPS:
 		break;
 	case KILL_ENEMIES:
+		if (enemiesKilled)
+			taskCompleted(KILL_ENEMIES);
 		break;
 	case PLACE_BARRACKS:
-		break;
-	case UNLOCK_FARM:
-		farms = App->gui->GetActionButton(7);
-		farms->Unlock();
-		break;
-	case UNLOCK_BARRACKS:
 		barracks = App->gui->GetActionButton(5);
 		barracks->Unlock();
 		break;
-
+	case MOVE_CAMERA:
+		break;
+	default:
+		break;
 	}
 }
 
