@@ -71,7 +71,7 @@ bool j1ParticleController::Update(float dt)
 		}
 		else if (p->currentLife.Read() > 0)
 		{
-			if (p->position.x > (App->win->width + -App->render->camera.x) || p->position.x < -App->win->width || p->position.y >(App->win->height + -App->render->camera.y) || p->position.y < -App->win->height)
+			if (p->position.x < (App->win->width + -App->render->camera.x) && p->position.x > -App->win->width && p->position.y <(App->win->height + -App->render->camera.y) && p->position.y > -App->win->height)
 				App->render->Blit(graphics, p->position.x, p->position.y, &(p->anim.GetCurrentFrame(dt)), true, false, 1, SDL_FLIP_NONE, 1, GetAngleInDegrees(p));
 		}
 
