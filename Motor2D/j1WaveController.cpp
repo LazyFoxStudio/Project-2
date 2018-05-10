@@ -31,6 +31,9 @@ bool j1WaveController::Awake(pugi::xml_node &config)
 	for (pugi::xml_node spawn = config.child("Spawns").child("spawn"); spawn; spawn = spawn.next_sibling("spawn"))
 		spawns.push_back(fPoint(spawn.attribute("x").as_float(0), spawn.attribute("y").as_float(0)));
 
+	for (pugi::xml_node spawn = config.child("Costs").child("cost"); spawn; spawn = spawn.next_sibling("cost"))
+		costs.push_back(spawn.attribute("value").as_int(0));
+		
 	return true;
 }
 
@@ -43,7 +46,7 @@ bool j1WaveController::Start()
 	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
 	flow_field = App->pathfinding->RequestFlowField(TownHall_pos);
 	
-	points = 100;
+	points = 1;
 	/*wave_timer.Start();
 
 	current_wave = 0;
@@ -121,6 +124,7 @@ bool j1WaveController::PostUpdate()
 bool j1WaveController::CleanUp()
 {
 	spawns.clear();
+	costs.clear();
 	return true;
 }
 
@@ -134,17 +138,6 @@ bool j1WaveController::Load(pugi::xml_node &)
 	return true;
 }
 
-int j1WaveController::CalculateWaveScore()
-{
-	int ret = 0;
-	ret = (current_wave+1) * 2;
-
-	if (current_wave % 2 == 0 && difficulty<(JUGGERNAUT - GRUNT))
-		difficulty++;
-
-	return ret;
-}
-
 void j1WaveController::Generate_Next_Wave()
 {
 	srand(time(NULL));
@@ -155,15 +148,8 @@ void j1WaveController::Generate_Next_Wave()
 	
 	if (!tutorial)
 	{
-		int wave_score = CalculateWaveScore();
-
-		for (int i = 0; i < wave_score; i++)
-		{
-			int enemy = rand() % ((difficulty)+1);    //   (last_enemy_type - first_enemy_type)
-			int position = rand() % spawns.size();
-
-			next_wave.push_back(new NextWave((Type)(GRUNT + enemy), spawns[position]));
-		}
+		points ++;
+		entity_selector(6);
 	}
 	else
 	{
@@ -214,19 +200,23 @@ void j1WaveController::entity_selector(int num)
 {
 	srand(time(NULL));
 
-	while (points > 0)
+	int aux_points = points;
+	LOG("Points %d", points);
+
+	while (aux_points > 0)
 	{
-		int enemy = rand() % (num)+1;
+		int enemy = rand() % (num);
 		int position = rand() % spawns.size();
 
-		/*if(points<entity.cost)
+		if(aux_points<costs[enemy])
 		{
-		num-=enemy;
+			num-=enemy;
 		}
 		else
 		{
-		next_wave.push_back(new NextWave((Type)(GRUNT + enemy), spawns[position]));
-		points-=entity.cost;
-		}*/
+			next_wave.push_back(new NextWave((Type)(GRUNT + enemy), spawns[position]));
+			aux_points -= costs[enemy];
+			LOG("enemy %d", enemy);
+		}
 	}
 }
