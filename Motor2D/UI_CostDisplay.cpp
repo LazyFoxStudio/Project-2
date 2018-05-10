@@ -11,9 +11,9 @@ CostDisplay::CostDisplay(SDL_Texture* texture, std::string entityname, int wood_
 	text_name = new Text(entityname.c_str(), 0, 0, (*App->font->fonts.begin()), { 255,255,255,255 }, callback);
 
 	SDL_Rect wood_icon = { 436,341,37,36 };
-	SDL_Rect gold_icon = { 0,0,0,0 };
+	SDL_Rect gold_icon = { 619,341,37,36 };
 	SDL_Rect oil_icon = { 0,0,0,0 };
-	SDL_Rect workers_icon = { 620,341,41,37 };
+	SDL_Rect workers_icon = { 796,341,37,36 };
 
 	if (wood_cost > 0)
 	{
