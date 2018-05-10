@@ -112,7 +112,9 @@ bool j1ActionsController::Update(float dt)
 			if (!App->entitycontroller->selected_entities.empty())
 			{
 				if (App->entitycontroller->CheckCost(FOOTMAN) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
+				{
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(FOOTMAN);
+				}
 			}
 			doingAction = false;
 			break;

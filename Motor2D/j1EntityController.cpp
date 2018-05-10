@@ -690,8 +690,7 @@ Squad* j1EntityController::AddSquad(Type type, fPoint position)
 		if (!unit_template->IsEnemy())
 		{
 			new_squad->FollowingOrdersSFX = GetOrdersSFXFromType(type);
-			App->scene->wood -= unit_template->cost.wood_cost;
-			SubstractRandomWorkers(unit_template->cost.worker_cost);
+			
 		}
 		new_squad->UID = last_UID++;
 		squads.push_back(new_squad);
