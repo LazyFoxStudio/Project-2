@@ -212,8 +212,8 @@ void j1Scene::Start_game()
 	}
 
 	//SATARTING ENTITIES-------------------------------------------------------
-	//if (!App->tutorial->doingTutorial)
-		App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
+	App->entitycontroller->addHero(iPoint(1950, 2100), HERO_1);
+
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	App->entitycontroller->town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, App->entitycontroller->town_hall->size.x, App->entitycontroller->town_hall->size.y, true, false);
@@ -255,6 +255,8 @@ void j1Scene::Start_game()
 	barracks->Lock();
 	Button* lumber = App->gui->GetActionButton(6);
 	lumber->setCondition(condition);
+	if (App->tutorial->doingTutorial)
+		lumber->Lock();
 	Button* farms = App->gui->GetActionButton(7);
 	farms->setCondition(condition);
 	farms->Lock();
