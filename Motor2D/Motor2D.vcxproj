@@ -206,6 +206,7 @@
     <Xml Include="..\Game\Gui_config.xml">
       <SubType>Designer</SubType>
     </Xml>
+    <Xml Include="..\Game\Particle_Templates.xml" />
     <Xml Include="..\Game\tutorial.xml" />
   </ItemGroup>
   <ItemGroup>

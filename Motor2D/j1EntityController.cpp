@@ -96,32 +96,7 @@ bool j1EntityController::Update(float dt)
 
 	if (App->scene->toRestart) return true;
 
-	/*int counter = 0;
-	if (!all_squads.empty())
-	{
-		time_slicer.Start();
-		while (time_slicer.Read() < ((float)App->framerate * SQUAD_MAX_FRAMETIME) && counter < all_squads.size())
-		{
-			counter++; squad_iterator++;
-			if (squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
-			if (!(*squad_iterator)->Update(dt))							return false;
-		}
-	}
-
-	if (!entities.empty())
-	{
-		counter = 0;
-		time_slicer.Start();
-		while (time_slicer.Read() < ((float)App->framerate * ENITITY_MAX_FRAMETIME) && counter < entities.size())
-		{
-			counter++; entity_iterator++;
-			if (entity_iterator == entities.end()) entity_iterator = entities.begin();
-
-			if ((*entity_iterator)->isActive || (*entity_iterator) == hero)
-				if (!(*entity_iterator)->Update(dt))	entities_to_destroy.push_back(*entity_iterator);
-
-		}
-	}*/
+	
 
 	BROFILER_CATEGORY("Entity controller update", Profiler::Color::Maroon);
 

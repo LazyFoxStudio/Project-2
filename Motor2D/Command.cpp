@@ -542,7 +542,9 @@ fPoint MoveTo::getDesiredPlace()
 
 bool MoveTo::useSquadPosition(fPoint desired_place)
 {
-	if (!desired_place.IsZero())
+	if (desired_place.IsZero())
+		return false;
+	else
 	{
 		if (desired_place.DistanceTo(unit->position) > SQUAD_UNATTACH_DISTANCE)
 		{
@@ -551,6 +553,8 @@ bool MoveTo::useSquadPosition(fPoint desired_place)
 				return false;
 		}
 	}
+
+
 	return true;
 }
 
