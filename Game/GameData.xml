@@ -3176,9 +3176,9 @@
           <life value="80"/>
           <attack value="3"/>
           <defense value="6"/>
-          <piercingDamage value="2"/>
+          <piercingDamage value="5"/>
           <movementSpeed value="0.7"/>
-          <range value="40"/>
+          <range value="200"/>
           <lineOfSight value="200"/>
           <goldCost value="0"/>
           <woodCost value="200"/>

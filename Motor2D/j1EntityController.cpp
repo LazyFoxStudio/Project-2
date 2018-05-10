@@ -1301,6 +1301,45 @@ Entity* j1EntityController::getNearestEnemy(Entity* entity, int target_squad)
 
 }
 
+bool j1EntityController::getNearestEnemies(Entity* entity, int squad_target, int number, std::vector<Entity*>& list_to_fill)
+{
+	list_to_fill.clear();
+
+	for (int j = 0; j < number; j++)
+	{
+		Entity* nearest = nullptr;
+		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			if (squad_target != -1)
+			{
+				if (!(*it)->IsUnit()) continue;
+				else if (((Unit*)(*it))->squad->UID != squad_target) continue;
+			}
+
+			if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED && !(entity->IsMelee() && (*it)->IsFlying()))
+			{
+				bool used = false;
+				for (int i = 0; i < list_to_fill.size(); i++)
+					if (list_to_fill[i] == *it) { used = true; break; }
+
+				if (!used)
+				{
+					if (!nearest) nearest = *it;
+					else
+					{
+						if ((*it)->position.DistanceTo(entity->position) < nearest->position.DistanceTo(entity->position))
+							nearest = *it;
+					}
+				}
+			}
+		}
+		if (nearest) list_to_fill.push_back(nearest);
+		else break;
+	}
+
+	return !list_to_fill.empty();
+}
+
 void j1EntityController::TownHallLevelUp()
 {
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)

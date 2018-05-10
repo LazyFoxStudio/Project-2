@@ -18,6 +18,9 @@
 #define PROXIMITY_FACTOR_TILES 2  // the higher the sooner units will reach destination (in tiles)  // 1 ~ 5//
 #define PROXIMITY_FACTOR_PIXELS 5
 
+#define MULTITARGET_NUMBER 3
+#define TURRET_ROF 1.0f
+
 void Command::Execute(float dt)
 {
 	bool ret = false;
@@ -187,6 +190,73 @@ bool Attack::OnStop()
 }
 
 
+bool MultiTargetAttack::OnUpdate(float dt)
+{
+	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
+
+	bool enemy_moved = true;
+	for (int i = 0; i < enemy_atk_slots->size(); i++)
+		if (current_target == enemy_atk_slots->at(i)) { enemy_moved = false; break; }
+
+	if (current_target.IsZero() || enemy_moved)
+		if (!searchTarget())
+			Stop();
+
+	std::vector<Entity*> enemies;
+	if (App->entitycontroller->getNearestEnemies(unit, *squad_target, MULTITARGET_NUMBER, enemies))
+	{
+		SDL_Rect r = { unit->position.x - unit->range, unit->position.y - unit->range, unit->range * 2, unit->range * 2 };
+		bool has_attacked = false;
+
+		for (int i = 0; i < enemies.size(); i++)
+		{
+			if (SDL_HasIntersection(&r, &enemies[i]->collider))
+			{
+				if (type == ATTACKING_MOVETO)
+					{type = ATTACK; return true;}
+				else if (unit->timer.ReadSec() > TURRET_ROF)
+				{
+					if (App->render->CullingCam(unit->position))
+						App->entitycontroller->HandleAttackSFX(unit->type, 30);
+
+					if (i == 0)
+					{
+						AoE_Damage(enemies[i]);
+						App->entitycontroller->HandleParticles(unit->type, unit->position, { enemies[i]->position.x + (enemies[i]->collider.w / 2), enemies[i]->position.y + (enemies[i]->collider.h / 2) });
+						unit->lookAt(enemies[i]->position - unit->position);
+						unit->mov_module = 0;
+					}
+					else
+					{
+						enemies[i]->current_HP -= dealDamage(unit, enemies[i]); //dmg
+						App->entitycontroller->HandleParticles(ARCHER, unit->position, { enemies[i]->position.x + (enemies[i]->collider.w / 2), enemies[i]->position.y + (enemies[i]->collider.h / 2) });
+
+						if (enemies[i]->current_HP < 0) enemies[i]->Destroy();
+						else					   callRetaliation(enemies[i], unit->squad->UID);
+					}
+					has_attacked = true;
+				}
+			}
+			else
+			{
+				moveToTarget();
+				break;
+			}
+		}
+		if (has_attacked)
+		{
+			unit->timer.Start();
+			return true;
+		}
+	}
+	else Stop();
+
+
+	type = ATTACKING_MOVETO;
+	return true;
+}
+
+
 //		SQUADS: =============================
 //// MOVETOSQUAD
 
@@ -311,7 +381,11 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 		for (int i = 0; i < units.size(); i++)
 		{
 			if (units[i]->commands.empty() ? true : (units[i]->getCurrentCommand() != ATTACK && units[i]->getCurrentCommand() != ATTACKING_MOVETO))
-				units[i]->commands.push_front(new Attack(units[i], &enemy_atk_slots, &target_squad_id));
+			{
+				if(units[i]->type == JUGGERNAUT)	units[i]->commands.push_front(new MultiTargetAttack(units[i], &enemy_atk_slots, &target_squad_id));
+				else								units[i]->commands.push_front(new Attack(units[i], &enemy_atk_slots, &target_squad_id));
+			}
+				
 		}
 
 	}

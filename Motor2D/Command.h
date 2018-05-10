@@ -93,11 +93,6 @@ public:
 public:
 	Attack(Unit* unit, std::vector<iPoint>* enemy_atk_slots, int* squad_target) : Command(unit, ATTACK), enemy_atk_slots(enemy_atk_slots), squad_target(squad_target) {};
 
-private:
-	bool OnInit();
-	virtual bool OnUpdate(float dt);
-	bool OnStop();
-
 	bool searchTarget();
 	void moveToTarget();
 	void callRetaliation(Entity* enemy, uint squad_UID);
@@ -106,11 +101,18 @@ private:
 	void AoE_Damage(Entity* enemy);
 	bool favorableMatchup(Entity* attacker, Entity* defender);
 
+private:
+	bool OnInit();
+	virtual bool OnUpdate(float dt);
+	bool OnStop();
+
+
 };
 
 
 class MultiTargetAttack : public Attack
 {
+public:
 	MultiTargetAttack(Unit* unit, std::vector<iPoint>* enemy_atk_slots, int* squad_target) : Attack(unit, enemy_atk_slots, squad_target) {};
 
 private:
