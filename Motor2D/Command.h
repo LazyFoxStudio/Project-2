@@ -58,6 +58,7 @@ private:
 	bool OnStop();
 
 	fPoint getDesiredPlace();
+	bool useSquadPosition(fPoint desired_place);
 
 };
 
@@ -94,7 +95,7 @@ public:
 
 private:
 	bool OnInit();
-	bool OnUpdate(float dt);
+	virtual bool OnUpdate(float dt);
 	bool OnStop();
 
 	bool searchTarget();
@@ -105,6 +106,15 @@ private:
 	void AoE_Damage(Entity* enemy);
 	bool favorableMatchup(Entity* attacker, Entity* defender);
 
+};
+
+
+class MultiTargetAttack : public Attack
+{
+	MultiTargetAttack(Unit* unit, std::vector<iPoint>* enemy_atk_slots, int* squad_target) : Attack(unit, enemy_atk_slots, squad_target) {};
+
+private:
+	bool OnUpdate(float dt);
 };
 
 //		SQUADS: =======================

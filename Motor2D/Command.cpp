@@ -56,8 +56,8 @@ bool MoveTo::OnUpdate(float dt)
 	{
 		fPoint desired_place = getDesiredPlace();
 		map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
-
-		if (!desired_place.IsZero() && desired_place.DistanceTo(unit->position) < SQUAD_UNATTACH_DISTANCE && unit->squad->units_id.size() > 1)
+		
+		if (useSquadPosition(desired_place))
 		{
 			unit->mov_target = desired_place;
 			if (unit->squad->squad_movement.IsZero() && unit->mov_target.DistanceTo(unit->position) < PROXIMITY_FACTOR_PIXELS)
@@ -464,6 +464,20 @@ fPoint MoveTo::getDesiredPlace()
 	}
 
 	return { 0.0f, 0.0f };
+}
+
+bool MoveTo::useSquadPosition(fPoint desired_place)
+{
+	if (!desired_place.IsZero())
+	{
+		if (desired_place.DistanceTo(unit->position) > SQUAD_UNATTACH_DISTANCE)
+		{
+			iPoint world_dest = App->map->MapToWorld(dest.x, dest.y);
+			if ((unit->position.DistanceTo({ (float)world_dest.x, (float)world_dest.y }) > desired_place.DistanceTo({ (float)world_dest.x, (float)world_dest.y })))
+				return false;
+		}
+	}
+	return true;
 }
 
 fPoint MoveToFlying::getDesiredPlace()
