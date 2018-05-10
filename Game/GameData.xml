@@ -3607,12 +3607,21 @@
       <iconData x="315" y="455" w="72" h="59"/>
       <size x="3" y="3"/>
     </Building>
+    
     <Building>
       <name value="Turret"/>
       <type value="6"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <Actions>
-
+        <action id="10"/>
+        <action id="10"/>
+        <action id="10"/>
+        <action id="10"/>
+        <action id="10"/>
+        <action id="10"/>
+        <action id="20"/>
+        <action id="10"/>
+        <action id="21"/>
       </Actions>
       <sprites>
         <sprite x="472" y="71" w="72" h="70"/>
@@ -3645,6 +3654,13 @@
       <Actions>
         <action id="15"/>
         <action id="16"/>
+        <action id="10"/>
+        <action id="10"/>
+        <action id="10"/>
+        <action id="10"/>
+        <action id="20"/>
+        <action id="10"/>
+        <action id="21"/>
       </Actions>
       <sprites>
         <sprite x="408" y="633" w="101" h="109"/>
@@ -3674,6 +3690,13 @@
       <Actions>
         <action id="13"/>
         <action id="14"/>
+        <action id="10"/>
+        <action id="10"/>
+        <action id="10"/>
+        <action id="10"/>
+        <action id="20"/>
+        <action id="10"/>
+        <action id="21"/>
       </Actions>
       <sprites>
         <sprite x="306" y="413" w="101" h="109"/>
