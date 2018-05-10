@@ -237,13 +237,18 @@ void Building::HandleResourceProduction()
 
 void Building::AddUnitToQueue(Type type)
 {
-	unit_queue.push_back(type);
-	queueDisplay->pushTroop(type);
-	if (unit_queue.size() == 1)
+	if (App->entitycontroller->SpendCost(type))
 	{
-		producing_unit = true;
-		timer.Start();
+		App->entitycontroller->SubstractRandomWorkers(App->entitycontroller->DataBase[type]->cost.worker_cost);
+		unit_queue.push_back(type);
+		queueDisplay->pushTroop(type);
+		if (unit_queue.size() == 1)
+		{
+			producing_unit = true;
+			timer.Start();
+		}
 	}
+	
 }
 
 void Building::HandleUnitProduction()
