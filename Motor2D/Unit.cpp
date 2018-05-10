@@ -236,7 +236,14 @@ void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)
 			fPoint current_separation = (position - collisions[i]->position);
 
 			if (current_separation.GetModule() < collider.w)
+			{
+				while (current_separation.IsZero())
+				{
+					current_separation = { (float)(rand() % 10), (float)(rand() % 10) };
+					current_separation.Normalized();
+				}
 				separation_v += (current_separation.Normalized() * (current_separation.GetModule() - collider.w)).Negate();
+			}
 		}
 	}
 
@@ -258,7 +265,8 @@ void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)
 
 void Unit::animationController()
 {
-	lookAt(mov_direction);
+	if(getCurrentCommand() != ATTACK)
+		lookAt(mov_direction);
 
 	animationType new_animation = IDLE_S;
 	if (ex_state != DESTROYED)
