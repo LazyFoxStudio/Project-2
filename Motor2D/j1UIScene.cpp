@@ -21,7 +21,7 @@
 #include "UI_CostDisplay.h"
 #include "j1WaveController.h"
 
-j1UIScene::j1UIScene() { name = "introscene";}
+j1UIScene::j1UIScene() { name = "introscene"; pausable = false; }
 
 j1UIScene::~j1UIScene() {}
 
@@ -36,23 +36,32 @@ bool j1UIScene::Start()
 
 	LoadUI(guiconfig);
 
+	/*Button* button = new Button(0, 0, App->gui->atlas, { 1182, 1188, 49, 48 }, { 1182, 1188, 49, 48 }, { 1182, 1188, 49, 48 }, App->uiscene);
+	App->gui->createSlider(100, 100, { 739, 1297, 775, 55 }, { 739, 1297, 775, 55 }, button, 0.5, App->uiscene);*/
+
 	//Set resource counters
-	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 1);
+	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 0);
 	text_position_y->convertIntoCounter(&App->scene->inactive_workers_int);
 
-	Text* gold_display = (Text*)App->gui->GetElement(TEXT, 3);
-	gold_display->convertIntoCounter(&App->scene->workers_int);
+	Text* workers_display = (Text*)App->gui->GetElement(TEXT, 2);
+	workers_display->convertIntoCounter(&App->scene->workers_int);
 
-	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 4);
+	Text* wood_display = (Text*)App->gui->GetElement(TEXT, 3);
 	wood_display->convertIntoCounter(&App->scene->wood);
 
-	Text* wood_sec = (Text*)App->gui->GetElement(TEXT, 5);
+	Text* wood_sec = (Text*)App->gui->GetElement(TEXT, 4);
 	wood_sec->convertIntoCounter(&App->scene->wood_production_per_second);
 
-	Text* waves = (Text*)App->gui->GetElement(TEXT, 7);
+	Text* gold_display = (Text*)App->gui->GetElement(TEXT, 5);
+	gold_display->convertIntoCounter(&App->scene->gold);
+
+	Text* gold_sec = (Text*)App->gui->GetElement(TEXT, 6);
+	gold_sec->convertIntoCounter(&App->scene->gold_production_per_second);
+
+	Text* waves = (Text*)App->gui->GetElement(TEXT, 8);
 	waves->convertIntoCounter(&App->wavecontroller->current_wave);
 
-	Text* survived_waves = (Text*)App->gui->GetElement(TEXT, 8);
+	Text* survived_waves = (Text*)App->gui->GetElement(TEXT, 9);
 	survived_waves->convertIntoCounter(&App->wavecontroller->current_wave);
 
 	//Hardcoded
@@ -84,6 +93,11 @@ bool j1UIScene::Start()
 
 bool j1UIScene::Update(float dt)
 {
+
+	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+		App->pauseGame();
+	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
+		App->resumeGame();
 
 	return true;
 }

@@ -100,14 +100,14 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	return ret;
 }
 
-bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bool check_trees)
+bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bool check_trees, bool check_mines)
 {
 	bool ret = true;
 	if (App->pathfinding->map)
 	{
 		iPoint currentTile = { x,y };
 		MapLayer* tree_layer = data.layers[0];
-		if (check_trees)
+		if (check_trees || check_mines)
 		{
 			for (int i = 0; i < data.layers.size(); i++)
 			{
@@ -133,7 +133,7 @@ bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bo
 			}
 		}
 
-		if (!modify && !check_trees)
+		if (!modify && !check_trees && !check_mines)
 		{
 			for (int j = 0; j < columns; j++)
 			{
@@ -149,7 +149,7 @@ bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bo
 				}
 			}
 		}
-		else if (modify && !check_trees)
+		else if (modify && !check_trees && !check_mines)
 		{
 			for (int j = 0; j < columns; j++)
 			{
@@ -163,20 +163,33 @@ bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bo
 				}
 			}
 		}
-		else if (check_trees)
+		else if (check_trees || check_mines)
 		{
 			for (int j = 0; j < columns; j++)
 			{
 				for (int i = 0; i < rows; i++)
 				{
 					iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
-					if (tree_layer->GetID(currentMapTile.x, currentMapTile.y) != 0)
+					if ((tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 373 && check_trees) || (tree_layer->GetID(currentMapTile.x,currentMapTile.y) == 179 && check_mines))
 					{
 						ret = false;
+						if (check_trees)
+						{
+							break;
+						}
+						
+					}
+					else if(check_mines)
+					{
+						ret = true;
 						break;
 					}
-				} if (!ret) break;
+				
+				} 
+				if (!ret && check_trees) break;
+				else if (ret && check_mines) break;
 			}
+
 		}
 	}
 

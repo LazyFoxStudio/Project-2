@@ -5,6 +5,8 @@
 #include "Building.h"
 #include "Unit.h"
 #include "Hero.h"
+#include "j1Audio.h"
+#include "j1Console.h"
 
 #include <list>
 #include <map>
@@ -18,11 +20,37 @@ class Quadtree;
 #define FARM_WORKER_PRODUCTION_SECONDS 5
 #define DEATH_TIME 5
 #define WOOD_PER_WORKER 2
+#define GOLD_PER_WORKER 3
 #define REPAIR_COST 10
 #define REPAIR_COOLDOWN 30
 #define UNIT_QUEUE_MAX_SIZE 6
 #define BUILDINGAREA 1750
+#define MATCHUP_MODIFIER 1.2
 
+ 
+//------------Upgrades section----------
+#define ATTACK_UPGRADE_GROWTH 2
+#define DEFENSE_UPGRADE_GROWTH 2
+
+#define MELEE_1_UPGRADE_COST 400
+#define MELEE_2_UPGRADE_COST 800
+
+#define RANGED_1_UPGRADE_COST 500
+#define RANGED_2_UPGRADE_COST 1000
+
+#define FLYING_1_UPGRADE_COST 600
+#define FLYING_2_UPGRADE_COST 1200
+
+enum UpgradeType
+{
+	NO_TYPE,
+	MELEE_ATTACK_UPGRADE,
+	MELEE_DEFENSE_UPGRADE,
+	RANGED_ATTACK_UPGRADE,
+	RANGED_DEFENSE_UPGRADE,
+	FLYING_ATTACK_UPGRADE,
+	FLYING_DEFENSE_UPGRADE
+};
 struct worker
 {
 	Building* farm = nullptr;
@@ -79,7 +107,11 @@ public:
 	Cost getCost(Type type);
 	bool SpendCost(Type type);
 	void debugDrawEntity(Entity* entity);
-	void HandleSFX(Type type, int volume = 128);
+	SFXList GetOrdersSFXFromType(Type type);
+	void HandleAttackSFX(Type type, int volume = 128);
+	void HandleReadySFX(Type type, int volume = 128);
+	void HandleOrdersSFX();
+	void HandleParticles(Type type, fPoint pos, fPoint obj, float speed = 300);
 	void GetTotalIncome();
 	void TownHallLevelUp();
 
@@ -92,7 +124,14 @@ public:
 
 	Entity* CheckMouseHover(iPoint mouse_world);
 	void CheckCollidingWith(SDL_Rect collider, std::vector<Entity*>& list_to_fill, Entity* entity_to_ignore = nullptr);
+	Entity* getNearestEnemy(Entity* entity, int squad_target);
+	bool getNearestEnemies(Entity* entity, int squad_target, int number, std::vector<Entity*>& list_to_fill);
 
+	bool ChechUpgradeCost(UpgradeType type) const;
+	void SpendUpgradeResources(UpgradeType type);
+	void UpgradeUnits(UpgradeType type);
+
+	void CheckMine();
 	//------Worker Related Functions--------
 	void SubstractRandomWorkers(int num);
 	void DeleteWorkers();
@@ -104,6 +143,8 @@ public:
 	void UnassignRandomWorker();
 
 	bool CreateForest(MapLayer* trees);
+	bool Console_Interaction(std::string& function, std::vector<int>& arguments);
+
 
 public:
 
@@ -136,6 +177,25 @@ public:
 	Type to_build_type = NONE_ENTITY;
 	SDL_Rect selection_rect = { 0,0,0,0 };
 	SDL_Rect buildingArea;
+
+	int m_dmg_lvl = 0;
+	int m_armor_lvl = 0;
+	int r_dmg_lvl = 0;
+	int r_armor_lvl = 0;
+	int f_dmg_lvl = 0;
+	int f_armor_lvl = 0;
+
+	function* lose_game;
+	function* reset_hero_cd;
+	function* new_worker_cost;
+	function* new_wood_cost;
+	function* new_gold_cost;
+	function* new_oil_cost;
+	function* complete_buildings;
+	function* kill_selected;
+	function* change_stat;
+	function* next_wave;
+
 
 };
 #endif // !

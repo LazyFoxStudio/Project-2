@@ -30,10 +30,12 @@
 #include "UI_TroopCreationQueue.h"
 #include "UI_FarmWorkersManager.h"
 #include "Minimap.h"
+#include "UI_Slider.h"
 
 j1Gui::j1Gui() : j1Module()
 {
 	name = "gui";
+	pausable = false;
 }
 
 // Destructor
@@ -90,10 +92,11 @@ bool j1Gui::PreUpdate()
 		element = draggingElement;
 	else
 	{
-		for (std::list<menu*>::reverse_iterator it_m = App->uiscene->menus.rbegin(); it_m != App->uiscene->menus.rend(); it_m++) //Go through menus
+		for (std::list<menu*>::iterator it_m = App->uiscene->menus.begin(); it_m != App->uiscene->menus.end(); it_m++) //Go through menus
 		{
 			if ((*it_m) == nullptr) break;
 			if ((*it_m)->active == false) continue;
+			if ((*it_m)->id == INGAME_MENU && App->isPaused()) continue;
 			for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++) //Go through elements
 			{
 				if ((*it_e)->active  && (*it_e)->interactive && checkMouseHovering((*it_e)))
@@ -190,6 +193,11 @@ bool j1Gui::PostUpdate()
 		(*it_l)->BlitElement();
 	}
 	//Draw elements of active menus
+	if (draggingElement != nullptr && draggingElement->moving)
+	{
+		draggingElement->Mouse_Drag();
+		draggingElement->state = CLICKED;
+	}
 	for (std::list<menu*>::iterator it_m = App->uiscene->menus.begin(); it_m != App->uiscene->menus.end(); it_m++)
 	{
 		if ((*it_m) == nullptr) break;
@@ -198,11 +206,6 @@ bool j1Gui::PostUpdate()
 		{
 			if (!(*it_e)->active)
 				continue;
-			if ((*it_e)->moving)
-			{
-				(*it_e)->Mouse_Drag();
-				(*it_e)->state = CLICKED;
-			}
 
 			if ((*it_e)->parent == nullptr) //If it has a parent, the parent will be responsible for drawing it
 				(*it_e)->BlitElement();
@@ -359,6 +362,16 @@ bool j1Gui::checkMouseHovering(UI_element* element)
 		element->hovering = false;
 		if (element->callback != nullptr)
 			element->callback->OnUIEvent(element, MOUSE_LEAVE);
+	}
+
+	if (!ret && element->childs.size() > 0)
+	{
+		for (std::list<UI_element*>::iterator it_c = element->childs.begin(); it_c != element->childs.end(); it_c++)
+		{
+			ret = App->gui->checkMouseHovering((*it_c));
+			if (ret)
+				break;
+		}
 	}
 
 	return ret;
@@ -771,7 +784,38 @@ TroopCreationQueue* j1Gui::createTroopCreationQueue(Building* building)
 		menu->elements.push_back(ret);
 		ret->menu = INGAME_MENU;
 	}
-	ret->active = false;
+
+	return ret;
+}
+
+Slider* j1Gui::createSlider(int x, int y, SDL_Rect empty, SDL_Rect full, Button* button, float default_progress, j1Module* callback)
+{
+
+	Slider* ret = new Slider(x, y, atlas, empty, full, default_progress, callback);
+
+	if (full.w > full.h)
+	{
+		button->setDragable(true, false);
+		button->setLimits(empty.w / (2 / w_stretch), empty.w / (2 / w_stretch), -1, -1);
+	}
+	else
+	{
+		button->setDragable(false, true);
+		button->setLimits(-1, -1, empty.h / (2 / h_stretch), empty.h / (2 / h_stretch));
+	}
+
+	ret->appendChild(button, true);
+	button->setOriginalPos(((empty.w * w_stretch) - 7 - button->section.w / (2 / w_stretch)) * 0.5f, y);
+
+	ret->setDragable(true, true);
+
+	menu* menu = App->uiscene->getMenu(INGAME_MENU);
+	if (menu != nullptr)
+	{
+		menu->elements.push_back(ret);
+		ret->menu = INGAME_MENU;
+	}
+
 	return ret;
 }
 
@@ -861,8 +905,10 @@ void j1Gui::createPopUpInfo(UI_element* element, std::string info)
 void j1Gui::LoadLifeBarsDB(pugi::xml_node node)
 {
 	//Load textures
-	atlas = App->tex->Load(atlas_file_name.c_str());
-	icon_atlas = App->tex->Load(icon_atlas_file_name.c_str());
+	if(atlas == nullptr)
+		atlas = App->tex->Load(atlas_file_name.c_str());
+	if (icon_atlas == nullptr)
+		icon_atlas = App->tex->Load(icon_atlas_file_name.c_str());
 
 	//Load life bars
 	pugi::xml_node lifebar;

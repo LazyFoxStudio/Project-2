@@ -17,7 +17,7 @@ void Image::BlitElement()
 			SDL_Rect border_rect = { globalPos.x - border_thickness / 2, globalPos.y - border_thickness / 2, section.w + border_thickness, section.h + border_thickness };
 			App->render->DrawQuad(border_rect, border_color, true, use_camera, true);
 		}
-		App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera, true);
+		App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera, true, 1.0f, SDL_FLIP_NONE, 1.0f, rotation);
 
 		UI_element::BlitElement();
 	}

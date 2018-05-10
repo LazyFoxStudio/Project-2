@@ -8,7 +8,7 @@
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 
-j1Audio::j1Audio() : j1Module() { name = "audio"; }
+j1Audio::j1Audio() : j1Module() { name = "audio"; pausable = false; }
 
 // Destructor
 j1Audio::~j1Audio() {}
@@ -16,8 +16,8 @@ j1Audio::~j1Audio() {}
 // Called before render is available
 bool j1Audio::Awake(pugi::xml_node& config)
 {
-	musicVolumeModifier = config.child("music").child("musicVolumeModifier").attribute("value").as_float();
-	sfxVolumeModifier = config.child("sfx").child("sfxVolumeModifier").attribute("value").as_float();
+	musicVolumeModifier = DEFAULT_MUSIC_MODIFIER;
+	sfxVolumeModifier = DEFAULT_SFX_MODIFIER;
 
 	LOG("Loading Audio Mixer");
 	SDL_Init(0);

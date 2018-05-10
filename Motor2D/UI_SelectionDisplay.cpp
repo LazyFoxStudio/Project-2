@@ -3,6 +3,7 @@
 #include "j1Gui.h"
 #include "UI_Image.h"
 #include "UI_LifeBar.h"
+#include "UI_ProgressBar.h"
 #include "j1EntityController.h"
 #include "Squad.h"
 #include "UI_Text.h"
@@ -10,7 +11,7 @@
 
 SelectionDisplay::SelectionDisplay() : UI_element(0, 0, element_type::WINDOW, { 0,0,0,0 }, nullptr)
 {
-	moreSquads = new Text("", 950, 800, App->font->getFont(1), { 0,0,0,255 }, nullptr);
+	moreSquads = new Text("", 935, 800, App->font->getFont(1), { 255,255,255,255 }, nullptr);
 }
 
 SelectionDisplay::~SelectionDisplay()
@@ -93,7 +94,13 @@ void SelectionDisplay::OrderDisplay()
 		for (std::list<TroopDisplay*>::iterator it_t = troops.begin(); it_t != troops.end(); it_t++)
 		{
 			(*it_t)->icon->image->localPosition = { position.x + (counterX*icon_offset.x), position.y + (counterY*icon_offset.y) };
-			(*it_t)->lifeBar->localPosition = { position.x + (counterX*icon_offset.x) + lifeBar_offset.x, position.y + (counterY*icon_offset.y) + lifeBar_offset.y };
+			(*it_t)->lifeBar->bar->localPosition = { position.x + (counterX*icon_offset.x) + lifeBar_offset.x, position.y + (counterY*icon_offset.y) + lifeBar_offset.y };
+			counterY++;
+			if (counterY == 3)
+			{
+				counterX++;
+				counterY = 0;
+			}
 		}
 	}
 }
@@ -199,7 +206,7 @@ void SelectionDisplay::setAdditionalSquads()
 
 TroopIcon::TroopIcon(Entity* entity, int x, int y)
 {
-	image = new Image(App->gui->icon_atlas, x, y, App->gui->GetIconRect(entity), nullptr);
+	image = new Image(App->gui->icon_atlas, x, y, App->gui->GetIconRect(entity), App->uiscene);
 	image->setBorder(true, White, 4);
 	
 	this->entity = entity;

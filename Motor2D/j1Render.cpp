@@ -5,12 +5,14 @@
 #include "j1Render.h"
 #include "j1Input.h"
 #include "j1Gui.h"
+#include "j1Tutorial.h"
 
 #define VSYNC true
 
 j1Render::j1Render() : j1Module()
 {
 	name = "renderer";
+	pausable = false;
 	background.r = background.g = background.b = 0; background.a = 255;   //  black
 }
 
@@ -72,6 +74,7 @@ bool j1Render::PreUpdate()
 
 bool j1Render::PostUpdate()
 {
+	BROFILER_CATEGORY("Render PostUpdate", Profiler::Color::Magenta);
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	return true;
@@ -298,6 +301,9 @@ void j1Render::MouseCameraMovement(float dt)
 		
 	camera.x += mov_x * dt;
 	camera.y += mov_y * dt;
+
+	if (App->tutorial->doingTutorial && (mov_x != 0 || mov_y != 0))
+		App->tutorial->taskCompleted(MOVE_CAMERA);
 
 	//clamp values to 0 and limit
 	camera.x = (camera.x < -cam_limit_x ? -cam_limit_x : (camera.x > 0 ? 0 : camera.x));

@@ -38,7 +38,15 @@ enum actionType
 	RESEARCH_FLYING_ATTACK,
 	RESEARCH_FLYGIN_DEFENSE,
 
-	NEW_GAME
+	NEW_GAME,
+	SETTINGS,
+	BACK_MENU,
+	CREDITS,
+	EXIT,
+	CROSS_MENU,
+	CHANGE_HOTKEYS,
+	PAUSE,
+	START_SCENE
 };
 
 class j1ActionsController : public j1Module
@@ -48,6 +56,7 @@ public:
 	j1ActionsController()
 	{
 		name = "actionscontroller";
+		pausable = false;
 	}
 
 	~j1ActionsController()

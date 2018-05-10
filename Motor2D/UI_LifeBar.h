@@ -3,6 +3,8 @@
 
 #include "UI_element.h"
 
+#define HIT_LIFEBAR_RECT {285, 410, 69, 11}
+
 class progressBar;
 class Entity;
 class Text;

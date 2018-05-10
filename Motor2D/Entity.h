@@ -18,7 +18,7 @@ enum Type
 	TOWN_HALL, BARRACKS, LUMBER_MILL, FARM, MINE, TURRET, GNOME_HUT, CHURCH, BLACKSMITH,
 
 	// Heroes
-	HERO_1, /* ... */
+	HERO_1, HERO_2,/* ... */
 
 	// Allies
 	FOOTMAN, ARCHER, KNIGHT, GRYPHON, BALLISTA, FLYING_MACHINE,/* ... */
@@ -55,6 +55,7 @@ public:
 	uint piercing_atk		= 0;
 	uint line_of_sight		= 0;
 	uint range				= 0;
+	bool flying = false;
 
 	j1Timer timer;
 	Cost cost;
@@ -73,15 +74,19 @@ public:
 
 	virtual bool Update(float dt)	{ return true; };
 	virtual void Draw(float dt)		{};
-	virtual void Destroy() {};
+	virtual void Destroy()			{};
 
-	virtual bool Save()		{ return true; };
-	virtual bool Load()		{ return true; };
+	virtual bool Save()	{ return true; };
+	virtual bool Load()	{ return true; };
 
-	bool IsEnemy() { return type >= GRUNT; };
-	bool IsUnit() { return type >= HERO_1; };
-	bool IsHero() { return (type >= HERO_1 && type < FOOTMAN); }
-	bool IsBuilding() { return type <= BLACKSMITH; };
+	bool IsEnemy()		{ return type >= GRUNT; };
+	bool IsUnit()		{ return type >= HERO_1; };
+	bool IsHero()		{ return (type >= HERO_1 && type < FOOTMAN); }
+	bool IsBuilding()	{ return type <= BLACKSMITH; };
+	bool IsFlying()		{ return (type == DRAGON || type == FLYING_MACHINE || type == GRYPHON); }
+	bool IsMelee()		{ return (type == FOOTMAN || type == KNIGHT || type == GRUNT); }
+	bool IsRanged()		{ return !IsMelee(); }
+	bool HasAoEDamage() { return (type == DRAGON || type == BALLISTA || type == CATAPULT || type == JUGGERNAUT); }
 };
 
 #endif

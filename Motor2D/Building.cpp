@@ -15,6 +15,9 @@
 #include "UI_CooldownsDisplay.h"
 #include "Unit.h"
 
+#define TURRET_ROF 1.0f
+#define RANDOM_FACTOR (1.0f - (((float)(rand() % 6)) / 10.0f))
+
 Building::Building(iPoint pos, Building& building)
 {
 	texture				= building.texture;
@@ -23,6 +26,9 @@ Building::Building(iPoint pos, Building& building)
 
 	current_HP = max_HP	= building.max_HP;
 	defense				= building.defense;
+	attack				= building.attack;
+	piercing_atk		= building.piercing_atk;
+	range				= building.range;
 
 	collider.x = position.x = pos.x;
 	collider.y = position.y	= pos.y;
@@ -65,17 +71,6 @@ Building::~Building()
 
 bool Building::Update(float dt)
 {
-	if (isSelected)
-	{
-		if (queueDisplay != nullptr)
-			queueDisplay->active = true;
-	}
-	else
-	{
-		if (queueDisplay != nullptr)
-			queueDisplay->active = false;
-	}
-
 	//minimap_
 	if (App->gui->minimap)
 	{
@@ -94,10 +89,12 @@ bool Building::Update(float dt)
 		break;
 	case OPERATIVE:
 
-		if (type == LUMBER_MILL)
+		if (type == LUMBER_MILL || type == MINE)
 			HandleResourceProduction();
 		else if (type == FARM)
 			HandleWorkerProduction();
+		else if (type == TURRET)
+			turretBehavior();
 		else if (type == BARRACKS || type == GNOME_HUT || type == CHURCH)
 		{
 			HandleUnitProduction();
@@ -155,6 +152,7 @@ void Building::Destroy()
 			(*it)->to_destroy = true;
 		}
 		break;
+	case MINE:
 	case LUMBER_MILL:
 		CalculateResourceProduction();
 		App->entitycontroller->GetTotalIncome();
@@ -197,10 +195,13 @@ void Building::HandleConstruction()
 		{
 			App->entitycontroller->CreateWorkers(this, 5);
 		}
-		if (type != LUMBER_MILL)
+		if (type != LUMBER_MILL || type != MINE)
 		{
-			workers_inside.back()->working_at = nullptr;
-			workers_inside.pop_back();
+			if (!workers_inside.empty())
+			{
+				workers_inside.back()->working_at = nullptr;
+				workers_inside.pop_back();
+			}
 		}
 		else
 		{
@@ -225,7 +226,11 @@ void Building::HandleResourceProduction()
 	if (timer.ReadSec() >= 3)
 	{
 		timer.Start();
-		if(!App->map->WalkabilityArea(position.x - (additional_size.x * App->map->data.tile_width / 2) + collider.w / 2, (position.y - (additional_size.x * App->map->data.tile_width / 2)) + collider.h / 2, additional_size.x, additional_size.y, false, true))
+		if (type == MINE)
+		{
+			App->scene->gold += resource_production;
+		}
+		else if(!App->map->WalkabilityArea(position.x - (additional_size.x * App->map->data.tile_width / 2) + collider.w / 2, (position.y - (additional_size.x * App->map->data.tile_width / 2)) + collider.h / 2, additional_size.x, additional_size.y, false, true) && type == LUMBER_MILL)
 			App->scene->wood += resource_production;
 	}
 }
@@ -265,8 +270,16 @@ void Building::HandleUnitProduction()
 
 void Building::CalculateResourceProduction()
 {
-	float production_modifier = WOOD_PER_WORKER * (1 - (float)((workers_inside.size() - 1) * 0.05f));
-	resource_production = 3 * workers_inside.size() * production_modifier;
+	if (type == LUMBER_MILL)
+	{
+		float production_modifier = WOOD_PER_WORKER * (1 - (float)((workers_inside.size() - 1) * 0.05f));
+		resource_production = 3 * workers_inside.size() * production_modifier;
+	}
+	if (type == MINE)
+	{
+		float production_modifier = GOLD_PER_WORKER * (1 - (float)((workers_inside.size() - 1) * 0.05f));
+		resource_production = 3 * workers_inside.size() * production_modifier;
+	}
 }
 
 void Building::HandleWorkerProduction()
@@ -309,4 +322,32 @@ void Building::DemolishBuilding()
 void Building::Draw(float dt)
 {
 	App->render->Blit(texture, position.x, position.y, current_sprite);
+}
+
+void Building::turretBehavior()
+{
+	if (timer.ReadSec() > TURRET_ROF)
+	{
+		fPoint building_center = { position.x + collider.w / 2, position.y + collider.h / 2 };
+
+		for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+		{
+			if ((*it)->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED)
+			{
+				if (building_center.DistanceTo((*it)->position) < range)
+				{
+					if (App->render->CullingCam(position))
+						App->entitycontroller->HandleAttackSFX(ARCHER, 30);
+
+					App->entitycontroller->HandleParticles(ARCHER, position, { (*it)->position.x + ((*it)->collider.w / 2), (*it)->position.y + ((*it)->collider.h / 2) });
+
+					(*it)->current_HP -= MAX((RANDOM_FACTOR * (piercing_atk + ((((int)attack - (int)(*it)->defense) <= 0) ? 0 : attack - (*it)->defense))), 1);
+					
+					if ((*it)->current_HP < 0) ((Unit*)(*it))->Destroy();
+					timer.Start();
+					break;
+				}
+			}
+		}
+	}
 }

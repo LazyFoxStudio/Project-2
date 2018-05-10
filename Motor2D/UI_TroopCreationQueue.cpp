@@ -9,11 +9,12 @@
 #include "j1Timer.h"
 #include "UI_Text.h"
 #include "j1Fonts.h"
+#include "j1Render.h"
 
-TroopCreationQueue::TroopCreationQueue(Building* building): UI_element(875,810,PRODUCTIONDISPLAY, {0,0,200,220}, (j1Module*)App->uiscene)
+TroopCreationQueue::TroopCreationQueue(Building* building): UI_element(875,885,PRODUCTIONDISPLAY, {0,0,200,220}, (j1Module*)App->uiscene)
 {
 	this->building = building;
-	text = new Text("Troops being created:", 660, 810, App->font->getFont(1), { 0,0,0,255 }, nullptr);
+	text = new Text("Troops being created:", 800, 845, App->font->getFont(1), { 255,255,255,255 }, nullptr);
 }
 
 TroopCreationQueue::~TroopCreationQueue()
@@ -24,7 +25,8 @@ TroopCreationQueue::~TroopCreationQueue()
 
 void TroopCreationQueue::BlitElement()
 {
-	text->BlitElement();
+	if (building != nullptr && building->isSelected)
+		text->BlitElement();
 
 	int counterX = 0;
 	int counterY = 0;
@@ -39,13 +41,23 @@ void TroopCreationQueue::BlitElement()
 	{		
 		if ((*it_i)->icon->image->state == CLICKED)
 		{
+			childs.remove((*it_i)->icon->image);
 			RELEASE((*it_i));
 			icons.erase(it_i);
+			if (counter == 0)
+			{
+				building->timer.Start();
+				it_i++;
+				if (it_i != icons.end())
+					(*it_i)->timer.Start();
+				it_i--;
+			}
 			building->unit_queue.erase(building->unit_queue.begin()+counter);
 			continue;
 		}
 		if ((*it_i)->progress->progress == 1.0f)
 		{
+			childs.remove((*it_i)->icon->image);
 			RELEASE((*it_i));
 			icons.erase(it_i);
 			it_i++;
@@ -54,18 +66,28 @@ void TroopCreationQueue::BlitElement()
 			it_i--;
 			continue;
 		}
-		(*it_i)->icon->image->localPosition = { icon_offset.x*counterX, icon_offset.y*counterY };
-		(*it_i)->icon->image->BlitElement();
-		(*it_i)->progress->localPosition = { icon_offset.x*counterX, icon_offset.y*counterY +63};
-		(*it_i)->progress->BlitElement();
-		counterY++;
-		counter++;
-		if (counter == 6)
-			break;
-		if (counterY == 3)
+
+		if (building != nullptr && building->isSelected)
 		{
-			counterY = 0;
-			counterX++;
+			(*it_i)->icon->image->localPosition = { icon_offset.x*counterX, icon_offset.y*counterY };
+			(*it_i)->icon->image->BlitElement();
+			if ((*it_i)->icon->image->state == MOUSEOVER || (*it_i)->icon->image->state == CLICKED)
+			{
+				iPoint pos = (*it_i)->icon->image->calculateAbsolutePosition();
+				SDL_Rect section = { pos.x, pos.y, (*it_i)->icon->image->section.w, (*it_i)->icon->image->section.h };
+				App->render->DrawQuad(section, Translucid_Red, true, false, true);
+			}
+			(*it_i)->progress->localPosition = { icon_offset.x*counterX, icon_offset.y*counterY + 63 };
+			(*it_i)->progress->BlitElement();
+			counterY++;
+			counter++;
+			if (counter == 4)
+				break;
+			if (counterY == 2)
+			{
+				counterY = 0;
+				counterX++;
+			}
 		}
 	}
 }
@@ -87,6 +109,7 @@ void TroopCreationQueue::pushTroop(Type type)
 
 	display->timer.Start();
 	icons.push_back(display);
+	childs.push_back(display->icon->image);
 }
 
 UI_element* TroopCreationQueue::getMouseHoveringElement()

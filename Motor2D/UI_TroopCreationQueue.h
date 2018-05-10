@@ -3,7 +3,7 @@
 
 #include "UI_element.h"
 
-#define ICONS_OFFSET {100, 80}
+#define ICONS_OFFSET {95, 80}
 
 class TroopIcon;
 class ProgressBar;

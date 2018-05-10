@@ -30,6 +30,7 @@ class j1Fonts;
 class j1Gui;
 class j1Console;
 class j1WaveController;
+class j1Tutorial;
 
 class j1App
 {
@@ -65,6 +66,10 @@ public:
 	void LoadGame();
 	void SaveGame() const;
 
+	void pauseGame();
+	void resumeGame();
+	bool isPaused() const;
+
 	// Load config file
 	pugi::xml_node LoadFile(pugi::xml_document&, char* file) const;
 
@@ -91,7 +96,6 @@ private:
 	bool LoadGameNow();
 	bool SavegameNow() const;
 
-
 public:
 
 	// Modules
@@ -112,9 +116,11 @@ public:
 	j1Fonts*				font = nullptr;
 	j1Gui*					gui = nullptr;
 	j1WaveController*		wavecontroller = nullptr;
+	j1Tutorial*				tutorial = nullptr;
 
 	bool fpsCapON = true;
 	std::string			load_game="";
+	j1PerfTimer			gameTime;
 
 private:
 
@@ -128,13 +134,15 @@ private:
 	mutable bool		want_to_save = false;
 	bool				want_to_load = false;
 
+	bool				paused = false;
+
 	mutable std::string	save_game;
 
 	j1PerfTimer			ptimer;
 	uint64				frame_count = 0;
-	j1Timer				startup_time;
-	j1Timer				frame_time;
-	j1Timer				last_sec_frame_time;
+	j1PerfTimer			startup_time;
+	j1PerfTimer			frame_time;
+	j1PerfTimer			last_sec_frame_time;
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
 	float				DeltaTime = 0.0f;

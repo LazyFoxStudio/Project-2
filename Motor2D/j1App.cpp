@@ -23,6 +23,9 @@
 #include "j1Gui.h"
 #include "j1Console.h"
 #include "j1WaveController.h"
+#include "UI_Chrono.h"
+#include "UI_NextWaveWindow.h"
+#include "j1Tutorial.h"
 
 #include <time.h>
 
@@ -48,6 +51,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	font				= new j1Fonts();
 	gui					= new j1Gui();
 	wavecontroller		= new j1WaveController();
+	tutorial			= new j1Tutorial();
 	
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -63,6 +67,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entitycontroller, false);
 	AddModule(gui);
 	AddModule(uiscene);
+	AddModule(tutorial, true);
 	AddModule(sceneswitch);
 	AddModule(particle);
 	AddModule(actionscontroller);
@@ -189,7 +194,7 @@ void j1App::FinishUpdate()
 	if(want_to_save) SavegameNow();
 	if(want_to_load) LoadGameNow();
 
-	if (last_sec_frame_time.Read() > 1000)
+	if (last_sec_frame_time.ReadMs() > 1000)
 	{
 		last_sec_frame_time.Start();
 		prev_last_sec_frame_count = last_sec_frame_count;
@@ -198,7 +203,7 @@ void j1App::FinishUpdate()
 
 	float avg_fps = float(frame_count) / startup_time.ReadSec();
 	float seconds_since_startup = startup_time.ReadSec();
-	uint32 last_frame_ms = frame_time.Read();
+	uint32 last_frame_ms = frame_time.ReadMs();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
 	static char title[256];
@@ -216,7 +221,7 @@ bool j1App::PreUpdate()
 
 	for (std::list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
-		if ((*it)->active)
+		if ((*it)->active && (!(*it)->pausable || !paused))
 			if (!(*it)->PreUpdate()) return false;
 	}
 
@@ -230,7 +235,7 @@ bool j1App::DoUpdate()
 
 	for (std::list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
-		if ((*it)->active)
+		if ((*it)->active && (!(*it)->pausable || !paused))
 			if (!(*it)->Update(DeltaTime)) return false;
 	}
 
@@ -244,7 +249,7 @@ bool j1App::PostUpdate()
 
 	for (std::list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
-		if ((*it)->active)
+		if ((*it)->active && (!(*it)->pausable || !paused))
 			if (!(*it)->PostUpdate()) return false;
 	}
 
@@ -344,6 +349,23 @@ bool j1App::SavegameNow() const
 	data.reset();
 	want_to_save = false;
 	return ret;
+}
+
+void j1App::pauseGame()
+{
+	paused = true;
+	gameTime.PauseTimer();
+}
+
+void j1App::resumeGame()
+{
+	paused = false;
+	gameTime.Start();
+}
+
+bool j1App::isPaused() const
+{
+	return paused;
 }
 
 

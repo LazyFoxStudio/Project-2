@@ -104,11 +104,11 @@ SDL_Texture * Minimap::createTexture()
 				{
 					if ((*it)->type == DANGER)
 					{
-						App->audio->PlayFx(SFX_MAP_ATTACK);
+						App->audio->PlayFx(SFX_MAP_ATTACK, 60);
 					}
 					else
 					{
-						App->audio->PlayFx(SFX_MAP_ASSIST);
+						App->audio->PlayFx(SFX_MAP_ASSIST, 60);
 					}
 					(*it)->sound_played = true;
 				}
@@ -156,7 +156,7 @@ SDL_Texture * Minimap::createTexture()
 
 void Minimap::DrawMinimap()
 {
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && !App->isPaused())
 		moveCamera();
 
 	//We get the texture

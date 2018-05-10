@@ -76,7 +76,21 @@ void LifeBar::BlitElement()
 	max_life = ((Building*)entity)->max_HP;
 	if (life < 0)
 		life = 0;
-	bar->enterCurrentValue(life);
+
+	SDL_Rect whiteBar = HIT_LIFEBAR_RECT;
+
+	if (bar->enterCurrentValue(life) && !inMenu)
+		bar->full = whiteBar;
+	else if (bar->full.x == whiteBar.x && bar->full.y == whiteBar.y)
+	{
+		if (entity->IsEnemy())
+			bar->full = App->gui->GetLifeBarRect("R_full");
+		else if (entity->IsBuilding())
+			bar->full = App->gui->GetLifeBarRect("Y_full");
+		else
+			bar->full = App->gui->GetLifeBarRect("G_full");
+	}
+
 
 	if (inMenu)
 	{

@@ -15,44 +15,54 @@
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 #include "j1ActionsController.h"
+#include "j1ParticleController.h"
 #include "UI_WarningMessages.h"
 #include "j1WaveController.h"
 #include "UI_Button.h"
 #include "Building.h"
 #include "Quadtree.h"
 #include "UI_InfoTable.h"
+#include "j1Tutorial.h"
+#include "UI_CooldownsDisplay.h"
+#include <algorithm>
 
 #define SQUAD_MAX_FRAMETIME 0.1f
 #define ENITITY_MAX_FRAMETIME 0.3f
 
 #define MOUSE_RADIUS 15 //(in pixels)
 
-j1EntityController::j1EntityController() { name = "entitycontroller"; }
+j1EntityController::j1EntityController() { name = "entitycontroller"; pausable = false; }
 
 bool j1EntityController::Start()
 {
 	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
+	
+	lose_game = App->console->AddFunction("lose_game",this,0,0);
+	reset_hero_cd = App->console->AddFunction("reset_hero_cd", this, 0, 0);;
+	complete_buildings = App->console->AddFunction("creation_speed", this, 1, 2, " entity , time_to_create");
+	kill_selected = App->console->AddFunction("kill_selected",this,0,0);
+	change_stat = App->console->AddFunction("change_stat", this, 3, 3, " entity , stat , value");
+	next_wave = App->console->AddFunction("next_wave", this, 0, 0);
 
-	addHero(iPoint(2000, 1950), HERO_1);
+	new_wood_cost = App->console->AddFunction("change_wood_cost", this, 2, 2, "entity, cost");
+	new_worker_cost = App->console->AddFunction("change_worker_cost", this, 2, 2, "entity, cost");;
+	new_gold_cost = App->console->AddFunction("change_gold_cost", this, 2, 2, "entity, cost");;
+	new_oil_cost = App->console->AddFunction("change_oil_cost", this, 2, 2, "entity, cost");;
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
-	/*town_hall = addBuilding(town_hall_pos, TOWN_HALL);
-	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, town_hall->size.x, town_hall->size.y, true, false);
-	App->scene->InitialWorkers(town_hall);*/
-
-	AddSquad(FOOTMAN, fPoint(2200, 1950));
-
-/*
-	entity_iterator = entities.begin();
-	squad_iterator = all_squads.begin();*/
 	return true;
+}
+
+bool CompareSquad(Squad* s1, Squad* s2)
+{
+	return s1 == s2;
 }
 
 bool j1EntityController::Update(float dt)
 {
-	BROFILER_CATEGORY("Entites update", Profiler::Color::Maroon);
+	BROFILER_CATEGORY("Entites update", Profiler::Color::Bisque);
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 	Hero* hero = (Hero*)getEntitybyID(hero_UID);
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
@@ -74,6 +84,11 @@ bool j1EntityController::Update(float dt)
 		}
 	}
 
+	if (App->isPaused())
+		return true;
+
+
+	BROFILER_CATEGORY("Squad update", Profiler::Color::BurlyWood);
 	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end() && !App->scene->toRestart; it++)
 	{
 		if (!(*it)->Update(dt)) squads_to_destroy.push_back((*it)->UID);
@@ -81,56 +96,82 @@ bool j1EntityController::Update(float dt)
 
 	if (App->scene->toRestart) return true;
 
-	/*int counter = 0;
-	if (!all_squads.empty())
-	{
-		time_slicer.Start();
-		while (time_slicer.Read() < ((float)App->framerate * SQUAD_MAX_FRAMETIME) && counter < all_squads.size())
-		{
-			counter++; squad_iterator++;
-			if (squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
-			if (!(*squad_iterator)->Update(dt))							return false;
-		}
-	}
+	
 
-	if (!entities.empty())
-	{
-		counter = 0;
-		time_slicer.Start();
-		while (time_slicer.Read() < ((float)App->framerate * ENITITY_MAX_FRAMETIME) && counter < entities.size())
-		{
-			counter++; entity_iterator++;
-			if (entity_iterator == entities.end()) entity_iterator = entities.begin();
-
-			if ((*entity_iterator)->isActive || (*entity_iterator) == hero)
-				if (!(*entity_iterator)->Update(dt))	entities_to_destroy.push_back(*entity_iterator);
-
-		}
-	}*/
+	BROFILER_CATEGORY("Entity controller update", Profiler::Color::Maroon);
 
 	if (to_build_type != NONE_ENTITY)
 		buildingCalculations();
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->actionscontroller->doingAction_lastFrame && (hero ? hero->current_skill == 0 : true) && !App->gui->leftClickedOnUI)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->actionscontroller->doingAction_lastFrame && (hero ? hero->current_skill == 0 : true) && !App->gui->leftClickedOnUI)
 		selectionControl();
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && !App->actionscontroller->doingAction_lastFrame && !App->gui->rightClickedOnUI)
+	{
 		commandControl();
-
+		if (App->audio->followOrdersCooldown.ReadSec() > 5)
+		{
+			App->audio->followOrdersCooldown.Restart();
+			HandleOrdersSFX();
+		}
+	}
 	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && to_build_type != NONE_ENTITY && App->actionscontroller->doingAction)
 	{
 		to_build_type = NONE_ENTITY;
 		App->actionscontroller->activateAction(NO_ACTION);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && town_hall != nullptr)
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && town_hall != nullptr && (!App->tutorial->doingTutorial || App->tutorial->allowTHSelection))
 	{
+		if (town_hall->isSelected == true) //center camera
+		{
+			App->render->camera.x = - town_hall->position.x + App->render->camera.w/2;
+			App->render->camera.y = - town_hall->position.y + App->render->camera.h *0.3;
+		}
+		
 		for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
 			(*it_e)->isSelected = false;
 		selected_entities.clear();
 
 		selected_entities.push_back(town_hall);
+		if (App->tutorial->doingTutorial)
+			App->tutorial->taskCompleted(SELECT_TOWN_HALL);
 		town_hall->isSelected = true;
 		App->gui->newSelectionDone();
+		
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr && (!App->tutorial->doingTutorial || App->tutorial->allowHeroSelection))
+	{
+		if (hero->isSelected == true) //center camera
+		{
+			App->render->camera.x = -hero->position.x + App->render->camera.w / 2;
+			App->render->camera.y = -hero->position.y + App->render->camera.h * 0.4;
+		}
+		for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
+		{
+			(*it_e)->isSelected = false;
+		}
+		selected_entities.clear();
+		selected_squads.clear();
+
+		selected_entities.push_back(hero);
+		if (App->tutorial->doingTutorial)
+			App->tutorial->taskCompleted(SELECT_HERO);
+		selected_squads.push_back(hero->squad);
+		hero->isSelected = true;
+	
+		App->gui->newSelectionDone();
+	}
+	//Group Control
+	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && hero != nullptr)
+	{
+		if (selected_entities.size() > 0)
+		{
+			for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
+			{
+
+			}
+		}
+
 	}
 
 	return true;
@@ -148,27 +189,29 @@ void j1EntityController::buildingCalculations()
 			App->input->GetMousePosition(position.x, position.y);
 			if (placeBuilding(position))
 			{
-				//Hardcoded
-				Button* barracks = App->gui->GetActionButton(5);
-				barracks->Unlock();
-				Button* farms = App->gui->GetActionButton(7);
-				farms->Unlock();
-				Button* mine = App->gui->GetActionButton(22);
-				mine->Unlock();
-				Button* turret = App->gui->GetActionButton(23);
-				turret->Unlock();
-				Button* hut = App->gui->GetActionButton(24);
-				hut->Unlock();
-				Button* church = App->gui->GetActionButton(25);
-				church->Unlock();
-				Button* blacksmith = App->gui->GetActionButton(26);
-				blacksmith->Unlock();
-
+				if (to_build_type == LUMBER_MILL && !App->tutorial->doingTutorial)
+				{
+					//Hardcoded
+					Button* barracks = App->gui->GetActionButton(5);
+					barracks->Unlock();					
+					Button* farms = App->gui->GetActionButton(7);
+					farms->Unlock();
+					Button* mine = App->gui->GetActionButton(22);
+					mine->Unlock();
+					Button* turret = App->gui->GetActionButton(23);
+					turret->Unlock();
+					Button* hut = App->gui->GetActionButton(24);
+					hut->Unlock();
+					Button* church = App->gui->GetActionButton(25);
+					church->Unlock();
+					Button* blacksmith = App->gui->GetActionButton(26);
+					blacksmith->Unlock();
+				}
 
 				App->gui->warningMessages->hideMessage(NO_TREES);
 				App->entitycontroller->SpendCost(to_build_type);
 
-				if (App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT)
+				if ((App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT) || App->tutorial->doingTutorial)
 					App->actionscontroller->doingAction = false;
 
 				to_build_type = NONE_ENTITY;
@@ -188,32 +231,163 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 		App->render->DrawQuad(r, White, false);
 		App->render->DrawCircle(unit->position.x, unit->position.y, unit->line_of_sight, Blue);
 		App->render->DrawCircle(unit->mov_target.x, unit->mov_target.y, 5, Red);
+
+		if (unit->squad ? !unit->squad->atk_slots.empty() : false)
+		{
+			for (std::list<iPoint>::iterator it = unit->squad->atk_slots.begin(); it != unit->squad->atk_slots.end(); it++)
+			{
+				iPoint world_p = App->map->MapToWorld((*it).x, (*it).y);
+				App->render->DrawCircle(world_p.x, world_p.y, 5, Blue);
+			}
+		}
 	}
 }
 
-void j1EntityController::HandleSFX(Type type, int volume)
+SFXList j1EntityController::GetOrdersSFXFromType(Type type)
+{
+	switch (type)
+	{
+	case Type::NONE_ENTITY:
+		break;
+	case Type::FOOTMAN:
+		return SFXList::SFX_FOOTMAN_FOLLOWING_ORDERS;
+		break;
+	case Type::ARCHER:
+		return SFXList::SFX_ARCHER_FOLLOWING_ORDERS;
+		break;
+	case Type::KNIGHT:
+		return SFXList::SFX_KNIGHT_FOLLOWING_ORDERS;
+		break;
+	case Type::GRYPHON:
+		return SFXList::SFX_GRYPHON_FOLLOWING_ORDERS;
+		break;
+	case Type::BALLISTA:
+		//App->audio->PlayFx(SFXList::SFX_BALLISTA_READY, volume);
+		break;
+	case Type::FLYING_MACHINE:
+		return SFXList::SFX_FLYING_MACHINE_FOLLOWING_ORDERS;
+		break;
+	default:
+		break;
+	}
+}
+
+void j1EntityController::HandleAttackSFX(Type type, int volume)
+{
+	switch (type)
+	{
+	case Type::NONE_ENTITY:
+		break;
+	case Type::HERO_1:
+		App->audio->PlayFx(SFX_HERO_YHAMAM_BASICATTACK, volume);
+		break;
+	case Type::FOOTMAN:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_SWORD_CLASH, volume);
+		break;
+	case Type::ARCHER:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_ARROW, volume);
+		break;
+	case Type::KNIGHT:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_SWORD_CLASH, volume);
+		break;
+	case Type::GRYPHON:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_GRYPHON, volume);
+		break;
+	case Type::BALLISTA:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_BALLISTA, volume);
+		break;
+	case Type::FLYING_MACHINE:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_FLYINGMACHINE, volume);
+		break;
+	case Type::GRUNT:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_SWORD_CLASH, volume);
+		break;
+	case Type::AXE_THROWER:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_AXETHROW, volume);
+		break;
+	case Type::DEATH_KNIGHT:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_DEATH_KNIGHT, volume);
+		break;
+	case Type::DRAGON:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_DRAGON, volume);
+		break;
+	case Type::CATAPULT:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_CATAPULT, volume);
+		break;
+	case Type::JUGGERNAUT:
+		App->audio->PlayFx(SFX_MISCELLANEOUS_JUGGERNAUT, volume);
+		break;
+	default:
+		break;
+	}
+}
+void j1EntityController::HandleReadySFX(Type type, int volume)
+{
+	switch (type)
+	{
+	case Type::NONE_ENTITY:
+		break;
+	case Type::FOOTMAN:
+		App->audio->PlayFx(SFXList::SFX_FOOTMAN_READY, volume);
+		break;
+	case Type::ARCHER:
+		App->audio->PlayFx(SFXList::SFX_ARCHER_READY, volume);
+		break;
+	case Type::KNIGHT:
+		App->audio->PlayFx(SFXList::SFX_KNIGHT_READY, volume);
+		break;
+	case Type::GRYPHON:
+		App->audio->PlayFx(SFXList::SFX_GRYPHON_READY, volume);
+		break;
+	case Type::BALLISTA:
+		//App->audio->PlayFx(SFXList::SFX_BALLISTA_READY, volume);
+		break;
+	case Type::FLYING_MACHINE:
+		App->audio->PlayFx(SFXList::SFX_FLYING_MACHINE_READY, volume);
+		break;
+	default:
+		break;
+	}
+}
+void j1EntityController::HandleOrdersSFX()
+{
+	for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
+	{
+		App->audio->PlayFx((*it)->FollowingOrdersSFX, 70);
+	}
+}
+void j1EntityController::HandleParticles(Type type, fPoint pos, fPoint obj, float speed)
 {
 	switch (type)
 	{
 	case NONE_ENTITY:
 		break;
 	case HERO_1:
-		App->audio->PlayFx(SFX_HERO_YHAMAM_BASICATTACK, volume);
-		break;
-	case FOOTMAN:
-		App->audio->PlayFx(SFX_MISCELLANEOUS_SWORD_CLASH, volume);
+		App->particle->AddProjectile(particleType::PYAHMAM_AA, pos, obj, speed);
 		break;
 	case ARCHER:
-		App->audio->PlayFx(SFX_MISCELLANEOUS_ARROW, volume);
+		App->particle->AddProjectile(particleType::PARROW, pos, obj, speed);
 		break;
-	case KNIGHT:
-		App->audio->PlayFx(SFX_MISCELLANEOUS_ARROW, volume);
-	case GRUNT:
-		// May be changed if a better sfx is found (for free)
-		App->audio->PlayFx(SFX_MISCELLANEOUS_SWORD_CLASH, volume);
+	case BALLISTA:
+		App->particle->AddProjectile(particleType::PBALLISTA, pos, obj, speed);
+		break;
+	case Type::FLYING_MACHINE:
+		App->particle->AddProjectile(particleType::PFLYINGMACHINE, pos, obj, speed);
 		break;
 	case AXE_THROWER:
-		App->audio->PlayFx(SFX_MISCELLANEOUS_AXETHROW, volume);
+		App->particle->AddProjectile(particleType::PTOMAHAWK, pos, obj, speed);
+		break;
+	case Type::DEATH_KNIGHT:
+		App->particle->AddProjectile(particleType::PDEATHKNIGHT, pos, obj, speed);
+		break;
+	case Type::DRAGON:
+		//App->particle->AddProjectile(particleType::PDRAGON, pos, obj, speed);
+		break;
+	case Type::CATAPULT:
+		App->particle->AddProjectile(particleType::PCATAPULT, pos, obj, speed);
+		break;
+	case Type::JUGGERNAUT:
+		App->particle->AddProjectile(particleType::PJUGGERNAUT, pos, obj, speed);
 		break;
 	default:
 		break;
@@ -222,12 +396,15 @@ void j1EntityController::HandleSFX(Type type, int volume)
 void j1EntityController::GetTotalIncome()
 {
 	App->scene->wood_production_per_second = 0;
+	App->scene->gold_production_per_second = 0;
 	for (std::list<Entity*>::iterator tmp = entities.begin(); tmp != entities.end(); tmp++)
 	{
 		if ((*tmp)->IsBuilding())
 		{
 			if ((*tmp)->type == LUMBER_MILL && (*tmp)->ex_state != DESTROYED)
-				App->scene->wood_production_per_second += ((Building*)(*tmp))->resource_production;			
+				App->scene->wood_production_per_second += ((Building*)(*tmp))->resource_production;
+			else if ((*tmp)->type == MINE && (*tmp)->ex_state != DESTROYED)
+				App->scene->gold_production_per_second += ((Building*)(*tmp))->resource_production;
 		}		
 	}
 }
@@ -292,7 +469,7 @@ bool j1EntityController::CleanUp()
 
 	last_UID = 0;
 	RELEASE(colliderQT);
-/*
+	/*
 	entity_iterator = entities.begin();
 	squad_iterator = squads.begin();*/
 
@@ -312,7 +489,6 @@ bool j1EntityController::Load(pugi::xml_node& file)
 	//TODO
 	return true;
 }
-
 
 void j1EntityController::DeleteEntity(uint UID)
 {
@@ -338,7 +514,10 @@ void j1EntityController::DeleteEntity(uint UID)
 		else   // is building
 		{
 			Building* building_to_remove = (Building*)(entity);
-			App->map->WalkabilityArea(building_to_remove->position.x, building_to_remove->position.y, building_to_remove->size.x, building_to_remove->size.y, true);
+			if (building_to_remove->type != MINE)
+			{
+				App->map->WalkabilityArea(building_to_remove->position.x, building_to_remove->position.y, building_to_remove->size.x, building_to_remove->size.y, true);
+			}
 
 			if (App->scene->toRestart)
 			{
@@ -395,7 +574,6 @@ Unit* j1EntityController::addUnit(iPoint pos, Type type, Squad* squad)
 	return unit;
 }
 
-
 Hero* j1EntityController::addHero(iPoint pos, Type type)
 {
 	Hero* hero = new Hero();
@@ -433,12 +611,20 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 
 	if (type == HERO_1)
 	{
-		hero->skill_one = new Skill(hero, 3, 100, 300, 6, AREA);		//Icicle Crash
+		hero->skill_one = new Skill(hero, 3, 100, 300, 1, AREA);		//Icicle Crash
 		hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
 		hero->skill_three = new Skill(hero, 0, 200, 250, 2, LINE);		//Dragon Breath
 	}
+	if (type == HERO_2)
+	{
+		hero->skill_one = new Skill(hero, 3, 50, 3000000, 6, PLACE);	//Consecration
+		hero->skill_two = new Skill(hero, 3, 50, 700, 10, HEAL);		//Circle of Light
+		hero->skill_three = new Skill(hero, 3, 75, 3000000, 1, BUFF);	//Honor of the pure
+	}
 
 	App->gui->createLifeBar(hero);
+
+	App->gui->cooldownsDisplay->heroChoosen(hero);
 
 	entities.push_back(hero);
 
@@ -457,11 +643,23 @@ Building* j1EntityController::addBuilding(iPoint pos, Type type)
 	Building* building = new Building(pos, *getBuildingFromDB(type));
 	building->UID = last_UID++;
 	if (type == LUMBER_MILL)
+	{
 		building->workersDisplay = App->gui->createWorkersDisplay(building);
+		if (App->tutorial->doingTutorial)
+			App->tutorial->taskCompleted(PLACE_LUMBER_MILL);
+	}
+	else if (type == MINE)
+	{
+		building->workersDisplay = App->gui->createWorkersDisplay(building);
+	}
 	else if (type == BARRACKS || type == GNOME_HUT || type == CHURCH)
+	{
 		building->queueDisplay = App->gui->createTroopCreationQueue(building);
-	/*else if (type == FARM)
-		building->workersManager = App->gui->createWorkersManager(building);*/
+		if (type == BARRACKS && App->tutorial->doingTutorial)
+			App->tutorial->taskCompleted(PLACE_BARRACKS);
+	}
+	else if (type == FARM && App->tutorial->doingTutorial)
+		App->tutorial->taskCompleted(PLACE_FARM);
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
 
@@ -479,6 +677,8 @@ Squad* j1EntityController::AddSquad(Type type, fPoint position)
 	Squad* new_squad = nullptr;
 	Unit* unit_template = getUnitFromDB(type);
 
+	HandleReadySFX(type, 70);
+
 	if (App->pathfinding->GatherWalkableAdjacents(map_p, getUnitFromDB(type)->squad_members, positions))
 	{
 		for (int i = 0; i < unit_template->squad_members; ++i)
@@ -489,6 +689,7 @@ Squad* j1EntityController::AddSquad(Type type, fPoint position)
 		new_squad = new Squad(squad_vector);
 		if (!unit_template->IsEnemy())
 		{
+			new_squad->FollowingOrdersSFX = GetOrdersSFXFromType(type);
 			App->scene->wood -= unit_template->cost.wood_cost;
 			SubstractRandomWorkers(unit_template->cost.worker_cost);
 		}
@@ -513,7 +714,6 @@ Building* j1EntityController::getBuildingFromDB(Type type)
 	return (DataBase[type]->IsBuilding() ? (Building*)DataBase[type] : nullptr);
 }
 
-
 bool j1EntityController::placeBuilding(iPoint position)
 {
 	iPoint pos = App->render->ScreenToWorld(position.x, position.y);
@@ -526,7 +726,7 @@ bool j1EntityController::placeBuilding(iPoint position)
 	std::vector<Entity*> collisions;
 	App->entitycontroller->CheckCollidingWith(building_col, collisions);
 
-	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && collisions.empty() && SDL_HasIntersection(&building_col,&buildingArea))
+	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && collisions.empty() && SDL_HasIntersection(&building_col,&buildingArea) && to_build->type != MINE)
 	{
 		Building* tmp = addBuilding(pos, to_build_type);
 		worker* tmp2 = GetInactiveWorker();
@@ -536,6 +736,16 @@ bool j1EntityController::placeBuilding(iPoint position)
 		
 		App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, true,false);
 		App->wavecontroller->updateFlowField();
+
+		return true;
+	}
+	else if (!App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, false, false, true) && collisions.empty() && SDL_HasIntersection(&building_col, &buildingArea) && to_build->type == MINE)
+	{
+		Building* tmp = addBuilding(pos, to_build_type);
+		worker* tmp2 = GetInactiveWorker();
+
+		tmp->workers_inside.push_back(tmp2);
+		tmp2->working_at = tmp;
 
 		return true;
 	}
@@ -563,25 +773,37 @@ void j1EntityController::buildingProcessDraw()
 
 	App->gui->warningMessages->hideMessage(NO_TREES);
 
-
-	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && enough_resources&& SDL_HasIntersection(&building_col, &buildingArea))
-		App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);
-	else
-		App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);
-
-	if (to_build_type == LUMBER_MILL)
+	if (to_build_type != MINE)
 	{
-		bool treesAround = !App->map->WalkabilityArea((pos.x - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.w / 2), (pos.y - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.h / 2), to_build->additional_size.x, to_build->additional_size.y, false, true);
-
-		if (!treesAround)
-			App->gui->warningMessages->showMessage(NO_TREES);
-
-		if (treesAround && enough_resources)
-			App->render->DrawQuad({ (pos.x - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.w / 2),(pos.y - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.h / 2),to_build->additional_size.x*App->map->data.tile_width, to_build->additional_size.y*App->map->data.tile_height }, Transparent_Green);
+		if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && enough_resources && SDL_HasIntersection(&building_col, &buildingArea))
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);
 		else
-			App->render->DrawQuad({ (pos.x - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.w / 2),(pos.y - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.h / 2),to_build->additional_size.x*App->map->data.tile_width,to_build->additional_size.y*App->map->data.tile_height }, Transparent_Red);
-	}
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);
 
+		if (to_build_type == LUMBER_MILL)
+		{
+			bool treesAround = !App->map->WalkabilityArea((pos.x - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.w / 2), (pos.y - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.h / 2), to_build->additional_size.x, to_build->additional_size.y, false, true);
+
+			if (!treesAround)
+				App->gui->warningMessages->showMessage(NO_TREES);
+
+			if (treesAround && enough_resources)
+				App->render->DrawQuad({ (pos.x - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.w / 2),(pos.y - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.h / 2),to_build->additional_size.x*App->map->data.tile_width, to_build->additional_size.y*App->map->data.tile_height }, Transparent_Green);
+			else
+				App->render->DrawQuad({ (pos.x - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.w / 2),(pos.y - (to_build->additional_size.x * App->map->data.tile_width / 2)) + (to_build->collider.h / 2),to_build->additional_size.x*App->map->data.tile_width,to_build->additional_size.y*App->map->data.tile_height }, Transparent_Red);
+		}
+	}
+	else
+	{
+		if (!App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, false, false, true) && enough_resources && SDL_HasIntersection(&building_col, &buildingArea))
+		{
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);
+		}
+		else
+		{
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);
+		}
+	}
 
 
 	App->render->Blit(to_build->texture, pos.x, pos.y, &to_build->sprites[COMPLETE]);
@@ -592,7 +814,7 @@ void j1EntityController::HandleWorkerAssignment(bool to_assign, Building * build
 {	
 	if (building)
 	{
-		if (building->type == LUMBER_MILL)
+		if (building->type == LUMBER_MILL || building->type == MINE)
 		{
 			if (to_assign)
 			{
@@ -680,39 +902,53 @@ void j1EntityController::commandControl()
 	{
 		if (!selected_squads.empty())
 		{
-			FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+			FlowField* shared_flowfield = nullptr;
+			if (App->tutorial->doingTutorial)
+				App->tutorial->taskCompleted(MOVE_TROOPS);
 			for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 			{
 				(*it)->Halt();
-				MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
-				new_order->flow_field = shared_flowfield;
-				(*it)->commands.push_back(new_order);
+				if((*it)->isFlying())
+					(*it)->commands.push_back(new MoveToSquadFlying((*it)->getCommander(), map_p));
+				else
+				{
+					if (!shared_flowfield)
+						shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+
+					MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
+					new_order->flow_field = shared_flowfield;
+					(*it)->commands.push_back(new_order);
+				}
 			}
-			shared_flowfield->used_by = selected_squads.size();
 		}
 	}
 	else
 	{
 		if (entity->IsEnemy() && entity->ex_state != DESTROYED && entity->isActive)    //clicked on a enemy
 		{
-			FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+			FlowField* shared_flowfield = nullptr;
 			for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 			{
 				(*it)->Halt();
-				AttackingMoveToSquad* new_order = nullptr;
-				new_order = new AttackingMoveToSquad((*it)->getCommander(), map_p, false, ((Unit*)entity)->squad->UID);
+				if ((*it)->isFlying())
+					(*it)->commands.push_back(new AttackingMoveToSquadFlying((*it)->getCommander(), map_p));
+				else 
+				{
+					if (Unit* commander = (*it)->getCommander())
+						if (commander->IsMelee() && entity->IsFlying())
+							continue;
 
-				new_order->flow_field = shared_flowfield;
-				(*it)->commands.push_back(new_order);
+					if (!shared_flowfield)
+						shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+
+					MoveToSquad* new_order = new AttackingMoveToSquad((*it)->getCommander(), map_p);
+					new_order->flow_field = shared_flowfield;
+					(*it)->commands.push_back(new_order);
+				}
 			}
 		}
 		
 	}
-}
-
-bool CompareSquad(Squad* s1, Squad* s2)
-{
-	return s1 == s2;
 }
 
 void j1EntityController::selectionControl()
@@ -767,6 +1003,8 @@ void j1EntityController::selectionControl()
 						if ((*it)->ex_state == OPERATIVE)
 						{
 							selected_entities.push_back(*it);
+							if ((*it)->type == TOWN_HALL && App->tutorial->doingTutorial)
+								App->tutorial->taskCompleted(SELECT_TOWN_HALL);
 							(*it)->isSelected = true;
 							App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
 							if (!buildings) buildings = true;
@@ -786,6 +1024,8 @@ void j1EntityController::selectionControl()
 			for (int i = 0; i < units.size(); i++)
 			{
 				selected_entities.push_back(units[i]);
+				if (units[i]->type == HERO_1 && App->tutorial->doingTutorial)
+					App->tutorial->taskCompleted(SELECT_HERO);
 				units[i]->isSelected = true;
 			}
 		}
@@ -793,7 +1033,18 @@ void j1EntityController::selectionControl()
 		if (buildings && units)
 		{
 			for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
-				if ((*it)->IsBuilding()) { selected_entities.erase(it); it--; }
+				if ((*it)->IsBuilding())
+				{ 
+					(*it)->isSelected = false;
+					selected_entities.erase(it);
+					it--;
+				}
+		}
+		else if (buildings && selected_entities.size() > 1)
+		{
+			Entity* first_selected = selected_entities.front();
+			selected_entities.clear();
+			selected_entities.push_back(first_selected);
 		}
 
 		App->gui->newSelectionDone();
@@ -802,8 +1053,6 @@ void j1EntityController::selectionControl()
 		break;
 	}
 }
-
-
 
 void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entity*>& list_to_fill, Entity* entity_to_ignore)
 {
@@ -820,6 +1069,252 @@ void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entit
 }
 
 
+bool j1EntityController::ChechUpgradeCost(UpgradeType type) const
+{
+	bool ret = false;
+	switch (type)
+	{
+	case MELEE_ATTACK_UPGRADE:
+		if (m_dmg_lvl == 0 && App->scene->wood >= MELEE_1_UPGRADE_COST && App->scene->gold >= MELEE_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (m_dmg_lvl == 1 && App->scene->wood >= MELEE_2_UPGRADE_COST && App->scene->gold >= MELEE_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case MELEE_DEFENSE_UPGRADE:
+		if (m_armor_lvl == 0 && App->scene->wood >= MELEE_1_UPGRADE_COST && App->scene->gold >= MELEE_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (m_armor_lvl == 1 && App->scene->wood >= MELEE_2_UPGRADE_COST && App->scene->gold >= MELEE_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case RANGED_ATTACK_UPGRADE:
+		if (r_dmg_lvl == 0 && App->scene->wood >= RANGED_1_UPGRADE_COST && App->scene->gold >= RANGED_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (r_dmg_lvl == 1 && App->scene->wood >= RANGED_2_UPGRADE_COST && App->scene->gold >= RANGED_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case RANGED_DEFENSE_UPGRADE:
+		if (r_armor_lvl == 0 && App->scene->wood >= RANGED_1_UPGRADE_COST && App->scene->gold >= RANGED_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (r_armor_lvl == 1 && App->scene->wood >= RANGED_2_UPGRADE_COST && App->scene->gold >= RANGED_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case FLYING_ATTACK_UPGRADE:
+		if (f_dmg_lvl == 0 && App->scene->wood >= FLYING_1_UPGRADE_COST && App->scene->gold >= FLYING_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (f_dmg_lvl == 1 && App->scene->wood >= FLYING_2_UPGRADE_COST && App->scene->gold >= FLYING_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	case FLYING_DEFENSE_UPGRADE:
+		if (f_armor_lvl == 0 && App->scene->wood >= FLYING_1_UPGRADE_COST && App->scene->gold >= FLYING_1_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		else if (f_armor_lvl == 1 && App->scene->wood >= FLYING_2_UPGRADE_COST && App->scene->gold >= FLYING_2_UPGRADE_COST)
+		{
+			ret = true;
+		}
+		break;
+	default:
+		break;
+	}
+	return ret;
+}
+
+void j1EntityController::SpendUpgradeResources(UpgradeType type)
+{
+	switch (type)
+	{
+	case MELEE_ATTACK_UPGRADE:
+		if (m_dmg_lvl == 0)
+		{
+			App->scene->wood -= MELEE_1_UPGRADE_COST;
+			App->scene->gold -= MELEE_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= MELEE_2_UPGRADE_COST;
+			App->scene->gold -= MELEE_2_UPGRADE_COST;
+		}
+		break;
+	case MELEE_DEFENSE_UPGRADE:
+		if (m_armor_lvl == 0)
+		{
+			App->scene->wood -= MELEE_1_UPGRADE_COST;
+			App->scene->gold -= MELEE_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= MELEE_2_UPGRADE_COST;
+			App->scene->gold -= MELEE_2_UPGRADE_COST;
+		}
+		break;
+	case RANGED_ATTACK_UPGRADE:
+		if (r_dmg_lvl == 0)
+		{
+			App->scene->wood -= RANGED_1_UPGRADE_COST;
+			App->scene->gold -= RANGED_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= RANGED_2_UPGRADE_COST;
+			App->scene->gold -= RANGED_2_UPGRADE_COST;
+		}
+		break;
+	case RANGED_DEFENSE_UPGRADE:
+		if (r_armor_lvl == 0)
+		{
+			App->scene->wood -= RANGED_1_UPGRADE_COST;
+			App->scene->gold -= RANGED_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= RANGED_2_UPGRADE_COST;
+			App->scene->gold -= RANGED_2_UPGRADE_COST;
+		}
+		break;
+	case FLYING_ATTACK_UPGRADE:
+		if (f_dmg_lvl == 0)
+		{
+			App->scene->wood -= FLYING_1_UPGRADE_COST;
+			App->scene->gold -= FLYING_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= FLYING_2_UPGRADE_COST;
+			App->scene->gold -= FLYING_2_UPGRADE_COST;
+		}
+		break;
+	case FLYING_DEFENSE_UPGRADE:
+		if (f_armor_lvl == 0)
+		{
+			App->scene->wood -= FLYING_1_UPGRADE_COST;
+			App->scene->gold -= FLYING_1_UPGRADE_COST;
+		}
+		else
+		{
+			App->scene->wood -= FLYING_2_UPGRADE_COST;
+			App->scene->gold -= FLYING_2_UPGRADE_COST;
+		}
+		break;
+	}
+}
+
+void j1EntityController::UpgradeUnits(UpgradeType type)
+{
+	switch (type)
+	{
+	case MELEE_ATTACK_UPGRADE:
+		DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		break;
+	case MELEE_DEFENSE_UPGRADE:
+		DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[KNIGHT]->defense += DEFENSE_UPGRADE_GROWTH;
+		break;
+	case RANGED_ATTACK_UPGRADE:
+		DataBase[ARCHER]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[BALLISTA]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		break;
+	case RANGED_DEFENSE_UPGRADE:
+		DataBase[ARCHER]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[BALLISTA]->defense += DEFENSE_UPGRADE_GROWTH;
+		break;
+	case FLYING_ATTACK_UPGRADE:
+		DataBase[FLYING_MACHINE]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[GRYPHON]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		break;
+	case FLYING_DEFENSE_UPGRADE:
+		DataBase[FLYING_MACHINE]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[GRYPHON]->defense += DEFENSE_UPGRADE_GROWTH;
+		break;
+	}
+}
+
+Entity* j1EntityController::getNearestEnemy(Entity* entity, int target_squad)
+{
+	Entity* ret = nullptr;
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		if (target_squad != -1)
+		{
+			if (!(*it)->IsUnit()) continue;
+			else if (((Unit*)(*it))->squad->UID != target_squad) continue;
+		}
+
+		if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED && !(entity->IsMelee() && (*it)->IsFlying()))
+		{
+			if (!ret) ret = *it;
+			else
+			{
+				if ((*it)->position.DistanceTo(entity->position) < ret->position.DistanceTo(entity->position))
+					ret = *it;
+			}
+		}
+	}
+
+	return ret;
+
+}
+
+bool j1EntityController::getNearestEnemies(Entity* entity, int squad_target, int number, std::vector<Entity*>& list_to_fill)
+{
+	list_to_fill.clear();
+
+	for (int j = 0; j < number; j++)
+	{
+		Entity* nearest = nullptr;
+		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			if (squad_target != -1)
+			{
+				if (!(*it)->IsUnit()) continue;
+				else if (((Unit*)(*it))->squad->UID != squad_target) continue;
+			}
+
+			if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED && !(entity->IsMelee() && (*it)->IsFlying()))
+			{
+				bool used = false;
+				for (int i = 0; i < list_to_fill.size(); i++)
+					if (list_to_fill[i] == *it) { used = true; break; }
+
+				if (!used)
+				{
+					if (!nearest) nearest = *it;
+					else
+					{
+						if ((*it)->position.DistanceTo(entity->position) < nearest->position.DistanceTo(entity->position))
+							nearest = *it;
+					}
+				}
+			}
+		}
+		if (nearest) list_to_fill.push_back(nearest);
+		else break;
+	}
+
+	return !list_to_fill.empty();
+}
+
 void j1EntityController::TownHallLevelUp()
 {
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
@@ -831,7 +1326,6 @@ void j1EntityController::TownHallLevelUp()
 		}
 	}
 }
-
 
 void j1EntityController::SubstractRandomWorkers(int num)
 {
@@ -956,7 +1450,6 @@ void j1EntityController::UnassignRandomWorker()
 	}
 }
 
-
 bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 {
 	pugi::xml_node NodeInfo;
@@ -1034,6 +1527,9 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		buildingTemplate->current_HP = buildingTemplate->max_HP = NodeInfo.child("Stats").child("life").attribute("value").as_int(0);
 		//buildingTemplate->workers_inside = NodeInfo.child("Stats").child("villagers").attribute("value").as_int(0);
 		buildingTemplate->defense = NodeInfo.child("Stats").child("defense").attribute("value").as_int(0);
+		buildingTemplate->attack = NodeInfo.child("Stats").child("attack").attribute("value").as_int(0);
+		buildingTemplate->range = NodeInfo.child("Stats").child("range").attribute("value").as_int(0);
+		buildingTemplate->piercing_atk = NodeInfo.child("Stats").child("piercingDamage").attribute("value").as_int(0);
 		buildingTemplate->cost.creation_time = NodeInfo.child("Stats").child("buildingTime").attribute("value").as_int(0);
 		buildingTemplate->cost.wood_cost = NodeInfo.child("Stats").child("woodCost").attribute("value").as_int(0);
 		buildingTemplate->cost.gold_cost = NodeInfo.child("Stats").child("goldCost").attribute("value").as_int(0);
@@ -1106,44 +1602,355 @@ void j1EntityController::DeleteDB()
 
 bool j1EntityController::CreateForest(MapLayer* trees)
 {
-	bool ret = true;
-	for (int j = 0; j < trees->height; j++)
+	return true;
+}
+bool j1EntityController::Console_Interaction(std::string& function, std::vector<int>& arguments)
+{
+	if (function == lose_game->name)
 	{
-		for (int i = 0; i < trees->width; i++)
-		{
-			if (trees->GetID(i, j) == 112)//found a core!
-			{
-				//start bfs
-				Forest f;
-				std::list<iPoint>borders_to_check;
-				iPoint p = { i, j};//32 is hardcoded
-				borders_to_check.push_back(p);
-				
-				while (borders_to_check.size() != 0)
-				{
-					iPoint curr = borders_to_check.front();
-					borders_to_check.remove(curr);
-					iPoint neighbors[4];
-					neighbors[0].create(curr.x + 1, curr.y + 0);
-					neighbors[1].create(curr.x + 0, curr.y + 1);
-					neighbors[2].create(curr.x - 1, curr.y + 0);
-					neighbors[3].create(curr.x + 0, curr.y - 1);
+		town_hall->current_HP -= 9000;
+	}
 
-					for (uint i = 0; i < 4; ++i)
-					{
-						if (!App->pathfinding->IsWalkable(neighbors[i]))
-						{
-							//add to the list of trees and to the borders
-							iPoint p = neighbors[i];
-							borders_to_check.push_back(p);
-							f.trees.push_back({p.x*32,p.y*32});
-						}
-					}
-					borders_to_check.remove(curr);
-				}
-				forests.push_back(&f);
+	if (function == reset_hero_cd->name)
+	{
+		(Hero*)getEntitybyID(hero_UID);//help
+	}
+
+	if (function == change_stat->name)
+	{
+		if (arguments.data()[0] >= Type::FOOTMAN && arguments.data()[0] <= Type::FLYING_MACHINE)
+		{
+			switch (arguments.data()[1])
+			{
+			case 0:
+				DataBase[arguments.data()[0]]->attack = arguments.data()[2];
+				LOG("changed attack to %d", arguments.data()[2]);
+				break;
+			case 1:
+				DataBase[arguments.data()[0]]->piercing_atk = arguments.data()[2];
+				LOG("changed piercing_atk to %d", arguments.data()[2]);
+				break;
+			case 2:
+				DataBase[arguments.data()[0]]->defense = arguments.data()[2];
+				LOG("changed defense to %d", arguments.data()[2]);
+				break;
+			case 3:
+				DataBase[arguments.data()[0]]->line_of_sight = arguments.data()[2];
+				LOG("changed line of sight to %d", arguments.data()[2]);
+				break;
+			case 4:
+				DataBase[arguments.data()[0]]->range = arguments.data()[2];
+				LOG("changed range to %d", arguments.data()[2]);
+				break;
+			default:
+				break;
+			}
+		}
+		////attack
+		//if (arguments.data()[1] == 0)
+		//{
+		//	switch (arguments.data()[0])
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->attack = arguments.data()[2];
+		//		LOG("changed footman attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->attack = arguments.data()[2];
+		//		LOG("changed archer attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->attack = arguments.data()[2];
+		//		LOG("changed knight attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->attack = arguments.data()[2];
+		//		LOG("changed gryphon attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->attack = arguments.data()[2];
+		//		LOG("changed ballista attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->attack = arguments.data()[2];
+		//		LOG("changed flying machine attack to %d", arguments.data()[2]);
+		//		break;
+		//	default:
+		//		break;
+		//	}
+		//}
+		////piercing attack
+		//if (arguments.data()[1] == 1)
+		//{
+		//	switch (arguments.data()[0])
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->piercing_atk = arguments.data()[2];
+		//		LOG("changed footman piercing attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->piercing_atk = arguments.data()[2];
+		//		LOG("changed archer piercing attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->piercing_atk = arguments.data()[2];
+		//		LOG("changed knight piercing attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->piercing_atk = arguments.data()[2];
+		//		LOG("changed gryphon piercing attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->piercing_atk = arguments.data()[2];
+		//		LOG("changed ballista piercing attack to %d", arguments.data()[2]);
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->piercing_atk = arguments.data()[2];
+		//		LOG("changed flying machine piercing attack to %d", arguments.data()[2]);
+		//		break;
+		//	default:
+		//		break;
+		//	}
+		//}
+		////defense
+		//if (arguments.data()[1] == 2)
+		//{
+		//	switch (arguments.data()[0])
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->defense = arguments.data()[2];
+		//		LOG("changed footman defense to %d", arguments.data()[2]);
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->defense = arguments.data()[2];
+		//		LOG("changed archer defense to %d", arguments.data()[2]);
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->defense = arguments.data()[2];
+		//		LOG("changed knight defense to %d", arguments.data()[2]);
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->defense = arguments.data()[2];
+		//		LOG("changed gryphon defense to %d", arguments.data()[2]);
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->defense = arguments.data()[2];
+		//		LOG("changed ballista defense to %d", arguments.data()[2]);
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->defense = arguments.data()[2];
+		//		LOG("changed flying machine defense to %d", arguments.data()[2]);
+		//		break;
+		//	default:
+		//		break;
+		//	}
+		//}
+		////sight
+		//if (arguments.data()[1] == 3)
+		//{
+		//	switch (arguments.data()[0])
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->line_of_sight = arguments.data()[2];
+		//		LOG("changed footman sight %d", arguments.data()[2]);
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->line_of_sight = arguments.data()[2];
+		//		LOG("changed archer sight %d", arguments.data()[2]);
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->line_of_sight = arguments.data()[2];
+		//		LOG("changed knight sight %d", arguments.data()[2]);
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->line_of_sight = arguments.data()[2];
+		//		LOG("changed gryphon sight %d", arguments.data()[2]);
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->line_of_sight = arguments.data()[2];
+		//		LOG("changed ballista sight %d", arguments.data()[2]);
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->line_of_sight = arguments.data()[2];
+		//		LOG("changed flying machine sight %d", arguments.data()[2]);
+		//		break;
+		//	default:
+		//		break;
+		//	}
+		//}
+		////range
+		//if (arguments.data()[1] == 4)
+		//{
+		//	switch (arguments.data()[0])
+		//	{
+		//	case 0:
+		//		DataBase[FOOTMAN]->range = arguments.data()[2];
+		//		LOG("changed footman range %d", arguments.data()[2]);
+		//		break;
+		//	case 1:
+		//		DataBase[ARCHER]->range = arguments.data()[2];
+		//		LOG("changed archer range %d", arguments.data()[2]);
+		//		break;
+		//	case 2:
+		//		DataBase[KNIGHT]->range = arguments.data()[2];
+		//		LOG("changed knight range %d", arguments.data()[2]);
+		//		break;
+		//	case 3:
+		//		DataBase[GRYPHON]->range = arguments.data()[2];
+		//		LOG("changed gryphon range %d", arguments.data()[2]);
+		//		break;
+		//	case 4:
+		//		DataBase[BALLISTA]->range = arguments.data()[2];
+		//		LOG("changed ballista range %d", arguments.data()[2]);
+		//		break;
+		//	case 5:
+		//		DataBase[FLYING_MACHINE]->range = arguments.data()[2];
+		//		LOG("changed flying machine range %d", arguments.data()[2]);
+		//		break;
+		//	default:
+		//		break;
+		//	}
+		//}
+
+	}
+
+	if (function == new_wood_cost->name)
+	{
+		switch (arguments.data()[0])
+		{
+		case 0:
+			DataBase[FOOTMAN]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 1:
+			DataBase[ARCHER]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 2:
+			DataBase[KNIGHT]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 3:
+			DataBase[GRYPHON]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 4:
+			DataBase[BALLISTA]->cost.wood_cost = arguments.data()[1];
+			break;
+		case 5:
+			DataBase[FLYING_MACHINE]->cost.wood_cost = arguments.data()[1];
+			break;
+		default:
+			break;
+		}
+	}
+	if (function == new_gold_cost->name)
+	{
+		switch (arguments.data()[0])
+		{
+		case 0:
+			DataBase[FOOTMAN]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 1:
+			DataBase[ARCHER]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 2:
+			DataBase[KNIGHT]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 3:
+			DataBase[GRYPHON]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 4:
+			DataBase[BALLISTA]->cost.gold_cost = arguments.data()[1];
+			break;
+		case 5:
+			DataBase[FLYING_MACHINE]->cost.gold_cost = arguments.data()[1];
+			break;
+		default:
+			break;
+		}
+	}
+	if (function == new_oil_cost->name)
+	{
+		switch (arguments.data()[0])
+		{
+		case 0:
+			DataBase[FOOTMAN]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 1:
+			DataBase[ARCHER]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 2:
+			DataBase[KNIGHT]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 3:
+			DataBase[GRYPHON]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 4:
+			DataBase[BALLISTA]->cost.oil_cost = arguments.data()[1];
+			break;
+		case 5:
+			DataBase[FLYING_MACHINE]->cost.oil_cost = arguments.data()[1];
+			break;
+		default:
+			break;
+		}
+	}
+	if (function == new_worker_cost->name)
+	{
+		switch (arguments.data()[0])
+		{
+		case 0:
+			DataBase[FOOTMAN]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 1:
+			DataBase[ARCHER]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 2:
+			DataBase[KNIGHT]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 3:
+			DataBase[GRYPHON]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 4:
+			DataBase[BALLISTA]->cost.worker_cost = arguments.data()[1];
+			break;
+		case 5:
+			DataBase[FLYING_MACHINE]->cost.worker_cost = arguments.data()[1];
+			break;
+		default:
+			break;
+		}
+	}
+
+	if (function == kill_selected->name)
+	{
+		for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
+		{
+			if ((*it)->IsUnit() && !(*it)->IsHero())
+			{
+				LOG("deleted %d via comand", (*it)->UID);
+				DeleteEntity((*it)->UID);
 			}
 		}
 	}
-	return ret;
+
+	if (function == complete_buildings->name)
+	{
+		if (arguments.data()[0] < Type::GRUNT)
+		{
+			if (arguments.size() == 2)
+				DataBase[arguments.data()[0]]->cost.creation_time = arguments.data()[1];
+			else if (arguments.size() == 1)
+				DataBase[arguments.data()[0]]->cost.creation_time = 0;
+		}
+	}
+
+	if (function == next_wave->name)
+	{
+		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			if ((*it)->type >= Type::GRUNT && (*it)->type <= Type::JUGGERNAUT)
+			{
+				DeleteEntity((*it)->UID);
+			}
+		}
+	}
+	return true;
 }

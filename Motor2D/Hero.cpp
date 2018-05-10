@@ -4,11 +4,13 @@
 #include "Color.h"
 #include "Command.h"
 #include "j1EntityController.h"
+#include "j1ParticleController.h"
 #include "Squad.h"
 #include "j1Gui.h"
 #include "j1Audio.h"
 #include "UI_CooldownsDisplay.h"
 #include "Minimap.h"
+#include "j1Tutorial.h"
 
 Hero::~Hero()
 {
@@ -48,27 +50,36 @@ bool Hero::Update(float dt)
 		if ((App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_one->Ready()) || skill_one->going)
 		{
 			skill_one->Activate();
-			App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
+			if (!skill_one->going)
+			{
+				iPoint tmp;
+				App->input->GetMousePosition(tmp.x,tmp.y);
+				fPoint tmp2(tmp.x, tmp.y);
+				App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
+				App->particle->AddParticle(PICICLE_CRASH, tmp2);
+			}
 			App->gui->cooldownsDisplay->skillUsed(1);
 		}
 		skill_one->toDraw.clear();
 		break;
 	case 2:
 		skill_two->DrawRange();
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready())
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready() || skill_two->going)
 		{
 			skill_two->Activate();
-			App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
+			if (!skill_two->going)
+				App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
 			App->gui->cooldownsDisplay->skillUsed(2);
 		}
 		skill_two->toDraw.clear();		
 		break;
 	case 3:
 		skill_three->DrawRange();
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready())
+		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready() || skill_three->going)
 		{
 			skill_three->Activate();
-			App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
+			if (!skill_three->going)
+				App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
 			App->gui->cooldownsDisplay->skillUsed(3);
 		}
 		skill_three->toDraw.clear();	

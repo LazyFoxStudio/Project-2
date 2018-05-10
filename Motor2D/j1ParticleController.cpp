@@ -71,7 +71,8 @@ bool j1ParticleController::Update(float dt)
 		}
 		else if (p->currentLife.Read() > 0)
 		{
-			App->render->Blit(graphics, p->position.x, p->position.y, &(p->anim.GetCurrentFrame(dt)), true, false, 1, SDL_FLIP_NONE, 1, GetAngleInDegrees(p));
+			if (App->render->CullingCam(p->position))
+				App->render->Blit(graphics, p->position.x, p->position.y, &(p->anim.GetCurrentFrame(dt)), true, false, 1, SDL_FLIP_NONE, 1, RADTODEG * p->angle);
 		}
 
 
@@ -89,12 +90,17 @@ void j1ParticleController::LoadParticlesFromXML()
 	file = App->LoadFile(Particledoc, "Particle_Templates.xml");
 
 	Particle* tmp; 
+	int type = 1;
 
 	for (pugi::xml_node part = file.child("particle").child("template"); part; part = part.next_sibling("template"))
 	{
 		tmp = new Particle();
 
-		tmp->type = GetTypeFromInt(part.child("type").attribute("value").as_int(0));
+		tmp->type = (particleType)type++;
+
+		tmp->width = part.child("width").attribute("value").as_int(0);
+		tmp->height = part.child("height").attribute("value").as_int(0);
+		tmp->parabollic = part.child("parabollic").attribute("value").as_bool(false);
 
 		pugi::xml_node childNode = part.child("anim");
 
@@ -109,18 +115,32 @@ void j1ParticleController::LoadParticlesFromXML()
 
 }
 
-particleType j1ParticleController::GetTypeFromInt(int posOnEnum)
-{
-	switch (posOnEnum)
-	{
-	case 2:
-		return particleType::TOMAHAWK;
-	case 1:
-		return particleType::ARROW;
-	default:
-		return particleType::NO_TYPE;
-	}
-}
+//particleType j1ParticleController::GetTypeFromInt(int posOnEnum)
+//{
+//	switch (posOnEnum)
+//	{
+//	case 9:
+//		return particleType::PJUGGERNAUT;
+//	case 8:
+//		return particleType::PCATAPULT;
+//	case 7:
+//		return particleType::PDRAGON;
+//	case 6:
+//		return particleType::PDEATHKNIGHT;
+//	case 5:
+//		return particleType::PFLYINGMACHINE;
+//	case 4:
+//		return particleType::PBALLISTA;
+//	case 3:
+//		return particleType::PYAHMAM_AA;
+//	case 2:
+//		return particleType::PTOMAHAWK;
+//	case 1:
+//		return particleType::PARROW;
+//	default:
+//		return particleType::PNO_TYPE;
+//	}
+//}
 
 Particle* j1ParticleController::FindParticleType(particleType type)
 {
@@ -133,7 +153,7 @@ Particle* j1ParticleController::FindParticleType(particleType type)
 
 void j1ParticleController::AdjustDirection(Particle* p, fPoint objective, float speed)
 {
-	fPoint vec = { objective.x - p->position.x, objective.y - p->position.y };
+	fPoint vec = { objective.x - p->position.x + (p->width/2), objective.y - p->position.y + (p->height / 2) };
 
 	p->angle = asinf(vec.y/vec.GetModule());
 	float sinus = sinf(p->angle);
@@ -144,19 +164,9 @@ void j1ParticleController::AdjustDirection(Particle* p, fPoint objective, float 
 	if (vec.x < 0)
 		p->speed.x *= -1;
 
-
 	p->life = (vec.GetModule() / speed)*1000;
 }
 
-double j1ParticleController::GetAngleInDegrees(Particle * p)
-{
-	double angle = p->angle * 180 / M_PI;
-
-	if (p->speed.x <= 0)
-		angle = 180 - angle;
-	
-	return angle;
-}
 
 
 void j1ParticleController::AddParticle(particleType type, fPoint position, bool using_camera)
@@ -169,8 +179,8 @@ void j1ParticleController::AddParticle(particleType type, fPoint position, bool 
 			p->currentLife.Start();
 
 
-			p->position.x = position.x;
-			p->position.y = position.y;
+			p->position.x = position.x - App->render->camera.x;
+			p->position.y = position.y - App->render->camera.y;
 			p->speed.SetToZero();
 
 
@@ -234,7 +244,7 @@ Particle::Particle()
 
 Particle::Particle(Particle& p) :
 	anim(p.anim), position(p.position),
-	life(p.life), type(p.type)
+	life(p.life), type(p.type), parabollic(p.parabollic)
 {}
 
 
@@ -254,14 +264,16 @@ bool Particle::Update(float dt)
 			ret = false;
 	}
 	
+	if (parabollic)
+	{
+		float z = (((life * 0.5f - aux) / (life * 0.5f)) * (life / 100));
+		angle = (fPoint(speed.x / speed.GetModule(), speed.y / speed.GetModule() - (z / 5))).GetAngle();
+		position.y -= z;
+	}
 	
 	position.x += speed.x*dt;
 	position.y += speed.y*dt;
 	
-
-	/*if (position.x > App->win->width || position.x < 0 || position.y >  App->win->height || position.y < 0)
-		life = 0;*/
-
 	return ret;
 }
 

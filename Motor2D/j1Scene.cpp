@@ -24,12 +24,25 @@
 #include "Squad.h"
 #include "j1ActionsController.h"
 #include "UI_WarningMessages.h"
+#include "j1Tutorial.h"
 
-j1Scene::j1Scene() : j1Module() { name = "scene"; }
+j1Scene::j1Scene() : j1Module() { name = "scene"; pausable = false; }
 
 // Destructor
 j1Scene::~j1Scene() {}
 
+bool j1Scene::Awake(pugi::xml_node& conf)
+{
+	LOG("Loading GUI atlas");
+	bool ret = true;
+
+	i_wood = conf.child("Wood").attribute("value").as_int(0);
+	i_gold = conf.child("Gold").attribute("value").as_int(0);
+	i_workers = conf.child("Workers").attribute("value").as_int(0);
+	i_oil = conf.child("Oil").attribute("value").as_int(0);
+
+	return ret;
+}
 
 // Called before the first frame
 bool j1Scene::Start()
@@ -48,8 +61,6 @@ bool j1Scene::Start()
 
 	guiconfig = App->LoadFile(Gui_config_file, "Gui_config.xml");
 	guiconfig = guiconfig.child("scene");
-	
-
 
 	App->render->camera.x = -1200;
 	App->render->camera.y = -1600;
@@ -68,6 +79,11 @@ bool j1Scene::Start()
 	//App->entitycontroller->addUnit({ 2000, 2200 }, KNIGHT);
 	//App->entitycontroller->AddSquad(FOOTMAN, { 2000,2200 });
 
+	set_wood = App->console->AddFunction("set_wood", this, 1, 1, "amount");
+	set_gold = App->console->AddFunction("set_gold", this, 1, 1, "amount");
+	set_wood_second = App->console->AddFunction("set_wood_second", this, 1, 1, "amount");
+	set_gold_second = App->console->AddFunction("set_gold_second", this, 1, 1, "amount");
+
 	return true;
 }
 
@@ -75,7 +91,9 @@ bool j1Scene::Start()
 bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene update", Profiler::Color::Chocolate);
-	App->render->MouseCameraMovement(dt);
+	if (!App->isPaused())
+		App->render->MouseCameraMovement(dt);
+	
 	App->map->Draw();
 
 	//Music and SFX modifiers (temporal for Vertical Slice)
@@ -95,10 +113,10 @@ bool j1Scene::Update(float dt)
 	{
 		App->audio->ModifySFXVolume(-10);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	/*if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
 		App->entitycontroller->UnassignRandomWorker();
-	}
+	}*/
 
 	workers_int = workers.size();
 	GetTotalInactiveWorkers();
@@ -161,9 +179,8 @@ bool j1Scene::Save(pugi::xml_node& data) const
 //	return ret;
 //}
 
-void j1Scene::Start_game()
+void j1Scene::Close_game()
 {
-
 	//DELETING ENTITIES-------------------------------------------------------
 	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
 	{
@@ -181,12 +198,22 @@ void j1Scene::Start_game()
 	App->entitycontroller->selected_squads.clear();
 	App->entitycontroller->entities.clear();
 	App->entitycontroller->squads.clear();
-		/*
-	App->entitycontroller->entity_iterator = App->entitycontroller->entities.begin();
-	App->entitycontroller->squad_iterator = App->entitycontroller->squads.begin();*/
+
+	if (App->tutorial->active)
+		App->tutorial->stopTutorial();
+}
+
+void j1Scene::Start_game()
+{
+	if (App->tutorial->doingTutorial)
+	{
+		App->render->camera.x = 0;
+		App->render->camera.y = -3200;
+	}
 
 	//SATARTING ENTITIES-------------------------------------------------------
-	App->entitycontroller->addHero(iPoint(2000, 1950), HERO_1);
+	App->entitycontroller->addHero(iPoint(1950, 2100), HERO_1);
+
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	App->entitycontroller->town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
 	App->map->WalkabilityArea(town_hall_pos.x, town_hall_pos.y, App->entitycontroller->town_hall->size.x, App->entitycontroller->town_hall->size.y, true, false);
@@ -197,44 +224,58 @@ void j1Scene::Start_game()
 	//buildingArea.y = -BUILDINGAREA / 2 + town_hall_pos.y / 2;
 	App->entitycontroller->buildingArea.x = town_hall_pos.x - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_width / 2);
 	App->entitycontroller->buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_height / 2);
-
-	App->entitycontroller->AddSquad(FOOTMAN, { 2200, 1950 });
+/*
+	App->entitycontroller->AddSquad(ARCHER, { 2200, 2100 });*/
 
 	//RESTARTING WAVES---------------------------------------------------------
 	App->gui->Chronos->counter.Restart();
 	App->wavecontroller->Restart_Wave_Sys();
 	App->gui->nextWaveWindow->timer->start_value = 0;
 	App->gui->nextWaveWindow->timer->setStartValue(App->wavecontroller->initial_wait);
+	if (App->tutorial->doingTutorial)
+	{
+		App->wavecontroller->wave_timer.PauseTimer();
+		App->gui->nextWaveWindow->active = false;
+		App->gui->nextWaveWindow->timer->counter.PauseTimer();
+	}
 
 	//RESTARTING RESOURCES-----------------------------------------------------
-	wood = INIT_WOOD;
-	gold = INIT_GOLD;
+	wood = i_wood;
+	gold = i_gold;
 	//inactive_workers = workers = INIT_WORKERS;
 	InitialWorkers(App->entitycontroller->town_hall);
 	town_hall_lvl = INIT_TOWNHALL_LVL;
 
 	//RESTART LOCKED ACTION BUTTONS
 	//Hardcoded
+	std::string condition = "Build first a Lumber Mill";
+	if (App->tutorial->doingTutorial)
+		condition = "First finish the tutorial";
+
 	Button* barracks = App->gui->GetActionButton(5);
-	barracks->setCondition("Build first a Lumber Mill");
+	barracks->setCondition(condition);
 	barracks->Lock();
+	Button* lumber = App->gui->GetActionButton(6);
+	lumber->setCondition(condition);
+	if (App->tutorial->doingTutorial)
+		lumber->Lock();
 	Button* farms = App->gui->GetActionButton(7);
-	farms->setCondition("Build first a Lumber Mill");
+	farms->setCondition(condition);
 	farms->Lock();
 	Button* mine = App->gui->GetActionButton(22);
-	mine->setCondition("Build first a Lumber Mill");
+	mine->setCondition(condition);
 	mine->Lock();
 	Button* turret = App->gui->GetActionButton(23);
-	turret->setCondition("Build first a Lumber Mill");
+	turret->setCondition(condition);
 	turret->Lock();
 	Button* hut = App->gui->GetActionButton(24);
-	hut->setCondition("Build first a Lumber Mill");
+	hut->setCondition(condition);
 	hut->Lock();
 	Button* church = App->gui->GetActionButton(25);
-	church->setCondition("Build first a Lumber Mill");
+	church->setCondition(condition);
 	church->Lock();
 	Button* blacksmith = App->gui->GetActionButton(26);
-	blacksmith->setCondition("Build first a Lumber Mill");
+	blacksmith->setCondition(condition);
 	blacksmith->Lock();
 
 	//CANCEL IF BUILDING
@@ -247,12 +288,13 @@ void j1Scene::Start_game()
 	App->gui->warningMessages->hideMessage(NO_TREES);
 
 	//CHANGING MUSIC BACK TO WAVE ONE-----------------------------------------
-	App->audio->PlayMusic(MAIN_THEME);
+	App->audio->PlayMusic(INGAME_THEME, 0);
 
 	App->entitycontroller->GetTotalIncome();
 
 	App->gui->newSelectionDone();
 	App->uiscene->toggleMenu(false, GAMEOVER_MENU);
+
 	toRestart = false;
 
 }
@@ -289,4 +331,29 @@ void j1Scene::loadGameDB(pugi::xml_node& data)
 
 	//Load workers display
 	App->gui->LoadWorkersDisplayDB(data);
+}
+
+bool j1Scene::Console_Interaction(std::string& function, std::vector<int>& arguments)
+{
+	if (function == set_gold->name)
+	{
+		gold = arguments.data()[0];
+	}
+
+	if (function == set_wood->name)
+	{
+		wood = arguments.data()[0];
+
+	}
+	if (function == set_gold_second->name)
+	{
+		gold_production_per_second = arguments.data()[0];
+
+	}
+	if (function == set_wood_second->name)
+	{
+		wood_production_per_second = arguments.data()[0];
+	}
+
+	return true;
 }

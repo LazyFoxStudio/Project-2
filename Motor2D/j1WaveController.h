@@ -34,13 +34,14 @@ public:
 	bool Save(pugi::xml_node&) const;
 	bool Load(pugi::xml_node&);
 
-	int CalculateWaveScore();
-
 	void Generate_Next_Wave();
 	void Generate_Wave();
 	void Restart_Wave_Sys();
+	void entity_selector(int);
 
 	void updateFlowField();
+
+	void forceNextWave();
 
 public:
 
@@ -50,11 +51,16 @@ public:
 	int					initial_wait = 0;
 	int					wait_between_waves = 0;
 	int					current_wave = 0;
+	int					difficulty = 0;
+	int					points=0;
+
+	bool				tutorial = false;
 	
 	j1Timer				wave_timer;
 	
 	std::list<NextWave*> next_wave;
 	
 	std::vector<fPoint> spawns;
+	std::vector<int> costs;
 };	
 #endif

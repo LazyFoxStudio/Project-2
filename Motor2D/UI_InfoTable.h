@@ -3,11 +3,12 @@
 
 #include "UI_element.h"
 
-#define INFOTABLE_POSITION {1111, 805}
+#define INFOTABLE_POSITION {1111, 813}
 #define LINES_SEPARATION 40
 #define TABLE_WIDTH 245
 #define TABLE_HEIGHT 254
 #define STATS_VALUE_OFFSET 170
+#define DEFAULT_INFO_COLOR {255,255,255,255}
 
 class Text;
 struct InfoLineData;

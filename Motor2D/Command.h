@@ -2,8 +2,6 @@
 #ifndef _COMMAND_H_
 #define _COMMAND_H_
 
-#define PROXIMITY_FACTOR 2  // the higher the sooner units will reach destination (in tiles)  // 1 ~ 5//
-
 #include <list>
 #include <vector>
 #include "p2Point.h"
@@ -60,6 +58,24 @@ private:
 	bool OnStop();
 
 	fPoint getDesiredPlace();
+	bool useSquadPosition(fPoint desired_place);
+
+};
+
+class MoveToFlying : public Command
+{
+public:
+	iPoint dest = { 0,0 };
+	iPoint map_p = { 0,0 };
+
+public:
+	MoveToFlying(Unit* unit, iPoint destination) : Command(unit, MOVETO), dest(destination) {};
+
+private:
+	bool OnUpdate(float dt);
+	bool OnStop();
+
+	fPoint getDesiredPlace();
 
 };
 
@@ -68,24 +84,39 @@ class Attack : public Command
 public:
 
 	iPoint map_p = { 0,0 };
-	int current_target = -1;
+	iPoint current_target = { 0,0 };
 
-	j1Timer timer;
 	std::list<iPoint> path;
-	std::vector<uint>* enemy_ids = nullptr;
+	std::vector<iPoint>* enemy_atk_slots = nullptr;
+	int* squad_target = nullptr;
 
 public:
-	Attack(Unit* unit, std::vector<uint>* enemy_ids) : Command(unit, ATTACK), enemy_ids(enemy_ids) {};
-
-private:
-	bool OnInit();
-	bool OnUpdate(float dt);
-	bool OnStop();
+	Attack(Unit* unit, std::vector<iPoint>* enemy_atk_slots, int* squad_target) : Command(unit, ATTACK), enemy_atk_slots(enemy_atk_slots), squad_target(squad_target) {};
 
 	bool searchTarget();
 	void moveToTarget();
-	void callRetaliation(Entity* enemy);
+	void callRetaliation(Entity* enemy, uint squad_UID);
+	
+	int dealDamage(Entity* attacker, Entity* defender);
+	void AoE_Damage(Entity* enemy);
+	bool favorableMatchup(Entity* attacker, Entity* defender);
 
+private:
+	bool OnInit();
+	virtual bool OnUpdate(float dt);
+	bool OnStop();
+
+
+};
+
+
+class MultiTargetAttack : public Attack
+{
+public:
+	MultiTargetAttack(Unit* unit, std::vector<iPoint>* enemy_atk_slots, int* squad_target) : Attack(unit, enemy_atk_slots, squad_target) {};
+
+private:
+	bool OnUpdate(float dt);
 };
 
 //		SQUADS: =======================
@@ -114,23 +145,59 @@ private:
 
 };
 
+class MoveToSquadFlying : public Command
+{
+public:
+	Squad * squad = nullptr;
+	iPoint dest = { -1,-1 };
+	FlowField* flow_field = nullptr;
+
+public:
+
+	MoveToSquadFlying(Unit* commander, iPoint map_dest) : Command(commander, MOVETOSQUAD), dest(map_dest) {};
+
+	bool allIdle();
+private:
+
+	bool OnInit();
+	virtual bool OnUpdate(float dt);
+	bool OnStop();
+
+};
+
 class AttackingMoveToSquad : public MoveToSquad
 {
 	int target_squad_id = -1;
 	bool hold = false;
 	bool enemies_found = false;
-	j1Timer timer;
+	std::vector<iPoint> enemy_atk_slots;
 
 public:
 	AttackingMoveToSquad(Unit* commander, iPoint map_dest, bool hold = false, int target_squad_id = -1) : MoveToSquad(commander, map_dest), hold(hold), target_squad_id(target_squad_id) 
-		{ type = ATTACKING_MOVETO_SQUAD; };
-
-	std::vector<uint> enemy_ids;
+		{ type = ATTACKING_MOVETO_SQUAD;};
 
 private:
 	bool OnUpdate(float dt);
 
-	bool checkSquadTarget();
+};
+
+
+class AttackingMoveToSquadFlying : public MoveToSquadFlying
+{
+	int target_squad_id = -1;
+	bool hold = false;
+	bool enemies_found = false;
+	std::vector<iPoint> enemy_atk_slots;
+
+public:
+	AttackingMoveToSquadFlying(Unit* commander, iPoint map_dest, bool hold = false, int target_squad_id = -1) : MoveToSquadFlying(commander, map_dest), hold(hold), target_squad_id(target_squad_id)
+	{
+		type = ATTACKING_MOVETO_SQUAD;
+	};
+
+private:
+	bool OnUpdate(float dt);
+
 };
 
 class PatrolSquad : public Command

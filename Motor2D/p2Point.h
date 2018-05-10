@@ -160,8 +160,8 @@ public:
 		if (!IsZero())
 		{
 			float _module = GetModule();
-			Normalized.x = (x / (TYPE)_module);
-			Normalized.y = (y / (TYPE)_module);
+			Normalized.x = ((float)x / (float)_module);
+			Normalized.y = ((float)y / (float)_module);
 		}
 		return Normalized;
 	}

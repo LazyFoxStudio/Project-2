@@ -96,7 +96,7 @@ void IngameMenu::BlitElement()
 
 	//HARDCODED ?
 	//Blit workers on Lumber Mill
-	if (workers_title != nullptr && workers != nullptr && App->entitycontroller->selected_entities.size() > 0 && App->entitycontroller->selected_entities.front()->type == LUMBER_MILL)
+	if (workers_title != nullptr && workers != nullptr && App->entitycontroller->selected_entities.size() > 0 && (App->entitycontroller->selected_entities.front()->type == LUMBER_MILL || App->entitycontroller->selected_entities.front()->type == MINE))
 	{
 		workers_title->BlitElement();
 		int workers_num = ((Building*)App->entitycontroller->selected_entities.front())->workers_inside.size();

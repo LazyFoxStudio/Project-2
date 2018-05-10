@@ -53,7 +53,7 @@ public:
 	void HandleWorkerProduction();
 	void RepairBuilding();
 	void DemolishBuilding();
-
+	void turretBehavior();
 
 	void Destroy();
 };

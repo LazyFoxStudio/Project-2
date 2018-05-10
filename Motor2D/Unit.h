@@ -8,16 +8,18 @@
 #include <vector>
 #include <deque>
 
-enum direction { E, NE, SE, N, S, NW, W, SW};
-
 #define SPEED_CONSTANT 100.0f   // applied to all units   
-#define MAX_MOVEMENT_WEIGHT 100.0f   // max value for the next_step vector, for steering calculations  /
-#define STEERING_FACTOR 1.5f
+#define SQUAD_UNATTACH_DISTANCE 100.0f
 
+#define MAX_NEXT_STEP_MULTIPLIER 1.2f
+#define MIN_NEXT_STEP_MULTIPLIER 0.7f
+
+enum direction { E, NE, SE, N, S, NW, W, SW};
 
 class Animation;
 class Squad;
 //class Effect;
+
 
 class Unit : public Entity
 {
@@ -28,15 +30,16 @@ public:
 
 	//Utilities
 	Squad* squad = nullptr;
-	bool flying = false;
+
 
 	fPoint mov_direction = { 0.0f,0.0f };
 	float mov_module = 0.0f;
 	fPoint mov_target = { 0.0f, 0.0f };
 	
 	Animation* current_anim = nullptr;
+	animationType last_anim = IDLE_S;
 	direction dir = S;
-	
+
 	std::vector<Animation*> animations;
 	std::list<Effect*> effects;
 	std::deque<Command*> commands;

@@ -18,7 +18,33 @@
 	<path sfx="Human/Hwhat3.wav"/>
 	<path sfx="Human/Hyessir3.wav"/>
 	<path sfx="Human/Hpissed3.wav"/>
-	
+
+<!-- Knight -->
+	<path sfx="Knight/Knready.wav"/>
+	<path sfx="Knight/Knwhat3.wav"/>
+	<path sfx="Knight/Knyessr3.wav"/>
+	<path sfx="Knight/Knpissd3.wav"/>
+
+<!-- Griffon -->
+	<path sfx="Griffon/Griffon2.wav"/>
+	<path sfx="Dwarf/Dwhat1.wav"/>
+	<path sfx="Dwarf/Dwyessr3.wav"/>
+	<path sfx="Dwarf/Dwpissd3.wav"/>
+
+
+<!-- Ballista --><!--
+	<path sfx="Griffon/Griffon2.wav"/>
+	<path sfx="Dwarf/Dwhat1.wav"/>
+	<path sfx="Dwarf/Dwyessr3.wav"/>
+	<path sfx="Dwarf/Dwpissd3.wav"/>-->
+
+
+<!-- Flying Machine -->
+	<path sfx="Gnome/Gnready.wav"/>
+	<path sfx="Gnome/Gnpissd1.wav"/>
+	<path sfx="Gnome/Gnyessr1.wav"/>
+	<path sfx="Gnome/Gnpissd3.wav"/>
+
 <!-- Hero Yha'mam -->
 	<path sfx="Spells/Spell.wav"/>
 	<path sfx="Spells/Icestorm.wav"/>
@@ -29,14 +55,23 @@
 	<path sfx="Misc/Sword3.wav"/>
 	<path sfx="Misc/Axe.wav"/>
 	<path sfx="Misc/Bowfire.wav"/>
+	<path sfx="Misc/Ballfire.wav"/>
+	<path sfx="Misc/Thunk.wav"/>
+	<path sfx="Misc/Catapult.wav"/>
+	<path sfx="Spells/Thunder.wav"/>
+	<path sfx="Spells/Iokilrog.wav"/>
+	<path sfx="Misc/Burning.wav"/>
+	<path sfx="Misc/Explode.wav"/>
 
 <!-- UI/Map -->
 	<path sfx="Map/Massist.wav"/>
 	<path sfx="Map/Massist.wav"/>
 	<path sfx="Map/Mattack.wav"/>
+	<path sfx="Misc/Tutorial_step.wav"/>
    </SFX>
    <Music>
 	<path track="Main_Theme.ogg"/>
+	<path track="Normal_Round_Theme.ogg"/>
 	<path track="Defeat Theme.ogg"/>
    </Music>
 

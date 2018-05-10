@@ -14,7 +14,10 @@ enum rangeType
 {
 	NONE_RANGE,
 	AREA,
-	LINE
+	LINE,
+	PLACE,
+	HEAL,
+	BUFF
 };
 
 class Skill
@@ -43,7 +46,7 @@ public:
 	Skill(Hero* hero, uint _radius, int _damage, uint _range, uint _cooldown, rangeType	type);
 	~Skill() {};
 
-	void Activate();
+	bool Activate();
 	void DrawRange();
 	void BFS();
 	void Line();
