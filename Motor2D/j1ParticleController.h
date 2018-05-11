@@ -39,6 +39,7 @@ struct Particle
 	particleType type;
 	int width = 0;
 	int height = 0;
+	bool parabollic = false;
 
 	Particle();
 	Particle(Particle& p);

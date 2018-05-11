@@ -15,7 +15,7 @@
 #define RANDOM_FACTOR (1.0f - (((float)(rand() % 6)) / 10.0f))  // must be the same in Building.cpp
 #define STEERING_FACTOR 10.0f
 
-#define PROXIMITY_FACTOR_TILES 2  // the higher the sooner units will reach destination (in tiles)  // 1 ~ 5//
+#define PROXIMITY_FACTOR_TILES 1  // the higher the sooner units will reach destination (in tiles)  // 1 ~ 5//
 #define PROXIMITY_FACTOR_PIXELS 5
 
 #define MULTITARGET_NUMBER 3
@@ -68,7 +68,10 @@ bool MoveTo::OnUpdate(float dt)
 		}
 		else
 		{
-			if (map_p.DistanceTo(dest) < PROXIMITY_FACTOR_TILES)
+			if (unit->squad)
+				unit->squad->everyone_in_position = false;
+
+			if (map_p.DistanceTo(dest) <= PROXIMITY_FACTOR_TILES)
 				Stop();
 			else if (FieldNode* parent = flow_field->getNodeAt(map_p)->parent)
 			{
@@ -125,7 +128,6 @@ bool MoveToFlying::OnStop()
 bool Attack::OnInit()
 {
 	if (enemy_atk_slots->empty() || !unit->squad || !squad_target) Stop();
-
 	return true;
 }
 
@@ -139,13 +141,14 @@ bool Attack::OnUpdate(float dt)
 
 	if (current_target.IsZero() || enemy_moved)
 		if (!searchTarget()) 
-			Stop();
+			{ Stop(); return true;}
 	
+
 	if (Entity* enemy = App->entitycontroller->getNearestEnemy(unit, *squad_target))
 	{
 		SDL_Rect r = { unit->position.x - unit->range, unit->position.y - unit->range, unit->range * 2, unit->range * 2 };
 
-		if (SDL_HasIntersection(&r, &enemy->collider))
+		if (SDL_HasIntersection(&r, &enemy->collider) && (!unit->IsMelee() || unit->position.DistanceTo({ (float)current_target.x, (float)current_target.y }) < 5))
 		{
 			if (type == ATTACKING_MOVETO)
 				type = ATTACK; 
@@ -154,7 +157,7 @@ bool Attack::OnUpdate(float dt)
 				if(App->render->CullingCam(unit->position))
 					App->entitycontroller->HandleAttackSFX(unit->type, 30);
 
-				App->entitycontroller->HandleParticles(unit->type, unit->position, { enemy->position.x + (enemy->collider.w / 2), enemy->position.y + (enemy->collider.h / 2) });
+				App->entitycontroller->HandleParticles(unit->type, unit->position, enemy->position);
 
 				if (unit->HasAoEDamage())
 					AoE_Damage(enemy);
@@ -162,7 +165,7 @@ bool Attack::OnUpdate(float dt)
 				{
 					enemy->current_HP -= dealDamage(unit, enemy); //dmg
 
-					if (enemy->current_HP < 0) enemy->Destroy();
+					if (enemy->current_HP < 0) { enemy->Destroy(); current_target.SetToZero(); }
 					else					   callRetaliation(enemy, unit->squad->UID);
 				}
 			}
@@ -222,14 +225,14 @@ bool MultiTargetAttack::OnUpdate(float dt)
 					if (i == 0)
 					{
 						AoE_Damage(enemies[i]);
-						App->entitycontroller->HandleParticles(unit->type, unit->position, { enemies[i]->position.x + (enemies[i]->collider.w / 2), enemies[i]->position.y + (enemies[i]->collider.h / 2) });
+						App->entitycontroller->HandleParticles(unit->type, unit->position,  enemies[i]->position);
 						unit->lookAt(enemies[i]->position - unit->position);
 						unit->mov_module = 0;
 					}
 					else
 					{
 						enemies[i]->current_HP -= dealDamage(unit, enemies[i]); //dmg
-						App->entitycontroller->HandleParticles(ARCHER, unit->position, { enemies[i]->position.x + (enemies[i]->collider.w / 2), enemies[i]->position.y + (enemies[i]->collider.h / 2) });
+						App->entitycontroller->HandleParticles(ARCHER, unit->position, enemies[i]->position);
 
 						if (enemies[i]->current_HP < 0) enemies[i]->Destroy();
 						else					   callRetaliation(enemies[i], unit->squad->UID);
@@ -290,11 +293,20 @@ bool MoveToSquad::OnUpdate(float dt)
 
 			if (FieldNode* parent = flow_field->getNodeAt(map_p)->parent)
 			{
-				fPoint movement = (parent->position - map_p).Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
-				squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
+				iPoint world_parent = App->map->MapToWorld(parent->position.x, parent->position.y);
+				world_parent += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
 
-				if (squad->squad_movement.GetModule() > movement.GetModule())
-					squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
+				fPoint movement = fPoint( (float)world_parent.x, (float)world_parent.y ) - commander->position;
+				if (parent->position == dest)
+				{
+					movement = movement.Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
+					squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
+
+					if (squad->squad_movement.GetModule() > movement.GetModule())
+						squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
+				}
+				else
+					squad->squad_movement = movement;
 			}
 			else if(launched)
 				Stop();
@@ -346,13 +358,20 @@ bool MoveToSquadFlying::OnUpdate(float dt)
 		if (Unit* commander = squad->getCommander())
 		{
 			iPoint map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
+			iPoint world_parent = App->map->MapToWorld(map_p.x, map_p.y);
+			world_parent += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
 
-			fPoint movement = (dest - map_p).Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
-			squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
+			fPoint movement = fPoint((float)world_parent.x, (float)world_parent.y) - commander->position;
+			if (map_p != dest)
+			{
+				movement = movement.Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
+				squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
 
-			if (squad->squad_movement.GetModule() > movement.GetModule())
-				squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
-
+				if (squad->squad_movement.GetModule() > movement.GetModule())
+					squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
+			}
+			else
+				squad->squad_movement = movement;
 		}
 	}
 
@@ -399,11 +418,20 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 
 				if (FieldNode* parent = flow_field->getNodeAt(map_p)->parent)
 				{
-					fPoint movement = (parent->position - map_p).Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
-					squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
+					iPoint world_parent = App->map->MapToWorld(parent->position.x, parent->position.y);
+					world_parent += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
 
-					if (squad->squad_movement.GetModule() > movement.GetModule())
-						squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
+					fPoint movement = fPoint((float)world_parent.x, (float)world_parent.y) - commander->position;
+					if (parent->position == dest)
+					{
+						movement = movement.Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
+						squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
+
+						if (squad->squad_movement.GetModule() > movement.GetModule())
+							squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
+					}
+					else
+						squad->squad_movement = movement;
 				}
 			}
 		}
@@ -454,12 +482,20 @@ bool AttackingMoveToSquadFlying::OnUpdate(float dt)
 			if (Unit* commander = squad->getCommander())
 			{
 				iPoint map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
+				iPoint world_parent = App->map->MapToWorld(map_p.x, map_p.y);
+				world_parent += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
 
-				fPoint movement = (dest - map_p).Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
-				squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
+				fPoint movement = fPoint((float)world_parent.x, (float)world_parent.y) - commander->position;
+				if (map_p != dest)
+				{
+					movement = movement.Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
+					squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
 
-				if (squad->squad_movement.GetModule() > movement.GetModule())
-					squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
+					if (squad->squad_movement.GetModule() > movement.GetModule())
+						squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
+				}
+				else
+					squad->squad_movement = movement;
 			}
 		}
 		else if (enemies_found && target_squad_id != -1)
@@ -542,7 +578,9 @@ fPoint MoveTo::getDesiredPlace()
 
 bool MoveTo::useSquadPosition(fPoint desired_place)
 {
-	if (!desired_place.IsZero())
+	if (desired_place.IsZero())
+		return false;
+	else
 	{
 		if (desired_place.DistanceTo(unit->position) > SQUAD_UNATTACH_DISTANCE)
 		{
@@ -551,6 +589,8 @@ bool MoveTo::useSquadPosition(fPoint desired_place)
 				return false;
 		}
 	}
+
+
 	return true;
 }
 
@@ -573,22 +613,24 @@ bool Attack::searchTarget()
 			slots_in_use.push_back(((Attack*)units[i]->commands.front())->current_target);
 	}
 
-	current_target = enemy_atk_slots->front();
+	current_target.SetToZero();
 	
-	for (int i = 1; i < enemy_atk_slots->size(); i++)
+	for (int i = 0; i < enemy_atk_slots->size(); i++)
 	{
 		bool used = false;
 		for (int j = 0; j < slots_in_use.size(); j++)
 		{
-			if(slots_in_use[j] == enemy_atk_slots->at(i) && i < enemy_atk_slots->size() - 1)
+			if(slots_in_use[j] == enemy_atk_slots->at(i))
 				{ used = true; break;}
 		}
 		if (used) continue;
 
-		if (map_p.DistanceTo(enemy_atk_slots->at(i)) < map_p.DistanceTo(current_target))
+		if (enemy_atk_slots->at(i).DistanceTo({ (int)unit->position.x, (int)unit->position.y }) < current_target.DistanceTo({ (int)unit->position.x, (int)unit->position.y }))
 			current_target = enemy_atk_slots->at(i);
 
 	}
+
+	if (current_target.IsZero()) current_target = enemy_atk_slots->at(rand() % enemy_atk_slots->size());
 
 	if (!unit->IsFlying())
 	{
@@ -614,17 +656,16 @@ void Attack::moveToTarget()
 {
 	if (!unit->IsFlying())
 	{
-		if (path.empty())
-			current_target.SetToZero();
-		else
+		if (!path.empty())
 		{
-			if (map_p == path.front())
+			iPoint world_p = App->map->MapToWorld(path.front().x, path.front().y);
+			world_p = { world_p.x + App->map->data.tile_width / 2, world_p.y + App->map->data.tile_height / 2 };
+
+			if (unit->position.DistanceTo({ (float)world_p.x, (float)world_p.y }) < 5)
 				path.pop_front();
 			else
-			{
-				iPoint world_p = App->map->MapToWorld(path.front().x, path.front().y);
-				unit->mov_target = { (float)world_p.x + App->map->data.tile_width / 2, (float)world_p.y + App->map->data.tile_height / 2 };
-			}
+				unit->mov_target = { (float)world_p.x , (float)world_p.y};
+
 		}
 	}
 	else
@@ -669,18 +710,18 @@ void Attack::AoE_Damage(Entity* enemy)
 {
 	int distance = App->map->data.tile_width * 3;
 	SDL_Rect damage_area = { enemy->position.x - distance / 2, enemy->position.y - distance / 2, distance, distance };
+	std::vector<Entity*> colliding_entities;
 
-	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+	App->entitycontroller->CheckCollidingWith(damage_area, colliding_entities);
+
+	for (int i = 0; i < colliding_entities.size(); i++)
 	{
-		if (SDL_HasIntersection(&damage_area, &(*it)->collider))
+		if (colliding_entities[i]->IsEnemy() != unit->IsEnemy())
 		{
-			if ((*it)->IsUnit() && (*it)->IsEnemy() != unit->IsEnemy() && (*it)->ex_state != DESTROYED && (*it)->isActive)
-			{
-				(*it)->current_HP -= dealDamage(unit, (*it)); //dmg
+			colliding_entities[i]->current_HP -= dealDamage(unit, colliding_entities[i]); //dmg
 
-				if ((*it)->current_HP < 0)   (*it)->Destroy();
-				else						  callRetaliation((*it), unit->squad->UID);
-			}
+			if (colliding_entities[i]->current_HP < 0)	colliding_entities[i]->Destroy();
+			else										callRetaliation(colliding_entities[i], unit->squad->UID);
 		}
 	}
 }

@@ -96,32 +96,7 @@ bool j1EntityController::Update(float dt)
 
 	if (App->scene->toRestart) return true;
 
-	/*int counter = 0;
-	if (!all_squads.empty())
-	{
-		time_slicer.Start();
-		while (time_slicer.Read() < ((float)App->framerate * SQUAD_MAX_FRAMETIME) && counter < all_squads.size())
-		{
-			counter++; squad_iterator++;
-			if (squad_iterator == all_squads.end()) squad_iterator = all_squads.begin();
-			if (!(*squad_iterator)->Update(dt))							return false;
-		}
-	}
-
-	if (!entities.empty())
-	{
-		counter = 0;
-		time_slicer.Start();
-		while (time_slicer.Read() < ((float)App->framerate * ENITITY_MAX_FRAMETIME) && counter < entities.size())
-		{
-			counter++; entity_iterator++;
-			if (entity_iterator == entities.end()) entity_iterator = entities.begin();
-
-			if ((*entity_iterator)->isActive || (*entity_iterator) == hero)
-				if (!(*entity_iterator)->Update(dt))	entities_to_destroy.push_back(*entity_iterator);
-
-		}
-	}*/
+	
 
 	BROFILER_CATEGORY("Entity controller update", Profiler::Color::Maroon);
 
@@ -254,15 +229,23 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 		SDL_Rect r = { unit->position.x - unit->range, unit->position.y - unit->range, unit->range * 2, unit->range * 2};
 
 		App->render->DrawQuad(r, White, false);
+		iPoint map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
+		iPoint world_p = App->map->MapToWorld(map_p.x, map_p.y);
+		App->render->DrawQuad({ world_p.x, world_p.y, App->map->data.tile_width, App->map->data.tile_height }, Grey, false);
 		App->render->DrawCircle(unit->position.x, unit->position.y, unit->line_of_sight, Blue);
 		App->render->DrawCircle(unit->mov_target.x, unit->mov_target.y, 5, Red);
 
+
 		if (unit->squad ? !unit->squad->atk_slots.empty() : false)
 		{
-			for (std::list<iPoint>::iterator it = unit->squad->atk_slots.begin(); it != unit->squad->atk_slots.end(); it++)
+			if (unit == unit->squad->getCommander())
 			{
-				iPoint world_p = App->map->MapToWorld((*it).x, (*it).y);
-				App->render->DrawCircle(world_p.x, world_p.y, 5, Blue);
+				for (std::list<iPoint>::iterator it = unit->squad->atk_slots.begin(); it != unit->squad->atk_slots.end(); it++)
+				{
+					iPoint world_p = App->map->MapToWorld((*it).x, (*it).y);
+					world_p += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
+					App->render->DrawCircle(world_p.x, world_p.y, 5, Blue);
+				}
 			}
 		}
 	}
@@ -715,8 +698,7 @@ Squad* j1EntityController::AddSquad(Type type, fPoint position)
 		if (!unit_template->IsEnemy())
 		{
 			new_squad->FollowingOrdersSFX = GetOrdersSFXFromType(type);
-			App->scene->wood -= unit_template->cost.wood_cost;
-			SubstractRandomWorkers(unit_template->cost.worker_cost);
+			
 		}
 		new_squad->UID = last_UID++;
 		squads.push_back(new_squad);
@@ -1081,14 +1063,12 @@ void j1EntityController::selectionControl()
 
 void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entity*>& list_to_fill, Entity* entity_to_ignore)
 {
-	std::vector<Entity*> QT_entities;
-	
-	App->entitycontroller->colliderQT->FillCollisionVector(QT_entities, collider);
 
-	for (int i = 0; i < QT_entities.size(); i++)
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
-		if (QT_entities[i] != entity_to_ignore && QT_entities[i]->ex_state !=  DESTROYED && QT_entities[i]->isActive)
-			if (SDL_HasIntersection(&collider, &QT_entities[i]->collider)) list_to_fill.push_back(QT_entities[i]);
+		if ((*it) != entity_to_ignore && (*it)->ex_state !=  DESTROYED && (*it)->isActive)
+			if (SDL_HasIntersection(&collider, &(*it)->collider)) 
+				list_to_fill.push_back((*it));
 	}
 
 }

@@ -170,7 +170,7 @@ bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bo
 				for (int i = 0; i < rows; i++)
 				{
 					iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
-					if ((tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 373 && check_trees) || (tree_layer->GetID(currentMapTile.x,currentMapTile.y) == 179 && check_mines))
+					if ((tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 373 && check_trees) || (IsMine(tree_layer->GetID(currentMapTile.x,currentMapTile.y))&& check_mines))
 					{
 						ret = false;
 						if (check_trees)
@@ -194,6 +194,11 @@ bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bo
 	}
 
 	return ret;
+}
+
+bool j1Map::IsMine(uint ID)
+{
+	return (ID==336 || ID==337||ID==338||ID==355||ID==356||ID==357||ID==374||ID==375||ID==376);
 }
 
 //Returns the rect of the specified tile.

@@ -112,7 +112,9 @@ bool j1ActionsController::Update(float dt)
 			if (!App->entitycontroller->selected_entities.empty())
 			{
 				if (App->entitycontroller->CheckCost(FOOTMAN) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
+				{
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(FOOTMAN);
+				}
 			}
 			doingAction = false;
 			break;
@@ -143,16 +145,16 @@ bool j1ActionsController::Update(float dt)
 		case CREATE_BALLISTA:
 			if (!App->entitycontroller->selected_entities.empty())
 			{
-			if (App->entitycontroller->CheckCost(BALLISTA) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
-			App->entitycontroller->AddSquad(BALLISTA, newSquadPos);
+				if (App->entitycontroller->CheckCost(BALLISTA) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
+					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(BALLISTA);
 			}
 			doingAction = false;
 			break;
 		case CREATE_FLYING_MACHINE:
 			if (!App->entitycontroller->selected_entities.empty())
 			{
-			if (App->entitycontroller->CheckCost(FLYING_MACHINE) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
-			App->entitycontroller->AddSquad(FLYING_MACHINE, newSquadPos);
+				if (App->entitycontroller->CheckCost(FLYING_MACHINE) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
+					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(FLYING_MACHINE);
 			}
 			doingAction = false;
 			break;

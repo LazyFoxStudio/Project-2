@@ -34,8 +34,6 @@ public:
 	bool Save(pugi::xml_node&) const;
 	bool Load(pugi::xml_node&);
 
-	int CalculateWaveScore();
-
 	void Generate_Next_Wave();
 	void Generate_Wave();
 	void Restart_Wave_Sys();
@@ -63,5 +61,6 @@ public:
 	std::list<NextWave*> next_wave;
 	
 	std::vector<fPoint> spawns;
+	std::vector<int> costs;
 };	
 #endif

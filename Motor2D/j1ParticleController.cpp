@@ -65,14 +65,16 @@ bool j1ParticleController::Update(float dt)
 
 		if (p->Update(dt) == false)
 		{
-
 			delete p;
 			active[i] = nullptr;
 		}
 		else if (p->currentLife.Read() > 0)
 		{
-			if (p->position.x < (App->win->width + -App->render->camera.x) && p->position.x > -App->win->width && p->position.y <(App->win->height + -App->render->camera.y) && p->position.y > -App->win->height)
-				App->render->Blit(graphics, p->position.x, p->position.y, &(p->anim.GetCurrentFrame(dt)), true, false, 1, SDL_FLIP_NONE, 1, GetAngleInDegrees(p));
+			if (App->render->CullingCam(p->position))
+			{
+				SDL_Rect frame = p->anim.GetCurrentFrame(dt);
+				App->render->Blit(graphics, p->position.x - frame.w / 2, p->position.y - frame.h / 2, &frame, true, false, 1, SDL_FLIP_NONE, 1, RADTODEG * p->angle);
+			}
 		}
 
 
@@ -100,6 +102,7 @@ void j1ParticleController::LoadParticlesFromXML()
 
 		tmp->width = part.child("width").attribute("value").as_int(0);
 		tmp->height = part.child("height").attribute("value").as_int(0);
+		tmp->parabollic = part.child("parabollic").attribute("value").as_bool(false);
 
 		pugi::xml_node childNode = part.child("anim");
 
@@ -163,19 +166,9 @@ void j1ParticleController::AdjustDirection(Particle* p, fPoint objective, float 
 	if (vec.x < 0)
 		p->speed.x *= -1;
 
-
 	p->life = (vec.GetModule() / speed)*1000;
 }
 
-double j1ParticleController::GetAngleInDegrees(Particle * p)
-{
-	double angle = p->angle * 180 / M_PI;
-
-	if (p->speed.x <= 0)
-		angle = 180 - angle;
-	
-	return angle;
-}
 
 
 void j1ParticleController::AddParticle(particleType type, fPoint position, bool using_center)
@@ -260,7 +253,7 @@ Particle::Particle()
 
 Particle::Particle(Particle& p) :
 	anim(p.anim), position(p.position), life(p.life), 
-	type(p.type), width(p.width), height(p.height)
+	type(p.type), width(p.width), height(p.height), parabollic(p.parabollic)
 {}
 
 
@@ -280,11 +273,16 @@ bool Particle::Update(float dt)
 			ret = false;
 	}
 	
+	if (parabollic)
+	{
+		float z = (((life * 0.5f - aux) / (life * 0.5f)) * (life / 100));
+		angle = (fPoint(speed.x / speed.GetModule(), speed.y / speed.GetModule() - (z / 5))).GetAngle();
+		position.y -= z;
+	}
 	
 	position.x += speed.x*dt;
 	position.y += speed.y*dt;
 	
-
 	return ret;
 }
 

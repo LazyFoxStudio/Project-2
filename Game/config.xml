@@ -41,5 +41,13 @@
       <spawn x="2177" y="3549"/>
       <spawn x="410" y="1982"/>
     </Spawns>
+    <Costs>
+      <cost value="1"/>
+      <cost value="1"/>
+      <cost value="4"/>
+      <cost value="6"/>
+      <cost value="8"/>
+      <cost value="10"/>
+    </Costs>
   </wavecontroller>
 </config>
