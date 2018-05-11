@@ -68,12 +68,25 @@
 	<path sfx="Map/Massist.wav"/>
 	<path sfx="Map/Mattack.wav"/>
 	<path sfx="Misc/Tutorial_step.wav"/>
+
+  <!-- Hero Paladin -->
+  <path sfx="Spells/Exorcism.wav"/>
+  <path sfx="Spells/Heal.wav"/>
+  <path sfx="Spells/Thunder.wav"/>
+     
    </SFX>
    <Music>
 	<path track="Main_Theme.ogg"/>
 	<path track="Normal_Round_Theme.ogg"/>
 	<path track="Defeat Theme.ogg"/>
    </Music>
+
+  <path sfx="Map/Massist.wav"/>
+  <path sfx="Map/Massist.wav"/>
+  <path sfx="Map/Mattack.wav"/>
+  <path sfx="Misc/Tutorial_step.wav"/>
+
+
 
 </node>
 
