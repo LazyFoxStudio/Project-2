@@ -598,13 +598,15 @@ bool Attack::searchTarget()
 	if (enemy_atk_slots->empty()) { Stop(); return false; }
 
 	std::vector<iPoint> slots_in_use;
-	std::vector<Unit*> units;
-	unit->squad->getUnits(units);
 
-	for (int i = 0; i < units.size(); i++)
+	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
 	{
-		if (units[i]->getCurrentCommand() == ATTACK || units[i]->getCurrentCommand() == ATTACKING_MOVETO)
-			slots_in_use.push_back(((Attack*)units[i]->commands.front())->current_target);
+		if ((*it)->IsEnemy() == unit->IsEnemy())
+		{
+			Unit* ally = (Unit*)(*it);
+			if (ally->getCurrentCommand() == ATTACK || ally->getCurrentCommand() == ATTACKING_MOVETO)
+				slots_in_use.push_back(((Attack*)ally->commands.front())->current_target);
+		}
 	}
 
 	current_target.SetToZero();

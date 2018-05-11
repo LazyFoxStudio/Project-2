@@ -37,7 +37,7 @@ bool Squad::Update(float dt)
 	if (units_id.empty()) { Destroy(); return false; }
 	else
 	{
-		if (timer.ReadSec() > 0.5f)
+		if (timer.ReadSec() > 0.25f)
 		{
 			calculateAttackSlots();
 			timer.Start();
