@@ -344,7 +344,7 @@ void Building::turretBehavior()
 					if (App->render->CullingCam(position))
 						App->entitycontroller->HandleAttackSFX(ARCHER, 30);
 
-					App->entitycontroller->HandleParticles(ARCHER, position, { (*it)->position.x + ((*it)->collider.w / 2), (*it)->position.y + ((*it)->collider.h / 2) });
+					App->entitycontroller->HandleParticles(ARCHER, position, (*it)->position);
 
 					(*it)->current_HP -= MAX((RANDOM_FACTOR * (piercing_atk + ((((int)attack - (int)(*it)->defense) <= 0) ? 0 : attack - (*it)->defense))), 1);
 					
