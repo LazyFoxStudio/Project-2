@@ -55,7 +55,12 @@ bool Hero::Update(float dt)
 				iPoint tmp;
 				App->input->GetMousePosition(tmp.x,tmp.y);
 				fPoint tmp2(tmp.x, tmp.y);
-				App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
+				
+				if( type == HERO_1)
+					App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
+				else if(type == HERO_2)
+					App->audio->PlayFx(SFX_CONSECRATION);
+
 				App->particle->AddParticle(PICICLE_CRASH, tmp2);
 			}
 			App->gui->cooldownsDisplay->skillUsed(1);
@@ -74,9 +79,17 @@ bool Hero::Update(float dt)
 				//tmp = App->map->WorldToMap(tmp.x, tmp.y);
 				//tmp = App->map->MapToWorld(tmp.x, tmp.y);
 				fPoint tmp2(tmp.x, tmp.y);
-				App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
-				App->particle->AddParticle(POVERFLOW, {tmp2.x, tmp2.y - 30});
 
+				App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
+				
+				
+				if (type == HERO_1)
+				{
+					App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
+					App->particle->AddParticle(POVERFLOW, { tmp2.x, tmp2.y - 30 });
+				}
+				else if (type == HERO_2)
+					App->audio->PlayFx(SFX_CIRCLE_OF_LIGHT);
 			}
 			App->gui->cooldownsDisplay->skillUsed(2);
 		}
@@ -87,8 +100,14 @@ bool Hero::Update(float dt)
 		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready() || skill_three->going)
 		{
 			skill_three->Activate();
+
 			if (!skill_three->going)
-				App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
+			{
+				if(type == HERO_1)
+					App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
+				else if(type==HERO_2)
+					App->audio->PlayFx(SFX_HONOR_OF_THE_PURE);
+			}
 			App->gui->cooldownsDisplay->skillUsed(3);
 		}
 		skill_three->toDraw.clear();	

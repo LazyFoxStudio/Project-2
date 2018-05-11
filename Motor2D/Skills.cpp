@@ -13,7 +13,10 @@ Skill::Skill(Hero* hero, uint _radius, int _damage, uint _range, uint _cooldown,
 	switch (type = _type)
 	{
 	case AREA: tile_color = Translucid_Green;	break; 
-	case LINE: tile_color = Translucid_Yellow;	break; 
+	case LINE: tile_color = Translucid_Yellow;	break;
+	case PLACE:	tile_color = Translucid_light_Blue; break;
+	case HEAL:	tile_color = Translucid_Yellow; break;
+	case BUFF:	tile_color = Translucid_pink; break;
 	default:   tile_color = Translucid_Blue;	break; 
 	}
 

@@ -205,6 +205,9 @@ void j1Scene::Close_game()
 
 void j1Scene::Start_game()
 {
+	if (!App->tutorial->active)
+		Close_game();
+
 	if (App->tutorial->doingTutorial)
 	{
 		App->render->camera.x = 0;
@@ -212,7 +215,7 @@ void j1Scene::Start_game()
 	}
 
 	//SATARTING ENTITIES-------------------------------------------------------
-	App->entitycontroller->addHero(iPoint(1950, 2100), HERO_1);
+	App->entitycontroller->addHero(iPoint(1950, 2100), HERO_2);
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	App->entitycontroller->town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
@@ -225,7 +228,7 @@ void j1Scene::Start_game()
 	App->entitycontroller->buildingArea.x = town_hall_pos.x - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_width / 2);
 	App->entitycontroller->buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_height / 2);
 
-	App->entitycontroller->AddSquad(ARCHER, { 2200, 2100 });
+	App->entitycontroller->AddSquad(FOOTMAN, { 2200, 2100 });
 
 	//RESTARTING WAVES---------------------------------------------------------
 	App->gui->Chronos->counter.Restart();

@@ -88,8 +88,6 @@ bool MoveTo::OnUpdate(float dt)
 
 bool MoveTo::OnStop()
 {
-	unit->mov_module = 0;
-	unit->mov_target = unit->position;
 	if(unit->squad) 
 		unit->mov_direction = unit->squad->squad_direction;
 
@@ -114,8 +112,6 @@ bool MoveToFlying::OnUpdate(float dt)
 
 bool MoveToFlying::OnStop()
 {
-	unit->mov_module = 0;
-	unit->mov_target = unit->position;
 	if (unit->squad)
 		unit->mov_direction = unit->squad->squad_direction;
 
@@ -133,16 +129,7 @@ bool Attack::OnInit()
 
 bool Attack::OnUpdate(float dt)
 {
-	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
-
-	bool enemy_moved = true;
-	for(int i = 0; i < enemy_atk_slots->size(); i++)
-		if (current_target == enemy_atk_slots->at(i)){ enemy_moved = false; break; }
-
-	if (current_target.IsZero() || enemy_moved)
-		if (!searchTarget()) 
-			{ Stop(); return true;}
-	
+	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);	
 
 	if (Entity* enemy = App->entitycontroller->getNearestEnemy(unit, *squad_target))
 	{
@@ -171,11 +158,20 @@ bool Attack::OnUpdate(float dt)
 			}
 
 			unit->lookAt(enemy->position - unit->position);
-			unit->mov_module = 0;
 			return true;
 		}
 		else
-			moveToTarget();
+		{
+			bool enemy_moved = true;
+			for(int i = 0; i < enemy_atk_slots->size(); i++)
+				if (current_target == enemy_atk_slots->at(i))	{ enemy_moved = false; break; }
+
+			if (current_target.IsZero() || enemy_moved)
+				if (!searchTarget()) 
+					{ Stop(); return true;}
+
+			moveToTarget(enemy->position);
+		}
 	}
 	else Stop();
 
@@ -187,7 +183,6 @@ bool Attack::OnUpdate(float dt)
 bool Attack::OnStop()
 {
 	type = ATTACKING_MOVETO;
-	unit->mov_module = 0;
 
 	return true;
 }
@@ -196,14 +191,6 @@ bool Attack::OnStop()
 bool MultiTargetAttack::OnUpdate(float dt)
 {
 	map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
-
-	bool enemy_moved = true;
-	for (int i = 0; i < enemy_atk_slots->size(); i++)
-		if (current_target == enemy_atk_slots->at(i)) { enemy_moved = false; break; }
-
-	if (current_target.IsZero() || enemy_moved)
-		if (!searchTarget())
-			Stop();
 
 	std::vector<Entity*> enemies;
 	if (App->entitycontroller->getNearestEnemies(unit, *squad_target, MULTITARGET_NUMBER, enemies))
@@ -242,7 +229,15 @@ bool MultiTargetAttack::OnUpdate(float dt)
 			}
 			else
 			{
-				moveToTarget();
+				bool enemy_moved = true;
+				for (int i = 0; i < enemy_atk_slots->size(); i++)
+					if (current_target == enemy_atk_slots->at(i)) { enemy_moved = false; break; }
+
+				if (current_target.IsZero() || enemy_moved)
+					if (!searchTarget())
+						Stop();
+
+				moveToTarget(enemies[i]->position);
 				break;
 			}
 		}
@@ -358,10 +353,10 @@ bool MoveToSquadFlying::OnUpdate(float dt)
 		if (Unit* commander = squad->getCommander())
 		{
 			iPoint map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
-			iPoint world_parent = App->map->MapToWorld(map_p.x, map_p.y);
-			world_parent += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
+			iPoint dest_p = App->map->MapToWorld(dest.x, dest.y);
+			dest_p += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
 
-			fPoint movement = fPoint((float)world_parent.x, (float)world_parent.y) - commander->position;
+			fPoint movement = fPoint((float)dest_p.x, (float)dest_p.y) - commander->position;
 			if (map_p != dest)
 			{
 				movement = movement.Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
@@ -404,7 +399,6 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 				if(units[i]->type == JUGGERNAUT)	units[i]->commands.push_front(new MultiTargetAttack(units[i], &enemy_atk_slots, &target_squad_id));
 				else								units[i]->commands.push_front(new Attack(units[i], &enemy_atk_slots, &target_squad_id));
 			}
-				
 		}
 
 	}
@@ -482,10 +476,10 @@ bool AttackingMoveToSquadFlying::OnUpdate(float dt)
 			if (Unit* commander = squad->getCommander())
 			{
 				iPoint map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
-				iPoint world_parent = App->map->MapToWorld(map_p.x, map_p.y);
-				world_parent += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
+				iPoint world_dest = App->map->MapToWorld(dest.x, dest.y);
+				world_dest += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
 
-				fPoint movement = fPoint((float)world_parent.x, (float)world_parent.y) - commander->position;
+				fPoint movement = fPoint((float)world_dest.x, (float)world_dest.y) - commander->position;
 				if (map_p != dest)
 				{
 					movement = movement.Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
@@ -644,20 +638,24 @@ bool Attack::searchTarget()
 			if(world_p.DistanceTo(current_target) > (unit->range - App->map->data.tile_width))
 				{ Stop(); return true; }
 		}
-
-		if (!App->pathfinding->CreatePath(map_p, targetMap_p) >= 0) path = *App->pathfinding->GetLastPath();
-		else { Stop(); return true; }
 	}
 
 	return true;
 }
 
-void Attack::moveToTarget()
+void Attack::moveToTarget(fPoint enemy_position)
 {
 	if (!unit->IsFlying())
 	{
 		if (!path.empty())
 		{
+			iPoint targetMap_p = App->map->WorldToMap(current_target.x, current_target.y);
+			if (path.back().DistanceManhattan(targetMap_p) > map_p.DistanceTo(targetMap_p))
+			{
+				if (!App->pathfinding->CreatePath(map_p, targetMap_p) >= 0) path = *App->pathfinding->GetLastPath();
+				else { Stop(); return; }
+			}
+
 			iPoint world_p = App->map->MapToWorld(path.front().x, path.front().y);
 			world_p = { world_p.x + App->map->data.tile_width / 2, world_p.y + App->map->data.tile_height / 2 };
 
@@ -666,6 +664,30 @@ void Attack::moveToTarget()
 			else
 				unit->mov_target = { (float)world_p.x , (float)world_p.y};
 
+		}
+		else
+		{
+			iPoint targetMap_p = App->map->WorldToMap(current_target.x, current_target.y);
+			if (targetMap_p != map_p)
+			{
+				if (!App->pathfinding->CreatePath(map_p, targetMap_p) >= 0) path = *App->pathfinding->GetLastPath();
+				else Stop();
+			}
+			else
+			{
+				if (unit->mov_target != fPoint((float)current_target.x, (float)current_target.y))
+					unit->mov_target = { (float)current_target.x, (float)current_target.y };
+				else
+				{
+					fPoint aux = unit->position;
+					unit->position = enemy_position;
+					if (!searchTarget())
+						Stop();
+
+					unit->position = aux;
+
+				}
+			}
 		}
 	}
 	else
@@ -679,7 +701,7 @@ void Attack::callRetaliation(Entity* enemy, uint squad_UID)
 	{
 		if (Unit* enemy_commander = (*it)->getCommander())
 		{
-			if (enemy_commander->IsEnemy() == enemy->IsEnemy() && enemy_commander->position.DistanceTo(enemy->position) < enemy_commander->line_of_sight)
+			if (enemy_commander->IsEnemy() == enemy->IsEnemy() && enemy_commander->position.DistanceTo(enemy->position) < enemy_commander->line_of_sight / 2)
 			{
 				Command_Type enemy_action = (*it)->getCurrentCommand();
 				if (enemy_action == NOTHING)

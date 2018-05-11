@@ -249,6 +249,19 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 			}
 		}
 	}
+	else if (entity->IsBuilding())
+	{
+		std::vector<iPoint> building_slots;
+		Building* building = (Building*)entity;
+		building->calculateAttackSlots(building_slots);
+
+		for (int i = 0; i < building_slots.size(); i++)
+		{
+			iPoint world_p = App->map->MapToWorld(building_slots[i].x, building_slots[i].y);
+			world_p += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
+			App->render->DrawCircle(world_p.x, world_p.y, 5, Green);
+		}
+	}
 }
 
 SFXList j1EntityController::GetOrdersSFXFromType(Type type)
@@ -619,9 +632,9 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 
 	if (type == HERO_1)
 	{
-		hero->skill_one = new Skill(hero, 3, 100, 300, 1, AREA);		//Icicle Crash
+		hero->skill_one = new Skill(hero, 3, 100, 300, 6, AREA);		//Icicle Crash
 		hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
-		hero->skill_three = new Skill(hero, 0, 200, 250, 2, LINE);		//Dragon Breath
+		hero->skill_three = new Skill(hero, 0, 200, 250, 5, LINE);		//Dragon Breath
 	}
 	if (type == HERO_2)
 	{
@@ -648,7 +661,9 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 
 Building* j1EntityController::addBuilding(iPoint pos, Type type)
 {
-	Building* building = new Building(pos, *getBuildingFromDB(type));
+	iPoint aux = App->map->WorldToMap(pos.x, pos.y);
+	aux = App->map->MapToWorld(aux.x, aux.y);
+	Building* building = new Building(aux, *getBuildingFromDB(type));
 	building->UID = last_UID++;
 	if (type == LUMBER_MILL)
 	{

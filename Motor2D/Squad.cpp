@@ -24,7 +24,6 @@ Squad::Squad(std::vector<uint>& units) : units_id(units)
 
 		calculateOffsets();
 	}
-	timer.Start();
 }
 
 Squad::~Squad()
@@ -37,11 +36,7 @@ bool Squad::Update(float dt)
 	if (units_id.empty()) { Destroy(); return false; }
 	else
 	{
-		if (timer.ReadSec() > 0.2f)
-		{
-			calculateAttackSlots();
-			timer.Start();
-		}
+		calculateAttackSlots();
 		if (!commands.empty())
 		{
 			commands.front()->Execute(dt);
@@ -184,14 +179,14 @@ bool Squad::findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_
 			{
 				if ((*it)->IsBuilding() && isInSquadSight((*it)->position))
 				{
+					Building* building = (Building*)(*it);
 					std::vector<iPoint> building_slots;
-					iPoint building_map_p = App->map->WorldToMap((*it)->position.x, (*it)->position.y);
-					App->pathfinding->GatherWalkableAdjacents(building_map_p, 8, building_slots);
+					building->calculateAttackSlots(building_slots);
 
 					for (int i = 0; i < building_slots.size(); i++)
 					{
 						iPoint world_p = App->map->MapToWorld(building_slots[i].x, building_slots[i].y);
-						world_p += {App->map->data.tile_width, App->map->data.tile_height};
+						world_p += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
 						list_to_fill.push_back(world_p);
 					}
 				}
