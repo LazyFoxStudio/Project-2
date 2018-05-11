@@ -70,9 +70,10 @@
 	<path sfx="Misc/Tutorial_step.wav"/>
 
   <!-- Hero Paladin -->
+
+  <path sfx="Spells/Invisibl.wav"/>
+  <path sfx="Spells/Holyvisn.wav"/>
   <path sfx="Spells/Exorcism.wav"/>
-  <path sfx="Spells/Heal.wav"/>
-  <path sfx="Spells/Thunder.wav"/>
      
    </SFX>
    <Music>

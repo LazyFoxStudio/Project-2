@@ -79,8 +79,6 @@ bool Hero::Update(float dt)
 				//tmp = App->map->WorldToMap(tmp.x, tmp.y);
 				//tmp = App->map->MapToWorld(tmp.x, tmp.y);
 				fPoint tmp2(tmp.x, tmp.y);
-
-				App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
 				
 				
 				if (type == HERO_1)
