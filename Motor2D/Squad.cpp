@@ -2,7 +2,7 @@
 #include "Unit.h"
 #include "Command.h"
 #include "j1EntityController.h"
-
+#include "j1Pathfinding.h"
 #include "j1Input.h"
 #include "j1Render.h"
 
@@ -35,39 +35,32 @@ Squad::~Squad()
 bool Squad::Update(float dt)
 {
 	if (units_id.empty()) { Destroy(); return false; }
-	else 
+	else
 	{
+		if (timer.ReadSec() > 0.2f)
+		{
+			calculateAttackSlots();
+			timer.Start();
+		}
 		if (!commands.empty())
 		{
 			commands.front()->Execute(dt);
 			if (commands.front()->state == FINISHED) commands.pop_front();
 
-			if (!squad_movement.IsZero())
+			if (!squad_movement.IsZero() )
 			{
-				std::vector<Unit*> units;
-				getUnits(units);
-
-				if (!units.empty())
+				if (Unit* commander = getCommander())
 				{
-					if (timer.ReadSec() > 0.5f)
-					{
-						calculateAttackSlots();
-						timer.Start();
-					}
-
-					bool everyone_in_position = true;
-					for(int i = 0; i < units.size(); i++)
-						if (units[i]->position.DistanceTo(units[i]->mov_target) > SQUAD_UNATTACH_DISTANCE)
-							{ everyone_in_position = false; break; }
-
-					commander_pos = units[0]->position + (everyone_in_position ? squad_movement : squad_movement * MIN_NEXT_STEP_MULTIPLIER);
+					commander_pos = commander->position + (everyone_in_position ? squad_movement : squad_movement * MIN_NEXT_STEP_MULTIPLIER);
 					squad_direction = squad_movement.Normalized();
 				}
+
 			}
 		}
 		else squad_movement = { 0.0f,0.0f };
 	}
 
+	bool everyone_in_position = true;
 	return true;
 }
 
@@ -121,7 +114,7 @@ void Squad::calculateOffsets()
 					for (int j = -radius; j <= radius && counter < squad_units.size(); j++)
 						if (std::abs(i) == radius || j == std::abs(radius))
 						{
-							units_offsets.push_back({ (i * squad_units[counter]->collider.w) * 1.2f, (j * squad_units[counter]->collider.h) * 1.2f });
+							units_offsets.push_back({ (i * squad_units[counter]->collider.w) * 1.1f, (j * squad_units[counter]->collider.h) * 1.1f });
 							counter++;
 						}
 				radius++;
@@ -163,11 +156,22 @@ bool Squad::findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_
 				{
 					if (enemy_commander->IsEnemy() != isEnemy && !(commander->IsMelee() && enemy_commander->IsFlying()))
 					{
-						for (std::list<iPoint>::iterator it2 = (*it)->atk_slots.begin(); it2 != (*it)->atk_slots.end(); it2++)
+						bool in_sight = false;
+						std::vector<Unit*> enemy_units;
+						(*it)->getUnits(enemy_units);
+
+						for(int i = 0; i < enemy_units.size(); i++)
+							if (isInSquadSight(enemy_units[i]->position))
+								{ in_sight = true; break; }
+
+						if (in_sight)
 						{
-							iPoint world_p = App->map->MapToWorld((*it2).x, (*it2).y);
-							if (isInSquadSight({ (float)world_p.x, (float)world_p.y }))
+							for (std::list<iPoint>::iterator it2 = (*it)->atk_slots.begin(); it2 != (*it)->atk_slots.end(); it2++)
+							{
+								iPoint world_p = App->map->MapToWorld((*it2).x, (*it2).y);
+								world_p += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
 								list_to_fill.push_back(world_p);
+							}
 						}
 					}
 				}
@@ -178,10 +182,18 @@ bool Squad::findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_
 		{
 			for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
 			{
-				if ((*it)->IsBuilding())
+				if ((*it)->IsBuilding() && isInSquadSight((*it)->position))
 				{
-					if (isInSquadSight((*it)->position))
-						list_to_fill.push_back({ (int)(*it)->position.x, (int)(*it)->position.x });
+					std::vector<iPoint> building_slots;
+					iPoint building_map_p = App->map->WorldToMap((*it)->position.x, (*it)->position.y);
+					App->pathfinding->GatherWalkableAdjacents(building_map_p, 8, building_slots);
+
+					for (int i = 0; i < building_slots.size(); i++)
+					{
+						iPoint world_p = App->map->MapToWorld(building_slots[i].x, building_slots[i].y);
+						world_p += {App->map->data.tile_width, App->map->data.tile_height};
+						list_to_fill.push_back(world_p);
+					}
 				}
 			}
 		}
@@ -265,8 +277,14 @@ void Squad::calculateAttackSlots()
 
 	for (std::list<iPoint>::iterator it = atk_slots.begin(); it != atk_slots.end(); it++)
 	{
-		for (int i = 0; i < units_map_p.size(); i++)
-			if (units_map_p[i] == *it) { atk_slots.erase(it); it--; break; }
+		for (int i = 0; i < squad_units.size(); i++)
+		{
+			iPoint world_atk_p = App->map->MapToWorld((*it).x, (*it).y);
+			world_atk_p += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
+
+			if (squad_units[i]->position.DistanceTo({(float)world_atk_p.x, (float)world_atk_p.y}) < squad_units[i]->collider.w * 0.6f)
+				{ atk_slots.erase(it); it--; break; }
+		}
 	}
 }
 

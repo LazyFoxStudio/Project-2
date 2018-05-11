@@ -65,14 +65,16 @@ bool j1ParticleController::Update(float dt)
 
 		if (p->Update(dt) == false)
 		{
-
 			delete p;
 			active[i] = nullptr;
 		}
 		else if (p->currentLife.Read() > 0)
 		{
 			if (App->render->CullingCam(p->position))
-				App->render->Blit(graphics, p->position.x, p->position.y, &(p->anim.GetCurrentFrame(dt)), true, false, 1, SDL_FLIP_NONE, 1, RADTODEG * p->angle);
+			{
+				SDL_Rect frame = p->anim.GetCurrentFrame(dt);
+				App->render->Blit(graphics, p->position.x - frame.w / 2, p->position.y - frame.h / 2, &frame, true, false, 1, SDL_FLIP_NONE, 1, RADTODEG * p->angle);
+			}
 		}
 
 

@@ -3551,7 +3551,7 @@
       <sprites>
         <sprite x="399" y="71" w="72"  h="70"/>
         <sprite x="399" y="0" w="72" h="70"/>
-        <sprite x="15" y="655" w="70" h="70" />
+        <sprite x="510" y="342" w="72" h="70" />
         <sprite x="545" y="0" w="72" h="70" />
       </sprites>
       <Stats>
@@ -3587,10 +3587,10 @@
          <action id="21"/>
       </Actions>
       <sprites>
-        <sprite x="0" y="633" w="101"  h="109"/>
+        <sprite x="0" y="523" w="101"  h="109"/>
         <sprite x="510" y="633" w="101" h="109"/>
-         <sprite x="0" y="633" w="101"  h="109"/>
-        <sprite x="545" y="0" w="72" h="70" />
+        <sprite x="0" y="523" w="101"  h="109"/>
+        <sprite x="0" y="0" w="0" h="0" />
       </sprites>
       <Stats>
         <life value="300"/>
@@ -3608,7 +3608,7 @@
       <size x="3" y="3"/>
     </Building>
     
-    <Building>
+     <Building>
       <name value="Turret"/>
       <type value="6"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
@@ -3626,7 +3626,7 @@
       <sprites>
         <sprite x="472" y="71" w="72" h="70"/>
         <sprite x="472" y="0" w="72"  h="70"/>
-         <sprite x="0" y="523" w="72"  h="69 "/>
+        <sprite x="510" y="342" w="72" h="70" />
         <sprite x="545" y="0" w="72" h="70" />
       </sprites>
       <Stats>
