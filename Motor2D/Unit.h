@@ -43,6 +43,8 @@ public:
 	std::vector<Animation*> animations;
 	std::list<Effect*> effects;
 	std::deque<Command*> commands;
+	j1PerfTimer anim_timer;
+	
 
 public:
 	Unit() {};
