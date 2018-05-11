@@ -47,10 +47,6 @@ bool j1WaveController::Start()
 	flow_field = App->pathfinding->RequestFlowField(TownHall_pos);
 	
 	points = 1;
-	/*wave_timer.Start();
-
-	current_wave = 0;
-	Generate_Next_Wave();*/
 
 	return ret;
 }
@@ -190,6 +186,7 @@ void j1WaveController::Generate_Wave()
 
 void j1WaveController::Restart_Wave_Sys()
 {
+	points = 1;
 	current_wave = 0;
 	Generate_Next_Wave();
 	wave_timer.Start();

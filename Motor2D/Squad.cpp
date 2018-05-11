@@ -186,6 +186,7 @@ bool Squad::findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_
 				{
 					std::vector<iPoint> building_slots;
 					iPoint building_map_p = App->map->WorldToMap((*it)->position.x, (*it)->position.y);
+					//iPoint building_map_p = App->map->WorldToMap((*it)->position.x + (int)((*it)->collider.w / 2), ((*it)->position.y + (int)(*it)->collider.h / 2));
 					App->pathfinding->GatherWalkableAdjacents(building_map_p, 8, building_slots);
 
 					for (int i = 0; i < building_slots.size(); i++)
