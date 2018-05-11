@@ -215,7 +215,7 @@ void j1Scene::Start_game()
 	}
 
 	//SATARTING ENTITIES-------------------------------------------------------
-	App->entitycontroller->addHero(iPoint(1950, 2100), HERO_2);
+	
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	App->entitycontroller->town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);

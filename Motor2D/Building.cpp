@@ -105,17 +105,18 @@ bool Building::Update(float dt)
 			Entity* hero = App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID);
 
 			iPoint TH_center = { (int)position.x + collider.w / 2, (int)position.y + collider.h / 2 };
-
-			if (hero->isSelected)
+			if (hero != nullptr)
 			{
-				App->render->DrawCircle(TH_center.x, TH_center.y, 250, Green);
-			}
+				if (hero->isSelected)
+				{
+					App->render->DrawCircle(TH_center.x, TH_center.y, 250, Green);
+				}
 
-			if (TH_center.DistanceTo(iPoint(hero->position.x,hero->position.y)) < 250 && hero->current_HP<hero->max_HP)
-			{
-				hero->current_HP++;
+				if (TH_center.DistanceTo(iPoint(hero->position.x, hero->position.y)) < 250 && hero->current_HP < hero->max_HP)
+				{
+					hero->current_HP++;
+				}
 			}
-			
 		}
 		break;
 

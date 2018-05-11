@@ -217,8 +217,10 @@ bool j1ActionsController::Update(float dt)
 			App->wavecontroller->active = true;
 			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, INGAME_MENU);
+			App->uiscene->toggleMenu(true, HERO_SELECTION_MENU);
 			App->scene->Start_game();
 			doingAction = false;
+			//App->pauseGame();
 			break;
 		case CROSS_MENU:
 		case BACK_MENU:
@@ -266,8 +268,21 @@ bool j1ActionsController::Update(float dt)
 			App->uiscene->toggleMenu(true, START_MENU);
 			App->uiscene->toggleMenu(false, INGAME_MENU);
 			App->uiscene->toggleMenu(false, PAUSE_MENU);
+			App->uiscene->toggleMenu(false, HERO_SELECTION_MENU);
 			doingAction = false;
 			App->scene->Close_game();
+			break;
+		case CHOOSE_MAGE:
+			App->entitycontroller->addHero(iPoint(1950, 2100), HERO_1);
+			App->uiscene->toggleMenu(false, HERO_SELECTION_MENU);
+			App->resumeGame();
+			doingAction = false;
+			break;
+		case CHOOSE_PALADIN:
+			App->entitycontroller->addHero(iPoint(1950, 2100), HERO_2);
+			App->uiscene->toggleMenu(false, HERO_SELECTION_MENU);
+			App->resumeGame();
+			doingAction = false;
 			break;
 		}
 		

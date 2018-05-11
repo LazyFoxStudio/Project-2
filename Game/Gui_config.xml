@@ -543,5 +543,30 @@ Resolution of the screen: 1680x 1050y
 
     </menu>
 	
+	<!-- HERO SELECTION MENU -->
+	<menu type="8" active="false">
+		<image path="gui/hero_selection.png">
+			<position x="440" y="132"/>
+		</image>
+		<button path="gui/mage_card.png" click_action="39">
+			<position x="509" y="271"/>
+			<standby x="0" y="0" w="330" h="450"/>
+			<OnMouse x="349" y="0" w="330" h="450"/>
+			<OnClick x="349" y="0" w="330" h="450"/>
+		</button>
+		<button path="gui/paladin_card.png" click_action="40">
+			<position x="839" y="271"/>
+			<standby x="0" y="0" w="330" h="450"/>
+			<OnMouse x="349" y="0" w="330" h="450"/>
+			<OnClick x="349" y="0" w="330" h="450"/>
+		</button>
+		<button click_action="38">
+			<position x="454" y="154"/>
+			<standby x="872" y="0" w="237" h="56"/>
+			<OnMouse x="872" y="0" w="237" h="56"/>
+			<OnClick x="872" y="0" w="237" h="56"/>
+		</button>
+	</menu>
+	
 </config>
 

@@ -46,7 +46,9 @@ enum actionType
 	CROSS_MENU,
 	CHANGE_HOTKEYS,
 	PAUSE,
-	START_SCENE
+	START_SCENE,
+	CHOOSE_MAGE,
+	CHOOSE_PALADIN
 };
 
 class j1ActionsController : public j1Module
