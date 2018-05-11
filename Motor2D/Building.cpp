@@ -4,6 +4,7 @@
 #include "j1Gui.h"
 #include "Minimap.h"
 #include "j1EntityController.h"
+#include "j1ParticleController.h"
 #include "j1Input.h"
 #include "j1Scene.h"
 #include "j1Audio.h"
@@ -56,6 +57,7 @@ Building::Building(iPoint pos, Building& building)
 	}
 	else current_sprite = &sprites[CREATION_STARTED];
 
+	healingParticleTimer.Start();
 	timer.Start();
 }
 
@@ -112,6 +114,12 @@ bool Building::Update(float dt)
 
 			if (TH_center.DistanceTo(iPoint(hero->position.x,hero->position.y)) < 250 && hero->current_HP<hero->max_HP)
 			{
+				if (healingParticleTimer.ReadSec() > 1)
+				{
+					App->particle->AddParticle(PHEALINGHERO, hero->position, false);
+					//App->audio->PlayFx(SFXList::SFX_BUTTON_CLICKED);
+					healingParticleTimer.Restart();
+				}
 				hero->current_HP++;
 			}
 			
