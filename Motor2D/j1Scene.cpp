@@ -205,6 +205,9 @@ void j1Scene::Close_game()
 
 void j1Scene::Start_game()
 {
+	if (!App->tutorial->active)
+		Close_game();
+
 	if (App->tutorial->doingTutorial)
 	{
 		App->render->camera.x = 0;
