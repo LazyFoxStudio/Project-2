@@ -80,13 +80,14 @@ bool Hero::Update(float dt)
 				//tmp = App->map->MapToWorld(tmp.x, tmp.y);
 				fPoint tmp2(tmp.x, tmp.y);
 				
+				
 				if (type == HERO_1)
+				{
 					App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
+					App->particle->AddParticle(POVERFLOW, { tmp2.x, tmp2.y - 30 });
+				}
 				else if (type == HERO_2)
 					App->audio->PlayFx(SFX_CIRCLE_OF_LIGHT);
-
-				App->particle->AddParticle(POVERFLOW, {tmp2.x - 17, tmp2.y - 50}, false);
-
 			}
 			App->gui->cooldownsDisplay->skillUsed(2);
 		}

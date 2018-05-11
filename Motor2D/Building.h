@@ -33,6 +33,7 @@ public:
 	bool producing_worker = false;
 	bool producing_unit = false;
 	j1Timer repair_timer;
+	j1Timer healingParticleTimer;
 	bool recently_repaired = false;
 	std::deque<Type> unit_queue;
 	TroopCreationQueue* queueDisplay = nullptr;

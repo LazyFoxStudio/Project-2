@@ -181,13 +181,13 @@ void j1ParticleController::AddParticle(particleType type, fPoint position, bool 
 
 			if (using_center)
 			{
-				p->position.x = position.x - App->render->camera.x - (p->width / 2);
-				p->position.y = position.y - App->render->camera.y - (p->height / 2);
+				p->position.x = position.x - App->render->camera.x;
+				p->position.y = position.y - App->render->camera.y;
 			}
 			else
 			{
-				p->position.x = position.x - App->render->camera.x;
-				p->position.y = position.y - App->render->camera.y;
+				p->position.x = position.x;
+				p->position.y = position.y;
 			}
 			p->speed.SetToZero();
 

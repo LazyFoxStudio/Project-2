@@ -9,7 +9,7 @@
 #include <deque>
 
 #define SPEED_CONSTANT 100.0f   // applied to all units   
-#define SQUAD_UNATTACH_DISTANCE 75.0f
+#define SQUAD_UNATTACH_DISTANCE 50.0f
 
 #define MAX_NEXT_STEP_MULTIPLIER 1.2f
 #define MIN_NEXT_STEP_MULTIPLIER 0.7f
