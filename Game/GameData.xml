@@ -18,8 +18,8 @@
             </Stats>
 			<Info title="Hero Stats:"/>
             <Animations>
-                <width value="74"/>
-                <height value="64"/>
+                <width value="75"/>
+                <height value="65"/>
               <Animation>
                 <!-- 0- IdleNorth -->
                 <rows value="0"/>
