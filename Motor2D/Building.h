@@ -44,16 +44,18 @@ public:
 
 	bool Update(float dt);
 	void Draw(float dt);
+	void turretBehavior();
 
 	void HandleConstruction();
 	void HandleResourceProduction();
-	void AddUnitToQueue(Type type);
 	void HandleUnitProduction();
 	void CalculateResourceProduction();
 	void HandleWorkerProduction();
+
+	void AddUnitToQueue(Type type);
 	void RepairBuilding();
 	void DemolishBuilding();
-	void turretBehavior();
+	void calculateAttackSlots(std::vector<iPoint>& list_to_fill);
 
 	void Destroy();
 };

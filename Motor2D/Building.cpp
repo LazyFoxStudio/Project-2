@@ -14,6 +14,7 @@
 #include "UI_FarmWorkersManager.h"
 #include "UI_CooldownsDisplay.h"
 #include "Unit.h"
+#include "j1Pathfinding.h"
 
 #define TURRET_ROF 1.0f
 #define RANDOM_FACTOR (1.0f - (((float)(rand() % 6)) / 10.0f))
@@ -355,4 +356,17 @@ void Building::turretBehavior()
 			}
 		}
 	}
+}
+
+void Building::calculateAttackSlots(std::vector<iPoint>& list_to_fill)
+{
+	iPoint map_p = App->map->WorldToMap(position.x, position.y);
+
+	for(int i = map_p.x - 1; i <= map_p.x + size.x; i++)
+		for (int j = map_p.y - 1; j <= map_p.y + size.y; j++)
+		{
+			iPoint atk_slot = { i,j };
+			if (App->pathfinding->IsWalkable(atk_slot))
+				list_to_fill.push_back(atk_slot);
+		}
 }
