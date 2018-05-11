@@ -70,7 +70,7 @@ bool j1Tutorial::PostUpdate()
 		else if (activeStep->finished)
 		{
 			if (completed_delay_timer.Read() >= completed_delay)
-			{				
+			{		
 				activeStep = nullptr;
 			}
 		}
@@ -120,9 +120,17 @@ void j1Tutorial::startTutorial()
 	if (!doingTutorial)
 	{
 		missing_steps = steps;
+		for (std::list<Step*>::iterator it_s = missing_steps.begin(); it_s != missing_steps.end(); it_s++)
+		{
+			(*it_s)->finished = false;
+			(*it_s)->text->changeColor(DEFAULT_COLOR);
+		}
 		doingTutorial = true;
 		App->wavecontroller->tutorial = true;
 		timer.Start();
+		allowTHSelection = false;
+		allowHeroSelection = false;
+		enemiesKilled = false;
 		allowTHSelection = false;
 		allowHeroSelection = false;
 	}

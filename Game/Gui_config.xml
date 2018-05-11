@@ -202,10 +202,10 @@ Resolution of the screen: 1680x 1050y
 			<section x="37" y="1067" w="612" h="301"/>
 		</atlas_image>
 		<button click_action="30">
-			<position x="600" y="400"/>
-			<standby x="687" y="1062" w="469" h="101"/>
-			<OnMouse x="687" y="1062" w="469" h="101"/>
-			<OnClick x="687" y="1062" w="469" h="101"/>
+			<position x="597" y="416"/>
+			<standby x="0" y="131" w="467" h="100"/>
+			<OnMouse x="477" y="131" w="467" h="100"/>
+			<OnClick x="954" y="131" w="467" h="100"/>
 			<childs>
 				<text text="NEW GAME" center="true" counter="false">
 					<position x="0" y="0"/>
@@ -215,31 +215,45 @@ Resolution of the screen: 1680x 1050y
 				</text>
 			</childs>
 		</button>
-      <button click_action="31"><!--SETTINGS-->
-        <position x="600" y="550"/>
-        <standby x="687" y="1062" w="469" h="101"/>
-        <OnMouse x="687" y="1062" w="469" h="101"/>
-        <OnClick x="687" y="1062" w="469" h="101"/>
-        <childs>
-	  <text text="SETTINGS" center="false" counter="false">
-            <position x="143" y="13"/>
-            <font id="6"/>
-            <color r="0" g="0" b="0" a="255"/>
-            <interactive value="false"/>
-          </text>
-          <text text="SETTINGS" center="true" counter="false">
-            <position x="0" y="0"/>
-            <font id="6"/>
-            <color r="255" g="215" b="0" a="255"/>
-            <interactive value="false"/>
-          </text>
-        </childs>
-      </button>
+		<button click_action="0">
+			<position x="597" y="529"/>
+			<standby x="0" y="131" w="467" h="100"/>
+			<OnMouse x="477" y="131" w="467" h="100"/>
+			<OnClick x="954" y="131" w="467" h="100"/>
+			<childs>
+				<text text="CONTINUE" center="true" counter="false">
+					<position x="0" y="0"/>
+					<font id="6"/>
+					<color r="255" g="255" b="0" a="255"/>
+					<interactive value="false"/>
+				</text>
+			</childs>
+		</button>
+		<button click_action="31"><!--SETTINGS-->
+			<position x="600" y="642"/>
+			<standby x="0" y="131" w="467" h="100"/>
+			<OnMouse x="477" y="131" w="467" h="100"/>
+			<OnClick x="954" y="131" w="467" h="100"/>
+			<childs>
+				<text text="SETTINGS" center="false" counter="false">
+					<position x="143" y="13"/>
+					<font id="6"/>
+					<color r="0" g="0" b="0" a="255"/>
+					<interactive value="false"/>
+				</text>
+				<text text="SETTINGS" center="true" counter="false">
+					<position x="0" y="0"/>
+					<font id="6"/>
+					<color r="255" g="215" b="0" a="255"/>
+					<interactive value="false"/>
+				</text>
+			</childs>
+		</button>
 		<button click_action="33"> <!--CREDITS-->
-			<position x="600" y="700"/>
-			<standby x="687" y="1062" w="469" h="101"/>
-			<OnMouse x="687" y="1062" w="469" h="101"/>
-			<OnClick x="687" y="1062" w="469" h="101"/>
+			<position x="600" y="756"/>
+			<standby x="0" y="131" w="467" h="100"/>
+			<OnMouse x="477" y="131" w="467" h="100"/>
+			<OnClick x="954" y="131" w="467" h="100"/>
 			<childs>
 				<text text="CREDITS" center="true" counter="false">
 					<position x="0" y="0"/>
@@ -250,10 +264,10 @@ Resolution of the screen: 1680x 1050y
 			</childs>
 		</button>
       <button click_action="34"><!--EXIT-->
-        <position x="600" y="850"/>
-        <standby x="687" y="1062" w="469" h="101"/>
-        <OnMouse x="687" y="1062" w="469" h="101"/>
-        <OnClick x="687" y="1062" w="469" h="101"/>
+        <position x="600" y="870"/>
+        <standby x="0" y="131" w="467" h="100"/>
+		<OnMouse x="477" y="131" w="467" h="100"/>
+		<OnClick x="954" y="131" w="467" h="100"/>
         <childs>
           <text text="EXIT" center="true" counter="false">
             <position x="0" y="0"/>
