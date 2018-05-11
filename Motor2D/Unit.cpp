@@ -72,7 +72,12 @@ bool Unit::Update(float dt)
 {
 	if (!squad) return false;
 
-	animationController();
+	if (anim_timer.ReadMs() > 10)
+	{
+		anim_timer.Start();
+		animationController();
+	}
+	
 
 	//take buffs out here
  	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
@@ -274,7 +279,7 @@ void Unit::animationController()
 		if (mov_module > 0.5)
 		{
 			switch (commands.empty() ? MOVETO : commands.front()->type)
-			{
+			{				
 			case ATTACK:
 				switch (dir)
 				{
@@ -303,7 +308,6 @@ void Unit::animationController()
 				break;
 			}
 		}
-
 		else if (commands.empty() ? false : commands.front()->type == ATTACK)
 		{
 			switch (dir)
@@ -332,6 +336,7 @@ void Unit::animationController()
 			case SW: new_animation = IDLE_SW; break;
 			}
 		}
+		
 	}
 	else 
 	{
@@ -352,6 +357,7 @@ void Unit::animationController()
 	{
 		if (animations[new_animation] != current_anim)
 		{
+			
 			current_anim = animations[new_animation];
 			current_anim->Reset();
 		}
