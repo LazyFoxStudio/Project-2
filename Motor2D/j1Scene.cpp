@@ -65,6 +65,9 @@ bool j1Scene::Start()
 	App->render->camera.x = -1200;
 	App->render->camera.y = -1600;
 
+	App->render->culling_camera.x = -App->render->camera.x - 50;
+	App->render->culling_camera.y = -App->render->camera.y - 50;
+
 	restart_time = 10;
 	//wood = INIT_WOOD;
 	//gold = INIT_GOLD;
@@ -212,6 +215,8 @@ void j1Scene::Start_game()
 	{
 		App->render->camera.x = 0;
 		App->render->camera.y = -3200;
+		App->render->culling_camera.x = -App->render->camera.x - 50;
+		App->render->culling_camera.y = -App->render->camera.y - 50;
 	}
 
 	//SATARTING ENTITIES-------------------------------------------------------
