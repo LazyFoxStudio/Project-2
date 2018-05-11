@@ -107,23 +107,24 @@ bool Building::Update(float dt)
 			Entity* hero = App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID);
 
 			iPoint TH_center = { (int)position.x + collider.w / 2, (int)position.y + collider.h / 2 };
-
-			if (hero->isSelected)
+			if (hero != nullptr)
 			{
-				App->render->DrawCircle(TH_center.x, TH_center.y, 250, Green);
-			}
-
-			if (TH_center.DistanceTo(iPoint(hero->position.x,hero->position.y)) < 250 && hero->current_HP<hero->max_HP)
-			{
-				if (healingParticleTimer.ReadSec() > 1)
+				if (hero->isSelected)
 				{
-					App->particle->AddParticle(PHEALINGHERO, hero->position, false);
-					//App->audio->PlayFx(SFXList::SFX_BUTTON_CLICKED);
-					healingParticleTimer.Restart();
+					App->render->DrawCircle(TH_center.x, TH_center.y, 250, Green);
 				}
-				hero->current_HP++;
+
+				if (TH_center.DistanceTo(iPoint(hero->position.x, hero->position.y)) < 250 && hero->current_HP < hero->max_HP)
+				{
+					if (healingParticleTimer.ReadSec() > 1)
+					{
+						App->particle->AddParticle(PHEALINGHERO, hero->position, false);
+						//App->audio->PlayFx(SFXList::SFX_BUTTON_CLICKED);
+						healingParticleTimer.Restart();
+					}
+					hero->current_HP++;
+				}
 			}
-			
 		}
 		break;
 
