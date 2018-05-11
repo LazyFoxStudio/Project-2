@@ -24,6 +24,7 @@ Squad::Squad(std::vector<uint>& units) : units_id(units)
 
 		calculateOffsets();
 	}
+	timer.Start();
 }
 
 Squad::~Squad()
@@ -36,7 +37,11 @@ bool Squad::Update(float dt)
 	if (units_id.empty()) { Destroy(); return false; }
 	else
 	{
-		calculateAttackSlots();
+		if (timer.ReadSec() > 0.5f)
+		{
+			calculateAttackSlots();
+			timer.Start();
+		}
 		if (!commands.empty())
 		{
 			commands.front()->Execute(dt);
@@ -265,6 +270,11 @@ void Squad::calculateAttackSlots()
 		atk_slots.push_back({map_p.x - 1, map_p.y});
 		atk_slots.push_back({map_p.x, map_p.y + 1});
 		atk_slots.push_back({map_p.x, map_p.y - 1});
+
+		atk_slots.push_back({ map_p.x + 1, map_p.y - 1});
+		atk_slots.push_back({ map_p.x - 1, map_p.y - 1});
+		atk_slots.push_back({ map_p.x + 1, map_p.y + 1 });
+		atk_slots.push_back({ map_p.x - 1, map_p.y + 1 });
 		units_map_p.push_back(map_p);
 	}
 

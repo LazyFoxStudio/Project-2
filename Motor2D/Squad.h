@@ -30,6 +30,7 @@ public:
 	int UID = -1;
 	bool everyone_in_position = true;
 	SFXList FollowingOrdersSFX = SFXList::SFX_NO_SFX;
+	j1Timer timer;
 
 public:
 	Squad(std::vector<uint>& units);
