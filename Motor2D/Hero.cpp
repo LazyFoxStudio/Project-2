@@ -68,7 +68,16 @@ bool Hero::Update(float dt)
 		{
 			skill_two->Activate();
 			if (!skill_two->going)
+			{
+				iPoint tmp;
+				App->input->GetMousePosition(tmp.x, tmp.y);
+				//tmp = App->map->WorldToMap(tmp.x, tmp.y);
+				//tmp = App->map->MapToWorld(tmp.x, tmp.y);
+				fPoint tmp2(tmp.x, tmp.y);
 				App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
+				App->particle->AddParticle(POVERFLOW, {tmp2.x - 17, tmp2.y - 50}, false);
+
+			}
 			App->gui->cooldownsDisplay->skillUsed(2);
 		}
 		skill_two->toDraw.clear();		

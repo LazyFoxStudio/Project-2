@@ -64,7 +64,7 @@ public:
 	
 	double GetAngleInDegrees(Particle* p);
 
-	void AddParticle(particleType type = PNO_TYPE, fPoint position = { 0,0 }, bool using_camera = true);
+	void AddParticle(particleType type = PNO_TYPE, fPoint position = { 0,0 }, bool using_center = true);
 	void AddProjectile(particleType type = PNO_TYPE, fPoint position = { 0,0 }, fPoint objective = { 0,0 },float speed = 0, bool using_camera = true);
 	//void DeleteParticle();
 

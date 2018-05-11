@@ -221,10 +221,16 @@ Resolution of the screen: 1680x 1050y
         <OnMouse x="687" y="1062" w="469" h="101"/>
         <OnClick x="687" y="1062" w="469" h="101"/>
         <childs>
+	  <text text="SETTINGS" center="false" counter="false">
+            <position x="143" y="13"/>
+            <font id="6"/>
+            <color r="0" g="0" b="0" a="255"/>
+            <interactive value="false"/>
+          </text>
           <text text="SETTINGS" center="true" counter="false">
             <position x="0" y="0"/>
             <font id="6"/>
-            <color r="255" g="255" b="0" a="255"/>
+            <color r="255" g="215" b="0" a="255"/>
             <interactive value="false"/>
           </text>
         </childs>
@@ -311,12 +317,12 @@ Resolution of the screen: 1680x 1050y
       <OnMouse x="26" y="805" w="56" h="56"/>
       <OnClick x="26" y="805" w="56" h="56"/>
       <childs>
-        <text text="X" center="true" counter="false">
+<!--        <text text="X" center="true" counter="false">
           <position x="0" y="0"/>
           <font id="4"/>
           <color r="255" g="255" b="0" a="255"/>
           <interactive value="false"/>
-        </text>
+        </text>-->
       </childs>
     </button>
 
@@ -434,12 +440,12 @@ Resolution of the screen: 1680x 1050y
       <OnMouse x="26" y="805" w="56" h="56"/>
       <OnClick x="26" y="805" w="56" h="56"/>
       <childs>
-        <text text="X" center="true" counter="false">
+<!--        <text text="X" center="true" counter="false">
           <position x="0" y="0"/>
           <font id="4"/>
           <color r="255" g="255" b="0" a="255"/>
           <interactive value="false"/>
-        </text>
+        </text>-->
       </childs>
     </button>
       <button click_action="36"><!--CHANGE_HOTKEYS-->
@@ -512,12 +518,12 @@ Resolution of the screen: 1680x 1050y
 		<OnMouse x="26" y="805" w="56" h="56"/>
 		<OnClick x="26" y="805" w="56" h="56"/>
         <childs>
-          <text text="X" center="true" counter="false">
-            <position x="0" y="0"/>
-            <font id="4"/>
-            <color r="255" g="255" b="0" a="255"/>
-            <interactive value="false"/>
-          </text>
+<!--        <text text="X" center="true" counter="false">
+          <position x="0" y="0"/>
+          <font id="4"/>
+          <color r="255" g="255" b="0" a="255"/>
+          <interactive value="false"/>
+        </text>-->
         </childs>
       </button>
 
