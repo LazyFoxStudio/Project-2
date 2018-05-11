@@ -140,6 +140,8 @@ public:
 
 	void moveElementToMouse(UI_element* element);
 
+	void assignActionButtonHotkey(uint id, SDL_Scancode newHotkey);
+
 public:
 
 	SDL_Texture* atlas = nullptr;

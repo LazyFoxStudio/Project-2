@@ -20,6 +20,16 @@ buttons_offset({buttons_offsetX, buttons_offsetY})
 	window = new Window(texture, x, y, section, callback);
 	workers_title = new Text("Workers:", 1480, 815, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
 	workers = new Text("", 1495, 865, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
+
+	actionButtonsHotkeys.push_back(DEFAULT_HOTKEY_1);
+	actionButtonsHotkeys.push_back(DEFAULT_HOTKEY_2);
+	actionButtonsHotkeys.push_back(DEFAULT_HOTKEY_3);
+	actionButtonsHotkeys.push_back(DEFAULT_HOTKEY_4);
+	actionButtonsHotkeys.push_back(DEFAULT_HOTKEY_5);
+	actionButtonsHotkeys.push_back(DEFAULT_HOTKEY_6);
+	actionButtonsHotkeys.push_back(DEFAULT_HOTKEY_7);
+	actionButtonsHotkeys.push_back(DEFAULT_HOTKEY_8);
+	actionButtonsHotkeys.push_back(DEFAULT_HOTKEY_9);
 }
 
 IngameMenu::~IngameMenu()
@@ -53,6 +63,7 @@ void IngameMenu::updateActionButtons()
 		actionButtons = App->gui->activateActionButtons(empty_vector);
 	}
 
+	int counter = 0;
 	int counterX = 0;
 	int counterY = 0;
 	int extraYvalue = 0;
@@ -64,8 +75,9 @@ void IngameMenu::updateActionButtons()
 		(*it_b)->localPosition.x = firstButton_pos.x + (buttons_offset.x*counterX);
 		(*it_b)->localPosition.y = firstButton_pos.y + (buttons_offset.y*counterY) + extraYvalue;
 		(*it_b)->active = true;
-		(*it_b)->updatedPosition();
+		(*it_b)->setHotkey(actionButtonsHotkeys[counter]);
 		counterX++;
+		counter++;
 		if (counterX == 3)
 		{
 			counterY++;

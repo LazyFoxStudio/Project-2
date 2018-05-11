@@ -94,11 +94,6 @@ bool j1UIScene::Start()
 bool j1UIScene::Update(float dt)
 {
 
-	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
-		App->pauseGame();
-	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
-		App->resumeGame();
-
 	return true;
 }
 

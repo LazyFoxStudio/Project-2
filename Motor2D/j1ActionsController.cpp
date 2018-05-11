@@ -236,6 +236,9 @@ bool j1ActionsController::Update(float dt)
 				App->uiscene->toggleMenu(false, CREDITS_MENU);
 				App->uiscene->toggleMenu(false, SETTINGS_MENU);
 			}
+
+			if (App->input->isReadingHotkey())
+				App->input->stopReadingHotkey();
 			
 			doingAction = false;
 			break;
@@ -282,6 +285,43 @@ bool j1ActionsController::Update(float dt)
 			App->entitycontroller->addHero(iPoint(1950, 2100), HERO_2);
 			App->uiscene->toggleMenu(false, HERO_SELECTION_MENU);
 			App->resumeGame();
+			doingAction = false;
+			break;
+
+		case CHANGE_KEY_1:
+			App->input->readHotkey(0);
+			doingAction = false;
+			break;
+		case CHANGE_KEY_2:
+			App->input->readHotkey(1);
+			doingAction = false;
+			break;
+		case CHANGE_KEY_3:
+			App->input->readHotkey(2);
+			doingAction = false;
+			break;
+		case CHANGE_KEY_4:
+			App->input->readHotkey(3);
+			doingAction = false;
+			break;
+		case CHANGE_KEY_5:
+			App->input->readHotkey(4);
+			doingAction = false;
+			break;
+		case CHANGE_KEY_6:
+			App->input->readHotkey(5);
+			doingAction = false;
+			break;
+		case CHANGE_KEY_7:
+			App->input->readHotkey(6);
+			doingAction = false;
+			break;
+		case CHANGE_KEY_8:
+			App->input->readHotkey(7);
+			doingAction = false;
+			break;
+		case CHANGE_KEY_9:
+			App->input->readHotkey(8);
 			doingAction = false;
 			break;
 		}

@@ -647,6 +647,14 @@ Button* j1Gui::createButton(pugi::xml_node node, j1Module* callback, bool saveIn
 		ret->releaseAction = (actionType)node.attribute("release_action").as_int(0);
 		ret->hasReleaseAction = true;
 	}
+	pugi::xml_node hotkey = node.child("hotkey");
+	if (hotkey)
+	{
+		std::string letter = hotkey.attribute("key").as_string();
+		SDL_Scancode key = (SDL_Scancode)(*letter.c_str() - 61);
+		ret->setHotkey(key);
+		ret->displayHotkey(true, App->font->getFont(hotkey.attribute("font_id").as_int()), { 0,0,0,255 }, true);
+	}
 
 	if (saveIntoGUI)
 		Buttons.push_back(ret);
@@ -1115,5 +1123,34 @@ void j1Gui::moveElementToMouse(UI_element* element)
 			y = 0;
 		}
 		element->localPosition = { (int)(x/w_stretch), (int)(y/h_stretch) };
+	}
+}
+
+void j1Gui::assignActionButtonHotkey(uint id, SDL_Scancode newHotkey)
+{
+	if (id < inGameMenu->actionButtonsHotkeys.size())
+	{
+		inGameMenu->actionButtonsHotkeys[id] = newHotkey;
+		inGameMenu->updateActionButtons();
+
+		menu* Menu = App->uiscene->getMenu(CHANGE_HOTKEYS_MENU);
+		if (Menu != nullptr)
+		{
+			int counter = 0;
+			for (std::list<UI_element*>::iterator it_b = Menu->elements.begin(); it_b != Menu->elements.end(); it_b++)
+			{
+				if ((*it_b)->element_type == BUTTON && (*it_b)->clickAction >= 50 && (*it_b)->clickAction <= 58)
+				{				
+					if (counter == id)
+					{
+						Button* button = (Button*)(*it_b);
+						button->setHotkey(newHotkey);
+						button->displayHotkey(true, App->font->getFont(3), { 0,0,0,255 }, true);
+						break;
+					}
+					counter++;
+				}
+			}
+		}
 	}
 }

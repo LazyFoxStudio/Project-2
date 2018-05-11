@@ -39,39 +39,40 @@ void Button::BlitElement()
 	}
 }
 
-void Button::displayHotkey(bool display, _TTF_Font* font)
+void Button::displayHotkey(bool display, _TTF_Font* font, SDL_Color color, bool atCenter)
 {
 	displayingHotkey = display;
 
 	if (display = true && font != nullptr && Hotkey != 0)
 	{
 		if (hotkey_text != nullptr)
+		{
+			childs.clear();
 			RELEASE(hotkey_text);
+		}
 		
 		std::string text;
 		text = (char)(Hotkey + 61);
 
-		hotkey_text = new Text(text, 0, 0, font, { 255,0,0,255 }, nullptr);
-		iPoint position = { localPosition.x + section.w - hotkey_text->section.w / 2, localPosition.y + section.h - hotkey_text->section.h / 2 };
-		hotkey_text->localPosition = position;
+		hotkey_text = new Text(text, 0, 0, font, color, nullptr);
+		appendChild(hotkey_text, true);
+		if (!atCenter)
+			hotkey_text->localPosition = { section.w - hotkey_text->section.w / 2, section.h - hotkey_text->section.h / 2 };
 	}
 }
 
 void Button::setHotkey(SDL_Scancode hotkey)
 {
 	Hotkey = hotkey;
+	if (hotkey_text != nullptr)
+	{
+		std::string text;
+		text = (char)(Hotkey + 61);
+		hotkey_text->setText(text);
+	}
 }
 
 SDL_Scancode Button::getHotkey() const
 {
 	return Hotkey;
-}
-
-void Button::updatedPosition()
-{
-	if (hotkey_text != nullptr)
-	{
-		iPoint position = { localPosition.x + section.w - hotkey_text->section.w / 2, localPosition.y + section.h - hotkey_text->section.h / 2 };
-		hotkey_text->localPosition = position;
-	}
 }

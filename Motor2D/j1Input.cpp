@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Input.h"
 #include "j1Window.h"
+#include "j1Gui.h"
 #include "SDL/include/SDL.h"
 
 #define MAX_KEYS 300
@@ -56,13 +57,14 @@ bool j1Input::PreUpdate()
 	BROFILER_CATEGORY("input_preupdate", Profiler::Color::BlanchedAlmond);
 	static SDL_Event event;
 	
+	wasKeyDown = SDL_SCANCODE_UNKNOWN;
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
 	for(int i = 0; i < MAX_KEYS; ++i)
 	{
 		if(keys[i] == 1)
 		{
-			if(keyboard[i] == KEY_IDLE) keyboard[i] = KEY_DOWN;
+			if (keyboard[i] == KEY_IDLE) { keyboard[i] = KEY_DOWN; wasKeyDown = (SDL_Scancode)i; }
 			else						keyboard[i] = KEY_REPEAT;
 		}
 		else
@@ -134,6 +136,18 @@ bool j1Input::PreUpdate()
 	return true;
 }
 
+bool j1Input::Update(float dt)
+{
+	if (assignNewHotkey && wasKeyDown != SDL_SCANCODE_UNKNOWN)
+	{
+		App->gui->assignActionButtonHotkey(buttonId, wasKeyDown);
+
+		assignNewHotkey = false;
+	}
+
+	return true;
+}
+
 // Called before quitting
 bool j1Input::CleanUp()
 {
@@ -158,6 +172,27 @@ void j1Input::GetMouseMotion(int& x, int& y)
 {
 	x = mouse_motion_x;
 	y = mouse_motion_y;
+}
+
+void j1Input::readHotkey(uint buttonId)
+{
+	if (!assignNewHotkey)
+	{
+		this->buttonId = buttonId;
+		assignNewHotkey = true;
+	}
+	else
+		assignNewHotkey = false;
+}
+
+bool j1Input::isReadingHotkey() const
+{
+	return assignNewHotkey;
+}
+
+void j1Input::stopReadingHotkey()
+{
+	assignNewHotkey = false;
 }
 
 void j1Input::StartTextInput()

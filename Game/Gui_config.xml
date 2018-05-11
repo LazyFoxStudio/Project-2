@@ -434,20 +434,21 @@ Resolution of the screen: 1680x 1050y
       <color r="0" g="0" b="0" a="255"/>
       <interactive value="false"/>
     </text>
-    <button click_action="32"> <!--BACK-->
-      <position x="190" y="875"/>
-      <standby x="26" y="726" w="187" h="69"/>
-	  <OnMouse x="26" y="726" w="187" h="69"/>
-	  <OnClick x="26" y="726" w="187" h="69"/>
-      <childs>
-        <text text="BACK" center="true" counter="false">
-          <position x="0" y="0"/>
-          <font id="4"/>
-          <color r="255" g="255" b="0" a="255"/>
-          <interactive value="false"/>
-        </text>
-      </childs>
-    </button>
+	<button click_action="32">
+        <!--Apply-->
+        <position x="1230" y="875"/>
+        <standby x="26" y="726" w="187" h="69"/>
+		<OnMouse x="26" y="726" w="187" h="69"/>
+		<OnClick x="26" y="726" w="187" h="69"/>
+        <childs>
+          <text text="APPLY" center="true" counter="false">
+            <position x="0" y="0"/>
+            <font id="4"/>
+            <color r="255" g="255" b="0" a="255"/>
+            <interactive value="false"/>
+          </text>
+        </childs>
+      </button>
     <button click_action="35"><!--X-->
       <position x="190" y="125"/>
       <standby x="26" y="805" w="56" h="56"/>
@@ -483,33 +484,69 @@ Resolution of the screen: 1680x 1050y
       <image path="gui/credits.png">
         <position x="0" y="0"/>
       </image>
-      <text text=" The Prime Minister of Sweden" center="true" counter="false">
-        <position x="350" y="200"/>
-      </text>
-      <text text=" visited Washington today as my" center="true" counter="false">
-        <position x="350" y="225"/>
-      </text>
-      <text text=" little tiny nipples moved to France-" center="true" counter="false">
-        <position x="350" y="250"/>
-      </text>
-      <text text=" The White House reception committee" center="true" counter="false">
-        <position x="350" y="275"/>
-      </text>
-      <text text=" greeted the Prime Rib Roast" center="true" counter="false">
-        <position x="350" y="300"/>
-      </text>
-      <text text=" Minister and I do the cha cha like" center="true" counter="false">
-        <position x="350" y="325"/>
-      </text>
-      <text text=" a sissy girl..." center="true" counter="false">
-        <position x="350" y="350"/>
-      </text>
-      <text text=" (urged to keep going, so continues slowly)" center="true" counter="false">
-        <position x="350" y="375"/>
-      </text>
-      <text text=" I lika do da cha cha..." center="true" counter="false">
-        <position x="350" y="400"/>
-      </text>
+	  <button click_action="50">
+		<position x="365" y="291"/>
+        <standby x="1321" y="0" w="92" h="92"/>
+		<OnMouse x="1420" y="0" w="92" h="92"/>
+		<OnClick x="1520" y="0" w="92" h="92"/>
+		<hotkey key="Q" font_id="3"/>
+	  </button>
+	  <button click_action="51">
+		<position x="527" y="291"/>
+        <standby x="1321" y="0" w="92" h="92"/>
+		<OnMouse x="1420" y="0" w="92" h="92"/>
+		<OnClick x="1520" y="0" w="92" h="92"/>
+		<hotkey key="W" font_id="3"/>
+	  </button>
+	  <button click_action="52">
+		<position x="689" y="291"/>
+        <standby x="1321" y="0" w="92" h="92"/>
+		<OnMouse x="1420" y="0" w="92" h="92"/>
+		<OnClick x="1520" y="0" w="92" h="92"/>
+		<hotkey key="E" font_id="3"/>
+	  </button>
+	  <button click_action="53">
+		<position x="365" y="445"/>
+        <standby x="1321" y="0" w="92" h="92"/>
+		<OnMouse x="1420" y="0" w="92" h="92"/>
+		<OnClick x="1520" y="0" w="92" h="92"/>
+		<hotkey key="A" font_id="3"/>
+	  </button>
+	  <button click_action="54">
+		<position x="527" y="445"/>
+        <standby x="1321" y="0" w="92" h="92"/>
+		<OnMouse x="1420" y="0" w="92" h="92"/>
+		<OnClick x="1520" y="0" w="92" h="92"/>
+		<hotkey key="S" font_id="3"/>
+	  </button>
+	  <button click_action="55">
+		<position x="689" y="445"/>
+        <standby x="1321" y="0" w="92" h="92"/>
+		<OnMouse x="1420" y="0" w="92" h="92"/>
+		<OnClick x="1520" y="0" w="92" h="92"/>
+		<hotkey key="D" font_id="3"/>
+	  </button>
+	  <button click_action="56">
+		<position x="365" y="604"/>
+        <standby x="1321" y="0" w="92" h="92"/>
+		<OnMouse x="1420" y="0" w="92" h="92"/>
+		<OnClick x="1520" y="0" w="92" h="92"/>
+		<hotkey key="Z" font_id="3"/>
+	  </button>
+	  <button click_action="57">
+		<position x="527" y="604"/>
+        <standby x="1321" y="0" w="92" h="92"/>
+		<OnMouse x="1420" y="0" w="92" h="92"/>
+		<OnClick x="1520" y="0" w="92" h="92"/>
+		<hotkey key="X" font_id="3"/>
+	  </button>
+	  <button click_action="58">
+		<position x="689" y="604"/>
+        <standby x="1321" y="0" w="92" h="92"/>
+		<OnMouse x="1420" y="0" w="92" h="92"/>
+		<OnClick x="1520" y="0" w="92" h="92"/>
+		<hotkey key="C" font_id="3"/>
+	  </button>
       <button click_action="32">
         <!--Back-->
         <position x="190" y="875"/>
@@ -517,7 +554,7 @@ Resolution of the screen: 1680x 1050y
 		<OnMouse x="26" y="726" w="187" h="69"/>
 		<OnClick x="26" y="726" w="187" h="69"/>
         <childs>
-          <text text="BACK" center="true" counter="false">
+          <text text="RESET" center="true" counter="false">
             <position x="0" y="0"/>
             <font id="4"/>
             <color r="255" g="255" b="0" a="255"/>
@@ -525,22 +562,21 @@ Resolution of the screen: 1680x 1050y
           </text>
         </childs>
       </button>
-      <button click_action="35">
-        <!--X-->
-        <position x="190" y="125"/>
-        <standby x="26" y="805" w="56" h="56"/>
-		<OnMouse x="26" y="805" w="56" h="56"/>
-		<OnClick x="26" y="805" w="56" h="56"/>
+      <button click_action="32">
+        <!--Continue-->
+        <position x="1230" y="875"/>
+        <standby x="26" y="726" w="187" h="69"/>
+		<OnMouse x="26" y="726" w="187" h="69"/>
+		<OnClick x="26" y="726" w="187" h="69"/>
         <childs>
-<!--        <text text="X" center="true" counter="false">
-          <position x="0" y="0"/>
-          <font id="4"/>
-          <color r="255" g="255" b="0" a="255"/>
-          <interactive value="false"/>
-        </text>-->
+          <text text="CONTINUE" center="true" counter="false">
+            <position x="0" y="0"/>
+            <font id="4"/>
+            <color r="255" g="255" b="0" a="255"/>
+            <interactive value="false"/>
+          </text>
         </childs>
       </button>
-
     </menu>
 	
 	<!-- HERO SELECTION MENU -->

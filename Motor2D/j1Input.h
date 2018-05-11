@@ -2,6 +2,7 @@
 #define __j1INPUT_H__
 
 #include "j1Module.h"
+#include "j1Window.h"
 
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
@@ -44,6 +45,8 @@ public:
 	// Called each loop iteration
 	bool PreUpdate();
 
+	bool Update(float dt);
+
 	// Called before quitting
 	bool CleanUp();
 
@@ -65,6 +68,10 @@ public:
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
+	void readHotkey(uint buttonId);
+	bool isReadingHotkey() const;
+	void stopReadingHotkey();
+
 private:
 	bool		windowEvents[WE_COUNT];
 	j1KeyState*	keyboard=nullptr;
@@ -73,6 +80,10 @@ private:
 	int			mouse_motion_y;
 	int			mouse_x;
 	int			mouse_y;
+
+	SDL_Scancode wasKeyDown = SDL_SCANCODE_UNKNOWN;
+	bool assignNewHotkey = false;
+	uint buttonId = 0;
 };
 
 #endif // __j1INPUT_H__
