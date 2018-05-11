@@ -24,7 +24,6 @@ Squad::Squad(std::vector<uint>& units) : units_id(units)
 
 		calculateOffsets();
 	}
-	timer.Start();
 }
 
 Squad::~Squad()
@@ -37,11 +36,7 @@ bool Squad::Update(float dt)
 	if (units_id.empty()) { Destroy(); return false; }
 	else
 	{
-		if (timer.ReadSec() > 0.2f)
-		{
-			calculateAttackSlots();
-			timer.Start();
-		}
+		calculateAttackSlots();
 		if (!commands.empty())
 		{
 			commands.front()->Execute(dt);

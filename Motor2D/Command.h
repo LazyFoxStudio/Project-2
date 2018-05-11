@@ -94,7 +94,7 @@ public:
 	Attack(Unit* unit, std::vector<iPoint>* enemy_atk_slots, int* squad_target) : Command(unit, ATTACK), enemy_atk_slots(enemy_atk_slots), squad_target(squad_target) {};
 
 	bool searchTarget();
-	void moveToTarget();
+	void moveToTarget(fPoint enemy_position);
 	void callRetaliation(Entity* enemy, uint squad_UID);
 	
 	int dealDamage(Entity* attacker, Entity* defender);
