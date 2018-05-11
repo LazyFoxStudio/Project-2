@@ -112,6 +112,21 @@
 			<pushback x="560" y="350" w="140" h="140"/>
 		</anim>
 	</template>
+
+<!-- Overload  -->
+	<template> 
+		<width value="34"/>
+		<height value="34"/>
+		<anim>
+			<loop value="false"/>
+			<speed value="7"/>
+			<pushback x="680" y="255" w="34" h="34"/>
+			<pushback x="714" y="255" w="34" h="34"/>
+			<pushback x="748" y="255" w="34" h="34"/>
+			<pushback x="782" y="255" w="34" h="34"/>
+			<pushback x="816" y="255" w="34" h="34"/>
+		</anim>
+	</template>
    </particle>
 </node>
 

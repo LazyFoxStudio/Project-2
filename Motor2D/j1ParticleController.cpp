@@ -152,7 +152,7 @@ Particle* j1ParticleController::FindParticleType(particleType type)
 
 void j1ParticleController::AdjustDirection(Particle* p, fPoint objective, float speed)
 {
-	fPoint vec = { objective.x - p->position.x + (p->width/2), objective.y - p->position.y + (p->height / 2) };
+	fPoint vec = { objective.x - p->position.x - (p->width/2), objective.y - p->position.y - (p->height / 2) };
 
 	p->angle = asinf(vec.y/vec.GetModule());
 	float sinus = sinf(p->angle);
@@ -178,20 +178,27 @@ double j1ParticleController::GetAngleInDegrees(Particle * p)
 }
 
 
-void j1ParticleController::AddParticle(particleType type, fPoint position, bool using_camera)
+void j1ParticleController::AddParticle(particleType type, fPoint position, bool using_center)
 {
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
 		if (active[i] == nullptr)
 		{
 			Particle* p = new Particle(*FindParticleType(type));
-			p->currentLife.Start();
 
-
-			p->position.x = position.x - App->render->camera.x;
-			p->position.y = position.y - App->render->camera.y;
+			if (using_center)
+			{
+				p->position.x = position.x - App->render->camera.x - (p->width / 2);
+				p->position.y = position.y - App->render->camera.y - (p->height / 2);
+			}
+			else
+			{
+				p->position.x = position.x - App->render->camera.x;
+				p->position.y = position.y - App->render->camera.y;
+			}
 			p->speed.SetToZero();
 
+			p->currentLife.Start();
 
 			active[i] = p;
 			break;
@@ -252,8 +259,8 @@ Particle::Particle()
 }
 
 Particle::Particle(Particle& p) :
-	anim(p.anim), position(p.position),
-	life(p.life), type(p.type)
+	anim(p.anim), position(p.position), life(p.life), 
+	type(p.type), width(p.width), height(p.height)
 {}
 
 
