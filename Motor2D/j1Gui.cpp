@@ -158,7 +158,8 @@ bool j1Gui::PreUpdate()
 	}
 
 	//Check action buttons hotkeys
-	checkActionButtonsHotkeys();
+	if (!App->isPaused())
+		checkActionButtonsHotkeys();
 
 	return ret;
 }

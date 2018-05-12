@@ -3907,9 +3907,9 @@
 		</createGryphon>
 		<createBallista id="15" release_action="11">
 			<position x="0" y="0"/>
-			<standby x="1305" y="1224" w="66" h="66"/>
-			<OnMouse x="1372" y="1224" w="66" h="66"/>
-			<OnClick x="1441" y="1224" w="66" h="66"/>
+			<standby x="1305" y="366" w="66" h="66"/>
+			<OnMouse x="1372" y="366" w="66" h="66"/>
+			<OnClick x="1441" y="366" w="66" h="66"/>
 			<popUp>
 				<Info text="Create Ballista" cost="true" type="16"/>
 			</popUp>
