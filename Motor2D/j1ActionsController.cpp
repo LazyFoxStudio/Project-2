@@ -355,13 +355,13 @@ bool j1ActionsController::Update(float dt)
 			doingAction = false;
 			break;
 		case TUTORIAL:
-			if (App->tutorial->pausable == true)
+			if (App->tutorial->active == true)
 			{
-				App->tutorial->pausable = false;
+				App->tutorial->active = false;
 			}
-			else if (App->tutorial->pausable == false)
+			else if (App->tutorial->active == false)
 			{
-				App->tutorial->pausable = true;
+				App->tutorial->active = true;
 			}
 			doingAction = false;
 			break;

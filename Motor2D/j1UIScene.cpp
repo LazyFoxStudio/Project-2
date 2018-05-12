@@ -100,17 +100,17 @@ bool j1UIScene::Update(float dt)
 	Text* tutorial_on = (Text*)App->gui->GetElement(TEXT, 38);
 	Text* tutorial_off = (Text*)App->gui->GetElement(TEXT, 39);
 
-	if (App->tutorial->pausable == true)
+	if (App->tutorial->active == true)
 	{
 		tutorial_on->active = true;
 		tutorial_off->active = false;
 	}
-
-	if (App->tutorial->pausable == false)
+	else if (App->tutorial->active == false)
 	{
 		tutorial_off->active = true;
 		tutorial_on->active = false;
 	}
+
 	return true;
 }
 
