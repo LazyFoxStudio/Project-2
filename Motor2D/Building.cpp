@@ -119,10 +119,11 @@ bool Building::Update(float dt)
 					if (healingParticleTimer.ReadSec() > 1)
 					{
 						App->particle->AddParticle(PHEALINGHERO, hero->position, false);
-						//App->audio->PlayFx(SFXList::SFX_BUTTON_CLICKED);
+						App->audio->PlayFx(SFX_MISCELLANEOUS_THHEAL, 50);
 						healingParticleTimer.Restart();
+						hero->current_HP++;
+
 					}
-					hero->current_HP++;
 				}
 			}
 		}
@@ -357,7 +358,7 @@ void Building::turretBehavior()
 					if (App->render->CullingCam(position))
 						App->entitycontroller->HandleAttackSFX(ARCHER, 30);
 
-					App->entitycontroller->HandleParticles(ARCHER, position, (*it)->position);
+					App->entitycontroller->HandleParticles(ARCHER, position, { (*it)->position.x + ((*it)->collider.w / 2), (*it)->position.y + ((*it)->collider.h / 2) });
 
 					(*it)->current_HP -= MAX((RANDOM_FACTOR * (piercing_atk + ((((int)attack - (int)(*it)->defense) <= 0) ? 0 : attack - (*it)->defense))), 1);
 					

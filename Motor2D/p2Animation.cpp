@@ -61,7 +61,7 @@ bool Animation::LoadAnimation(pugi::xml_node& data, int width, int height)
 }
 
 bool Animation::Finished() const				{ return loops > 0; }
-void Animation::Reset()							{ current_frame = 0; }
+void Animation::Reset()							{ current_frame = 0, loops = 0; }
 float Animation::GetCurrentFrameinFloat()		{ return current_frame; }
 int Animation::GetLastFrameinInt()				{ return last_frame;}
 void Animation::ChangeCurrentFrame(float frame)	{ current_frame = frame; }

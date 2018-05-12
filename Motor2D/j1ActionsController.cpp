@@ -1,5 +1,6 @@
 #include "j1ActionsController.h"
 #include "j1App.h"
+#include "j1Audio.h"
 #include "j1Input.h"
 #include "Command.h"
 #include "j1Render.h"
@@ -115,6 +116,10 @@ bool j1ActionsController::Update(float dt)
 				{
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(FOOTMAN);
 				}
+				else
+				{
+					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT, 40);
+				}
 			}
 			doingAction = false;
 			break;
@@ -123,6 +128,10 @@ bool j1ActionsController::Update(float dt)
 			{
 				if (App->entitycontroller->CheckCost(ARCHER) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(ARCHER);
+				else
+				{
+					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT, 40);
+				}
 			}
 			doingAction = false;
 			break;
@@ -131,6 +140,10 @@ bool j1ActionsController::Update(float dt)
 			{
 				if (App->entitycontroller->CheckCost(KNIGHT) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(KNIGHT);
+				else
+				{
+					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT, 40);
+				}
 			}
 			doingAction = false;
 			break;
@@ -139,6 +152,10 @@ bool j1ActionsController::Update(float dt)
 			{
 				if (App->entitycontroller->CheckCost(GRYPHON) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(GRYPHON);
+				else
+				{
+					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT, 40);
+				}
 			}
 			doingAction = false;
 			break;
@@ -147,6 +164,10 @@ bool j1ActionsController::Update(float dt)
 			{
 				if (App->entitycontroller->CheckCost(BALLISTA) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(BALLISTA);
+				else
+				{
+					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT, 40);
+				}
 			}
 			doingAction = false;
 			break;
@@ -155,6 +176,10 @@ bool j1ActionsController::Update(float dt)
 			{
 				if (App->entitycontroller->CheckCost(FLYING_MACHINE) && ((Building*)*App->entitycontroller->selected_entities.begin())->ex_state != BEING_BUILT)
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(FLYING_MACHINE);
+				else
+				{
+					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT, 60);
+				}
 			}
 			doingAction = false;
 			break;

@@ -101,8 +101,16 @@ bool Hero::Update(float dt)
 
 			if (!skill_three->going)
 			{
-				if(type == HERO_1)
+				iPoint tmp;
+				App->input->GetMousePosition(tmp.x, tmp.y);
+				tmp = App->render->ScreenToWorld(tmp.x, tmp.y);
+				fPoint tmp2(tmp.x, tmp.y);
+
+				if (type == HERO_1)
+				{
+					App->particle->AddProgressiveParticle(PFLAMETHROWER, position, tmp2, 2);
 					App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
+				}
 				else if(type==HERO_2)
 					App->audio->PlayFx(SFX_HONOR_OF_THE_PURE);
 			}

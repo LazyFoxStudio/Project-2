@@ -144,7 +144,7 @@ bool Attack::OnUpdate(float dt)
 				if(App->render->CullingCam(unit->position))
 					App->entitycontroller->HandleAttackSFX(unit->type, 30);
 
-				App->entitycontroller->HandleParticles(unit->type, unit->position, enemy->position);
+				App->entitycontroller->HandleParticles(unit->type, unit->position, { enemy->position.x + (enemy->collider.w / 2), enemy->position.y + (enemy->collider.h / 2) });
 
 				if (unit->HasAoEDamage())
 					AoE_Damage(enemy);
@@ -212,14 +212,14 @@ bool MultiTargetAttack::OnUpdate(float dt)
 					if (i == 0)
 					{
 						AoE_Damage(enemies[i]);
-						App->entitycontroller->HandleParticles(unit->type, unit->position,  enemies[i]->position);
+						App->entitycontroller->HandleParticles(unit->type, unit->position, { enemies[i]->position.x + (enemies[i]->collider.w / 2), enemies[i]->position.y + (enemies[i]->collider.h / 2) });
 						unit->lookAt(enemies[i]->position - unit->position);
 						unit->mov_module = 0;
 					}
 					else
 					{
 						enemies[i]->current_HP -= dealDamage(unit, enemies[i]); //dmg
-						App->entitycontroller->HandleParticles(ARCHER, unit->position, enemies[i]->position);
+						App->entitycontroller->HandleParticles(ARCHER, unit->position, { enemies[i]->position.x + (enemies[i]->collider.w / 2), enemies[i]->position.y + (enemies[i]->collider.h / 2) });
 
 						if (enemies[i]->current_HP < 0) enemies[i]->Destroy();
 						else					   callRetaliation(enemies[i], unit->squad->UID);
