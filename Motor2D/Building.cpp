@@ -116,13 +116,12 @@ bool Building::Update(float dt)
 
 				if (TH_center.DistanceTo(iPoint(hero->position.x, hero->position.y)) < 250 && hero->current_HP < hero->max_HP)
 				{
-					if (healingParticleTimer.ReadSec() > 1)
+					if (healingParticleTimer.ReadSec() > 5)
 					{
 						App->particle->AddParticle(PHEALINGHERO, hero->position, false);
 						App->audio->PlayFx(SFX_MISCELLANEOUS_THHEAL, 50);
 						healingParticleTimer.Restart();
-						hero->current_HP++;
-
+						hero->current_HP += 10;
 					}
 				}
 			}

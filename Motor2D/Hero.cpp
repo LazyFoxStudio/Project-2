@@ -51,17 +51,13 @@ bool Hero::Update(float dt)
 		{
 			skill_one->Activate();
 			if (!skill_one->going)
-			{
-				iPoint tmp;
-				App->input->GetMousePosition(tmp.x,tmp.y);
-				fPoint tmp2(tmp.x, tmp.y);
-				
+			{			
 				if( type == HERO_1)
 					App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
 				else if(type == HERO_2)
 					App->audio->PlayFx(SFX_CONSECRATION);
 
-				App->particle->AddParticle(PICICLE_CRASH, tmp2);
+				App->particle->AddParticle(PICICLE_CRASH, { (float)skill_two->last_cast.x, (float)(skill_two->last_cast.y) });
 			}
 			App->gui->cooldownsDisplay->skillUsed(1);
 		}
@@ -73,18 +69,11 @@ bool Hero::Update(float dt)
 		{
 			skill_two->Activate();
 			if (!skill_two->going)
-			{
-				iPoint tmp;
-				App->input->GetMousePosition(tmp.x, tmp.y);
-				//tmp = App->map->WorldToMap(tmp.x, tmp.y);
-				//tmp = App->map->MapToWorld(tmp.x, tmp.y);
-				fPoint tmp2(tmp.x, tmp.y);
-				
-				
+			{		
 				if (type == HERO_1)
 				{
 					App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
-					App->particle->AddParticle(POVERFLOW, { tmp2.x, tmp2.y - 30 });
+					App->particle->AddParticle(POVERFLOW, { (float)skill_two->last_cast.x, (float)(skill_two->last_cast.y - 30) });
 				}
 				else if (type == HERO_2)
 					App->audio->PlayFx(SFX_CIRCLE_OF_LIGHT);
@@ -101,14 +90,9 @@ bool Hero::Update(float dt)
 
 			if (!skill_three->going)
 			{
-				iPoint tmp;
-				App->input->GetMousePosition(tmp.x, tmp.y);
-				tmp = App->render->ScreenToWorld(tmp.x, tmp.y);
-				fPoint tmp2(tmp.x, tmp.y);
-
 				if (type == HERO_1)
 				{
-					App->particle->AddProgressiveParticle(PFLAMETHROWER, position, tmp2, 2,10);
+					App->particle->AddProgressiveParticle(PFLAMETHROWER, position, { (float)skill_three->last_cast.x, (float)(skill_three->last_cast.y) }, 2.5f, 10);
 					App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
 				}
 				else if(type==HERO_2)
