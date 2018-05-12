@@ -527,7 +527,7 @@
                 <movementSpeed value="0.7"/>
                 <range value="40"/>
                 <lineOfSight value="200"/>
-                <goldCost value="0"/>
+                <goldCost value="200"/>
                 <woodCost value="200"/>
                 <workerCost value="4"/>
                 <trainingTime value="10"/>
@@ -3422,6 +3422,7 @@
           <action id="1"/>
         </Actions>
       </Unit>
+  
     </Units>
   
   <Buildings>
@@ -4033,7 +4034,7 @@
       <OnMouse x="1373" y="939" w="66" h="66"/>
       <OnClick x="1441" y="939" w="66" h="66"/>
       <popUp>
-        <Info text="Increase the attack of the melee troops" cost="true" type="10"/>
+        <Info text="Increase the attack of the melee troops" cost="true" type="1" upgrade="true"/>
       </popUp>
       <hotkey key="Q" font_id="3"/>
     </meleeAttackUpgrade>
@@ -4043,7 +4044,7 @@
       <OnMouse x="1373" y="939" w="66" h="66"/>
       <OnClick x="1441" y="939" w="66" h="66"/>
       <popUp>
-        <Info text="Increase the defense of the melee troops" cost="true" type="11"/>
+        <Info text="Increase the defense of the melee troops" cost="true" type="2" upgrade="true"/>
       </popUp>
       <hotkey key="E" font_id="3"/>
     </meleeArmorUpgrade>
@@ -4053,7 +4054,7 @@
       <OnMouse x="1373" y="939" w="66" h="66"/>
       <OnClick x="1441" y="939" w="66" h="66"/>
       <popUp>
-        <Info text="Increase the attack of ranged troops" cost="true" type="12"/>
+        <Info text="Increase the attack of ranged troops" cost="true" type="3" upgrade="true"/>
       </popUp>
       <hotkey key="A" font_id="3"/>
     </rangedAttackUpgrade>
@@ -4063,7 +4064,7 @@
       <OnMouse x="1373" y="939" w="66" h="66"/>
       <OnClick x="1441" y="939" w="66" h="66"/>
       <popUp>
-        <Info text="Increase the defense of ranged troops" cost="true" type="13"/>
+        <Info text="Increase the defense of ranged troops" cost="true" type="4" upgrade="true"/>
       </popUp>
       <hotkey key="D" font_id="3"/>
     </rangedArmorUpgrade>
@@ -4073,7 +4074,7 @@
       <OnMouse x="1373" y="939" w="66" h="66"/>
       <OnClick x="1441" y="939" w="66" h="66"/>
       <popUp>
-        <Info text="Increase the attack of the flying troops" cost="true" type="14"/>
+        <Info text="Increase the attack of the flying troops" cost="true" type="5" upgrade="true"/>
       </popUp>
       <hotkey key="Z" font_id="3"/>
     </flyingAttackUpgrade>
@@ -4083,7 +4084,7 @@
       <OnMouse x="1373" y="939" w="66" h="66"/>
       <OnClick x="1441" y="939" w="66" h="66"/>
       <popUp>
-        <Info text="Increase the defense of the melee troops" cost="true" type="15"/>
+        <Info text="Increase the defense of the melee troops" cost="true" type="6" upgrade="true"/>
       </popUp>
       <hotkey key="C" font_id="3"/>
     </flyingArmorUpgrade>

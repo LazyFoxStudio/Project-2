@@ -8,6 +8,10 @@ struct _TTF_Font;
 class Image;
 class Text;
 
+
+
+
+
 struct resource_cost
 {
 	resource_cost(SDL_Texture* texture, int cost, SDL_Rect icon);
@@ -21,22 +25,24 @@ class CostDisplay : public UI_element
 {
 public:
 
-	CostDisplay(SDL_Texture* texture, std::string entityname, int wood_cost = 0, int gold_cost = 0, int oil_cost = 0, int workers_cost = 0);
+	CostDisplay(SDL_Texture* texture, std::string entityname, int wood_cost = 0, int gold_cost = 0, int oil_cost = 0, int workers_cost = 0, uint _up_type = 0, uint _upgradelvl = 3);
 
 	~CostDisplay();
 
 	void BlitElement();
+	bool UpgradeBlitPermission();
 
 public:
 	//SDL_Texture* icon_atlas = nullptr;
 
 	Text* text_name = nullptr;
-
+	uint upgradelvl = 3;
 	resource_cost* wood = nullptr;
 	resource_cost* gold = nullptr;
 	resource_cost* oil = nullptr;
 	resource_cost* workers = nullptr;
 	uint resources_num = 0;
+	uint up_type = 0;
 };
 
 
