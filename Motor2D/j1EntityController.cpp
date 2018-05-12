@@ -38,7 +38,7 @@ bool j1EntityController::Start()
 	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
 	
 	lose_game = App->console->AddFunction("lose_game",this,0,0);
-	reset_hero_cd = App->console->AddFunction("reset_hero_cd", this, 0, 0);;
+	reset_hero_cd = App->console->AddFunction("reset_hero_cd", this, 0, 0);
 	complete_buildings = App->console->AddFunction("creation_speed", this, 1, 2, " entity , time_to_create");
 	kill_selected = App->console->AddFunction("kill_selected",this,0,0);
 	change_stat = App->console->AddFunction("change_stat", this, 3, 3, " entity , stat , value");
@@ -1170,6 +1170,7 @@ void j1EntityController::commandControl()
 
 					MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
 					new_order->flow_field = shared_flowfield;
+					shared_flowfield->used_by++;
 					(*it)->commands.push_back(new_order);
 				}
 			}
@@ -1196,6 +1197,7 @@ void j1EntityController::commandControl()
 
 					MoveToSquad* new_order = new AttackingMoveToSquad((*it)->getCommander(), map_p);
 					new_order->flow_field = shared_flowfield;
+					shared_flowfield->used_by++;
 					(*it)->commands.push_back(new_order);
 				}
 			}
@@ -1208,16 +1210,17 @@ void j1EntityController::selectionControl()
 {
 	int mouseX, mouseY;
 	App->input->GetMousePosition(mouseX, mouseY);
+	iPoint selection_to_world = App->render->ScreenToWorld(mouseX, mouseY);
 
 	switch (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
 	{
 	case KEY_DOWN:
-		selection_rect.x = mouseX; selection_rect.y = mouseY;
+		selection_rect.x = selection_to_world.x; selection_rect.y = selection_to_world.y;
 		break;
 	case KEY_REPEAT:
-		selection_rect.w = mouseX - selection_rect.x;
-		selection_rect.h = mouseY - selection_rect.y;
-		App->render->DrawQuad(selection_rect, White, false, false);
+		selection_rect.w = selection_to_world.x - selection_rect.x;
+		selection_rect.h = selection_to_world.y - selection_rect.y;
+		App->render->DrawQuad(selection_rect, White, false);
 		break;
 	case KEY_UP:
 
@@ -1227,9 +1230,6 @@ void j1EntityController::selectionControl()
 		selected_squads.clear();
 		bool buildings = false;
 		bool units = false;
-
-		iPoint selection_to_world = App->render->ScreenToWorld(selection_rect.x, selection_rect.y);
-		selection_rect.x = selection_to_world.x; selection_rect.y = selection_to_world.y;
 
 		if (selection_rect.w == 0 && selection_rect.h == 0) selection_rect.w = selection_rect.h = 1;  // for single clicks
 		else {
@@ -1476,28 +1476,148 @@ void j1EntityController::UpgradeUnits(UpgradeType type)
 	case MELEE_ATTACK_UPGRADE:
 		DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		m_dmg_lvl++;
 		break;
 	case MELEE_DEFENSE_UPGRADE:
 		DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[KNIGHT]->defense += DEFENSE_UPGRADE_GROWTH;
+		m_armor_lvl++;
 		break;
 	case RANGED_ATTACK_UPGRADE:
 		DataBase[ARCHER]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[BALLISTA]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		r_dmg_lvl++;
 		break;
 	case RANGED_DEFENSE_UPGRADE:
 		DataBase[ARCHER]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[BALLISTA]->defense += DEFENSE_UPGRADE_GROWTH;
+		r_armor_lvl++;
 		break;
 	case FLYING_ATTACK_UPGRADE:
 		DataBase[FLYING_MACHINE]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[GRYPHON]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		f_dmg_lvl++;
 		break;
 	case FLYING_DEFENSE_UPGRADE:
 		DataBase[FLYING_MACHINE]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[GRYPHON]->defense += DEFENSE_UPGRADE_GROWTH;
+		f_armor_lvl++;
 		break;
 	}
+}
+
+void j1EntityController::UpgradeExistingUnits(Type type1, Type type2, UpgradeType up_type)
+{
+	//I know it's ugly af, sorry
+	switch (up_type)
+	{
+	case MELEE_ATTACK_UPGRADE:
+		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			if ((*it)->type == type1 || (*it)->type == type2)
+			{
+				(*it)->piercing_atk += ATTACK_UPGRADE_GROWTH;
+			}
+		}
+		break;
+	case MELEE_DEFENSE_UPGRADE:
+		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			if ((*it)->type == type1 || (*it)->type == type2)
+			{
+				(*it)->defense += DEFENSE_UPGRADE_GROWTH;
+			}
+		}
+		break;
+	case RANGED_ATTACK_UPGRADE:
+		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			if ((*it)->type == type1 || (*it)->type == type2)
+			{
+				(*it)->piercing_atk += ATTACK_UPGRADE_GROWTH;
+			}
+		}
+		break;
+	case RANGED_DEFENSE_UPGRADE:
+		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			if ((*it)->type == type1 || (*it)->type == type2)
+			{
+				(*it)->defense += DEFENSE_UPGRADE_GROWTH;
+			}
+		}
+		break;
+	case FLYING_ATTACK_UPGRADE:
+		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			if ((*it)->type == type1 || (*it)->type == type2)
+			{
+				(*it)->piercing_atk += ATTACK_UPGRADE_GROWTH;
+			}
+		}
+		break;
+	case FLYING_DEFENSE_UPGRADE:
+		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			if ((*it)->type == type1 || (*it)->type == type2)
+			{
+				(*it)->defense += DEFENSE_UPGRADE_GROWTH;
+			}
+		}
+		break;
+	}
+
+}
+
+Cost j1EntityController::getUpgradeCost(UpgradeType type, uint up_lvl)
+{
+	Cost cost;
+	cost.oil_cost = 0;
+	cost.worker_cost = 0;
+
+	switch (type)
+	{
+	case MELEE_ATTACK_UPGRADE:
+	case MELEE_DEFENSE_UPGRADE:
+		if (up_lvl == 0)
+		{
+			cost.wood_cost = MELEE_1_UPGRADE_COST;
+			cost.gold_cost = MELEE_1_UPGRADE_COST;
+		}
+		else if (up_lvl == 1)
+		{
+			cost.wood_cost = MELEE_2_UPGRADE_COST;
+			cost.gold_cost = MELEE_2_UPGRADE_COST;
+		}
+		break;
+	case RANGED_ATTACK_UPGRADE:
+	case RANGED_DEFENSE_UPGRADE:
+		if (up_lvl == 0)
+		{
+			cost.wood_cost = RANGED_1_UPGRADE_COST;
+			cost.gold_cost = RANGED_1_UPGRADE_COST;
+		}
+		else if (up_lvl == 1)
+		{
+			cost.wood_cost = RANGED_2_UPGRADE_COST;
+			cost.gold_cost = RANGED_2_UPGRADE_COST;
+		}
+		break;
+	case FLYING_ATTACK_UPGRADE:
+	case FLYING_DEFENSE_UPGRADE:
+		if (up_lvl == 0)
+		{
+			cost.wood_cost = FLYING_1_UPGRADE_COST;
+			cost.gold_cost = FLYING_1_UPGRADE_COST;
+		}
+		else if (up_lvl == 1)
+		{
+			cost.wood_cost = FLYING_2_UPGRADE_COST;
+			cost.gold_cost = FLYING_2_UPGRADE_COST;
+		}
+		break;
+	}
+	return cost;
 }
 
 void j1EntityController::RefundResources(Type type)
@@ -1602,10 +1722,6 @@ void j1EntityController::SubstractRandomWorkers(int num)
 	
 }
 
-void j1EntityController::DeleteWorkers()
-{
-
-}
 
 void j1EntityController::CreateWorkers(Building * target, int num)
 {

@@ -51,6 +51,7 @@ public:
 	void Start_game();
 	void InitialWorkers(Building* town_hall);
 	void GetTotalInactiveWorkers();
+	void DeleteWorkers();
 
 	void loadGameDB(pugi::xml_node& data);
 

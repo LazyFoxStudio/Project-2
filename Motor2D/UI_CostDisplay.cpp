@@ -5,8 +5,9 @@
 #include <string>
 #include "j1Scene.h"
 #include "j1Render.h"
+#include "j1EntityController.h"
 
-CostDisplay::CostDisplay(SDL_Texture* texture, std::string entityname, int wood_cost, int gold_cost, int oil_cost, int workers_cost): UI_element(0,0,COSTDISPLAY, {0,0,0,0}, nullptr, texture)
+CostDisplay::CostDisplay(SDL_Texture* texture, std::string entityname, int wood_cost, int gold_cost, int oil_cost, int workers_cost,uint _up_type, uint _upgradelvl): UI_element(0,0,COSTDISPLAY, {0,0,0,0}, nullptr, texture)
 {
 	text_name = new Text(entityname.c_str(), 0, 0, (*App->font->fonts.begin()), { 255,255,255,255 }, callback);
 
@@ -15,6 +16,8 @@ CostDisplay::CostDisplay(SDL_Texture* texture, std::string entityname, int wood_
 	SDL_Rect oil_icon = { 0,0,0,0 };
 	SDL_Rect workers_icon = { 796,341,37,36 };
 
+	upgradelvl = _upgradelvl;
+	up_type = _up_type;
 	if (wood_cost > 0)
 	{
 		wood = new resource_cost(texture, wood_cost, wood_icon);
@@ -114,9 +117,62 @@ void CostDisplay::BlitElement()
 		workers->text_cost->localPosition.y = offsetY;
 		offsetY += 36;
 	}
+	if (upgradelvl == 3)
+	{
+		UI_element::BlitElement();
+	}
+	else if (UpgradeBlitPermission())
+	{
+		UI_element::BlitElement();
+	}
+
 	
-	UI_element::BlitElement();
-};
+}
+bool CostDisplay::UpgradeBlitPermission()
+{
+	bool ret = false;
+	switch (up_type)
+	{
+	case MELEE_ATTACK_UPGRADE:
+		if (upgradelvl == App->entitycontroller->m_dmg_lvl)
+		{
+			ret = true;
+		}
+		break;
+	case MELEE_DEFENSE_UPGRADE:
+		if (upgradelvl == App->entitycontroller->m_armor_lvl)
+		{
+			ret = true;
+		}
+		break;
+	case RANGED_ATTACK_UPGRADE:
+		if (upgradelvl == App->entitycontroller->r_dmg_lvl)
+		{
+			ret = true;
+		}
+		break;
+	case RANGED_DEFENSE_UPGRADE:
+		if (upgradelvl == App->entitycontroller->r_armor_lvl)
+		{
+			ret = true;
+		}
+		break;
+	case FLYING_ATTACK_UPGRADE:
+		if (upgradelvl == App->entitycontroller->f_dmg_lvl)
+		{
+			ret = true;
+		}
+		break;
+	case FLYING_DEFENSE_UPGRADE:
+		if (upgradelvl == App->entitycontroller->f_armor_lvl)
+		{
+			ret = true;
+		}
+		break;
+	}
+	return ret;
+}
+
 
 resource_cost::resource_cost(SDL_Texture * texture, int cost, SDL_Rect icon)
 {

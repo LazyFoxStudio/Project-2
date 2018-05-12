@@ -245,7 +245,6 @@ void j1Scene::Start_game()
 	App->entitycontroller->buildingArea.x = town_hall_pos.x - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_width / 2);
 	App->entitycontroller->buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_height / 2);
 
-	App->entitycontroller->AddSquad(FOOTMAN, { 2200, 2100 });
 
 	//RESTARTING WAVES---------------------------------------------------------
 	App->gui->Chronos->counter.Restart();
@@ -263,6 +262,7 @@ void j1Scene::Start_game()
 	wood = i_wood;
 	gold = i_gold;
 	//inactive_workers = workers = INIT_WORKERS;
+	DeleteWorkers();
 	InitialWorkers(App->entitycontroller->town_hall);
 	town_hall_lvl = INIT_TOWNHALL_LVL;
 
@@ -322,7 +322,7 @@ void j1Scene::Start_game()
 
 void j1Scene::InitialWorkers(Building* town_hall)
 {
-	App->entitycontroller->CreateWorkers(town_hall, INIT_WORKERS);
+	App->entitycontroller->CreateWorkers(town_hall, i_workers);
 }
 
 void j1Scene::GetTotalInactiveWorkers()
@@ -377,4 +377,12 @@ bool j1Scene::Console_Interaction(std::string& function, std::vector<int>& argum
 	}
 
 	return true;
+}
+
+void j1Scene::DeleteWorkers()
+{
+	for (std::list<worker*>::iterator it = workers.begin(); it != workers.end(); it++)
+	{
+		(*it)->to_destroy = true;
+	}
 }

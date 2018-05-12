@@ -231,9 +231,6 @@
     <ClInclude Include="j1SceneSwitch.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Unit.h">
-      <Filter>Desenvolupament  ========\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClInclude>
@@ -345,6 +342,9 @@
     </ClInclude>
     <ClInclude Include="UI_Slider.h">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="Unit.h">
+      <Filter>Desenvolupament  ========\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
