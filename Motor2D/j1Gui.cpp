@@ -199,7 +199,8 @@ bool j1Gui::PostUpdate()
 		if (draggingElement->parent != nullptr && draggingElement->parent->element_type == SLIDER)
 		{
 			Slider* slider = (Slider*)draggingElement->parent;
-			slider->setProgress((slider->getButton()->localPosition.x + slider->getButton()->section.w / (2 / App->gui->w_stretch)) / ((slider->bar_length) * App->gui->w_stretch));
+			Button* button = slider->getButton();
+			slider->setProgress(((float)button->localPosition.x + (float)(button->section.w / 2)) / (float)(slider->bar_length));
 		}
 		draggingElement->state = CLICKED;
 	}
@@ -824,7 +825,7 @@ Slider* j1Gui::createSlider(pugi::xml_node node, j1Module* callback, bool saveIn
 	if (full.w > full.h)
 	{
 		button->setDragable(true, false);
-		button->setLimits(empty.w / (2 / w_stretch), empty.w / (2 / w_stretch), -1, -1);
+		button->setLimits(empty.w /2, empty.w /2, -1, -1);
 	}
 	else
 	{
@@ -833,7 +834,7 @@ Slider* j1Gui::createSlider(pugi::xml_node node, j1Module* callback, bool saveIn
 	}
 
 	ret->appendChild(button, true);
-	button->setOriginalPos(((empty.w * w_stretch) - 7 - button->section.w / (2 / w_stretch)) * 0.5f, y);
+	button->setOriginalPos((empty.w/2 + 1 - button->section.w/2), y);
 
 	ret->setDragable(true, true);
 
