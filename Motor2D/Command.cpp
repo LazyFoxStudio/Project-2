@@ -601,7 +601,7 @@ bool Attack::searchTarget()
 
 	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
 	{
-		if ((*it)->IsEnemy() == unit->IsEnemy())
+		if ((*it)->IsEnemy() == unit->IsEnemy() && (*it)->IsUnit())
 		{
 			Unit* ally = (Unit*)(*it);
 			if (ally->getCurrentCommand() == ATTACK || ally->getCurrentCommand() == ATTACKING_MOVETO)
