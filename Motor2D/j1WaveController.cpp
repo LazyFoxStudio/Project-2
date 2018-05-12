@@ -82,6 +82,7 @@ bool j1WaveController::Update(float dt)
 		current_wave += 1;
 		wave_timer.Start();
 		Generate_Wave();
+		App->SaveGame();
 	}
 
 	if (App->entitycontroller->debug)

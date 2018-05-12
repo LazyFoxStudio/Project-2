@@ -496,6 +496,7 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 
 	pugi::xml_node hero_node = units_node.append_child("Hero");
 	Hero* heroE = (Hero*)App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID);
+	hero_node.append_attribute("type") = heroE->type;
 	hero_node.append_attribute("hp") = heroE->current_HP;
 	hero_node.append_attribute("x") = heroE->position.x;
 	hero_node.append_attribute("y") = heroE->position.y;
@@ -559,7 +560,7 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 				unit_node.append_attribute("hp") = units_of_squad.data()[i]->current_HP;
 				unit_node.append_attribute("pos_x") = units_of_squad.data()[i]->position.x;
 				unit_node.append_attribute("pos_y") = units_of_squad.data()[i]->position.y;
-
+				unit_node.append_attribute("direction") = units_of_squad.data()[i]->dir;
 				//:^)
 				if (units_of_squad.data()[i]->effects.size() > 0)
 				{
@@ -592,6 +593,7 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 			building_node.append_attribute("pos_x") = (*it)->position.x;
 			building_node.append_attribute("pos_y") = (*it)->position.y;
 			building_node.append_attribute("type_enum") = (*it)->type;
+			building_node.append_attribute("workers") = ((Building*)(*it))->workers_inside.size();
 			switch ((*it)->type)
 			{
 			case BARRACKS:
@@ -631,7 +633,7 @@ bool j1EntityController::Load(pugi::xml_node& file)
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
-		if ((*it)->type != HERO_1 && (*it)->type != HERO_2 && (*it)->type != TOWN_HALL)
+		if (/*(*it)->type != HERO_1 && (*it)->type != HERO_2 &&*/ (*it)->type != TOWN_HALL)
 		{
 			if ((*it)->IsUnit())
 			{
@@ -639,11 +641,21 @@ bool j1EntityController::Load(pugi::xml_node& file)
 			}
 			App->gui->entityDeleted(*it);
 			DeleteEntity((*it)->UID);
+			entities.remove(*it);
 		}
 	}
 	pugi::xml_node units = file.child("Units");
 	pugi::xml_node squads_node;
 
+	//lets load the hero
+
+	int pos_x =units.child("Hero").attribute("x").as_int();
+	int pos_y = units.child("Hero").attribute("y").as_int();
+	Type her = (Type)units.child("Hero").attribute("type").as_int();
+	Hero* h = addHero({ pos_x,pos_y },her);
+	h->current_HP = units.child("Hero").attribute("hp").as_int();
+
+	//now all the others
 	for (squads_node = units.child("squad"); squads_node; squads_node = squads_node.next_sibling("squad"))
 	{
 		Type type = (Type)squads_node.attribute("type_enum").as_int();
@@ -658,6 +670,7 @@ bool j1EntityController::Load(pugi::xml_node& file)
 			units_of_squad.data()[i]->current_HP = node_units.attribute("hp").as_int();
 			units_of_squad.data()[i]->position.x = node_units.attribute("pos_x").as_int();
 			units_of_squad.data()[i]->position.y = node_units.attribute("pos_y").as_int();
+			units_of_squad.data()[i]->dir = (direction)node_units.attribute("direction").as_int();
 			//effects
 			//:^)
 			if (node_units.child("effect"))
@@ -693,6 +706,23 @@ bool j1EntityController::Load(pugi::xml_node& file)
 			}
 			node_units = node_units.next_sibling("unit");
 		}
+		//WARNING
+		//KILL ALL OTHER UNITS IN SQUAD
+		if (i <= units_of_squad.size() - 1)
+		{
+			int it = units_of_squad.size() - (i + 1)/*:^)*/;
+			for (int j = units_of_squad.size() - 1; j > it; --j)
+			{
+				//KILL IT
+				//DeleteEntity(units_of_squad.data()[j]->UID);
+				if (units_of_squad.data()[j]->IsUnit())
+				{
+					((Unit*)units_of_squad.data()[j])->commands.clear();
+				}
+				DeleteEntity(units_of_squad.data()[j]->UID);
+				App->gui->entityDeleted(units_of_squad.data()[j]);
+			}
+		}
 
 		//SET THE COMMANDS FOR ENEMIES
 		if (squad->isFlying())
@@ -709,19 +739,7 @@ bool j1EntityController::Load(pugi::xml_node& file)
 			squad->commands.push_back(new_atk_order);
 		}
 
-		//WARNING
-		//KILL ALL OTHER UNITS IN SQUAD
-		if (i <= units_of_squad.size()-1)
-		{
-			int it = units_of_squad.size() - (i + 1)/*:^)*/;
-			for (int j = units_of_squad.size() - 1; j > it; --j)
-			{
-				//KILL IT
-				//DeleteEntity(units_of_squad.data()[j]->UID);
-				entities_to_destroy.push_back(units_of_squad.data()[j]->UID);
-				App->gui->entityDeleted(units_of_squad.data()[j]);
-			}
-		}
+
 	}
 	//LOAD BUILDINGS
 	pugi::xml_node buildings = file.child("Buildings");
@@ -738,6 +756,11 @@ bool j1EntityController::Load(pugi::xml_node& file)
 		Type t = (Type)building_node.attribute("type_enum").as_int();
 		Building* b = addBuilding({pos_x,pos_y},t);
 		b->current_HP = hp;
+		int workers= building_node.attribute("workers").as_int();
+		//for (int i=0;i< workers-1;++i)
+		//{
+		//
+		//}
 	}
 	return true;
 }
