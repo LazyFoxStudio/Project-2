@@ -354,6 +354,17 @@ bool j1ActionsController::Update(float dt)
 			App->input->readHotkey(8);
 			doingAction = false;
 			break;
+		case TUTORIAL:
+			if (App->tutorial->pausable == true)
+			{
+				App->tutorial->pausable = false;
+			}
+			else if (App->tutorial->pausable == false)
+			{
+				App->tutorial->pausable = true;
+			}
+			doingAction = false;
+			break;
 		}
 		
 	}

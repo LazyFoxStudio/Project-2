@@ -60,7 +60,9 @@ enum actionType
 	CHANGE_KEY_6,
 	CHANGE_KEY_7,
 	CHANGE_KEY_8,
-	CHANGE_KEY_9
+	CHANGE_KEY_9,
+
+	TUTORIAL
 };
 
 class j1ActionsController : public j1Module
