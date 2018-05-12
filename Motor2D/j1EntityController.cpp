@@ -390,8 +390,8 @@ void j1EntityController::HandleParticles(Type type, fPoint pos, fPoint obj, floa
 	case AXE_THROWER:
 		App->particle->AddProjectile(particleType::PTOMAHAWK, pos, obj, speed);
 		break;
-	case Type::DEATH_KNIGHT:
-		App->particle->AddProjectile(particleType::PDEATHKNIGHT, pos, obj, speed);
+	case Type::GRYPHON:
+		App->particle->AddProjectile(particleType::PGRIFFON, pos, obj, speed);
 		break;
 	case Type::DRAGON:
 		//App->particle->AddProjectile(particleType::PDRAGON, pos, obj, speed);

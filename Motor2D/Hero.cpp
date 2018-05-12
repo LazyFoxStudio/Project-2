@@ -57,7 +57,11 @@ bool Hero::Update(float dt)
 				else if(type == HERO_2)
 					App->audio->PlayFx(SFX_CONSECRATION);
 
-				App->particle->AddParticle(PICICLE_CRASH, { (float)skill_two->last_cast.x, (float)(skill_two->last_cast.y) });
+				if(skill_one->last_cast.IsZero())
+					App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->cast_pos.x, (float)(skill_one->cast_pos.y) }, false);
+				else
+					App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->last_cast.x, (float)(skill_one->last_cast.y) }, false);
+
 			}
 			App->gui->cooldownsDisplay->skillUsed(1);
 		}
@@ -73,7 +77,10 @@ bool Hero::Update(float dt)
 				if (type == HERO_1)
 				{
 					App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
-					App->particle->AddParticle(POVERFLOW, { (float)skill_two->last_cast.x, (float)(skill_two->last_cast.y - 30) });
+					if (skill_two->last_cast.IsZero())
+						App->particle->AddParticle(POVERFLOW, { (float)skill_two->cast_pos.x, (float)(skill_two->cast_pos.y - 30) }, false);
+					else
+						App->particle->AddParticle(POVERFLOW, { (float)skill_two->last_cast.x, (float)(skill_two->last_cast.y - 30) }, false);
 				}
 				else if (type == HERO_2)
 					App->audio->PlayFx(SFX_CIRCLE_OF_LIGHT);
@@ -92,7 +99,10 @@ bool Hero::Update(float dt)
 			{
 				if (type == HERO_1)
 				{
-					App->particle->AddProgressiveParticle(PFLAMETHROWER, position, { (float)skill_three->last_cast.x, (float)(skill_three->last_cast.y) }, 2.5f, 10);
+					if (skill_three->last_cast.IsZero())
+						App->particle->AddProgressiveParticle(PFLAMETHROWER, position, { (float)skill_three->cast_pos.x, (float)(skill_three->cast_pos.y) }, 2.5f, 10, false);
+					else
+						App->particle->AddProgressiveParticle(PFLAMETHROWER, position, { (float)skill_three->last_cast.x, (float)(skill_three->last_cast.y) }, 2.5f, 10, false);
 					App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
 				}
 				else if(type==HERO_2)
