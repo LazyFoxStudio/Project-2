@@ -318,6 +318,7 @@ void j1Scene::Start_game()
 
 	toRestart = false;
 
+	App->entitycontroller->AddSquad(FOOTMAN, { 2000,2200 });
 }
 
 void j1Scene::InitialWorkers(Building* town_hall)

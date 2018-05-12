@@ -200,6 +200,38 @@
 			<pushback x="800" y="640" w="160" h="160"/>
 		</anim>
 	</template>
+
+<!-- Holy Buff -->
+	<template>
+		<width value="160"/>
+		<height value="160"/>
+		<anim>
+			<loop value="false"/>
+			<speed value="10"/>
+			<pushback x="0" y="640" w="160" h="160"/>
+			<pushback x="160" y="800" w="160" h="160"/>
+			<pushback x="320" y="800" w="160" h="160"/>
+			<pushback x="480" y="800" w="160" h="160"/>
+			<pushback x="640" y="800" w="160" h="160"/>
+			<pushback x="800" y="800" w="160" h="160"/>
+		</anim>
+	</template>
+
+<!-- Halo -->
+	<template>
+		<width value="16"/>
+		<height value="7"/>
+		<anim>
+			<loop value="false"/>
+			<speed value="4"/>
+			<pushback x="0" y="295" w="53" h="27"/>
+			<pushback x="53" y="295" w="53" h="27"/>
+			<pushback x="106" y="295" w="53" h="27"/>
+			<pushback x="159" y="295" w="53" h="27"/>
+			<pushback x="212" y="295" w="53" h="27"/>
+			<pushback x="265" y="295" w="53" h="27"/>
+		</anim>
+	</template>
    </particle>
 </node>
 
