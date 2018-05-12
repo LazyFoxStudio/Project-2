@@ -40,24 +40,30 @@ bool j1PathFinding::PostUpdate()
 					if ((*it2)->IsUnit())
 					{
 						Unit* unit = (Unit*)(*it2);
-						if (unit->getCurrentCommand() == MOVETO)
-							if (((MoveTo*)unit->commands.front())->flow_field == (*it)->flow_field)
-								to_erase = false;
+						for (std::deque<Command*>::iterator it3 = unit->commands.begin(); it3 != unit->commands.end(); it3++)
+						{
+							if ((*it3)->type == MOVETO)
+								if (((MoveTo*)unit->commands.front())->flow_field == (*it)->flow_field)
+									to_erase = false;
+						}
 					}
 				}
 				if (to_erase)
 				{
 					for (std::list<Squad*>::iterator it2 = App->entitycontroller->squads.begin(); it2 != App->entitycontroller->squads.end(); it2++)
 					{
-						if ((*it2)->getCurrentCommand() == MOVETOSQUAD)
+						for (std::deque<Command*>::iterator it3 = (*it2)->commands.begin(); it3 != (*it2)->commands.end(); it3++)
 						{
-							if (((MoveToSquad*)(*it2)->commands.front())->flow_field == (*it)->flow_field)
-								to_erase = false;
-						}
-						else if ((*it2)->getCurrentCommand() == ATTACKING_MOVETO_SQUAD)
-						{
-							if (((AttackingMoveToSquad*)(*it2)->commands.front())->flow_field == (*it)->flow_field)
-								to_erase = false;
+							if ((*it3)->type == MOVETOSQUAD)
+							{
+								if (((MoveToSquad*)(*it2)->commands.front())->flow_field == (*it)->flow_field)
+									to_erase = false;
+							}
+							else if ((*it3)->type == ATTACKING_MOVETO_SQUAD)
+							{
+								if (((AttackingMoveToSquad*)(*it2)->commands.front())->flow_field == (*it)->flow_field)
+									to_erase = false;
+							}
 						}
 					}
 				}
