@@ -14,27 +14,30 @@
 	<scene />
 	<entitycontroller>
 		<Units>
+			<Hero hp="250" x="1950" y="2100" />
 			<squad type_enum="12" type="FOOTMAN">
 				<unit hp="80" pos_x="2144" pos_y="2048" />
 				<unit hp="80" pos_x="2144" pos_y="2080" />
 				<unit hp="80" pos_x="2144" pos_y="2112" />
 				<unit hp="80" pos_x="2176" pos_y="2048" />
-				<unit hp="80" pos_x="2176" pos_y="2112" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2159.76465" pos_y="3364.60596" />
+				<unit hp="70" pos_x="2124.1228" pos_y="3398.42212" />
+				<unit hp="70" pos_x="2156.01953" pos_y="3427.12427" />
+				<unit hp="70" pos_x="2194.19019" pos_y="3394.19775" />
+				<unit hp="70" pos_x="2190.16797" pos_y="3427.37183" />
 			</squad>
 			<squad type_enum="19" type="AXE_THROWER">
-				<unit hp="40" pos_x="2159.99951" pos_y="2840.63013" />
-				<unit hp="40" pos_x="2124.79834" pos_y="2874.34106" />
-				<unit hp="40" pos_x="2159.99683" pos_y="2903.11523" />
-				<unit hp="40" pos_x="2195.19873" pos_y="2869.70703" />
-			</squad>
-			<squad type_enum="19" type="AXE_THROWER">
-				<unit hp="40" pos_x="2127.99951" pos_y="871.673706" />
-				<unit hp="40" pos_x="2163.19849" pos_y="840.614441" />
-				<unit hp="40" pos_x="2127.99854" pos_y="841.832703" />
-				<unit hp="40" pos_x="2092.79834" pos_y="836.81366" />
+				<unit hp="40" pos_x="2223.99243" pos_y="3270.58252" />
+				<unit hp="40" pos_x="2188.75684" pos_y="3309.8938" />
+				<unit hp="40" pos_x="2223.47754" pos_y="3333.19434" />
+				<unit hp="40" pos_x="2134.13916" pos_y="3387.50244" />
 			</squad>
 		</Units>
-		<Buildings />
+		<Buildings>
+			<town_hall hp="300" />
+		</Buildings>
 	</entitycontroller>
 	<gui />
 	<introscene />
@@ -44,11 +47,11 @@
 	<wavecontroller>
 		<wave value="1" />
 		<points value="3" />
-		<wave_timer value="5.20839071" />
+		<wave_timer value="1.79488873" />
 		<next_wave>
-			<enemies type="AXE_THROWER" type_enum="19" x="2177" y="3549" />
-			<enemies type="GRUNT" type_enum="18" x="410" y="1982" />
-			<enemies type="GRUNT" type_enum="18" x="2177" y="3549" />
+			<enemies type="AXE_THROWER" type_enum="19" x="3605" y="1844" />
+			<enemies type="GRUNT" type_enum="18" x="2154" y="256" />
+			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
 		</next_wave>
 	</wavecontroller>
 	<renderer>

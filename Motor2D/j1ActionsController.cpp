@@ -286,6 +286,12 @@ bool j1ActionsController::Update(float dt)
 			App->resumeGame();
 			doingAction = false;
 			break;
+		case CHANGE_MUSIC:
+			App->audio->ModifyMusicVolume(App->gui->getSliderProgress(CHANGE_MUSIC));
+			break;
+		case CHANGE_FX:
+			App->audio->ModifySFXVolume(App->gui->getSliderProgress(CHANGE_FX));
+			break;
 
 		case CHANGE_KEY_1:
 			App->input->readHotkey(0);

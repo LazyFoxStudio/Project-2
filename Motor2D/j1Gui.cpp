@@ -196,6 +196,11 @@ bool j1Gui::PostUpdate()
 	if (draggingElement != nullptr && draggingElement->moving)
 	{
 		draggingElement->Mouse_Drag();
+		if (draggingElement->parent != nullptr && draggingElement->parent->element_type == SLIDER)
+		{
+			Slider* slider = (Slider*)draggingElement->parent;
+			slider->setProgress((slider->getButton()->localPosition.x + slider->getButton()->section.w / (2 / App->gui->w_stretch)) / ((slider->bar_length) * App->gui->w_stretch));
+		}
 		draggingElement->state = CLICKED;
 	}
 	for (std::list<menu*>::iterator it_m = App->uiscene->menus.begin(); it_m != App->uiscene->menus.end(); it_m++)
@@ -488,6 +493,8 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 			element = createIngameMenu(tmp, callback);
 		else if (type == "nextwavewindow")
 			element = createNextWaveWindow(tmp, callback);
+		else if (type == "slider")
+			element = createSlider(tmp, callback);
 
 		//minimap_
 		else if (type == "minimap")
@@ -796,10 +803,23 @@ TroopCreationQueue* j1Gui::createTroopCreationQueue(Building* building)
 	return ret;
 }
 
-Slider* j1Gui::createSlider(int x, int y, SDL_Rect empty, SDL_Rect full, Button* button, float default_progress, j1Module* callback)
+Slider* j1Gui::createSlider(pugi::xml_node node, j1Module* callback, bool saveIntoGUI)
 {
+	SDL_Texture* texture = nullptr;
+	if (node.attribute("path"))
+		texture = App->tex->Load(node.attribute("path").as_string());
+	else
+		texture = atlas;
 
-	Slider* ret = new Slider(x, y, atlas, empty, full, default_progress, callback);
+	int x = node.child("position").attribute("x").as_int();
+	int y = node.child("position").attribute("y").as_int();
+	SDL_Rect empty = { node.child("empty").attribute("x").as_int(), node.child("empty").attribute("y").as_int(), node.child("empty").attribute("w").as_int(), node.child("empty").attribute("h").as_int() };
+	SDL_Rect full = { node.child("full").attribute("x").as_int(), node.child("full").attribute("y").as_int(), node.child("full").attribute("w").as_int(), node.child("full").attribute("h").as_int() };
+
+
+	Button* button = createButton(node.child("button"), callback, false);
+
+	Slider* ret = new Slider(x, y, texture, empty, full, 0.5f, callback);
 
 	if (full.w > full.h)
 	{
@@ -816,13 +836,6 @@ Slider* j1Gui::createSlider(int x, int y, SDL_Rect empty, SDL_Rect full, Button*
 	button->setOriginalPos(((empty.w * w_stretch) - 7 - button->section.w / (2 / w_stretch)) * 0.5f, y);
 
 	ret->setDragable(true, true);
-
-	menu* menu = App->uiscene->getMenu(INGAME_MENU);
-	if (menu != nullptr)
-	{
-		menu->elements.push_back(ret);
-		ret->menu = INGAME_MENU;
-	}
 
 	return ret;
 }
@@ -1213,4 +1226,25 @@ uint j1Gui::getIDbyButton(Button* button) const
 	}
 
 	return id;
+}
+
+float j1Gui::getSliderProgress(int action) const
+{
+	float ret = 0.0f;
+
+	for (std::list<menu*>::iterator it_m = App->uiscene->menus.begin(); it_m != App->uiscene->menus.end(); it_m++)
+	{
+		if ((*it_m) == nullptr) break;
+		if (!(*it_m)->active) continue;
+		for (std::list<UI_element*>::iterator it_e = (*it_m)->elements.begin(); it_e != (*it_m)->elements.end(); it_e++)
+		{
+			if ((*it_e)->element_type == SLIDER && ((Slider*)(*it_e))->getButton()->clickAction == (actionType)action)
+			{
+				ret = ((Slider*)(*it_e))->progress;
+				return ret;
+			}
+		}
+	}
+
+	return ret;
 }

@@ -11,6 +11,7 @@ bar_length(full.w),
 progress(default_progress)
 {
 	progress_num = new Text("", x, y, App->font->getFont(1), { 255,255,255,255 }, nullptr);
+	appendChild(progress_num);
 }
 
 float Slider::getProgress() const
@@ -30,7 +31,7 @@ void Slider::BlitElement()
 	iPoint globalPos = calculateAbsolutePosition();
 	App->render->Blit(texture, globalPos.x, globalPos.y, &section, false, true);
 
-	std::string newText = std::to_string(progress*100);
+	std::string newText = std::to_string((int)(progress*100));
 	progress_num->setText(newText);
 	progress_num->localPosition.x = full.w * App->gui->w_stretch - progress_num->section.w / (2 / App->gui->w_stretch);
 	progress_num->localPosition.y = -progress_num->section.h * App->gui->h_stretch;
@@ -42,7 +43,23 @@ void Slider::BlitElement()
 	full.w = ((bar_length)* progress);
 	App->render->Blit(texture, globalPos.x, globalPos.y, &full, false, true);
 
-	progress_num->BlitElement();
+	//progress_num->BlitElement();
 
 	UI_element::BlitElement();
+}
+
+Button* Slider::getButton() const
+{
+	Button* ret = nullptr;
+
+	for (std::list<UI_element*>::const_iterator it_e = childs.begin(); it_e != childs.end(); it_e++)
+	{
+		if ((*it_e)->element_type == BUTTON)
+		{
+			ret = (Button*)(*it_e);
+			break;
+		}
+	}
+
+	return ret;
 }

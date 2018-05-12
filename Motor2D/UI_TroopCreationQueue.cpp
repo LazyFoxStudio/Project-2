@@ -52,7 +52,9 @@ void TroopCreationQueue::BlitElement()
 					(*it_i)->timer.Start();
 				it_i--;
 			}
+			App->entitycontroller->RefundResources(building->unit_queue.at(counter));
 			building->unit_queue.erase(building->unit_queue.begin()+counter);
+
 			continue;
 		}
 		if ((*it_i)->progress->progress == 1.0f)

@@ -104,7 +104,7 @@ public:
 	NextWaveWindow* createNextWaveWindow(pugi::xml_node node, j1Module* callback = nullptr);
 	WorkersDisplay* createWorkersDisplay(Building* building);
 	TroopCreationQueue* createTroopCreationQueue(Building* building);
-	Slider* j1Gui::createSlider(int x, int y, SDL_Rect empty, SDL_Rect full, Button* button, float default_progress, j1Module * callback);
+	Slider* j1Gui::createSlider(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 
 
 	//minimap_
@@ -144,6 +144,8 @@ public:
 	Button* searchButtonbyHotkey(SDL_Scancode hotkey) const;
 	Button* getButtonbyId(uint id) const;
 	uint getIDbyButton(Button* button) const;
+
+	float getSliderProgress(int action) const;
 
 public:
 
