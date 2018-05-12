@@ -4,6 +4,7 @@
 #include "j1Input.h"
 #include "j1Window.h"
 #include "j1Gui.h"
+#include "UI_Button.h"
 #include "SDL/include/SDL.h"
 
 #define MAX_KEYS 300
@@ -176,13 +177,25 @@ void j1Input::GetMouseMotion(int& x, int& y)
 
 void j1Input::readHotkey(uint buttonId)
 {
-	if (!assignNewHotkey)
+	if (!(assignNewHotkey && this->buttonId == buttonId))
 	{
+		if (assignNewHotkey)
+		{
+			Button* prevButton = App->gui->getButtonbyId(this->buttonId);
+			prevButton->cancelReadingHotkey();
+		}
 		this->buttonId = buttonId;
 		assignNewHotkey = true;
+		Button* button = App->gui->getButtonbyId(buttonId);
+		if (button != nullptr)
+			button->setReadingHotkey();
 	}
 	else
+	{
 		assignNewHotkey = false;
+		Button* prevButton = App->gui->getButtonbyId(this->buttonId);
+		prevButton->cancelReadingHotkey();
+	}
 }
 
 bool j1Input::isReadingHotkey() const

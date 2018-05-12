@@ -250,12 +250,10 @@
               </Animation>
             </Animations>
 			<Actions>
-				<action id="1"/>
-				<action id="10"/>
-				<action id="10"/>
 				<action id="17"/>
 				<action id="18"/>
 				<action id="19"/>
+				<action id="1"/>
 			</Actions>
         </Unit>
       <Unit>

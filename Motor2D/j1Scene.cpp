@@ -314,6 +314,7 @@ void j1Scene::Start_game()
 
 	App->gui->newSelectionDone();
 	App->uiscene->toggleMenu(false, GAMEOVER_MENU);
+	App->uiscene->toggleMenu(true, HERO_SELECTION_MENU);
 
 	toRestart = false;
 
