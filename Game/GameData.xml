@@ -752,7 +752,7 @@
                 <life value="40"/>
                 <attack value="2"/>
                 <defense value="1"/>
-                <piercingDamage value="4"/>
+                <piercingDamage value="3"/>
                 <movementSpeed value="1.0"/>
                 <range value="210"/>
                 <lineOfSight value="250"/>
@@ -1236,10 +1236,10 @@
         <texture value="Assets\Sprites\Alliance Sprites\Gryphon Rider_SpriteSheet.png"/>
         <Stats>
           <life value="80"/>
-          <attack value="3"/>
-          <defense value="6"/>
+          <attack value="6"/>
+          <defense value="4"/>
           <piercingDamage value="2"/>
-          <movementSpeed value="0.7"/>
+          <movementSpeed value="1.1"/>
           <range value="40"/>
           <lineOfSight value="200"/>
           <goldCost value="0"/>
@@ -1496,7 +1496,7 @@
           <attack value="2"/>
           <defense value="1"/>
           <piercingDamage value="4"/>
-          <movementSpeed value="1.0"/>
+          <movementSpeed value="0.6"/>
           <range value="210"/>
           <lineOfSight value="250"/>
           <goldCost value="0"/>
