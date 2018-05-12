@@ -167,18 +167,18 @@ void j1Audio::LoadFXFromXML()
 		LoadMusic(Music.attribute("track").as_string());
 }
 
-void j1Audio::ModifyMusicVolume(int value)
+void j1Audio::ModifyMusicVolume(float value)
 {
-	musicVolumeModifier += (float)value/100;
+	musicVolumeModifier = value;
 	if (musicVolumeModifier < 0)musicVolumeModifier = 0;
 	else if (musicVolumeModifier > 1)musicVolumeModifier = 1;
 
 	Mix_VolumeMusic(128 * musicVolumeModifier);
 }
 
-void j1Audio::ModifySFXVolume(int value)
+void j1Audio::ModifySFXVolume(float value)
 {
-	sfxVolumeModifier += (float)value / 100;
+	sfxVolumeModifier = value;
 	if (sfxVolumeModifier < 0)sfxVolumeModifier = 0;
 	else if (sfxVolumeModifier > 1)sfxVolumeModifier = 1;
 }

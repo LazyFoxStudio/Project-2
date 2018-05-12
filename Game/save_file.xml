@@ -14,36 +14,46 @@
 	<scene />
 	<entitycontroller>
 		<Units>
+			<Hero hp="250" x="1950" y="2100" />
 			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="80" pos_x="2015.00269" pos_y="1904.02808" />
-				<unit hp="80" pos_x="2050.10254" pos_y="1939.328" />
-				<unit hp="80" pos_x="2050.20264" pos_y="1904.12805" />
-				<unit hp="80" pos_x="2052.53516" pos_y="1869.64807" />
-				<unit hp="80" pos_x="2017.42627" pos_y="1871.06128" />
+				<unit hp="80" pos_x="2144" pos_y="2048" />
+				<unit hp="80" pos_x="2144" pos_y="2080" />
+				<unit hp="80" pos_x="2144" pos_y="2112" />
+				<unit hp="80" pos_x="2176" pos_y="2048" />
 			</squad>
 			<squad type_enum="18" type="GRUNT">
-				<unit hp="70" pos_x="2127.99854" pos_y="695.279236" />
-				<unit hp="70" pos_x="2163.19629" pos_y="663.625305" />
-				<unit hp="70" pos_x="2127.99634" pos_y="664.536682" />
-				<unit hp="70" pos_x="2092.79614" pos_y="660.253601" />
-				<unit hp="70" pos_x="2092.79956" pos_y="705.457092" />
+				<unit hp="70" pos_x="2159.76465" pos_y="3364.60596" />
+				<unit hp="70" pos_x="2124.1228" pos_y="3398.42212" />
+				<unit hp="70" pos_x="2156.01953" pos_y="3427.12427" />
+				<unit hp="70" pos_x="2194.19019" pos_y="3394.19775" />
+				<unit hp="70" pos_x="2190.16797" pos_y="3427.37183" />
 			</squad>
-			<squad type_enum="18" type="GRUNT">
-				<unit hp="70" pos_x="2159.99854" pos_y="3016.89087" />
-				<unit hp="70" pos_x="2124.7959" pos_y="3050.72778" />
-				<unit hp="70" pos_x="2159.98901" pos_y="3079.46802" />
-				<unit hp="70" pos_x="2195.19629" pos_y="3046.95728" />
-				<unit hp="70" pos_x="2195.08081" pos_y="3079.71436" />
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2223.99243" pos_y="3270.58252" />
+				<unit hp="40" pos_x="2188.75684" pos_y="3309.8938" />
+				<unit hp="40" pos_x="2223.47754" pos_y="3333.19434" />
+				<unit hp="40" pos_x="2134.13916" pos_y="3387.50244" />
 			</squad>
 		</Units>
-		<Buildings />
+		<Buildings>
+			<town_hall hp="300" />
+		</Buildings>
 	</entitycontroller>
 	<gui />
 	<introscene />
 	<sceneswitch />
 	<particle />
 	<actionscontroller />
-	<wavecontroller />
+	<wavecontroller>
+		<wave value="1" />
+		<points value="3" />
+		<wave_timer value="1.79488873" />
+		<next_wave>
+			<enemies type="AXE_THROWER" type_enum="19" x="3605" y="1844" />
+			<enemies type="GRUNT" type_enum="18" x="2154" y="256" />
+			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
+		</next_wave>
+	</wavecontroller>
 	<renderer>
 		<camera x="-1200" y="-1600" />
 	</renderer>

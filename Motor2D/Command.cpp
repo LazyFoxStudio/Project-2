@@ -280,7 +280,7 @@ bool MoveToSquad::OnInit()
 bool MoveToSquad::OnUpdate(float dt)
 {
 	if ((allIdle() && launched) || flow_field->stage == FAILED) 
-		Stop();
+		Stop(); 
 	else {
 		if (Unit* commander = squad->getCommander())
 		{
@@ -601,7 +601,7 @@ bool Attack::searchTarget()
 
 	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
 	{
-		if ((*it)->IsEnemy() == unit->IsEnemy())
+		if ((*it)->IsEnemy() == unit->IsEnemy() && (*it)->IsUnit())
 		{
 			Unit* ally = (Unit*)(*it);
 			if (ally->getCurrentCommand() == ATTACK || ally->getCurrentCommand() == ATTACKING_MOVETO)
@@ -711,7 +711,6 @@ void Attack::callRetaliation(Entity* enemy, uint squad_UID)
 			}
 		}
 	}
-
 }
 
 int Attack::dealDamage(Entity * attacker, Entity * defender)
@@ -753,11 +752,11 @@ void Attack::AoE_Damage(Entity* enemy)
 bool Attack::favorableMatchup(Entity * attacker, Entity * defender)
 {
 	bool ret = false;
-	if (attacker->range == 40 && defender->range < 40 && !defender->flying)
+	if (attacker->range == 40 && defender->range > 40 && !defender->flying)
 	{
 		ret = true;
 	}
-	else if (attacker->range < 40 && !attacker->flying && defender->flying)
+	else if (attacker->range > 40 && !attacker->flying && defender->flying)
 	{
 		ret = true;
 	}

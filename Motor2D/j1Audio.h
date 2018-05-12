@@ -43,8 +43,8 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, uint volume = 128, int repeat = 0);
 
-	void ModifyMusicVolume(int value);
-	void ModifySFXVolume(int value);
+	void ModifyMusicVolume(float value);
+	void ModifySFXVolume(float value);
 
 
 

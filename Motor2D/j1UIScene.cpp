@@ -166,6 +166,7 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 
 			if (element->hasReleaseAction)
 				App->actionscontroller->activateAction(element->releaseAction);
+			else App->actionscontroller->doingAction = false;
 		}
 		else if (event_type == MOUSE_RIGHT_CLICK)
 		{}
