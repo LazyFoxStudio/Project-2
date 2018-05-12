@@ -1210,16 +1210,17 @@ void j1EntityController::selectionControl()
 {
 	int mouseX, mouseY;
 	App->input->GetMousePosition(mouseX, mouseY);
+	iPoint selection_to_world = App->render->ScreenToWorld(mouseX, mouseY);
 
 	switch (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
 	{
 	case KEY_DOWN:
-		selection_rect.x = mouseX; selection_rect.y = mouseY;
+		selection_rect.x = selection_to_world.x; selection_rect.y = selection_to_world.y;
 		break;
 	case KEY_REPEAT:
-		selection_rect.w = mouseX - selection_rect.x;
-		selection_rect.h = mouseY - selection_rect.y;
-		App->render->DrawQuad(selection_rect, White, false, false);
+		selection_rect.w = selection_to_world.x - selection_rect.x;
+		selection_rect.h = selection_to_world.y - selection_rect.y;
+		App->render->DrawQuad(selection_rect, White, false);
 		break;
 	case KEY_UP:
 
@@ -1229,9 +1230,6 @@ void j1EntityController::selectionControl()
 		selected_squads.clear();
 		bool buildings = false;
 		bool units = false;
-
-		iPoint selection_to_world = App->render->ScreenToWorld(selection_rect.x, selection_rect.y);
-		selection_rect.x = selection_to_world.x; selection_rect.y = selection_to_world.y;
 
 		if (selection_rect.w == 0 && selection_rect.h == 0) selection_rect.w = selection_rect.h = 1;  // for single clicks
 		else {
