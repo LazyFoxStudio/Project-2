@@ -11,18 +11,18 @@
   </renderer>
 
   <window>
-    <resolution default="false" width="1680" height="1050" scale="1"/>
+    <resolution default="false" width="1920" height="1000" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
-    <resizable value="true"/>
+    <resizable value="false"/>
     <fullscreen_window value="false"/>
     <icon path ="gui/Application icon.png"/>
   </window>
 
   <gui>
     <atlas file="gui/atlas.png"/>
-	<icon_atlas file="gui/icon_atlas.png"/>
-	<popUps time="100"/>
+	  <icon_atlas file="gui/icon_atlas.png"/>
+	  <popUps time="100"/>
   </gui>
 
   <scene>
