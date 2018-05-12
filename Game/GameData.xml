@@ -538,8 +538,8 @@
             </Stats>
 			<Info title="Footman Stats:"/>
             <Animations>
-                <width value="73"/>
-                <height value="65"/>
+                <width value="74"/>
+                <height value="66"/>
               <Animation> <!-- 0- IdleNorth -->
                 <rows value="0"/>
                 <columns value="0"/>
