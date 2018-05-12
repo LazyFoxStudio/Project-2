@@ -384,6 +384,9 @@ void j1Scene::DeleteWorkers()
 {
 	for (std::list<worker*>::iterator it = workers.begin(); it != workers.end(); it++)
 	{
-		(*it)->to_destroy = true;
+		worker* tmp = (*it);
+		(*it)->farm->workers_inside.remove(*it);
+		App->scene->workers.remove(*it);
+		RELEASE(tmp);
 	}
 }
