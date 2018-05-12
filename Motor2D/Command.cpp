@@ -753,11 +753,11 @@ void Attack::AoE_Damage(Entity* enemy)
 bool Attack::favorableMatchup(Entity * attacker, Entity * defender)
 {
 	bool ret = false;
-	if (attacker->range == 40 && defender->range < 40 && !defender->flying)
+	if (attacker->range == 40 && defender->range > 40 && !defender->flying)
 	{
 		ret = true;
 	}
-	else if (attacker->range < 40 && !attacker->flying && defender->flying)
+	else if (attacker->range > 40 && !attacker->flying && defender->flying)
 	{
 		ret = true;
 	}
