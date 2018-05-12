@@ -108,7 +108,7 @@ bool Hero::Update(float dt)
 
 				if (type == HERO_1)
 				{
-					App->particle->AddProgressiveParticle(PFLAMETHROWER, position, tmp2, 2);
+					App->particle->AddProgressiveParticle(PFLAMETHROWER, position, tmp2, 2,10);
 					App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
 				}
 				else if(type==HERO_2)
