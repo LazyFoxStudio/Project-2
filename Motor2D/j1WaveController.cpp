@@ -45,7 +45,6 @@ bool j1WaveController::Start()
 	TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
 	iPoint dest = App->map->WorldToMap(spawns[0].x, spawns[0].y);
 	flow_field = App->pathfinding->RequestFlowField(TownHall_pos, dest);
-	flow_field->used_by = 1;
 	
 	points = 1;
 
@@ -54,13 +53,11 @@ bool j1WaveController::Start()
 
 void j1WaveController::updateFlowField()
 {
-	if (flow_field_aux) flow_field_aux->used_by = 0;
 
 	iPoint TownHall_pos = TOWN_HALL_POS;
 	TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
 	iPoint dest = App->map->WorldToMap(spawns[0].x, spawns[0].y);
 	flow_field_aux = App->pathfinding->RequestFlowField(TownHall_pos, dest);
-	flow_field_aux->used_by++;
 }
 
 void j1WaveController::forceNextWave()
@@ -113,7 +110,6 @@ bool j1WaveController::PostUpdate()
 					}
 				}
 			}
-			flow_field_aux->used_by = 0;
 			flow_field_aux = nullptr;
 		}
 	}
@@ -122,9 +118,6 @@ bool j1WaveController::PostUpdate()
 
 bool j1WaveController::CleanUp()
 {
-	flow_field->used_by = 0;
-	if(flow_field_aux) 
-		flow_field_aux->used_by = 0;
 	spawns.clear();
 	costs.clear();
 	return true;

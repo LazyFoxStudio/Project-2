@@ -150,7 +150,6 @@ class MoveToSquadFlying : public Command
 public:
 	Squad * squad = nullptr;
 	iPoint dest = { -1,-1 };
-	FlowField* flow_field = nullptr;
 
 public:
 

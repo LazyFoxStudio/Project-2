@@ -1198,7 +1198,6 @@ void j1EntityController::commandControl()
 
 						MoveToSquad* new_order = new MoveToSquad(commander, map_p);
 						new_order->flow_field = shared_flowfield;
-						shared_flowfield->used_by++;
 						(*it)->commands.push_back(new_order);
 					}
 				}
@@ -1230,7 +1229,6 @@ void j1EntityController::commandControl()
 
 						MoveToSquad* new_order = new AttackingMoveToSquad(commander, map_p);
 						new_order->flow_field = shared_flowfield;
-						shared_flowfield->used_by++;
 						(*it)->commands.push_back(new_order);
 					}
 				}

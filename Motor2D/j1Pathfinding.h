@@ -34,7 +34,6 @@ struct FlowField
 	FieldNode** field = nullptr;
 	uint width = 0; uint height = 0;
 	PathProcessStage stage = REQUESTED;
-	int used_by = 0;
 
 	FlowField(uint width, uint heigth, int init_to = FLOWFIELD_MAX);
 	~FlowField();
@@ -50,6 +49,7 @@ struct PathProcessor
 	iPoint destination = { 0,0 };
 	iPoint origin = { 0,0 };
 	FlowField* flow_field = nullptr;
+	bool to_erase = false;
 
 	std::list<FieldNode> open;
 

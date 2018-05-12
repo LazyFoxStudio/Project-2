@@ -46,7 +46,6 @@ void Command::Restart() { OnStop(); state = TO_INIT; }
 bool MoveTo::OnInit()
 {
 	if (!flow_field) Stop();
-	else if(!unit->IsEnemy()) flow_field->used_by++;
 
 	return true;
 }
@@ -91,7 +90,6 @@ bool MoveTo::OnStop()
 	if(unit->squad) 
 		unit->mov_direction = unit->squad->squad_direction;
 
-	if(!unit->IsEnemy() && flow_field) flow_field->used_by--;
 	return true;
 }
 
@@ -322,7 +320,6 @@ bool MoveToSquad::OnUpdate(float dt)
 
 bool MoveToSquad::OnStop()
 {
-	if(!unit->IsEnemy() && flow_field) flow_field->used_by--;
 	if(squad) squad->squad_movement.SetToZero();
 
 	return true;

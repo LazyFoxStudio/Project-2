@@ -2,11 +2,13 @@
 #include "j1App.h"
 #include "j1PathFinding.h"
 #include "j1EntityController.h"
+#include "Squad.h"
 #include "j1Map.h"
+#include "j1WaveController.h"
 #include "j1Render.h"
 #include "SDL/include/SDL.h"
 
-j1PathFinding::j1PathFinding() : j1Module(), map(nullptr),width(0), height(0)
+j1PathFinding::j1PathFinding() : j1Module(), map(nullptr), width(0), height(0)
 {
 	name = "pathfinding";
 }
@@ -28,13 +30,46 @@ bool j1PathFinding::PostUpdate()
 	if (!path_pool.empty())
 	{
 		for (std::list<PathProcessor*>::iterator it = path_pool.begin(); it != path_pool.end(); it++)
-			if ((*it)->flow_field->used_by == 0) { RELEASE(*it);  path_pool.erase(it); it--; }
+		{
+			bool to_erase = false;
+			if ((*it)->flow_field != App->wavecontroller->flow_field && (*it)->flow_field != App->wavecontroller->flow_field_aux)
+			{
+				to_erase = true;
+				for (std::list<Entity*>::iterator it2 = App->entitycontroller->entities.begin(); it2 != App->entitycontroller->entities.end(); it2++)
+				{
+					if ((*it2)->IsUnit())
+					{
+						Unit* unit = (Unit*)(*it2);
+						if (unit->getCurrentCommand() == MOVETO)
+							if (((MoveTo*)unit->commands.front())->flow_field == (*it)->flow_field)
+								to_erase = false;
+					}
+				}
+				if (to_erase)
+				{
+					for (std::list<Squad*>::iterator it2 = App->entitycontroller->squads.begin(); it2 != App->entitycontroller->squads.end(); it2++)
+					{
+						if ((*it2)->getCurrentCommand() == MOVETOSQUAD)
+						{
+							if (((MoveToSquad*)(*it2)->commands.front())->flow_field == (*it)->flow_field)
+								to_erase = false;
+						}
+						else if ((*it2)->getCurrentCommand() == ATTACKING_MOVETO_SQUAD)
+						{
+							if (((AttackingMoveToSquad*)(*it2)->commands.front())->flow_field == (*it)->flow_field)
+								to_erase = false;
+						}
+					}
+				}
+			}
 
+			if (to_erase) { RELEASE(*it);  path_pool.erase(it); it--; }
+		}
+		
 		timer.Start();
 		for (std::list<PathProcessor*>::iterator it = path_pool.begin(); it != path_pool.end(); it++)
-		{
 			if (!(*it)->ProcessFlowField(timer)) break;
-		}
+		
 	}
 	return true;
 }
