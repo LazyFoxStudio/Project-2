@@ -619,6 +619,10 @@ bool j1EntityController::Load(pugi::xml_node& file)
 	{
 		if ((*it)->type != HERO_1 && (*it)->type != HERO_2 && (*it)->type != TOWN_HALL)
 		{
+			if ((*it)->IsUnit())
+			{
+				((Unit*)(*it))->commands.clear();
+			}
 			App->gui->entityDeleted(*it);
 			DeleteEntity((*it)->UID);
 		}
