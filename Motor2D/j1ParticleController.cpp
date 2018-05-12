@@ -236,7 +236,7 @@ void j1ParticleController::AddProgressiveParticle(particleType type, fPoint posi
 	vec.x = vec.x / 6;
 	vec.y = vec.y / 6;
 
-	for (int j = 0; j != 6; j++)
+	for (int j = 0; j != 7; j++)
 	{
 		for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 		{
@@ -249,7 +249,7 @@ void j1ParticleController::AddProgressiveParticle(particleType type, fPoint posi
 				p->position.y = position.y + (float)(vec.y*j);
 
 				p->delay = j*(1000/6);
-				p->scale = 1 + (spread - 1) * ((float)(0.2* j));
+				p->scale = 1 + (spread - 1) * ((float)(0.1667* j));
 				p->angle = 0;
 
 				active[i] = p;
