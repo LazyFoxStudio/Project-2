@@ -11,8 +11,8 @@
   </renderer>
 
   <window>
-    <resolution default="false" width="1920" height="1000" scale="1"/>
-    <fullscreen value="false"/>
+    <resolution default="true" width="1920" height="1000" scale="1"/>
+    <fullscreen value="true"/>
     <borderless value="false"/>
     <resizable value="false"/>
     <fullscreen_window value="false"/>

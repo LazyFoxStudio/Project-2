@@ -263,6 +263,7 @@ void j1Scene::Start_game()
 	wood = i_wood;
 	gold = i_gold;
 	//inactive_workers = workers = INIT_WORKERS;
+	DeleteWorkers();
 	InitialWorkers(App->entitycontroller->town_hall);
 	town_hall_lvl = INIT_TOWNHALL_LVL;
 
@@ -377,4 +378,12 @@ bool j1Scene::Console_Interaction(std::string& function, std::vector<int>& argum
 	}
 
 	return true;
+}
+
+void j1Scene::DeleteWorkers()
+{
+	for (std::list<worker*>::iterator it = workers.begin(); it != workers.end(); it++)
+	{
+		(*it)->to_destroy = true;
+	}
 }
