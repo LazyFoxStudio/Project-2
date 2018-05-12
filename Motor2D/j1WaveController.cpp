@@ -122,7 +122,8 @@ bool j1WaveController::PostUpdate()
 bool j1WaveController::CleanUp()
 {
 	flow_field->used_by = 0;
-	flow_field_aux->used_by = 0;
+	if(flow_field_aux) 
+		flow_field_aux->used_by = 0;
 	spawns.clear();
 	costs.clear();
 	return true;
