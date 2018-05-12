@@ -195,6 +195,7 @@ void j1ParticleController::AddParticle(particleType type, fPoint position, bool 
 			p->active = true;
 			p->delay = 0;
 			p->scale = 1;
+			p->angle = 0;
 
 			active[i] = p;
 			break;

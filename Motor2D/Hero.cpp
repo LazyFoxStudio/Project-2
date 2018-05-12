@@ -118,7 +118,10 @@ bool Hero::Update(float dt)
 					App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
 				}
 				else if(type==HERO_2)
+				{
 					App->audio->PlayFx(SFX_HONOR_OF_THE_PURE);
+					App->particle->AddParticle(PHOLYBUFF, position, false);
+				}
 			}
 			App->gui->cooldownsDisplay->skillUsed(3);
 		}

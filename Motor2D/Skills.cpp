@@ -191,6 +191,7 @@ bool Skill::Activate()
 							LOG("defense %d", ((Unit*)(*item))->defense);
 							((Unit*)(*item))->AddDefensebuff(15, 5, PLUS_MINUS);
 							((Unit*)(*item))->AddPiercingDamagebuff(15, 7, PLUS_MINUS);
+							App->particle->AddParticle(PHALO, { (*item)->position.x, (*item)->position.y - 30 }, false);
 							ret = true;
 						}
 					}

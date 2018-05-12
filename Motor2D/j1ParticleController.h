@@ -27,7 +27,9 @@ enum particleType
 	PFLAMETHROWER,
 	PHEALINGHERO,
 	PHOLYDAMAGE,
-	PHOLYHEAL
+	PHOLYHEAL,
+	PHOLYBUFF,
+	PHALO
 };
 
 struct Particle
