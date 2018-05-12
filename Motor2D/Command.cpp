@@ -711,7 +711,6 @@ void Attack::callRetaliation(Entity* enemy, uint squad_UID)
 			}
 		}
 	}
-
 }
 
 int Attack::dealDamage(Entity * attacker, Entity * defender)
