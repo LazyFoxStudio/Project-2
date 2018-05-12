@@ -45,6 +45,7 @@ bool j1WaveController::Start()
 	TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
 	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
 	flow_field = App->pathfinding->RequestFlowField(TownHall_pos);
+	flow_field->used_by = 1;
 	
 	points = 1;
 
@@ -59,6 +60,7 @@ void j1WaveController::updateFlowField()
 	TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
 	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
 	flow_field_aux = App->pathfinding->RequestFlowField(TownHall_pos);
+	flow_field_aux->used_by++;
 }
 
 void j1WaveController::forceNextWave()
@@ -119,6 +121,8 @@ bool j1WaveController::PostUpdate()
 
 bool j1WaveController::CleanUp()
 {
+	flow_field->used_by = 0;
+	flow_field_aux->used_by = 0;
 	spawns.clear();
 	costs.clear();
 	return true;

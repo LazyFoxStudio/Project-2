@@ -46,7 +46,7 @@ void Command::Restart() { OnStop(); state = TO_INIT; }
 bool MoveTo::OnInit()
 {
 	if (!flow_field) Stop();
-	else flow_field->used_by++;
+	else if(!unit->IsEnemy()) flow_field->used_by++;
 
 	return true;
 }
@@ -91,7 +91,7 @@ bool MoveTo::OnStop()
 	if(unit->squad) 
 		unit->mov_direction = unit->squad->squad_direction;
 
-	if(flow_field) flow_field->used_by--;
+	if(!unit->IsEnemy() && flow_field) flow_field->used_by--;
 	return true;
 }
 
@@ -626,7 +626,11 @@ bool Attack::searchTarget()
 
 	}
 
-	if (current_target.IsZero()) current_target = enemy_atk_slots->at(rand() % enemy_atk_slots->size());
+	if (current_target.IsZero())
+	{
+		return false;
+		state == ATTACKING_MOVETO;
+	}
 
 	if (!unit->IsFlying())
 	{

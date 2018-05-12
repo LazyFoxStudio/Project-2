@@ -390,7 +390,6 @@ FlowField* j1PathFinding::RequestFlowField(iPoint destination)
 {
 	PathProcessor* pp = new PathProcessor(destination);
 	App->pathfinding->path_pool.push_back(pp);
-	pp->flow_field->used_by++;
 	return pp->flow_field;
 }
 
