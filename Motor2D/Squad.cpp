@@ -47,7 +47,7 @@ bool Squad::Update(float dt)
 			commands.front()->Execute(dt);
 			if (commands.front()->state == FINISHED) commands.pop_front();
 
-			if (!squad_movement.IsZero() )
+			if (!squad_movement.IsZero())
 			{
 				if (Unit* commander = getCommander())
 				{
@@ -59,7 +59,6 @@ bool Squad::Update(float dt)
 		}
 		else squad_movement = { 0.0f,0.0f };
 	}
-
 	bool everyone_in_position = true;
 	return true;
 }

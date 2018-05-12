@@ -530,7 +530,7 @@
                 <goldCost value="0"/>
                 <woodCost value="200"/>
                 <workerCost value="4"/>
-                <trainingTime value="10"/>
+                <trainingTime value="1"/>
                 <squadMembers value="4"/>
                 <size x="1" y="1"/>
             </Stats>
@@ -3481,12 +3481,10 @@
 		<line text="to train your troops"/>
 	  </Info>
 	  <Actions>
-		<action id="11"/>
-		<action id="12"/>
-
-
+		    <action id="11"/>
+		    <action id="12"/>
         <action id="20"/>
-		<action id="10"/>
+	    	<action id="10"/>
         <action id="21"/>
 	  </Actions>
       <iconData x="162" y="264" w="72" h="59"/>
@@ -3964,6 +3962,7 @@
 				<Info text="Repair Building"/>
 				<Cost wood="200" gold="" oil="" workers="" time=""/>
 			</popUp>
+      <hotkey key="" font_id="3"/>
 		</repairBuilding>
 		<demolishBuilding id="21" click_action="17">
 			<position x="0" y="0"/>
