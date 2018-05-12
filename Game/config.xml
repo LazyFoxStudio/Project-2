@@ -28,7 +28,7 @@
   <scene>
     <Wood value="800"/>
     <Gold value="300"/>
-    <Workers value="0"/>
+    <Workers value="3"/>
     <Oil value="0"/>
   </scene>
 
