@@ -212,10 +212,12 @@ void j1Input::StartTextInput()
 {
 	SDL_StartTextInput();
 	text_buffer.clear();
+	console_input = true;
 }
 
 void j1Input::StopTextInput()
 {
 	SDL_StopTextInput();
 	text_buffer.clear();
+	console_input = false;
 }
