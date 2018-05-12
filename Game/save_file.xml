@@ -15,36 +15,41 @@
 	<entitycontroller>
 		<Units>
 			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="80" pos_x="2015.00269" pos_y="1904.02808" />
-				<unit hp="80" pos_x="2050.10254" pos_y="1939.328" />
-				<unit hp="80" pos_x="2050.20264" pos_y="1904.12805" />
-				<unit hp="80" pos_x="2052.53516" pos_y="1869.64807" />
-				<unit hp="80" pos_x="2017.42627" pos_y="1871.06128" />
+				<unit hp="80" pos_x="2144" pos_y="2048" />
+				<unit hp="80" pos_x="2144" pos_y="2080" />
+				<unit hp="80" pos_x="2144" pos_y="2112" />
+				<unit hp="80" pos_x="2176" pos_y="2048" />
+				<unit hp="80" pos_x="2176" pos_y="2112" />
 			</squad>
 			<squad type_enum="18" type="GRUNT">
-				<unit hp="70" pos_x="2127.99854" pos_y="695.279236" />
-				<unit hp="70" pos_x="2163.19629" pos_y="663.625305" />
-				<unit hp="70" pos_x="2127.99634" pos_y="664.536682" />
-				<unit hp="70" pos_x="2092.79614" pos_y="660.253601" />
-				<unit hp="70" pos_x="2092.79956" pos_y="705.457092" />
-			</squad>
-			<squad type_enum="18" type="GRUNT">
-				<unit hp="70" pos_x="2159.99854" pos_y="3016.89087" />
-				<unit hp="70" pos_x="2124.7959" pos_y="3050.72778" />
-				<unit hp="70" pos_x="2159.98901" pos_y="3079.46802" />
-				<unit hp="70" pos_x="2195.19629" pos_y="3046.95728" />
-				<unit hp="70" pos_x="2195.08081" pos_y="3079.71436" />
+				<unit hp="70" pos_x="1963.68298" pos_y="2031.99988" />
+				<unit hp="70" pos_x="1963.6925" pos_y="2000.00012" />
+				<unit hp="70" pos_x="1963.0387" pos_y="2063.97534" />
+				<unit hp="70" pos_x="1963.53638" pos_y="1968.11194" />
+				<unit hp="70" pos_x="1963.4729" pos_y="2095.48584" />
 			</squad>
 		</Units>
-		<Buildings />
+		<Buildings>
+			<Building hp="250" pos_x="1696" pos_y="1760" type_enum="3" type="LUMBER_MILL" />
+			<Building hp="100" pos_x="1824" pos_y="1728" type_enum="4" type="FARM" />
+		</Buildings>
 	</entitycontroller>
 	<gui />
 	<introscene />
 	<sceneswitch />
 	<particle />
 	<actionscontroller />
-	<wavecontroller />
+	<wavecontroller>
+		<wave value="1" />
+		<points value="3" />
+		<wave_timer value="26.1353092" />
+		<next_wave>
+			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
+			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
+			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
+		</next_wave>
+	</wavecontroller>
 	<renderer>
-		<camera x="-1200" y="-1600" />
+		<camera x="-1200" y="-1394" />
 	</renderer>
 </game_state>

@@ -100,7 +100,7 @@ bool j1Scene::Update(float dt)
 	App->map->Draw();
 
 	//Music and SFX modifiers (temporal for Vertical Slice)
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	/*if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
 		App->audio->ModifyMusicVolume(10);
 	}
@@ -115,7 +115,7 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
 	{
 		App->audio->ModifySFXVolume(-10);
-	}
+	}*/
 	/*if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
 		App->entitycontroller->UnassignRandomWorker();

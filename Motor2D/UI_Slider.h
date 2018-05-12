@@ -30,6 +30,8 @@ public:
 	void setProgress(float newProgress);
 	void BlitElement();
 
+	Button* getButton() const;
+
 public:
 
 	SDL_Rect full;
