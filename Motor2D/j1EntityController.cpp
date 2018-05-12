@@ -2051,12 +2051,19 @@ bool j1EntityController::Console_Interaction(std::string& function, std::vector<
 
 	if (function == spawn_squad->name)
 	{
-		AddSquad((Type)arguments.data()[0], { arguments.data()[1], arguments.data()[2] });
+		float x = arguments.data()[1];
+		float y = arguments.data()[2];
+		fPoint p = { x,y };
+		AddSquad((Type)arguments.data()[0], p);
 	}
 
 	if (function == spawn_building->name)
 	{
-		addBuilding( { arguments.data()[1], arguments.data()[2] }, (Type)arguments.data()[0]);
+		int x= arguments.data()[1];
+		int y= arguments.data()[2];
+		iPoint c = { x,y };
+		p2Point<int> p = c;
+		addBuilding( p, (Type)arguments.data()[0]);
 	}
 
 	return true;
