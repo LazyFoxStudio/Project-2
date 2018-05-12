@@ -1483,6 +1483,12 @@ void j1EntityController::UpgradeUnits(UpgradeType type)
 	}
 }
 
+void j1EntityController::RefundResources(Type type)
+{
+	App->scene->gold += DataBase[type]->cost.gold_cost;
+	App->scene->wood += DataBase[type]->cost.wood_cost;
+}
+
 Entity* j1EntityController::getNearestEnemy(Entity* entity, int target_squad)
 {
 	Entity* ret = nullptr;

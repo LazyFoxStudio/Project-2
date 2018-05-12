@@ -131,11 +131,12 @@ public:
 	void SpendUpgradeResources(UpgradeType type);
 	void UpgradeUnits(UpgradeType type);
 
-	void CheckMine();
+	void RefundResources(Type type);
 	//------Worker Related Functions--------
 	void SubstractRandomWorkers(int num);
 	void DeleteWorkers();
 	void CreateWorkers(Building* target, int num);
+
 	bool CheckInactiveWorkers(int num = 1);
 	worker* GetInactiveWorker();
 	void AssignWorker(Building* building, worker* worker);
