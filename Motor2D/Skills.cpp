@@ -262,7 +262,8 @@ bool Skill::Activate()
 		last_cast = cast_pos;
 		going = true;
 		iPoint map_p = App->map->WorldToMap(cast_pos.x, cast_pos.y);
-		FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+		iPoint hero_map_p = App->map->WorldToMap(hero->position.x, hero->position.y);
+		FlowField* shared_flowfield = App->pathfinding->RequestFlowField(map_p, hero_map_p);
 
 		hero->squad->Halt();
 		iPoint map_pos = App->map->WorldToMap(cast_pos.x, cast_pos.y);

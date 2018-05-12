@@ -1160,18 +1160,24 @@ void j1EntityController::commandControl()
 				App->tutorial->taskCompleted(MOVE_TROOPS);
 			for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 			{
-				(*it)->Halt();
-				if((*it)->isFlying())
-					(*it)->commands.push_back(new MoveToSquadFlying((*it)->getCommander(), map_p));
-				else
+				if (Unit* commander = (*it)->getCommander())
 				{
-					if (!shared_flowfield)
-						shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+					(*it)->Halt();
+					if ((*it)->isFlying())
+						(*it)->commands.push_back(new MoveToSquadFlying(commander, map_p));
+					else
+					{
+						if (!shared_flowfield)
+						{
+							iPoint commander_map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
+							shared_flowfield = App->pathfinding->RequestFlowField(map_p, commander_map_p);
+						}
 
-					MoveToSquad* new_order = new MoveToSquad((*it)->getCommander(), map_p);
-					new_order->flow_field = shared_flowfield;
-					shared_flowfield->used_by++;
-					(*it)->commands.push_back(new_order);
+						MoveToSquad* new_order = new MoveToSquad(commander, map_p);
+						new_order->flow_field = shared_flowfield;
+						shared_flowfield->used_by++;
+						(*it)->commands.push_back(new_order);
+					}
 				}
 			}
 		}
@@ -1183,22 +1189,27 @@ void j1EntityController::commandControl()
 			FlowField* shared_flowfield = nullptr;
 			for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 			{
-				(*it)->Halt();
-				if ((*it)->isFlying())
-					(*it)->commands.push_back(new AttackingMoveToSquadFlying((*it)->getCommander(), map_p));
-				else 
+				if (Unit* commander = (*it)->getCommander())
 				{
-					if (Unit* commander = (*it)->getCommander())
+					(*it)->Halt();
+					if ((*it)->isFlying())
+						(*it)->commands.push_back(new AttackingMoveToSquadFlying(commander, map_p));
+					else
+					{
 						if (commander->IsMelee() && entity->IsFlying())
 							continue;
 
-					if (!shared_flowfield)
-						shared_flowfield = App->pathfinding->RequestFlowField(map_p);
+						if (!shared_flowfield)
+						{
+							iPoint commander_map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
+							shared_flowfield = App->pathfinding->RequestFlowField(map_p, commander_map_p);
+						}
 
-					MoveToSquad* new_order = new AttackingMoveToSquad((*it)->getCommander(), map_p);
-					new_order->flow_field = shared_flowfield;
-					shared_flowfield->used_by++;
-					(*it)->commands.push_back(new_order);
+						MoveToSquad* new_order = new AttackingMoveToSquad(commander, map_p);
+						new_order->flow_field = shared_flowfield;
+						shared_flowfield->used_by++;
+						(*it)->commands.push_back(new_order);
+					}
 				}
 			}
 		}

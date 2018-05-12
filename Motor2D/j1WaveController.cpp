@@ -43,8 +43,8 @@ bool j1WaveController::Start()
 
 	iPoint TownHall_pos = TOWN_HALL_POS;
 	TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
-	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
-	flow_field = App->pathfinding->RequestFlowField(TownHall_pos);
+	iPoint dest = App->map->WorldToMap(spawns[0].x, spawns[0].y);
+	flow_field = App->pathfinding->RequestFlowField(TownHall_pos, dest);
 	flow_field->used_by = 1;
 	
 	points = 1;
@@ -58,8 +58,8 @@ void j1WaveController::updateFlowField()
 
 	iPoint TownHall_pos = TOWN_HALL_POS;
 	TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
-	TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
-	flow_field_aux = App->pathfinding->RequestFlowField(TownHall_pos);
+	iPoint dest = App->map->WorldToMap(spawns[0].x, spawns[0].y);
+	flow_field_aux = App->pathfinding->RequestFlowField(TownHall_pos, dest);
 	flow_field_aux->used_by++;
 }
 
@@ -165,7 +165,8 @@ void j1WaveController::Generate_Wave()
 		{
 			iPoint TownHall_pos = TOWN_HALL_POS;
 			TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
-			TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
+			iPoint dest = App->map->WorldToMap((*it)->spawn.x, (*it)->spawn.y);
+			TownHall_pos = App->pathfinding->FirstWalkableAdjacentSafeProof(TownHall_pos, dest);
 			squad->commands.push_back(new AttackingMoveToSquadFlying(squad->getCommander(), TownHall_pos));
 		}
 		else

@@ -48,11 +48,12 @@ struct FlowField
 struct PathProcessor
 {
 	iPoint destination = { 0,0 };
+	iPoint origin = { 0,0 };
 	FlowField* flow_field = nullptr;
 
 	std::list<FieldNode> open;
 
-	PathProcessor(iPoint destination);
+	PathProcessor(iPoint destination, iPoint origin);
 	~PathProcessor() { RELEASE(flow_field); };
 
 	bool ProcessFlowField(j1Timer& timer);
@@ -91,8 +92,9 @@ public:
 
 	bool GatherWalkableAdjacents(iPoint map_pos, int count, std::vector<iPoint>& adjacents, int max_distance = 0);
 	iPoint FirstWalkableAdjacent(iPoint map_pos, int max_distance = 0);
+	iPoint FirstWalkableAdjacentSafeProof(iPoint map_pos, iPoint dest, int max_distance = 0);
 
-	FlowField* RequestFlowField(iPoint destination);
+	FlowField* RequestFlowField(iPoint destination, iPoint origin);
 
 public:
 	uchar * map = nullptr;

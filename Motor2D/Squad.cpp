@@ -57,7 +57,21 @@ bool Squad::Update(float dt)
 
 			}
 		}
-		else squad_movement = { 0.0f,0.0f };
+		else
+		{
+			squad_movement = { 0.0f,0.0f };
+			if (Unit* commander = getCommander())
+			{
+				if (commander->IsEnemy())
+				{
+					iPoint TownHall_pos = TOWN_HALL_POS;
+					TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
+					iPoint dest = App->map->WorldToMap(commander->position.x, commander->position.y);
+					TownHall_pos = App->pathfinding->FirstWalkableAdjacentSafeProof(TownHall_pos, dest);
+					commands.push_back(new AttackingMoveToSquadFlying(commander, TownHall_pos));
+				}
+			}
+		}
 	}
 	bool everyone_in_position = true;
 	return true;

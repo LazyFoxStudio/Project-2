@@ -268,8 +268,13 @@ bool MoveToSquad::OnInit()
 {
 	if (!flow_field)
 	{
-		flow_field = App->pathfinding->RequestFlowField(dest);
-		state = TO_INIT;
+		if (Unit* commander = squad->getCommander())
+		{
+			iPoint commander_map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
+			flow_field = App->pathfinding->RequestFlowField(dest, commander_map_p);
+			state = TO_INIT;
+		}
+		else Stop();
 	}
 	else if(flow_field->stage == FAILED) { Stop(); return true; }
 	
@@ -638,7 +643,7 @@ bool Attack::searchTarget()
 
 		if (!App->pathfinding->IsWalkable(targetMap_p) && unit->IsRanged())
 		{
-			targetMap_p = App->pathfinding->FirstWalkableAdjacent(targetMap_p);
+			targetMap_p = App->pathfinding->FirstWalkableAdjacentSafeProof(targetMap_p, map_p);
 			iPoint world_p = App->map->MapToWorld(targetMap_p.x, targetMap_p.y);
 
 			if(world_p.DistanceTo(current_target) > (unit->range - App->map->data.tile_width))

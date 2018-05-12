@@ -208,6 +208,28 @@ iPoint j1PathFinding::FirstWalkableAdjacent(iPoint map_pos, int max_distance)
 	return { -1,-1 };
 }
 
+iPoint j1PathFinding::FirstWalkableAdjacentSafeProof(iPoint map_pos, iPoint dest, int max_distance)
+{
+	if (!max_distance) max_distance = MAX_ADJACENT_DIST;
+
+	iPoint ret;
+	int radius = 1;
+
+	while (radius < max_distance)
+	{
+		for (int i = -radius; i <= radius; i++)
+			for (int j = -radius; j <= radius; j++)
+				if (std::abs(i) == radius || std::abs(j) == radius)
+				{
+					ret.create(map_pos.x + i, map_pos.y + j);
+						if (App->pathfinding->IsWalkable(ret) && CreatePath(ret, dest) > 0)
+						return ret;
+				}
+		radius++;
+	}
+	return { -1,-1 };
+}
+
 // PathNode -------------------------------------------------------------------------
 // Calculates this tile score
 // ----------------------------------------------------------------------------------
@@ -235,6 +257,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, iPoint& destination)
 	BROFILER_CATEGORY("Pathfinding", Profiler::Color::Magenta);
 	last_path.clear();
 	int ret = -1;
+	bool completed = false;
 
 	if (!IsWalkable(destination))
 	{
@@ -267,6 +290,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, iPoint& destination)
 			for (current = lowestScoreNode; current.parent; current = *current.parent)
 				last_path.push_front(current.pos);
 
+			completed = true;
 			break;
 		}
 
@@ -293,7 +317,10 @@ int j1PathFinding::CreatePath(const iPoint& origin, iPoint& destination)
 		}
 	}
 
-	return ret;
+	if (completed)
+		return ret;
+	else
+		return -1;
 }
 
 
@@ -386,14 +413,14 @@ FieldNode* FlowField::getNodeAt(iPoint p)
 		return &field[0][0];
 }
 
-FlowField* j1PathFinding::RequestFlowField(iPoint destination)
+FlowField* j1PathFinding::RequestFlowField(iPoint destination, iPoint origin)
 {
-	PathProcessor* pp = new PathProcessor(destination);
+	PathProcessor* pp = new PathProcessor(destination, origin);
 	App->pathfinding->path_pool.push_back(pp);
 	return pp->flow_field;
 }
 
-PathProcessor::PathProcessor(iPoint destination) : destination(destination)
+PathProcessor::PathProcessor(iPoint destination, iPoint origin) : destination(destination), origin(origin)
 { 
 	flow_field = new FlowField(App->map->data.width, App->map->data.height);
 }
@@ -405,8 +432,8 @@ bool PathProcessor::ProcessFlowField(j1Timer& timer)
 	{
 	case REQUESTED:
 
-		if (!App->pathfinding->IsWalkable(destination))
-			destination = App->pathfinding->FirstWalkableAdjacent(destination);
+		if (App->pathfinding->CreatePath(origin, destination) == -1)
+			destination = App->pathfinding->FirstWalkableAdjacentSafeProof(destination, origin);
 
 		if (!App->pathfinding->IsWalkable(destination))		flow_field->stage = FAILED;
 		else
