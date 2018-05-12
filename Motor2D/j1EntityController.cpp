@@ -45,9 +45,12 @@ bool j1EntityController::Start()
 	next_wave = App->console->AddFunction("next_wave", this, 0, 0);
 
 	new_wood_cost = App->console->AddFunction("change_wood_cost", this, 2, 2, "entity, cost");
-	new_worker_cost = App->console->AddFunction("change_worker_cost", this, 2, 2, "entity, cost");;
-	new_gold_cost = App->console->AddFunction("change_gold_cost", this, 2, 2, "entity, cost");;
-	new_oil_cost = App->console->AddFunction("change_oil_cost", this, 2, 2, "entity, cost");;
+	new_worker_cost = App->console->AddFunction("change_worker_cost", this, 2, 2, "entity, cost");
+	new_gold_cost = App->console->AddFunction("change_gold_cost", this, 2, 2, "entity, cost");
+	new_oil_cost = App->console->AddFunction("change_oil_cost", this, 2, 2, "entity, cost");
+
+	spawn_squad = App->console->AddFunction("spawn_squad", this, 1, 3, "entity, x, y");
+	spawn_building = App->console->AddFunction("spawn_building", this, 3, 3, "building, x, y");
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	return true;
@@ -490,6 +493,13 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 {
 	//SAVE_UNITS
 	pugi::xml_node units_node = file.append_child("Units");
+
+	pugi::xml_node hero_node = units_node.append_child("Hero");
+	Hero* heroE = (Hero*)App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID);
+	hero_node.append_attribute("hp") = heroE->current_HP;
+	hero_node.append_attribute("x") = heroE->position.x;
+	hero_node.append_attribute("y") = heroE->position.y;
+
 	for (std::list<Squad*>::const_iterator it = squads.begin(); it != squads.end(); it++)
 	{
 		std::vector<Unit*> units_of_squad;
@@ -569,6 +579,10 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 
 	//SAVE_BUILDINGS
 	pugi::xml_node buildings_node = file.append_child("Buildings");
+
+	pugi::xml_node tw = buildings_node.append_child("town_hall");
+	tw.append_attribute("hp") = town_hall->current_HP;
+
 	for (std::list<Entity*>::const_iterator it = entities.begin(); it != entities.end(); it++)
 	{
 		if ((*it)->IsBuilding() && (*it)->type != TOWN_HALL)
@@ -619,6 +633,10 @@ bool j1EntityController::Load(pugi::xml_node& file)
 	{
 		if ((*it)->type != HERO_1 && (*it)->type != HERO_2 && (*it)->type != TOWN_HALL)
 		{
+			if ((*it)->IsUnit())
+			{
+				((Unit*)(*it))->commands.clear();
+			}
 			App->gui->entityDeleted(*it);
 			DeleteEntity((*it)->UID);
 		}
@@ -705,9 +723,12 @@ bool j1EntityController::Load(pugi::xml_node& file)
 			}
 		}
 	}
-
+	//LOAD BUILDINGS
 	pugi::xml_node buildings = file.child("Buildings");
 	pugi::xml_node building_node;
+
+	pugi::xml_node tw = buildings.child("town_hall");
+	town_hall->current_HP = tw.attribute("hp").as_int();
 
 	for (building_node = buildings.child("Building"); building_node; building_node = building_node.next_sibling("squad"))
 	{
@@ -1479,6 +1500,12 @@ void j1EntityController::UpgradeUnits(UpgradeType type)
 	}
 }
 
+void j1EntityController::RefundResources(Type type)
+{
+	App->scene->gold += DataBase[type]->cost.gold_cost;
+	App->scene->wood += DataBase[type]->cost.wood_cost;
+}
+
 Entity* j1EntityController::getNearestEnemy(Entity* entity, int target_squad)
 {
 	Entity* ret = nullptr;
@@ -1833,6 +1860,7 @@ bool j1EntityController::CreateForest(MapLayer* trees)
 {
 	return true;
 }
+
 bool j1EntityController::Console_Interaction(std::string& function, std::vector<int>& arguments)
 {
 	if (function == lose_game->name)
@@ -2011,9 +2039,32 @@ bool j1EntityController::Console_Interaction(std::string& function, std::vector<
 		{
 			if ((*it)->type >= Type::GRUNT && (*it)->type <= Type::JUGGERNAUT)
 			{
+				if ((*it)->IsUnit())
+				{
+					((Unit*)(*it))->commands.clear();
+				}
+				App->gui->entityDeleted(*it);
 				DeleteEntity((*it)->UID);
 			}
 		}
 	}
+
+	if (function == spawn_squad->name)
+	{
+		float x = arguments.data()[1];
+		float y = arguments.data()[2];
+		fPoint p = { x,y };
+		AddSquad((Type)arguments.data()[0], p);
+	}
+
+	if (function == spawn_building->name)
+	{
+		int x= arguments.data()[1];
+		int y= arguments.data()[2];
+		iPoint c = { x,y };
+		p2Point<int> p = c;
+		addBuilding( p, (Type)arguments.data()[0]);
+	}
+
 	return true;
 }

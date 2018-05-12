@@ -84,6 +84,8 @@ private:
 	SDL_Scancode wasKeyDown = SDL_SCANCODE_UNKNOWN;
 	bool assignNewHotkey = false;
 	uint buttonId = 0;
+
+	bool console_input = false;
 };
 
 #endif // __j1INPUT_H__
