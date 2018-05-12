@@ -57,24 +57,42 @@ bool j1Input::PreUpdate()
 {
 	BROFILER_CATEGORY("input_preupdate", Profiler::Color::BlanchedAlmond);
 	static SDL_Event event;
+
+		wasKeyDown = SDL_SCANCODE_UNKNOWN;
+		const Uint8* keys = SDL_GetKeyboardState(NULL);
+
+		for (int i = 0; i < MAX_KEYS; ++i)
+		{
+			if (!console_input)
+			{
+				if (keys[i] == 1)
+				{
+					if (keyboard[i] == KEY_IDLE) { keyboard[i] = KEY_DOWN; wasKeyDown = (SDL_Scancode)i; }
+					else						keyboard[i] = KEY_REPEAT;
+				}
+				else
+				{
+					if (keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)	keyboard[i] = KEY_UP;
+					else														keyboard[i] = KEY_IDLE;
+				}
+			}				
+			else if (i == SDL_SCANCODE_LCTRL || i == SDL_SCANCODE_C || i == SDL_SCANCODE_HOME || i == SDL_SCANCODE_HOME
+				|| i == SDL_SCANCODE_END || i == SDL_SCANCODE_LEFT || i == SDL_SCANCODE_RIGHT || i == SDL_SCANCODE_BACKSPACE
+				|| i == SDL_SCANCODE_DELETE || i == SDL_SCANCODE_RETURN)
+			{
+				if (keys[i] == 1)
+				{
+					if (keyboard[i] == KEY_IDLE) { keyboard[i] = KEY_DOWN; wasKeyDown = (SDL_Scancode)i; }
+					else						keyboard[i] = KEY_REPEAT;
+				}
+				else
+				{
+					if (keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)	keyboard[i] = KEY_UP;
+					else														keyboard[i] = KEY_IDLE;
+				}
+			}
+		}
 	
-	wasKeyDown = SDL_SCANCODE_UNKNOWN;
-	const Uint8* keys = SDL_GetKeyboardState(NULL);
-
-	for(int i = 0; i < MAX_KEYS; ++i)
-	{
-		if(keys[i] == 1)
-		{
-			if (keyboard[i] == KEY_IDLE) { keyboard[i] = KEY_DOWN; wasKeyDown = (SDL_Scancode)i; }
-			else						keyboard[i] = KEY_REPEAT;
-		}
-		else
-		{
-			if(keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)	keyboard[i] = KEY_UP;
-			else														keyboard[i] = KEY_IDLE;
-		}
-	}
-
 	for(int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
 	{
 		if(mouse_buttons[i] == KEY_DOWN) mouse_buttons[i] = KEY_REPEAT;
