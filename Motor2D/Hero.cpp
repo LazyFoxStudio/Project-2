@@ -52,15 +52,21 @@ bool Hero::Update(float dt)
 			skill_one->Activate();
 			if (!skill_one->going)
 			{			
-				if( type == HERO_1)
+				if (type == HERO_1)
+				{
 					App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
-				else if(type == HERO_2)
-					App->audio->PlayFx(SFX_CONSECRATION);
 
-				if(skill_one->last_cast.IsZero())
-					App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->cast_pos.x, (float)(skill_one->cast_pos.y) }, false);
-				else
-					App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->last_cast.x, (float)(skill_one->last_cast.y) }, false);
+					if (skill_one->last_cast.IsZero())
+						App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->cast_pos.x, (float)(skill_one->cast_pos.y) }, false);
+					else
+						App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->last_cast.x, (float)(skill_one->last_cast.y) }, false);
+				}
+				else if (type == HERO_2)
+				{
+					App->audio->PlayFx(SFX_CONSECRATION);
+					App->particle->AddParticle(PHOLYDAMAGE, position, false);
+
+				}
 
 			}
 			App->gui->cooldownsDisplay->skillUsed(1);
@@ -83,7 +89,13 @@ bool Hero::Update(float dt)
 						App->particle->AddParticle(POVERFLOW, { (float)skill_two->last_cast.x, (float)(skill_two->last_cast.y - 30) }, false);
 				}
 				else if (type == HERO_2)
+				{
 					App->audio->PlayFx(SFX_CIRCLE_OF_LIGHT);
+					if (skill_two->last_cast.IsZero())
+						App->particle->AddParticle(PHOLYHEAL, { (float)skill_two->cast_pos.x, (float)(skill_two->cast_pos.y) }, false);
+					else
+						App->particle->AddParticle(PHOLYHEAL, { (float)skill_two->last_cast.x, (float)(skill_two->last_cast.y) }, false);
+				}
 			}
 			App->gui->cooldownsDisplay->skillUsed(2);
 		}

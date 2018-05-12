@@ -168,6 +168,38 @@
 			<pushback x="323" y="255" w="34" h="34"/>
 		</anim>
 	</template>
+
+<!-- Holy Damage -->
+	<template> 
+		<width value="160"/>
+		<height value="160"/>
+		<anim>
+			<loop value="false"/>
+			<speed value="6"/>
+			<pushback x="0" y="480" w="160" h="160"/>
+			<pushback x="160" y="480" w="160" h="160"/>
+			<pushback x="320" y="480" w="160" h="160"/>
+			<pushback x="480" y="480" w="160" h="160"/>
+			<pushback x="640" y="480" w="160" h="160"/>
+			<pushback x="800" y="480" w="160" h="160"/>
+		</anim>
+	</template>
+
+<!-- Holy Heal -->
+	<template>
+		<width value="160"/>
+		<height value="160"/>
+		<anim>
+			<loop value="false"/>
+			<speed value="10"/>
+			<pushback x="0" y="640" w="160" h="160"/>
+			<pushback x="160" y="640" w="160" h="160"/>
+			<pushback x="320" y="640" w="160" h="160"/>
+			<pushback x="480" y="640" w="160" h="160"/>
+			<pushback x="640" y="640" w="160" h="160"/>
+			<pushback x="800" y="640" w="160" h="160"/>
+		</anim>
+	</template>
    </particle>
 </node>
 
