@@ -499,15 +499,236 @@ bool j1EntityController::CleanUp()
 
 bool j1EntityController::Save(pugi::xml_node& file) const
 {
+	//SAVE_UNITS
+	pugi::xml_node units_node = file.append_child("Units");
+	for (std::list<Squad*>::const_iterator it = squads.begin(); it != squads.end(); it++)
+	{
+		std::vector<Unit*> units_of_squad;
+		(*it)->getUnits(units_of_squad);
+		if (units_of_squad.data()[0]->type != HERO_2 && units_of_squad.data()[0]->type != HERO_1)
+		{
+			pugi::xml_node squad_node = units_node.append_child("squad");
+			squad_node.append_attribute("type_enum") = units_of_squad.data()[0]->type;//SOMEWHAT UNSTABLE
+
+			//READABLE UNITS
+			switch (units_of_squad.data()[0]->type)
+			{
+			case FOOTMAN:
+				squad_node.append_attribute("type") = "FOOTMAN";
+				break;
+			case ARCHER:
+				squad_node.append_attribute("type") = "ARCHER";
+				break;
+			case KNIGHT:
+				squad_node.append_attribute("type") = "KNIGHT";
+				break;
+			case GRYPHON:
+				squad_node.append_attribute("type") = "GRYPHON";
+				break;
+			case BALLISTA:
+				squad_node.append_attribute("type") = "BALLISTA";
+				break;
+			case FLYING_MACHINE:
+				squad_node.append_attribute("type") = "FLYING_MACHINE";
+				break;
+			case GRUNT:
+				squad_node.append_attribute("type") = "GRUNT";
+				break;
+			case AXE_THROWER:
+				squad_node.append_attribute("type") = "AXE_THROWER";
+				break;
+			case DEATH_KNIGHT:
+				squad_node.append_attribute("type") = "DEATH_KNIGHT";
+				break;
+			case DRAGON:
+				squad_node.append_attribute("type") = "DRAGON";
+				break;
+			case CATAPULT:
+				squad_node.append_attribute("type") = "CATAPULT";
+				break;
+			case JUGGERNAUT:
+				squad_node.append_attribute("type") = "JUGGERNAUT";
+				break;
+			default:
+				squad_node.append_attribute("type") = "UNKNOWN UNIT";
+				break;
+			}//LEGIBLE TEXT FOR WHAT TYPE OF UNIT IT IS
+
+			for (int i = 0; i < units_of_squad.size(); ++i)
+			{
+				pugi::xml_node unit_node = squad_node.append_child("unit");
+				unit_node.append_attribute("hp") = units_of_squad.data()[i]->current_HP;
+				unit_node.append_attribute("pos_x") = units_of_squad.data()[i]->position.x;
+				unit_node.append_attribute("pos_y") = units_of_squad.data()[i]->position.y;
+
+				//:^)
+				if (units_of_squad.data()[i]->effects.size() > 0)
+				{
+					for (std::list<Effect*>::const_iterator ef = units_of_squad.data()[i]->effects.begin(); ef != units_of_squad.data()[i]->effects.end(); ef++)
+					{
+						pugi::xml_node effect_node = unit_node.append_child("effect");
+						int new_dur = (*ef)->duration - (*ef)->timer.ReadSec();
+						effect_node.append_attribute("duration_left") = new_dur;
+						effect_node.append_attribute("stat") = (*ef)->type;
+						effect_node.append_attribute("sign") = (*ef)->sign;
+						effect_node.append_attribute("amount") = (*ef)->buff;
+					}
+				}
+			}
+		}
+	}
+
+	//SAVE_BUILDINGS
+	pugi::xml_node buildings_node = file.append_child("Buildings");
 	for (std::list<Entity*>::const_iterator it = entities.begin(); it != entities.end(); it++)
-		if ((*it)->Save()) return false;
+	{
+		if ((*it)->IsBuilding() && (*it)->type != TOWN_HALL)
+		{
+			pugi::xml_node building_node = buildings_node.append_child("Building");
+			building_node.append_attribute("hp") = (*it)->current_HP;
+			building_node.append_attribute("pos_x") = (*it)->position.x;
+			building_node.append_attribute("pos_y") = (*it)->position.y;
+			building_node.append_attribute("type_enum") = (*it)->type;
+			switch ((*it)->type)
+			{
+			case BARRACKS:
+				building_node.append_attribute("type") = "BARRACKS";
+				break;
+			case LUMBER_MILL:
+				building_node.append_attribute("type") = "LUMBER_MILL";
+				break;
+			case FARM:
+				building_node.append_attribute("type") = "FARM";
+				break;
+			case MINE:
+				building_node.append_attribute("type") = "MINE";
+				break;
+			case TURRET:
+				building_node.append_attribute("type") = "TURRET";
+				break;
+			case GNOME_HUT:
+				building_node.append_attribute("type") = "GNOME_HUT";
+				break;
+			case BLACKSMITH:
+				building_node.append_attribute("type") = "BLACKSMITH";
+				break;
+			default:
+				building_node.append_attribute("type") = "UNKNOWN BUILDING";
+				break;
+			}
+		}
+	}
 
 	return true;
 }
 
 bool j1EntityController::Load(pugi::xml_node& file)
 {
-	//TODO
+	//UNITS
+
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		if ((*it)->type != HERO_1 && (*it)->type != HERO_2 && (*it)->type != TOWN_HALL)
+		{
+			App->gui->entityDeleted(*it);
+			DeleteEntity((*it)->UID);
+		}
+	}
+	pugi::xml_node units = file.child("Units");
+	pugi::xml_node squads_node;
+
+	for (squads_node = units.child("squad"); squads_node; squads_node = squads_node.next_sibling("squad"))
+	{
+		Type type = (Type)squads_node.attribute("type_enum").as_int();
+
+		Squad* squad = AddSquad(type, { 1000,1000 });//WILL NEED CHANGE :^)
+		std::vector<Unit*> units_of_squad;
+		squad->getUnits(units_of_squad);
+		pugi::xml_node node_units = squads_node.child("unit");
+		int i = -1;
+		for (i = 0; node_units; ++i)
+		{
+			units_of_squad.data()[i]->current_HP = node_units.attribute("hp").as_int();
+			units_of_squad.data()[i]->position.x = node_units.attribute("pos_x").as_int();
+			units_of_squad.data()[i]->position.y = node_units.attribute("pos_y").as_int();
+			//effects
+			//:^)
+			if (node_units.child("effect"))
+			{
+				pugi::xml_node effect_node;
+				for (effect_node = node_units.child("effect"); effect_node; effect_node = effect_node.next_sibling("effect"))
+					{
+						int duration = effect_node.attribute("duration_left").as_int();
+						operation_sign sign = (operation_sign)effect_node.attribute("sign").as_int();
+						stat_affected sta = (stat_affected)effect_node.attribute("stat").as_int();
+						int amount = effect_node.attribute("amount").as_int();
+						switch (sta)
+						{
+						case ATTACK_STAT:
+							units_of_squad.data()[i]->AddDamagebuff(duration, amount, sign);
+							break;
+						case PIERCING_ATK_STAT:
+							units_of_squad.data()[i]->AddPiercingDamagebuff(duration, amount, sign);
+							break;
+						case SPEED_STAT:
+							units_of_squad.data()[i]->AddSpeedbuff(duration, amount, sign);
+							break;
+						case RANGE_STAT:
+							units_of_squad.data()[i]->AddRangebuff(duration, amount, sign);
+							break;
+						case DEFENSE_STAT:
+							units_of_squad.data()[i]->AddDefensebuff(duration, amount, sign);
+							break;
+						default:
+							break;
+						}
+					}
+			}
+			node_units = node_units.next_sibling("unit");
+		}
+
+		//SET THE COMMANDS FOR ENEMIES
+		if (squad->isFlying())
+		{
+			iPoint TownHall_pos = TOWN_HALL_POS;
+			TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
+			TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
+			squad->commands.push_back(new AttackingMoveToSquadFlying(squad->getCommander(), TownHall_pos));
+		}
+		else
+		{
+			AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->getCommander(), TOWN_HALL_POS);
+			new_atk_order->flow_field = App->wavecontroller->flow_field;
+			squad->commands.push_back(new_atk_order);
+		}
+
+		//WARNING
+		//KILL ALL OTHER UNITS IN SQUAD
+		if (i <= units_of_squad.size()-1)
+		{
+			int it = units_of_squad.size() - (i + 1)/*:^)*/;
+			for (int j = units_of_squad.size() - 1; j > it; --j)
+			{
+				//KILL IT
+				//DeleteEntity(units_of_squad.data()[j]->UID);
+				entities_to_destroy.push_back(units_of_squad.data()[j]->UID);
+				App->gui->entityDeleted(units_of_squad.data()[j]);
+			}
+		}
+	}
+
+	pugi::xml_node buildings = file.child("Buildings");
+	pugi::xml_node building_node;
+
+	for (building_node = buildings.child("Building"); building_node; building_node = building_node.next_sibling("squad"))
+	{
+		int pos_x = building_node.attribute("pos_x").as_int();
+		int pos_y = building_node.attribute("pos_y").as_int();
+		int hp = building_node.attribute("hp").as_int();
+		Type t = (Type)building_node.attribute("type_enum").as_int();
+		Building* b = addBuilding({pos_x,pos_y},t);
+		b->current_HP = hp;
+	}
 	return true;
 }
 
@@ -1088,7 +1309,6 @@ void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entit
 
 }
 
-
 bool j1EntityController::ChechUpgradeCost(UpgradeType type) const
 {
 	bool ret = false;
@@ -1666,172 +1886,6 @@ bool j1EntityController::Console_Interaction(std::string& function, std::vector<
 				break;
 			}
 		}
-		////attack
-		//if (arguments.data()[1] == 0)
-		//{
-		//	switch (arguments.data()[0])
-		//	{
-		//	case 0:
-		//		DataBase[FOOTMAN]->attack = arguments.data()[2];
-		//		LOG("changed footman attack to %d", arguments.data()[2]);
-		//		break;
-		//	case 1:
-		//		DataBase[ARCHER]->attack = arguments.data()[2];
-		//		LOG("changed archer attack to %d", arguments.data()[2]);
-		//		break;
-		//	case 2:
-		//		DataBase[KNIGHT]->attack = arguments.data()[2];
-		//		LOG("changed knight attack to %d", arguments.data()[2]);
-		//		break;
-		//	case 3:
-		//		DataBase[GRYPHON]->attack = arguments.data()[2];
-		//		LOG("changed gryphon attack to %d", arguments.data()[2]);
-		//		break;
-		//	case 4:
-		//		DataBase[BALLISTA]->attack = arguments.data()[2];
-		//		LOG("changed ballista attack to %d", arguments.data()[2]);
-		//		break;
-		//	case 5:
-		//		DataBase[FLYING_MACHINE]->attack = arguments.data()[2];
-		//		LOG("changed flying machine attack to %d", arguments.data()[2]);
-		//		break;
-		//	default:
-		//		break;
-		//	}
-		//}
-		////piercing attack
-		//if (arguments.data()[1] == 1)
-		//{
-		//	switch (arguments.data()[0])
-		//	{
-		//	case 0:
-		//		DataBase[FOOTMAN]->piercing_atk = arguments.data()[2];
-		//		LOG("changed footman piercing attack to %d", arguments.data()[2]);
-		//		break;
-		//	case 1:
-		//		DataBase[ARCHER]->piercing_atk = arguments.data()[2];
-		//		LOG("changed archer piercing attack to %d", arguments.data()[2]);
-		//		break;
-		//	case 2:
-		//		DataBase[KNIGHT]->piercing_atk = arguments.data()[2];
-		//		LOG("changed knight piercing attack to %d", arguments.data()[2]);
-		//		break;
-		//	case 3:
-		//		DataBase[GRYPHON]->piercing_atk = arguments.data()[2];
-		//		LOG("changed gryphon piercing attack to %d", arguments.data()[2]);
-		//		break;
-		//	case 4:
-		//		DataBase[BALLISTA]->piercing_atk = arguments.data()[2];
-		//		LOG("changed ballista piercing attack to %d", arguments.data()[2]);
-		//		break;
-		//	case 5:
-		//		DataBase[FLYING_MACHINE]->piercing_atk = arguments.data()[2];
-		//		LOG("changed flying machine piercing attack to %d", arguments.data()[2]);
-		//		break;
-		//	default:
-		//		break;
-		//	}
-		//}
-		////defense
-		//if (arguments.data()[1] == 2)
-		//{
-		//	switch (arguments.data()[0])
-		//	{
-		//	case 0:
-		//		DataBase[FOOTMAN]->defense = arguments.data()[2];
-		//		LOG("changed footman defense to %d", arguments.data()[2]);
-		//		break;
-		//	case 1:
-		//		DataBase[ARCHER]->defense = arguments.data()[2];
-		//		LOG("changed archer defense to %d", arguments.data()[2]);
-		//		break;
-		//	case 2:
-		//		DataBase[KNIGHT]->defense = arguments.data()[2];
-		//		LOG("changed knight defense to %d", arguments.data()[2]);
-		//		break;
-		//	case 3:
-		//		DataBase[GRYPHON]->defense = arguments.data()[2];
-		//		LOG("changed gryphon defense to %d", arguments.data()[2]);
-		//		break;
-		//	case 4:
-		//		DataBase[BALLISTA]->defense = arguments.data()[2];
-		//		LOG("changed ballista defense to %d", arguments.data()[2]);
-		//		break;
-		//	case 5:
-		//		DataBase[FLYING_MACHINE]->defense = arguments.data()[2];
-		//		LOG("changed flying machine defense to %d", arguments.data()[2]);
-		//		break;
-		//	default:
-		//		break;
-		//	}
-		//}
-		////sight
-		//if (arguments.data()[1] == 3)
-		//{
-		//	switch (arguments.data()[0])
-		//	{
-		//	case 0:
-		//		DataBase[FOOTMAN]->line_of_sight = arguments.data()[2];
-		//		LOG("changed footman sight %d", arguments.data()[2]);
-		//		break;
-		//	case 1:
-		//		DataBase[ARCHER]->line_of_sight = arguments.data()[2];
-		//		LOG("changed archer sight %d", arguments.data()[2]);
-		//		break;
-		//	case 2:
-		//		DataBase[KNIGHT]->line_of_sight = arguments.data()[2];
-		//		LOG("changed knight sight %d", arguments.data()[2]);
-		//		break;
-		//	case 3:
-		//		DataBase[GRYPHON]->line_of_sight = arguments.data()[2];
-		//		LOG("changed gryphon sight %d", arguments.data()[2]);
-		//		break;
-		//	case 4:
-		//		DataBase[BALLISTA]->line_of_sight = arguments.data()[2];
-		//		LOG("changed ballista sight %d", arguments.data()[2]);
-		//		break;
-		//	case 5:
-		//		DataBase[FLYING_MACHINE]->line_of_sight = arguments.data()[2];
-		//		LOG("changed flying machine sight %d", arguments.data()[2]);
-		//		break;
-		//	default:
-		//		break;
-		//	}
-		//}
-		////range
-		//if (arguments.data()[1] == 4)
-		//{
-		//	switch (arguments.data()[0])
-		//	{
-		//	case 0:
-		//		DataBase[FOOTMAN]->range = arguments.data()[2];
-		//		LOG("changed footman range %d", arguments.data()[2]);
-		//		break;
-		//	case 1:
-		//		DataBase[ARCHER]->range = arguments.data()[2];
-		//		LOG("changed archer range %d", arguments.data()[2]);
-		//		break;
-		//	case 2:
-		//		DataBase[KNIGHT]->range = arguments.data()[2];
-		//		LOG("changed knight range %d", arguments.data()[2]);
-		//		break;
-		//	case 3:
-		//		DataBase[GRYPHON]->range = arguments.data()[2];
-		//		LOG("changed gryphon range %d", arguments.data()[2]);
-		//		break;
-		//	case 4:
-		//		DataBase[BALLISTA]->range = arguments.data()[2];
-		//		LOG("changed ballista range %d", arguments.data()[2]);
-		//		break;
-		//	case 5:
-		//		DataBase[FLYING_MACHINE]->range = arguments.data()[2];
-		//		LOG("changed flying machine range %d", arguments.data()[2]);
-		//		break;
-		//	default:
-		//		break;
-		//	}
-		//}
-
 	}
 
 	if (function == new_wood_cost->name)

@@ -4,64 +4,47 @@
 	<window />
 	<textures />
 	<audio>
-		<musicVolumeModifier value="0.300000012" />
+		<musicVolumeModifier value="1" />
 		<sfxVolumeModifier value="1" />
 	</audio>
+	<pathfinding />
+	<Console />
 	<map />
 	<fonts />
-	<gui>
-		<score value="200" />
-		<coins value="4" />
-	</gui>
-	<scene>
-		<currentMap num="0" />
-		<time value="20" />
-		<uipos>
-			<uiclock x="0" y="0" />
-			<lifebar x="94" y="5" />
-			<timer x="800" y="100" />
-			<coins x="800" y="0" />
-			<score x="800" y="50" />
-		</uipos>
-	</scene>
-	<sceneswitch />
-	<mapchange />
+	<scene />
 	<entitycontroller>
-		<player>
-			<position x="6151" y="632" />
-			<speed x="0" y="0" />
-			<collider width="32" height="63" x="6162" y="641" />
-			<grounded value="true" />
-			<dashing value="false" />
-			<currentDashtime value="0" />
-		</player>
-		<flyingfurrball>
-			<position x="1236" y="1563" />
-		</flyingfurrball>
-		<flyingfurrball>
-			<position x="1868" y="1766" />
-		</flyingfurrball>
-		<flyingfurrball>
-			<position x="2228" y="1228" />
-		</flyingfurrball>
-		<flyingfurrball>
-			<position x="4482" y="1051" />
-		</flyingfurrball>
-		<flyingfurrball>
-			<position x="3363" y="963" />
-		</flyingfurrball>
-		<flyingfurrball>
-			<position x="4803" y="607" />
-		</flyingfurrball>
-		<landmaid>
-			<position x="1727" y="1695" />
-		</landmaid>
-		<landmaid>
-			<position x="3568" y="1919" />
-		</landmaid>
+		<Units>
+			<squad type_enum="12" type="FOOTMAN">
+				<unit hp="80" pos_x="2015.00269" pos_y="1904.02808" />
+				<unit hp="80" pos_x="2050.10254" pos_y="1939.328" />
+				<unit hp="80" pos_x="2050.20264" pos_y="1904.12805" />
+				<unit hp="80" pos_x="2052.53516" pos_y="1869.64807" />
+				<unit hp="80" pos_x="2017.42627" pos_y="1871.06128" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2127.99854" pos_y="695.279236" />
+				<unit hp="70" pos_x="2163.19629" pos_y="663.625305" />
+				<unit hp="70" pos_x="2127.99634" pos_y="664.536682" />
+				<unit hp="70" pos_x="2092.79614" pos_y="660.253601" />
+				<unit hp="70" pos_x="2092.79956" pos_y="705.457092" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2159.99854" pos_y="3016.89087" />
+				<unit hp="70" pos_x="2124.7959" pos_y="3050.72778" />
+				<unit hp="70" pos_x="2159.98901" pos_y="3079.46802" />
+				<unit hp="70" pos_x="2195.19629" pos_y="3046.95728" />
+				<unit hp="70" pos_x="2195.08081" pos_y="3079.71436" />
+			</squad>
+		</Units>
+		<Buildings />
 	</entitycontroller>
-	<pathfinding />
+	<gui />
+	<introscene />
+	<sceneswitch />
+	<particle />
+	<actionscontroller />
+	<wavecontroller />
 	<renderer>
-		<camera x="5810" y="248" />
+		<camera x="-1200" y="-1600" />
 	</renderer>
 </game_state>

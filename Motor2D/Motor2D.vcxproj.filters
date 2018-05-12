@@ -389,9 +389,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Game\save_file.tmx">
-      <Filter>Desenvolupament  ========\Files</Filter>
-    </None>
     <None Include="..\Game\maps\map1.tmx">
       <Filter>Desenvolupament  ========\Files</Filter>
     </None>
@@ -410,6 +407,9 @@
       <Filter>Desenvolupament  ========\Files</Filter>
     </Xml>
     <Xml Include="..\Game\Particle_Templates.xml">
+      <Filter>Desenvolupament  ========\Files</Filter>
+    </Xml>
+    <Xml Include="..\Game\save_file.xml">
       <Filter>Desenvolupament  ========\Files</Filter>
     </Xml>
   </ItemGroup>

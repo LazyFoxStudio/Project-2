@@ -217,3 +217,71 @@ void j1WaveController::entity_selector(int num)
 		}
 	}
 }
+
+bool j1WaveController::Save(pugi::xml_node& file) const
+{
+	file.append_child("wave").append_attribute("value") = current_wave;
+	file.append_child("points").append_attribute("value") = points;
+	file.append_child("wave_timer").append_attribute("value") = wave_timer.ReadSec();
+
+	pugi::xml_node nw = file.append_child("next_wave");
+	for (std::list<NextWave*>::iterator it = next_wave.begin; it != next_wave.end; it++)
+	{
+		pugi::xml_node w = nw.append_child("enemies");
+		switch ((*it)->type)
+		{
+		case GRUNT:
+			w.append_attribute("type") = "GRUNT";
+			break;
+		case AXE_THROWER:
+			w.append_attribute("type") = "AXE_THROWER";
+			break;
+		case DEATH_KNIGHT:
+			w.append_attribute("type") = "DEATH_KNIGHT";
+			break;
+		case DRAGON:
+			w.append_attribute("type") = "DRAGON";
+			break;
+		case CATAPULT:
+			w.append_attribute("type") = "CATAPULT";
+			break;
+		case JUGGERNAUT:
+			w.append_attribute("type") = "JUGGERNAUT";
+			break;
+		default:
+			w.append_attribute("type") = "UNKNOWN ENEMY UNIT";
+			break;
+		}
+		w.append_attribute("type_enum") = (*it)->type;
+		w.append_attribute("x") = (*it)->spawn.x;
+		w.append_attribute("y") = (*it)->spawn.y;
+	}
+}
+
+bool j1WaveController::Load(pugi::xml_node& file)
+{
+	current_wave = file.child("wave").attribute("value").as_int();
+	points = file.child("points").attribute("value").as_int();
+	int CHANGE_ME_IM_THE_TIMER/*:^)*/ = file.child("wave_timer").attribute("value").as_int();//readsec of the wave when closed
+
+	for (std::list<NextWave*>::iterator it = next_wave.begin; it != next_wave.end; it++)
+	{
+		RELEASE(*it);
+	}
+	next_wave.clear();
+
+	pugi::xml_node node_1 = file.child("next_wave").child("enemies");
+	for (int i = 0; node_1; ++i)
+	{
+		Type type = (Type)node_1.attribute("type_enum").as_int();
+		int x = node_1.attribute("x").as_int();
+		int y = node_1.attribute("y").as_int();
+		NextWave* n = new NextWave(type, {x,y});
+
+		next_wave.push_back(n);
+
+		node_1 = node_1.next_sibling("enemies");
+	}
+
+
+}
