@@ -336,7 +336,10 @@ void Building::DemolishBuilding()
 
 void Building::Draw(float dt)
 {
-	App->render->Blit(texture, position.x, position.y, current_sprite);
+	if (App->render->CullingCam(position))
+	{
+		App->render->Blit(texture, position.x, position.y, current_sprite);
+	}
 }
 
 void Building::turretBehavior()

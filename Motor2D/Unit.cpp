@@ -60,11 +60,14 @@ void Unit::Draw(float dt)
 	if (!isActive) return;
 
 	SDL_Rect r = current_anim->GetCurrentFrame(dt);
-
-	if(dir == W  || dir == NW || dir == SW)
-		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r, true,false,(1.0F), SDL_FLIP_HORIZONTAL);
-	else
-		App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r);
+	
+	if (App->render->CullingCam(position))
+	{
+		if (dir == W || dir == NW || dir == SW)
+			App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r, true, false, (1.0F), SDL_FLIP_HORIZONTAL);
+		else
+			App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r);
+	}
 	
 }
 

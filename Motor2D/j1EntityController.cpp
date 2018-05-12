@@ -76,9 +76,10 @@ bool j1EntityController::Update(float dt)
 				if (!(*it)->Update(dt))	entities_to_destroy.push_back((*it)->UID);
 			}
 			
+			(*it)->Draw(dt);
+
 			if (App->render->CullingCam((*it)->position))
 			{
-				(*it)->Draw(dt);
 				if (debug) debugDrawEntity(*it);
 			}
 		}
@@ -160,18 +161,6 @@ bool j1EntityController::Update(float dt)
 		hero->isSelected = true;
 	
 		App->gui->newSelectionDone();
-	}
-	//Group Control
-	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && hero != nullptr)
-	{
-		if (selected_entities.size() > 0)
-		{
-			for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
-			{
-
-			}
-		}
-
 	}
 
 	return true;
