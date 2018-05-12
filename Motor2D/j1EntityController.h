@@ -195,8 +195,8 @@ public:
 	function* kill_selected;
 	function* change_stat;
 	function* next_wave;
-
-
+	function* spawn_squad;
+	function* spawn_building;
 };
 #endif // !
 
