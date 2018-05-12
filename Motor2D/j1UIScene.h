@@ -55,6 +55,7 @@ public:
 public:
 
 	std::list<menu*> menus;
+
 };
 
 #endif
