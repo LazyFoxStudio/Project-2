@@ -248,7 +248,7 @@ void j1ParticleController::AddProgressiveParticle(particleType type, fPoint posi
 				p->position.x = position.x + (float)(vec.x*j);
 				p->position.y = position.y + (float)(vec.y*j);
 
-				p->delay = j*(1000 / numofseparations);
+				p->delay = j*(500 / numofseparations);
 
 				float tmp = (float)(1 / numofseparations);
 				p->scale = 1 + (spread - 1) * ((float)(tmp * j));

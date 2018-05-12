@@ -18,7 +18,7 @@ enum particleType
 	PYAHMAM_AA,
 	PBALLISTA,
 	PFLYINGMACHINE,
-	PDEATHKNIGHT,
+	PGRIFFON,
 	PDRAGON,
 	PCATAPULT,
 	PJUGGERNAUT,
@@ -64,7 +64,7 @@ public:
 	Particle* FindParticleType(particleType type);
 	void AdjustDirection(Particle* p, fPoint objective, float speed);
 	
-	double GetAngleInDegrees(Particle* p);
+	//double GetAngleInDegrees(Particle* p);
 
 	void AddParticle(particleType type = PNO_TYPE, fPoint position = { 0,0 }, bool using_center = true);
 	void AddProjectile(particleType type = PNO_TYPE, fPoint position = { 0,0 }, fPoint objective = { 0,0 }, float speed = 0, bool using_camera = true);

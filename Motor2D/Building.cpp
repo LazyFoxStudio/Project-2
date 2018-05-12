@@ -16,6 +16,7 @@
 #include "UI_CooldownsDisplay.h"
 #include "Unit.h"
 #include "j1Pathfinding.h"
+#include "j1ActionsController.h"
 
 #define TURRET_ROF 1.0f
 #define RANDOM_FACTOR (1.0f - (((float)(rand() % 6)) / 10.0f))

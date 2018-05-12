@@ -38,7 +38,7 @@ bool j1EntityController::Start()
 	colliderQT = new Quadtree({ 0,0,App->map->data.width*App->map->data.tile_width,App->map->data.height*App->map->data.tile_height }, 0);
 	
 	lose_game = App->console->AddFunction("lose_game",this,0,0);
-	reset_hero_cd = App->console->AddFunction("reset_hero_cd", this, 0, 0);;
+	reset_hero_cd = App->console->AddFunction("reset_hero_cd", this, 0, 0);
 	complete_buildings = App->console->AddFunction("creation_speed", this, 1, 2, " entity , time_to_create");
 	kill_selected = App->console->AddFunction("kill_selected",this,0,0);
 	change_stat = App->console->AddFunction("change_stat", this, 3, 3, " entity , stat , value");
@@ -390,8 +390,8 @@ void j1EntityController::HandleParticles(Type type, fPoint pos, fPoint obj, floa
 	case AXE_THROWER:
 		App->particle->AddProjectile(particleType::PTOMAHAWK, pos, obj, speed);
 		break;
-	case Type::DEATH_KNIGHT:
-		App->particle->AddProjectile(particleType::PDEATHKNIGHT, pos, obj, speed);
+	case Type::GRYPHON:
+		App->particle->AddProjectile(particleType::PGRIFFON, pos, obj, speed);
 		break;
 	case Type::DRAGON:
 		//App->particle->AddProjectile(particleType::PDRAGON, pos, obj, speed);

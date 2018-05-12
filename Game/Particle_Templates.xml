@@ -60,10 +60,15 @@
 <!-- Death Knight -->
 	<template> 
 		<width value="32"/>
-		<height value="20"/>
+		<height value="32"/>
+    <parabollic value="true"/>
 		<anim>
-			<pushback x="64" y="127" w="32" h="20"/>
-			<loop value="false"/>
+			<loop value="true"/>
+			<speed value="5"/>
+			<pushback x="816" y="16" w="32" h="32"/>
+			<pushback x="848" y="16" w="32" h="32"/>
+			<pushback x="880 " y="16" w="32" h="32 "/>
+
 		</anim>
 	</template>
 
@@ -138,7 +143,7 @@
 		<height value="32"/>
 		<anim>
 			<loop value="false"/>
-			<speed value="7"/>
+			<speed value="10"/>
 			<pushback x="608" y="128" w="32" h="32"/>
 			<pushback x="640" y="128" w="32" h="32"/>
 			<pushback x="672" y="128" w="32" h="32"/>
