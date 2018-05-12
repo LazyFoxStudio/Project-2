@@ -46,7 +46,7 @@ void Command::Restart() { OnStop(); state = TO_INIT; }
 bool MoveTo::OnInit()
 {
 	if (!flow_field) Stop();
-	else flow_field->used_by++;
+	else if(!unit->IsEnemy()) flow_field->used_by++;
 
 	return true;
 }
@@ -91,7 +91,7 @@ bool MoveTo::OnStop()
 	if(unit->squad) 
 		unit->mov_direction = unit->squad->squad_direction;
 
-	if(flow_field) flow_field->used_by--;
+	if(!unit->IsEnemy() && flow_field) flow_field->used_by--;
 	return true;
 }
 
@@ -144,7 +144,7 @@ bool Attack::OnUpdate(float dt)
 				if(App->render->CullingCam(unit->position))
 					App->entitycontroller->HandleAttackSFX(unit->type, 30);
 
-				App->entitycontroller->HandleParticles(unit->type, unit->position, enemy->position);
+				App->entitycontroller->HandleParticles(unit->type, unit->position, { enemy->position.x + (enemy->collider.w / 2), enemy->position.y + (enemy->collider.h / 2) });
 
 				if (unit->HasAoEDamage())
 					AoE_Damage(enemy);
@@ -212,14 +212,14 @@ bool MultiTargetAttack::OnUpdate(float dt)
 					if (i == 0)
 					{
 						AoE_Damage(enemies[i]);
-						App->entitycontroller->HandleParticles(unit->type, unit->position,  enemies[i]->position);
+						App->entitycontroller->HandleParticles(unit->type, unit->position, { enemies[i]->position.x + (enemies[i]->collider.w / 2), enemies[i]->position.y + (enemies[i]->collider.h / 2) });
 						unit->lookAt(enemies[i]->position - unit->position);
 						unit->mov_module = 0;
 					}
 					else
 					{
 						enemies[i]->current_HP -= dealDamage(unit, enemies[i]); //dmg
-						App->entitycontroller->HandleParticles(ARCHER, unit->position, enemies[i]->position);
+						App->entitycontroller->HandleParticles(ARCHER, unit->position, { enemies[i]->position.x + (enemies[i]->collider.w / 2), enemies[i]->position.y + (enemies[i]->collider.h / 2) });
 
 						if (enemies[i]->current_HP < 0) enemies[i]->Destroy();
 						else					   callRetaliation(enemies[i], unit->squad->UID);
@@ -280,7 +280,7 @@ bool MoveToSquad::OnInit()
 bool MoveToSquad::OnUpdate(float dt)
 {
 	if ((allIdle() && launched) || flow_field->stage == FAILED) 
-		Stop();
+		Stop(); 
 	else {
 		if (Unit* commander = squad->getCommander())
 		{
@@ -601,7 +601,7 @@ bool Attack::searchTarget()
 
 	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
 	{
-		if ((*it)->IsEnemy() == unit->IsEnemy())
+		if ((*it)->IsEnemy() == unit->IsEnemy() && (*it)->IsUnit())
 		{
 			Unit* ally = (Unit*)(*it);
 			if (ally->getCurrentCommand() == ATTACK || ally->getCurrentCommand() == ATTACKING_MOVETO)
@@ -626,7 +626,11 @@ bool Attack::searchTarget()
 
 	}
 
-	if (current_target.IsZero()) current_target = enemy_atk_slots->at(rand() % enemy_atk_slots->size());
+	if (current_target.IsZero())
+	{
+		return false;
+		state == ATTACKING_MOVETO;
+	}
 
 	if (!unit->IsFlying())
 	{
@@ -711,7 +715,6 @@ void Attack::callRetaliation(Entity* enemy, uint squad_UID)
 			}
 		}
 	}
-
 }
 
 int Attack::dealDamage(Entity * attacker, Entity * defender)

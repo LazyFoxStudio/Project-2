@@ -20,6 +20,7 @@
 #include "j1ActionsController.h"
 #include "UI_CostDisplay.h"
 #include "j1WaveController.h"
+#include "j1Tutorial.h"
 
 j1UIScene::j1UIScene() { name = "introscene"; pausable = false; }
 
@@ -64,6 +65,9 @@ bool j1UIScene::Start()
 	Text* survived_waves = (Text*)App->gui->GetElement(TEXT, 9);
 	survived_waves->convertIntoCounter(&App->wavecontroller->current_wave);
 
+
+	
+
 	//Hardcoded
 	Button* barracks = App->gui->GetActionButton(5);
 	barracks->setCondition("Build first a Lumber Mill");
@@ -93,6 +97,19 @@ bool j1UIScene::Start()
 
 bool j1UIScene::Update(float dt)
 {
+	Text* tutorial_on = (Text*)App->gui->GetElement(TEXT, 38);
+	Text* tutorial_off = (Text*)App->gui->GetElement(TEXT, 39);
+
+	if (App->tutorial->active == true)
+	{
+		tutorial_on->active = true;
+		tutorial_off->active = false;
+	}
+	else if (App->tutorial->active == false)
+	{
+		tutorial_off->active = true;
+		tutorial_on->active = false;
+	}
 
 	return true;
 }

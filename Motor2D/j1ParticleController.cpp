@@ -70,10 +70,10 @@ bool j1ParticleController::Update(float dt)
 		}
 		else if (p->currentLife.Read() > 0)
 		{
-			if (App->render->CullingCam(p->position))
+			if (App->render->CullingCam(p->position) && p->active)
 			{
 				SDL_Rect frame = p->anim.GetCurrentFrame(dt);
-				App->render->Blit(graphics, p->position.x - frame.w / 2, p->position.y - frame.h / 2, &frame, true, false, 1, SDL_FLIP_NONE, 1, RADTODEG * p->angle);
+				App->render->Blit(graphics, p->position.x - (frame.w*p->scale) / 2, p->position.y - (frame.h*p->scale) / 2, &frame, true, false, p->scale, SDL_FLIP_NONE, 1, RADTODEG * p->angle);
 			}
 		}
 
@@ -192,6 +192,9 @@ void j1ParticleController::AddParticle(particleType type, fPoint position, bool 
 			p->speed.SetToZero();
 
 			p->currentLife.Start();
+			p->active = true;
+			p->delay = 0;
+			p->scale = 1;
 
 			active[i] = p;
 			break;
@@ -201,24 +204,59 @@ void j1ParticleController::AddParticle(particleType type, fPoint position, bool 
 
 void j1ParticleController::AddProjectile(particleType type, fPoint position, fPoint objective, float speed, bool using_camera)
 {
+
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
 		if (active[i] == nullptr)
 		{
 			Particle* p = new Particle(*FindParticleType(type));
 			p->currentLife.Start();
-			
 
 			p->position.x = position.x;
 			p->position.y = position.y;
-		
+
 			if (speed != 0)
-				AdjustDirection(p, objective, speed);
-			else 
-				break;
+					AdjustDirection(p, objective, speed);
+			else
+			break;
+
+			p->active = true;
+			p->delay = 0;
+			p->scale = 1;
 
 			active[i] = p;
 			break;
+		}
+	}
+}
+
+void j1ParticleController::AddProgressiveParticle(particleType type, fPoint position, fPoint objective, float spread, float numofseparations, bool using_camera)
+{
+	fPoint vec = { objective.x - position.x, objective.y - position.y };
+	vec.x = vec.x / numofseparations;
+	vec.y = vec.y / numofseparations;
+
+	for (int j = 0; j != numofseparations+1; j++)
+	{
+		for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
+		{
+			if (active[i] == nullptr)
+			{
+				Particle* p = new Particle(*FindParticleType(type));
+				p->currentLife.Start();
+
+				p->position.x = position.x + (float)(vec.x*j);
+				p->position.y = position.y + (float)(vec.y*j);
+
+				p->delay = j*(500 / numofseparations);
+
+				float tmp = (float)(1 / numofseparations);
+				p->scale = 1 + (spread - 1) * ((float)(tmp * j));
+				p->angle = 0;
+
+				active[i] = p;
+				break;
+			}
 		}
 	}
 }
@@ -252,7 +290,7 @@ Particle::Particle()
 }
 
 Particle::Particle(Particle& p) :
-	anim(p.anim), position(p.position), life(p.life), 
+	anim(p.anim), position(p.position), life(p.life), delay(p.delay), scale(p.scale),
 	type(p.type), width(p.width), height(p.height), parabollic(p.parabollic)
 {}
 
@@ -261,6 +299,21 @@ bool Particle::Update(float dt)
 {
 	bool ret = true;
 	int aux = (currentLife.Read());
+	if (delay > 0)
+	{
+		if (aux > delay)
+		{
+			if (!active)
+			{
+				active = true;
+				anim.Reset();
+			}
+		}
+		else
+		{
+			return ret;
+		}
+	}
 
 	if (life > 0)
 	{

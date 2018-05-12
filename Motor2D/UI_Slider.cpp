@@ -33,7 +33,7 @@ void Slider::BlitElement()
 
 	std::string newText = std::to_string((int)(progress*100));
 	progress_num->setText(newText);
-	progress_num->localPosition.x = full.w * App->gui->w_stretch - progress_num->section.w / (2 / App->gui->w_stretch);
+	progress_num->localPosition.x = full.w - progress_num->section.w /2;
 	progress_num->localPosition.y = -progress_num->section.h * App->gui->h_stretch;
 
 	if (progress < 0.01)

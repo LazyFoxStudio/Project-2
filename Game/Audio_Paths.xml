@@ -62,8 +62,10 @@
 	<path sfx="Spells/Iokilrog.wav"/>
 	<path sfx="Misc/Burning.wav"/>
 	<path sfx="Misc/Explode.wav"/>
+	<path sfx="Spells/Heal.wav"/>
 
 <!-- UI/Map -->
+	<path sfx="Misc/Cantdothat.wav"/>
 	<path sfx="Map/Massist.wav"/>
 	<path sfx="Map/Massist.wav"/>
 	<path sfx="Map/Mattack.wav"/>

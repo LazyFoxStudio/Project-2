@@ -16,6 +16,7 @@
 #include "UI_CooldownsDisplay.h"
 #include "Unit.h"
 #include "j1Pathfinding.h"
+#include "j1ActionsController.h"
 
 #define TURRET_ROF 1.0f
 #define RANDOM_FACTOR (1.0f - (((float)(rand() % 6)) / 10.0f))
@@ -116,13 +117,13 @@ bool Building::Update(float dt)
 
 				if (TH_center.DistanceTo(iPoint(hero->position.x, hero->position.y)) < 250 && hero->current_HP < hero->max_HP)
 				{
-					if (healingParticleTimer.ReadSec() > 1)
+					if (healingParticleTimer.ReadSec() > 5)
 					{
 						App->particle->AddParticle(PHEALINGHERO, hero->position, false);
-						//App->audio->PlayFx(SFXList::SFX_BUTTON_CLICKED);
+						App->audio->PlayFx(SFX_MISCELLANEOUS_THHEAL, 50);
 						healingParticleTimer.Restart();
+						hero->current_HP += 10;
 					}
-					hero->current_HP++;
 				}
 			}
 		}
@@ -357,7 +358,7 @@ void Building::turretBehavior()
 					if (App->render->CullingCam(position))
 						App->entitycontroller->HandleAttackSFX(ARCHER, 30);
 
-					App->entitycontroller->HandleParticles(ARCHER, position, (*it)->position);
+					App->entitycontroller->HandleParticles(ARCHER, position, { (*it)->position.x + ((*it)->collider.w / 2), (*it)->position.y + ((*it)->collider.h / 2) });
 
 					(*it)->current_HP -= MAX((RANDOM_FACTOR * (piercing_atk + ((((int)attack - (int)(*it)->defense) <= 0) ? 0 : attack - (*it)->defense))), 1);
 					

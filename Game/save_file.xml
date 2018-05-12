@@ -14,24 +14,29 @@
 	<scene />
 	<entitycontroller>
 		<Units>
+			<Hero hp="250" x="1950" y="2100" />
 			<squad type_enum="12" type="FOOTMAN">
 				<unit hp="80" pos_x="2144" pos_y="2048" />
 				<unit hp="80" pos_x="2144" pos_y="2080" />
 				<unit hp="80" pos_x="2144" pos_y="2112" />
 				<unit hp="80" pos_x="2176" pos_y="2048" />
-				<unit hp="80" pos_x="2176" pos_y="2112" />
 			</squad>
 			<squad type_enum="18" type="GRUNT">
-				<unit hp="70" pos_x="1963.68298" pos_y="2031.99988" />
-				<unit hp="70" pos_x="1963.6925" pos_y="2000.00012" />
-				<unit hp="70" pos_x="1963.0387" pos_y="2063.97534" />
-				<unit hp="70" pos_x="1963.53638" pos_y="1968.11194" />
-				<unit hp="70" pos_x="1963.4729" pos_y="2095.48584" />
+				<unit hp="70" pos_x="2159.76465" pos_y="3364.60596" />
+				<unit hp="70" pos_x="2124.1228" pos_y="3398.42212" />
+				<unit hp="70" pos_x="2156.01953" pos_y="3427.12427" />
+				<unit hp="70" pos_x="2194.19019" pos_y="3394.19775" />
+				<unit hp="70" pos_x="2190.16797" pos_y="3427.37183" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2223.99243" pos_y="3270.58252" />
+				<unit hp="40" pos_x="2188.75684" pos_y="3309.8938" />
+				<unit hp="40" pos_x="2223.47754" pos_y="3333.19434" />
+				<unit hp="40" pos_x="2134.13916" pos_y="3387.50244" />
 			</squad>
 		</Units>
 		<Buildings>
-			<Building hp="250" pos_x="1696" pos_y="1760" type_enum="3" type="LUMBER_MILL" />
-			<Building hp="100" pos_x="1824" pos_y="1728" type_enum="4" type="FARM" />
+			<town_hall hp="300" />
 		</Buildings>
 	</entitycontroller>
 	<gui />
@@ -42,14 +47,14 @@
 	<wavecontroller>
 		<wave value="1" />
 		<points value="3" />
-		<wave_timer value="26.1353092" />
+		<wave_timer value="1.79488873" />
 		<next_wave>
-			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
-			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
+			<enemies type="AXE_THROWER" type_enum="19" x="3605" y="1844" />
+			<enemies type="GRUNT" type_enum="18" x="2154" y="256" />
 			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
 		</next_wave>
 	</wavecontroller>
 	<renderer>
-		<camera x="-1200" y="-1394" />
+		<camera x="-1200" y="-1600" />
 	</renderer>
 </game_state>

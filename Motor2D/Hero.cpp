@@ -51,17 +51,17 @@ bool Hero::Update(float dt)
 		{
 			skill_one->Activate();
 			if (!skill_one->going)
-			{
-				iPoint tmp;
-				App->input->GetMousePosition(tmp.x,tmp.y);
-				fPoint tmp2(tmp.x, tmp.y);
-				
+			{			
 				if( type == HERO_1)
 					App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
 				else if(type == HERO_2)
 					App->audio->PlayFx(SFX_CONSECRATION);
 
-				App->particle->AddParticle(PICICLE_CRASH, tmp2);
+				if(skill_one->last_cast.IsZero())
+					App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->cast_pos.x, (float)(skill_one->cast_pos.y) }, false);
+				else
+					App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->last_cast.x, (float)(skill_one->last_cast.y) }, false);
+
 			}
 			App->gui->cooldownsDisplay->skillUsed(1);
 		}
@@ -73,18 +73,14 @@ bool Hero::Update(float dt)
 		{
 			skill_two->Activate();
 			if (!skill_two->going)
-			{
-				iPoint tmp;
-				App->input->GetMousePosition(tmp.x, tmp.y);
-				//tmp = App->map->WorldToMap(tmp.x, tmp.y);
-				//tmp = App->map->MapToWorld(tmp.x, tmp.y);
-				fPoint tmp2(tmp.x, tmp.y);
-				
-				
+			{		
 				if (type == HERO_1)
 				{
 					App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
-					App->particle->AddParticle(POVERFLOW, { tmp2.x, tmp2.y - 30 });
+					if (skill_two->last_cast.IsZero())
+						App->particle->AddParticle(POVERFLOW, { (float)skill_two->cast_pos.x, (float)(skill_two->cast_pos.y - 30) }, false);
+					else
+						App->particle->AddParticle(POVERFLOW, { (float)skill_two->last_cast.x, (float)(skill_two->last_cast.y - 30) }, false);
 				}
 				else if (type == HERO_2)
 					App->audio->PlayFx(SFX_CIRCLE_OF_LIGHT);
@@ -101,8 +97,14 @@ bool Hero::Update(float dt)
 
 			if (!skill_three->going)
 			{
-				if(type == HERO_1)
+				if (type == HERO_1)
+				{
+					if (skill_three->last_cast.IsZero())
+						App->particle->AddProgressiveParticle(PFLAMETHROWER, position, { (float)skill_three->cast_pos.x, (float)(skill_three->cast_pos.y) }, 2.5f, 10, false);
+					else
+						App->particle->AddProgressiveParticle(PFLAMETHROWER, position, { (float)skill_three->last_cast.x, (float)(skill_three->last_cast.y) }, 2.5f, 10, false);
 					App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
+				}
 				else if(type==HERO_2)
 					App->audio->PlayFx(SFX_HONOR_OF_THE_PURE);
 			}
