@@ -2,6 +2,7 @@
 #include "j1Render.h"
 #include "j1Input.h"
 #include "j1EntityController.h"
+#include "j1ParticleController.h"
 #include "Hero.h"
 #include "j1Pathfinding.h"
 #include "j1Map.h"
@@ -175,6 +176,8 @@ bool Skill::Activate()
 						if (cast_aux.DistanceTo(pos) < radius)
 						{
 							(*item)->current_HP += damage;
+							App->particle->AddParticle(PHEALINGHERO, (*item)->position, false);
+
 							ret = true;
 						}
 					}
@@ -188,6 +191,7 @@ bool Skill::Activate()
 							LOG("defense %d", ((Unit*)(*item))->defense);
 							((Unit*)(*item))->AddDefensebuff(15, 5, PLUS_MINUS);
 							((Unit*)(*item))->AddPiercingDamagebuff(15, 7, PLUS_MINUS);
+							App->particle->AddParticle(PHALO, { (*item)->position.x, (*item)->position.y - 30 }, false);
 							ret = true;
 						}
 					}
@@ -246,6 +250,8 @@ bool Skill::Activate()
 						if (cast_aux.DistanceTo(pos) < radius)
 						{
 							(*item)->current_HP += damage;
+							App->particle->AddParticle(PHEALINGHERO, (*item)->position, false);
+
 							ret = true;
 						}
 					}

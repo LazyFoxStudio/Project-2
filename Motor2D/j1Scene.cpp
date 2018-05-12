@@ -318,6 +318,7 @@ void j1Scene::Start_game()
 
 	toRestart = false;
 
+	App->entitycontroller->AddSquad(FOOTMAN, { 2000,2200 });
 }
 
 void j1Scene::InitialWorkers(Building* town_hall)
@@ -383,6 +384,9 @@ void j1Scene::DeleteWorkers()
 {
 	for (std::list<worker*>::iterator it = workers.begin(); it != workers.end(); it++)
 	{
-		(*it)->to_destroy = true;
+		worker* tmp = (*it);
+		(*it)->farm->workers_inside.remove(*it);
+		App->scene->workers.remove(*it);
+		RELEASE(tmp);
 	}
 }
