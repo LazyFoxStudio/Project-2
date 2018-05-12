@@ -1130,27 +1130,87 @@ void j1Gui::assignActionButtonHotkey(uint id, SDL_Scancode newHotkey)
 {
 	if (id < inGameMenu->actionButtonsHotkeys.size())
 	{
+		Button* button = getButtonbyId(id);
+		if (button != nullptr)
+		{
+			Button* prevButton = searchButtonbyHotkey(newHotkey);
+			if (prevButton != nullptr)
+			{
+				prevButton->setHotkey(button->getHotkey());
+				uint prevId = getIDbyButton(prevButton);
+				if (prevId < MAX_ACTION_BUTONS)
+					inGameMenu->actionButtonsHotkeys[prevId] = inGameMenu->actionButtonsHotkeys[id];
+			}
+			button->setHotkey(newHotkey);
+			button->displayHotkey(true, App->font->getFont(3), { 0,0,0,255 }, true);
+		}
 		inGameMenu->actionButtonsHotkeys[id] = newHotkey;
 		inGameMenu->updateActionButtons();
+	}
+}
 
-		menu* Menu = App->uiscene->getMenu(CHANGE_HOTKEYS_MENU);
-		if (Menu != nullptr)
+Button* j1Gui::searchButtonbyHotkey(SDL_Scancode hotkey) const
+{
+	Button* button = nullptr;
+	menu* Menu = App->uiscene->getMenu(CHANGE_HOTKEYS_MENU);
+	if (Menu != nullptr)
+	{
+		for (std::list<UI_element*>::iterator it_b = Menu->elements.begin(); it_b != Menu->elements.end(); it_b++)
 		{
-			int counter = 0;
-			for (std::list<UI_element*>::iterator it_b = Menu->elements.begin(); it_b != Menu->elements.end(); it_b++)
+			if ((*it_b)->element_type == BUTTON && (*it_b)->clickAction >= 50 && (*it_b)->clickAction <= 58)
 			{
-				if ((*it_b)->element_type == BUTTON && (*it_b)->clickAction >= 50 && (*it_b)->clickAction <= 58)
-				{				
-					if (counter == id)
-					{
-						Button* button = (Button*)(*it_b);
-						button->setHotkey(newHotkey);
-						button->displayHotkey(true, App->font->getFont(3), { 0,0,0,255 }, true);
+					button = (Button*)(*it_b);
+					if (button->getHotkey() == hotkey)
 						break;
-					}
-					counter++;
-				}
 			}
 		}
 	}
+
+	return button;
+}
+
+Button * j1Gui::getButtonbyId(uint id) const
+{
+	Button* button = nullptr;
+	menu* Menu = App->uiscene->getMenu(CHANGE_HOTKEYS_MENU);
+	if (Menu != nullptr)
+	{
+		int counter = 0;
+		for (std::list<UI_element*>::iterator it_b = Menu->elements.begin(); it_b != Menu->elements.end(); it_b++)
+		{
+			if ((*it_b)->element_type == BUTTON && (*it_b)->clickAction >= 50 && (*it_b)->clickAction <= 58)
+			{
+				if (counter == id)
+				{
+					button = (Button*)(*it_b);
+				}
+				counter++;
+			}
+		}
+	}
+
+	return button;
+}
+
+uint j1Gui::getIDbyButton(Button* button) const
+{
+	uint id = 100;
+	menu* Menu = App->uiscene->getMenu(CHANGE_HOTKEYS_MENU);
+	if (Menu != nullptr)
+	{
+		for (std::list<UI_element*>::iterator it_b = Menu->elements.begin(); it_b != Menu->elements.end(); it_b++)
+		{
+			if ((*it_b)->element_type == BUTTON && (*it_b)->clickAction >= 50 && (*it_b)->clickAction <= 58)
+			{
+				if ((*it_b) == button)
+					break;
+				if (id == 100)
+					id = 1;
+				else
+					id++;
+			}
+		}
+	}
+
+	return id;
 }

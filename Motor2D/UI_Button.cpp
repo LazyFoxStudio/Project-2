@@ -1,6 +1,7 @@
 #include "UI_Button.h"
 #include "j1App.h"
 #include "j1Render.h"
+#include "j1Fonts.h"
 #include "Brofiler\Brofiler.h"
 
 void Button::BlitElement()
@@ -32,7 +33,7 @@ void Button::BlitElement()
 
 		if (displayingHotkey && hotkey_text != nullptr)
 		{
-			hotkey_text->BlitElement();
+			//hotkey_text->BlitElement();
 		}
 
 		UI_element::BlitElement();
@@ -55,6 +56,7 @@ void Button::displayHotkey(bool display, _TTF_Font* font, SDL_Color color, bool 
 		text = (char)(Hotkey + 61);
 
 		hotkey_text = new Text(text, 0, 0, font, color, nullptr);
+		hotkey_text->interactive = false;
 		appendChild(hotkey_text, true);
 		if (!atCenter)
 			hotkey_text->localPosition = { section.w - hotkey_text->section.w / 2, section.h - hotkey_text->section.h / 2 };
@@ -70,9 +72,39 @@ void Button::setHotkey(SDL_Scancode hotkey)
 		text = (char)(Hotkey + 61);
 		hotkey_text->setText(text);
 	}
+	cancelReadingHotkey();
 }
 
 SDL_Scancode Button::getHotkey() const
 {
 	return Hotkey;
+}
+
+void Button::setReadingHotkey()
+{
+	if (readingHotkeyLine1 == nullptr || readingHotkeyLine2 == nullptr)
+	{
+		readingHotkeyLine1 = new Text("Press a", 15, 25, App->font->getFont(2), { 75, 0, 0, 255 }, nullptr);
+		readingHotkeyLine1->interactive = false;
+		appendChild(readingHotkeyLine1);
+		readingHotkeyLine2 = new Text("letter key", 5, 45, App->font->getFont(2), { 75, 0, 0, 255 }, nullptr);
+		readingHotkeyLine2->interactive = false;
+		appendChild(readingHotkeyLine2);
+	}
+	else
+	{
+		readingHotkeyLine1->active = true;
+		readingHotkeyLine2->active = true;
+	}
+	hotkey_text->active = false;
+}
+
+void Button::cancelReadingHotkey()
+{
+	if (readingHotkeyLine1 != nullptr)
+		readingHotkeyLine1->active = false;
+	if (readingHotkeyLine2 != nullptr)
+		readingHotkeyLine2->active = false;
+	if (hotkey_text != nullptr)
+		hotkey_text->active = true;
 }

@@ -22,6 +22,8 @@ public:
 	void displayHotkey(bool display, _TTF_Font* font = nullptr, SDL_Color color = { 255,0,0,255 }, bool atCenter = false);
 	void setHotkey(SDL_Scancode hotkey);
 	SDL_Scancode getHotkey() const;
+	void setReadingHotkey();
+	void cancelReadingHotkey();
 
 public:
 
@@ -34,6 +36,9 @@ private:
 	bool displayingHotkey = false;
 	SDL_Scancode Hotkey = SDL_SCANCODE_UNKNOWN;
 	Text* hotkey_text = nullptr;
+
+	Text* readingHotkeyLine1 = nullptr;
+	Text* readingHotkeyLine2 = nullptr;
 };
 
 #endif // !__UI_BUTTON__
