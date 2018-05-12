@@ -11,10 +11,10 @@
   </renderer>
 
   <window>
-    <resolution default="true" width="1920" height="1000" scale="1"/>
+    <resolution default="false" width="1920" height="1000" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
-    <resizable value="false"/>
+    <resizable value="true"/>
     <fullscreen_window value="false"/>
     <icon path ="gui/Application icon.png"/>
   </window>
@@ -28,7 +28,7 @@
   <scene>
     <Wood value="800"/>
     <Gold value="300"/>
-    <Workers value="0"/>
+    <Workers value="3"/>
     <Oil value="0"/>
   </scene>
 

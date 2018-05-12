@@ -525,9 +525,9 @@
                 <movementSpeed value="0.7"/>
                 <range value="40"/>
                 <lineOfSight value="200"/>
-                <goldCost value="0"/>
-                <woodCost value="200"/>
-                <workerCost value="4"/>
+                <goldCost value="600"/>
+                <woodCost value="0"/>
+                <workerCost value="5"/>
                 <trainingTime value="1"/>
                 <squadMembers value="4"/>
                 <size x="1" y="1"/>
@@ -754,9 +754,9 @@
                 <movementSpeed value="1.0"/>
                 <range value="210"/>
                 <lineOfSight value="250"/>
-                <goldCost value="0"/>
-                <woodCost value="250"/>
-                <workerCost value="3"/>
+                <goldCost value="500"/>
+                <woodCost value="50"/>
+                <workerCost value="4"/>
                 <trainingTime value="10"/>
                 <squadMembers value="4"/>
                 <size x="1" y="1"/>
@@ -983,9 +983,9 @@
           <movementSpeed value="1.05"/>
           <range value="40"/>
           <lineOfSight value="200"/>
-          <goldCost value="0"/>
-          <woodCost value="200"/>
-          <workerCost value="4"/>
+          <goldCost value="800"/>
+          <woodCost value="100"/>
+          <workerCost value="3"/>
           <trainingTime value="10"/>
           <squadMembers value="3"/>
           <size x="1" y="1"/>
@@ -1240,9 +1240,9 @@
           <movementSpeed value="1.1"/>
           <range value="40"/>
           <lineOfSight value="200"/>
-          <goldCost value="0"/>
-          <woodCost value="200"/>
-          <workerCost value="4"/>
+          <goldCost value="2500"/>
+          <woodCost value="0"/>
+          <workerCost value="3"/>
           <trainingTime value="10"/>
           <squadMembers value="1"/>
           <size x="1" y="1"/>
@@ -1497,9 +1497,9 @@
           <movementSpeed value="0.6"/>
           <range value="210"/>
           <lineOfSight value="250"/>
-          <goldCost value="0"/>
-          <woodCost value="250"/>
-          <workerCost value="3"/>
+          <goldCost value="900"/>
+          <woodCost value="300"/>
+          <workerCost value="2"/>
           <trainingTime value="10"/>
           <squadMembers value="1"/>
           <size x="2" y="2"/>
@@ -1754,9 +1754,9 @@
           <movementSpeed value="1.0"/>
           <range value="210"/>
           <lineOfSight value="250"/>
-          <goldCost value="0"/>
-          <woodCost value="250"/>
-          <workerCost value="3"/>
+          <goldCost value="900"/>
+          <woodCost value="500"/>
+          <workerCost value="6"/>
           <trainingTime value="10"/>
           <squadMembers value="1"/>
           <size x="1" y="1"/>
@@ -2917,10 +2917,6 @@
           <movementSpeed value="0.5"/>
           <range value="40"/>
           <lineOfSight value="200"/>
-          <goldCost value="0"/>
-          <woodCost value="200"/>
-          <workerCost value="4"/>
-          <trainingTime value="10"/>
           <squadMembers value="1"/>
           <size x="1" y="1"/>
         </Stats>
@@ -3174,10 +3170,6 @@
           <movementSpeed value="0.4"/>
           <range value="200"/>
           <lineOfSight value="200"/>
-          <goldCost value="0"/>
-          <woodCost value="200"/>
-          <workerCost value="4"/>
-          <trainingTime value="10"/>
           <squadMembers value="1"/>
           <size x="1" y="1"/>
         </Stats>
@@ -3418,6 +3410,7 @@
           <action id="1"/>
         </Actions>
       </Unit>
+  
     </Units>
   
   <Buildings>
@@ -3471,8 +3464,8 @@
         <villagers value="0"/>
         <buildingTime value="5"/>
         <defense value="20"/>
-        <woodCost value="300"/>
-        <goldCost value="0"/>
+        <woodCost value="500"/>
+        <goldCost value="100"/>
       </Stats>
 	  <Info title="Barracks:">
 		<line text="Use this building"/>
@@ -3514,8 +3507,8 @@
         <villagers value="0"/>
         <buildingTime value="10"/>
         <defense value="20"/>
-        <woodCost value="350"/>
-        <goldCost value="0"/>
+        <woodCost value="0"/>
+        <goldCost value="400"/>
       </Stats>
 	  <Info title="Lumber Mill:">
 		<line text="Use this building"/>
@@ -3551,8 +3544,8 @@
         <villagers value="0"/>
         <buildingTime value="7"/>
         <defense value="20"/>
-        <woodCost value="150"/>
-        <goldCost value="0"/>
+        <woodCost value="250"/>
+        <goldCost value="50"/>
       </Stats>
 	  <Info title="Farm:">
 		<line text="This building is"/>
@@ -3589,7 +3582,7 @@
         <villagers value="0"/>
         <buildingTime value="5"/>
         <defense value="20"/>
-        <woodCost value="350"/>
+        <woodCost value="400"/>
         <goldCost value="0"/>
       </Stats>
 	  <Info title="Mine:">
@@ -3629,8 +3622,8 @@
         <piercingDamage value="4"/>
         <range value="210"/>
         <defense value="20"/>
-        <woodCost value="350"/>
-        <goldCost value="0"/>
+        <woodCost value="600"/>
+        <goldCost value="200"/>
       </Stats>
 	  <Info title=" Turret:">
 		<line text="This building"/>
@@ -3665,8 +3658,8 @@
         <villagers value="0"/>
         <buildingTime value="5"/>
         <defense value="20"/>
-        <woodCost value="300"/>
-        <goldCost value="0"/>
+        <woodCost value="400"/>
+        <goldCost value="200"/>
       </Stats>
 	  <Info title="Gnome Hut:">
 		<line text="Use this building"/>
@@ -3702,7 +3695,7 @@
         <buildingTime value="5"/>
         <defense value="20"/>
         <woodCost value="300"/>
-        <goldCost value="0"/>
+        <goldCost value="500"/>
       </Stats>
 	  <Info title="Church:">
 		<line text="Use this building"/>
@@ -3738,9 +3731,9 @@
         <buildingTime value="5"/>
         <defense value="20"/>
         <woodCost value="300"/>
-        <goldCost value="0"/>
+        <goldCost value="600"/>
       </Stats>
-	  <Info title="Gnome Hut:">
+	  <Info title="Blacksmith:">
 		<line text="Use this building"/>
 		<line text="to train your troops"/>
 	  </Info>
@@ -4028,7 +4021,7 @@
       <OnMouse x="1373" y="939" w="66" h="66"/>
       <OnClick x="1441" y="939" w="66" h="66"/>
       <popUp>
-        <Info text="Increase the attack of the melee troops" cost="true" type="10"/>
+        <Info text="Increase the attack of the melee troops" cost="true" type="1" upgrade="true"/>
       </popUp>
       <hotkey key="Q" font_id="3"/>
     </meleeAttackUpgrade>
@@ -4038,7 +4031,7 @@
       <OnMouse x="1373" y="939" w="66" h="66"/>
       <OnClick x="1441" y="939" w="66" h="66"/>
       <popUp>
-        <Info text="Increase the defense of the melee troops" cost="true" type="11"/>
+        <Info text="Increase the defense of the melee troops" cost="true" type="2" upgrade="true"/>
       </popUp>
       <hotkey key="E" font_id="3"/>
     </meleeArmorUpgrade>
@@ -4048,7 +4041,7 @@
       <OnMouse x="1373" y="939" w="66" h="66"/>
       <OnClick x="1441" y="939" w="66" h="66"/>
       <popUp>
-        <Info text="Increase the attack of ranged troops" cost="true" type="12"/>
+        <Info text="Increase the attack of ranged troops" cost="true" type="3" upgrade="true"/>
       </popUp>
       <hotkey key="A" font_id="3"/>
     </rangedAttackUpgrade>
@@ -4058,7 +4051,7 @@
       <OnMouse x="1373" y="939" w="66" h="66"/>
       <OnClick x="1441" y="939" w="66" h="66"/>
       <popUp>
-        <Info text="Increase the defense of ranged troops" cost="true" type="13"/>
+        <Info text="Increase the defense of ranged troops" cost="true" type="4" upgrade="true"/>
       </popUp>
       <hotkey key="D" font_id="3"/>
     </rangedArmorUpgrade>
@@ -4068,7 +4061,7 @@
       <OnMouse x="1373" y="939" w="66" h="66"/>
       <OnClick x="1441" y="939" w="66" h="66"/>
       <popUp>
-        <Info text="Increase the attack of the flying troops" cost="true" type="14"/>
+        <Info text="Increase the attack of the flying troops" cost="true" type="5" upgrade="true"/>
       </popUp>
       <hotkey key="Z" font_id="3"/>
     </flyingAttackUpgrade>
@@ -4078,7 +4071,7 @@
       <OnMouse x="1373" y="939" w="66" h="66"/>
       <OnClick x="1441" y="939" w="66" h="66"/>
       <popUp>
-        <Info text="Increase the defense of the melee troops" cost="true" type="15"/>
+        <Info text="Increase the defense of the melee troops" cost="true" type="6" upgrade="true"/>
       </popUp>
       <hotkey key="C" font_id="3"/>
     </flyingArmorUpgrade>

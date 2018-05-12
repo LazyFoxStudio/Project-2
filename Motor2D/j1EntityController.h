@@ -32,7 +32,7 @@ class Quadtree;
 #define ATTACK_UPGRADE_GROWTH 2
 #define DEFENSE_UPGRADE_GROWTH 2
 
-#define MELEE_1_UPGRADE_COST 400
+#define MELEE_1_UPGRADE_COST 10
 #define MELEE_2_UPGRADE_COST 800
 
 #define RANGED_1_UPGRADE_COST 500
@@ -130,11 +130,13 @@ public:
 	bool ChechUpgradeCost(UpgradeType type) const;
 	void SpendUpgradeResources(UpgradeType type);
 	void UpgradeUnits(UpgradeType type);
+	void UpgradeExistingUnits(Type type1, Type type2, UpgradeType up_type);
+	Cost getUpgradeCost(UpgradeType type, uint up_lvl);
 
 	void RefundResources(Type type);
 	//------Worker Related Functions--------
 	void SubstractRandomWorkers(int num);
-	void DeleteWorkers();
+
 	void CreateWorkers(Building* target, int num);
 
 	bool CheckInactiveWorkers(int num = 1);
