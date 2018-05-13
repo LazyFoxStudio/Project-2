@@ -33,6 +33,26 @@ bool j1Tutorial::Start()
 	return true;
 }
 
+bool j1Tutorial::PreUpdate()
+{
+	if (doingTutorial && activeStep != nullptr && !activeStep->finished && activeStep->task == KILL_ENEMIES)
+	{
+		bool enemies_found = false;
+		for (std::list<Entity*>::iterator it_e = App->entitycontroller->entities.begin(); it_e != App->entitycontroller->entities.end(); it_e++)
+		{
+			if ((*it_e)->IsEnemy() && (*it_e)->ex_state != existence_state::DESTROYED)
+			{
+				enemies_found = true;
+				break;
+			}
+		}
+		if (!enemies_found)
+			taskCompleted(KILL_ENEMIES);
+	}
+
+	return true;
+}
+
 bool j1Tutorial::Update(float dt)
 {
 	if (doingTutorial)
