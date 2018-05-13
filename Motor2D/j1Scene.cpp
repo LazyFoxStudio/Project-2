@@ -284,34 +284,46 @@ void j1Scene::Start_game()
 
 	//RESTART LOCKED ACTION BUTTONS
 	//Hardcoded
-	std::string condition = "Build first a Lumber Mill";
+	std::string condition_lumber = "Build first a Lumber Mill";
+	std::string condition_mine = "Build first a Mine";
+	std::string condition_farm = "Build first a Farm";
+	std::string condition_barracks = "Build first a Barracks";
+	std::string condition_hut = "Build first a Gnome Hut";
 	if (App->tutorial->doingTutorial)
-		condition = "First finish the tutorial";
+	{
+		condition_lumber = "First finish the tutorial";
+		condition_mine = "First finish the tutorial";
+		condition_farm = "First finish the tutorial";
+		condition_barracks = "First finish the tutorial";
+		condition_hut = "First finish the tutorial";
+	}
+
+	
 
 	Button* barracks = App->gui->GetActionButton(5);
-	barracks->setCondition(condition);
+	barracks->setCondition(condition_lumber);
 	barracks->Lock();
 	Button* lumber = App->gui->GetActionButton(6);
-	lumber->setCondition(condition);
+	lumber->setCondition(condition_lumber);
 	if (App->tutorial->doingTutorial)
 		lumber->Lock();
 	Button* farms = App->gui->GetActionButton(7);
-	farms->setCondition(condition);
+	farms->setCondition(condition_lumber);
 	farms->Lock();
 	Button* mine = App->gui->GetActionButton(22);
-	mine->setCondition(condition);
+	mine->setCondition(condition_lumber);
 	mine->Lock();
 	Button* turret = App->gui->GetActionButton(23);
-	turret->setCondition(condition);
+	turret->setCondition(condition_farm);
 	turret->Lock();
 	Button* hut = App->gui->GetActionButton(24);
-	hut->setCondition(condition);
+	hut->setCondition(condition_barracks);
 	hut->Lock();
 	Button* church = App->gui->GetActionButton(25);
-	church->setCondition(condition);
+	church->setCondition(condition_mine);
 	church->Lock();
 	Button* blacksmith = App->gui->GetActionButton(26);
-	blacksmith->setCondition(condition);
+	blacksmith->setCondition(condition_hut);
 	blacksmith->Lock();
 
 	//CANCEL IF BUILDING

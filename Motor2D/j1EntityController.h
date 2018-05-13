@@ -32,13 +32,13 @@ class Quadtree;
 #define ATTACK_UPGRADE_GROWTH 2
 #define DEFENSE_UPGRADE_GROWTH 2
 
-#define MELEE_1_UPGRADE_COST 10
+
 #define MELEE_2_UPGRADE_COST 800
 
-#define RANGED_1_UPGRADE_COST 500
+
 #define RANGED_2_UPGRADE_COST 1000
 
-#define FLYING_1_UPGRADE_COST 600
+
 #define FLYING_2_UPGRADE_COST 1200
 
 enum UpgradeType
@@ -85,7 +85,7 @@ public:
 	bool Load(pugi::xml_node&);
 
 	bool loadEntitiesDB(pugi::xml_node& data);
-
+	
 	void DeleteEntity(uint UID);
 	void DeleteSquad(uint UID);
 	void DeleteDB();
@@ -131,7 +131,7 @@ public:
 	void SpendUpgradeResources(UpgradeType type);
 	void UpgradeUnits(UpgradeType type);
 	void UpgradeExistingUnits(Type type1, Type type2, UpgradeType up_type);
-	Cost getUpgradeCost(UpgradeType type, uint up_lvl);
+	Cost getUpgradeCost(UpgradeType type);
 
 	void RefundResources(Type type);
 	//------Worker Related Functions--------

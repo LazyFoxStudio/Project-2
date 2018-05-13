@@ -146,6 +146,8 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr && (!App->tutorial->doingTutorial || App->tutorial->allowHeroSelection))
 	{
+		to_build_type = NONE_ENTITY;
+		App->actionscontroller->activateAction(NO_ACTION);
 		if (hero->isSelected == true) //center camera
 		{
 			App->render->camera.x = -hero->position.x + App->render->camera.w / 2;
@@ -1409,61 +1411,39 @@ bool j1EntityController::ChechUpgradeCost(UpgradeType type) const
 	switch (type)
 	{
 	case MELEE_ATTACK_UPGRADE:
-		if (m_dmg_lvl == 0 && App->scene->wood >= MELEE_1_UPGRADE_COST && App->scene->gold >= MELEE_1_UPGRADE_COST)
-		{
-			ret = true;
-		}
-		else if (m_dmg_lvl == 1 && App->scene->wood >= MELEE_2_UPGRADE_COST && App->scene->gold >= MELEE_2_UPGRADE_COST)
+		if (m_dmg_lvl == 0 && App->scene->wood >= MELEE_2_UPGRADE_COST && App->scene->gold >= MELEE_2_UPGRADE_COST)
 		{
 			ret = true;
 		}
 		break;
 	case MELEE_DEFENSE_UPGRADE:
-		if (m_armor_lvl == 0 && App->scene->wood >= MELEE_1_UPGRADE_COST && App->scene->gold >= MELEE_1_UPGRADE_COST)
-		{
-			ret = true;
-		}
-		else if (m_armor_lvl == 1 && App->scene->wood >= MELEE_2_UPGRADE_COST && App->scene->gold >= MELEE_2_UPGRADE_COST)
+
+		if (m_armor_lvl == 0 && App->scene->wood >= MELEE_2_UPGRADE_COST && App->scene->gold >= MELEE_2_UPGRADE_COST)
 		{
 			ret = true;
 		}
 		break;
 	case RANGED_ATTACK_UPGRADE:
-		if (r_dmg_lvl == 0 && App->scene->wood >= RANGED_1_UPGRADE_COST && App->scene->gold >= RANGED_1_UPGRADE_COST)
-		{
-			ret = true;
-		}
-		else if (r_dmg_lvl == 1 && App->scene->wood >= RANGED_2_UPGRADE_COST && App->scene->gold >= RANGED_2_UPGRADE_COST)
+		if (r_dmg_lvl == 0 && App->scene->wood >= RANGED_2_UPGRADE_COST && App->scene->gold >= RANGED_2_UPGRADE_COST)
 		{
 			ret = true;
 		}
 		break;
 	case RANGED_DEFENSE_UPGRADE:
-		if (r_armor_lvl == 0 && App->scene->wood >= RANGED_1_UPGRADE_COST && App->scene->gold >= RANGED_1_UPGRADE_COST)
-		{
-			ret = true;
-		}
-		else if (r_armor_lvl == 1 && App->scene->wood >= RANGED_2_UPGRADE_COST && App->scene->gold >= RANGED_2_UPGRADE_COST)
+		if (r_armor_lvl == 0 && App->scene->wood >= RANGED_2_UPGRADE_COST && App->scene->gold >= RANGED_2_UPGRADE_COST)
 		{
 			ret = true;
 		}
 		break;
 	case FLYING_ATTACK_UPGRADE:
-		if (f_dmg_lvl == 0 && App->scene->wood >= FLYING_1_UPGRADE_COST && App->scene->gold >= FLYING_1_UPGRADE_COST)
-		{
-			ret = true;
-		}
-		else if (f_dmg_lvl == 1 && App->scene->wood >= FLYING_2_UPGRADE_COST && App->scene->gold >= FLYING_2_UPGRADE_COST)
+
+		if (f_dmg_lvl == 0 && App->scene->wood >= FLYING_2_UPGRADE_COST && App->scene->gold >= FLYING_2_UPGRADE_COST)
 		{
 			ret = true;
 		}
 		break;
 	case FLYING_DEFENSE_UPGRADE:
-		if (f_armor_lvl == 0 && App->scene->wood >= FLYING_1_UPGRADE_COST && App->scene->gold >= FLYING_1_UPGRADE_COST)
-		{
-			ret = true;
-		}
-		else if (f_armor_lvl == 1 && App->scene->wood >= FLYING_2_UPGRADE_COST && App->scene->gold >= FLYING_2_UPGRADE_COST)
+		if (f_armor_lvl == 0 && App->scene->wood >= FLYING_2_UPGRADE_COST && App->scene->gold >= FLYING_2_UPGRADE_COST)
 		{
 			ret = true;
 		}
@@ -1479,76 +1459,40 @@ void j1EntityController::SpendUpgradeResources(UpgradeType type)
 	switch (type)
 	{
 	case MELEE_ATTACK_UPGRADE:
-		if (m_dmg_lvl == 0)
-		{
-			App->scene->wood -= MELEE_1_UPGRADE_COST;
-			App->scene->gold -= MELEE_1_UPGRADE_COST;
-		}
-		else
-		{
+
 			App->scene->wood -= MELEE_2_UPGRADE_COST;
 			App->scene->gold -= MELEE_2_UPGRADE_COST;
-		}
+	
 		break;
 	case MELEE_DEFENSE_UPGRADE:
-		if (m_armor_lvl == 0)
-		{
-			App->scene->wood -= MELEE_1_UPGRADE_COST;
-			App->scene->gold -= MELEE_1_UPGRADE_COST;
-		}
-		else
-		{
+
 			App->scene->wood -= MELEE_2_UPGRADE_COST;
 			App->scene->gold -= MELEE_2_UPGRADE_COST;
-		}
+		
 		break;
 	case RANGED_ATTACK_UPGRADE:
-		if (r_dmg_lvl == 0)
-		{
-			App->scene->wood -= RANGED_1_UPGRADE_COST;
-			App->scene->gold -= RANGED_1_UPGRADE_COST;
-		}
-		else
-		{
+
 			App->scene->wood -= RANGED_2_UPGRADE_COST;
 			App->scene->gold -= RANGED_2_UPGRADE_COST;
-		}
+		
 		break;
 	case RANGED_DEFENSE_UPGRADE:
-		if (r_armor_lvl == 0)
-		{
-			App->scene->wood -= RANGED_1_UPGRADE_COST;
-			App->scene->gold -= RANGED_1_UPGRADE_COST;
-		}
-		else
-		{
+
 			App->scene->wood -= RANGED_2_UPGRADE_COST;
 			App->scene->gold -= RANGED_2_UPGRADE_COST;
-		}
+		
 		break;
 	case FLYING_ATTACK_UPGRADE:
-		if (f_dmg_lvl == 0)
-		{
-			App->scene->wood -= FLYING_1_UPGRADE_COST;
-			App->scene->gold -= FLYING_1_UPGRADE_COST;
-		}
-		else
-		{
+
 			App->scene->wood -= FLYING_2_UPGRADE_COST;
 			App->scene->gold -= FLYING_2_UPGRADE_COST;
-		}
+		
 		break;
 	case FLYING_DEFENSE_UPGRADE:
-		if (f_armor_lvl == 0)
-		{
-			App->scene->wood -= FLYING_1_UPGRADE_COST;
-			App->scene->gold -= FLYING_1_UPGRADE_COST;
-		}
-		else
-		{
+
 			App->scene->wood -= FLYING_2_UPGRADE_COST;
 			App->scene->gold -= FLYING_2_UPGRADE_COST;
-		}
+		
 		break;
 	}
 }
@@ -1653,7 +1597,7 @@ void j1EntityController::UpgradeExistingUnits(Type type1, Type type2, UpgradeTyp
 
 }
 
-Cost j1EntityController::getUpgradeCost(UpgradeType type, uint up_lvl)
+Cost j1EntityController::getUpgradeCost(UpgradeType type)
 {
 	Cost cost;
 	cost.oil_cost = 0;
@@ -1663,42 +1607,24 @@ Cost j1EntityController::getUpgradeCost(UpgradeType type, uint up_lvl)
 	{
 	case MELEE_ATTACK_UPGRADE:
 	case MELEE_DEFENSE_UPGRADE:
-		if (up_lvl == 0)
-		{
-			cost.wood_cost = MELEE_1_UPGRADE_COST;
-			cost.gold_cost = MELEE_1_UPGRADE_COST;
-		}
-		else if (up_lvl == 1)
-		{
+
 			cost.wood_cost = MELEE_2_UPGRADE_COST;
 			cost.gold_cost = MELEE_2_UPGRADE_COST;
-		}
+	
 		break;
 	case RANGED_ATTACK_UPGRADE:
 	case RANGED_DEFENSE_UPGRADE:
-		if (up_lvl == 0)
-		{
-			cost.wood_cost = RANGED_1_UPGRADE_COST;
-			cost.gold_cost = RANGED_1_UPGRADE_COST;
-		}
-		else if (up_lvl == 1)
-		{
+
 			cost.wood_cost = RANGED_2_UPGRADE_COST;
 			cost.gold_cost = RANGED_2_UPGRADE_COST;
-		}
+
 		break;
 	case FLYING_ATTACK_UPGRADE:
 	case FLYING_DEFENSE_UPGRADE:
-		if (up_lvl == 0)
-		{
-			cost.wood_cost = FLYING_1_UPGRADE_COST;
-			cost.gold_cost = FLYING_1_UPGRADE_COST;
-		}
-		else if (up_lvl == 1)
-		{
+
 			cost.wood_cost = FLYING_2_UPGRADE_COST;
 			cost.gold_cost = FLYING_2_UPGRADE_COST;
-		}
+		
 		break;
 	}
 	return cost;
@@ -1930,6 +1856,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitTemplate->cost.worker_cost	= NodeInfo.child("Stats").child("workerCost").attribute("value").as_int(0);
 		unitTemplate->cost.creation_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
 		unitTemplate->squad_members		= NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
+		unitTemplate->attack_speed = NodeInfo.child("Stats").child("attackSpeed").attribute("value").as_float(3.0f);
 
 
 		for (pugi::xml_node action = NodeInfo.child("Actions").child("action"); action; action = action.next_sibling("action"))
@@ -1967,8 +1894,13 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 			if (animation->LoadAnimation(AnimInfo, anim_width, anim_height))
 				unitTemplate->animations.push_back(animation);
 		}
+		for (int i = 16; i <= 23; i++)
+		{
+			unitTemplate->animations.at(i)->speed = unitTemplate->attack_speed;
+		}
 
 		if (!unitTemplate->animations.empty()) unitTemplate->current_anim = unitTemplate->animations.front();
+
 
 		DataBase.insert(std::pair<uint, Entity*>(unitTemplate->type, unitTemplate));
 	}
