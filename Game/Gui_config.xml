@@ -371,7 +371,7 @@ Resolution of the screen: 1680x 1050y
 	  <!-- PAUSE MENU-->
 	  <menu type="3" active="false">
 		<image path="gui/pause.png">
-			<position x="700" y="200"/>
+			<position x="650" y="170"/>
 			<childs>
 				<button click_action="32">
 					<position x="80" y="100"/>
