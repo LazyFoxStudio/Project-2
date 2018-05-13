@@ -70,6 +70,8 @@ public:
 	void resumeGame();
 	bool isPaused() const;
 
+	bool isCleaning() const;
+
 	// Load config file
 	pugi::xml_node LoadFile(pugi::xml_document&, char* file) const;
 
@@ -135,6 +137,7 @@ private:
 	bool				want_to_load = false;
 
 	bool				paused = false;
+	bool				cleaning = false;
 
 	mutable std::string	save_game;
 

@@ -261,6 +261,8 @@ bool j1App::CleanUp()
 {
 	PERF_START(ptimer);
 
+	cleaning = true;
+
 	for (std::list<j1Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend(); it++)
 		if (!(*it)->CleanUp()) return false;
 	
@@ -366,6 +368,11 @@ void j1App::resumeGame()
 bool j1App::isPaused() const
 {
 	return paused;
+}
+
+bool j1App::isCleaning() const
+{
+	return cleaning;
 }
 
 

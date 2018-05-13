@@ -126,8 +126,9 @@ void CostDisplay::BlitElement()
 		UI_element::BlitElement();
 	}
 
-	
+	UI_element::BlitElement();
 }
+
 bool CostDisplay::UpgradeBlitPermission()
 {
 	bool ret = false;
