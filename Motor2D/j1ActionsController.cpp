@@ -111,6 +111,8 @@ bool j1ActionsController::Update(float dt)
 			{
 				App->entitycontroller->HandleWorkerAssignment(true, ((WorkersDisplay*)App->gui->current_hovering_element->parent)->building);
 			}
+			if (App->tutorial->doingTutorial)
+				App->tutorial->taskCompleted(ASSIGN_WORKERS);
 			doingAction = false;
 			break;
 		case CREATE_FOOTMAN:

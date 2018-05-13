@@ -1347,6 +1347,8 @@ void j1EntityController::selectionControl()
 							selected_entities.push_back(*it);
 							if ((*it)->type == TOWN_HALL && App->tutorial->doingTutorial)
 								App->tutorial->taskCompleted(SELECT_TOWN_HALL);
+							else if ((*it)->type == LUMBER_MILL && App->tutorial->doingTutorial)
+								App->tutorial->taskCompleted(SELECT_LUMBER_MILL);
 							(*it)->isSelected = true;
 							App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
 							if (!buildings) buildings = true;
