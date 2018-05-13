@@ -147,6 +147,8 @@ public:
 	Button* getButtonbyId(uint id) const;
 	uint getIDbyButton(Button* button) const;
 
+	void UpdateContinueButton();
+
 	float getSliderProgress(int action) const;
 
 public:

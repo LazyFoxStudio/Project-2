@@ -65,8 +65,7 @@ bool j1UIScene::Start()
 	Text* survived_waves = (Text*)App->gui->GetElement(TEXT, 9);
 	survived_waves->convertIntoCounter(&App->wavecontroller->current_wave);
 
-
-	
+	App->gui->UpdateContinueButton();
 
 	//Hardcoded
 	Button* barracks = App->gui->GetActionButton(5);

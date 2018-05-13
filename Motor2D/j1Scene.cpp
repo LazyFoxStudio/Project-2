@@ -319,6 +319,10 @@ void j1Scene::Start_game()
 
 	App->gui->newSelectionDone();
 	App->uiscene->toggleMenu(false, GAMEOVER_MENU);
+	if (App->tutorial->active)
+		App->uiscene->toggleMenu(true, SKIP_TUTORIAL_MENU);
+	else
+		App->uiscene->toggleMenu(true, HERO_SELECTION_MENU);
 
 	toRestart = false;
 }
