@@ -3002,7 +3002,7 @@
           <movementSpeed value="0.5"/>
           <range value="40"/>
           <lineOfSight value="200"/>
-          <squadMembers value="1"/>
+          <squadMembers value="3"/>
           <attackSpeed value="2"/>
           <size x="2" y="2"/>
         </Stats>
