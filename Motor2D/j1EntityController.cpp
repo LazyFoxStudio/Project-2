@@ -1541,6 +1541,7 @@ void j1EntityController::SpendUpgradeResources(UpgradeType type)
 
 void j1EntityController::UpgradeUnits(UpgradeType type)
 {
+	Button* tmp = nullptr;
 	switch (type)
 	{
 	case MELEE_ATTACK_UPGRADE:
@@ -1548,36 +1549,54 @@ void j1EntityController::UpgradeUnits(UpgradeType type)
 		DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		UpgradeExistingUnits(FOOTMAN, KNIGHT, type);
 		m_dmg_lvl++;
+		tmp = App->gui->GetActionButton(27);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 		break;
 	case MELEE_DEFENSE_UPGRADE:
 		DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[KNIGHT]->defense += DEFENSE_UPGRADE_GROWTH;
 		UpgradeExistingUnits(FOOTMAN, KNIGHT, type);
 		m_armor_lvl++;
+		tmp = App->gui->GetActionButton(28);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 		break;
 	case RANGED_ATTACK_UPGRADE:
 		DataBase[ARCHER]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[BALLISTA]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		UpgradeExistingUnits(ARCHER, BALLISTA, type);
 		r_dmg_lvl++;
+		tmp = App->gui->GetActionButton(29);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 		break;
 	case RANGED_DEFENSE_UPGRADE:
 		DataBase[ARCHER]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[BALLISTA]->defense += DEFENSE_UPGRADE_GROWTH;
 		UpgradeExistingUnits(ARCHER, BALLISTA, type);
 		r_armor_lvl++;
+		tmp = App->gui->GetActionButton(30);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 		break;
 	case FLYING_ATTACK_UPGRADE:
 		DataBase[FLYING_MACHINE]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[GRYPHON]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		UpgradeExistingUnits(FLYING_MACHINE, GRYPHON, type);
 		f_dmg_lvl++;
+		tmp = App->gui->GetActionButton(31);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 		break;
 	case FLYING_DEFENSE_UPGRADE:
 		DataBase[FLYING_MACHINE]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[GRYPHON]->defense += DEFENSE_UPGRADE_GROWTH;
 		UpgradeExistingUnits(FLYING_MACHINE, GRYPHON, type);
 		f_armor_lvl++;
+		tmp = App->gui->GetActionButton(32);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 		break;
 	}
 }
@@ -1589,36 +1608,54 @@ void j1EntityController::LoadUpgrades(int m_dmg, int m_armor, int r_dmg, int r_a
 		DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		m_dmg_lvl++;
+		Button* tmp = App->gui->GetActionButton(27);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 	}
 	if (m_armor == 1)
 	{
 		DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[KNIGHT]->defense += DEFENSE_UPGRADE_GROWTH;
 		m_armor_lvl++;
+		Button* tmp = App->gui->GetActionButton(28);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 	}
 	if (r_dmg == 1)
 	{
 		DataBase[ARCHER]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[BALLISTA]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		r_dmg_lvl++;
+		Button* tmp = App->gui->GetActionButton(29);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 	}
 	if (r_armor == 1)
 	{
 		DataBase[ARCHER]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[BALLISTA]->defense += DEFENSE_UPGRADE_GROWTH;
 		r_armor_lvl++;
+		Button* tmp = App->gui->GetActionButton(30);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 	}
 	if (f_dmg == 1)
 	{
 		DataBase[FLYING_MACHINE]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[GRYPHON]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		f_dmg_lvl++;
+		Button* tmp = App->gui->GetActionButton(31);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 	}
 	if (f_armor == 1)
 	{
 		DataBase[FLYING_MACHINE]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[GRYPHON]->defense += DEFENSE_UPGRADE_GROWTH;
 		f_armor_lvl++;
+		Button* tmp = App->gui->GetActionButton(32);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 	}
 		
 }

@@ -237,6 +237,41 @@ bool j1ActionsController::Update(float dt)
 				App->entitycontroller->UpgradeUnits(MELEE_ATTACK_UPGRADE);
 
 			}
+		case RESEARCH_MELEE_DEFENSE:
+			if (App->entitycontroller->ChechUpgradeCost(MELEE_DEFENSE_UPGRADE))
+			{
+				App->entitycontroller->SpendUpgradeResources(MELEE_DEFENSE_UPGRADE);
+				App->entitycontroller->UpgradeUnits(MELEE_DEFENSE_UPGRADE);
+
+			}
+		case RESEARCH_RANGED_ATTACK:
+			if (App->entitycontroller->ChechUpgradeCost(RANGED_ATTACK_UPGRADE))
+			{
+				App->entitycontroller->SpendUpgradeResources(RANGED_ATTACK_UPGRADE);
+				App->entitycontroller->UpgradeUnits(RANGED_ATTACK_UPGRADE);
+
+			}
+		case RESEARCH_RANGED_DEFENSE:
+			if (App->entitycontroller->ChechUpgradeCost(RANGED_DEFENSE_UPGRADE))
+			{
+				App->entitycontroller->SpendUpgradeResources(RANGED_DEFENSE_UPGRADE);
+				App->entitycontroller->UpgradeUnits(RANGED_DEFENSE_UPGRADE);
+
+			}
+		case RESEARCH_FLYING_ATTACK:
+			if (App->entitycontroller->ChechUpgradeCost(FLYING_ATTACK_UPGRADE))
+			{
+				App->entitycontroller->SpendUpgradeResources(FLYING_ATTACK_UPGRADE);
+				App->entitycontroller->UpgradeUnits(FLYING_ATTACK_UPGRADE);
+
+			}
+		case RESEARCH_FLYING_DEFENSE:
+			if (App->entitycontroller->ChechUpgradeCost(FLYING_DEFENSE_UPGRADE))
+			{
+				App->entitycontroller->SpendUpgradeResources(FLYING_DEFENSE_UPGRADE);
+				App->entitycontroller->UpgradeUnits(FLYING_DEFENSE_UPGRADE);
+
+			}
 		case TOGGLE_NEXTWAVE:
 			App->gui->nextWaveWindow->toggle();
 			doingAction = false;

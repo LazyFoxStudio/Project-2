@@ -7,7 +7,7 @@
 #include "Skills.h"
 #include "j1Timer.h"
 
-#define HERO_REVIVE_COOLDOWN 60
+#define HERO_REVIVE_COOLDOWN 10
 
 class Hero : public Unit
 {
