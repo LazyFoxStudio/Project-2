@@ -36,7 +36,7 @@
 
   <wavecontroller>
     <initialWait value="10"/>
-    <waitBetweenWaves value="100"/>
+    <waitBetweenWaves value="80"/>
     <Spawns>
       <spawn x="2154" y="256"/>
       <spawn x="3605" y="1844"/>
