@@ -26,8 +26,8 @@
   </gui>
 
   <scene>
-    <Wood value="80000"/>
-    <Gold value="30000"/>
+    <Wood value="40000"/>
+    <Gold value="40000"/>
     <Workers value="10"/>
     <Oil value="0"/>
   </scene>
@@ -42,12 +42,12 @@
       <spawn x="410" y="1982"/>
     </Spawns>
     <Costs>
-      <cost value="1"/>
-      <cost value="1"/>
-      <cost value="4"/>
-      <cost value="6"/>
-      <cost value="8"/>
-      <cost value="10"/>
+      <cost value="1"/><!--Grunt-->
+      <cost value="1"/><!--Axe thrower-->
+      <cost value="4"/><!--Death Knight-->
+      <cost value="6"/><!--Catapulta-->
+      <cost value="8"/><!--Dragon-->
+      <cost value="10"/><!--Juggernaut-->
     </Costs>
   </wavecontroller>
 </config>
