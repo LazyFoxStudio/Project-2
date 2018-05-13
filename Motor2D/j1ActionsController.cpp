@@ -401,6 +401,7 @@ bool j1ActionsController::Update(float dt)
 			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, INGAME_MENU);
 			App->scene->Start_game(true);
+			App->tutorial->active = false;
 			App->resumeGame();
 			App->LoadGame();
 			doingAction = false;
