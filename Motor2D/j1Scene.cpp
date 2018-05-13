@@ -265,8 +265,9 @@ void j1Scene::Start_game()
 	//buildingArea.y = -BUILDINGAREA / 2 + town_hall_pos.y / 2;
 	App->entitycontroller->buildingArea.x = town_hall_pos.x - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_width / 2);
 	App->entitycontroller->buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_height / 2);
-
-
+/*
+	App->entitycontroller->AddSquad(FOOTMAN, fPoint(2000, 2000));
+	App->entitycontroller->AddSquad(FOOTMAN, fPoint(2000, 2000));*/
 	//RESTARTING WAVES---------------------------------------------------------
 	App->gui->Chronos->counter.Restart();
 	App->wavecontroller->Restart_Wave_Sys();
