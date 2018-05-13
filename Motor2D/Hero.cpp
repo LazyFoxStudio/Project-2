@@ -67,7 +67,7 @@ bool Hero::Update(float dt)
 					App->particle->AddParticle(PHOLYDAMAGE, position, false);
 
 				}
-
+				skill_one->last_cast.SetToZero();
 			}
 			App->gui->cooldownsDisplay->skillUsed(1);
 		}
@@ -96,6 +96,7 @@ bool Hero::Update(float dt)
 					else
 						App->particle->AddParticle(PHOLYHEAL, { (float)skill_two->last_cast.x, (float)(skill_two->last_cast.y) }, false);
 				}
+				skill_two->last_cast.SetToZero();
 			}
 			App->gui->cooldownsDisplay->skillUsed(2);
 		}
@@ -122,6 +123,8 @@ bool Hero::Update(float dt)
 					App->audio->PlayFx(SFX_HONOR_OF_THE_PURE);
 					App->particle->AddParticle(PHOLYBUFF, position, false);
 				}
+				skill_three->last_cast.SetToZero();
+
 			}
 			App->gui->cooldownsDisplay->skillUsed(3);
 		}

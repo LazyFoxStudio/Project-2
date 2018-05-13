@@ -933,9 +933,9 @@ void j1Gui::entityDeleted(Entity* entity)
 	}
 }
 
-CostDisplay* j1Gui::createCostDisplay(std::string name, int wood_cost, int gold_cost, int oil_cost, int workers_cost, uint upgradetype ,uint upgradelvl)
+CostDisplay* j1Gui::createCostDisplay(std::string name, int wood_cost, int gold_cost, int oil_cost, int workers_cost, uint upgradetype)
 {
-	CostDisplay* ret = new CostDisplay(atlas, name, wood_cost, gold_cost, oil_cost, workers_cost,upgradetype, upgradelvl);
+	CostDisplay* ret = new CostDisplay(atlas, name, wood_cost, gold_cost, oil_cost, workers_cost,upgradetype);
 	return ret;
 }
 
@@ -1015,15 +1015,15 @@ void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
 			if (!info.attribute("upgrade").as_bool(false))
 			{
 				cost = App->entitycontroller->getCost((Type)info.attribute("type").as_int());
+				button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.wood_cost, cost.gold_cost, cost.oil_cost, cost.worker_cost);
 			}
 			else
 			{
-				//cost = App->entitycontroller->getUpgradeCost((UpgradeType)info.attribute("type").as_int(), 0);
-				cost = App->entitycontroller->getUpgradeCost((UpgradeType)info.attribute("type").as_int(), 1);
+				cost = App->entitycontroller->getUpgradeCost((UpgradeType)info.attribute("type").as_int());
+				button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.wood_cost, cost.gold_cost, cost.oil_cost, cost.worker_cost, (UpgradeType)info.attribute("type").as_int());
 			}
-			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.wood_cost, cost.gold_cost, cost.oil_cost, cost.oil_cost, (UpgradeType)info.attribute("type").as_int(), 1);
 
-		//	button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.wood_cost, cost.gold_cost, cost.oil_cost, cost.worker_cost, (UpgradeType)info.attribute("type").as_int(), 0);
+
 		}
 		else if (info && cost_node)
 		{
