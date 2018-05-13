@@ -239,9 +239,21 @@ void j1Scene::Start_game()
 		App->render->culling_camera.x = -App->render->camera.x - 50;
 		App->render->culling_camera.y = -App->render->camera.y - 50;
 	}
+	else
+	{
+		App->render->camera.x = -1200;
+		App->render->camera.y = -1600;
+		App->render->culling_camera.x = -App->render->camera.x - 50;
+		App->render->culling_camera.y = -App->render->camera.y - 50;
+	}
 
 	//SATARTING ENTITIES-------------------------------------------------------
 	
+	pugi::xml_document doc;
+	pugi::xml_node gameData;
+
+	gameData = App->LoadFile(doc, "GameData.xml");
+	App->entitycontroller->loadEntitiesDB(gameData);
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	App->entitycontroller->town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
@@ -253,8 +265,9 @@ void j1Scene::Start_game()
 	//buildingArea.y = -BUILDINGAREA / 2 + town_hall_pos.y / 2;
 	App->entitycontroller->buildingArea.x = town_hall_pos.x - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_width / 2);
 	App->entitycontroller->buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_height / 2);
-
-
+/*
+	App->entitycontroller->AddSquad(FOOTMAN, fPoint(2000, 2000));
+	App->entitycontroller->AddSquad(FOOTMAN, fPoint(2000, 2000));*/
 	//RESTARTING WAVES---------------------------------------------------------
 	App->gui->Chronos->counter.Restart();
 	App->wavecontroller->Restart_Wave_Sys();
@@ -277,46 +290,26 @@ void j1Scene::Start_game()
 
 	//RESTART LOCKED ACTION BUTTONS
 	//Hardcoded
-	std::string condition_lumber = "Build first a Lumber Mill";
-	std::string condition_mine = "Build first a Mine";
-	std::string condition_farm = "Build first a Farm";
-	std::string condition_barracks = "Build first a Barracks";
-	std::string condition_hut = "Build first a Gnome Hut";
-	if (App->tutorial->doingTutorial)
-	{
-		condition_lumber = "First finish the tutorial";
-		condition_mine = "First finish the tutorial";
-		condition_farm = "First finish the tutorial";
-		condition_barracks = "First finish the tutorial";
-		condition_hut = "First finish the tutorial";
-	}
-
-	
-
 	Button* barracks = App->gui->GetActionButton(5);
-	barracks->setCondition(condition_lumber);
+	barracks->setCondition("Build first a Lumber Mill");
 	barracks->Lock();
-	Button* lumber = App->gui->GetActionButton(6);
-	lumber->setCondition(condition_lumber);
-	if (App->tutorial->doingTutorial)
-		lumber->Lock();
 	Button* farms = App->gui->GetActionButton(7);
-	farms->setCondition(condition_lumber);
+	farms->setCondition("Build first a Lumber Mill");
 	farms->Lock();
 	Button* mine = App->gui->GetActionButton(22);
-	mine->setCondition(condition_lumber);
+	mine->setCondition("Build first a Lumber Mill");
 	mine->Lock();
 	Button* turret = App->gui->GetActionButton(23);
-	turret->setCondition(condition_farm);
+	turret->setCondition("Build first a Farm");
 	turret->Lock();
 	Button* hut = App->gui->GetActionButton(24);
-	hut->setCondition(condition_barracks);
+	hut->setCondition("Build first a Barracks");
 	hut->Lock();
 	Button* church = App->gui->GetActionButton(25);
-	church->setCondition(condition_mine);
+	church->setCondition("Build first a Mine");
 	church->Lock();
 	Button* blacksmith = App->gui->GetActionButton(26);
-	blacksmith->setCondition(condition_hut);
+	blacksmith->setCondition("Build first a Gnome Hut");
 	blacksmith->Lock();
 
 	//CANCEL IF BUILDING

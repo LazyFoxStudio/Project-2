@@ -506,9 +506,9 @@
           </Animation>
         </Animations>
         <Actions>
-          <action id="17"/>
-          <action id="18"/>
-          <action id="19"/>
+          <action id="33"/>
+          <action id="34"/>
+          <action id="35"/>
           <action id="1"/>
         </Actions>
       </Unit>
@@ -520,14 +520,14 @@
             <texture value="Assets\Sprites\Alliance Sprites\Footman_Spritesheet.png"/>
             <Stats>
                 <life value="80"/>
-                <attack value="5"/>
+                <attack value="3"/>
                 <defense value="6"/>
                 <piercingDamage value="2"/>
                 <movementSpeed value="0.7"/>
                 <range value="40"/>
                 <lineOfSight value="200"/>
-                <goldCost value="200"/>
-                <woodCost value="50"/>
+                <goldCost value="0"/>
+                <woodCost value="200"/>
                 <workerCost value="5"/>
                 <trainingTime value="3"/>
                 <squadMembers value="4"/>
@@ -756,8 +756,8 @@
                 <movementSpeed value="1.0"/>
                 <range value="210"/>
                 <lineOfSight value="250"/>
-                <goldCost value="240"/>
-                <woodCost value="50"/>
+                <goldCost value="0"/>
+                <woodCost value="250"/>
                 <workerCost value="4"/>
                 <trainingTime value="5"/>
                 <squadMembers value="4"/>
@@ -1005,11 +1005,10 @@
           <woodCost value="200"/>
           <workerCost value="6"/>
           <trainingTime value="10"/>
-
           <squadMembers value="3"/>
           <attackSpeed value="4"/>
 
-          <size x="1" y="1"/>
+          <size x="2" y="2"/>
         </Stats>
         <Info title="Gnomish Flying Machine Stats:"/>
         <Animations>
@@ -1254,16 +1253,20 @@
         <iconData x="315" y="72" w="71" h="59"/>
         <texture value="Assets\Sprites\Alliance Sprites\Knight_Spritesheet.png"/>
         <Stats>
-
           <life value="100"/>
-          <attack value="3"/>
+          <attack value="1"/>
           <defense value="5"/>
-          <piercingDamage value="2"/>
+          <piercingDamage value="6"/>
           <movementSpeed value="1.10"/>
           <range value="40"/>
-
-
-          <size x="1" y="1"/>
+          <lineOfSight value="150"/>
+          <goldCost value="600"/>
+          <woodCost value="200"/>
+          <workerCost value="6"/>
+          <trainingTime value="10"/>
+          <squadMembers value="3"/>
+          <attackSpeed value="4"/>
+          <size x="2" y="2"/>
         </Stats>
         <Info title="Knight Stats:"/>
         <Animations>
@@ -1779,7 +1782,7 @@
           <trainingTime value="10"/>
           <squadMembers value="3"/>
           <attackSpeed value="8"/>
-          <size x="1" y="1"/>
+          <size x="2" y="2"/>
         </Stats>
         <Info title="Gryphon Stats:"/>
         <Animations>
@@ -2018,11 +2021,8 @@
           <action id="1"/>
         </Actions>
       </Unit><!--Gryphon-->
-    
       <!-- Horde-->
- 
-
-        <Unit>
+      <Unit>
           <name value="Grunt"/>
 
           <type value="18"/>
@@ -2030,8 +2030,8 @@
           <iconData x="239" y="7" w="72" h="60"/>
           <texture value="Assets\Sprites\Horde Sprites\Grunt_SpriteSheet.png"/>
           <Stats>
-            <life value="70"/>
-            <attack value="2"/>
+            <life value="90"/>
+            <attack value="5"/>
             <defense value="5"/>
             <piercingDamage value="2"/>
             <movementSpeed value="0.6"/>
@@ -2289,7 +2289,7 @@
                 <range value="160"/>
                 <lineOfSight value="250"/>
                 <squadMembers value="3"/>
-
+                <attackSpeed value="5"/>
                 <size x="1" y="1"/>
             </Stats>
         <Animations>
@@ -2505,14 +2505,14 @@
         <Stats>
           <life value="300"/>
           <attack value="4"/>
-          <defense value="0"/>
+          <defense value="5"/>
           <piercingDamage value="2"/>
           <movementSpeed value="1.05"/>
           <range value="160"/>
           <lineOfSight value="250"/>
           <squadMembers value="2"/>
           <attackSpeed value="5"/>
-          <size x="1" y="1"/>
+          <size x="2" y="2"/>
         </Stats>
         <Animations>
           <width value="83"/>
@@ -2748,12 +2748,13 @@
         <life value="120"/>
         <attack value="5"/>
         <defense value="4"/>
-        <piercingDamage value="1"/>
+        <piercingDamage value="2"/>
         <movementSpeed value="1.10"/>
         <range value="40"/>
         <lineOfSight value="250"/>
-        <squadMembers value="3"/>
-        <size x="1" y="1"/>
+        <squadMembers value="4"/>
+        <attackSpeed value="4"/>
+        <size x="2" y="2"/>
       </Stats>
       <Animations>
         <width value="71"/>
@@ -2994,16 +2995,16 @@
         <iconData x="544" y="72" w="72" h="59"/>
         <texture value="Assets\Sprites\Horde Sprites\Catapult_SpriteSheet.png"/>
         <Stats>
-          <life value="60"/>
-          <attack value="6"/>
+          <life value="150"/>
+          <attack value="2"/>
           <defense value="2"/>
-          <piercingDamage value="2"/>
+          <piercingDamage value="10"/>
           <movementSpeed value="0.5"/>
           <range value="40"/>
           <lineOfSight value="200"/>
-          <squadMembers value="1"/>
+          <squadMembers value="3"/>
           <attackSpeed value="2"/>
-          <size x="1" y="1"/>
+          <size x="2" y="2"/>
         </Stats>
         <Info title="Catapult Stats:"/>
         <Animations>
@@ -3249,7 +3250,7 @@
         <texture value="Assets\Sprites\Horde Sprites\Juggernaut_SpriteSheet.png"/>
         <Stats>
           <life value="500"/>
-          <attack value="3"/>
+          <attack value="4"/>
           <defense value="10"/>
           <piercingDamage value="5"/>
           <movementSpeed value="0.4"/>
@@ -3257,7 +3258,7 @@
           <lineOfSight value="200"/>
           <squadMembers value="1"/>
           <attackSpeed value="4"/>
-          <size x="1" y="1"/>
+          <size x="2" y="2"/>
         </Stats>
         <Info title="Juggernaut Stats:"/>
         <Animations>
@@ -3496,7 +3497,6 @@
           <action id="1"/>
         </Actions>
       </Unit><!--Juggernaut-->
-  
     </Units>
   
   <Buildings>
@@ -3549,20 +3549,25 @@
         <life value="200"/>
         <villagers value="0"/>
         <buildingTime value="5"/>
-        <defense value="20"/>
+        <defense value="5"/>
         <woodCost value="300"/>
-        <goldCost value="100"/>
+        <goldCost value="0"/>
       </Stats>
 	  <Info title="Barracks:">
 		<line text="Use this building"/>
 		<line text="to train your troops"/>
+		<line text="into powerful soldiers"/>
 	  </Info>
 	  <Actions>
 		    <action id="11"/>
 		    <action id="12"/>
-        <action id="20"/>
+			<action id="10"/>
+			<action id="10"/>
+			<action id="10"/>
+			<action id="10"/>
+			<action id="20"/>
 	    	<action id="10"/>
-        <action id="21"/>
+			<action id="21"/>
 	  </Actions>
       <iconData x="162" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
@@ -3592,13 +3597,15 @@
         <life value="250"/>
         <villagers value="0"/>
         <buildingTime value="10"/>
-        <defense value="20"/>
-        <woodCost value="0"/>
-        <goldCost value="300"/>
+        <defense value="5"/>
+        <woodCost value="350"/>
+        <goldCost value="0"/>
       </Stats>
 	  <Info title="Lumber Mill:">
 		<line text="Use this building"/>
 		<line text="to collect wood"/>
+		<line text="Assign workers to"/>
+		<line text="increase production"/>
 	  </Info>
       <iconData x="315" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
@@ -3629,9 +3636,9 @@
         <life value="100"/>
         <villagers value="0"/>
         <buildingTime value="7"/>
-        <defense value="20"/>
+        <defense value="5"/>
         <woodCost value="150"/>
-        <goldCost value="50"/>
+        <goldCost value="0"/>
       </Stats>
 	  <Info title="Farm:">
 		<line text="This building is"/>
@@ -3647,8 +3654,8 @@
       <type value="5"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <Actions>
- <action id="8"/>
-		     <action id="10"/>
+		 <action id="8"/>
+		 <action id="10"/>
          <action id="9"/>
 		 <action id="10"/>
 		 <action id="10"/>
@@ -3667,19 +3674,20 @@
         <life value="300"/>
         <villagers value="0"/>
         <buildingTime value="5"/>
-        <defense value="20"/>
-        <woodCost value="300"/>
+        <defense value="5"/>
+        <woodCost value="350"/>
         <goldCost value="0"/>
       </Stats>
 	  <Info title="Mine:">
 		<line text="Use this building"/>
 		<line text="to collect gold"/>
+		<line text="Assign workers to"/>
+		<line text="increase production"/>
 	  </Info>
       <iconData x="315" y="455" w="72" h="59"/>
       <size x="3" y="3"/>
     </Building>
-    
-     <Building>
+    <Building>
       <name value="Turret"/>
       <type value="6"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
@@ -3701,13 +3709,13 @@
         <sprite x="545" y="0" w="72" h="70" />
       </sprites>
       <Stats>
-        <life value="200"/>
+        <life value="120"/>
         <villagers value="0"/>
         <buildingTime value="5"/>
-        <attack value="1"/>
+        <attack value="3"/>
         <piercingDamage value="6"/>
         <range value="210"/>
-        <defense value="20"/>
+        <defense value="5"/>
         <woodCost value="400"/>
         <goldCost value="50"/>
       </Stats>
@@ -3743,13 +3751,14 @@
         <life value="200"/>
         <villagers value="0"/>
         <buildingTime value="5"/>
-        <defense value="20"/>
+        <defense value="5"/>
         <woodCost value="400"/>
         <goldCost value="200"/>
       </Stats>
 	  <Info title="Gnome Hut:">
 		<line text="Use this building"/>
 		<line text="to train your troops"/>
+		<line text="to use powerful machines"/>
 	  </Info>
       <iconData x="621" y="328" w="71" h="59"/>
       <size x="3" y="3"/>
@@ -3779,13 +3788,14 @@
         <life value="200"/>
         <villagers value="0"/>
         <buildingTime value="5"/>
-        <defense value="20"/>
+        <defense value="5"/>
         <woodCost value="600"/>
         <goldCost value="200"/>
       </Stats>
 	  <Info title="Church:">
 		<line text="Use this building"/>
 		<line text="to train your troops"/>
+		<line text="into powerful soldiers"/>
 	  </Info>
       <iconData x="162" y="391" w="72" h="59"/>
       <size x="3" y="3"/> 
@@ -3796,14 +3806,14 @@
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <Actions>
         <action id="27"/>
-        <action id ="10"/>
         <action id="28"/>
         <action id="29"/>
-        <action id ="10"/>
         <action id="30"/>
         <action id="31"/>
-        <action id ="10"/>
         <action id="32"/>
+		<action id="20"/>
+        <action id="10"/>
+        <action id="21"/>
       </Actions>
       <sprites>
         <sprite x="0" y="413" w="101" h="109"/>
@@ -3815,13 +3825,13 @@
         <life value="200"/>
         <villagers value="0"/>
         <buildingTime value="5"/>
-        <defense value="20"/>
+        <defense value="5"/>
         <woodCost value="500"/>
         <goldCost value="500"/>
       </Stats>
 	  <Info title="Blacksmith:">
 		<line text="Use this building"/>
-		<line text="to train your troops"/>
+		<line text="to upgrade your troops"/>
 	  </Info>
       <iconData x="468" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
@@ -4161,6 +4171,36 @@
       </popUp>
       <hotkey key="C" font_id="3"/>
     </flyingArmorUpgrade>
+  <ability4 id="33" click_action="13">
+			<position x="0" y="0"/>
+			<standby x="1101" y="366" w="66" h="66"/>
+			<OnMouse x="1168" y="365" w="66" h="66"/>
+			<OnClick x="1237" y="366" w="66" h="66"/>
+			<popUp>
+				<Info text="Big area ability"/>
+			</popUp>
+			<hotkey key="Q" font_id="3"/>
+		</ability4>
+		<ability5 id="34" click_action="14">
+			<position x="0" y="0"/>
+			<standby x="1101" y="295" w="66" h="66"/>
+			<OnMouse x="1168" y="295 " w="66" h="66"/>
+			<OnClick x="1237" y="295" w="66" h="66"/>
+			<popUp>
+				<Info text="Heal target ability"/>
+			</popUp>
+			<hotkey key="W" font_id="3"/>
+		</ability5>
+		<ability6 id="35" click_action="15">
+			<position x="0" y="0"/>
+			<standby x="1305" y="295" w="66" h="66"/>
+			<OnMouse x="1373" y="295" w="66" h="66"/>
+			<OnClick x="1441" y="295" w="66" h="66"/>
+			<popUp>
+				<Info text="Buff area ability"/>
+			</popUp>
+			<hotkey key="E" font_id="3"/>
+		</ability6>
 	</ActionButtons>
 	
 	<WorkersDisplay>
@@ -4178,6 +4218,8 @@
 				<OnClick x="1020" y="704" w="22" h="22"/>
 			</unassign>
 		</WorkersDisplay>
+  
+  
 	
 	<fonts>
 		<font path="fonts/BebasNeue-Regular.ttf" size="23"/>
@@ -4185,5 +4227,7 @@
 		<font path="fonts/BebasNeue-Regular.ttf" size="50"/>
 		<font path="fonts/BebasNeue-Regular.ttf" size="18"/>
 		<font path="fonts/BebasNeue-Regular.ttf" size="70"/>
+		<font path="fonts/BebasNeue-Regular.ttf" size="43"/>
+		<font path="fonts/BebasNeue-Regular.ttf" size="35"/>
 	</fonts>
 </GameData>

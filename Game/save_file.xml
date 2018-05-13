@@ -11,16 +11,39 @@
 	<Console />
 	<map />
 	<fonts />
-	<scene />
+	<scene>
+		<gold value="98500" />
+		<wood value="97650" />
+		<oil value="0" />
+	</scene>
 	<entitycontroller>
+		<Upgrades>
+			<upgrades_1 value="1" />
+			<upgrades_2 value="0" />
+			<upgrades_3 value="0" />
+			<upgrades_4 value="0" />
+			<upgrades_5 value="0" />
+			<upgrades_6 value="0" />
+		</Upgrades>
 		<Units>
-			<Hero type="11" hp="360" x="1788.25232" y="2063.93945" />
+			<Hero type="10" hp="251" x="1724.29993" y="2223.99927" />
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2112" pos_y="224" direction="4" />
+				<unit hp="40" pos_x="2112" pos_y="256" direction="4" />
+				<unit hp="40" pos_x="2112" pos_y="288" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="352" pos_y="1920" direction="4" />
+				<unit hp="40" pos_x="352" pos_y="1952" direction="4" />
+				<unit hp="40" pos_x="352" pos_y="1984" direction="4" />
+			</squad>
 		</Units>
 		<Buildings>
 			<town_hall hp="300" />
-			<Building hp="250" pos_x="1824" pos_y="1760" type_enum="3" workers="0" type="LUMBER_MILL" />
-			<Building hp="100" pos_x="2304" pos_y="1824" type_enum="4" workers="5" type="FARM" />
-			<Building hp="29" pos_x="1536" pos_y="1984" type_enum="4" workers="1" type="FARM" />
+			<Building hp="250" pos_x="1728" pos_y="1792" type_enum="3" workers="0" type="LUMBER_MILL" />
+			<Building hp="200" pos_x="1952" pos_y="1856" type_enum="2" workers="0" type="BARRACKS" />
+			<Building hp="200" pos_x="2240" pos_y="1952" type_enum="7" workers="0" type="GNOME_HUT" />
+			<Building hp="58" pos_x="2112" pos_y="2176" type_enum="9" workers="0" type="BLACKSMITH" />
 		</Buildings>
 	</entitycontroller>
 	<gui />
@@ -29,15 +52,16 @@
 	<particle />
 	<actionscontroller />
 	<wavecontroller>
-		<wave value="0" />
-		<points value="2" />
-		<wave_timer value="43.9212685" />
+		<wave value="2" />
+		<points value="3" />
+		<wave_timer value="0.0356877074" />
 		<next_wave>
-			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
 			<enemies type="GRUNT" type_enum="18" x="2154" y="256" />
+			<enemies type="AXE_THROWER" type_enum="19" x="2154" y="256" />
+			<enemies type="GRUNT" type_enum="18" x="2177" y="3549" />
 		</next_wave>
 	</wavecontroller>
 	<renderer>
-		<camera x="-1058" y="-1546" />
+		<camera x="-2416" y="-1763" />
 	</renderer>
 </game_state>

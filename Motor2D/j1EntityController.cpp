@@ -146,6 +146,8 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr && (!App->tutorial->doingTutorial || App->tutorial->allowHeroSelection))
 	{
+		to_build_type = NONE_ENTITY;
+		App->actionscontroller->activateAction(NO_ACTION);
 		if (hero->isSelected == true) //center camera
 		{
 			App->render->camera.x = -hero->position.x + App->render->camera.w / 2;
@@ -503,6 +505,15 @@ bool j1EntityController::CleanUp()
 
 bool j1EntityController::Save(pugi::xml_node& file) const
 {
+	//UPGRADES
+	pugi::xml_node upgrades_node = file.append_child("Upgrades");
+	upgrades_node.append_child("upgrades_1").append_attribute("value") = m_dmg_lvl;
+	upgrades_node.append_child("upgrades_2").append_attribute("value") = m_armor_lvl;
+	upgrades_node.append_child("upgrades_3").append_attribute("value") = r_dmg_lvl;
+	upgrades_node.append_child("upgrades_4").append_attribute("value") = r_armor_lvl;
+	upgrades_node.append_child("upgrades_5").append_attribute("value") = f_dmg_lvl;
+	upgrades_node.append_child("upgrades_6").append_attribute("value") = f_armor_lvl;
+
 	//SAVE_UNITS
 	pugi::xml_node units_node = file.append_child("Units");
 
@@ -650,11 +661,26 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 
 bool j1EntityController::Load(pugi::xml_node& file)
 {
-	//UNITS
+	//UPGRADES
+	pugi::xml_node upgrades_node = file.child("Upgrades");
+	int q = upgrades_node.child("upgrades_1").attribute("value").as_int();
+	int w = upgrades_node.child("upgrades_2").attribute("value").as_int();
+	int e = upgrades_node.child("upgrades_3").attribute("value").as_int();
+	int r = upgrades_node.child("upgrades_4").attribute("value").as_int();
+	int t = upgrades_node.child("upgrades_5").attribute("value").as_int();
+	int y = upgrades_node.child("upgrades_6").attribute("value").as_int();
 
+	pugi::xml_document doc;
+	pugi::xml_node gameData;
+	gameData = App->LoadFile(doc, "GameData.xml");
+	loadEntitiesDB(gameData);
+
+	LoadUpgrades(q, w, e, r, t, y);
+
+	//UNITS
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
-		if (/*(*it)->type != HERO_1 && (*it)->type != HERO_2 && */(*it)->type != TOWN_HALL )
+		if ((*it)->type != TOWN_HALL )
 		{
 			if ((*it)->IsUnit())
 			{
@@ -686,7 +712,7 @@ bool j1EntityController::Load(pugi::xml_node& file)
 		squad->getUnits(units_of_squad);
 		pugi::xml_node node_units = squads_node.child("unit");
 		int i = -1;
-		for (i = 0; node_units; ++i)
+		for (i = 0; node_units &&  i < units_of_squad.size()-1; ++i)
 		{
 			units_of_squad.data()[i]->current_HP = node_units.attribute("hp").as_int();
 			units_of_squad.data()[i]->position.x = node_units.attribute("pos_x").as_int();
@@ -736,12 +762,11 @@ bool j1EntityController::Load(pugi::xml_node& file)
 			{
 				//KILL IT
 				//DeleteEntity(units_of_squad.data()[j]->UID);
-				if (units_of_squad.data()[j]->IsUnit())
-				{
-					((Unit*)units_of_squad.data()[j])->commands.clear();
-				}
-				DeleteEntity(units_of_squad.data()[j]->UID);
+				
+				squad->removeUnit(units_of_squad.data()[j]->UID);
 				App->gui->entityDeleted(units_of_squad.data()[j]);
+				DeleteEntity(units_of_squad.data()[j]->UID);
+				entities.remove(getEntitybyID(units_of_squad.data()[j]->UID));
 			}
 		}
 	}
@@ -793,7 +818,10 @@ bool j1EntityController::Load(pugi::xml_node& file)
 				b->queueDisplay->pushTroop(t);
 			}
 		}
+
+		App->map->WalkabilityArea(pos_x, pos_y, b->size.x, b->size.y, true, false);
 	}
+	App->wavecontroller->updateFlowField();
 
 	int workers_to_assign = workers;
 	for (int i = 0; i < farmss.size() && workers_to_assign > 0; ++i )
@@ -937,15 +965,15 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 
 	if (type == HERO_1)
 	{
-		hero->skill_one = new Skill(hero, 3, 100, 300, 6, AREA);		//Icicle Crash
+		hero->skill_one = new Skill(hero, 3, 80, 50, 6, AREA);		//Icicle Crash
 		hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
-		hero->skill_three = new Skill(hero, 0, 200, 250, 5, LINE);		//Dragon Breath
+		hero->skill_three = new Skill(hero, 0, 200, 200, 4, LINE);		//Dragon Breath
 	}
 	if (type == HERO_2)
 	{
-		hero->skill_one = new Skill(hero, 3, 50, 3000000, 6, PLACE);	//Consecration
-		hero->skill_two = new Skill(hero, 3, 50, 700, 10, HEAL);		//Circle of Light
-		hero->skill_three = new Skill(hero, 3, 75, 3000000, 1, BUFF);	//Honor of the pure
+		hero->skill_one = new Skill(hero, 3, 70, 3000000, 3, PLACE);	//Consecration
+		hero->skill_two = new Skill(hero, 3, 10, 700, 10, HEAL);		//Circle of Light
+		hero->skill_three = new Skill(hero, 3, 0, 3000000, 4, BUFF);	//Honor of the pure
 	}
 
 	App->gui->createLifeBar(hero);
@@ -1123,14 +1151,22 @@ void j1EntityController::buildingProcessDraw()
 	else
 	{
 		if (!App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, false, false, true) && enough_resources && SDL_HasIntersection(&building_col, &buildingArea))
-		{
-			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);
+		{		
+			App->gui->warningMessages->hideMessage(NO_MINE);
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);		
 		}
 		else
 		{
-			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);
+			if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, false, false, true))
+				App->gui->warningMessages->showMessage(NO_MINE);
+				
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);			
 		}
 	}
+	if (SDL_HasIntersection(&building_col, &buildingArea))
+		App->gui->warningMessages->hideMessage(OUT_OF_RANGE);
+	else
+		App->gui->warningMessages->showMessage(OUT_OF_RANGE);
 
 
 	App->render->Blit(to_build->texture, pos.x, pos.y, &to_build->sprites[COMPLETE]);
@@ -1269,18 +1305,24 @@ void j1EntityController::commandControl()
 						(*it)->commands.push_back(new AttackingMoveToSquadFlying(commander, map_p));
 					else
 					{
-						if (commander->IsMelee() && entity->IsFlying())
-							continue;
-
 						if (!shared_flowfield)
 						{
 							iPoint commander_map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
 							shared_flowfield = App->pathfinding->RequestFlowField(map_p, commander_map_p);
 						}
 
-						MoveToSquad* new_order = new AttackingMoveToSquad(commander, map_p);
-						new_order->flow_field = shared_flowfield;
-						(*it)->commands.push_back(new_order);
+						if (commander->IsMelee() && entity->IsFlying())
+						{
+							MoveToSquad* new_order = new MoveToSquad(commander, map_p);
+							new_order->flow_field = shared_flowfield;
+							(*it)->commands.push_back(new_order);
+						}
+						else
+						{
+							MoveToSquad* new_order = new AttackingMoveToSquad(commander, map_p);
+							new_order->flow_field = shared_flowfield;
+							(*it)->commands.push_back(new_order);
+						}
 					}
 				}
 			}
@@ -1322,7 +1364,7 @@ void j1EntityController::selectionControl()
 
 		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 		{
-			if ((*it)->isActive) {
+			if ((*it)->isActive && (*it)->ex_state != DESTROYED) {
 
 				if (SDL_HasIntersection(&(*it)->collider, &selection_rect))
 				{
@@ -1342,6 +1384,8 @@ void j1EntityController::selectionControl()
 							selected_entities.push_back(*it);
 							if ((*it)->type == TOWN_HALL && App->tutorial->doingTutorial)
 								App->tutorial->taskCompleted(SELECT_TOWN_HALL);
+							else if ((*it)->type == LUMBER_MILL && App->tutorial->doingTutorial)
+								App->tutorial->taskCompleted(SELECT_LUMBER_MILL);
 							(*it)->isSelected = true;
 							App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
 							if (!buildings) buildings = true;
@@ -1497,39 +1541,123 @@ void j1EntityController::SpendUpgradeResources(UpgradeType type)
 
 void j1EntityController::UpgradeUnits(UpgradeType type)
 {
+	Button* tmp = nullptr;
 	switch (type)
 	{
 	case MELEE_ATTACK_UPGRADE:
 		DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		UpgradeExistingUnits(FOOTMAN, KNIGHT, type);
 		m_dmg_lvl++;
+		tmp = App->gui->GetActionButton(27);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 		break;
 	case MELEE_DEFENSE_UPGRADE:
 		DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[KNIGHT]->defense += DEFENSE_UPGRADE_GROWTH;
+		UpgradeExistingUnits(FOOTMAN, KNIGHT, type);
 		m_armor_lvl++;
+		tmp = App->gui->GetActionButton(28);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 		break;
 	case RANGED_ATTACK_UPGRADE:
 		DataBase[ARCHER]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[BALLISTA]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		UpgradeExistingUnits(ARCHER, BALLISTA, type);
 		r_dmg_lvl++;
+		tmp = App->gui->GetActionButton(29);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 		break;
 	case RANGED_DEFENSE_UPGRADE:
 		DataBase[ARCHER]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[BALLISTA]->defense += DEFENSE_UPGRADE_GROWTH;
+		UpgradeExistingUnits(ARCHER, BALLISTA, type);
 		r_armor_lvl++;
+		tmp = App->gui->GetActionButton(30);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 		break;
 	case FLYING_ATTACK_UPGRADE:
 		DataBase[FLYING_MACHINE]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[GRYPHON]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		UpgradeExistingUnits(FLYING_MACHINE, GRYPHON, type);
 		f_dmg_lvl++;
+		tmp = App->gui->GetActionButton(31);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 		break;
 	case FLYING_DEFENSE_UPGRADE:
 		DataBase[FLYING_MACHINE]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[GRYPHON]->defense += DEFENSE_UPGRADE_GROWTH;
+		UpgradeExistingUnits(FLYING_MACHINE, GRYPHON, type);
 		f_armor_lvl++;
+		tmp = App->gui->GetActionButton(32);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
 		break;
 	}
+}
+
+void j1EntityController::LoadUpgrades(int m_dmg, int m_armor, int r_dmg, int r_armor, int f_dmg, int f_armor)
+{
+	if (m_dmg == 1)
+	{
+		DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		m_dmg_lvl++;
+		Button* tmp = App->gui->GetActionButton(27);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
+	}
+	if (m_armor == 1)
+	{
+		DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[KNIGHT]->defense += DEFENSE_UPGRADE_GROWTH;
+		m_armor_lvl++;
+		Button* tmp = App->gui->GetActionButton(28);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
+	}
+	if (r_dmg == 1)
+	{
+		DataBase[ARCHER]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[BALLISTA]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		r_dmg_lvl++;
+		Button* tmp = App->gui->GetActionButton(29);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
+	}
+	if (r_armor == 1)
+	{
+		DataBase[ARCHER]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[BALLISTA]->defense += DEFENSE_UPGRADE_GROWTH;
+		r_armor_lvl++;
+		Button* tmp = App->gui->GetActionButton(30);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
+	}
+	if (f_dmg == 1)
+	{
+		DataBase[FLYING_MACHINE]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[GRYPHON]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		f_dmg_lvl++;
+		Button* tmp = App->gui->GetActionButton(31);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
+	}
+	if (f_armor == 1)
+	{
+		DataBase[FLYING_MACHINE]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[GRYPHON]->defense += DEFENSE_UPGRADE_GROWTH;
+		f_armor_lvl++;
+		Button* tmp = App->gui->GetActionButton(32);
+		tmp->setCondition("Already upgraded");
+		tmp->Lock();
+	}
+		
 }
 
 void j1EntityController::UpgradeExistingUnits(Type type1, Type type2, UpgradeType up_type)
@@ -1595,7 +1723,7 @@ void j1EntityController::UpgradeExistingUnits(Type type1, Type type2, UpgradeTyp
 
 }
 
-Cost j1EntityController::getUpgradeCost(UpgradeType type, uint up_lvl)
+Cost j1EntityController::getUpgradeCost(UpgradeType type)
 {
 	Cost cost;
 	cost.oil_cost = 0;

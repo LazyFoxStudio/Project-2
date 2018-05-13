@@ -31,7 +31,7 @@ void Text::createTexture()
 	uint outline_height = 0;
 	if (outlined)
 	{
-		App->font->setFontOutline(font, 2);
+		App->font->setFontOutline(font, outline_size);
 		outline = App->font->Print(text.c_str(), &outline_color, font); //Outlined texture
 		App->tex->GetSize(outline, outline_width, outline_height);
 	}
@@ -115,11 +115,12 @@ void Text::BlitElement()
 	}
 }
 
-void Text::setOutlined(bool isOutlined)
+void Text::setOutlined(bool isOutlined, int outline_size)
 {
 	if (isOutlined != outlined)
 	{
 		outlined = isOutlined;
+		this->outline_size = outline_size;
 		createTexture();
 	}
 }

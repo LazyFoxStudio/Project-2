@@ -203,77 +203,76 @@ Resolution of the screen: 1680x 1050y
 		</atlas_image>
 		<button click_action="30">
 			<position x="597" y="416"/>
-			<standby x="0" y="131" w="467" h="100"/>
-			<OnMouse x="477" y="131" w="467" h="100"/>
+			<standby x="477" y="131" w="467" h="100"/>
+			<OnMouse x="0" y="131" w="467" h="100"/>
 			<OnClick x="954" y="131" w="467" h="100"/>
 			<childs>
 				<text text="NEW GAME" center="true" counter="false">
 					<position x="0" y="0"/>
 					<font id="6"/>
-					<color r="255" g="255" b="0" a="255"/>
+					<color r="255" g="215" b="0" a="255"/>
 					<interactive value="false"/>
+					<outline size="4" r="0" g="0" b="0" a="255"/>
 				</text>
 			</childs>
 		</button>
 		<button click_action="44">
 			<position x="597" y="529"/>
-			<standby x="0" y="131" w="467" h="100"/>
-			<OnMouse x="477" y="131" w="467" h="100"/>
+			<standby x="477" y="131" w="467" h="100"/>
+			<OnMouse x="0" y="131" w="467" h="100"/>
 			<OnClick x="954" y="131" w="467" h="100"/>
 			<childs>
 				<text text="CONTINUE" center="true" counter="false">
 					<position x="0" y="0"/>
 					<font id="6"/>
-					<color r="255" g="255" b="0" a="255"/>
+					<color r="255" g="215" b="0" a="255"/>
 					<interactive value="false"/>
+					<outline size="4" r="0" g="0" b="0" a="255"/>
 				</text>
 			</childs>
 		</button>
 		<button click_action="31"><!--SETTINGS-->
 			<position x="600" y="642"/>
-			<standby x="0" y="131" w="467" h="100"/>
-			<OnMouse x="477" y="131" w="467" h="100"/>
+			<standby x="477" y="131" w="467" h="100"/>
+			<OnMouse x="0" y="131" w="467" h="100"/>
 			<OnClick x="954" y="131" w="467" h="100"/>
 			<childs>
-				<text text="SETTINGS" center="false" counter="false">
-					<position x="143" y="13"/>
-					<font id="6"/>
-					<color r="0" g="0" b="0" a="255"/>
-					<interactive value="false"/>
-				</text>
 				<text text="SETTINGS" center="true" counter="false">
 					<position x="0" y="0"/>
 					<font id="6"/>
 					<color r="255" g="215" b="0" a="255"/>
 					<interactive value="false"/>
+					<outline size="4" r="0" g="0" b="0" a="255"/>
 				</text>
 			</childs>
 		</button>
 		<button click_action="33"> <!--CREDITS-->
 			<position x="600" y="756"/>
-			<standby x="0" y="131" w="467" h="100"/>
-			<OnMouse x="477" y="131" w="467" h="100"/>
+			<standby x="477" y="131" w="467" h="100"/>
+			<OnMouse x="0" y="131" w="467" h="100"/>
 			<OnClick x="954" y="131" w="467" h="100"/>
 			<childs>
 				<text text="CREDITS" center="true" counter="false">
 					<position x="0" y="0"/>
 					<font id="6"/>
-					<color r="255" g="255" b="0" a="255"/>
+					<color r="255" g="215" b="0" a="255"/>
 					<interactive value="false"/>
+					<outline size="4" r="0" g="0" b="0" a="255"/>
 				</text>
 			</childs>
 		</button>
       <button click_action="34"><!--EXIT-->
         <position x="600" y="870"/>
-        <standby x="0" y="131" w="467" h="100"/>
-		<OnMouse x="477" y="131" w="467" h="100"/>
+        <standby x="477" y="131" w="467" h="100"/>
+			<OnMouse x="0" y="131" w="467" h="100"/>
 		<OnClick x="954" y="131" w="467" h="100"/>
         <childs>
           <text text="EXIT" center="true" counter="false">
             <position x="0" y="0"/>
             <font id="6"/>
-            <color r="255" g="255" b="0" a="255"/>
+            <color r="255" g="215" b="0" a="255"/>
             <interactive value="false"/>
+			<outline size="4" r="0" g="0" b="0" a="255"/>
           </text>
         </childs>
       </button>
@@ -284,38 +283,65 @@ Resolution of the screen: 1680x 1050y
 		<image path="gui/credits.png">
 		  <position x="0" y="0"/>
 		</image>
-      <text text=" The Prime Minister of Sweden" center="true" counter="false">
+      <text text=" MIT License" center="true" counter="false">
         <position x="350" y="200"/>
       </text>
-      <text text=" visited Washington today as my" center="true" counter="false">
-        <position x="350" y="225"/>
-      </text>
-      <text text=" little tiny nipples moved to France-" center="true" counter="false">
+      <text text=" Copyright (c) 2018 Marc Garcia, Josep Pi, Ivan Drofiak, Adria Ferrer," center="true" counter="false">
         <position x="350" y="250"/>
       </text>
-      <text text=" The White House reception committee" center="true" counter="false">
+      <text text=" Jaume Suris, Lorien Portella, Hugo Bo and Rodrigo de Pedro." center="true" counter="false">
         <position x="350" y="275"/>
       </text>
-      <text text=" greeted the Prime Rib Roast" center="true" counter="false">
-        <position x="350" y="300"/>
-      </text>
-      <text text=" Minister and I do the cha cha like" center="true" counter="false">
+      <text text=" Permission is hereby granted, free of charge, to any person obtaining a copy" center="true" counter="false">
         <position x="350" y="325"/>
       </text>
-      <text text=" a sissy girl..." center="true" counter="false">
+      <text text=" of this software and associated documentation files (the ''Software''), to deal" center="true" counter="false">
         <position x="350" y="350"/>
       </text>
-      <text text=" (urged to keep going, so continues slowly)" center="true" counter="false">
+      <text text=" in the Software without restriction, including without limitation the rights" center="true" counter="false">
         <position x="350" y="375"/>
       </text>
-      <text text=" I lika do da cha cha..." center="true" counter="false">
+      <text text=" to use, copy, modify, merge, publish, distribute, sublicense, and/or sell" center="true" counter="false">
         <position x="350" y="400"/>
+      </text>
+      <text text=" copies of the Software, and to permit persons to whom the Software is" center="true" counter="false">
+        <position x="350" y="425"/>
+      </text>
+      <text text=" furnished to do so, subject to the following conditions:" center="true" counter="false">
+        <position x="350" y="450"/>
+      </text>
+      <text text=" The above copyright notice and this permission notice shall be included in all" center="true" counter="false">
+        <position x="350" y="500"/>
+      </text>
+      <text text=" copies or substantial portions of the Software." center="true" counter="false">
+        <position x="350" y="525"/>
+      </text>
+      <text text=" THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR" center="true" counter="false">
+        <position x="350" y="550"/>
+      </text>
+      <text text=" IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY," center="true" counter="false">
+        <position x="350" y="575"/>
+      </text>
+      <text text=" FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE" center="true" counter="false">
+        <position x="350" y="600"/>
+      </text>
+      <text text=" AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER" center="true" counter="false">
+        <position x="350" y="625"/>
+      </text>
+      <text text=" AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER" center="true" counter="false">
+        <position x="350" y="650"/>
+      </text>
+      <text text=" OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE" center="true" counter="false">
+        <position x="350" y="675"/>
+      </text>
+      <text text=" SOFTWARE." center="true" counter="false">
+        <position x="350" y="700"/>
       </text>
 		<button click_action="32"> <!--Back-->
 			<position x="190" y="875"/>
-			<standby x="26" y="726" w="187" h="69"/>
-			<OnMouse x="26" y="726" w="187" h="69"/>
-			<OnClick x="26" y="726" w="187" h="69"/>
+			<standby x="196" y="0" w="192" h="56"/>
+			<OnMouse x="0" y="0" w="192" h="56"/>
+			<OnClick x="392" y="0" w="192" h="56"/>
 			<childs>
 				<text text="BACK" center="true" counter="false">
 					<position x="0" y="0"/>
@@ -327,9 +353,9 @@ Resolution of the screen: 1680x 1050y
 		</button>
     <button click_action="35"><!--X-->
       <position x="190" y="125"/>
-      <standby x="26" y="805" w="56" h="56"/>
-      <OnMouse x="26" y="805" w="56" h="56"/>
-      <OnClick x="26" y="805" w="56" h="56"/>
+      <standby x="727" y="0" w="56" h="55"/>
+      <OnMouse x="665" y="0" w="56" h="55"/>
+      <OnClick x="789" y="0" w="56" h="55"/>
       <childs>
 <!--        <text text="X" center="true" counter="false">
           <position x="0" y="0"/>
@@ -405,19 +431,19 @@ Resolution of the screen: 1680x 1050y
         <interactive value="false"/>
       </text>
     <text text="Audio" center="true" counter="false">
-      <position x="350" y="275"/>
+      <position x="350" y="325"/>
       <font id="4"/>
       <color r="0" g="0" b="0" a="255"/>
       <interactive value="false"/>
     </text>
     <text text="Music" center="true" counter="false">
-      <position x="400" y="350"/>
+      <position x="400" y="400"/>
       <font id="3"/>
       <color r="0" g="0" b="0" a="255"/>
       <interactive value="false"/>
     </text>
 	<slider>
-		<position x="500" y="350"/>
+		<position x="500" y="400"/>
 		<empty x="737" y="1258" w="779" h="55"/>
 		<full x="737" y="1313" w="779" h="55"/>
 		<button click_action="41">
@@ -428,13 +454,13 @@ Resolution of the screen: 1680x 1050y
 		</button>
 	</slider>
     <text text="Effects" center="true" counter="false">
-      <position x="400" y="450"/>
+      <position x="400" y="500"/>
       <font id="3"/>
       <color r="0" g="0" b="0" a="255"/>
       <interactive value="false"/>
     </text>
 	<slider>
-		<position x="500" y="450"/>
+		<position x="500" y="500"/>
 		<empty x="737" y="1258" w="779" h="55"/>
 		<full x="737" y="1313" w="779" h="55"/>
 		<button click_action="42">
@@ -444,7 +470,7 @@ Resolution of the screen: 1680x 1050y
 			<OnClick x="1182" y="1188" w="49" h="48"/>
 		</button>
 	</slider>
-    <text text="Video" center="true" counter="false">
+    <!--<text text="Video" center="true" counter="false">
       <position x="350" y="575"/>
       <font id="4"/>
       <color r="0" g="0" b="0" a="255"/>
@@ -462,13 +488,13 @@ Resolution of the screen: 1680x 1050y
 		<OnMouseOff x="1464" y="173" w="81" h="53"/>
 		<standbyOn x="1553" y="119" w="81" h="53"/>
 		<OnMouseOn x="1553" y="173" w="81" h="53"/>
-	</switch>
+	</switch>-->
 	<button click_action="32">
         <!--Apply-->
         <position x="1230" y="875"/>
-        <standby x="26" y="726" w="187" h="69"/>
-		<OnMouse x="26" y="726" w="187" h="69"/>
-		<OnClick x="26" y="726" w="187" h="69"/>
+        <standby x="196" y="0" w="192" h="56"/>
+		<OnMouse x="0" y="0" w="192" h="56"/>
+		<OnClick x="392" y="0" w="192" h="56"/>
         <childs>
           <text text="APPLY" center="true" counter="false">
             <position x="0" y="0"/>
@@ -480,9 +506,9 @@ Resolution of the screen: 1680x 1050y
     </button>
     <button click_action="35"><!--X-->
       <position x="190" y="125"/>
-      <standby x="26" y="805" w="56" h="56"/>
-      <OnMouse x="26" y="805" w="56" h="56"/>
-      <OnClick x="26" y="805" w="56" h="56"/>
+      <standby x="727" y="0" w="56" h="55"/>
+      <OnMouse x="665" y="0" w="56" h="55"/>
+      <OnClick x="789" y="0" w="56" h="55"/>
       <childs>
 <!--        <text text="X" center="true" counter="false">
           <position x="0" y="0"/>
@@ -493,7 +519,7 @@ Resolution of the screen: 1680x 1050y
       </childs>
     </button>
       <button click_action="36"><!--CHANGE_HOTKEYS-->
-        <position x="600" y="750"/>
+        <position x="600" y="700"/>
         <standby x="687" y="1177" w="469" h="72"/>
         <OnMouse x="687" y="1177" w="469" h="72"/>
         <OnClick x="687" y="1177" w="469" h="72"/>
@@ -585,9 +611,9 @@ Resolution of the screen: 1680x 1050y
       <button click_action="59">
         <!--Back-->
         <position x="190" y="875"/>
-        <standby x="26" y="726" w="187" h="69"/>
-		<OnMouse x="26" y="726" w="187" h="69"/>
-		<OnClick x="26" y="726" w="187" h="69"/>
+        <standby x="196" y="0" w="192" h="56"/>
+		<OnMouse x="0" y="0" w="192" h="56"/>
+		<OnClick x="392" y="0" w="192" h="56"/>
         <childs>
           <text text="RESET" center="true" counter="false">
             <position x="0" y="0"/>
@@ -600,9 +626,9 @@ Resolution of the screen: 1680x 1050y
       <button click_action="32">
         <!--Continue-->
         <position x="1230" y="875"/>
-        <standby x="26" y="726" w="187" h="69"/>
-		<OnMouse x="26" y="726" w="187" h="69"/>
-		<OnClick x="26" y="726" w="187" h="69"/>
+        <standby x="196" y="0" w="192" h="56"/>
+		<OnMouse x="0" y="0" w="192" h="56"/>
+		<OnClick x="392" y="0" w="192" h="56"/>
         <childs>
           <text text="CONTINUE" center="true" counter="false">
             <position x="0" y="0"/>
@@ -632,12 +658,42 @@ Resolution of the screen: 1680x 1050y
 			<OnClick x="349" y="0" w="330" h="450"/>
 		</button>
 		<button click_action="38">
-			<position x="454" y="154"/>
-			<standby x="872" y="0" w="237" h="56"/>
-			<OnMouse x="872" y="0" w="237" h="56"/>
-			<OnClick x="872" y="0" w="237" h="56"/>
+			<position x="464" y="146"/>
+			<standby x="5" y="248" w="187" h="43"/>
+			<OnMouse x="5" y="293" w="187" h="43"/>
+			<OnClick x="5" y="338" w="187" h="43"/>
 		</button>
-
+	</menu>
+	
+	<!-- SKIP TUTORIAL MENU -->
+	<menu type="9" active="false">
+		<image path="gui/skip_tutorial.png">
+			<position x="630" y="275"/>
+		</image>
+		<text text="Do you want to skip the">
+			<position x="685" y="330"/>
+			<font id="8"/>
+			<color r="255" g="255" b="255" a="255"/>
+			<interactive value="false"/>
+		</text>
+		<text text="tutorial or continue with it?">
+			<position x="685" y="380"/>
+			<font id="8"/>
+			<color r="255" g="255" b="255" a="255"/>
+			<interactive value="false"/>
+		</text>
+		<button click_action="46">
+			<position x="900" y="460"/>
+			<standby x="138" y="384" w="121" h="45"/>
+			<OnMouse x="138" y="437" w="121" h="45"/>
+			<OnClick x="138" y="491" w="121" h="45"/>
+		</button>
+		<button click_action="45">
+			<position x="700" y="460"/>
+			<standby x="5" y="384" w="121" h="45"/>
+			<OnMouse x="5" y="437" w="121" h="45"/>
+			<OnClick x="5" y="491" w="121" h="45"/>
+		</button>
 	</menu>
 	
 </config>

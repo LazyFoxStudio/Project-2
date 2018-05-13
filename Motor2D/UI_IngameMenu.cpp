@@ -18,8 +18,8 @@ buttons_offset({buttons_offsetX, buttons_offsetY})
 	selectionDisplay = new SelectionDisplay();
 	infoTable = new InfoTable();
 	window = new Window(texture, x, y, section, callback);
-	workers_title = new Text("Workers:", 1480, 815, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
-	workers = new Text("", 1495, 865, App->font->fonts.front(), { 0,0,0,255 }, nullptr);
+	workers_title = new Text("Workers:", 1480, 815, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
+	workers = new Text("", 1500, 865, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
 
 	actionButtonsHotkeys.push_back(DEFAULT_HOTKEY_1);
 	actionButtonsHotkeys.push_back(DEFAULT_HOTKEY_2);

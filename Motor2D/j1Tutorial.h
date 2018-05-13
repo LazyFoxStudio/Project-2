@@ -22,7 +22,9 @@ enum Task
 	KILL_ENEMIES,
 	PLACE_BARRACKS,
 	MOVE_CAMERA,
-	CHOOSE_HERO
+	CHOOSE_HERO,
+	ASSIGN_WORKERS,
+	SELECT_LUMBER_MILL
 };
 
 class TextBox;
@@ -82,6 +84,8 @@ public:
 	bool				enemiesKilled = false;
 	bool				allowTHSelection = false;
 	bool				allowHeroSelection = false;
+	bool				workersAssigned = false;
+	bool				tutorialDone = false;
 
 	j1Timer				timer;
 	j1Timer				completed_delay_timer;

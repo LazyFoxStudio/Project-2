@@ -39,6 +39,7 @@ bool j1Tutorial::Update(float dt)
 	{
 		if (missing_steps.size() == 0 && activeStep == nullptr)
 		{
+			tutorialDone = true;
 			stopTutorial(true);
 			return true;
 		}
@@ -133,6 +134,32 @@ void j1Tutorial::startTutorial()
 		enemiesKilled = false;
 		allowTHSelection = false;
 		allowHeroSelection = false;
+		App->gui->nextWaveWindow->active = false;
+
+		Button* barracks = App->gui->GetActionButton(5);
+		barracks->setCondition("First finish the tutorial");
+		barracks->Lock();
+		Button* lumber = App->gui->GetActionButton(6);
+		lumber->setCondition("First finish the tutorial");
+		lumber->Lock();
+		Button* farms = App->gui->GetActionButton(7);
+		farms->setCondition("First finish the tutorial");
+		farms->Lock();
+		Button* mine = App->gui->GetActionButton(22);
+		mine->setCondition("First finish the tutorial");
+		mine->Lock();
+		Button* turret = App->gui->GetActionButton(23);
+		turret->setCondition("First finish the tutorial");
+		turret->Lock();
+		Button* hut = App->gui->GetActionButton(24);
+		hut->setCondition("First finish the tutorial");
+		hut->Lock();
+		Button* church = App->gui->GetActionButton(25);
+		church->setCondition("First finish the tutorial");
+		church->Lock();
+		Button* blacksmith = App->gui->GetActionButton(26);
+		blacksmith->setCondition("First finish the tutorial");
+		blacksmith->Lock();
 	}
 }
 
@@ -146,33 +173,41 @@ void j1Tutorial::stopTutorial(bool skip)
 		App->wavecontroller->wave_timer.Start();
 		App->gui->nextWaveWindow->timer->counter.Start();
 		App->wavecontroller->tutorial = false;
-		std::string condition_mine = "Build first a Mine";
-		std::string condition_farm = "Build first a Farm";
-		std::string condition_barracks = "Build first a Barracks";
-		std::string condition_hut = "Build first a Gnome Hut";
+
 		if (skip)
 			active = false;
 
 		Button* lumber = App->gui->GetActionButton(6);
 		lumber->Unlock();
 		Button* barracks = App->gui->GetActionButton(5);
-		barracks->Unlock();
 		Button* farms = App->gui->GetActionButton(7);
-		farms->Unlock();
 		Button* mine = App->gui->GetActionButton(22);
-		mine->Unlock();
+		if (!skip || tutorialDone)
+		{			
+			barracks->Unlock();			
+			farms->Unlock();			
+			mine->Unlock();
+		}
+		else
+		{
+			barracks->setCondition("Build first a Lumber Mill");
+			farms->setCondition("Build first a Lumber Mill");
+			mine->setCondition("Build first a Lumber Mill");
+		}
 		Button* turret = App->gui->GetActionButton(23);
-		turret->setCondition(condition_farm);
+		turret->setCondition("Build first a Farm");
 		turret->Lock();
 		Button* hut = App->gui->GetActionButton(24);
-		hut->setCondition(condition_barracks);
+		hut->setCondition("Build first a Barracks");
 		hut->Lock();
 		Button* church = App->gui->GetActionButton(25);
-		church->setCondition(condition_mine);
+		church->setCondition("Build first a Mine");
 		church->Lock();
 		Button* blacksmith = App->gui->GetActionButton(26);
-		blacksmith->setCondition(condition_hut);
+		blacksmith->setCondition("Build first a Gnome Hut");
 		blacksmith->Lock();
+
+		App->gui->nextWaveWindow->active = true;
 	}
 }
 
@@ -228,6 +263,11 @@ void j1Tutorial::taskCompleted(Task task)
 	{
 		if (task == KILL_ENEMIES)
 			enemiesKilled = true;
+		if (activeStep->task == SELECT_LUMBER_MILL && task == ASSIGN_WORKERS)
+		{
+			workersAssigned = true;
+			finishStep();
+		}
 	}
 }
 
@@ -269,6 +309,10 @@ void j1Tutorial::stepStarted(Task task)
 		barracks->Unlock();
 		break;
 	case MOVE_CAMERA:
+		break;
+	case ASSIGN_WORKERS:
+		if (workersAssigned)
+			finishStep();
 		break;
 	default:
 		break;

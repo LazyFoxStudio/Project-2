@@ -47,6 +47,7 @@ bool j1WaveController::Start()
 	flow_field = App->pathfinding->RequestFlowField(TownHall_pos, dest);
 	
 	points = 1;
+	points_plus = 1;
 
 	return ret;
 }
@@ -133,8 +134,13 @@ void j1WaveController::Generate_Next_Wave()
 	
 	if (!tutorial)
 	{
-		points ++;
+		points += points_plus;
 		entity_selector(6);
+		
+		if (current_wave % 5 == 0)
+		{
+			points_plus++;
+		}
 	}
 	else
 	{
@@ -177,6 +183,7 @@ void j1WaveController::Generate_Wave()
 void j1WaveController::Restart_Wave_Sys()
 {
 	points = 1;
+	points_plus = 1;
 	current_wave = 0;
 	Generate_Next_Wave();
 	wave_timer.Start();

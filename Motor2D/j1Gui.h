@@ -114,7 +114,7 @@ public:
 	void createLifeBar(Entity* entity);
 	void deleteLifeBar(Entity* entity, std::list<LifeBar*>& list);
 	void entityDeleted(Entity* entity);
-	CostDisplay* createCostDisplay(std::string name, int wood_cost = 0, int gold_cost = 0, int oil_cost = 0, int workers_cost = 0,  uint upgradetype = 0, uint upgradelvl = 3);
+	CostDisplay* createCostDisplay(std::string name, int wood_cost = 0, int gold_cost = 0, int oil_cost = 0, int workers_cost = 0,  uint upgradetype = 0);
 
 	void deleteElement(UI_element* element);
 
