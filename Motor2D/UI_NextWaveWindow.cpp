@@ -18,9 +18,13 @@ minimized_pos({min_x, min_y})
 {
 	window = new Window(texture, 0, 0, section, callback);
 	window->parent = this;
-	text = new Text("Next Wave in:", 10, 4, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
+	text = new Text("Next Wave in:", 20, 8, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
+	//text->setOutlined(true);
+	//text->setOutlineColor({ 0,0,0,255 });
 	text->parent = this;
-	timer = new Chrono(150, 4, TIMER, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
+	timer = new Chrono(150, 8, TIMER, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
+	//timer->text->setOutlined(true);
+	//timer->text->setOutlineColor({ 0,0,0,255 });
 	timer->parent = this;
 	timer->setStartValue(App->wavecontroller->initial_wait);
 	button->parent = this;
