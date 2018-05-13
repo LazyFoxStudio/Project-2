@@ -14,34 +14,13 @@
 	<scene />
 	<entitycontroller>
 		<Units>
-			<Hero type="10" hp="257" x="2160" y="2097.66992" />
-			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="44" pos_x="2096.38184" pos_y="2219.47778" direction="4" />
-				<unit hp="59" pos_x="2097.99341" pos_y="2187.52026" direction="4" />
-				<unit hp="63" pos_x="2064.38403" pos_y="2219.6416" direction="4" />
-			</squad>
-			<squad type_enum="19" type="AXE_THROWER">
-				<unit hp="40" pos_x="2144" pos_y="3488" direction="4" />
-				<unit hp="40" pos_x="2144" pos_y="3520" direction="4" />
-				<unit hp="40" pos_x="2144" pos_y="3552" direction="4" />
-				<unit hp="40" pos_x="2176" pos_y="3488" direction="4" />
-			</squad>
-			<squad type_enum="18" type="GRUNT">
-				<unit hp="70" pos_x="352" pos_y="1920" direction="4" />
-				<unit hp="70" pos_x="352" pos_y="1952" direction="4" />
-				<unit hp="70" pos_x="352" pos_y="1984" direction="4" />
-				<unit hp="70" pos_x="384" pos_y="1920" direction="4" />
-				<unit hp="70" pos_x="384" pos_y="1984" direction="4" />
-			</squad>
-			<squad type_enum="19" type="AXE_THROWER">
-				<unit hp="40" pos_x="2112" pos_y="224" direction="4" />
-				<unit hp="40" pos_x="2112" pos_y="256" direction="4" />
-				<unit hp="40" pos_x="2112" pos_y="288" direction="4" />
-				<unit hp="40" pos_x="2144" pos_y="224" direction="4" />
-			</squad>
+			<Hero type="11" hp="360" x="1788.25232" y="2063.93945" />
 		</Units>
 		<Buildings>
 			<town_hall hp="300" />
+			<Building hp="250" pos_x="1824" pos_y="1760" type_enum="3" workers="0" type="LUMBER_MILL" />
+			<Building hp="100" pos_x="2304" pos_y="1824" type_enum="4" workers="5" type="FARM" />
+			<Building hp="29" pos_x="1536" pos_y="1984" type_enum="4" workers="1" type="FARM" />
 		</Buildings>
 	</entitycontroller>
 	<gui />
@@ -50,17 +29,15 @@
 	<particle />
 	<actionscontroller />
 	<wavecontroller>
-		<wave value="2" />
-		<points value="4" />
-		<wave_timer value="0.0237504821" />
+		<wave value="0" />
+		<points value="2" />
+		<wave_timer value="43.9212685" />
 		<next_wave>
-			<enemies type="AXE_THROWER" type_enum="19" x="3605" y="1844" />
 			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
-			<enemies type="AXE_THROWER" type_enum="19" x="2177" y="3549" />
-			<enemies type="AXE_THROWER" type_enum="19" x="2177" y="3549" />
+			<enemies type="GRUNT" type_enum="18" x="2154" y="256" />
 		</next_wave>
 	</wavecontroller>
 	<renderer>
-		<camera x="-1402" y="-2216" />
+		<camera x="-1058" y="-1546" />
 	</renderer>
 </game_state>
