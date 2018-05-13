@@ -159,7 +159,7 @@ Resolution of the screen: 1680x 1050y
 	<!-- in-game menu -->
 		<ingamemenu>
 			<position x="0" y="750"/>
-			<section x="0" y="1379" w="1680" h="301"/>
+			<section x="0" y="1375" w="1680" h="301"/>
 			<buttons x="1408" y="790" offsetX="81" offsetY="75"/>
 		</ingamemenu>
     
