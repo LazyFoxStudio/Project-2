@@ -1595,7 +1595,7 @@ void j1EntityController::UpgradeExistingUnits(Type type1, Type type2, UpgradeTyp
 
 }
 
-Cost j1EntityController::getUpgradeCost(UpgradeType type, uint up_lvl)
+Cost j1EntityController::getUpgradeCost(UpgradeType type)
 {
 	Cost cost;
 	cost.oil_cost = 0;
