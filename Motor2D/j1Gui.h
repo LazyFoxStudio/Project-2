@@ -98,6 +98,7 @@ public:
 	Image* createImageFromAtlas(pugi::xml_node node, j1Module* callback = nullptr, bool use_icon_atlas = false, bool saveIntoGUI = true);
 	//NULL texture to use atlas
 	Button* createButton(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
+	Button* createSwitch(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 	Window* createWindow(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 	ProgressBar* createProgressBar(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 	IngameMenu* createIngameMenu(pugi::xml_node node, j1Module* callback = nullptr);

@@ -487,6 +487,8 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 			element = createImage(tmp, callback);
 		else if (type == "button")
 			element = createButton(tmp, callback);
+		else if (type == "switch")
+			element = createSwitch(tmp, callback);
 		else if (type == "window")
 			element = createWindow(tmp, callback);
 		else if (type == "progressbar")
@@ -663,6 +665,39 @@ Button* j1Gui::createButton(pugi::xml_node node, j1Module* callback, bool saveIn
 		SDL_Scancode key = (SDL_Scancode)(*letter.c_str() - 61);
 		ret->setHotkey(key);
 		ret->displayHotkey(true, App->font->getFont(hotkey.attribute("font_id").as_int()), { 0,0,0,255 }, true);
+	}
+
+	if (saveIntoGUI)
+		Buttons.push_back(ret);
+
+	return ret;
+}
+
+Button* j1Gui::createSwitch(pugi::xml_node node, j1Module * callback, bool saveIntoGUI)
+{
+	SDL_Texture* texture = nullptr;
+	if (node.attribute("path"))
+		texture = App->tex->Load(node.attribute("path").as_string());
+	else
+		texture = atlas;
+
+	int x = node.child("position").attribute("x").as_int();
+	int y = node.child("position").attribute("y").as_int();
+
+	SDL_Rect standbyOff = { node.child("standbyOff").attribute("x").as_int(), node.child("standbyOff").attribute("y").as_int(), node.child("standbyOff").attribute("w").as_int(), node.child("standbyOff").attribute("h").as_int() };
+	SDL_Rect OnMouseOff = { node.child("OnMouseOff").attribute("x").as_int(), node.child("OnMouseOff").attribute("y").as_int(), node.child("OnMouseOff").attribute("w").as_int(), node.child("OnMouseOff").attribute("h").as_int() };
+	SDL_Rect standbyOn = { node.child("standbyOn").attribute("x").as_int(), node.child("standbyOn").attribute("y").as_int(), node.child("standbyOn").attribute("w").as_int(), node.child("standbyOn").attribute("h").as_int() };
+	SDL_Rect OnMouseOn = { node.child("OnMouseOn").attribute("x").as_int(), node.child("OnMouseOn").attribute("y").as_int(), node.child("OnMouseOn").attribute("w").as_int(), node.child("OnMouseOn").attribute("h").as_int() };
+
+	Button* ret = new Button(x, y, texture, standbyOff, OnMouseOff, standbyOn, OnMouseOn, callback);
+
+	if (SDL_GetWindowFlags(App->win->window) & SDL_WINDOW_FULLSCREEN)
+		ret->switchOn = true;
+
+	if (node.attribute("click_action"))
+	{
+		ret->clickAction = (actionType)node.attribute("click_action").as_int(0);
+		ret->hasClickAction = true;
 	}
 
 	if (saveIntoGUI)

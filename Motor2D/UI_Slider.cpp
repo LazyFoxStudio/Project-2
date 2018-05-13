@@ -10,7 +10,7 @@ full(full),
 bar_length(full.w),
 progress(default_progress)
 {
-	progress_num = new Text("", x, y, App->font->getFont(1), { 255,255,255,255 }, nullptr);
+	progress_num = new Text("", x, y, App->font->getFont(1), { 0,0,0,255 }, nullptr);
 	appendChild(progress_num);
 }
 

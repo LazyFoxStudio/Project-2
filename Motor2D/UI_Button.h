@@ -15,6 +15,12 @@ public:
 		OnClick(OnClick)
 	{}
 
+	Button(int x, int y, SDL_Texture* texture, SDL_Rect standbyOff, SDL_Rect OnMouseOff, SDL_Rect standbyOn, SDL_Rect OnMouseOn, j1Module* callback) : UI_element(x, y, element_type::SWITCH, standbyOff, callback, texture),
+		OnMouse(OnMouseOff),
+		OnClick(standbyOn),
+		OnMouseOn(OnMouseOn)
+	{}
+
 	~Button()
 	{}
 
@@ -29,7 +35,9 @@ public:
 
 	SDL_Rect OnMouse = { 0,0,0,0 };
 	SDL_Rect OnClick = { 0,0,0,0 };
+	SDL_Rect OnMouseOn = { 0,0,0,0 };
 	bool clicked = false;
+	bool switchOn = false;
 
 private:
 

@@ -51,6 +51,7 @@ enum actionType
 	CHOOSE_PALADIN,
 	CHANGE_MUSIC,
 	CHANGE_FX,
+	TOGGLE_FULLSCREEN,
 
 	CHANGE_KEY_1 = 50,
 	CHANGE_KEY_2,
@@ -60,9 +61,7 @@ enum actionType
 	CHANGE_KEY_6,
 	CHANGE_KEY_7,
 	CHANGE_KEY_8,
-	CHANGE_KEY_9,
-
-	TUTORIAL
+	CHANGE_KEY_9
 };
 
 class j1ActionsController : public j1Module

@@ -318,6 +318,24 @@ bool j1ActionsController::Update(float dt)
 		case CHANGE_FX:
 			App->audio->ModifySFXVolume(App->gui->getSliderProgress(CHANGE_FX));
 			break;
+		case TOGGLE_FULLSCREEN:
+			if (SDL_GetWindowFlags(App->win->window) & SDL_WINDOW_FULLSCREEN)
+			{
+				SDL_SetWindowFullscreen(App->win->window, 0);
+				/*SDL_DisplayMode default_resolution;
+				SDL_GetCurrentDisplayMode(0, &default_resolution);
+				App->win->width = default_resolution.w;
+				App->win->height = default_resolution.h;*/
+			}
+			else
+			{
+				SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_FULLSCREEN);
+				/*App->win->width = 1680;
+				App->win->height = 1050;*/
+			}
+
+			doingAction = false;
+			break;
 
 		case CHANGE_KEY_1:
 			App->input->readHotkey(0);
@@ -353,17 +371,6 @@ bool j1ActionsController::Update(float dt)
 			break;
 		case CHANGE_KEY_9:
 			App->input->readHotkey(8);
-			doingAction = false;
-			break;
-		case TUTORIAL:
-			if (App->tutorial->active == true)
-			{
-				App->tutorial->active = false;
-			}
-			else if (App->tutorial->active == false)
-			{
-				App->tutorial->active = true;
-			}
 			doingAction = false;
 			break;
 		}

@@ -398,20 +398,26 @@ Resolution of the screen: 1680x 1050y
     <image path="gui/settings.png">
       <position x="0" y="0"/>
     </image>
+	<text text="Settings">
+        <position x="700" y="150"/>
+        <font id="6"/>
+        <color r="0" g="0" b="0" a="255"/>
+        <interactive value="false"/>
+      </text>
     <text text="Audio" center="true" counter="false">
-      <position x="350" y="200"/>
+      <position x="350" y="275"/>
       <font id="4"/>
       <color r="0" g="0" b="0" a="255"/>
       <interactive value="false"/>
     </text>
     <text text="Music" center="true" counter="false">
-      <position x="400" y="275"/>
+      <position x="400" y="350"/>
       <font id="3"/>
       <color r="0" g="0" b="0" a="255"/>
       <interactive value="false"/>
     </text>
 	<slider>
-		<position x="500" y="275"/>
+		<position x="500" y="350"/>
 		<empty x="737" y="1258" w="779" h="55"/>
 		<full x="737" y="1313" w="779" h="55"/>
 		<button click_action="41">
@@ -422,13 +428,13 @@ Resolution of the screen: 1680x 1050y
 		</button>
 	</slider>
     <text text="Effects" center="true" counter="false">
-      <position x="400" y="375"/>
+      <position x="400" y="450"/>
       <font id="3"/>
       <color r="0" g="0" b="0" a="255"/>
       <interactive value="false"/>
     </text>
 	<slider>
-		<position x="500" y="375"/>
+		<position x="500" y="450"/>
 		<empty x="737" y="1258" w="779" h="55"/>
 		<full x="737" y="1313" w="779" h="55"/>
 		<button click_action="42">
@@ -439,23 +445,24 @@ Resolution of the screen: 1680x 1050y
 		</button>
 	</slider>
     <text text="Video" center="true" counter="false">
-      <position x="350" y="500"/>
+      <position x="350" y="575"/>
       <font id="4"/>
       <color r="0" g="0" b="0" a="255"/>
       <interactive value="false"/>
     </text>
     <text text="Fullscreen" center="true" counter="false">
-      <position x="400" y="575"/>
+      <position x="400" y="650"/>
       <font id="3"/>
       <color r="0" g="0" b="0" a="255"/>
       <interactive value="false"/>
     </text>
-    <text text="Frame Cap" center="true" counter="false">
-      <position x="400" y="675"/>
-      <font id="3"/>
-      <color r="0" g="0" b="0" a="255"/>
-      <interactive value="false"/>
-    </text>
+	<switch click_action="43">
+		<position x="600" y="625"/>
+		<standbyOff x="1464" y="119" w="81" h="53"/>
+		<OnMouseOff x="1464" y="173" w="81" h="53"/>
+		<standbyOn x="1553" y="119" w="81" h="53"/>
+		<OnMouseOn x="1553" y="173" w="81" h="53"/>
+	</switch>
 	<button click_action="32">
         <!--Apply-->
         <position x="1230" y="875"/>
@@ -495,38 +502,6 @@ Resolution of the screen: 1680x 1050y
             <position x="0" y="0"/>
             <font id="4"/>
             <color r="0" g="0" b="0" a="255"/>
-            <interactive value="false"/>
-          </text>
-        </childs>
-      </button>
-      <text text="Tutorial" center="true" counter="false">
-        <position x="750" y="150"/>
-        <font id="6"/>
-        <color r="255" g="255" b="0" a="255"/>
-        <interactive value="false"/>
-      </text>
-      <text text="On" center="true" counter="false">
-        <position x="1000" y="150"/>
-        <font id="6"/>
-        <color r="255" g="255" b="0" a="255"/>
-        <interactive value="false"/>
-      </text>
-      <text text="Off" center="true" counter="false">
-        <position x="1000" y="150"/>
-        <font id="6"/>
-        <color r="255" g="255" b="0" a="255"/>
-        <interactive value="false"/>
-      </text>
-      <button click_action="59">
-        <position x="1100" y="160"/>
-        <standby x="26" y="805" w="56" h="55"/>
-        <OnMouse x="26" y="805" w="56" h="55"/>
-        <OnClick x="26" y="805" w="56" h="55"/>
-        <childs>
-          <text text="X" center="true" counter="false">
-            <position x="0" y="0"/>
-            <font id="6"/>
-            <color r="255" g="255" b="0" a="255"/>
             <interactive value="false"/>
           </text>
         </childs>

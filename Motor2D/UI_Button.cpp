@@ -19,21 +19,22 @@ void Button::BlitElement()
 		switch (state)
 		{
 		case STANDBY:
-			App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera, true, 1.0f, flip);
+			if (this->element_type == BUTTON || !switchOn)
+				App->render->Blit(texture, globalPos.x, globalPos.y, &section, use_camera, true, 1.0f, flip);
+			else
+				App->render->Blit(texture, globalPos.x, globalPos.y, &OnClick, use_camera, true, 1.0f, flip);
 			break;
 		case MOUSEOVER:
-			App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouse, use_camera, true, 1.0f, flip);
+			if (this->element_type == BUTTON || !switchOn)
+				App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouse, use_camera, true, 1.0f, flip);
+			else
+				App->render->Blit(texture, globalPos.x, globalPos.y, &OnMouseOn, use_camera, true, 1.0f, flip);
 			break;
 		case LOCKED:
 		case LOCKED_MOUSEOVER:
 		case CLICKED:
 			App->render->Blit(texture, globalPos.x, globalPos.y, &OnClick, use_camera, true, 1.0f, flip);
 			break;
-		}
-
-		if (displayingHotkey && hotkey_text != nullptr)
-		{
-			//hotkey_text->BlitElement();
 		}
 
 		UI_element::BlitElement();

@@ -25,7 +25,8 @@ enum element_type
 	COSTDISPLAY,
 	WORKERSDISPLAY,
 	PRODUCTIONDISPLAY,
-	SLIDER
+	SLIDER,
+	SWITCH
 };
 
 enum element_state

@@ -97,19 +97,6 @@ bool j1UIScene::Start()
 
 bool j1UIScene::Update(float dt)
 {
-	Text* tutorial_on = (Text*)App->gui->GetElement(TEXT, 38);
-	Text* tutorial_off = (Text*)App->gui->GetElement(TEXT, 39);
-
-	if (App->tutorial->active == true)
-	{
-		tutorial_on->active = true;
-		tutorial_off->active = false;
-	}
-	else if (App->tutorial->active == false)
-	{
-		tutorial_off->active = true;
-		tutorial_on->active = false;
-	}
 
 	return true;
 }
@@ -172,6 +159,8 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 		if (event_type == MOUSE_LEFT_CLICK)
 		{
 			element->state = CLICKED;
+			if (element->element_type == SWITCH)
+				((Button*)element)->switchOn = !((Button*)element)->switchOn;
 
 			if (element->hasClickAction)
 				App->actionscontroller->activateAction(element->clickAction);
