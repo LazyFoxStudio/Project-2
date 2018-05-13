@@ -43,7 +43,7 @@ bool j1PathFinding::PostUpdate()
 						for (std::deque<Command*>::iterator it3 = unit->commands.begin(); it3 != unit->commands.end(); it3++)
 						{
 							if ((*it3)->type == MOVETO)
-								if (((MoveTo*)unit->commands.front())->flow_field == (*it)->flow_field)
+								if (((MoveTo*)(*it3))->flow_field == (*it)->flow_field)
 									to_erase = false;
 						}
 					}
@@ -56,12 +56,12 @@ bool j1PathFinding::PostUpdate()
 						{
 							if ((*it3)->type == MOVETOSQUAD)
 							{
-								if (((MoveToSquad*)(*it2)->commands.front())->flow_field == (*it)->flow_field)
+								if (((MoveToSquad*)(*it3))->flow_field == (*it)->flow_field)
 									to_erase = false;
 							}
 							else if ((*it3)->type == ATTACKING_MOVETO_SQUAD)
 							{
-								if (((AttackingMoveToSquad*)(*it2)->commands.front())->flow_field == (*it)->flow_field)
+								if (((AttackingMoveToSquad*)(*it3))->flow_field == (*it)->flow_field)
 									to_erase = false;
 							}
 						}
