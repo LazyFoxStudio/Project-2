@@ -288,11 +288,7 @@ bool j1ActionsController::Update(float dt)
 			App->entitycontroller->active = true;
 			App->wavecontroller->active = true;
 			App->uiscene->toggleMenu(false, START_MENU);
-			App->uiscene->toggleMenu(true, INGAME_MENU);	
-			if (App->tutorial->active)
-				App->uiscene->toggleMenu(true, SKIP_TUTORIAL_MENU);
-			else
-				App->uiscene->toggleMenu(true, HERO_SELECTION_MENU);
+			App->uiscene->toggleMenu(true, INGAME_MENU);				
 			App->scene->Start_game();	
 			App->tutorial->stopTutorial();
 			doingAction = false;
