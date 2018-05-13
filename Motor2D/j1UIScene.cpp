@@ -88,7 +88,7 @@ bool j1UIScene::Start()
 	church->setCondition("Build first a Mine");
 	church->Lock();
 	Button* blacksmith = App->gui->GetActionButton(26);
-	blacksmith->setCondition("You need to build Church and Hut");
+	blacksmith->setCondition("Build first a Hut");
 	blacksmith->Lock();
 
 	return true;
