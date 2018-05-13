@@ -142,14 +142,14 @@ Resolution of the screen: 1680x 1050y
 		</button>
 
 	<!-- Wave Window -->
-		<nextwavewindow icon_atlas="false">
-			<position x="1408" y="429"/>
+		<nextwavewindow path="gui/next_wave.png" icon_atlas="false">
+			<position x="1408" y="450"/>
 			<minimizedPosition x="1408" y="725"/>
-			<section x="0" y="271" w="272" h="336"/>
-			<icons x="23" y="70" offsetX="125" offsetY="80"/>
+			<section x="0" y="0" w="272" h="336"/>
+			<icons x="35" y="70" offsetX="125" offsetY="80"/>
 			<draggable horizontal="false" vertical="false"/>
 			<button click_action="18">
-				<position x="230" y="8"/>
+				<position x="225" y="13"/>
 				<standby x="1054" y="705" w="23" h="22"/>
 				<OnMouse x="1084" y="705" w="23" h="22"/>
 				<OnClick x="1116" y="705" w="23" h="22"/>
@@ -160,7 +160,7 @@ Resolution of the screen: 1680x 1050y
 		<ingamemenu>
 			<position x="0" y="750"/>
 			<section x="0" y="1379" w="1680" h="301"/>
-			<buttons x="1408" y="810" offsetX="81" offsetY="81"/>
+			<buttons x="1408" y="790" offsetX="81" offsetY="75"/>
 		</ingamemenu>
     
     <!-- Minimap -->
@@ -620,13 +620,13 @@ Resolution of the screen: 1680x 1050y
 			<position x="440" y="132"/>
 		</image>
 		<button path="gui/mage_card.png" click_action="39">
-			<position x="509" y="271"/>
+			<position x="509" y="240"/>
 			<standby x="0" y="0" w="330" h="450"/>
 			<OnMouse x="349" y="0" w="330" h="450"/>
 			<OnClick x="349" y="0" w="330" h="450"/>
 		</button>
 		<button path="gui/paladin_card.png" click_action="40">
-			<position x="839" y="271"/>
+			<position x="839" y="240"/>
 			<standby x="0" y="0" w="330" h="450"/>
 			<OnMouse x="349" y="0" w="330" h="450"/>
 			<OnClick x="349" y="0" w="330" h="450"/>
