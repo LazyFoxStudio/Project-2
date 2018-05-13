@@ -4113,9 +4113,9 @@
 
     <meleeAttackUpgrade  id="27" click_action="24">
       <position x="0" y="0"/>
-      <standby x="1305" y="939" w="66" h="66"/>
-      <OnMouse x="1373" y="939" w="66" h="66"/>
-      <OnClick x="1441" y="939" w="66" h="66"/>
+      <standby x="1515" y="296" w="66" h="66"/>
+      <OnMouse x="1583" y="296" w="66" h="66"/>
+      <OnClick x="1651" y="296" w="66" h="66"/>
       <popUp>
         <Info text="Increase the attack of the melee troops" cost="true" type="1" upgrade="true"/>
       </popUp>
@@ -4123,9 +4123,9 @@
     </meleeAttackUpgrade>
     <meleeArmorUpgrade  id="28" click_action="25">
       <position x="0" y="0"/>
-      <standby x="1305" y="939" w="66" h="66"/>
-      <OnMouse x="1373" y="939" w="66" h="66"/>
-      <OnClick x="1441" y="939" w="66" h="66"/>
+      <standby x="1515" y="366" w="66" h="66"/>
+      <OnMouse x="1583" y="366" w="66" h="66"/>
+      <OnClick x="1651" y="366" w="66" h="66"/>
       <popUp>
         <Info text="Increase the defense of the melee troops" cost="true" type="2" upgrade="true"/>
       </popUp>
@@ -4133,9 +4133,9 @@
     </meleeArmorUpgrade>
     <rangedAttackUpgrade  id="29" click_action="26">
       <position x="0" y="0"/>
-      <standby x="1305" y="939" w="66" h="66"/>
-      <OnMouse x="1373" y="939" w="66" h="66"/>
-      <OnClick x="1441" y="939" w="66" h="66"/>
+      <standby x="1515" y="437" w="66" h="66"/>
+      <OnMouse x="1583" y="437" w="66" h="66"/>
+      <OnClick x="1651" y="437" w="66" h="66"/>
       <popUp>
         <Info text="Increase the attack of ranged troops" cost="true" type="3" upgrade="true"/>
       </popUp>
@@ -4143,9 +4143,9 @@
     </rangedAttackUpgrade>
     <rangedArmorUpgrade  id="30" click_action="27">
       <position x="0" y="0"/>
-      <standby x="1305" y="939" w="66" h="66"/>
-      <OnMouse x="1373" y="939" w="66" h="66"/>
-      <OnClick x="1441" y="939" w="66" h="66"/>
+      <standby x="1515" y="507" w="66" h="66"/>
+      <OnMouse x="1583" y="507" w="66" h="66"/>
+      <OnClick x="1651" y="507" w="66" h="66"/>
       <popUp>
         <Info text="Increase the defense of ranged troops" cost="true" type="4" upgrade="true"/>
       </popUp>
@@ -4153,9 +4153,9 @@
     </rangedArmorUpgrade>
     <flyingAttackUpgrade  id="31" click_action="28">
       <position x="0" y="0"/>
-      <standby x="1305" y="939" w="66" h="66"/>
-      <OnMouse x="1373" y="939" w="66" h="66"/>
-      <OnClick x="1441" y="939" w="66" h="66"/>
+      <standby x="1515" y="588" w="66" h="66"/>
+      <OnMouse x="1583" y="588" w="66" h="66"/>
+      <OnClick x="1651" y="588" w="66" h="66"/>
       <popUp>
         <Info text="Increase the attack of the flying troops" cost="true" type="5" upgrade="true"/>
       </popUp>
@@ -4163,9 +4163,9 @@
     </flyingAttackUpgrade>
     <flyingArmorUpgrade  id="32" click_action="29">
       <position x="0" y="0"/>
-      <standby x="1305" y="939" w="66" h="66"/>
-      <OnMouse x="1373" y="939" w="66" h="66"/>
-      <OnClick x="1441" y="939" w="66" h="66"/>
+      <standby x="1515" y="658" w="66" h="66"/>
+      <OnMouse x="1583" y="658" w="66" h="66"/>
+      <OnClick x="1651" y="658" w="66" h="66"/>
       <popUp>
         <Info text="Increase the defense of the melee troops" cost="true" type="6" upgrade="true"/>
       </popUp>
