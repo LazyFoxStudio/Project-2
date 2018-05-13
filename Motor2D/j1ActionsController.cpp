@@ -351,6 +351,9 @@ bool j1ActionsController::Update(float dt)
 			App->audio->PlayMusic(MAIN_THEME, 0);
 			doingAction = false;
 			App->scene->Close_game();
+
+			App->gui->UpdateContinueButton();
+
 			break;
 		case CHOOSE_MAGE:
 			App->tutorial->taskCompleted(CHOOSE_HERO);

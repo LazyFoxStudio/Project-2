@@ -71,6 +71,8 @@ bool j1Gui::Start()
 	warningMessages->addWarningMessage("You cannot build out of the range", OUT_OF_RANGE);
 	warningMessages->addWarningMessage("You have to place it over an unused mine", NO_MINE);
 
+	
+
 	return true;
 }
 
@@ -1316,6 +1318,27 @@ uint j1Gui::getIDbyButton(Button* button) const
 	}
 
 	return id;
+}
+
+void j1Gui::UpdateContinueButton()
+{
+	pugi::xml_document save_file;
+	pugi::xml_node node = App->LoadFile(save_file, "save_file.xml");
+
+	menu* Menu = App->uiscene->getMenu(START_MENU);
+	if (Menu != nullptr)
+	{
+		for (std::list<UI_element*>::iterator it_e = Menu->elements.begin(); it_e != Menu->elements.end(); it_e++)
+		{
+			if ((*it_e)->clickAction == 44)
+			{
+				if (node)
+					(*it_e)->Unlock();
+				else
+					(*it_e)->Lock();
+			}
+		}
+	}
 }
 
 float j1Gui::getSliderProgress(int action) const
