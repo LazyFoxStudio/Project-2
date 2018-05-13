@@ -1021,7 +1021,7 @@ void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
 				//cost = App->entitycontroller->getUpgradeCost((UpgradeType)info.attribute("type").as_int(), 0);
 				cost = App->entitycontroller->getUpgradeCost((UpgradeType)info.attribute("type").as_int(), 1);
 			}
-			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.wood_cost, cost.gold_cost, cost.oil_cost, cost.oil_cost, (UpgradeType)info.attribute("type").as_int(), 1);
+			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.wood_cost, cost.gold_cost, cost.oil_cost, cost.worker_cost, (UpgradeType)info.attribute("type").as_int(), 1);
 
 		//	button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.wood_cost, cost.gold_cost, cost.oil_cost, cost.worker_cost, (UpgradeType)info.attribute("type").as_int(), 0);
 		}
