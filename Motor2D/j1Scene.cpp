@@ -220,6 +220,8 @@ void j1Scene::Close_game()
 
 void j1Scene::Start_game()
 {
+	App->pauseGame();
+
 	if (!App->tutorial->active)
 		Close_game();
 
