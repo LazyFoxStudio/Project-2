@@ -74,15 +74,16 @@
 
 <!-- Dragon -->
 	<template> 
-		<width value="16"/>
-		<height value="15"/>
+		<width value="54"/>
+		<height value="54"/>
 		<anim>
 			<loop value="true"/>
 			<speed value="5"/>
-			<pushback x="71" y="14" w="16" h="15"/>
-			<pushback x="96" y="14" w="16" h="15"/>
-			<pushback x="119" y="14" w="16" h="15"/>
-			<pushback x="138" y="14" w="16" h="15"/>
+			<pushback x="756" y="0" w="54" h="54"/>
+			<pushback x="702" y="0" w="54" h="54"/>
+			<pushback x="648" y="0" w="54" h="54"/>
+			<pushback x="594" y="0" w="54" h="54"/>
+			<pushback x="540" y="0" w="54" h="54"/>
 		</anim>
 	</template>
 

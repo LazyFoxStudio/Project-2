@@ -231,7 +231,7 @@ void j1ParticleController::AddProjectile(particleType type, fPoint position, fPo
 	}
 }
 
-void j1ParticleController::AddProgressiveParticle(particleType type, fPoint position, fPoint objective, float spread, float numofseparations, bool using_camera)
+void j1ParticleController::AddProgressiveParticle(particleType type, fPoint position, fPoint objective, float spread, float numofseparations, bool using_camera, float negativespread)
 {
 	fPoint vec = { objective.x - position.x, objective.y - position.y };
 	vec.x = vec.x / numofseparations;
@@ -252,7 +252,7 @@ void j1ParticleController::AddProgressiveParticle(particleType type, fPoint posi
 				p->delay = j*(500 / numofseparations);
 
 				float tmp = (float)(1 / numofseparations);
-				p->scale = 1 + (spread - 1) * ((float)(tmp * j));
+				p->scale = negativespread + (spread - negativespread) * ((float)(tmp * j));
 				p->angle = 0;
 
 				active[i] = p;

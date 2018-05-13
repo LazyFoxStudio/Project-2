@@ -394,7 +394,7 @@ void j1EntityController::HandleParticles(Type type, fPoint pos, fPoint obj, floa
 		App->particle->AddProjectile(particleType::PGRIFFON, pos, obj, speed);
 		break;
 	case Type::DRAGON:
-		//App->particle->AddProjectile(particleType::PDRAGON, pos, obj, speed);
+		App->particle->AddProgressiveParticle(particleType::PDRAGON, pos, obj, 1.5, 10, false, 0.33f);
 		break;
 	case Type::CATAPULT:
 		App->particle->AddProjectile(particleType::PCATAPULT, pos, obj, speed);
