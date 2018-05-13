@@ -34,7 +34,28 @@ Squad::~Squad()
 
 bool Squad::Update(float dt)
 {
-	if (units_id.empty()) { Destroy(); return false; }
+	if (units_id.empty()) {
+		bool used = false;
+		for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+		{
+			if ((*it)->IsUnit())
+			{
+				if (((Unit*)(*it))->squad == this)
+				{
+					used = true;
+					break;
+				}
+			}
+			
+		}
+		if(!used)
+		{ 
+			Destroy(); 
+			return false; 
+		}
+		else return true;
+		
+	}
 	else
 	{
 		if (timer.ReadSec() > 0.25f)
