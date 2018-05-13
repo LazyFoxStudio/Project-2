@@ -5,9 +5,11 @@
 #include "Command.h"
 #include "j1EntityController.h"
 #include "j1ParticleController.h"
+#include "j1Pathfinding.h"
 #include "Squad.h"
 #include "j1Gui.h"
 #include "j1Audio.h"
+#include "j1Map.h"
 #include "UI_CooldownsDisplay.h"
 #include "Minimap.h"
 #include "j1Tutorial.h"
@@ -25,6 +27,8 @@ Hero::~Hero()
 
 bool Hero::Update(float dt)
 {
+	animationController();
+
 	if (current_HP <= 0)
 	{
 		if (isActive)
@@ -34,14 +38,22 @@ bool Hero::Update(float dt)
 		}
 		else if (timer.ReadSec() > HERO_REVIVE_COOLDOWN)
 		{
+			iPoint th_w_pos = TOWN_HALL_POS;
+			iPoint th_m_pos = App->map->WorldToMap(th_w_pos.x, th_w_pos.y);
+			th_m_pos = App->pathfinding->FirstWalkableAdjacentSafeProof(th_m_pos, App->map->WorldToMap(position.x, position.y));
+
+			if (th_m_pos != iPoint(-1, -1))
+			{
+				th_w_pos = App->map->MapToWorld(th_m_pos.x, th_m_pos.y);
+				position = { (float)th_w_pos.x + App->map->data.tile_width / 2, (float)th_w_pos.y + App->map->data.tile_height / 2 };
+			}
 			current_HP = max_HP; 
 			setActive(true);
+			ex_state = OPERATIVE;
 			App->gui->createLifeBar(this);
 		}
 		return true;
 	}
-
-	animationController();
 
 	switch (current_skill)
 	{

@@ -57,8 +57,6 @@ Unit::~Unit()
 
 void Unit::Draw(float dt)
 {
-	if (!isActive) return;
-
 	SDL_Rect r = current_anim->GetCurrentFrame(dt);
 	
 	if (App->render->CullingCam(position))
