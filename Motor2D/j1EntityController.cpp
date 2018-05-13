@@ -24,6 +24,7 @@
 #include "UI_InfoTable.h"
 #include "j1Tutorial.h"
 #include "UI_CooldownsDisplay.h"
+#include "UI_TroopCreationQueue.h"
 #include <algorithm>
 
 #define SQUAD_MAX_FRAMETIME 0.1f
@@ -190,16 +191,27 @@ void j1EntityController::buildingCalculations()
 					farms->Unlock();
 					Button* mine = App->gui->GetActionButton(22);
 					mine->Unlock();
-					Button* turret = App->gui->GetActionButton(23);
-					turret->Unlock();
+				}
+				if (to_build_type == BARRACKS && !App->tutorial->doingTutorial)
+				{
 					Button* hut = App->gui->GetActionButton(24);
 					hut->Unlock();
+				}
+				if (to_build_type == FARM && !App->tutorial->doingTutorial)
+				{
+					Button* turret = App->gui->GetActionButton(23);
+					turret->Unlock();
+				}
+				if (to_build_type == MINE && !App->tutorial->doingTutorial)
+				{
 					Button* church = App->gui->GetActionButton(25);
 					church->Unlock();
+				}
+				if (to_build_type == GNOME_HUT && !App->tutorial->doingTutorial)
+				{
 					Button* blacksmith = App->gui->GetActionButton(26);
 					blacksmith->Unlock();
 				}
-
 				App->gui->warningMessages->hideMessage(NO_TREES);
 				App->entitycontroller->SpendCost(to_build_type);
 
@@ -394,7 +406,7 @@ void j1EntityController::HandleParticles(Type type, fPoint pos, fPoint obj, floa
 		App->particle->AddProjectile(particleType::PGRIFFON, pos, obj, speed);
 		break;
 	case Type::DRAGON:
-		//App->particle->AddProjectile(particleType::PDRAGON, pos, obj, speed);
+		App->particle->AddProgressiveParticle(particleType::PDRAGON, pos, obj, 1.5, 10, false, 0.33f);
 		break;
 	case Type::CATAPULT:
 		App->particle->AddProjectile(particleType::PCATAPULT, pos, obj, speed);
@@ -594,6 +606,15 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 			building_node.append_attribute("pos_y") = (*it)->position.y;
 			building_node.append_attribute("type_enum") = (*it)->type;
 			building_node.append_attribute("workers") = ((Building*)(*it))->workers_inside.size();
+			//if barracks save queue
+			if ((*it)->type == BARRACKS)
+			{
+				for (std::deque<Type>::iterator itera = ((Building*)(*it))->unit_queue.begin(); itera != ((Building*)(*it))->unit_queue.end(); ++itera)
+				{
+					Type t = *itera;
+					building_node.append_child("unit").append_attribute("type") = t;
+				}
+			}
 			switch ((*it)->type)
 			{
 			case BARRACKS:
@@ -633,7 +654,7 @@ bool j1EntityController::Load(pugi::xml_node& file)
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
-		if (/*(*it)->type != HERO_1 && (*it)->type != HERO_2 &&*/ (*it)->type != TOWN_HALL)
+		if (/*(*it)->type != HERO_1 && (*it)->type != HERO_2 && */(*it)->type != TOWN_HALL )
 		{
 			if ((*it)->IsUnit())
 			{
@@ -723,36 +744,24 @@ bool j1EntityController::Load(pugi::xml_node& file)
 				App->gui->entityDeleted(units_of_squad.data()[j]);
 			}
 		}
-
-		//SET THE COMMANDS FOR ENEMIES
-		if (squad->isFlying())
-		{
-			iPoint TownHall_pos = TOWN_HALL_POS;
-			TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
-			TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
-			squad->commands.push_back(new AttackingMoveToSquadFlying(squad->getCommander(), TownHall_pos));
-		}
-		else
-		{
-			AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->getCommander(), TOWN_HALL_POS);
-			new_atk_order->flow_field = App->wavecontroller->flow_field;
-			squad->commands.push_back(new_atk_order);
-		}
-
-
 	}
+
 	//LOAD BUILDINGS
 	pugi::xml_node buildings = file.child("Buildings");
 	pugi::xml_node building_node;
 
+	//lets load the town_hall
 	pugi::xml_node tw = buildings.child("town_hall");
 	town_hall->current_HP = tw.attribute("hp").as_int();
 
+	int workers_working = 0;
 	int workers = 0;
 	std::vector<int> frams;
 	std::vector<Building*> farmss;
+	std::vector<int> other_buildings;
+	std::vector<Building*> buildings_with_workers;
 
-	for (building_node = buildings.child("Building"); building_node; building_node = building_node.next_sibling("squad"))
+	for (building_node = buildings.child("Building"); building_node; building_node = building_node.next_sibling("Building"))
 	{
 		int pos_x = building_node.attribute("pos_x").as_int();
 		int pos_y = building_node.attribute("pos_y").as_int();
@@ -760,24 +769,49 @@ bool j1EntityController::Load(pugi::xml_node& file)
 		Type t = (Type)building_node.attribute("type_enum").as_int();
 		Building* b = addBuilding({pos_x,pos_y},t);
 		b->current_HP = hp;
+		b->ex_state = OPERATIVE;
+		b->current_sprite = &b->sprites[COMPLETE];
 		if (b->type == FARM)
 		{
 			workers += building_node.attribute("workers").as_int();			
 			frams.push_back(building_node.attribute("workers").as_int());
 			farmss.push_back(b);
 		}
+		else if (b->type == LUMBER_MILL || b->type == MINE)
+		{
+			workers_working += building_node.attribute("workers").as_int();
+			other_buildings.push_back(building_node.attribute("workers").as_int());
+			buildings_with_workers.push_back(b);
+		}
+		else if (b->type == BARRACKS)
+		{
+			pugi::xml_node troops_node;
+			for (troops_node = building_node.child("unit"); troops_node; troops_node = troops_node.next_sibling("unit"))
+			{
+				Type t = (Type)troops_node.attribute("type").as_int();
+				b->unit_queue.push_back(t);
+				b->queueDisplay->pushTroop(t);
+			}
+		}
 	}
 
-	int workers_assigned=0;
 	int workers_to_assign = workers;
-	for (int i = 0; i < workers_to_assign; workers_to_assign -=workers_assigned )
+	for (int i = 0; i < farmss.size() && workers_to_assign > 0; ++i )
 	{
 		CreateWorkers(farmss.data()[i], frams.data()[i]);
 		workers_to_assign -= frams.data()[i];
-		workers_assigned = frams.data()[i];
 	}
 	frams.clear();
 	
+	for (int i = 0; i < buildings_with_workers.size(); ++i)
+	{
+		for(int j = 0; j < other_buildings.data()[i];++j)
+		{
+			AssignWorker(buildings_with_workers.data()[i], GetInactiveWorker());
+		}
+	}
+	other_buildings.clear();
+
 
 	return true;
 }
@@ -1296,7 +1330,8 @@ void j1EntityController::selectionControl()
 					{
 						if (!(*it)->IsEnemy())
 						{
-							selected_squads.push_back(((Unit*)*it)->squad);
+							if((*it)->IsHero()) selected_squads.push_front(((Unit*)*it)->squad);
+							else				selected_squads.push_back(((Unit*)*it)->squad);
 							if (!units) units = true;
 						}
 					}

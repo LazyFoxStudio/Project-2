@@ -165,7 +165,7 @@ public:
 	std::list<Forest*> forests;
 
 	uint last_UID = 0;
-	uint hero_UID = 0;
+	uint hero_UID = -1;
 
 	Building* town_hall = nullptr;
 /*
