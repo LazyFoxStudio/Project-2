@@ -373,6 +373,10 @@ bool j1ActionsController::Update(float dt)
 			App->input->readHotkey(8);
 			doingAction = false;
 			break;
+		case RESET_KEYS:
+			App->gui->resetActionButtonHotkeys();
+			doingAction = false;
+			break;
 		}
 		
 	}
