@@ -672,11 +672,11 @@ bool j1EntityController::Load(pugi::xml_node& file)
 
 	pugi::xml_document doc;
 	pugi::xml_node gameData;
-	if (DataBase.empty())
-	{
-		gameData = App->LoadFile(doc, "GameData.xml");
-		loadEntitiesDB(gameData);
-	}
+
+	DeleteDB();
+	gameData = App->LoadFile(doc, "GameData.xml");
+	loadEntitiesDB(gameData);
+	
 
 	LoadUpgrades(q, w, e, r, t, y);
 
