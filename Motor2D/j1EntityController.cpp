@@ -672,8 +672,11 @@ bool j1EntityController::Load(pugi::xml_node& file)
 
 	pugi::xml_document doc;
 	pugi::xml_node gameData;
-	gameData = App->LoadFile(doc, "GameData.xml");
-	loadEntitiesDB(gameData);
+	if (DataBase.empty())
+	{
+		gameData = App->LoadFile(doc, "GameData.xml");
+		loadEntitiesDB(gameData);
+	}
 
 	LoadUpgrades(q, w, e, r, t, y);
 
@@ -1545,13 +1548,13 @@ void j1EntityController::UpgradeUnits(UpgradeType type)
 	switch (type)
 	{
 	case MELEE_ATTACK_UPGRADE:
-		DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
-		DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
-		UpgradeExistingUnits(FOOTMAN, KNIGHT, type);
-		m_dmg_lvl++;
-		tmp = App->gui->GetActionButton(27);
-		tmp->setCondition("Already upgraded");
-		tmp->Lock();
+			DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+			DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+			UpgradeExistingUnits(FOOTMAN, KNIGHT, type);
+			m_dmg_lvl++;
+			tmp = App->gui->GetActionButton(27);
+			tmp->setCondition("Already upgraded");
+			tmp->Lock();
 		break;
 	case MELEE_DEFENSE_UPGRADE:
 		DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
