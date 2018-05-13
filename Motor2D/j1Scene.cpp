@@ -319,8 +319,6 @@ void j1Scene::Start_game()
 	App->uiscene->toggleMenu(true, HERO_SELECTION_MENU);
 
 	toRestart = false;
-
-	App->entitycontroller->AddSquad(FOOTMAN, { 2000,2200 });
 }
 
 void j1Scene::InitialWorkers(Building* town_hall)
@@ -384,11 +382,5 @@ bool j1Scene::Console_Interaction(std::string& function, std::vector<int>& argum
 
 void j1Scene::DeleteWorkers()
 {
-	for (std::list<worker*>::iterator it = workers.begin(); it != workers.end(); it++)
-	{
-		worker* tmp = (*it);
-		(*it)->farm->workers_inside.remove(*it);
-		App->scene->workers.remove(*it);
-		RELEASE(tmp);
-	}
+	workers.clear();
 }
