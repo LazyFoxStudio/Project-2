@@ -145,6 +145,8 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr && (!App->tutorial->doingTutorial || App->tutorial->allowHeroSelection))
 	{
+		to_build_type = NONE_ENTITY;
+		App->actionscontroller->activateAction(NO_ACTION);
 		if (hero->isSelected == true) //center camera
 		{
 			App->render->camera.x = -hero->position.x + App->render->camera.w / 2;
