@@ -24,6 +24,7 @@
 #include "UI_InfoTable.h"
 #include "j1Tutorial.h"
 #include "UI_CooldownsDisplay.h"
+#include "UI_TroopCreationQueue.h"
 #include <algorithm>
 
 #define SQUAD_MAX_FRAMETIME 0.1f
@@ -605,6 +606,15 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 			building_node.append_attribute("pos_y") = (*it)->position.y;
 			building_node.append_attribute("type_enum") = (*it)->type;
 			building_node.append_attribute("workers") = ((Building*)(*it))->workers_inside.size();
+			//if barracks save queue
+			if ((*it)->type == BARRACKS)
+			{
+				for (std::deque<Type>::iterator itera = ((Building*)(*it))->unit_queue.begin(); itera != ((Building*)(*it))->unit_queue.end(); ++itera)
+				{
+					Type t = *itera;
+					building_node.append_child("unit").append_attribute("type") = t;
+				}
+			}
 			switch ((*it)->type)
 			{
 			case BARRACKS:
@@ -772,7 +782,16 @@ bool j1EntityController::Load(pugi::xml_node& file)
 			workers_working += building_node.attribute("workers").as_int();
 			other_buildings.push_back(building_node.attribute("workers").as_int());
 			buildings_with_workers.push_back(b);
-
+		}
+		else if (b->type == BARRACKS)
+		{
+			pugi::xml_node troops_node;
+			for (troops_node = building_node.child("unit"); troops_node; troops_node = troops_node.next_sibling("unit"))
+			{
+				Type t = (Type)troops_node.attribute("type").as_int();
+				b->unit_queue.push_back(t);
+				b->queueDisplay->pushTroop(t);
+			}
 		}
 	}
 
