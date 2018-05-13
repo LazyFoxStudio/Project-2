@@ -12,13 +12,13 @@
 	<map />
 	<fonts />
 	<scene>
-		<gold value="9300" />
-		<wood value="97300" />
+		<gold value="98500" />
+		<wood value="97650" />
 		<oil value="0" />
 	</scene>
 	<entitycontroller>
 		<Upgrades>
-			<upgrades_1 value="0" />
+			<upgrades_1 value="1" />
 			<upgrades_2 value="0" />
 			<upgrades_3 value="0" />
 			<upgrades_4 value="0" />
@@ -26,32 +26,24 @@
 			<upgrades_6 value="0" />
 		</Upgrades>
 		<Units>
-			<Hero type="10" hp="250" x="2081.20459" y="1967.96106" />
-			<squad type_enum="18" type="GRUNT">
-				<unit hp="70" pos_x="3552" pos_y="1792" direction="4" />
-				<unit hp="70" pos_x="3552" pos_y="1824" direction="4" />
-				<unit hp="70" pos_x="3552" pos_y="1856" direction="4" />
-				<unit hp="70" pos_x="3584" pos_y="1792" direction="4" />
-				<unit hp="70" pos_x="3584" pos_y="1856" direction="4" />
+			<Hero type="10" hp="251" x="1724.29993" y="2223.99927" />
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2112" pos_y="224" direction="4" />
+				<unit hp="40" pos_x="2112" pos_y="256" direction="4" />
+				<unit hp="40" pos_x="2112" pos_y="288" direction="4" />
 			</squad>
-			<squad type_enum="18" type="GRUNT">
-				<unit hp="70" pos_x="2112" pos_y="224" direction="4" />
-				<unit hp="70" pos_x="2112" pos_y="256" direction="4" />
-				<unit hp="70" pos_x="2112" pos_y="288" direction="4" />
-				<unit hp="70" pos_x="2144" pos_y="224" direction="4" />
-				<unit hp="70" pos_x="2144" pos_y="288" direction="4" />
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="352" pos_y="1920" direction="4" />
+				<unit hp="40" pos_x="352" pos_y="1952" direction="4" />
+				<unit hp="40" pos_x="352" pos_y="1984" direction="4" />
 			</squad>
 		</Units>
 		<Buildings>
 			<town_hall hp="300" />
-			<Building hp="250" pos_x="1696" pos_y="1760" type_enum="3" workers="0" type="LUMBER_MILL" />
-			<Building hp="200" pos_x="1856" pos_y="1888" type_enum="2" workers="0" type="BARRACKS" />
-			<Building hp="100" pos_x="1824" pos_y="1728" type_enum="4" workers="5" type="FARM" />
-			<Building hp="28" pos_x="2272" pos_y="1824" type_enum="6" workers="0" type="TURRET" />
-			<Building hp="200" pos_x="2208" pos_y="1952" type_enum="7" workers="0" type="GNOME_HUT" />
-			<Building hp="200" pos_x="1824" pos_y="2048" type_enum="9" workers="0" type="BLACKSMITH" />
-			<Building hp="300" pos_x="2336" pos_y="2080" type_enum="5" workers="0" type="MINE" />
-			<Building hp="200" pos_x="1632" pos_y="2048" type_enum="8" workers="0" type="UNKNOWN BUILDING" />
+			<Building hp="250" pos_x="1728" pos_y="1792" type_enum="3" workers="0" type="LUMBER_MILL" />
+			<Building hp="200" pos_x="1952" pos_y="1856" type_enum="2" workers="0" type="BARRACKS" />
+			<Building hp="200" pos_x="2240" pos_y="1952" type_enum="7" workers="0" type="GNOME_HUT" />
+			<Building hp="58" pos_x="2112" pos_y="2176" type_enum="9" workers="0" type="BLACKSMITH" />
 		</Buildings>
 	</entitycontroller>
 	<gui />
@@ -62,14 +54,14 @@
 	<wavecontroller>
 		<wave value="2" />
 		<points value="3" />
-		<wave_timer value="0.00902956817" />
+		<wave_timer value="0.0356877074" />
 		<next_wave>
-			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
+			<enemies type="GRUNT" type_enum="18" x="2154" y="256" />
+			<enemies type="AXE_THROWER" type_enum="19" x="2154" y="256" />
 			<enemies type="GRUNT" type_enum="18" x="2177" y="3549" />
-			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
 		</next_wave>
 	</wavecontroller>
 	<renderer>
-		<camera x="-1242" y="-1576" />
+		<camera x="-2416" y="-1763" />
 	</renderer>
 </game_state>
