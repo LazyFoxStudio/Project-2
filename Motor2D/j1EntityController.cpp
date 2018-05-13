@@ -968,7 +968,7 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 
 	if (type == HERO_1)
 	{
-		hero->skill_one = new Skill(hero, 3, 80, 50, 6, AREA);		//Icicle Crash
+		hero->skill_one = new Skill(hero, 3, 80, 300, 6, AREA);		//Icicle Crash
 		hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
 		hero->skill_three = new Skill(hero, 0, 200, 200, 4, LINE);		//Dragon Breath
 	}
@@ -1548,13 +1548,13 @@ void j1EntityController::UpgradeUnits(UpgradeType type)
 	switch (type)
 	{
 	case MELEE_ATTACK_UPGRADE:
-		DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
-		DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
-		UpgradeExistingUnits(FOOTMAN, KNIGHT, type);
-		m_dmg_lvl++;
-		tmp = App->gui->GetActionButton(27);
-		tmp->setCondition("Already upgraded");
-		tmp->Lock();
+			DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+			DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+			UpgradeExistingUnits(FOOTMAN, KNIGHT, type);
+			m_dmg_lvl++;
+			tmp = App->gui->GetActionButton(27);
+			tmp->setCondition("Already upgraded");
+			tmp->Lock();
 		break;
 	case MELEE_DEFENSE_UPGRADE:
 		DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
