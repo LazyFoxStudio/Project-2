@@ -203,8 +203,8 @@ Resolution of the screen: 1680x 1050y
 		</atlas_image>
 		<button click_action="30">
 			<position x="597" y="416"/>
-			<standby x="0" y="131" w="467" h="100"/>
-			<OnMouse x="477" y="131" w="467" h="100"/>
+			<standby x="477" y="131" w="467" h="100"/>
+			<OnMouse x="0" y="131" w="467" h="100"/>
 			<OnClick x="954" y="131" w="467" h="100"/>
 			<childs>
 				<text text="NEW GAME" center="true" counter="false">
@@ -217,8 +217,8 @@ Resolution of the screen: 1680x 1050y
 		</button>
 		<button click_action="44">
 			<position x="597" y="529"/>
-			<standby x="0" y="131" w="467" h="100"/>
-			<OnMouse x="477" y="131" w="467" h="100"/>
+			<standby x="477" y="131" w="467" h="100"/>
+			<OnMouse x="0" y="131" w="467" h="100"/>
 			<OnClick x="954" y="131" w="467" h="100"/>
 			<childs>
 				<text text="CONTINUE" center="true" counter="false">
@@ -231,8 +231,8 @@ Resolution of the screen: 1680x 1050y
 		</button>
 		<button click_action="31"><!--SETTINGS-->
 			<position x="600" y="642"/>
-			<standby x="0" y="131" w="467" h="100"/>
-			<OnMouse x="477" y="131" w="467" h="100"/>
+			<standby x="477" y="131" w="467" h="100"/>
+			<OnMouse x="0" y="131" w="467" h="100"/>
 			<OnClick x="954" y="131" w="467" h="100"/>
 			<childs>
 				<text text="SETTINGS" center="false" counter="false">
@@ -251,8 +251,8 @@ Resolution of the screen: 1680x 1050y
 		</button>
 		<button click_action="33"> <!--CREDITS-->
 			<position x="600" y="756"/>
-			<standby x="0" y="131" w="467" h="100"/>
-			<OnMouse x="477" y="131" w="467" h="100"/>
+			<standby x="477" y="131" w="467" h="100"/>
+			<OnMouse x="0" y="131" w="467" h="100"/>
 			<OnClick x="954" y="131" w="467" h="100"/>
 			<childs>
 				<text text="CREDITS" center="true" counter="false">
@@ -265,8 +265,8 @@ Resolution of the screen: 1680x 1050y
 		</button>
       <button click_action="34"><!--EXIT-->
         <position x="600" y="870"/>
-        <standby x="0" y="131" w="467" h="100"/>
-		<OnMouse x="477" y="131" w="467" h="100"/>
+        <standby x="477" y="131" w="467" h="100"/>
+			<OnMouse x="0" y="131" w="467" h="100"/>
 		<OnClick x="954" y="131" w="467" h="100"/>
         <childs>
           <text text="EXIT" center="true" counter="false">

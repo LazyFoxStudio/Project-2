@@ -12,276 +12,97 @@
 	<map />
 	<fonts />
 	<scene>
-		<gold value="4069" />
-		<wood value="4886" />
+		<gold value="7221" />
+		<wood value="3532" />
 		<oil value="0" />
 	</scene>
 	<entitycontroller>
 		<Units>
-			<Hero type="10" hp="258" x="2076.64966" y="1646.40259" />
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="40" pos_x="2058.04468" pos_y="1591.39734" direction="3" />
-				<unit hp="40" pos_x="2059.51025" pos_y="1592.74402" direction="3" />
-				<unit hp="40" pos_x="2059.77075" pos_y="1593.19507" direction="3" />
-			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="40" pos_x="2546.04736" pos_y="2000.92456" direction="3" />
-				<unit hp="40" pos_x="2543.97314" pos_y="2051.39258" direction="3" />
-				<unit hp="40" pos_x="2544.00391" pos_y="2020.51172" direction="3" />
-				<unit hp="40" pos_x="2544.05493" pos_y="2073.479" direction="3" />
-			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="40" pos_x="2545.39307" pos_y="2041.50391" direction="3" />
-				<unit hp="40" pos_x="2542.72217" pos_y="2105.44971" direction="3" />
-				<unit hp="40" pos_x="2559.99707" pos_y="2092.07886" direction="3" />
-				<unit hp="40" pos_x="2559.99658" pos_y="2129.19214" direction="3" />
+			<Hero type="10" hp="250" x="1885.72302" y="2255.94019" />
+			<squad type_enum="14" type="KNIGHT">
+				<unit hp="100" pos_x="2080" pos_y="2208" direction="4" />
 			</squad>
 			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="17" pos_x="2264.78662" pos_y="1927.08948" direction="0" />
-				<unit hp="10" pos_x="2246.97241" pos_y="1894.93152" direction="0" />
-				<unit hp="20" pos_x="2232.89575" pos_y="1929.70117" direction="0" />
-				<unit hp="37" pos_x="2241.24048" pos_y="1962.04358" direction="0" />
-			</squad>
-			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="63" pos_x="2562.95557" pos_y="1993.3457" direction="0" />
-				<unit hp="38" pos_x="2551.80981" pos_y="1950.23083" direction="0" />
-				<unit hp="49" pos_x="2522.43286" pos_y="2031.99902" direction="0" />
-				<unit hp="46" pos_x="2552.60791" pos_y="2042.64526" direction="0" />
-			</squad>
-			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="75" pos_x="2224.625" pos_y="2462.71069" direction="3" />
-				<unit hp="53" pos_x="2191.81006" pos_y="2500.14404" direction="3" />
-				<unit hp="57" pos_x="2226.93408" pos_y="2497.83496" direction="3" />
-			</squad>
-			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="76" pos_x="2201.70166" pos_y="2440.3728" direction="0" />
-				<unit hp="80" pos_x="2172.30176" pos_y="2414.86621" direction="0" />
-				<unit hp="78" pos_x="2170.80371" pos_y="2448.77295" direction="0" />
-				<unit hp="69" pos_x="2166.54272" pos_y="2480.51343" direction="0" />
-			</squad>
-			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="65" pos_x="1296.29932" pos_y="2032.00464" direction="6" />
-				<unit hp="79" pos_x="1330.60986" pos_y="2067.20947" direction="0" />
-				<unit hp="73" pos_x="1330.61487" pos_y="2032.00952" direction="0" />
-				<unit hp="74" pos_x="1330.62" pos_y="1996.80957" direction="0" />
-			</squad>
-			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="71" pos_x="2097.75928" pos_y="1475.15979" direction="3" />
-				<unit hp="67" pos_x="2033.6311" pos_y="1392.55444" direction="5" />
-				<unit hp="64" pos_x="2032.18481" pos_y="1450.08728" direction="3" />
-				<unit hp="75" pos_x="2057.68408" pos_y="1424.03003" direction="6" />
-			</squad>
-			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="52" pos_x="1934.87219" pos_y="1472.31726" direction="5" />
-				<unit hp="62" pos_x="2122.20605" pos_y="1425.81274" direction="6" />
-				<unit hp="64" pos_x="2032" pos_y="1428.27197" direction="3" />
-				<unit hp="73" pos_x="2065.39331" pos_y="1502.98682" direction="3" />
+				<unit hp="80" pos_x="2046.42358" pos_y="1871.43726" direction="6" />
+				<unit hp="80" pos_x="2083.57471" pos_y="1904.57141" direction="6" />
+				<unit hp="80" pos_x="2081.56616" pos_y="1869.42871" direction="6" />
+				<unit hp="80" pos_x="2082.06104" pos_y="1836.34766" direction="6" />
 			</squad>
 			<squad type_enum="13" type="ARCHER">
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="2" />
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="2" />
+				<unit hp="40" pos_x="2014.66992" pos_y="1871.92163" direction="6" />
+				<unit hp="40" pos_x="2048.84155" pos_y="1908.12073" direction="6" />
+				<unit hp="40" pos_x="2049.76123" pos_y="1872.94531" direction="6" />
+				<unit hp="40" pos_x="2050.09448" pos_y="1837.78406" direction="6" />
 			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="36" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-				<unit hp="40" pos_x="2045.21594" pos_y="1561.47339" direction="7" />
-				<unit hp="28" pos_x="2045.16736" pos_y="1564.07715" direction="2" />
+			<squad type_enum="15" type="GRYPHON">
+				<unit hp="80" pos_x="2192.46484" pos_y="2479.30469" direction="7" />
+				<unit hp="80" pos_x="2236.89233" pos_y="2525.36743" direction="7" />
+				<unit hp="80" pos_x="2222.87061" pos_y="2422.98901" direction="7" />
 			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="2" />
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="2" />
+			<squad type_enum="14" type="KNIGHT">
+				<unit hp="93" pos_x="2173.07959" pos_y="2540.29541" direction="3" />
 			</squad>
 			<squad type_enum="16" type="BALLISTA">
-				<unit hp="8" pos_x="1277.44495" pos_y="2022.10352" direction="5" />
+				<unit hp="40" pos_x="2372.08472" pos_y="1803.14758" direction="0" />
 			</squad>
 			<squad type_enum="17" type="FLYING_MACHINE">
-				<unit hp="40" pos_x="2050.15088" pos_y="2214.82813" direction="1" />
-			</squad>
-			<squad type_enum="17" type="FLYING_MACHINE">
-				<unit hp="40" pos_x="1453.1781" pos_y="2077.19678" direction="6" />
-			</squad>
-			<squad type_enum="16" type="BALLISTA">
-				<unit hp="40" pos_x="1252.69312" pos_y="2018.3396" direction="7" />
-			</squad>
-			<squad type_enum="17" type="FLYING_MACHINE">
-				<unit hp="40" pos_x="1447.35278" pos_y="2045.72827" direction="6" />
-			</squad>
-			<squad type_enum="16" type="BALLISTA">
-				<unit hp="40" pos_x="2704.00195" pos_y="1950.11633" direction="3" />
-			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="40" pos_x="1474.90137" pos_y="2032.00049" direction="6" />
-				<unit hp="40" pos_x="1474.58411" pos_y="2032.03223" direction="6" />
-				<unit hp="40" pos_x="1474.19727" pos_y="2032.00012" direction="6" />
-				<unit hp="40" pos_x="1473.66345" pos_y="2032" direction="6" />
-			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="40" pos_x="1498.06482" pos_y="2032.00049" direction="6" />
-				<unit hp="40" pos_x="1572.96497" pos_y="2033.09033" direction="6" />
-				<unit hp="40" pos_x="1536.92395" pos_y="2032.00256" direction="6" />
-				<unit hp="40" pos_x="1570.37146" pos_y="2032.00122" direction="6" />
-			</squad>
-			<squad type_enum="17" type="FLYING_MACHINE">
-				<unit hp="40" pos_x="1971.41736" pos_y="1530.52832" direction="1" />
-			</squad>
-			<squad type_enum="16" type="BALLISTA">
-				<unit hp="40" pos_x="1770.03101" pos_y="2016.00867" direction="0" />
-			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="1" />
-				<unit hp="40" pos_x="2045.37061" pos_y="1559.45947" direction="3" />
-			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-				<unit hp="40" pos_x="2045.59473" pos_y="1557.19421" direction="3" />
-				<unit hp="40" pos_x="2045.34192" pos_y="1559.75635" direction="3" />
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-				<unit hp="40" pos_x="2034.20398" pos_y="1526.22534" direction="3" />
-				<unit hp="40" pos_x="2040.37097" pos_y="1548.02185" direction="3" />
-				<unit hp="40" pos_x="2042.03613" pos_y="1551.22156" direction="3" />
-			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-				<unit hp="40" pos_x="2045.16736" pos_y="1564.07715" direction="3" />
-			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="40" pos_x="2045.19543" pos_y="1652.28284" direction="6" />
-				<unit hp="40" pos_x="2110.46973" pos_y="1685.88965" direction="6" />
-				<unit hp="40" pos_x="2115.04443" pos_y="1638.22461" direction="6" />
-				<unit hp="40" pos_x="2098.27686" pos_y="1662.54675" direction="6" />
-			</squad>
-			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="80" pos_x="2084.28931" pos_y="1632.02686" direction="6" />
-				<unit hp="80" pos_x="2133.88867" pos_y="1664.08618" direction="6" />
-				<unit hp="80" pos_x="2107.28662" pos_y="1632.09314" direction="6" />
-				<unit hp="80" pos_x="2133.88867" pos_y="1664.08435" direction="6" />
-			</squad>
-			<squad type_enum="16" type="BALLISTA">
-				<unit hp="40" pos_x="2708.86694" pos_y="2013.92419" direction="3" />
-			</squad>
-			<squad type_enum="17" type="FLYING_MACHINE">
-				<unit hp="40" pos_x="2502.94824" pos_y="2084.54785" direction="1" />
-			</squad>
-			<squad type_enum="16" type="BALLISTA">
-				<unit hp="40" pos_x="2469.69897" pos_y="2139.22388" direction="3" />
-			</squad>
-			<squad type_enum="17" type="FLYING_MACHINE">
-				<unit hp="40" pos_x="2453.15063" pos_y="2086.12207" direction="1" />
-			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="4" pos_x="2605.02783" pos_y="1973.72607" direction="0" />
-				<unit hp="14" pos_x="2584.32227" pos_y="1949.32922" direction="0" />
-				<unit hp="40" pos_x="2583.58691" pos_y="2015.99927" direction="0" />
-				<unit hp="40" pos_x="2636.36255" pos_y="1984.00244" direction="0" />
-			</squad>
-			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="80" pos_x="2551.57104" pos_y="2008.6416" direction="0" />
-				<unit hp="80" pos_x="2537.41089" pos_y="2000.94189" direction="0" />
-				<unit hp="80" pos_x="2554.26416" pos_y="2028.79773" direction="0" />
-				<unit hp="80" pos_x="2498.20996" pos_y="2052.90503" direction="0" />
-			</squad>
-			<squad type_enum="13" type="ARCHER">
-				<unit hp="19" pos_x="2554.42725" pos_y="1960.73853" direction="4" />
-				<unit hp="40" pos_x="2537.05054" pos_y="1935.97083" direction="4" />
-				<unit hp="36" pos_x="2565.72681" pos_y="1921.74573" direction="4" />
-				<unit hp="40" pos_x="2552.8457" pos_y="2041.98206" direction="4" />
-			</squad>
-			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="2" pos_x="2703.54053" pos_y="1918.12109" direction="3" />
-				<unit hp="24" pos_x="2688.57324" pos_y="1976.41614" direction="7" />
-				<unit hp="18" pos_x="2691.302" pos_y="2040.66602" direction="3" />
-				<unit hp="41" pos_x="2739.56128" pos_y="1985.45032" direction="3" />
-			</squad>
-			<squad type_enum="16" type="BALLISTA">
-				<unit hp="40" pos_x="2688.14771" pos_y="1950.84314" direction="1" />
-			</squad>
-			<squad type_enum="17" type="FLYING_MACHINE">
-				<unit hp="40" pos_x="2525.51294" pos_y="2198.07373" direction="1" />
-			</squad>
-			<squad type_enum="21" type="DRAGON">
-				<unit hp="300" pos_x="3552" pos_y="1792" direction="4" />
-				<unit hp="300" pos_x="3552" pos_y="1824" direction="4" />
-			</squad>
-			<squad type_enum="21" type="DRAGON">
-				<unit hp="300" pos_x="2144" pos_y="3488" direction="4" />
-				<unit hp="300" pos_x="2144" pos_y="3520" direction="4" />
-			</squad>
-			<squad type_enum="19" type="AXE_THROWER">
-				<unit hp="40" pos_x="2144" pos_y="3552" direction="4" />
-				<unit hp="40" pos_x="2176" pos_y="3488" direction="4" />
-				<unit hp="40" pos_x="2176" pos_y="3552" direction="4" />
-				<unit hp="40" pos_x="2208" pos_y="3488" direction="4" />
+				<unit hp="40" pos_x="2384" pos_y="1808" direction="2" />
+				<unit hp="40" pos_x="2350.92334" pos_y="1714.09448" direction="2" />
+				<unit hp="40" pos_x="2320.50879" pos_y="1777.58557" direction="2" />
 			</squad>
 			<squad type_enum="18" type="GRUNT">
-				<unit hp="70" pos_x="2208" pos_y="3520" direction="4" />
-				<unit hp="70" pos_x="2208" pos_y="3552" direction="4" />
-				<unit hp="70" pos_x="2112" pos_y="3584" direction="4" />
-				<unit hp="70" pos_x="2144" pos_y="3584" direction="4" />
-				<unit hp="70" pos_x="2176" pos_y="3584" direction="4" />
-			</squad>
-			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="3552" pos_y="1792" direction="4" />
+				<unit hp="70" pos_x="3552" pos_y="1824" direction="4" />
 				<unit hp="70" pos_x="3552" pos_y="1856" direction="4" />
 				<unit hp="70" pos_x="3584" pos_y="1792" direction="4" />
 				<unit hp="70" pos_x="3584" pos_y="1856" direction="4" />
-				<unit hp="70" pos_x="3616" pos_y="1792" direction="4" />
-				<unit hp="70" pos_x="3616" pos_y="1824" direction="4" />
 			</squad>
 			<squad type_enum="18" type="GRUNT">
-				<unit hp="70" pos_x="352" pos_y="1920" direction="4" />
-				<unit hp="70" pos_x="352" pos_y="1952" direction="4" />
-				<unit hp="70" pos_x="352" pos_y="1984" direction="4" />
-				<unit hp="70" pos_x="384" pos_y="1920" direction="4" />
-				<unit hp="70" pos_x="384" pos_y="1984" direction="4" />
+				<unit hp="70" pos_x="3616" pos_y="1792" direction="4" />
+				<unit hp="70" pos_x="3616" pos_y="1824" direction="4" />
+				<unit hp="70" pos_x="3616" pos_y="1856" direction="4" />
+				<unit hp="70" pos_x="3520" pos_y="1888" direction="4" />
+				<unit hp="70" pos_x="3552" pos_y="1888" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="3584" pos_y="1888" direction="4" />
+				<unit hp="40" pos_x="3616" pos_y="1888" direction="4" />
+				<unit hp="40" pos_x="3648" pos_y="1760" direction="4" />
 			</squad>
 		</Units>
 		<Buildings>
 			<town_hall hp="300" />
-			<Building hp="250" pos_x="1696" pos_y="1760" type_enum="3" workers="9" type="LUMBER_MILL" />
-			<Building hp="100" pos_x="1792" pos_y="1856" type_enum="4" workers="5" type="FARM" />
-			<Building hp="285" pos_x="2336" pos_y="2080" type_enum="5" workers="9" type="MINE" />
-			<Building hp="100" pos_x="1920" pos_y="1888" type_enum="4" workers="5" type="FARM" />
-			<Building hp="100" pos_x="1984" pos_y="1856" type_enum="4" workers="5" type="FARM" />
-			<Building hp="200" pos_x="2048" pos_y="1888" type_enum="2" workers="0" type="BARRACKS" />
-			<Building hp="100" pos_x="1920" pos_y="1824" type_enum="4" workers="5" type="FARM" />
-			<Building hp="100" pos_x="1856" pos_y="1888" type_enum="4" workers="5" type="FARM" />
-			<Building hp="94" pos_x="2496" pos_y="1856" type_enum="4" workers="5" type="FARM" />
-			<Building hp="61" pos_x="2464" pos_y="1952" type_enum="4" workers="5" type="FARM" />
-			<Building hp="227" pos_x="1728" pos_y="1920" type_enum="3" workers="9" type="LUMBER_MILL" />
-			<Building hp="300" pos_x="2240" pos_y="1632" type_enum="5" workers="9" type="MINE" />
-			<Building hp="100" pos_x="2144" pos_y="1600" type_enum="4" workers="5" type="FARM" />
-			<Building hp="96" pos_x="2080" pos_y="1568" type_enum="4" workers="5" type="FARM" />
-			<Building hp="200" pos_x="2048" pos_y="1792" type_enum="2" workers="0" type="BARRACKS" />
-			<Building hp="200" pos_x="1952" pos_y="1536" type_enum="6" workers="0" type="TURRET" />
-			<Building hp="200" pos_x="1888" pos_y="2016" type_enum="7" workers="0" type="GNOME_HUT" />
-			<Building hp="72" pos_x="1984" pos_y="2400" type_enum="6" workers="0" type="TURRET" />
-			<Building hp="121" pos_x="2560" pos_y="1792" type_enum="6" workers="0" type="TURRET" />
-			<Building hp="100" pos_x="2144" pos_y="1792" type_enum="4" workers="5" type="FARM" />
-			<Building hp="100" pos_x="2272" pos_y="1760" type_enum="4" workers="5" type="FARM" />
-			<Building hp="197" pos_x="1568" pos_y="2144" type_enum="6" workers="0" type="TURRET" />
-			<Building hp="100" pos_x="1920" pos_y="1760" type_enum="4" workers="5" type="FARM" />
-			<Building hp="181" pos_x="2560" pos_y="2016" type_enum="6" workers="0" type="TURRET" />
-			<Building hp="200" pos_x="2240" pos_y="2432" type_enum="6" workers="0" type="TURRET" />
-			<Building hp="170" pos_x="1536" pos_y="2048" type_enum="6" workers="0" type="TURRET" />
-			<Building hp="200" pos_x="2016" pos_y="2112" type_enum="9" workers="0" type="BLACKSMITH" />
-			<Building hp="100" pos_x="1952" pos_y="2144" type_enum="4" workers="5" type="FARM" />
-			<Building hp="200" pos_x="2016" pos_y="2496" type_enum="6" workers="0" type="TURRET" />
-			<Building hp="25" pos_x="1408" pos_y="1952" type_enum="6" workers="0" type="TURRET" />
-			<Building hp="33" pos_x="2624" pos_y="1920" type_enum="6" workers="0" type="TURRET" />
-			<Building hp="200" pos_x="1920" pos_y="1408" type_enum="6" workers="0" type="TURRET" />
+			<Building hp="250" pos_x="1696" pos_y="1760" type_enum="3" workers="10" type="LUMBER_MILL" />
+			<Building hp="100" pos_x="1824" pos_y="1728" type_enum="4" workers="5" type="FARM" />
+			<Building hp="200" pos_x="2144" pos_y="1792" type_enum="2" workers="0" type="BARRACKS" />
+			<Building hp="300" pos_x="2336" pos_y="2080" type_enum="5" workers="10" type="MINE" />
+			<Building hp="100" pos_x="1856" pos_y="1856" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="1696" pos_y="2048" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="1760" pos_y="1952" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="1984" pos_y="1728" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="2016" pos_y="1600" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="1984" pos_y="1504" type_enum="4" workers="5" type="FARM" />
+			<Building hp="200" pos_x="2112" pos_y="2144" type_enum="8" workers="0" type="UNKNOWN BUILDING" />
+			<Building hp="100" pos_x="1632" pos_y="2112" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="1664" pos_y="2208" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="1728" pos_y="2240" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="1792" pos_y="2304" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="1888" pos_y="2400" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="2016" pos_y="2432" type_enum="4" workers="5" type="FARM" />
+			<Building hp="77" pos_x="2144" pos_y="2432" type_enum="4" workers="5" type="FARM" />
+			<Building hp="81" pos_x="2272" pos_y="2464" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="2368" pos_y="2400" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="2496" pos_y="2240" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="2528" pos_y="2016" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="2560" pos_y="1888" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="2560" pos_y="1792" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="2272" pos_y="1568" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="2208" pos_y="1504" type_enum="4" workers="5" type="FARM" />
+			<Building hp="47" pos_x="2080" pos_y="1440" type_enum="4" workers="5" type="FARM" />
+			<Building hp="7" pos_x="2016" pos_y="1408" type_enum="4" workers="5" type="FARM" />
+			<Building hp="100" pos_x="1920" pos_y="1408" type_enum="4" workers="5" type="FARM" />
+			<Building hp="200" pos_x="2336" pos_y="1856" type_enum="7" workers="0" type="GNOME_HUT" />
+			<Building hp="1" pos_x="2464" pos_y="2016" type_enum="6" workers="1" type="TURRET" />
 		</Buildings>
 	</entitycontroller>
 	<gui />
@@ -290,21 +111,17 @@
 	<particle />
 	<actionscontroller />
 	<wavecontroller>
-		<wave value="15" />
-		<points value="17" />
-		<wave_timer value="0.0112317232" />
+		<wave value="3" />
+		<points value="4" />
+		<wave_timer value="0.00736197922" />
 		<next_wave>
-			<enemies type="GRUNT" type_enum="18" x="2177" y="3549" />
-			<enemies type="JUGGERNAUT" type_enum="23" x="410" y="1982" />
+			<enemies type="AXE_THROWER" type_enum="19" x="410" y="1982" />
 			<enemies type="GRUNT" type_enum="18" x="2154" y="256" />
-			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
-			<enemies type="GRUNT" type_enum="18" x="2154" y="256" />
-			<enemies type="GRUNT" type_enum="18" x="2154" y="256" />
-			<enemies type="GRUNT" type_enum="18" x="2177" y="3549" />
-			<enemies type="GRUNT" type_enum="18" x="2154" y="256" />
+			<enemies type="GRUNT" type_enum="18" x="410" y="1982" />
+			<enemies type="GRUNT" type_enum="18" x="410" y="1982" />
 		</next_wave>
 	</wavecontroller>
 	<renderer>
-		<camera x="-1685" y="-1844" />
+		<camera x="-1411" y="-1537" />
 	</renderer>
 </game_state>

@@ -505,6 +505,15 @@ bool j1EntityController::CleanUp()
 
 bool j1EntityController::Save(pugi::xml_node& file) const
 {
+	//UPGRADES
+	pugi::xml_node upgrades_node = file.append_child("Upgrades");
+	upgrades_node.append_child("upgrades_1").append_attribute("value") = m_dmg_lvl;
+	upgrades_node.append_child("upgrades_2").append_attribute("value") = m_armor_lvl;
+	upgrades_node.append_child("upgrades_3").append_attribute("value") = r_dmg_lvl;
+	upgrades_node.append_child("upgrades_4").append_attribute("value") = r_armor_lvl;
+	upgrades_node.append_child("upgrades_5").append_attribute("value") = f_dmg_lvl;
+	upgrades_node.append_child("upgrades_6").append_attribute("value") = f_armor_lvl;
+
 	//SAVE_UNITS
 	pugi::xml_node units_node = file.append_child("Units");
 
@@ -652,8 +661,23 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 
 bool j1EntityController::Load(pugi::xml_node& file)
 {
-	//UNITS
+	//UPGRADES
+	pugi::xml_node upgrades_node = file.child("Upgrades");
+	int q = upgrades_node.child("upgrades_1").attribute("value").as_int();
+	int w = upgrades_node.child("upgrades_2").attribute("value").as_int();
+	int e = upgrades_node.child("upgrades_3").attribute("value").as_int();
+	int r = upgrades_node.child("upgrades_4").attribute("value").as_int();
+	int t = upgrades_node.child("upgrades_5").attribute("value").as_int();
+	int y = upgrades_node.child("upgrades_6").attribute("value").as_int();
 
+	pugi::xml_document doc;
+	pugi::xml_node gameData;
+	gameData = App->LoadFile(doc, "GameData.xml");
+	loadEntitiesDB(gameData);
+
+	LoadUpgrades(q, w, e, r, t, y);
+
+	//UNITS
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
 		if ((*it)->type != TOWN_HALL )
@@ -944,13 +968,13 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	{
 		hero->skill_one = new Skill(hero, 3, 100, 300, 6, AREA);		//Icicle Crash
 		hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
-		hero->skill_three = new Skill(hero, 0, 200, 250, 5, LINE);		//Dragon Breath
+		hero->skill_three = new Skill(hero, 0, 200, 250, 4, LINE);		//Dragon Breath
 	}
 	if (type == HERO_2)
 	{
-		hero->skill_one = new Skill(hero, 3, 50, 3000000, 6, PLACE);	//Consecration
-		hero->skill_two = new Skill(hero, 3, 50, 700, 10, HEAL);		//Circle of Light
-		hero->skill_three = new Skill(hero, 3, 75, 3000000, 1, BUFF);	//Honor of the pure
+		hero->skill_one = new Skill(hero, 3, 50, 3000000, 4, PLACE);	//Consecration
+		hero->skill_two = new Skill(hero, 3, 20, 700, 3, HEAL);		//Circle of Light
+		hero->skill_three = new Skill(hero, 3, 75, 3000000, 4, BUFF);	//Honor of the pure
 	}
 
 	App->gui->createLifeBar(hero);
