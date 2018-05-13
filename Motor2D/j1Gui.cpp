@@ -574,6 +574,14 @@ Text* j1Gui::createText(pugi::xml_node node, j1Module* callback, bool saveIntoGU
 		ret->setBackground(true, background_color);
 	}
 
+	pugi::xml_node outline = node.child("outline");
+	if (outline)
+	{
+		SDL_Color outline_color = { outline.attribute("r").as_int(), outline.attribute("g").as_int(), outline.attribute("b").as_int(), outline.attribute("a").as_int() };
+		ret->setOutlined(true, outline.attribute("size").as_int(2));
+		ret->setOutlineColor(outline_color);
+	}
+
 	if (saveIntoGUI)
 		Texts.push_back(ret);
 
