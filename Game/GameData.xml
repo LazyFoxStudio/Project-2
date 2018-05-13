@@ -3555,13 +3555,18 @@
 	  <Info title="Barracks:">
 		<line text="Use this building"/>
 		<line text="to train your troops"/>
+		<line text="into powerful soldiers"/>
 	  </Info>
 	  <Actions>
 		    <action id="11"/>
 		    <action id="12"/>
-        <action id="20"/>
+			<action id="10"/>
+			<action id="10"/>
+			<action id="10"/>
+			<action id="10"/>
+			<action id="20"/>
 	    	<action id="10"/>
-        <action id="21"/>
+			<action id="21"/>
 	  </Actions>
       <iconData x="162" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
@@ -3598,6 +3603,8 @@
 	  <Info title="Lumber Mill:">
 		<line text="Use this building"/>
 		<line text="to collect wood"/>
+		<line text="Assign workers to"/>
+		<line text="increase production"/>
 	  </Info>
       <iconData x="315" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
@@ -3646,8 +3653,8 @@
       <type value="5"/>
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <Actions>
- <action id="8"/>
-		     <action id="10"/>
+		 <action id="8"/>
+		 <action id="10"/>
          <action id="9"/>
 		 <action id="10"/>
 		 <action id="10"/>
@@ -3673,6 +3680,8 @@
 	  <Info title="Mine:">
 		<line text="Use this building"/>
 		<line text="to collect gold"/>
+		<line text="Assign workers to"/>
+		<line text="increase production"/>
 	  </Info>
       <iconData x="315" y="455" w="72" h="59"/>
       <size x="3" y="3"/>
@@ -3748,6 +3757,7 @@
 	  <Info title="Gnome Hut:">
 		<line text="Use this building"/>
 		<line text="to train your troops"/>
+		<line text="to use powerful machines"/>
 	  </Info>
       <iconData x="621" y="328" w="71" h="59"/>
       <size x="3" y="3"/>
@@ -3784,6 +3794,7 @@
 	  <Info title="Church:">
 		<line text="Use this building"/>
 		<line text="to train your troops"/>
+		<line text="into powerful soldiers"/>
 	  </Info>
       <iconData x="162" y="391" w="72" h="59"/>
       <size x="3" y="3"/> 
@@ -3794,14 +3805,14 @@
       <texture value="Assets\Sprites\Alliance Sprites\Human summer buildings_Spritesheet.png"/>
       <Actions>
         <action id="27"/>
-        <action id ="10"/>
         <action id="28"/>
         <action id="29"/>
-        <action id ="10"/>
         <action id="30"/>
         <action id="31"/>
-        <action id ="10"/>
         <action id="32"/>
+		<action id="20"/>
+        <action id="10"/>
+        <action id="21"/>
       </Actions>
       <sprites>
         <sprite x="0" y="413" w="101" h="109"/>
@@ -3819,7 +3830,7 @@
       </Stats>
 	  <Info title="Blacksmith:">
 		<line text="Use this building"/>
-		<line text="to train your troops"/>
+		<line text="to upgrade your troops"/>
 	  </Info>
       <iconData x="468" y="264" w="72" h="59"/>
       <size x="3" y="3"/>
