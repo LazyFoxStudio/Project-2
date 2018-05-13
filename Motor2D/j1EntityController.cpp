@@ -1274,18 +1274,24 @@ void j1EntityController::commandControl()
 						(*it)->commands.push_back(new AttackingMoveToSquadFlying(commander, map_p));
 					else
 					{
-						if (commander->IsMelee() && entity->IsFlying())
-							continue;
-
 						if (!shared_flowfield)
 						{
 							iPoint commander_map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
 							shared_flowfield = App->pathfinding->RequestFlowField(map_p, commander_map_p);
 						}
 
-						MoveToSquad* new_order = new AttackingMoveToSquad(commander, map_p);
-						new_order->flow_field = shared_flowfield;
-						(*it)->commands.push_back(new_order);
+						if (commander->IsMelee() && entity->IsFlying())
+						{
+							MoveToSquad* new_order = new MoveToSquad(commander, map_p);
+							new_order->flow_field = shared_flowfield;
+							(*it)->commands.push_back(new_order);
+						}
+						else
+						{
+							MoveToSquad* new_order = new AttackingMoveToSquad(commander, map_p);
+							new_order->flow_field = shared_flowfield;
+							(*it)->commands.push_back(new_order);
+						}
 					}
 				}
 			}
