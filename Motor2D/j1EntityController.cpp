@@ -748,6 +748,8 @@ bool j1EntityController::Load(pugi::xml_node& file)
 	int workers = 0;
 	std::vector<int> frams;
 	std::vector<Building*> farmss;
+	std::vector<int> other_buildings;
+	std::vector<Building*> buildings_with_workers;
 
 	for (building_node = buildings.child("Building"); building_node; building_node = building_node.next_sibling("Building"))
 	{
@@ -765,22 +767,32 @@ bool j1EntityController::Load(pugi::xml_node& file)
 			frams.push_back(building_node.attribute("workers").as_int());
 			farmss.push_back(b);
 		}
-		if (b->type == LUMBER_MILL || b->type == MINE)
+		else if (b->type == LUMBER_MILL || b->type == MINE)
 		{
-			//TODO
+			workers_working += building_node.attribute("workers").as_int();
+			other_buildings.push_back(building_node.attribute("workers").as_int());
+			buildings_with_workers.push_back(b);
+
 		}
 	}
 
-	int workers_assigned=0;
 	int workers_to_assign = workers;
-	for (int i = 0; i <= workers_to_assign; workers_to_assign -=workers_assigned )
+	for (int i = 0; i < farmss.size() && workers_to_assign > 0; ++i )
 	{
 		CreateWorkers(farmss.data()[i], frams.data()[i]);
 		workers_to_assign -= frams.data()[i];
-		workers_assigned = frams.data()[i];
 	}
 	frams.clear();
 	
+	for (int i = 0; i < buildings_with_workers.size(); ++i)
+	{
+		for(int j = 0; j < other_buildings.data()[i];++j)
+		{
+			AssignWorker(buildings_with_workers.data()[i], GetInactiveWorker());
+		}
+	}
+	other_buildings.clear();
+
 
 	return true;
 }

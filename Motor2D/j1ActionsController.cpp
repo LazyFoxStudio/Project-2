@@ -26,6 +26,10 @@ bool j1ActionsController::Update(float dt)
 			int x, y;
 			App->input->GetMousePosition(x, y);
 			App->render->DrawQuad({ x, y, 10, 10 }, Translucid_Yellow, true, false);
+
+			if (hero = (Hero*)App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID))
+				hero->current_skill = 0;
+
 			if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
 				App->entitycontroller->commandControl();
@@ -298,6 +302,7 @@ bool j1ActionsController::Update(float dt)
 			App->uiscene->toggleMenu(false, INGAME_MENU);
 			App->uiscene->toggleMenu(false, PAUSE_MENU);
 			App->uiscene->toggleMenu(false, HERO_SELECTION_MENU);
+			App->audio->PlayMusic(MAIN_THEME, 0);
 			doingAction = false;
 			App->scene->Close_game();
 			break;

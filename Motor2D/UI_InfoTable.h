@@ -3,7 +3,7 @@
 
 #include "UI_element.h"
 
-#define INFOTABLE_POSITION {1111, 813}
+#define INFOTABLE_POSITION {1111, 770}
 #define LINES_SEPARATION 40
 #define TABLE_WIDTH 245
 #define TABLE_HEIGHT 254
