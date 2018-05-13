@@ -11,10 +11,10 @@
 #include "j1Fonts.h"
 #include "j1Render.h"
 
-TroopCreationQueue::TroopCreationQueue(Building* building): UI_element(875,885,PRODUCTIONDISPLAY, {0,0,200,220}, (j1Module*)App->uiscene)
+TroopCreationQueue::TroopCreationQueue(Building* building): UI_element(875,855,PRODUCTIONDISPLAY, {0,0,200,220}, (j1Module*)App->uiscene)
 {
 	this->building = building;
-	text = new Text("Troops being created:", 800, 845, App->font->getFont(1), { 255,255,255,255 }, nullptr);
+	text = new Text("Troops being created:", 800, 815, App->font->getFont(1), { 255,255,255,255 }, nullptr);
 }
 
 TroopCreationQueue::~TroopCreationQueue()
