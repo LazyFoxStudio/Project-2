@@ -239,7 +239,7 @@ bool j1ActionsController::Update(float dt)
 			App->gui->nextWaveWindow->toggle();
 			doingAction = false;
 			break;
-		case NEW_GAME:		
+		case NEW_GAME:	
 			if (App->tutorial->active)
 				App->tutorial->startTutorial();
 			App->scene->active = true;
@@ -247,8 +247,12 @@ bool j1ActionsController::Update(float dt)
 			App->wavecontroller->active = true;
 			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, INGAME_MENU);	
-			App->uiscene->toggleMenu(true, HERO_SELECTION_MENU);
-			App->scene->Start_game();			
+			if (App->tutorial->active)
+				App->uiscene->toggleMenu(true, SKIP_TUTORIAL_MENU);
+			else
+				App->uiscene->toggleMenu(true, HERO_SELECTION_MENU);
+			App->scene->Start_game();	
+			App->tutorial->stopTutorial();
 			doingAction = false;
 			App->pauseGame();
 			break;
@@ -341,7 +345,6 @@ bool j1ActionsController::Update(float dt)
 				/*App->win->width = 1680;
 				App->win->height = 1050;*/
 			}
-
 			doingAction = false;
 			break;
 		case LOAD_GAME:
@@ -353,6 +356,18 @@ bool j1ActionsController::Update(float dt)
 			App->scene->Start_game();
 			App->resumeGame();
 			App->LoadGame();
+			doingAction = false;
+			break;
+		case SKIP_TUTORIAL:
+			if (App->tutorial->active)
+				App->tutorial->startTutorial();
+			App->tutorial->stopTutorial(true);
+		case CONTINUE_TUTORIAL:
+			if (App->tutorial->active)
+				App->tutorial->startTutorial();
+			App->uiscene->toggleMenu(false, SKIP_TUTORIAL_MENU);
+			App->uiscene->toggleMenu(true, HERO_SELECTION_MENU);
+
 			doingAction = false;
 			break;
 
