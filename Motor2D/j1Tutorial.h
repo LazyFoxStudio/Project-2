@@ -84,6 +84,8 @@ public:
 	bool				enemiesKilled = false;
 	bool				allowTHSelection = false;
 	bool				allowHeroSelection = false;
+	bool				workersAssigned = false;
+	bool				tutorialDone = false;
 
 	j1Timer				timer;
 	j1Timer				completed_delay_timer;

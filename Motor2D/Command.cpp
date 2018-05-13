@@ -429,6 +429,8 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 					else
 						squad->squad_movement = movement;
 				}
+				else
+					squad->squad_movement.SetToZero();
 			}
 		}
 		else if (enemies_found && target_squad_id != -1)
@@ -709,7 +711,7 @@ void Attack::callRetaliation(Entity* enemy, uint squad_UID)
 	{
 		if (Unit* enemy_commander = (*it)->getCommander())
 		{
-			if (enemy_commander->IsEnemy() == enemy->IsEnemy() && enemy_commander->position.DistanceTo(enemy->position) < enemy_commander->line_of_sight * 0.75f)
+			if (enemy_commander->IsEnemy() == enemy->IsEnemy() && enemy_commander->position.DistanceTo(enemy->position) < enemy_commander->line_of_sight * 0.75f && !(enemy_commander->IsMelee() && unit->IsFlying()))
 			{
 				Command_Type enemy_action = (*it)->getCurrentCommand();
 				if (enemy_action == NOTHING)
