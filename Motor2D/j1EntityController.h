@@ -130,6 +130,7 @@ public:
 	bool ChechUpgradeCost(UpgradeType type) const;
 	void SpendUpgradeResources(UpgradeType type);
 	void UpgradeUnits(UpgradeType type);
+	void LoadUpgrades(int m_dmg, int m_armor, int r_dmg, int r_armor, int f_dmg, int f_armor);
 	void UpgradeExistingUnits(Type type1, Type type2, UpgradeType up_type);
 	Cost getUpgradeCost(UpgradeType type);
 
