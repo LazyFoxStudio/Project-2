@@ -797,8 +797,8 @@ bool j1EntityController::Load(pugi::xml_node& file)
 		}
 
 		App->map->WalkabilityArea(pos_x, pos_y, b->size.x, b->size.y, true, false);
-		App->wavecontroller->updateFlowField();
 	}
+	App->wavecontroller->updateFlowField();
 
 	int workers_to_assign = workers;
 	for (int i = 0; i < farmss.size() && workers_to_assign > 0; ++i )
