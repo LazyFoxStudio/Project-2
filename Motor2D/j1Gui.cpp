@@ -866,7 +866,7 @@ Slider* j1Gui::createSlider(pugi::xml_node node, j1Module* callback, bool saveIn
 
 	Button* button = createButton(node.child("button"), callback, false);
 
-	Slider* ret = new Slider(x, y, texture, empty, full, 0.5f, callback);
+	Slider* ret = new Slider(x, y, texture, empty, full, node.attribute("default_progress").as_float(0.5f), callback);
 
 	if (full.w > full.h)
 	{
@@ -880,6 +880,8 @@ Slider* j1Gui::createSlider(pugi::xml_node node, j1Module* callback, bool saveIn
 	}
 
 	ret->appendChild(button, true);
+	if (ret->progress == 1.0f)
+		button->localPosition.x = empty.w - button->section.w / 2;
 	button->setOriginalPos((empty.w/2 + 1 - button->section.w/2), y);
 
 	ret->setDragable(true, true);

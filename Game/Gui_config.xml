@@ -375,9 +375,9 @@ Resolution of the screen: 1680x 1050y
 			<childs>
 				<button click_action="32">
 					<position x="80" y="100"/>
-					<standby x="992" y="928" w="294" h="89"/>
-					<OnMouse x="992" y="928" w="294" h="89"/>
-					<OnClick x="992" y="928" w="294" h="89"/>
+					<standby x="0" y="744" w="281" h="87"/>
+					<OnMouse x="0" y="844" w="281" h="87"/>
+					<OnClick x="0" y="946" w="281" h="87"/>
 					<childs>
 						<text text="RESUME" center="true" counter="false">
 							<position x="0" y="0"/>
@@ -390,9 +390,9 @@ Resolution of the screen: 1680x 1050y
 				</button>
 				<button click_action="31">
 					<position x="80" y="210"/>
-					<standby x="992" y="928" w="294" h="89"/>
-					<OnMouse x="992" y="928" w="294" h="89"/>
-					<OnClick x="992" y="928" w="294" h="89"/>
+					<standby x="0" y="744" w="281" h="87"/>
+					<OnMouse x="0" y="844" w="281" h="87"/>
+					<OnClick x="0" y="946" w="281" h="87"/>
 					<childs>
 						<text text="SETTINGS" center="true" counter="false">
 							<position x="0" y="0"/>
@@ -405,9 +405,9 @@ Resolution of the screen: 1680x 1050y
 				</button>
 				<button click_action="38">
 					<position x="80" y="320"/>
-					<standby x="992" y="928" w="294" h="89"/>
-					<OnMouse x="992" y="928" w="294" h="89"/>
-					<OnClick x="992" y="928" w="294" h="89"/>
+					<standby x="0" y="744" w="281" h="87"/>
+					<OnMouse x="0" y="844" w="281" h="87"/>
+					<OnClick x="0" y="946" w="281" h="87"/>
 					<childs>
 						<text text="MAIN MENU" center="true" counter="false">
 							<position x="0" y="0"/>
@@ -445,7 +445,7 @@ Resolution of the screen: 1680x 1050y
       <color r="0" g="0" b="0" a="255"/>
       <interactive value="false"/>
     </text>
-	<slider>
+	<slider default_progress="1">
 		<position x="500" y="400"/>
 		<empty x="737" y="1258" w="779" h="55"/>
 		<full x="737" y="1313" w="779" h="55"/>
@@ -462,7 +462,7 @@ Resolution of the screen: 1680x 1050y
       <color r="0" g="0" b="0" a="255"/>
       <interactive value="false"/>
     </text>
-	<slider>
+	<slider default_progress="0.5">
 		<position x="500" y="500"/>
 		<empty x="737" y="1258" w="779" h="55"/>
 		<full x="737" y="1313" w="779" h="55"/>
@@ -523,9 +523,9 @@ Resolution of the screen: 1680x 1050y
     </button>
       <button click_action="36"><!--CHANGE_HOTKEYS-->
         <position x="600" y="700"/>
-        <standby x="687" y="1177" w="469" h="72"/>
-        <OnMouse x="687" y="1177" w="469" h="72"/>
-        <OnClick x="687" y="1177" w="469" h="72"/>
+        <standby x="687" y="1186" w="469" h="66"/>
+        <OnMouse x="687" y="1119" w="469" h="66"/>
+        <OnClick x="687" y="1051" w="469" h="66"/>
         <childs>
           <text text="Change Hotkeys" center="true" counter="false">
             <position x="0" y="0"/>
