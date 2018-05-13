@@ -79,16 +79,16 @@ bool j1UIScene::Start()
 	mine->setCondition("Build first a Lumber Mill");
 	mine->Lock();
 	Button* turret = App->gui->GetActionButton(23);
-	turret->setCondition("Build first a Lumber Mill");
+	turret->setCondition("Build first a Farm");
 	turret->Lock();
 	Button* hut = App->gui->GetActionButton(24);
-	hut->setCondition("Build first a Lumber Mill");
+	hut->setCondition("Build first a Barracks");
 	hut->Lock();
 	Button* church = App->gui->GetActionButton(25);
-	church->setCondition("Build first a Lumber Mill");
+	church->setCondition("Build first a Mine");
 	church->Lock();
 	Button* blacksmith = App->gui->GetActionButton(26);
-	blacksmith->setCondition("Build first a Lumber Mill");
+	blacksmith->setCondition("You need to build Church and Hut");
 	blacksmith->Lock();
 
 	return true;

@@ -190,16 +190,27 @@ void j1EntityController::buildingCalculations()
 					farms->Unlock();
 					Button* mine = App->gui->GetActionButton(22);
 					mine->Unlock();
-					Button* turret = App->gui->GetActionButton(23);
-					turret->Unlock();
+				}
+				if (to_build_type == BARRACKS && !App->tutorial->doingTutorial)
+				{
 					Button* hut = App->gui->GetActionButton(24);
 					hut->Unlock();
+				}
+				if (to_build_type == FARM && !App->tutorial->doingTutorial)
+				{
+					Button* turret = App->gui->GetActionButton(23);
+					turret->Unlock();
+				}
+				if (to_build_type == MINE && !App->tutorial->doingTutorial)
+				{
 					Button* church = App->gui->GetActionButton(25);
 					church->Unlock();
+				}
+				if (to_build_type == GNOME_HUT && !App->tutorial->doingTutorial)
+				{
 					Button* blacksmith = App->gui->GetActionButton(26);
 					blacksmith->Unlock();
 				}
-
 				App->gui->warningMessages->hideMessage(NO_TREES);
 				App->entitycontroller->SpendCost(to_build_type);
 
