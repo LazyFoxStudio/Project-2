@@ -513,70 +513,76 @@ Resolution of the screen: 1680x 1050y
       <image path="gui/credits.png">
         <position x="0" y="0"/>
       </image>
+	  <text text="Assign the hotkeys related to the action buttons">
+		<position x="460" y="225"/>
+		<font id="7"/>
+		<color r="0" g="0" b="0" a="255"/>
+        <interactive value="false"/>
+	  </text>
 	  <button click_action="50">
-		<position x="365" y="291"/>
+		<position x="590" y="350"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="Q" font_id="3"/>
 	  </button>
 	  <button click_action="51">
-		<position x="527" y="291"/>
+		<position x="742" y="350"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="W" font_id="3"/>
 	  </button>
 	  <button click_action="52">
-		<position x="689" y="291"/>
+		<position x="914" y="350"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="E" font_id="3"/>
 	  </button>
 	  <button click_action="53">
-		<position x="365" y="445"/>
+		<position x="590" y="504"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="A" font_id="3"/>
 	  </button>
 	  <button click_action="54">
-		<position x="527" y="445"/>
+		<position x="742" y="504"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="S" font_id="3"/>
 	  </button>
 	  <button click_action="55">
-		<position x="689" y="445"/>
+		<position x="914" y="504"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="D" font_id="3"/>
 	  </button>
 	  <button click_action="56">
-		<position x="365" y="604"/>
+		<position x="590" y="663"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="Z" font_id="3"/>
 	  </button>
 	  <button click_action="57">
-		<position x="527" y="604"/>
+		<position x="742" y="663"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="X" font_id="3"/>
 	  </button>
 	  <button click_action="58">
-		<position x="689" y="604"/>
+		<position x="914" y="663"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="C" font_id="3"/>
 	  </button>
-      <button click_action="32">
+      <button click_action="59">
         <!--Back-->
         <position x="190" y="875"/>
         <standby x="26" y="726" w="187" h="69"/>

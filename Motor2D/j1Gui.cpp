@@ -1213,6 +1213,30 @@ void j1Gui::assignActionButtonHotkey(uint id, SDL_Scancode newHotkey)
 	}
 }
 
+void j1Gui::resetActionButtonHotkeys()
+{
+	inGameMenu->actionButtonsHotkeys[0] = DEFAULT_HOTKEY_1;
+	getButtonbyId(0)->setHotkey(DEFAULT_HOTKEY_1);
+	inGameMenu->actionButtonsHotkeys[1] = DEFAULT_HOTKEY_2;
+	getButtonbyId(1)->setHotkey(DEFAULT_HOTKEY_2);
+	inGameMenu->actionButtonsHotkeys[2] = DEFAULT_HOTKEY_3;
+	getButtonbyId(2)->setHotkey(DEFAULT_HOTKEY_3);
+	inGameMenu->actionButtonsHotkeys[3] = DEFAULT_HOTKEY_4;
+	getButtonbyId(3)->setHotkey(DEFAULT_HOTKEY_4);
+	inGameMenu->actionButtonsHotkeys[4] = DEFAULT_HOTKEY_5;
+	getButtonbyId(4)->setHotkey(DEFAULT_HOTKEY_5);
+	inGameMenu->actionButtonsHotkeys[5] = DEFAULT_HOTKEY_6;
+	getButtonbyId(5)->setHotkey(DEFAULT_HOTKEY_6);
+	inGameMenu->actionButtonsHotkeys[6] = DEFAULT_HOTKEY_7;
+	getButtonbyId(6)->setHotkey(DEFAULT_HOTKEY_7);
+	inGameMenu->actionButtonsHotkeys[7] = DEFAULT_HOTKEY_8;
+	getButtonbyId(7)->setHotkey(DEFAULT_HOTKEY_8);
+	inGameMenu->actionButtonsHotkeys[8] = DEFAULT_HOTKEY_9;
+	getButtonbyId(8)->setHotkey(DEFAULT_HOTKEY_9);
+
+	inGameMenu->updateActionButtons();
+}
+
 Button* j1Gui::searchButtonbyHotkey(SDL_Scancode hotkey) const
 {
 	Button* button = nullptr;
@@ -1223,9 +1247,12 @@ Button* j1Gui::searchButtonbyHotkey(SDL_Scancode hotkey) const
 		{
 			if ((*it_b)->element_type == BUTTON && (*it_b)->clickAction >= 50 && (*it_b)->clickAction <= 58)
 			{
+					
+				if (((Button*)(*it_b))->getHotkey() == hotkey)
+				{
 					button = (Button*)(*it_b);
-					if (button->getHotkey() == hotkey)
-						break;
+					break;
+				}
 			}
 		}
 	}
