@@ -14,34 +14,901 @@
 	<scene />
 	<entitycontroller>
 		<Units>
-			<Hero type="10" hp="257" x="2160" y="2097.66992" />
-			<squad type_enum="12" type="FOOTMAN">
-				<unit hp="44" pos_x="2096.38184" pos_y="2219.47778" direction="4" />
-				<unit hp="59" pos_x="2097.99341" pos_y="2187.52026" direction="4" />
-				<unit hp="63" pos_x="2064.38403" pos_y="2219.6416" direction="4" />
-			</squad>
+			<Hero type="10" hp="165" x="2503.01123" y="2051.77734" />
 			<squad type_enum="19" type="AXE_THROWER">
-				<unit hp="40" pos_x="2144" pos_y="3488" direction="4" />
-				<unit hp="40" pos_x="2144" pos_y="3520" direction="4" />
-				<unit hp="40" pos_x="2144" pos_y="3552" direction="4" />
-				<unit hp="40" pos_x="2176" pos_y="3488" direction="4" />
+				<unit hp="40" pos_x="2128" pos_y="1826.57874" direction="7" />
+				<unit hp="40" pos_x="2160.00757" pos_y="1825.43347" direction="7" />
+				<unit hp="40" pos_x="2128" pos_y="1858.02808" direction="7" />
+				<unit hp="40" pos_x="2095.99609" pos_y="1826.08179" direction="7" />
 			</squad>
 			<squad type_enum="18" type="GRUNT">
-				<unit hp="70" pos_x="352" pos_y="1920" direction="4" />
-				<unit hp="70" pos_x="352" pos_y="1952" direction="4" />
-				<unit hp="70" pos_x="352" pos_y="1984" direction="4" />
-				<unit hp="70" pos_x="384" pos_y="1920" direction="4" />
-				<unit hp="70" pos_x="384" pos_y="1984" direction="4" />
+				<unit hp="55" pos_x="2507.36987" pos_y="2031.98181" direction="4" />
+				<unit hp="70" pos_x="2539.36792" pos_y="2030.72632" direction="7" />
+				<unit hp="70" pos_x="2539.09961" pos_y="2063.56055" direction="5" />
+				<unit hp="70" pos_x="2475.43457" pos_y="2033.31726" direction="2" />
+				<unit hp="70" pos_x="2507.19141" pos_y="2095.69507" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="1730.78491" pos_y="2031.99939" direction="0" />
+				<unit hp="70" pos_x="1673.64807" pos_y="2012.42297" direction="1" />
+				<unit hp="70" pos_x="1699.85852" pos_y="2032.35693" direction="0" />
+				<unit hp="70" pos_x="1656.40125" pos_y="2033.30444" direction="0" />
+				<unit hp="70" pos_x="1671.60791" pos_y="2036.45471" direction="0" />
 			</squad>
 			<squad type_enum="19" type="AXE_THROWER">
-				<unit hp="40" pos_x="2112" pos_y="224" direction="4" />
-				<unit hp="40" pos_x="2112" pos_y="256" direction="4" />
-				<unit hp="40" pos_x="2112" pos_y="288" direction="4" />
-				<unit hp="40" pos_x="2144" pos_y="224" direction="4" />
+				<unit hp="40" pos_x="1826.0636" pos_y="2032" direction="1" />
+				<unit hp="40" pos_x="1825.26074" pos_y="2032" direction="1" />
+				<unit hp="40" pos_x="1825.12134" pos_y="2062.86621" direction="1" />
+				<unit hp="40" pos_x="1825.4281" pos_y="2032" direction="1" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2539.10376" pos_y="2095.48389" direction="5" />
+				<unit hp="70" pos_x="2477.11475" pos_y="2098.14038" direction="3" />
+				<unit hp="70" pos_x="2578.89893" pos_y="1968.00159" direction="6" />
+				<unit hp="70" pos_x="2573.2417" pos_y="1932.80164" direction="6" />
+				<unit hp="70" pos_x="2542.60938" pos_y="1932.76965" direction="6" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2209.31372" pos_y="1967.99963" direction="6" />
+				<unit hp="40" pos_x="2219.38086" pos_y="2000.00049" direction="6" />
+				<unit hp="40" pos_x="2241.3125" pos_y="1967.99976" direction="6" />
+				<unit hp="40" pos_x="2252.96826" pos_y="1938.30859" direction="6" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2292.25757" pos_y="1969.01831" direction="2" />
+				<unit hp="40" pos_x="2324.27539" pos_y="2000.35144" direction="2" />
+				<unit hp="40" pos_x="2329.87598" pos_y="1967.99939" direction="2" />
+				<unit hp="40" pos_x="2313.55762" pos_y="1940.74976" direction="2" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2159.99902" pos_y="2099.44995" direction="3" />
+				<unit hp="70" pos_x="2124.79688" pos_y="2133.26685" direction="3" />
+				<unit hp="70" pos_x="2159.99512" pos_y="2162.03687" direction="3" />
+				<unit hp="70" pos_x="2195.19727" pos_y="2128.98413" direction="3" />
+				<unit hp="70" pos_x="2195.19409" pos_y="2162.2876" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2610.86987" pos_y="1968.00073" direction="6" />
+				<unit hp="70" pos_x="2638.28516" pos_y="2003.20166" direction="6" />
+				<unit hp="70" pos_x="2642.73242" pos_y="1968.00171" direction="6" />
+				<unit hp="70" pos_x="2639.18262" pos_y="1932.80164" direction="6" />
+				<unit hp="70" pos_x="2607.34229" pos_y="1932.80078" direction="6" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2674.14404" pos_y="1967.99927" direction="6" />
+				<unit hp="70" pos_x="2741.58228" pos_y="2003.19653" direction="6" />
+				<unit hp="70" pos_x="2701.39966" pos_y="1967.99841" direction="6" />
+				<unit hp="70" pos_x="2693.13916" pos_y="1932.79846" direction="6" />
+				<unit hp="70" pos_x="2723.15771" pos_y="1932.79675" direction="6" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2127.99902" pos_y="1539.6676" direction="4" />
+				<unit hp="70" pos_x="2163.19727" pos_y="1508.35168" direction="4" />
+				<unit hp="70" pos_x="2127.99731" pos_y="1508.87146" direction="4" />
+				<unit hp="70" pos_x="2092.79712" pos_y="1504.7312" direction="4" />
+				<unit hp="70" pos_x="2092.79956" pos_y="1548.9624" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="1583.90063" pos_y="2031.99939" direction="0" />
+				<unit hp="70" pos_x="1558.71973" pos_y="1996.79883" direction="0" />
+				<unit hp="70" pos_x="1553.10254" pos_y="2031.99866" direction="0" />
+				<unit hp="70" pos_x="1515.79846" pos_y="2031.99951" direction="0" />
+				<unit hp="70" pos_x="1485.00928" pos_y="2031.99951" direction="0" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2159.99902" pos_y="2204.50171" direction="3" />
+				<unit hp="70" pos_x="2124.79712" pos_y="2240.03003" direction="3" />
+				<unit hp="70" pos_x="2159.99683" pos_y="2241.85181" direction="3" />
+				<unit hp="70" pos_x="2195.19702" pos_y="2230.76196" direction="3" />
+				<unit hp="70" pos_x="2195.19873" pos_y="2207.78931" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2777.45654" pos_y="1967.99927" direction="6" />
+				<unit hp="70" pos_x="2696.20581" pos_y="1967.99927" direction="6" />
+				<unit hp="70" pos_x="2594.86621" pos_y="1965.08765" direction="6" />
+				<unit hp="70" pos_x="2749.29272" pos_y="1952.98694" direction="1" />
+				<unit hp="70" pos_x="2812.91138" pos_y="1932.79773" direction="6" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="2145.63745" pos_y="2085.79639" direction="5" />
+				<unit hp="120" pos_x="2254.9668" pos_y="2096.05151" direction="0" />
+				<unit hp="120" pos_x="2105.85522" pos_y="2122.21704" direction="5" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="1825.10645" pos_y="2032" direction="1" />
+				<unit hp="40" pos_x="1825.02283" pos_y="2032" direction="1" />
+				<unit hp="40" pos_x="1825.02515" pos_y="2032" direction="1" />
+				<unit hp="40" pos_x="1827.11755" pos_y="2064.00024" direction="1" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2159.75146" pos_y="1857.81384" direction="7" />
+				<unit hp="40" pos_x="2187.74048" pos_y="1843.40466" direction="7" />
+				<unit hp="40" pos_x="2156.14624" pos_y="1750.56421" direction="4" />
+				<unit hp="40" pos_x="2124.7981" pos_y="1771.64941" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2127.99878" pos_y="1394.33582" direction="4" />
+				<unit hp="70" pos_x="2163.19727" pos_y="1362.66785" direction="4" />
+				<unit hp="70" pos_x="2127.99731" pos_y="1363.54346" direction="4" />
+				<unit hp="70" pos_x="2092.79858" pos_y="1343.30811" direction="4" />
+				<unit hp="70" pos_x="2092.80127" pos_y="1378.08606" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2159.99902" pos_y="2317.83423" direction="3" />
+				<unit hp="70" pos_x="2124.79736" pos_y="2351.65649" direction="3" />
+				<unit hp="70" pos_x="2159.99536" pos_y="2380.41968" direction="3" />
+				<unit hp="70" pos_x="2195.19751" pos_y="2347.40356" direction="3" />
+				<unit hp="70" pos_x="2195.19434" pos_y="2380.66895" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2207.63672" pos_y="1352.20789" direction="7" />
+				<unit hp="70" pos_x="2256.76416" pos_y="1330.95032" direction="4" />
+				<unit hp="70" pos_x="2227.86353" pos_y="1330.71045" direction="4" />
+				<unit hp="70" pos_x="2205.83521" pos_y="1312.41455" direction="1" />
+				<unit hp="70" pos_x="2185.21484" pos_y="1336.25183" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2223.99878" pos_y="2317.83423" direction="3" />
+				<unit hp="70" pos_x="2183.24707" pos_y="2373.59155" direction="3" />
+				<unit hp="70" pos_x="2225.20361" pos_y="2382.26294" direction="3" />
+				<unit hp="70" pos_x="2127.99902" pos_y="2413.83423" direction="3" />
+				<unit hp="70" pos_x="2257.58594" pos_y="2720.79077" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2684.25171" pos_y="1968.59338" direction="6" />
+				<unit hp="70" pos_x="2768.09082" pos_y="2009.82007" direction="6" />
+				<unit hp="70" pos_x="2716.75854" pos_y="1970.77917" direction="6" />
+				<unit hp="70" pos_x="2716.18628" pos_y="1934.20251" direction="6" />
+				<unit hp="70" pos_x="2689.66772" pos_y="1932.96338" direction="6" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2191.99878" pos_y="2413.93042" direction="3" />
+				<unit hp="70" pos_x="2156.79736" pos_y="2443.32056" direction="3" />
+				<unit hp="70" pos_x="2224.00171" pos_y="2298.05835" direction="3" />
+				<unit hp="70" pos_x="2224.87671" pos_y="2348.25659" direction="3" />
+				<unit hp="70" pos_x="2227.2002" pos_y="2412.55078" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="1438.98035" pos_y="2031.99939" direction="0" />
+				<unit hp="70" pos_x="1413.78503" pos_y="1996.79871" direction="0" />
+				<unit hp="70" pos_x="1408.18945" pos_y="2031.99866" direction="0" />
+				<unit hp="70" pos_x="1369.23108" pos_y="2031.99939" direction="0" />
+				<unit hp="70" pos_x="1338.44812" pos_y="2032.00061" direction="0" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="1744.49341" pos_y="2031.99963" direction="0" />
+				<unit hp="120" pos_x="1555.78162" pos_y="2010.80103" direction="0" />
+				<unit hp="120" pos_x="1718.41858" pos_y="2031.75232" direction="0" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="1322.14185" pos_y="2031.99939" direction="0" />
+				<unit hp="70" pos_x="1297.03418" pos_y="1996.79871" direction="0" />
+				<unit hp="70" pos_x="1291.35583" pos_y="2031.99866" direction="0" />
+				<unit hp="70" pos_x="1264.96729" pos_y="2066.13892" direction="0" />
+				<unit hp="70" pos_x="1260.59766" pos_y="2032.00049" direction="0" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2682.88989" pos_y="1966.58325" direction="6" />
+				<unit hp="70" pos_x="2749.68481" pos_y="1985.40027" direction="6" />
+				<unit hp="70" pos_x="2714.38818" pos_y="1952.89795" direction="6" />
+				<unit hp="70" pos_x="2708.64478" pos_y="1927.97437" direction="6" />
+				<unit hp="70" pos_x="2673.46313" pos_y="1932.42725" direction="6" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2682.93213" pos_y="1968.75452" direction="6" />
+				<unit hp="70" pos_x="2824.25122" pos_y="1998.39612" direction="2" />
+				<unit hp="70" pos_x="2845.51001" pos_y="1961.35449" direction="6" />
+				<unit hp="70" pos_x="2780.90454" pos_y="1926.41162" direction="6" />
+				<unit hp="70" pos_x="2773.74121" pos_y="1925.83887" direction="6" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2095.99878" pos_y="1289.48267" direction="4" />
+				<unit hp="70" pos_x="2131.19751" pos_y="1263.59106" direction="4" />
+				<unit hp="70" pos_x="2095.99707" pos_y="1258.698" direction="4" />
+				<unit hp="70" pos_x="2060.79761" pos_y="1263.77112" direction="4" />
+				<unit hp="70" pos_x="2060.79932" pos_y="1294.20361" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="1373.36768" pos_y="2023.99512" direction="2" />
+				<unit hp="70" pos_x="1229.89917" pos_y="2031.99939" direction="0" />
+				<unit hp="70" pos_x="1337.79395" pos_y="2018.93335" direction="0" />
+				<unit hp="70" pos_x="1273.06055" pos_y="2030.98743" direction="0" />
+				<unit hp="70" pos_x="1304.94556" pos_y="2033.67578" direction="0" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="1745.59753" pos_y="2053.26978" direction="0" />
+				<unit hp="40" pos_x="1671.82507" pos_y="2039.08948" direction="0" />
+				<unit hp="40" pos_x="1709.47888" pos_y="2057.91455" direction="1" />
+				<unit hp="40" pos_x="1727.6731" pos_y="2075.48779" direction="0" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="1752.85388" pos_y="2062.17285" direction="0" />
+				<unit hp="120" pos_x="1516.49548" pos_y="2061.84619" direction="0" />
+				<unit hp="120" pos_x="1725.18091" pos_y="2056.98584" direction="0" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2159.99902" pos_y="2495.07397" direction="3" />
+				<unit hp="70" pos_x="2124.79688" pos_y="2528.90039" direction="3" />
+				<unit hp="70" pos_x="2159.99731" pos_y="2525.85986" direction="3" />
+				<unit hp="70" pos_x="2195.19702" pos_y="2528.12427" direction="3" />
+				<unit hp="70" pos_x="2195.19922" pos_y="2490.3147" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2724.93799" pos_y="1970.08594" direction="6" />
+				<unit hp="70" pos_x="2782.87622" pos_y="2006.51721" direction="6" />
+				<unit hp="70" pos_x="2750.51538" pos_y="1972.24988" direction="6" />
+				<unit hp="70" pos_x="2754.73218" pos_y="1935.81775" direction="6" />
+				<unit hp="70" pos_x="2770.54492" pos_y="1932.09998" direction="6" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2224.2688" pos_y="2499.87744" direction="3" />
+				<unit hp="70" pos_x="2189.20557" pos_y="2558.3562" direction="3" />
+				<unit hp="70" pos_x="2128.00073" pos_y="2559.53076" direction="3" />
+				<unit hp="70" pos_x="2159.729" pos_y="2560.35449" direction="3" />
+				<unit hp="70" pos_x="2254.56885" pos_y="2721.90137" direction="3" />
+			</squad>
+			<squad type_enum="21" type="DRAGON">
+				<unit hp="300" pos_x="1986.75159" pos_y="1700.57849" direction="4" />
+				<unit hp="300" pos_x="2024.32751" pos_y="1667.92688" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2138.05225" pos_y="2319.65356" direction="3" />
+				<unit hp="40" pos_x="2103.93701" pos_y="2341.73389" direction="3" />
+				<unit hp="40" pos_x="2143.79956" pos_y="2349.28784" direction="3" />
+				<unit hp="40" pos_x="2142.20996" pos_y="2156.29614" direction="5" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2127.99878" pos_y="2632.54248" direction="3" />
+				<unit hp="70" pos_x="2092.79736" pos_y="2663.01611" direction="3" />
+				<unit hp="70" pos_x="2127.99707" pos_y="2664.97119" direction="3" />
+				<unit hp="70" pos_x="2163.19678" pos_y="2669.7439" direction="3" />
+				<unit hp="70" pos_x="2224.54102" pos_y="2528.80981" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2224.00171" pos_y="2556.3396" direction="3" />
+				<unit hp="70" pos_x="2189.27026" pos_y="2605.84717" direction="3" />
+				<unit hp="70" pos_x="2224.46436" pos_y="2612.35498" direction="3" />
+				<unit hp="70" pos_x="2274.39697" pos_y="2720.1521" direction="3" />
+				<unit hp="70" pos_x="2095.99878" pos_y="2471.93164" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2160.00122" pos_y="1174.30042" direction="4" />
+				<unit hp="70" pos_x="2195.20288" pos_y="1141.89893" direction="4" />
+				<unit hp="70" pos_x="2160.00269" pos_y="1143.54224" direction="4" />
+				<unit hp="70" pos_x="2124.80249" pos_y="1148.26794" direction="4" />
+				<unit hp="70" pos_x="2159.99878" pos_y="1112.85266" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2191.55542" pos_y="1167.59106" direction="4" />
+				<unit hp="70" pos_x="2095.99878" pos_y="1071.46594" direction="4" />
+				<unit hp="70" pos_x="2127.99878" pos_y="1071.44775" direction="4" />
+				<unit hp="70" pos_x="2159.99878" pos_y="1071.44434" direction="4" />
+				<unit hp="70" pos_x="2152.98438" pos_y="1159.76636" direction="4" />
+			</squad>
+			<squad type_enum="21" type="DRAGON">
+				<unit hp="300" pos_x="2588.68701" pos_y="1899.03491" direction="4" />
+				<unit hp="300" pos_x="2622.74683" pos_y="1904.31873" direction="7" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2710.10083" pos_y="2001.4718" direction="6" />
+				<unit hp="40" pos_x="2771.69434" pos_y="2039.24475" direction="6" />
+				<unit hp="40" pos_x="2781.77515" pos_y="1987.15894" direction="6" />
+				<unit hp="40" pos_x="2771.87744" pos_y="1922.7666" direction="6" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2162.99316" pos_y="2205.7439" direction="3" />
+				<unit hp="40" pos_x="2132.11426" pos_y="2232.17993" direction="3" />
+				<unit hp="40" pos_x="2166.36084" pos_y="2226.39795" direction="0" />
+				<unit hp="40" pos_x="2201.62061" pos_y="2220.4209" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="1148.26355" pos_y="2031.99939" direction="0" />
+				<unit hp="70" pos_x="1122.99829" pos_y="1996.79883" direction="0" />
+				<unit hp="70" pos_x="1117.48303" pos_y="2031.99866" direction="0" />
+				<unit hp="70" pos_x="1066.36365" pos_y="2031.99951" direction="0" />
+				<unit hp="70" pos_x="1081.58508" pos_y="2032.00061" direction="0" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2191.99878" pos_y="1071.44397" direction="4" />
+				<unit hp="70" pos_x="2227.19751" pos_y="1045.62695" direction="4" />
+				<unit hp="70" pos_x="2191.99731" pos_y="1041.03125" direction="4" />
+				<unit hp="70" pos_x="2156.79712" pos_y="1040.83276" direction="4" />
+				<unit hp="70" pos_x="2155.76855" pos_y="1081.14148" direction="4" />
+			</squad>
+			<squad type_enum="22" type="CATAPULT">
+				<unit hp="60" pos_x="2095.99878" pos_y="864.02124" direction="4" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="1623.48743" pos_y="2033.34912" direction="0" />
+				<unit hp="120" pos_x="1576.5304" pos_y="2015.901" direction="4" />
+				<unit hp="120" pos_x="1476.73425" pos_y="2033.51062" direction="0" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2738.51172" pos_y="1972.14246" direction="4" />
+				<unit hp="40" pos_x="2778.71069" pos_y="2034.80896" direction="5" />
+				<unit hp="40" pos_x="2754.7937" pos_y="1972.7843" direction="4" />
+				<unit hp="40" pos_x="2765.49731" pos_y="1932.12634" direction="0" />
+			</squad>
+			<squad type_enum="23" type="JUGGERNAUT">
+				<unit hp="500" pos_x="2127.99854" pos_y="712.942078" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2965.3623" pos_y="1967.99951" direction="6" />
+				<unit hp="70" pos_x="3057.35181" pos_y="2003.16003" direction="6" />
+				<unit hp="70" pos_x="2996.1416" pos_y="1967.9989" direction="6" />
+				<unit hp="70" pos_x="2990.80981" pos_y="1932.79895" direction="6" />
+				<unit hp="70" pos_x="2955.60986" pos_y="1932.79993" direction="6" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2159.99878" pos_y="2753.80176" direction="3" />
+				<unit hp="70" pos_x="2124.79712" pos_y="2787.62866" direction="3" />
+				<unit hp="70" pos_x="2159.99536" pos_y="2816.38623" direction="3" />
+				<unit hp="70" pos_x="2195.19727" pos_y="2783.63794" direction="3" />
+				<unit hp="70" pos_x="2195.19409" pos_y="2816.6311" direction="3" />
+			</squad>
+			<squad type_enum="22" type="CATAPULT">
+				<unit hp="60" pos_x="3180.60669" pos_y="1967.99927" direction="6" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="929.515503" pos_y="2031.99939" direction="0" />
+				<unit hp="70" pos_x="904.00708" pos_y="1996.79846" direction="0" />
+				<unit hp="70" pos_x="898.750244" pos_y="2031.99854" direction="0" />
+				<unit hp="70" pos_x="868.003601" pos_y="2031.99951" direction="0" />
+				<unit hp="70" pos_x="837.480225" pos_y="2032.00049" direction="0" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2738.63232" pos_y="1971.97498" direction="7" />
+				<unit hp="40" pos_x="2794.80322" pos_y="1992.91174" direction="7" />
+				<unit hp="40" pos_x="2761.41528" pos_y="1977.13879" direction="0" />
+				<unit hp="40" pos_x="2755.99756" pos_y="1931.50806" direction="0" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2160.4082" pos_y="2499.06763" direction="3" />
+				<unit hp="40" pos_x="2127.40552" pos_y="2528.71265" direction="3" />
+				<unit hp="40" pos_x="2161.3374" pos_y="2529.76904" direction="3" />
+				<unit hp="40" pos_x="2196.72876" pos_y="2528.59546" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2192.00122" pos_y="2864.29199" direction="3" />
+				<unit hp="70" pos_x="2156.80347" pos_y="2906.58276" direction="3" />
+				<unit hp="70" pos_x="2127.99902" pos_y="2923.20117" direction="3" />
+				<unit hp="70" pos_x="2226.44043" pos_y="2950.93921" direction="3" />
+				<unit hp="70" pos_x="2229.04712" pos_y="2928.27856" direction="3" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2224.05933" pos_y="2455.2063" direction="3" />
+				<unit hp="40" pos_x="2186.50635" pos_y="2492.98096" direction="3" />
+				<unit hp="40" pos_x="2223.65405" pos_y="2503.59546" direction="3" />
+				<unit hp="40" pos_x="2239.89648" pos_y="2675.27515" direction="3" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2233.43311" pos_y="2490.21875" direction="5" />
+				<unit hp="40" pos_x="2207.24854" pos_y="2550.06543" direction="3" />
+				<unit hp="40" pos_x="2095.99854" pos_y="2394.63086" direction="3" />
+				<unit hp="40" pos_x="2096.00635" pos_y="2417.23291" direction="3" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2160.00073" pos_y="2624.88525" direction="3" />
+				<unit hp="40" pos_x="2121.80591" pos_y="2667.22192" direction="3" />
+				<unit hp="40" pos_x="2156.00952" pos_y="2661.9231" direction="3" />
+				<unit hp="40" pos_x="2128.02295" pos_y="2578.22559" direction="3" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="2128.21338" pos_y="2683.99316" direction="3" />
+				<unit hp="120" pos_x="2092.92383" pos_y="2703.63599" direction="3" />
+				<unit hp="120" pos_x="2128.15234" pos_y="2706.72729" direction="3" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="1330.60974" pos_y="2041.70313" direction="0" />
+				<unit hp="120" pos_x="1291.22229" pos_y="2009.21509" direction="0" />
+				<unit hp="120" pos_x="1304.30273" pos_y="2044.51672" direction="0" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2223.16138" pos_y="2570.97559" direction="3" />
+				<unit hp="40" pos_x="2231.87378" pos_y="2506.84766" direction="3" />
+				<unit hp="40" pos_x="2220.2124" pos_y="2596.0813" direction="3" />
+				<unit hp="40" pos_x="2227.86108" pos_y="2534.20337" direction="3" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="2226.91504" pos_y="2547.82739" direction="3" />
+				<unit hp="120" pos_x="2193.76392" pos_y="2594.71582" direction="3" />
+				<unit hp="120" pos_x="2096.00195" pos_y="2556.13013" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2128.02295" pos_y="784.957031" direction="4" />
+				<unit hp="70" pos_x="2163.25439" pos_y="760.419861" direction="4" />
+				<unit hp="70" pos_x="2134.54712" pos_y="733.749573" direction="4" />
+				<unit hp="70" pos_x="2092.92578" pos_y="748.34259" direction="4" />
+				<unit hp="70" pos_x="2093.22852" pos_y="765.39856" direction="4" />
+			</squad>
+			<squad type_enum="23" type="JUGGERNAUT">
+				<unit hp="500" pos_x="2159.99805" pos_y="3145.32593" direction="3" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="2159.64746" pos_y="2643.56738" direction="3" />
+				<unit hp="120" pos_x="2127.59644" pos_y="2730.34839" direction="3" />
+				<unit hp="120" pos_x="2159.56763" pos_y="2686.71753" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="3215.84302" pos_y="1967.99939" direction="6" />
+				<unit hp="70" pos_x="3289.22998" pos_y="2002.93701" direction="6" />
+				<unit hp="70" pos_x="3246.47754" pos_y="1967.99866" direction="6" />
+				<unit hp="70" pos_x="3240.94043" pos_y="1932.79883" direction="6" />
+				<unit hp="70" pos_x="3205.74048" pos_y="1932.7998" direction="6" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2223.99902" pos_y="3004.87915" direction="3" />
+				<unit hp="70" pos_x="2188.79736" pos_y="3040.59521" direction="3" />
+				<unit hp="70" pos_x="2127.99902" pos_y="3068.87939" direction="3" />
+				<unit hp="70" pos_x="2226.36743" pos_y="3131.4563" direction="3" />
+				<unit hp="70" pos_x="2258.68042" pos_y="3084.21924" direction="3" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="2160.05811" pos_y="2805.00146" direction="3" />
+				<unit hp="120" pos_x="2124.93066" pos_y="2824.61621" direction="3" />
+				<unit hp="120" pos_x="2160.13013" pos_y="2824.44824" direction="3" />
+			</squad>
+			<squad type_enum="22" type="CATAPULT">
+				<unit hp="60" pos_x="3328.46753" pos_y="1967.99402" direction="6" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="3057.33203" pos_y="1968.00378" direction="6" />
+				<unit hp="40" pos_x="3095.80811" pos_y="2003.22876" direction="6" />
+				<unit hp="40" pos_x="3095.77661" pos_y="1968.04883" direction="6" />
+				<unit hp="40" pos_x="3004.43091" pos_y="1968.00049" direction="6" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="3023.98267" pos_y="1967.99963" direction="6" />
+				<unit hp="40" pos_x="3071.80298" pos_y="2003.08447" direction="6" />
+				<unit hp="40" pos_x="3130.44531" pos_y="1961.7793" direction="6" />
+				<unit hp="40" pos_x="3047.49634" pos_y="1932.79932" direction="6" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2130.45386" pos_y="2921.91479" direction="3" />
+				<unit hp="40" pos_x="2094.86694" pos_y="2933.1521" direction="3" />
+				<unit hp="40" pos_x="2129.18726" pos_y="2936.56396" direction="3" />
+				<unit hp="40" pos_x="2165.24561" pos_y="2929.2627" direction="3" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="3183.89795" pos_y="1972.2583" direction="6" />
+				<unit hp="40" pos_x="3197.20557" pos_y="2008.21973" direction="6" />
+				<unit hp="40" pos_x="3211.72192" pos_y="1978.97974" direction="5" />
+				<unit hp="40" pos_x="3220.10205" pos_y="1942.08716" direction="6" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2127.99878" pos_y="667.143433" direction="4" />
+				<unit hp="70" pos_x="2163.19727" pos_y="636.084778" direction="4" />
+				<unit hp="70" pos_x="2127.99731" pos_y="636.560181" direction="4" />
+				<unit hp="70" pos_x="2092.79883" pos_y="616.958679" direction="4" />
+				<unit hp="70" pos_x="2092.802" pos_y="650.542786" direction="4" />
+			</squad>
+			<squad type_enum="23" type="JUGGERNAUT">
+				<unit hp="500" pos_x="515.496765" pos_y="2031.92273" direction="0" />
+			</squad>
+			<squad type_enum="22" type="CATAPULT">
+				<unit hp="60" pos_x="2159.97656" pos_y="584.38385" direction="4" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="851.210205" pos_y="2031.99976" direction="0" />
+				<unit hp="120" pos_x="828.017822" pos_y="1996.79956" direction="0" />
+				<unit hp="120" pos_x="824.493652" pos_y="2031.99939" direction="0" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2127.99878" pos_y="521.783752" direction="4" />
+				<unit hp="70" pos_x="2163.19702" pos_y="490.090515" direction="4" />
+				<unit hp="70" pos_x="2127.99731" pos_y="491.524292" direction="4" />
+				<unit hp="70" pos_x="2092.84399" pos_y="470.694244" direction="4" />
+				<unit hp="70" pos_x="2092.83423" pos_y="505.51236" direction="4" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="2159.99805" pos_y="2958.71436" direction="3" />
+				<unit hp="120" pos_x="2124.61743" pos_y="2997.01123" direction="3" />
+				<unit hp="120" pos_x="2159.39893" pos_y="3029.11157" direction="3" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="3252.78589" pos_y="1968.31897" direction="6" />
+				<unit hp="40" pos_x="3296.9187" pos_y="2004.89111" direction="6" />
+				<unit hp="40" pos_x="3275.61841" pos_y="1968.54492" direction="6" />
+				<unit hp="40" pos_x="3275.19409" pos_y="1933.33679" direction="6" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="3229.16284" pos_y="1963.9054" direction="6" />
+				<unit hp="120" pos_x="3264.26685" pos_y="1991.09741" direction="6" />
+				<unit hp="120" pos_x="3260.38159" pos_y="1955.55786" direction="6" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2192.20142" pos_y="2986.38379" direction="3" />
+				<unit hp="40" pos_x="2157.00049" pos_y="3068.19507" direction="3" />
+				<unit hp="40" pos_x="2193.02539" pos_y="3015.15015" direction="3" />
+				<unit hp="40" pos_x="2229.302" pos_y="3012.70435" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="3437.54053" pos_y="1967.9823" direction="6" />
+				<unit hp="70" pos_x="3385.15894" pos_y="1967.97119" direction="6" />
+				<unit hp="70" pos_x="3525.93457" pos_y="1958.88867" direction="6" />
+				<unit hp="70" pos_x="3462.88281" pos_y="1932.75696" direction="6" />
+				<unit hp="70" pos_x="3458.35474" pos_y="1935.37744" direction="6" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="630.057312" pos_y="2031.98511" direction="0" />
+				<unit hp="70" pos_x="605.321716" pos_y="1996.76477" direction="0" />
+				<unit hp="70" pos_x="600.032898" pos_y="2031.95142" direction="0" />
+				<unit hp="70" pos_x="497.560089" pos_y="2031.96521" direction="0" />
+				<unit hp="70" pos_x="576.25116" pos_y="2032.15503" direction="0" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="645.558228" pos_y="2032.14771" direction="0" />
+				<unit hp="70" pos_x="617.897217" pos_y="1997.28784" direction="0" />
+				<unit hp="70" pos_x="608.751221" pos_y="2035.17163" direction="0" />
+				<unit hp="70" pos_x="600.916321" pos_y="2067.052" direction="0" />
+				<unit hp="70" pos_x="641.442566" pos_y="2067.23364" direction="0" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="686.504333" pos_y="2031.97888" direction="0" />
+				<unit hp="70" pos_x="661.801147" pos_y="1996.74866" direction="0" />
+				<unit hp="70" pos_x="659.686462" pos_y="2031.9397" direction="0" />
+				<unit hp="70" pos_x="475.701385" pos_y="2032.23181" direction="0" />
+				<unit hp="70" pos_x="518.607483" pos_y="2037.70874" direction="0" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2159.22998" pos_y="512.16272" direction="4" />
+				<unit hp="70" pos_x="2192.77759" pos_y="448.748718" direction="4" />
+				<unit hp="70" pos_x="2158.37207" pos_y="462.282745" direction="4" />
+				<unit hp="70" pos_x="2123.4353" pos_y="463.397522" direction="4" />
+				<unit hp="70" pos_x="2095.99438" pos_y="416.847046" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="625.941101" pos_y="2037.33789" direction="0" />
+				<unit hp="40" pos_x="589.835815" pos_y="2005.43042" direction="0" />
+				<unit hp="40" pos_x="593.987244" pos_y="2041.29163" direction="0" />
+				<unit hp="40" pos_x="553.297852" pos_y="2034.17957" direction="0" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="3337.46436" pos_y="1967.98132" direction="6" />
+				<unit hp="40" pos_x="3409.02295" pos_y="2001.62183" direction="6" />
+				<unit hp="40" pos_x="3389.54688" pos_y="1967.45618" direction="6" />
+				<unit hp="40" pos_x="3364.32349" pos_y="1932.74927" direction="6" />
+			</squad>
+			<squad type_enum="23" type="JUGGERNAUT">
+				<unit hp="500" pos_x="2159.90332" pos_y="3338.87036" direction="3" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="3440.84741" pos_y="1967.72144" direction="6" />
+				<unit hp="120" pos_x="3489.13281" pos_y="2001.099" direction="6" />
+				<unit hp="120" pos_x="3287.84692" pos_y="1966.47876" direction="6" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="477.190338" pos_y="2030.854" direction="0" />
+				<unit hp="70" pos_x="456.813324" pos_y="1994.34705" direction="0" />
+				<unit hp="70" pos_x="453.408081" pos_y="2029.3623" direction="0" />
+				<unit hp="70" pos_x="420.103394" pos_y="2045.7959" direction="2" />
+				<unit hp="70" pos_x="445.586578" pos_y="2040.15759" direction="1" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2095.99463" pos_y="544.846924" direction="4" />
+				<unit hp="70" pos_x="2127.99438" pos_y="416.828735" direction="4" />
+				<unit hp="70" pos_x="2096.052" pos_y="518.598938" direction="4" />
+				<unit hp="70" pos_x="2060.83521" pos_y="499.414032" direction="4" />
+				<unit hp="70" pos_x="2119.43628" pos_y="498.583313" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2223.99463" pos_y="416.846954" direction="4" />
+				<unit hp="70" pos_x="2259.17896" pos_y="385.400116" direction="4" />
+				<unit hp="70" pos_x="2223.98218" pos_y="387.712219" direction="4" />
+				<unit hp="70" pos_x="2188.7854" pos_y="391.716034" direction="4" />
+				<unit hp="70" pos_x="2188.73071" pos_y="424.978912" direction="4" />
+			</squad>
+			<squad type_enum="21" type="DRAGON">
+				<unit hp="300" pos_x="2064.48779" pos_y="430.785248" direction="4" />
+				<unit hp="300" pos_x="2101.92871" pos_y="397.417084" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2160.02686" pos_y="3240.26563" direction="3" />
+				<unit hp="40" pos_x="2124.90259" pos_y="3266.56274" direction="3" />
+				<unit hp="40" pos_x="2164.19775" pos_y="3297.90356" direction="3" />
+				<unit hp="40" pos_x="2195.27686" pos_y="3263.04126" direction="3" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2223.99854" pos_y="555.121277" direction="4" />
+				<unit hp="40" pos_x="2259.19482" pos_y="524.469788" direction="4" />
+				<unit hp="40" pos_x="2063.96875" pos_y="555.002502" direction="4" />
+				<unit hp="40" pos_x="2159.99854" pos_y="427.121185" direction="4" />
+			</squad>
+			<squad type_enum="22" type="CATAPULT">
+				<unit hp="60" pos_x="335.791718" pos_y="2014.18225" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2191.9165" pos_y="3400.38696" direction="3" />
+				<unit hp="70" pos_x="2156.60132" pos_y="3425.04297" direction="3" />
+				<unit hp="70" pos_x="2191.75195" pos_y="3429.25391" direction="3" />
+				<unit hp="70" pos_x="2226.80444" pos_y="3435.6272" direction="3" />
+				<unit hp="70" pos_x="2127.42676" pos_y="3433.0459" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2160.78052" pos_y="3447.25659" direction="3" />
+				<unit hp="70" pos_x="2126.31104" pos_y="3472.31152" direction="3" />
+				<unit hp="70" pos_x="2161.49658" pos_y="3471.42603" direction="3" />
+				<unit hp="70" pos_x="2255.9165" pos_y="3304.38696" direction="3" />
+				<unit hp="70" pos_x="2255.9165" pos_y="3336.38696" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="3567.9165" pos_y="1943.78711" direction="4" />
+				<unit hp="70" pos_x="3602.84985" pos_y="1910.49487" direction="4" />
+				<unit hp="70" pos_x="3567.75244" pos_y="1915.20886" direction="4" />
+				<unit hp="70" pos_x="3535.40088" pos_y="1891.85693" direction="4" />
+				<unit hp="70" pos_x="3535.54272" pos_y="1926.64661" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="3663.9165" pos_y="1911.78711" direction="4" />
+				<unit hp="70" pos_x="3698.89722" pos_y="1880.20325" direction="4" />
+				<unit hp="70" pos_x="3503.91626" pos_y="1879.78699" direction="4" />
+				<unit hp="70" pos_x="3503.90942" pos_y="1911.81067" direction="4" />
+				<unit hp="70" pos_x="3504.76611" pos_y="1942.24146" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="3485.03857" pos_y="1961.82104" direction="7" />
+				<unit hp="70" pos_x="3535.27515" pos_y="1869.70325" direction="4" />
+				<unit hp="70" pos_x="3568.0918" pos_y="1876.84888" direction="4" />
+				<unit hp="70" pos_x="3560.58594" pos_y="1856.27563" direction="7" />
+				<unit hp="70" pos_x="3501.26587" pos_y="1930.02759" direction="6" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2158.89502" pos_y="302.872559" direction="4" />
+				<unit hp="70" pos_x="2190.99072" pos_y="267.154663" direction="4" />
+				<unit hp="70" pos_x="2094.89502" pos_y="270.872467" direction="4" />
+				<unit hp="70" pos_x="2121.26514" pos_y="272.024475" direction="4" />
+				<unit hp="70" pos_x="2158.50708" pos_y="270.658813" direction="4" />
+			</squad>
+			<squad type_enum="21" type="DRAGON">
+				<unit hp="300" pos_x="2169.66455" pos_y="3432.83447" direction="3" />
+				<unit hp="300" pos_x="2139.82153" pos_y="3474.21924" direction="3" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="413.192383" pos_y="2029.51343" direction="0" />
+				<unit hp="120" pos_x="401.717468" pos_y="1992.48987" direction="5" />
+				<unit hp="120" pos_x="389.382355" pos_y="2022.51257" direction="2" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="478.835358" pos_y="2020.71521" direction="2" />
+				<unit hp="120" pos_x="488.139557" pos_y="1984.55298" direction="5" />
+				<unit hp="120" pos_x="303.900269" pos_y="2002.26892" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2126.91919" pos_y="3377.3501" direction="3" />
+				<unit hp="70" pos_x="2100.95972" pos_y="3503.98071" direction="3" />
+				<unit hp="70" pos_x="2131.55273" pos_y="3507.74512" direction="3" />
+				<unit hp="70" pos_x="2168.00366" pos_y="3504.98291" direction="3" />
+				<unit hp="70" pos_x="2167.36792" pos_y="3389.83228" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2222.89502" pos_y="270.872467" direction="4" />
+				<unit hp="70" pos_x="2255.36255" pos_y="239.344666" direction="4" />
+				<unit hp="70" pos_x="2062.89502" pos_y="302.872498" direction="4" />
+				<unit hp="70" pos_x="2184.79712" pos_y="239.386063" direction="4" />
+				<unit hp="70" pos_x="2222.07544" pos_y="236.683624" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="302.138397" pos_y="1963.64526" direction="4" />
+				<unit hp="70" pos_x="330.183167" pos_y="1938.12463" direction="4" />
+				<unit hp="70" pos_x="298.759735" pos_y="1950.91357" direction="2" />
+				<unit hp="70" pos_x="270.240448" pos_y="1969.13501" direction="3" />
+				<unit hp="70" pos_x="314.09964" pos_y="1926.64441" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2222.90039" pos_y="3505.78784" direction="3" />
+				<unit hp="70" pos_x="2254.91895" pos_y="3377.3501" direction="3" />
+				<unit hp="70" pos_x="2254.91895" pos_y="3409.3501" direction="3" />
+				<unit hp="70" pos_x="2255.97705" pos_y="3442.15308" direction="3" />
+				<unit hp="70" pos_x="2258.33594" pos_y="3505.60034" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="3598.55664" pos_y="1934.55444" direction="4" />
+				<unit hp="70" pos_x="3632.17505" pos_y="1901.9054" direction="4" />
+				<unit hp="70" pos_x="3598.92236" pos_y="1838.56799" direction="4" />
+				<unit hp="70" pos_x="3630.89502" pos_y="1838.87219" direction="4" />
+				<unit hp="70" pos_x="3567.15308" pos_y="1937.16101" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2252.26978" pos_y="3520.60278" direction="3" />
+				<unit hp="70" pos_x="2094.91895" pos_y="3537.3501" direction="3" />
+				<unit hp="70" pos_x="2126.93237" pos_y="3537.38599" direction="3" />
+				<unit hp="70" pos_x="2158.9375" pos_y="3537.36865" direction="3" />
+				<unit hp="70" pos_x="2190.93848" pos_y="3537.36865" direction="3" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="3633.19092" pos_y="1935.03662" direction="4" />
+				<unit hp="70" pos_x="3672.86719" pos_y="1913.58435" direction="4" />
+				<unit hp="70" pos_x="3502.89502" pos_y="1806.87219" direction="4" />
+				<unit hp="70" pos_x="3662.89502" pos_y="1806.87219" direction="4" />
+				<unit hp="70" pos_x="3598.28345" pos_y="1937.87463" direction="4" />
+			</squad>
+			<squad type_enum="21" type="DRAGON">
+				<unit hp="300" pos_x="3505.44336" pos_y="1761.95105" direction="6" />
+				<unit hp="300" pos_x="3537.04468" pos_y="1791.83301" direction="0" />
+			</squad>
+			<squad type_enum="21" type="DRAGON">
+				<unit hp="300" pos_x="3537.43823" pos_y="1761.91211" direction="6" />
+				<unit hp="300" pos_x="3582.73633" pos_y="1776.72632" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="3652.81494" pos_y="1830.33789" direction="4" />
+				<unit hp="70" pos_x="3618.48169" pos_y="1735.44409" direction="4" />
+				<unit hp="70" pos_x="3650.52905" pos_y="1735.4281" direction="4" />
+				<unit hp="70" pos_x="3682.53198" pos_y="1735.427" direction="4" />
+				<unit hp="70" pos_x="3682.42627" pos_y="1767.4624" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2183.8457" pos_y="299.494507" direction="4" />
+				<unit hp="40" pos_x="2084.34253" pos_y="205.027206" direction="4" />
+				<unit hp="40" pos_x="2084.34253" pos_y="301.027191" direction="4" />
+				<unit hp="40" pos_x="2084.177" pos_y="333.081177" direction="4" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="3684.52441" pos_y="1805.65576" direction="4" />
+				<unit hp="120" pos_x="3686.28833" pos_y="1908.8551" direction="3" />
+				<unit hp="120" pos_x="3460.54932" pos_y="1709.64758" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="354.481415" pos_y="1927.44409" direction="4" />
+				<unit hp="70" pos_x="385.831848" pos_y="1915.09949" direction="3" />
+				<unit hp="70" pos_x="408.211823" pos_y="1920.55872" direction="6" />
+				<unit hp="70" pos_x="322.085754" pos_y="1944.35974" direction="3" />
+				<unit hp="70" pos_x="354.481415" pos_y="1895.44409" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="3458.28833" pos_y="1735.50549" direction="4" />
+				<unit hp="70" pos_x="3488.91431" pos_y="1703.76257" direction="4" />
+				<unit hp="70" pos_x="3513.52051" pos_y="1699.88" direction="7" />
+				<unit hp="70" pos_x="3544.65552" pos_y="1698.73987" direction="7" />
+				<unit hp="70" pos_x="3580.01099" pos_y="1946.57104" direction="5" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2211.15479" pos_y="3545.00195" direction="3" />
+				<unit hp="70" pos_x="2115.15479" pos_y="3577.00195" direction="3" />
+				<unit hp="70" pos_x="2147.15479" pos_y="3577.00195" direction="3" />
+				<unit hp="70" pos_x="2180.29248" pos_y="3578.82666" direction="3" />
+				<unit hp="70" pos_x="2213.36816" pos_y="3578.42847" direction="1" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="450.481415" pos_y="1895.44409" direction="4" />
+				<unit hp="70" pos_x="453.256104" pos_y="1914.87976" direction="1" />
+				<unit hp="70" pos_x="290.481415" pos_y="1863.44409" direction="4" />
+				<unit hp="70" pos_x="293.665192" pos_y="2044.14709" direction="1" />
+				<unit hp="70" pos_x="325.824799" pos_y="2044.28699" direction="1" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="359.444153" pos_y="2050.48169" direction="2" />
+				<unit hp="70" pos_x="386.481415" pos_y="1863.44409" direction="4" />
+				<unit hp="70" pos_x="482.481415" pos_y="1863.44409" direction="4" />
+				<unit hp="70" pos_x="482.474792" pos_y="1895.44629" direction="4" />
+				<unit hp="70" pos_x="482.425903" pos_y="1927.46252" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="3584" pos_y="1856" direction="4" />
+				<unit hp="40" pos_x="3648" pos_y="1856" direction="4" />
+				<unit hp="40" pos_x="3680" pos_y="1824" direction="4" />
+				<unit hp="40" pos_x="3456" pos_y="1824" direction="4" />
+			</squad>
+			<squad type_enum="23" type="JUGGERNAUT">
+				<unit hp="500" pos_x="2112" pos_y="192" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2112" pos_y="320" direction="4" />
+				<unit hp="40" pos_x="2144" pos_y="320" direction="4" />
+				<unit hp="40" pos_x="2176" pos_y="320" direction="4" />
+				<unit hp="40" pos_x="2208" pos_y="288" direction="4" />
+			</squad>
+			<squad type_enum="23" type="JUGGERNAUT">
+				<unit hp="500" pos_x="3616" pos_y="1952" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2240" pos_y="3552" direction="4" />
+				<unit hp="40" pos_x="2240" pos_y="3584" direction="4" />
+				<unit hp="40" pos_x="2080" pos_y="3616" direction="4" />
+				<unit hp="40" pos_x="2112" pos_y="3616" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="3648" pos_y="1952" direction="4" />
+				<unit hp="40" pos_x="3680" pos_y="1952" direction="4" />
+				<unit hp="40" pos_x="3712" pos_y="1696" direction="4" />
+				<unit hp="40" pos_x="3712" pos_y="1728" direction="4" />
+			</squad>
+			<squad type_enum="22" type="CATAPULT">
+				<unit hp="60" pos_x="2144" pos_y="3616" direction="4" />
+			</squad>
+			<squad type_enum="23" type="JUGGERNAUT">
+				<unit hp="500" pos_x="2208" pos_y="320" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="352" pos_y="1952" direction="4" />
+				<unit hp="40" pos_x="256" pos_y="1888" direction="4" />
+				<unit hp="40" pos_x="256" pos_y="2080" direction="4" />
+				<unit hp="40" pos_x="288" pos_y="2080" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="3712" pos_y="1760" direction="4" />
+				<unit hp="40" pos_x="3712" pos_y="1792" direction="4" />
+				<unit hp="40" pos_x="3712" pos_y="1824" direction="4" />
+				<unit hp="40" pos_x="3712" pos_y="1920" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="3712" pos_y="1952" direction="4" />
+				<unit hp="70" pos_x="3424" pos_y="1760" direction="4" />
+				<unit hp="70" pos_x="3424" pos_y="1856" direction="4" />
+				<unit hp="70" pos_x="3520" pos_y="1984" direction="4" />
+				<unit hp="70" pos_x="3552" pos_y="1984" direction="4" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="2176" pos_y="3616" direction="4" />
+				<unit hp="120" pos_x="2208" pos_y="3616" direction="4" />
+				<unit hp="120" pos_x="2240" pos_y="3616" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2272" pos_y="3424" direction="4" />
+				<unit hp="40" pos_x="2272" pos_y="3456" direction="4" />
+				<unit hp="40" pos_x="2272" pos_y="3552" direction="4" />
+				<unit hp="40" pos_x="2272" pos_y="3584" direction="4" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="320" pos_y="1824" direction="4" />
+				<unit hp="120" pos_x="320" pos_y="2080" direction="4" />
+				<unit hp="120" pos_x="352" pos_y="2080" direction="4" />
+			</squad>
+			<squad type_enum="20" type="DEATH_KNIGHT">
+				<unit hp="120" pos_x="2272" pos_y="3616" direction="4" />
+				<unit hp="120" pos_x="2048" pos_y="3392" direction="4" />
+				<unit hp="120" pos_x="2048" pos_y="3424" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2048" pos_y="3456" direction="4" />
+				<unit hp="70" pos_x="2048" pos_y="3488" direction="4" />
+				<unit hp="70" pos_x="2048" pos_y="3648" direction="4" />
+				<unit hp="70" pos_x="2080" pos_y="3648" direction="4" />
+				<unit hp="70" pos_x="2112" pos_y="3648" direction="4" />
+			</squad>
+			<squad type_enum="23" type="JUGGERNAUT">
+				<unit hp="500" pos_x="3584" pos_y="1664" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2144" pos_y="3648" direction="4" />
+				<unit hp="40" pos_x="2176" pos_y="3648" direction="4" />
+				<unit hp="40" pos_x="2208" pos_y="3648" direction="4" />
+				<unit hp="40" pos_x="2240" pos_y="3648" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="384" pos_y="2080" direction="4" />
+				<unit hp="40" pos_x="416" pos_y="1824" direction="4" />
+				<unit hp="40" pos_x="416" pos_y="2080" direction="4" />
+				<unit hp="40" pos_x="448" pos_y="2080" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="480" pos_y="2080" direction="4" />
+				<unit hp="40" pos_x="512" pos_y="1824" direction="4" />
+				<unit hp="40" pos_x="512" pos_y="1856" direction="4" />
+				<unit hp="40" pos_x="512" pos_y="1888" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2048" pos_y="352" direction="4" />
+				<unit hp="70" pos_x="2144" pos_y="160" direction="4" />
+				<unit hp="70" pos_x="2176" pos_y="160" direction="4" />
+				<unit hp="70" pos_x="2208" pos_y="160" direction="4" />
+				<unit hp="70" pos_x="2240" pos_y="160" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="2272" pos_y="3648" direction="4" />
+				<unit hp="40" pos_x="2304" pos_y="3392" direction="4" />
+				<unit hp="40" pos_x="2304" pos_y="3424" direction="4" />
+				<unit hp="40" pos_x="2304" pos_y="3456" direction="4" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="512" pos_y="1920" direction="4" />
+				<unit hp="40" pos_x="512" pos_y="1952" direction="4" />
+				<unit hp="40" pos_x="512" pos_y="2080" direction="4" />
+				<unit hp="40" pos_x="224" pos_y="1792" direction="4" />
 			</squad>
 		</Units>
 		<Buildings>
-			<town_hall hp="300" />
+			<town_hall hp="-1" />
 		</Buildings>
 	</entitycontroller>
 	<gui />
@@ -50,17 +917,18 @@
 	<particle />
 	<actionscontroller />
 	<wavecontroller>
-		<wave value="2" />
-		<points value="4" />
-		<wave_timer value="0.0237504821" />
+		<wave value="25" />
+		<points value="27" />
+		<wave_timer value="0.0197291654" />
 		<next_wave>
-			<enemies type="AXE_THROWER" type_enum="19" x="3605" y="1844" />
-			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
-			<enemies type="AXE_THROWER" type_enum="19" x="2177" y="3549" />
-			<enemies type="AXE_THROWER" type_enum="19" x="2177" y="3549" />
+			<enemies type="CATAPULT" type_enum="22" x="410" y="1982" />
+			<enemies type="DEATH_KNIGHT" type_enum="20" x="2177" y="3549" />
+			<enemies type="AXE_THROWER" type_enum="19" x="2154" y="256" />
+			<enemies type="CATAPULT" type_enum="22" x="410" y="1982" />
+			<enemies type="DRAGON" type_enum="21" x="3605" y="1844" />
 		</next_wave>
 	</wavecontroller>
 	<renderer>
-		<camera x="-1402" y="-2216" />
+		<camera x="-1547" y="-1600" />
 	</renderer>
 </game_state>
