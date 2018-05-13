@@ -972,7 +972,7 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	if (type == HERO_2)
 	{
 		hero->skill_one = new Skill(hero, 3, 70, 3000000, 3, PLACE);	//Consecration
-		hero->skill_two = new Skill(hero, 6, 20, 700, 3, HEAL);		//Circle of Light
+		hero->skill_two = new Skill(hero, 3, 20, 700, 6, HEAL);		//Circle of Light
 		hero->skill_three = new Skill(hero, 3, 0, 3000000, 4, BUFF);	//Honor of the pure
 	}
 
