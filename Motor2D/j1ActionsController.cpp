@@ -242,7 +242,8 @@ bool j1ActionsController::Update(float dt)
 			App->entitycontroller->active = true;
 			App->wavecontroller->active = true;
 			App->uiscene->toggleMenu(false, START_MENU);
-			App->uiscene->toggleMenu(true, INGAME_MENU);			
+			App->uiscene->toggleMenu(true, INGAME_MENU);	
+			App->uiscene->toggleMenu(true, HERO_SELECTION_MENU);
 			App->scene->Start_game();			
 			doingAction = false;
 			App->pauseGame();
@@ -336,6 +337,17 @@ bool j1ActionsController::Update(float dt)
 				App->win->height = 1050;*/
 			}
 
+			doingAction = false;
+			break;
+		case LOAD_GAME:
+			App->scene->active = true;
+			App->entitycontroller->active = true;
+			App->wavecontroller->active = true;
+			App->uiscene->toggleMenu(false, START_MENU);
+			App->uiscene->toggleMenu(true, INGAME_MENU);
+			App->scene->Start_game();
+			App->resumeGame();
+			App->LoadGame();
 			doingAction = false;
 			break;
 

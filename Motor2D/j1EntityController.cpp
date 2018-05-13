@@ -633,7 +633,7 @@ bool j1EntityController::Load(pugi::xml_node& file)
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
-		if (/*(*it)->type != HERO_1 && (*it)->type != HERO_2 &&*/ (*it)->type != TOWN_HALL)
+		if (/*(*it)->type != HERO_1 && (*it)->type != HERO_2 && */(*it)->type != TOWN_HALL )
 		{
 			if ((*it)->IsUnit())
 			{
@@ -723,36 +723,22 @@ bool j1EntityController::Load(pugi::xml_node& file)
 				App->gui->entityDeleted(units_of_squad.data()[j]);
 			}
 		}
-
-		//SET THE COMMANDS FOR ENEMIES
-		if (squad->isFlying())
-		{
-			iPoint TownHall_pos = TOWN_HALL_POS;
-			TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
-			TownHall_pos = App->pathfinding->FirstWalkableAdjacent(TownHall_pos);
-			squad->commands.push_back(new AttackingMoveToSquadFlying(squad->getCommander(), TownHall_pos));
-		}
-		else
-		{
-			AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->getCommander(), TOWN_HALL_POS);
-			new_atk_order->flow_field = App->wavecontroller->flow_field;
-			squad->commands.push_back(new_atk_order);
-		}
-
-
 	}
+
 	//LOAD BUILDINGS
 	pugi::xml_node buildings = file.child("Buildings");
 	pugi::xml_node building_node;
 
+	//lets load the town_hall
 	pugi::xml_node tw = buildings.child("town_hall");
 	town_hall->current_HP = tw.attribute("hp").as_int();
 
+	int workers_working = 0;
 	int workers = 0;
 	std::vector<int> frams;
 	std::vector<Building*> farmss;
 
-	for (building_node = buildings.child("Building"); building_node; building_node = building_node.next_sibling("squad"))
+	for (building_node = buildings.child("Building"); building_node; building_node = building_node.next_sibling("Building"))
 	{
 		int pos_x = building_node.attribute("pos_x").as_int();
 		int pos_y = building_node.attribute("pos_y").as_int();
@@ -760,17 +746,23 @@ bool j1EntityController::Load(pugi::xml_node& file)
 		Type t = (Type)building_node.attribute("type_enum").as_int();
 		Building* b = addBuilding({pos_x,pos_y},t);
 		b->current_HP = hp;
+		b->ex_state = OPERATIVE;
+		b->current_sprite = &b->sprites[COMPLETE];
 		if (b->type == FARM)
 		{
 			workers += building_node.attribute("workers").as_int();			
 			frams.push_back(building_node.attribute("workers").as_int());
 			farmss.push_back(b);
 		}
+		if (b->type == LUMBER_MILL || b->type == MINE)
+		{
+			//TODO
+		}
 	}
 
 	int workers_assigned=0;
 	int workers_to_assign = workers;
-	for (int i = 0; i < workers_to_assign; workers_to_assign -=workers_assigned )
+	for (int i = 0; i <= workers_to_assign; workers_to_assign -=workers_assigned )
 	{
 		CreateWorkers(farmss.data()[i], frams.data()[i]);
 		workers_to_assign -= frams.data()[i];

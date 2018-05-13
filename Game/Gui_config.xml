@@ -215,7 +215,7 @@ Resolution of the screen: 1680x 1050y
 				</text>
 			</childs>
 		</button>
-		<button click_action="0">
+		<button click_action="44">
 			<position x="597" y="529"/>
 			<standby x="0" y="131" w="467" h="100"/>
 			<OnMouse x="477" y="131" w="467" h="100"/>
