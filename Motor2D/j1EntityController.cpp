@@ -1152,14 +1152,22 @@ void j1EntityController::buildingProcessDraw()
 	else
 	{
 		if (!App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, false, false, true) && enough_resources && SDL_HasIntersection(&building_col, &buildingArea))
-		{
-			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);
+		{		
+			App->gui->warningMessages->hideMessage(NO_MINE);
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);		
 		}
 		else
 		{
-			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);
+			if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, false, false, true))
+				App->gui->warningMessages->showMessage(NO_MINE);
+				
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);			
 		}
 	}
+	if (SDL_HasIntersection(&building_col, &buildingArea))
+		App->gui->warningMessages->hideMessage(OUT_OF_RANGE);
+	else
+		App->gui->warningMessages->showMessage(OUT_OF_RANGE);
 
 
 	App->render->Blit(to_build->texture, pos.x, pos.y, &to_build->sprites[COMPLETE]);
