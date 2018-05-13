@@ -283,32 +283,59 @@ Resolution of the screen: 1680x 1050y
 		<image path="gui/credits.png">
 		  <position x="0" y="0"/>
 		</image>
-      <text text=" The Prime Minister of Sweden" center="true" counter="false">
+      <text text=" MIT License" center="true" counter="false">
         <position x="350" y="200"/>
       </text>
-      <text text=" visited Washington today as my" center="true" counter="false">
-        <position x="350" y="225"/>
-      </text>
-      <text text=" little tiny nipples moved to France-" center="true" counter="false">
+      <text text=" Copyright (c) 2018 Marc Garcia, Josep Pi, Ivan Drofiak, Adria Ferrer," center="true" counter="false">
         <position x="350" y="250"/>
       </text>
-      <text text=" The White House reception committee" center="true" counter="false">
+      <text text=" Jaume Suris, Lorien Portella, Hugo Bo and Rodrigo de Pedro." center="true" counter="false">
         <position x="350" y="275"/>
       </text>
-      <text text=" greeted the Prime Rib Roast" center="true" counter="false">
-        <position x="350" y="300"/>
-      </text>
-      <text text=" Minister and I do the cha cha like" center="true" counter="false">
+      <text text=" Permission is hereby granted, free of charge, to any person obtaining a copy" center="true" counter="false">
         <position x="350" y="325"/>
       </text>
-      <text text=" a sissy girl..." center="true" counter="false">
+      <text text=" of this software and associated documentation files (the ''Software''), to deal" center="true" counter="false">
         <position x="350" y="350"/>
       </text>
-      <text text=" (urged to keep going, so continues slowly)" center="true" counter="false">
+      <text text=" in the Software without restriction, including without limitation the rights" center="true" counter="false">
         <position x="350" y="375"/>
       </text>
-      <text text=" I lika do da cha cha..." center="true" counter="false">
+      <text text=" to use, copy, modify, merge, publish, distribute, sublicense, and/or sell" center="true" counter="false">
         <position x="350" y="400"/>
+      </text>
+      <text text=" copies of the Software, and to permit persons to whom the Software is" center="true" counter="false">
+        <position x="350" y="425"/>
+      </text>
+      <text text=" furnished to do so, subject to the following conditions:" center="true" counter="false">
+        <position x="350" y="450"/>
+      </text>
+      <text text=" The above copyright notice and this permission notice shall be included in all" center="true" counter="false">
+        <position x="350" y="500"/>
+      </text>
+      <text text=" copies or substantial portions of the Software." center="true" counter="false">
+        <position x="350" y="525"/>
+      </text>
+      <text text=" THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR" center="true" counter="false">
+        <position x="350" y="550"/>
+      </text>
+      <text text=" IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY," center="true" counter="false">
+        <position x="350" y="575"/>
+      </text>
+      <text text=" FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE" center="true" counter="false">
+        <position x="350" y="600"/>
+      </text>
+      <text text=" AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER" center="true" counter="false">
+        <position x="350" y="625"/>
+      </text>
+      <text text=" AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER" center="true" counter="false">
+        <position x="350" y="650"/>
+      </text>
+      <text text=" OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE" center="true" counter="false">
+        <position x="350" y="675"/>
+      </text>
+      <text text=" SOFTWARE." center="true" counter="false">
+        <position x="350" y="700"/>
       </text>
 		<button click_action="32"> <!--Back-->
 			<position x="190" y="875"/>
