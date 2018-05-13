@@ -146,25 +146,33 @@ void j1Tutorial::stopTutorial(bool skip)
 		App->wavecontroller->wave_timer.Start();
 		App->gui->nextWaveWindow->timer->counter.Start();
 		App->wavecontroller->tutorial = false;
+		std::string condition_mine = "Build first a Mine";
+		std::string condition_farm = "Build first a Farm";
+		std::string condition_barracks = "Build first a Barracks";
+		std::string condition_hut = "Build first a Gnome Hut";
 		if (skip)
 			active = false;
 
-		Button* barracks = App->gui->GetActionButton(5);
-		barracks->Unlock();
 		Button* lumber = App->gui->GetActionButton(6);
 		lumber->Unlock();
+		Button* barracks = App->gui->GetActionButton(5);
+		barracks->Unlock();
 		Button* farms = App->gui->GetActionButton(7);
 		farms->Unlock();
 		Button* mine = App->gui->GetActionButton(22);
 		mine->Unlock();
 		Button* turret = App->gui->GetActionButton(23);
-		turret->Unlock();
+		turret->setCondition(condition_farm);
+		turret->Lock();
 		Button* hut = App->gui->GetActionButton(24);
-		hut->Unlock();
+		hut->setCondition(condition_barracks);
+		hut->Lock();
 		Button* church = App->gui->GetActionButton(25);
-		church->Unlock();
+		church->setCondition(condition_mine);
+		church->Lock();
 		Button* blacksmith = App->gui->GetActionButton(26);
-		blacksmith->Unlock();
+		blacksmith->setCondition(condition_hut);
+		blacksmith->Lock();
 	}
 }
 
