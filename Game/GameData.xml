@@ -992,8 +992,8 @@
         </Stats>
         <Info title="Knight Stats:"/>
         <Animations>
-          <width value="73"/>
-          <height value="77"/>
+          <width value="74"/>
+          <height value="78"/>
           <Animation>
             <!-- 0- IdleNorth -->
             <rows value="0"/>
@@ -1506,8 +1506,8 @@
         </Stats>
         <Info title="Ballista Stats:"/>
         <Animations>
-          <width value="67"/>
-          <height value="66"/>
+          <width value="66"/>
+          <height value="65"/>
           <Animation>
             <!--0- Idle North-->
             <rows value="0"/>
