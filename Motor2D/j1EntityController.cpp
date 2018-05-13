@@ -1327,7 +1327,7 @@ void j1EntityController::selectionControl()
 
 		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 		{
-			if ((*it)->isActive) {
+			if ((*it)->isActive && (*it)->ex_state != DESTROYED) {
 
 				if (SDL_HasIntersection(&(*it)->collider, &selection_rect))
 				{
