@@ -26,6 +26,10 @@ bool j1ActionsController::Update(float dt)
 			int x, y;
 			App->input->GetMousePosition(x, y);
 			App->render->DrawQuad({ x, y, 10, 10 }, Translucid_Yellow, true, false);
+
+			if (hero = (Hero*)App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID))
+				hero->current_skill = 0;
+
 			if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
 				App->entitycontroller->commandControl();
