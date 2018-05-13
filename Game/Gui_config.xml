@@ -55,7 +55,7 @@ Resolution of the screen: 1680x 1050y
 	<!-- Resources Display -->
 		<atlas_image icon_atlas="false" active="true">
 			<position x="0" y="0"/>
-			<section x="285" y="332" w="874" h="54"/>
+			<section x="285" y="332" w="695" h="54"/>
 			<childs>
 				<text text="inactive_workers" center="false" counter="true">
 					<position x="565" y="10"/>
@@ -143,8 +143,8 @@ Resolution of the screen: 1680x 1050y
 
 	<!-- Wave Window -->
 		<nextwavewindow path="gui/next_wave.png" icon_atlas="false">
-			<position x="1408" y="450"/>
-			<minimizedPosition x="1408" y="725"/>
+			<position x="1408" y="420"/>
+			<minimizedPosition x="1408" y="710"/>
 			<section x="0" y="0" w="272" h="336"/>
 			<icons x="35" y="70" offsetX="125" offsetY="80"/>
 			<draggable horizontal="false" vertical="false"/>
@@ -158,14 +158,14 @@ Resolution of the screen: 1680x 1050y
 
 	<!-- in-game menu -->
 		<ingamemenu>
-			<position x="0" y="750"/>
-			<section x="0" y="1375" w="1680" h="301"/>
-			<buttons x="1408" y="790" offsetX="81" offsetY="75"/>
+			<position x="0" y="748"/>
+			<section x="0" y="1377" w="1680" h="303"/>
+			<buttons x="1408" y="795" offsetX="81" offsetY="80"/>
 		</ingamemenu>
     
     <!-- Minimap -->
 		<minimap>
-			<position x="22" y="784"/>
+			<position x="20" y="785"/>
 			<base_image path ="Assets/Sprites/Minimap Sprites/minimap_base.png"/>
 			<map width ="4096" height ="4096"/>
 			<alerts>

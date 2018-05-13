@@ -302,6 +302,7 @@ bool j1ActionsController::Update(float dt)
 			App->uiscene->toggleMenu(false, INGAME_MENU);
 			App->uiscene->toggleMenu(false, PAUSE_MENU);
 			App->uiscene->toggleMenu(false, HERO_SELECTION_MENU);
+			App->audio->PlayMusic(MAIN_THEME, 0);
 			doingAction = false;
 			App->scene->Close_game();
 			break;
