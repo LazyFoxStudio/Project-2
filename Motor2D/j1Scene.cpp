@@ -170,11 +170,18 @@ bool j1Scene::CleanUp()
 
 bool j1Scene::Load(pugi::xml_node& data)
 {
+	gold = data.child("gold").attribute("value").as_int();
+	wood = data.child("wood").attribute("value").as_int();
+	oil = data.child("oil").attribute("value").as_int();
 	return true;
 }
 
 bool j1Scene::Save(pugi::xml_node& data) const
 {
+	data.append_child("gold").append_attribute("value") = gold;
+	data.append_child("wood").append_attribute("value") = wood;
+	data.append_child("oil").append_attribute("value") = oil;
+
 	return true;
 }
 

@@ -195,7 +195,7 @@ bool Squad::findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_
 		{
 			for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
 			{
-				if ((*it)->IsBuilding() && isInSquadSight((*it)->position))
+				if ((*it)->IsBuilding() && isInSquadSight((*it)->position) && (*it)->isActive && (*it)->ex_state != DESTROYED)
 				{
 					Building* building = (Building*)(*it);
 					std::vector<iPoint> building_slots;
