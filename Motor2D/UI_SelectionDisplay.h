@@ -3,8 +3,8 @@
 
 #include "UI_element.h"
 
-#define FIRST_ICON_POSITION {376, 849}
-#define TROOP_ICON_OFFSET {355, 67}
+#define FIRST_ICON_POSITION {376, 815}
+#define TROOP_ICON_OFFSET {355, 80}
 #define LIFEBARS_OFFSET {82, 6}
 #define SQUAD_ICON_OFFSET 26
 

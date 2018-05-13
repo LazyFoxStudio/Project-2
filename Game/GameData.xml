@@ -527,7 +527,7 @@
                 <lineOfSight value="200"/>
                 <goldCost value="200"/>
                 <woodCost value="50"/>
-                <workerCost value="5"/>
+                <workerCost value="0"/>
                 <trainingTime value="3"/>
                 <squadMembers value="4"/>
                 <size x="1" y="1"/>
