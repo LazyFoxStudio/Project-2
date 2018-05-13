@@ -748,6 +748,10 @@ bool j1EntityController::Load(pugi::xml_node& file)
 	pugi::xml_node tw = buildings.child("town_hall");
 	town_hall->current_HP = tw.attribute("hp").as_int();
 
+	int workers = 0;
+	std::vector<int> frams;
+	std::vector<Building*> farmss;
+
 	for (building_node = buildings.child("Building"); building_node; building_node = building_node.next_sibling("squad"))
 	{
 		int pos_x = building_node.attribute("pos_x").as_int();
@@ -756,12 +760,25 @@ bool j1EntityController::Load(pugi::xml_node& file)
 		Type t = (Type)building_node.attribute("type_enum").as_int();
 		Building* b = addBuilding({pos_x,pos_y},t);
 		b->current_HP = hp;
-		int workers= building_node.attribute("workers").as_int();
-		//for (int i=0;i< workers-1;++i)
-		//{
-		//
-		//}
+		if (b->type == FARM)
+		{
+			workers += building_node.attribute("workers").as_int();			
+			frams.push_back(building_node.attribute("workers").as_int());
+			farmss.push_back(b);
+		}
 	}
+
+	int workers_assigned=0;
+	int workers_to_assign = workers;
+	for (int i = 0; i < workers_to_assign; workers_to_assign -=workers_assigned )
+	{
+		CreateWorkers(farmss.data()[i], frams.data()[i]);
+		workers_to_assign -= frams.data()[i];
+		workers_assigned = frams.data()[i];
+	}
+	frams.clear();
+	
+
 	return true;
 }
 
