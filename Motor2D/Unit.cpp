@@ -51,6 +51,9 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 Unit::~Unit()
 {
 	Halt();
+	for (int i = 0; i < animations.size(); i++)
+		RELEASE(animations[i]);
+
 	animations.clear();
 	effects.clear();
 }

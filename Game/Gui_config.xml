@@ -371,10 +371,10 @@ Resolution of the screen: 1680x 1050y
 	  <!-- PAUSE MENU-->
 	  <menu type="3" active="false">
 		<image path="gui/pause.png">
-			<position x="700" y="250"/>
+			<position x="700" y="200"/>
 			<childs>
 				<button click_action="32">
-					<position x="37" y="38"/>
+					<position x="80" y="100"/>
 					<standby x="992" y="928" w="294" h="89"/>
 					<OnMouse x="992" y="928" w="294" h="89"/>
 					<OnClick x="992" y="928" w="294" h="89"/>
@@ -382,13 +382,14 @@ Resolution of the screen: 1680x 1050y
 						<text text="RESUME" center="true" counter="false">
 							<position x="0" y="0"/>
 							<font id="4"/>
-							<color r="0" g="0" b="0" a="255"/>
+							<color r="255" g="225" b="0" a="255"/>
 							<interactive value="false"/>
+							<outline size="4" r="0" g="0" b="0" a="255"/>
 						</text>
 					</childs>
 				</button>
 				<button click_action="31">
-					<position x="37" y="154"/>
+					<position x="80" y="210"/>
 					<standby x="992" y="928" w="294" h="89"/>
 					<OnMouse x="992" y="928" w="294" h="89"/>
 					<OnClick x="992" y="928" w="294" h="89"/>
@@ -396,13 +397,14 @@ Resolution of the screen: 1680x 1050y
 						<text text="SETTINGS" center="true" counter="false">
 							<position x="0" y="0"/>
 							<font id="4"/>
-							<color r="0" g="0" b="0" a="255"/>
+							<color r="255" g="225" b="0" a="255"/>
 							<interactive value="false"/>
+							<outline size="4" r="0" g="0" b="0" a="255"/>
 						</text>
 					</childs>
 				</button>
 				<button click_action="38">
-					<position x="37" y="272"/>
+					<position x="80" y="320"/>
 					<standby x="992" y="928" w="294" h="89"/>
 					<OnMouse x="992" y="928" w="294" h="89"/>
 					<OnClick x="992" y="928" w="294" h="89"/>
@@ -410,8 +412,9 @@ Resolution of the screen: 1680x 1050y
 						<text text="MAIN MENU" center="true" counter="false">
 							<position x="0" y="0"/>
 							<font id="4"/>
-							<color r="0" g="0" b="0" a="255"/>
+							<color r="255" g="225" b="0" a="255"/>
 							<interactive value="false"/>
+							<outline size="4" r="0" g="0" b="0" a="255"/>
 						</text>
 					</childs>
 				</button>

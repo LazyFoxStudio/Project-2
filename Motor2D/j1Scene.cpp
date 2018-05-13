@@ -252,8 +252,12 @@ void j1Scene::Start_game()
 	pugi::xml_document doc;
 	pugi::xml_node gameData;
 
-	gameData = App->LoadFile(doc, "GameData.xml");
-	App->entitycontroller->loadEntitiesDB(gameData);
+	if (App->entitycontroller->DataBase.empty())
+	{
+		gameData = App->LoadFile(doc, "GameData.xml");
+		App->entitycontroller->loadEntitiesDB(gameData);
+	}
+	
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	App->entitycontroller->town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
