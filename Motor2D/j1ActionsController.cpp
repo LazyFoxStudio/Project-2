@@ -236,6 +236,7 @@ bool j1ActionsController::Update(float dt)
 				App->entitycontroller->SpendUpgradeResources(MELEE_ATTACK_UPGRADE);
 				App->entitycontroller->UpgradeUnits(MELEE_ATTACK_UPGRADE);
 			}
+			doingAction = false;
 			break;
 		case RESEARCH_MELEE_DEFENSE:
 			if (App->entitycontroller->ChechUpgradeCost(MELEE_DEFENSE_UPGRADE))
@@ -244,6 +245,7 @@ bool j1ActionsController::Update(float dt)
 				App->entitycontroller->UpgradeUnits(MELEE_DEFENSE_UPGRADE);
 
 			}
+			doingAction = false;
 			break;
 		case RESEARCH_RANGED_ATTACK:
 			if (App->entitycontroller->ChechUpgradeCost(RANGED_ATTACK_UPGRADE))
@@ -252,6 +254,7 @@ bool j1ActionsController::Update(float dt)
 				App->entitycontroller->UpgradeUnits(RANGED_ATTACK_UPGRADE);
 
 			}
+			doingAction = false;
 			break;
 		case RESEARCH_RANGED_DEFENSE:
 			if (App->entitycontroller->ChechUpgradeCost(RANGED_DEFENSE_UPGRADE))
@@ -260,6 +263,7 @@ bool j1ActionsController::Update(float dt)
 				App->entitycontroller->UpgradeUnits(RANGED_DEFENSE_UPGRADE);
 
 			}
+			doingAction = false;
 			break;
 		case RESEARCH_FLYING_ATTACK:
 			if (App->entitycontroller->ChechUpgradeCost(FLYING_ATTACK_UPGRADE))
@@ -268,6 +272,7 @@ bool j1ActionsController::Update(float dt)
 				App->entitycontroller->UpgradeUnits(FLYING_ATTACK_UPGRADE);
 
 			}
+			doingAction = false;
 			break;
 		case RESEARCH_FLYING_DEFENSE:
 			if (App->entitycontroller->ChechUpgradeCost(FLYING_DEFENSE_UPGRADE))
@@ -276,6 +281,7 @@ bool j1ActionsController::Update(float dt)
 				App->entitycontroller->UpgradeUnits(FLYING_DEFENSE_UPGRADE);
 
 			}
+			doingAction = false;
 			break;
 		case TOGGLE_NEXTWAVE:
 			App->gui->nextWaveWindow->toggle();
@@ -288,11 +294,7 @@ bool j1ActionsController::Update(float dt)
 			App->entitycontroller->active = true;
 			App->wavecontroller->active = true;
 			App->uiscene->toggleMenu(false, START_MENU);
-			App->uiscene->toggleMenu(true, INGAME_MENU);	
-			if (App->tutorial->active)
-				App->uiscene->toggleMenu(true, SKIP_TUTORIAL_MENU);
-			else
-				App->uiscene->toggleMenu(true, HERO_SELECTION_MENU);
+			App->uiscene->toggleMenu(true, INGAME_MENU);				
 			App->scene->Start_game();	
 			App->tutorial->stopTutorial();
 			doingAction = false;
@@ -351,6 +353,9 @@ bool j1ActionsController::Update(float dt)
 			App->audio->PlayMusic(MAIN_THEME, 0);
 			doingAction = false;
 			App->scene->Close_game();
+
+			App->gui->UpdateContinueButton();
+
 			break;
 		case CHOOSE_MAGE:
 			App->tutorial->taskCompleted(CHOOSE_HERO);
@@ -395,7 +400,7 @@ bool j1ActionsController::Update(float dt)
 			App->wavecontroller->active = true;
 			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, INGAME_MENU);
-			App->scene->Start_game();
+			App->scene->Start_game(true);
 			App->resumeGame();
 			App->LoadGame();
 			doingAction = false;

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<game_state>
+	<input />
+	<window />
+	<textures />
+	<audio>
+		<musicVolumeModifier value="1" />
+		<sfxVolumeModifier value="1" />
+	</audio>
+	<pathfinding />
+	<Console />
+	<map />
+	<fonts />
+	<scene>
+		<gold value="450" />
+		<wood value="400" />
+		<oil value="0" />
+	</scene>
+	<entitycontroller>
+		<Upgrades>
+			<upgrades_1 value="0" />
+			<upgrades_2 value="0" />
+			<upgrades_3 value="0" />
+			<upgrades_4 value="0" />
+			<upgrades_5 value="0" />
+			<upgrades_6 value="0" />
+		</Upgrades>
+		<Units>
+			<Hero type="10" hp="250" x="892.983643" y="1742.4856" />
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="90" pos_x="2132.68896" pos_y="1967.99988" direction="6" />
+				<unit hp="90" pos_x="2132.5061" pos_y="2000.00024" direction="6" />
+				<unit hp="90" pos_x="2127.30176" pos_y="2031.57239" direction="5" />
+				<unit hp="90" pos_x="2096.45557" pos_y="1963.94312" direction="6" />
+				<unit hp="90" pos_x="2064.35815" pos_y="1963.96802" direction="6" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="3552" pos_y="1792" direction="4" />
+				<unit hp="40" pos_x="3552" pos_y="1824" direction="4" />
+				<unit hp="40" pos_x="3552" pos_y="1856" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="90" pos_x="2144" pos_y="3488" direction="4" />
+				<unit hp="90" pos_x="2144" pos_y="3520" direction="4" />
+				<unit hp="90" pos_x="2144" pos_y="3552" direction="4" />
+				<unit hp="90" pos_x="2176" pos_y="3488" direction="4" />
+				<unit hp="90" pos_x="2176" pos_y="3552" direction="4" />
+			</squad>
+		</Units>
+		<Buildings>
+			<town_hall hp="42" />
+		</Buildings>
+	</entitycontroller>
+	<gui />
+	<introscene />
+	<sceneswitch />
+	<particle />
+	<actionscontroller />
+	<wavecontroller>
+		<wave value="2" />
+		<points value="3" />
+		<wave_timer value="0.00766666699" />
+		<next_wave>
+			<enemies type="AXE_THROWER" type_enum="19" x="3605" y="1844" />
+			<enemies type="AXE_THROWER" type_enum="19" x="3605" y="1844" />
+			<enemies type="AXE_THROWER" type_enum="19" x="410" y="1982" />
+		</next_wave>
+	</wavecontroller>
+	<renderer>
+		<camera x="-1264" y="-1610" />
+	</renderer>
+</game_state>
