@@ -925,8 +925,11 @@ void j1Gui::entityDeleted(Entity* entity)
 	if (inGameMenu != nullptr)
 	{
 		inGameMenu->selectionDisplay->deleteDisplay(entity);
-		inGameMenu->infoTable->newSelection();
-		inGameMenu->updateActionButtons();
+		if (!App->isCleaning())
+		{
+			inGameMenu->infoTable->newSelection();
+			inGameMenu->updateActionButtons();
+		}
 	}
 }
 
@@ -1016,10 +1019,10 @@ void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
 			else
 			{
 				//cost = App->entitycontroller->getUpgradeCost((UpgradeType)info.attribute("type").as_int(), 0);
-				Cost cost = App->entitycontroller->getUpgradeCost((UpgradeType)info.attribute("type").as_int(), 1);
-				button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.wood_cost, cost.gold_cost, cost.oil_cost, cost.oil_cost, (UpgradeType)info.attribute("type").as_int(), 1);
+				cost = App->entitycontroller->getUpgradeCost((UpgradeType)info.attribute("type").as_int(), 1);
 			}
-		
+			button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.wood_cost, cost.gold_cost, cost.oil_cost, cost.oil_cost, (UpgradeType)info.attribute("type").as_int(), 1);
+
 		//	button->costDisplay = createCostDisplay(info.attribute("text").as_string(), cost.wood_cost, cost.gold_cost, cost.oil_cost, cost.worker_cost, (UpgradeType)info.attribute("type").as_int(), 0);
 		}
 		else if (info && cost_node)
