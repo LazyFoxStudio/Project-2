@@ -525,10 +525,10 @@
                 <movementSpeed value="0.7"/>
                 <range value="40"/>
                 <lineOfSight value="200"/>
-                <goldCost value="600"/>
-                <woodCost value="0"/>
+                <goldCost value="200"/>
+                <woodCost value="50"/>
                 <workerCost value="5"/>
-                <trainingTime value="1"/>
+                <trainingTime value="3"/>
                 <squadMembers value="4"/>
                 <size x="1" y="1"/>
             </Stats>
@@ -748,16 +748,16 @@
             <texture value="Assets\Sprites\Alliance Sprites\Elven archer_Spritesheet.png"/>
             <Stats>
                 <life value="40"/>
-                <attack value="2"/>
-                <defense value="1"/>
+                <attack value="1"/>
+                <defense value="0"/>
                 <piercingDamage value="3"/>
                 <movementSpeed value="1.0"/>
                 <range value="210"/>
                 <lineOfSight value="250"/>
-                <goldCost value="500"/>
+                <goldCost value="250"/>
                 <woodCost value="50"/>
                 <workerCost value="4"/>
-                <trainingTime value="10"/>
+                <trainingTime value="5"/>
                 <squadMembers value="4"/>
                 <size x="1" y="1"/>
             </Stats>
@@ -976,11 +976,11 @@
         <iconData x="315" y="72" w="71" h="59"/>
         <texture value="Assets\Sprites\Alliance Sprites\Knight_Spritesheet.png"/>
         <Stats>
-          <life value="80"/>
+          <life value="100"/>
           <attack value="3"/>
-          <defense value="6"/>
+          <defense value="5"/>
           <piercingDamage value="2"/>
-          <movementSpeed value="1.05"/>
+          <movementSpeed value="1.10"/>
           <range value="40"/>
           <lineOfSight value="200"/>
           <goldCost value="800"/>
@@ -1234,14 +1234,14 @@
         <texture value="Assets\Sprites\Alliance Sprites\Gryphon Rider_SpriteSheet.png"/>
         <Stats>
           <life value="80"/>
-          <attack value="6"/>
+          <attack value="2"/>
           <defense value="4"/>
-          <piercingDamage value="2"/>
+          <piercingDamage value="6"/>
           <movementSpeed value="1.1"/>
           <range value="40"/>
           <lineOfSight value="200"/>
-          <goldCost value="2500"/>
-          <woodCost value="0"/>
+          <goldCost value="2100"/>
+          <woodCost value="200"/>
           <workerCost value="3"/>
           <trainingTime value="10"/>
           <squadMembers value="1"/>
@@ -1497,7 +1497,7 @@
           <movementSpeed value="0.6"/>
           <range value="210"/>
           <lineOfSight value="250"/>
-          <goldCost value="900"/>
+          <goldCost value="800"/>
           <woodCost value="300"/>
           <workerCost value="2"/>
           <trainingTime value="10"/>
@@ -1748,14 +1748,14 @@
         <texture value="Assets\Sprites\Alliance Sprites\Flying Machine_SpriteSheet.png"/>
         <Stats>
           <life value="40"/>
-          <attack value="2"/>
+          <attack value="1"/>
           <defense value="1"/>
           <piercingDamage value="4"/>
           <movementSpeed value="1.0"/>
-          <range value="210"/>
+          <range value="190"/>
           <lineOfSight value="250"/>
-          <goldCost value="900"/>
-          <woodCost value="500"/>
+          <goldCost value="400"/>
+          <woodCost value="200"/>
           <workerCost value="6"/>
           <trainingTime value="10"/>
           <squadMembers value="1"/>
@@ -2450,10 +2450,10 @@
             <texture value="Assets\Sprites\Horde Sprites\Death Knight_SpriteSheet.png"/>
             <Stats>
                 <life value="120"/>
-                <attack value="2"/>
-                <defense value="0"/>
-                <piercingDamage value="4"/>
-                <movementSpeed value="1.05"/>
+                <attack value="5"/>
+                <defense value="4"/>
+                <piercingDamage value="1"/>
+                <movementSpeed value="1.10"/>
                 <range value="40"/>
                 <lineOfSight value="250"/>
                 <squadMembers value="3"/>
@@ -2671,9 +2671,9 @@
         <texture value="Assets\Sprites\Horde Sprites\Dragon_SpriteSheet.png"/>
         <Stats>
           <life value="300"/>
-          <attack value="2"/>
+          <attack value="4"/>
           <defense value="0"/>
-          <piercingDamage value="3"/>
+          <piercingDamage value="2"/>
           <movementSpeed value="1.05"/>
           <range value="160"/>
           <lineOfSight value="250"/>
@@ -2910,9 +2910,9 @@
         <iconData x="544" y="72" w="72" h="59"/>
         <texture value="Assets\Sprites\Horde Sprites\Catapult_SpriteSheet.png"/>
         <Stats>
-          <life value="150"/>
-          <attack value="4"/>
-          <defense value="6"/>
+          <life value="60"/>
+          <attack value="6"/>
+          <defense value="2"/>
           <piercingDamage value="2"/>
           <movementSpeed value="0.5"/>
           <range value="40"/>
@@ -3464,7 +3464,7 @@
         <villagers value="0"/>
         <buildingTime value="5"/>
         <defense value="20"/>
-        <woodCost value="500"/>
+        <woodCost value="300"/>
         <goldCost value="100"/>
       </Stats>
 	  <Info title="Barracks:">
@@ -3508,7 +3508,7 @@
         <buildingTime value="10"/>
         <defense value="20"/>
         <woodCost value="0"/>
-        <goldCost value="400"/>
+        <goldCost value="300"/>
       </Stats>
 	  <Info title="Lumber Mill:">
 		<line text="Use this building"/>
@@ -3544,7 +3544,7 @@
         <villagers value="0"/>
         <buildingTime value="7"/>
         <defense value="20"/>
-        <woodCost value="250"/>
+        <woodCost value="150"/>
         <goldCost value="50"/>
       </Stats>
 	  <Info title="Farm:">
@@ -3582,7 +3582,7 @@
         <villagers value="0"/>
         <buildingTime value="5"/>
         <defense value="20"/>
-        <woodCost value="400"/>
+        <woodCost value="300"/>
         <goldCost value="0"/>
       </Stats>
 	  <Info title="Mine:">
@@ -3618,12 +3618,12 @@
         <life value="200"/>
         <villagers value="0"/>
         <buildingTime value="5"/>
-        <attack value="2"/>
-        <piercingDamage value="4"/>
+        <attack value="1"/>
+        <piercingDamage value="6"/>
         <range value="210"/>
         <defense value="20"/>
-        <woodCost value="600"/>
-        <goldCost value="200"/>
+        <woodCost value="400"/>
+        <goldCost value="50"/>
       </Stats>
 	  <Info title=" Turret:">
 		<line text="This building"/>
@@ -3694,8 +3694,8 @@
         <villagers value="0"/>
         <buildingTime value="5"/>
         <defense value="20"/>
-        <woodCost value="300"/>
-        <goldCost value="500"/>
+        <woodCost value="600"/>
+        <goldCost value="200"/>
       </Stats>
 	  <Info title="Church:">
 		<line text="Use this building"/>
@@ -3730,8 +3730,8 @@
         <villagers value="0"/>
         <buildingTime value="5"/>
         <defense value="20"/>
-        <woodCost value="300"/>
-        <goldCost value="600"/>
+        <woodCost value="500"/>
+        <goldCost value="500"/>
       </Stats>
 	  <Info title="Blacksmith:">
 		<line text="Use this building"/>
@@ -3951,7 +3951,7 @@
 			<OnClick x="1237" y="588" w="66" h="66"/>
 			<popUp>
 				<Info text="Repair Building"/>
-				<Cost wood="200" gold="" oil="" workers="" time=""/>
+				<Cost wood="400" gold="" oil="" workers="" time=""/>
 			</popUp>
       <hotkey key="" font_id="3"/>
 		</repairBuilding>
