@@ -221,7 +221,7 @@ void Unit::Destroy()
 	App->entitycontroller->selected_entities.remove(this);
 	if (App->tutorial->doingTutorial && this->IsEnemy())
 	{
-		if (squad->units_id.size() == 1) //It was last enemy
+		if (squad->units_id.size() <= 1) //It was last enemy
 			App->tutorial->taskCompleted(KILL_ENEMIES);
 	}
 	App->gui->entityDeleted(this);
