@@ -2030,7 +2030,7 @@
           <iconData x="239" y="7" w="72" h="60"/>
           <texture value="Assets\Sprites\Horde Sprites\Grunt_SpriteSheet.png"/>
           <Stats>
-            <life value="70"/>
+            <life value="90"/>
             <attack value="5"/>
             <defense value="5"/>
             <piercingDamage value="2"/>

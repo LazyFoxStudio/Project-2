@@ -966,15 +966,15 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 
 	if (type == HERO_1)
 	{
-		hero->skill_one = new Skill(hero, 3, 100, 300, 6, AREA);		//Icicle Crash
+		hero->skill_one = new Skill(hero, 3, 80, 50, 6, AREA);		//Icicle Crash
 		hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
-		hero->skill_three = new Skill(hero, 0, 200, 250, 4, LINE);		//Dragon Breath
+		hero->skill_three = new Skill(hero, 0, 200, 200, 4, LINE);		//Dragon Breath
 	}
 	if (type == HERO_2)
 	{
-		hero->skill_one = new Skill(hero, 3, 50, 3000000, 4, PLACE);	//Consecration
-		hero->skill_two = new Skill(hero, 3, 20, 700, 3, HEAL);		//Circle of Light
-		hero->skill_three = new Skill(hero, 3, 75, 3000000, 4, BUFF);	//Honor of the pure
+		hero->skill_one = new Skill(hero, 3, 70, 3000000, 3, PLACE);	//Consecration
+		hero->skill_two = new Skill(hero, 6, 20, 700, 3, HEAL);		//Circle of Light
+		hero->skill_three = new Skill(hero, 3, 0, 3000000, 4, BUFF);	//Honor of the pure
 	}
 
 	App->gui->createLifeBar(hero);
