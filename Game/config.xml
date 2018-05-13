@@ -26,8 +26,8 @@
   </gui>
 
   <scene>
-    <Wood value="40000"/>
-    <Gold value="40000"/>
+    <Wood value="500"/>
+    <Gold value="1000"/>
     <Workers value="10"/>
     <Oil value="0"/>
   </scene>
