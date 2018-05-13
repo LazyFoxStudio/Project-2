@@ -239,6 +239,13 @@ void j1Scene::Start_game()
 		App->render->culling_camera.x = -App->render->camera.x - 50;
 		App->render->culling_camera.y = -App->render->camera.y - 50;
 	}
+	else
+	{
+		App->render->camera.x = -1200;
+		App->render->camera.y = -1600;
+		App->render->culling_camera.x = -App->render->camera.x - 50;
+		App->render->culling_camera.y = -App->render->camera.y - 50;
+	}
 
 	//SATARTING ENTITIES-------------------------------------------------------
 	

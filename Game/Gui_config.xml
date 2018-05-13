@@ -637,7 +637,37 @@ Resolution of the screen: 1680x 1050y
 			<OnMouse x="872" y="0" w="237" h="56"/>
 			<OnClick x="872" y="0" w="237" h="56"/>
 		</button>
-
+	</menu>
+	
+	<!-- SKIP TUTORIAL MENU -->
+	<menu type="9" active="false">
+		<image path="gui/skip_tutorial.png">
+			<position x="630" y="275"/>
+		</image>
+		<text text="Do you want to skip the">
+			<position x="685" y="330"/>
+			<font id="8"/>
+			<color r="255" g="255" b="255" a="255"/>
+			<interactive value="false"/>
+		</text>
+		<text text="tutorial or continue with it?">
+			<position x="685" y="380"/>
+			<font id="8"/>
+			<color r="255" g="255" b="255" a="255"/>
+			<interactive value="false"/>
+		</text>
+		<button click_action="46">
+			<position x="900" y="460"/>
+			<standby x="138" y="384" w="121" h="45"/>
+			<OnMouse x="138" y="437" w="121" h="45"/>
+			<OnClick x="138" y="491" w="121" h="45"/>
+		</button>
+		<button click_action="45">
+			<position x="700" y="460"/>
+			<standby x="5" y="384" w="121" h="45"/>
+			<OnMouse x="5" y="437" w="121" h="45"/>
+			<OnClick x="5" y="491" w="121" h="45"/>
+		</button>
 	</menu>
 	
 </config>
