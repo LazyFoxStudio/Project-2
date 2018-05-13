@@ -2911,9 +2911,9 @@
         <texture value="Assets\Sprites\Horde Sprites\Catapult_SpriteSheet.png"/>
         <Stats>
           <life value="150"/>
-          <attack value="4"/>
+          <attack value="2"/>
           <defense value="6"/>
-          <piercingDamage value="2"/>
+          <piercingDamage value="7"/>
           <movementSpeed value="0.5"/>
           <range value="40"/>
           <lineOfSight value="200"/>
