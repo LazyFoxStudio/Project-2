@@ -59,9 +59,23 @@
 		</text>
 		<arrow x="220" y="110" rotation="270"/>
 	</step>
+	<step duration="-1" task="12" UI="true">
+		<text x="750" y="150">
+			<line text="Select your lumber mill"/>
+			<line text="to assign more workers"/>
+		</text>
+	</step>
+	<step duration="-1" task="11" UI="true">
+		<text x="1300" y="450">
+			<line text="To assign more workers, click the plus"/>
+			<line text="button or use the ones above the building"/>
+		</text>
+		<arrow x="1450" y="590" rotation="90"/>
+	</step>
 	<step duration="-1" task="4" UI="true">
 		<text x="750" y="150">
-			<line text="Now build a farm to get more workers"/>
+			<line text="Now wait until you have enough resources"/>
+			<line text="and build a farm to get more workers"/>
 		</text>
 	</step>
 	<step duration="4500" task="0" UI="true">
