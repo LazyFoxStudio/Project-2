@@ -48,7 +48,7 @@ public:
 	//bool workerAvalible(int num = 1);
 
 	void Close_game();
-	void Start_game();
+	void Start_game(bool continuing = false);
 	void InitialWorkers(Building* town_hall);
 	void GetTotalInactiveWorkers();
 	void DeleteWorkers();

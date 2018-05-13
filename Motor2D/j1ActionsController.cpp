@@ -394,7 +394,7 @@ bool j1ActionsController::Update(float dt)
 			App->wavecontroller->active = true;
 			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, INGAME_MENU);
-			App->scene->Start_game();
+			App->scene->Start_game(true);
 			App->resumeGame();
 			App->LoadGame();
 			doingAction = false;
