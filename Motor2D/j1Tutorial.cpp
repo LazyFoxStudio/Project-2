@@ -39,6 +39,7 @@ bool j1Tutorial::Update(float dt)
 	{
 		if (missing_steps.size() == 0 && activeStep == nullptr)
 		{
+			tutorialDone = true;
 			stopTutorial(true);
 			return true;
 		}
@@ -181,7 +182,7 @@ void j1Tutorial::stopTutorial(bool skip)
 		Button* barracks = App->gui->GetActionButton(5);
 		Button* farms = App->gui->GetActionButton(7);
 		Button* mine = App->gui->GetActionButton(22);
-		if (!skip)
+		if (!skip || tutorialDone)
 		{			
 			barracks->Unlock();			
 			farms->Unlock();			
@@ -262,6 +263,11 @@ void j1Tutorial::taskCompleted(Task task)
 	{
 		if (task == KILL_ENEMIES)
 			enemiesKilled = true;
+		if (activeStep->task == SELECT_LUMBER_MILL && task == ASSIGN_WORKERS)
+		{
+			workersAssigned = true;
+			finishStep();
+		}
 	}
 }
 
@@ -303,6 +309,10 @@ void j1Tutorial::stepStarted(Task task)
 		barracks->Unlock();
 		break;
 	case MOVE_CAMERA:
+		break;
+	case ASSIGN_WORKERS:
+		if (workersAssigned)
+			finishStep();
 		break;
 	default:
 		break;
