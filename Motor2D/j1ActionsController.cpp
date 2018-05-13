@@ -301,12 +301,14 @@ bool j1ActionsController::Update(float dt)
 			App->scene->Close_game();
 			break;
 		case CHOOSE_MAGE:
+			App->tutorial->taskCompleted(CHOOSE_HERO);
 			App->entitycontroller->addHero(iPoint(1950, 2100), HERO_1);
 			App->uiscene->toggleMenu(false, HERO_SELECTION_MENU);
 			App->resumeGame();
 			doingAction = false;
 			break;
 		case CHOOSE_PALADIN:
+			App->tutorial->taskCompleted(CHOOSE_HERO);
 			App->entitycontroller->addHero(iPoint(1950, 2100), HERO_2);
 			App->uiscene->toggleMenu(false, HERO_SELECTION_MENU);
 			App->resumeGame();
@@ -371,6 +373,10 @@ bool j1ActionsController::Update(float dt)
 			break;
 		case CHANGE_KEY_9:
 			App->input->readHotkey(8);
+			doingAction = false;
+			break;
+		case RESET_KEYS:
+			App->gui->resetActionButtonHotkeys();
 			doingAction = false;
 			break;
 		}

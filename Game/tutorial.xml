@@ -1,4 +1,11 @@
 <tutorial>
+	<step duration="-1" task="10" UI="true">
+		<text x="100" y="300">
+			<line text="Select one of the two"/>
+			<line text="heroes to start your adventure"/>
+		</text>
+		<arrow x="250" y="400" rotation="0"/>
+	</step>
 	<step duration="-1" task="9" UI="true">
 		<text x="700" y="300">
 			<line text="To move the camera you can"/>

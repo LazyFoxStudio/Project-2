@@ -11,7 +11,7 @@
   </renderer>
 
   <window>
-    <resolution default="false" width="1680" height="1050" scale="1"/>
+    <resolution default="true" width="1680" height="1050" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
@@ -26,9 +26,11 @@
   </gui>
 
   <scene>
+
     <Wood value="400"/>
     <Gold value="400"/>
     <Workers value="3"/>
+
     <Oil value="0"/>
   </scene>
 

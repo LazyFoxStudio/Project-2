@@ -754,7 +754,7 @@
                 <movementSpeed value="1.0"/>
                 <range value="210"/>
                 <lineOfSight value="250"/>
-                <goldCost value="250"/>
+                <goldCost value="240"/>
                 <woodCost value="50"/>
                 <workerCost value="4"/>
                 <trainingTime value="5"/>

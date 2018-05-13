@@ -142,14 +142,14 @@ Resolution of the screen: 1680x 1050y
 		</button>
 
 	<!-- Wave Window -->
-		<nextwavewindow icon_atlas="false">
-			<position x="1408" y="429"/>
+		<nextwavewindow path="gui/next_wave.png" icon_atlas="false">
+			<position x="1408" y="450"/>
 			<minimizedPosition x="1408" y="725"/>
-			<section x="0" y="271" w="272" h="336"/>
-			<icons x="23" y="70" offsetX="125" offsetY="80"/>
+			<section x="0" y="0" w="272" h="336"/>
+			<icons x="35" y="70" offsetX="125" offsetY="80"/>
 			<draggable horizontal="false" vertical="false"/>
 			<button click_action="18">
-				<position x="230" y="8"/>
+				<position x="225" y="13"/>
 				<standby x="1054" y="705" w="23" h="22"/>
 				<OnMouse x="1084" y="705" w="23" h="22"/>
 				<OnClick x="1116" y="705" w="23" h="22"/>
@@ -160,7 +160,7 @@ Resolution of the screen: 1680x 1050y
 		<ingamemenu>
 			<position x="0" y="750"/>
 			<section x="0" y="1379" w="1680" h="301"/>
-			<buttons x="1408" y="810" offsetX="81" offsetY="81"/>
+			<buttons x="1408" y="790" offsetX="81" offsetY="75"/>
 		</ingamemenu>
     
     <!-- Minimap -->
@@ -513,70 +513,76 @@ Resolution of the screen: 1680x 1050y
       <image path="gui/credits.png">
         <position x="0" y="0"/>
       </image>
+	  <text text="Assign the hotkeys related to the action buttons">
+		<position x="460" y="225"/>
+		<font id="7"/>
+		<color r="0" g="0" b="0" a="255"/>
+        <interactive value="false"/>
+	  </text>
 	  <button click_action="50">
-		<position x="365" y="291"/>
+		<position x="590" y="350"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="Q" font_id="3"/>
 	  </button>
 	  <button click_action="51">
-		<position x="527" y="291"/>
+		<position x="742" y="350"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="W" font_id="3"/>
 	  </button>
 	  <button click_action="52">
-		<position x="689" y="291"/>
+		<position x="914" y="350"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="E" font_id="3"/>
 	  </button>
 	  <button click_action="53">
-		<position x="365" y="445"/>
+		<position x="590" y="504"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="A" font_id="3"/>
 	  </button>
 	  <button click_action="54">
-		<position x="527" y="445"/>
+		<position x="742" y="504"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="S" font_id="3"/>
 	  </button>
 	  <button click_action="55">
-		<position x="689" y="445"/>
+		<position x="914" y="504"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="D" font_id="3"/>
 	  </button>
 	  <button click_action="56">
-		<position x="365" y="604"/>
+		<position x="590" y="663"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="Z" font_id="3"/>
 	  </button>
 	  <button click_action="57">
-		<position x="527" y="604"/>
+		<position x="742" y="663"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="X" font_id="3"/>
 	  </button>
 	  <button click_action="58">
-		<position x="689" y="604"/>
+		<position x="914" y="663"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="C" font_id="3"/>
 	  </button>
-      <button click_action="32">
+      <button click_action="59">
         <!--Back-->
         <position x="190" y="875"/>
         <standby x="26" y="726" w="187" h="69"/>
@@ -614,13 +620,13 @@ Resolution of the screen: 1680x 1050y
 			<position x="440" y="132"/>
 		</image>
 		<button path="gui/mage_card.png" click_action="39">
-			<position x="509" y="271"/>
+			<position x="509" y="240"/>
 			<standby x="0" y="0" w="330" h="450"/>
 			<OnMouse x="349" y="0" w="330" h="450"/>
 			<OnClick x="349" y="0" w="330" h="450"/>
 		</button>
 		<button path="gui/paladin_card.png" click_action="40">
-			<position x="839" y="271"/>
+			<position x="839" y="240"/>
 			<standby x="0" y="0" w="330" h="450"/>
 			<OnMouse x="349" y="0" w="330" h="450"/>
 			<OnClick x="349" y="0" w="330" h="450"/>

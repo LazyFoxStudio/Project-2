@@ -117,7 +117,7 @@
 			<pushback x="0" y="350" w="140" h="140"/>
 			<pushback x="140" y="350" w="140" h="140"/>
 			<pushback x="280" y="350" w="140" h="140"/>
-			<pushback x="420" y="350" w="140" h="140"/>
+			<pushback x="420" y="350" w="140" h="137"/>
 			<pushback x="560" y="350" w="140" h="140"/>
 		</anim>
 	</template>

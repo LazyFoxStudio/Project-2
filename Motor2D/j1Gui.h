@@ -142,6 +142,7 @@ public:
 	void moveElementToMouse(UI_element* element);
 
 	void assignActionButtonHotkey(uint id, SDL_Scancode newHotkey);
+	void resetActionButtonHotkeys();
 	Button* searchButtonbyHotkey(SDL_Scancode hotkey) const;
 	Button* getButtonbyId(uint id) const;
 	uint getIDbyButton(Button* button) const;
