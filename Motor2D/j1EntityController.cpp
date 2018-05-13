@@ -656,7 +656,7 @@ bool j1EntityController::Load(pugi::xml_node& file)
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
-		if (/*(*it)->type != HERO_1 && (*it)->type != HERO_2 && */(*it)->type != TOWN_HALL )
+		if ((*it)->type != TOWN_HALL )
 		{
 			if ((*it)->IsUnit())
 			{
@@ -688,7 +688,7 @@ bool j1EntityController::Load(pugi::xml_node& file)
 		squad->getUnits(units_of_squad);
 		pugi::xml_node node_units = squads_node.child("unit");
 		int i = -1;
-		for (i = 0; node_units; ++i)
+		for (i = 0; node_units &&  i < units_of_squad.size()-1; ++i)
 		{
 			units_of_squad.data()[i]->current_HP = node_units.attribute("hp").as_int();
 			units_of_squad.data()[i]->position.x = node_units.attribute("pos_x").as_int();
@@ -1507,34 +1507,81 @@ void j1EntityController::UpgradeUnits(UpgradeType type)
 	case MELEE_ATTACK_UPGRADE:
 		DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		UpgradeExistingUnits(FOOTMAN, KNIGHT, type);
 		m_dmg_lvl++;
 		break;
 	case MELEE_DEFENSE_UPGRADE:
 		DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[KNIGHT]->defense += DEFENSE_UPGRADE_GROWTH;
+		UpgradeExistingUnits(FOOTMAN, KNIGHT, type);
 		m_armor_lvl++;
 		break;
 	case RANGED_ATTACK_UPGRADE:
 		DataBase[ARCHER]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[BALLISTA]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		UpgradeExistingUnits(ARCHER, BALLISTA, type);
 		r_dmg_lvl++;
 		break;
 	case RANGED_DEFENSE_UPGRADE:
 		DataBase[ARCHER]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[BALLISTA]->defense += DEFENSE_UPGRADE_GROWTH;
+		UpgradeExistingUnits(ARCHER, BALLISTA, type);
 		r_armor_lvl++;
 		break;
 	case FLYING_ATTACK_UPGRADE:
 		DataBase[FLYING_MACHINE]->piercing_atk += ATTACK_UPGRADE_GROWTH;
 		DataBase[GRYPHON]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		UpgradeExistingUnits(FLYING_MACHINE, GRYPHON, type);
 		f_dmg_lvl++;
 		break;
 	case FLYING_DEFENSE_UPGRADE:
 		DataBase[FLYING_MACHINE]->defense += DEFENSE_UPGRADE_GROWTH;
 		DataBase[GRYPHON]->defense += DEFENSE_UPGRADE_GROWTH;
+		UpgradeExistingUnits(FLYING_MACHINE, GRYPHON, type);
 		f_armor_lvl++;
 		break;
 	}
+}
+
+void j1EntityController::LoadUpgrades(int m_dmg, int m_armor, int r_dmg, int r_armor, int f_dmg, int f_armor)
+{
+	if (m_dmg == 1)
+	{
+		DataBase[FOOTMAN]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[KNIGHT]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		m_dmg_lvl++;
+	}
+	if (m_armor == 1)
+	{
+		DataBase[FOOTMAN]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[KNIGHT]->defense += DEFENSE_UPGRADE_GROWTH;
+		m_armor_lvl++;
+	}
+	if (r_dmg == 1)
+	{
+		DataBase[ARCHER]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[BALLISTA]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		r_dmg_lvl++;
+	}
+	if (r_armor == 1)
+	{
+		DataBase[ARCHER]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[BALLISTA]->defense += DEFENSE_UPGRADE_GROWTH;
+		r_armor_lvl++;
+	}
+	if (f_dmg == 1)
+	{
+		DataBase[FLYING_MACHINE]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		DataBase[GRYPHON]->piercing_atk += ATTACK_UPGRADE_GROWTH;
+		f_dmg_lvl++;
+	}
+	if (f_armor == 1)
+	{
+		DataBase[FLYING_MACHINE]->defense += DEFENSE_UPGRADE_GROWTH;
+		DataBase[GRYPHON]->defense += DEFENSE_UPGRADE_GROWTH;
+		f_armor_lvl++;
+	}
+		
 }
 
 void j1EntityController::UpgradeExistingUnits(Type type1, Type type2, UpgradeType up_type)
