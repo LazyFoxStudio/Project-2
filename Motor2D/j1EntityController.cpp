@@ -656,7 +656,7 @@ bool j1EntityController::Load(pugi::xml_node& file)
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
-		if (/*(*it)->type != HERO_1 && (*it)->type != HERO_2 && */(*it)->type != TOWN_HALL )
+		if ((*it)->type != TOWN_HALL )
 		{
 			if ((*it)->IsUnit())
 			{
@@ -688,7 +688,7 @@ bool j1EntityController::Load(pugi::xml_node& file)
 		squad->getUnits(units_of_squad);
 		pugi::xml_node node_units = squads_node.child("unit");
 		int i = -1;
-		for (i = 0; node_units; ++i)
+		for (i = 0; node_units &&  i < units_of_squad.size()-1; ++i)
 		{
 			units_of_squad.data()[i]->current_HP = node_units.attribute("hp").as_int();
 			units_of_squad.data()[i]->position.x = node_units.attribute("pos_x").as_int();
@@ -795,7 +795,10 @@ bool j1EntityController::Load(pugi::xml_node& file)
 				b->queueDisplay->pushTroop(t);
 			}
 		}
+
+		App->map->WalkabilityArea(pos_x, pos_y, b->size.x, b->size.y, true, false);
 	}
+	App->wavecontroller->updateFlowField();
 
 	int workers_to_assign = workers;
 	for (int i = 0; i < farmss.size() && workers_to_assign > 0; ++i )

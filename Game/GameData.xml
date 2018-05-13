@@ -3696,10 +3696,10 @@
         <sprite x="545" y="0" w="72" h="70" />
       </sprites>
       <Stats>
-        <life value="200"/>
+        <life value="120"/>
         <villagers value="0"/>
         <buildingTime value="5"/>
-        <attack value="1"/>
+        <attack value="3"/>
         <piercingDamage value="6"/>
         <range value="210"/>
         <defense value="20"/>
