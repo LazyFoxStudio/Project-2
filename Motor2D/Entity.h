@@ -55,6 +55,7 @@ public:
 	uint piercing_atk		= 0;
 	uint line_of_sight		= 0;
 	uint range				= 0;
+	float attack_speed = 3;
 	bool flying = false;
 
 	j1Timer timer;

@@ -9,12 +9,13 @@
             <Stats>
                 <life value="250"/>
                 <attack value="1"/>
-                <defense value="6"/>
+                <defense value="3"/>
                 <piercingDamage value="15"/>
                 <movementSpeed value="1.1"/>
                 <range value="80"/>
                 <lineOfSight value="500"/>
                 <size x="1" y="1"/>
+                <attackSpeed value="5"/>
             </Stats>
 			<Info title="Hero Stats:"/>
             <Animations>
@@ -519,7 +520,7 @@
             <texture value="Assets\Sprites\Alliance Sprites\Footman_Spritesheet.png"/>
             <Stats>
                 <life value="80"/>
-                <attack value="3"/>
+                <attack value="5"/>
                 <defense value="6"/>
                 <piercingDamage value="2"/>
                 <movementSpeed value="0.7"/>
@@ -530,6 +531,7 @@
                 <workerCost value="5"/>
                 <trainingTime value="3"/>
                 <squadMembers value="4"/>
+                <attackSpeed value="4"/>
                 <size x="1" y="1"/>
             </Stats>
 			<Info title="Footman Stats:"/>
@@ -653,56 +655,56 @@
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="0"/>
-                <speed value="6"/>
+                <speed value="4"/>
               </Animation>
               <Animation> <!-- 17- AttackingNorthEast-->
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="1"/>
-                <speed value="6"/>
+                <speed value="4"/>
               </Animation>
               <Animation> <!-- 18- AttackingEast-->
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="2"/>
-                <speed value="6"/>
+                <speed value="4"/>
               </Animation>
               <Animation> <!-- 19- AttackingSouthEast-->
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="3"/>
-                <speed value="6"/>
+                <speed value="4"/>
               </Animation>
               <Animation> <!-- 20- AttackingSouth-->
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="4"/>
-                <speed value="6"/>
+                <speed value="4"/>
               </Animation>
               <Animation>  <!-- 21- AttackingSouthWest-->
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="3"/>
-                <speed value="6"/>
+                <speed value="4"/>
               </Animation>
               <Animation> <!-- 22- AttackingWest-->
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="2"/>
-                <speed value="6"/>
+                <speed value="4"/>
               </Animation>
               <Animation> <!-- 23- WalkingNorthWest-->
                 <rows value="3"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="1"/>
-                <speed value="6"/>
+                <speed value="4"/>
               </Animation>
               <Animation> <!-- 24- DyingNorthEast-->
                 <rows value="0"/>
@@ -748,7 +750,7 @@
             <texture value="Assets\Sprites\Alliance Sprites\Elven archer_Spritesheet.png"/>
             <Stats>
                 <life value="40"/>
-                <attack value="1"/>
+                <attack value="2"/>
                 <defense value="0"/>
                 <piercingDamage value="3"/>
                 <movementSpeed value="1.0"/>
@@ -759,6 +761,7 @@
                 <workerCost value="4"/>
                 <trainingTime value="5"/>
                 <squadMembers value="4"/>
+                <attackSpeed value="4.5"/>
                 <size x="1" y="1"/>
             </Stats>
 			<Info title="Archer Stats:"/>
@@ -875,70 +878,70 @@
                 <columns value="0"/>
                 <StartingRow value="1"/>
                 <StartingColumn value="1"/>
-                <speed value="10"/>
+                <speed value="7"/>
               </Animation>
               <Animation> <!-- 16- AttackingNorth-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="0"/>
-                <speed value="5"/>
+                <speed value="4.5"/>
               </Animation>
               <Animation> <!-- 17- AttackingNorthEast-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="1"/>
-                <speed value="5"/>
+                <speed value="4.5"/>
               </Animation>
               <Animation> <!-- 18- AttackingEast-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="2"/>
-                <speed value="5"/>
+                <speed value="4.5"/>
               </Animation>
               <Animation> <!-- 19- AttackingSouthEast-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="3"/>
-                <speed value="5"/>
+                <speed value="4.5"/>
               </Animation>
               <Animation> <!-- 20- AttackingSouth-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="4"/>
-                <speed value="5"/>
+                <speed value="4.5"/>
               </Animation>
               <Animation> <!-- 21- AttackingSouthWest-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="3"/>
-                <speed value="5"/>
+                <speed value="4.5"/>
               </Animation>
               <Animation> <!-- 22- AttackingWest-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="2"/>
-                <speed value="5"/>
+                <speed value="4.5"/>
               </Animation>
               <Animation> <!-- 23- AttackingNorthWest-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="1"/>
-                <speed value="5"/>
+                <speed value="4.5"/>
               </Animation>
               <Animation> <!-- 24- DyingNorthEast-->
                 <rows value="0"/>
                 <columns value="2"/>
                 <StartingRow value="9"/>
                 <StartingColumn value="0"/>
-                <speed value="5"/>
+                <speed value="62"/>
                 <loop value="false"/>
               </Animation>
               <Animation> <!-- 25- DyingSouthEast-->
@@ -988,6 +991,7 @@
           <workerCost value="3"/>
           <trainingTime value="10"/>
           <squadMembers value="3"/>
+          <attackSpeed value="4"/>
           <size x="1" y="1"/>
         </Stats>
         <Info title="Knight Stats:"/>
@@ -1236,15 +1240,16 @@
           <life value="80"/>
           <attack value="2"/>
           <defense value="4"/>
-          <piercingDamage value="6"/>
+          <piercingDamage value="7"/>
           <movementSpeed value="1.1"/>
-          <range value="40"/>
+          <range value="180"/>
           <lineOfSight value="200"/>
           <goldCost value="2100"/>
           <woodCost value="200"/>
           <workerCost value="3"/>
           <trainingTime value="10"/>
-          <squadMembers value="1"/>
+          <squadMembers value="3"/>
+          <attackSpeed value="10"/>
           <size x="1" y="1"/>
         </Stats>
         <Info title="Gryphon Stats:"/>
@@ -1502,6 +1507,7 @@
           <workerCost value="2"/>
           <trainingTime value="10"/>
           <squadMembers value="1"/>
+          <attackSpeed value="9"/>
           <size x="2" y="2"/>
         </Stats>
         <Info title="Ballista Stats:"/>
@@ -1758,7 +1764,8 @@
           <woodCost value="200"/>
           <workerCost value="6"/>
           <trainingTime value="10"/>
-          <squadMembers value="1"/>
+          <squadMembers value="3"/>
+          <attackSpeed value="8"/>
           <size x="1" y="1"/>
         </Stats>
         <Info title="Gnomish Flying Machine Stats:"/>
@@ -2014,6 +2021,7 @@
                 <range value="40"/>
                 <lineOfSight value="200"/>
                 <squadMembers value="5"/>
+                <attackSpeed value="4"/>
                 <size x="1" y="1"/>
             </Stats>
         <Animations>
@@ -2236,6 +2244,7 @@
                 <range value="160"/>
                 <lineOfSight value="250"/>
                 <squadMembers value="4"/>
+                <attackSpeed value="4.5"/>
                 <size x="1" y="1"/>
             </Stats>
         <Animations>
@@ -2457,6 +2466,7 @@
                 <range value="40"/>
                 <lineOfSight value="250"/>
                 <squadMembers value="3"/>
+                 <attackSpeed value="4.5"/>
                 <size x="1" y="1"/>
             </Stats>
         <Animations>
@@ -2678,6 +2688,7 @@
           <range value="160"/>
           <lineOfSight value="250"/>
           <squadMembers value="2"/>
+          <attackSpeed value="5"/>
           <size x="1" y="1"/>
         </Stats>
         <Animations>
@@ -2918,6 +2929,7 @@
           <range value="40"/>
           <lineOfSight value="200"/>
           <squadMembers value="1"/>
+          <attackSpeed value="2"/>
           <size x="1" y="1"/>
         </Stats>
         <Info title="Catapult Stats:"/>
@@ -3171,6 +3183,7 @@
           <range value="200"/>
           <lineOfSight value="200"/>
           <squadMembers value="1"/>
+          <attackSpeed value="4"/>
           <size x="1" y="1"/>
         </Stats>
         <Info title="Juggernaut Stats:"/>

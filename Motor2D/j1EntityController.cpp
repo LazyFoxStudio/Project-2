@@ -1895,6 +1895,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitTemplate->cost.worker_cost	= NodeInfo.child("Stats").child("workerCost").attribute("value").as_int(0);
 		unitTemplate->cost.creation_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
 		unitTemplate->squad_members		= NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
+		unitTemplate->attack_speed = NodeInfo.child("Stats").child("attackSpeed").attribute("value").as_float(3.0f);
 
 
 		for (pugi::xml_node action = NodeInfo.child("Actions").child("action"); action; action = action.next_sibling("action"))
@@ -1932,8 +1933,13 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 			if (animation->LoadAnimation(AnimInfo, anim_width, anim_height))
 				unitTemplate->animations.push_back(animation);
 		}
+		for (int i = 16; i <= 23; i++)
+		{
+			unitTemplate->animations.at(i)->speed = unitTemplate->attack_speed;
+		}
 
 		if (!unitTemplate->animations.empty()) unitTemplate->current_anim = unitTemplate->animations.front();
+
 
 		DataBase.insert(std::pair<uint, Entity*>(unitTemplate->type, unitTemplate));
 	}
