@@ -27,7 +27,7 @@ public:
 	void createTexture();
 	void setColor(SDL_Color newColor);
 	void setOutlineColor(SDL_Color newColor);
-	void setOutlined(bool isOutlined);
+	void setOutlined(bool isOutlined, int outline_size = 2);
 	void setBackground(bool hasBackground, SDL_Color color = { 0, 0, 0, 255 });
 	void convertIntoCounter(int* variableCounting);
 
@@ -55,6 +55,7 @@ private:
 	bool hasSufix = false;
 	_TTF_Font* font = nullptr;
 	bool outlined = false;
+	int outline_size = 2;
 	SDL_Texture* outline = nullptr;
 	SDL_Color outline_color = { 0, 0, 0, 255 };
 	iPoint outline_offset = { 0,0 };
