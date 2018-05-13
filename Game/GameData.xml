@@ -1005,11 +1005,10 @@
           <woodCost value="200"/>
           <workerCost value="6"/>
           <trainingTime value="10"/>
-
           <squadMembers value="3"/>
           <attackSpeed value="4"/>
 
-          <size x="1" y="1"/>
+          <size x="2" y="2"/>
         </Stats>
         <Info title="Gnomish Flying Machine Stats:"/>
         <Animations>
@@ -1254,16 +1253,20 @@
         <iconData x="315" y="72" w="71" h="59"/>
         <texture value="Assets\Sprites\Alliance Sprites\Knight_Spritesheet.png"/>
         <Stats>
-
           <life value="100"/>
-          <attack value="3"/>
+          <attack value="1"/>
           <defense value="5"/>
-          <piercingDamage value="2"/>
+          <piercingDamage value="6"/>
           <movementSpeed value="1.10"/>
           <range value="40"/>
-
-
-          <size x="1" y="1"/>
+          <lineOfSight value="150"/>
+          <goldCost value="600"/>
+          <woodCost value="200"/>
+          <workerCost value="6"/>
+          <trainingTime value="10"/>
+          <squadMembers value="3"/>
+          <attackSpeed value="4"/>
+          <size x="2" y="2"/>
         </Stats>
         <Info title="Knight Stats:"/>
         <Animations>
@@ -1779,7 +1782,7 @@
           <trainingTime value="10"/>
           <squadMembers value="3"/>
           <attackSpeed value="8"/>
-          <size x="1" y="1"/>
+          <size x="2" y="2"/>
         </Stats>
         <Info title="Gryphon Stats:"/>
         <Animations>
@@ -2509,7 +2512,7 @@
           <lineOfSight value="250"/>
           <squadMembers value="2"/>
           <attackSpeed value="5"/>
-          <size x="1" y="1"/>
+          <size x="2" y="2"/>
         </Stats>
         <Animations>
           <width value="83"/>
@@ -2750,7 +2753,7 @@
         <range value="40"/>
         <lineOfSight value="250"/>
         <squadMembers value="3"/>
-        <size x="1" y="1"/>
+        <size x="1" y="2"/>
       </Stats>
       <Animations>
         <width value="71"/>
@@ -2991,16 +2994,16 @@
         <iconData x="544" y="72" w="72" h="59"/>
         <texture value="Assets\Sprites\Horde Sprites\Catapult_SpriteSheet.png"/>
         <Stats>
-          <life value="60"/>
-          <attack value="6"/>
+          <life value="150"/>
+          <attack value="2"/>
           <defense value="2"/>
-          <piercingDamage value="2"/>
+          <piercingDamage value="10"/>
           <movementSpeed value="0.5"/>
           <range value="40"/>
           <lineOfSight value="200"/>
           <squadMembers value="1"/>
           <attackSpeed value="2"/>
-          <size x="1" y="1"/>
+          <size x="2" y="2"/>
         </Stats>
         <Info title="Catapult Stats:"/>
         <Animations>
@@ -3254,7 +3257,7 @@
           <lineOfSight value="200"/>
           <squadMembers value="1"/>
           <attackSpeed value="4"/>
-          <size x="1" y="1"/>
+          <size x="2" y="2"/>
         </Stats>
         <Info title="Juggernaut Stats:"/>
         <Animations>
