@@ -1296,7 +1296,8 @@ void j1EntityController::selectionControl()
 					{
 						if (!(*it)->IsEnemy())
 						{
-							selected_squads.push_back(((Unit*)*it)->squad);
+							if((*it)->IsHero()) selected_squads.push_front(((Unit*)*it)->squad);
+							else				selected_squads.push_back(((Unit*)*it)->squad);
 							if (!units) units = true;
 						}
 					}
