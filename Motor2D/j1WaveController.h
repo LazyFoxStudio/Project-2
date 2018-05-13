@@ -53,6 +53,7 @@ public:
 	int					current_wave = 0;
 	int					difficulty = 0;
 	int					points=0;
+	int					points_plus = 0;
 
 	bool				tutorial = false;
 	

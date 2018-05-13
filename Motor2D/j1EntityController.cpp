@@ -762,12 +762,11 @@ bool j1EntityController::Load(pugi::xml_node& file)
 			{
 				//KILL IT
 				//DeleteEntity(units_of_squad.data()[j]->UID);
-				if (units_of_squad.data()[j]->IsUnit())
-				{
-					((Unit*)units_of_squad.data()[j])->commands.clear();
-				}
-				DeleteEntity(units_of_squad.data()[j]->UID);
+				
+				squad->removeUnit(units_of_squad.data()[j]->UID);
 				App->gui->entityDeleted(units_of_squad.data()[j]);
+				DeleteEntity(units_of_squad.data()[j]->UID);
+				entities.remove(getEntitybyID(units_of_squad.data()[j]->UID));
 			}
 		}
 	}
