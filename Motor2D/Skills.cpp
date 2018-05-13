@@ -188,7 +188,6 @@ bool Skill::Activate()
 						
 						if (cast_aux.DistanceTo(pos) < radius)
 						{
-							LOG("defense %d", ((Unit*)(*item))->defense);
 							((Unit*)(*item))->AddDefensebuff(15, 5, PLUS_MINUS);
 							((Unit*)(*item))->AddPiercingDamagebuff(15, 7, PLUS_MINUS);
 							App->particle->AddParticle(PHALO, { (*item)->position.x, (*item)->position.y - 30 }, false);
@@ -276,7 +275,6 @@ bool Skill::Activate()
 		MoveToSquad* new_order = new MoveToSquad(hero->squad->getCommander(), map_pos);
 		new_order->flow_field = shared_flowfield;
 		hero->squad->commands.push_back(new_order);
-		LOG("Out of range");
 	}
 	
 
