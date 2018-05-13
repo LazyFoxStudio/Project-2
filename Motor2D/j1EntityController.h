@@ -85,7 +85,7 @@ public:
 	bool Load(pugi::xml_node&);
 
 	bool loadEntitiesDB(pugi::xml_node& data);
-
+	
 	void DeleteEntity(uint UID);
 	void DeleteSquad(uint UID);
 	void DeleteDB();

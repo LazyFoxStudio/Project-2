@@ -24,6 +24,7 @@
 #include "UI_InfoTable.h"
 #include "j1Tutorial.h"
 #include "UI_CooldownsDisplay.h"
+#include "UI_TroopCreationQueue.h"
 #include <algorithm>
 
 #define SQUAD_MAX_FRAMETIME 0.1f
@@ -605,6 +606,15 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 			building_node.append_attribute("pos_y") = (*it)->position.y;
 			building_node.append_attribute("type_enum") = (*it)->type;
 			building_node.append_attribute("workers") = ((Building*)(*it))->workers_inside.size();
+			//if barracks save queue
+			if ((*it)->type == BARRACKS)
+			{
+				for (std::deque<Type>::iterator itera = ((Building*)(*it))->unit_queue.begin(); itera != ((Building*)(*it))->unit_queue.end(); ++itera)
+				{
+					Type t = *itera;
+					building_node.append_child("unit").append_attribute("type") = t;
+				}
+			}
 			switch ((*it)->type)
 			{
 			case BARRACKS:
@@ -772,7 +782,16 @@ bool j1EntityController::Load(pugi::xml_node& file)
 			workers_working += building_node.attribute("workers").as_int();
 			other_buildings.push_back(building_node.attribute("workers").as_int());
 			buildings_with_workers.push_back(b);
-
+		}
+		else if (b->type == BARRACKS)
+		{
+			pugi::xml_node troops_node;
+			for (troops_node = building_node.child("unit"); troops_node; troops_node = troops_node.next_sibling("unit"))
+			{
+				Type t = (Type)troops_node.attribute("type").as_int();
+				b->unit_queue.push_back(t);
+				b->queueDisplay->pushTroop(t);
+			}
 		}
 	}
 
@@ -1911,6 +1930,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		unitTemplate->cost.worker_cost	= NodeInfo.child("Stats").child("workerCost").attribute("value").as_int(0);
 		unitTemplate->cost.creation_time = NodeInfo.child("Stats").child("trainingTime").attribute("value").as_int(0);
 		unitTemplate->squad_members		= NodeInfo.child("Stats").child("squadMembers").attribute("value").as_int(1);
+		unitTemplate->attack_speed = NodeInfo.child("Stats").child("attackSpeed").attribute("value").as_float(3.0f);
 
 
 		for (pugi::xml_node action = NodeInfo.child("Actions").child("action"); action; action = action.next_sibling("action"))
@@ -1948,8 +1968,13 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 			if (animation->LoadAnimation(AnimInfo, anim_width, anim_height))
 				unitTemplate->animations.push_back(animation);
 		}
+		for (int i = 16; i <= 23; i++)
+		{
+			unitTemplate->animations.at(i)->speed = unitTemplate->attack_speed;
+		}
 
 		if (!unitTemplate->animations.empty()) unitTemplate->current_anim = unitTemplate->animations.front();
+
 
 		DataBase.insert(std::pair<uint, Entity*>(unitTemplate->type, unitTemplate));
 	}
