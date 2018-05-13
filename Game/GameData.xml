@@ -2030,8 +2030,8 @@
           <iconData x="239" y="7" w="72" h="60"/>
           <texture value="Assets\Sprites\Horde Sprites\Grunt_SpriteSheet.png"/>
           <Stats>
-            <life value="70"/>
-            <attack value="2"/>
+            <life value="90"/>
+            <attack value="5"/>
             <defense value="5"/>
             <piercingDamage value="2"/>
             <movementSpeed value="0.6"/>
@@ -2289,7 +2289,7 @@
                 <range value="160"/>
                 <lineOfSight value="250"/>
                 <squadMembers value="3"/>
-
+                <attackSpeed value="5"/>
                 <size x="1" y="1"/>
             </Stats>
         <Animations>
@@ -2505,7 +2505,7 @@
         <Stats>
           <life value="300"/>
           <attack value="4"/>
-          <defense value="0"/>
+          <defense value="5"/>
           <piercingDamage value="2"/>
           <movementSpeed value="1.05"/>
           <range value="160"/>
@@ -2748,11 +2748,12 @@
         <life value="120"/>
         <attack value="5"/>
         <defense value="4"/>
-        <piercingDamage value="1"/>
+        <piercingDamage value="2"/>
         <movementSpeed value="1.10"/>
         <range value="40"/>
         <lineOfSight value="250"/>
         <squadMembers value="3"/>
+        <attackSpeed value="4"/>
         <size x="1" y="2"/>
       </Stats>
       <Animations>

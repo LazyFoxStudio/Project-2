@@ -762,12 +762,11 @@ bool j1EntityController::Load(pugi::xml_node& file)
 			{
 				//KILL IT
 				//DeleteEntity(units_of_squad.data()[j]->UID);
-				if (units_of_squad.data()[j]->IsUnit())
-				{
-					((Unit*)units_of_squad.data()[j])->commands.clear();
-				}
-				DeleteEntity(units_of_squad.data()[j]->UID);
+				
+				squad->removeUnit(units_of_squad.data()[j]->UID);
 				App->gui->entityDeleted(units_of_squad.data()[j]);
+				DeleteEntity(units_of_squad.data()[j]->UID);
+				entities.remove(getEntitybyID(units_of_squad.data()[j]->UID));
 			}
 		}
 	}
@@ -966,15 +965,15 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 
 	if (type == HERO_1)
 	{
-		hero->skill_one = new Skill(hero, 3, 100, 300, 6, AREA);		//Icicle Crash
+		hero->skill_one = new Skill(hero, 3, 80, 50, 6, AREA);		//Icicle Crash
 		hero->skill_two = new Skill(hero, 0, 400, 700, 2, NONE_RANGE);	//Overflow
-		hero->skill_three = new Skill(hero, 0, 200, 250, 4, LINE);		//Dragon Breath
+		hero->skill_three = new Skill(hero, 0, 200, 200, 4, LINE);		//Dragon Breath
 	}
 	if (type == HERO_2)
 	{
-		hero->skill_one = new Skill(hero, 3, 50, 3000000, 4, PLACE);	//Consecration
-		hero->skill_two = new Skill(hero, 3, 20, 700, 3, HEAL);		//Circle of Light
-		hero->skill_three = new Skill(hero, 3, 75, 3000000, 4, BUFF);	//Honor of the pure
+		hero->skill_one = new Skill(hero, 3, 70, 3000000, 3, PLACE);	//Consecration
+		hero->skill_two = new Skill(hero, 3, 20, 700, 6, HEAL);		//Circle of Light
+		hero->skill_three = new Skill(hero, 3, 0, 3000000, 4, BUFF);	//Honor of the pure
 	}
 
 	App->gui->createLifeBar(hero);
@@ -1152,14 +1151,22 @@ void j1EntityController::buildingProcessDraw()
 	else
 	{
 		if (!App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, false, false, true) && enough_resources && SDL_HasIntersection(&building_col, &buildingArea))
-		{
-			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);
+		{		
+			App->gui->warningMessages->hideMessage(NO_MINE);
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);		
 		}
 		else
 		{
-			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);
+			if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, false, false, true))
+				App->gui->warningMessages->showMessage(NO_MINE);
+				
+			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);			
 		}
 	}
+	if (SDL_HasIntersection(&building_col, &buildingArea))
+		App->gui->warningMessages->hideMessage(OUT_OF_RANGE);
+	else
+		App->gui->warningMessages->showMessage(OUT_OF_RANGE);
 
 
 	App->render->Blit(to_build->texture, pos.x, pos.y, &to_build->sprites[COMPLETE]);

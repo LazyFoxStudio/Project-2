@@ -434,6 +434,8 @@ void j1ActionsController::activateAction(actionType type)
 		App->gui->warningMessages->hideMessage(NO_WORKERS);
 		App->gui->warningMessages->hideMessage(NO_RESOURCES);
 		App->gui->warningMessages->hideMessage(NO_TREES);
+		App->gui->warningMessages->hideMessage(OUT_OF_RANGE);
+		App->gui->warningMessages->hideMessage(NO_MINE);
 
 		if (type == NO_ACTION)
 		{
