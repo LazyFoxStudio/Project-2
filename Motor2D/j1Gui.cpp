@@ -68,6 +68,8 @@ bool j1Gui::Start()
 	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
 	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
 	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
+	warningMessages->addWarningMessage("You cannot build out of the range", OUT_OF_RANGE);
+	warningMessages->addWarningMessage("You have to place it over an unused mine", NO_MINE);
 
 	return true;
 }

@@ -7,7 +7,9 @@ enum message_type
 {
 	NO_WORKERS,
 	NO_RESOURCES,
-	NO_TREES
+	NO_TREES,
+	OUT_OF_RANGE,
+	NO_MINE
 };
 
 class Text;
