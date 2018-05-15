@@ -715,12 +715,12 @@ bool j1EntityController::Load(pugi::xml_node& file)
 		squad->getUnits(units_of_squad);
 		pugi::xml_node node_units = squads_node.child("unit");
 		int i = -1;
-		for (i = 0; node_units &&  i < units_of_squad.size()-1; ++i)
+		for (i = 0; node_units &&  i <= units_of_squad.size()-1; ++i, node_units = node_units.next_sibling("unit"))
 		{
-			units_of_squad.data()[i]->current_HP = node_units.attribute("hp").as_int();
-			units_of_squad.data()[i]->position.x = node_units.attribute("pos_x").as_int();
-			units_of_squad.data()[i]->position.y = node_units.attribute("pos_y").as_int();
-			units_of_squad.data()[i]->dir = (direction)node_units.attribute("direction").as_int();
+			units_of_squad.data()[i]->current_HP = node_units.attribute("hp").as_int(0);
+			units_of_squad.data()[i]->position.x = node_units.attribute("pos_x").as_int(0);
+			units_of_squad.data()[i]->position.y = node_units.attribute("pos_y").as_int(0);
+			units_of_squad.data()[i]->dir = (direction)node_units.attribute("direction").as_int(0);
 			//effects
 			//:^)
 			if (node_units.child("effect"))
@@ -754,22 +754,22 @@ bool j1EntityController::Load(pugi::xml_node& file)
 						}
 					}
 			}
-			node_units = node_units.next_sibling("unit");
+			
 		}
 		//WARNING
 		//KILL ALL OTHER UNITS IN SQUAD
-		if (i <= units_of_squad.size() - 1)
+		if (i <= units_of_squad.size())
 		{
-			int it = units_of_squad.size() - (i + 1)/*:^)*/;
-			for (int j = units_of_squad.size() - 1; j > it; --j)
+			int iterations_to_do = units_of_squad.size() - (i);
+			for (int iterations_done = 0 ; iterations_done < iterations_to_do; ++iterations_done)
 			{
 				//KILL IT
-				//DeleteEntity(units_of_squad.data()[j]->UID);
+				int space_of_the_entity = units_of_squad.size()-1 - iterations_done;
 				
-				squad->removeUnit(units_of_squad.data()[j]->UID);
-				App->gui->entityDeleted(units_of_squad.data()[j]);
-				DeleteEntity(units_of_squad.data()[j]->UID);
-				entities.remove(getEntitybyID(units_of_squad.data()[j]->UID));
+				squad->removeUnit(units_of_squad.data()[space_of_the_entity]->UID);
+				App->gui->entityDeleted(units_of_squad.data()[space_of_the_entity]);
+				DeleteEntity(units_of_squad.data()[space_of_the_entity]->UID);
+				entities.remove(getEntitybyID(units_of_squad.data()[space_of_the_entity]->UID));
 			}
 		}
 	}

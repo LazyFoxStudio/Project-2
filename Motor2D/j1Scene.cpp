@@ -146,6 +146,16 @@ bool j1Scene::Update(float dt)
 		}
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	{
+		App->SaveGame();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	{
+		App->LoadGame();
+	}
+
+
 	return true;
 }
 
