@@ -125,7 +125,7 @@ bool j1Scene::Update(float dt)
 	GetTotalInactiveWorkers();
 
 	//TEST SPAWNER--------------------------------------------------
-	/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		int x, y;
 		iPoint mouse_pos;
@@ -133,7 +133,18 @@ bool j1Scene::Update(float dt)
 		mouse_pos=App->render->ScreenToWorld(x, y);
 		App->entitycontroller->AddSquad(FOOTMAN, {(float)mouse_pos.x,(float)mouse_pos.y});
 	}
-	*/
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_UP)
+	{
+		if (App->isPaused() == false)
+		{
+			App->actionscontroller->activateAction(PAUSE);
+		}
+		else if (App->isPaused() == true)
+		{
+			App->uiscene->toggleMenu(false, PAUSE_MENU);
+			App->resumeGame();
+		}
+	}
 
 	return true;
 }
