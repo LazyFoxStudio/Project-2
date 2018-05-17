@@ -31,6 +31,7 @@
 #include "UI_FarmWorkersManager.h"
 #include "Minimap.h"
 #include "UI_Slider.h"
+#include "UI_TextBox.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -526,7 +527,11 @@ void j1Gui::Load_UIElements(pugi::xml_node node, menu* menu, j1Module* callback,
 			pugi::xml_node info = tmp.child("popUp").child("Info");
 			if (info)
 			{
-				createPopUpInfo(element, info.attribute("text").as_string());
+				createPopUpInfo(element, info.attribute("text").as_string(), info.attribute("is_title").as_bool(false));
+				for (pugi::xml_node description = info.child("line"); description; description = description.next_sibling("line"))
+				{
+					addPopUpInfoLine(element, description.attribute("text").as_string());
+				}
 			}
 
 			pugi::xml_node childs = tmp.child("childs");
@@ -970,11 +975,21 @@ void j1Gui::deleteElement(UI_element* element)
 	RELEASE(element);
 }
 
-void j1Gui::createPopUpInfo(UI_element* element, std::string info)
+void j1Gui::createPopUpInfo(UI_element* element, std::string text, bool isTitle)
 {
-	Text* text = new Text(info, element->localPosition.x, element->localPosition.y - 10, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
-	text->setBackground(true, { 75, 75, 75, 185 });
-	element->popUpInfo = text;
+	TextBox* textBox = new TextBox(0, 0, 0, 0);
+	int font = 1;
+	if (isTitle)
+		font = 9;
+	textBox->addTextLine(text, font);
+
+	element->popUpInfo = textBox;
+}
+
+void j1Gui::addPopUpInfoLine(UI_element* element, std::string line)
+{
+	if (element->popUpInfo != nullptr)
+		((TextBox*)element->popUpInfo)->addTextLine(line);
 }
 
 void j1Gui::LoadLifeBarsDB(pugi::xml_node node)
@@ -1045,7 +1060,11 @@ void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
 		}
 		else if (info)
 		{
-			createPopUpInfo(button, info.attribute("text").as_string());
+			createPopUpInfo(button, info.attribute("text").as_string(), info.attribute("is_title").as_bool(false));
+			for (pugi::xml_node description = info.child("line"); description; description = description.next_sibling("line"))
+			{
+				addPopUpInfoLine(button, description.attribute("text").as_string());
+			}
 		}
 		actionButtons.insert(std::pair<uint, Button*>(id, button));
 
@@ -1074,6 +1093,8 @@ void j1Gui::LoadFonts(pugi::xml_node node)
 	for (pugi::xml_node font = node.child("font"); font; font = font.next_sibling("font"))
 	{
 		App->font->Load(font.attribute("path").as_string(), font.attribute("size").as_int());
+		if (font.attribute("bold").as_bool(false))
+			App->font->setFontBold((*App->font->fonts.rbegin()));
 	}
 }
 

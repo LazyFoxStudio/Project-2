@@ -4016,7 +4016,11 @@
 			<OnMouse x="965" y="507" w="66" h="66"/>
 			<OnClick x="1033" y="507" w="66" h="66"/>
 			<popUp>
-				<Info text="Big area ability"/>
+				<Info text="Icicle Crash" is_title="true">
+					<line text="This ability deals"/>
+					<line text="moderate damage"/>
+					<line text="in an area"/>
+				</Info>
 			</popUp>
 			<hotkey key="Q" font_id="3"/>
 		</ability1>
@@ -4026,7 +4030,11 @@
 			<OnMouse x="1169" y="507" w="66" h="66"/>
 			<OnClick x="1237" y="507" w="66" h="66"/>
 			<popUp>
-				<Info text="Single target ability"/>
+				<Info text="Overflow" is_title="true">
+					<line text="This ability deals"/>
+					<line text="heavy damage to"/>
+					<line text="a single target"/>
+				</Info>
 			</popUp>
 			<hotkey key="W" font_id="3"/>
 		</ability2>
@@ -4036,7 +4044,11 @@
 			<OnMouse x="1373" y="507" w="66" h="66"/>
 			<OnClick x="1441" y="507" w="66" h="66"/>
 			<popUp>
-				<Info text="Straight line ability"/>
+				<Info text="Dragon breath" is_title="true">
+					<line text="This ability deals"/>
+					<line text="damage to all enemies"/>
+					<line text="in a straight line"/>
+				</Info>
 			</popUp>
 			<hotkey key="E" font_id="3"/>
 		</ability3>
@@ -4229,5 +4241,6 @@
 		<font path="fonts/BebasNeue-Regular.ttf" size="70"/>
 		<font path="fonts/BebasNeue-Regular.ttf" size="43"/>
 		<font path="fonts/BebasNeue-Regular.ttf" size="35"/>
+		<font path="fonts/BebasNeue-Regular.ttf" size="27" bold="true"/>
 	</fonts>
 </GameData>

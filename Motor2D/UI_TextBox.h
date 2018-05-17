@@ -7,6 +7,7 @@
 class Text;
 
 #define DEFAULT_COLOR Translucid_DarkGrey
+#define DEFAULT_TEXTBOX_FONT 2
 
 #define BOX_MARGIN 5
 
@@ -19,7 +20,7 @@ public:
 
 	void BlitElement();
 
-	void addTextLine(std::string text);
+	void addTextLine(std::string text, int font_id = DEFAULT_TEXTBOX_FONT);
 	int getLinesHeight();
 	void changeColor(Color color);
 

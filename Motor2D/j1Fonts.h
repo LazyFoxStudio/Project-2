@@ -36,6 +36,7 @@ public:
 	bool CalcSize(const char* text, int& width, int& height, _TTF_Font* font = NULL) const;
 
 	void setFontOutline(_TTF_Font* font, int outline);
+	void setFontBold(_TTF_Font* font);
 
 	void CloseFont(_TTF_Font* font);
 

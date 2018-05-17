@@ -27,9 +27,9 @@ void TextBox::BlitElement()
 	}
 }
 
-void TextBox::addTextLine(std::string text)
+void TextBox::addTextLine(std::string text, int font_id)
 {
-	Text* line = new Text(text, BOX_MARGIN, BOX_MARGIN + getLinesHeight(), App->font->getFont(1), { 255,255,255,255 }, nullptr);
+	Text* line = new Text(text, BOX_MARGIN, BOX_MARGIN + getLinesHeight(), App->font->getFont(font_id), { 255,255,255,255 }, nullptr);
 	line->parent = this;
 	line->use_camera = use_camera;
 

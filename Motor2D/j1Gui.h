@@ -118,7 +118,8 @@ public:
 
 	void deleteElement(UI_element* element);
 
-	void createPopUpInfo(UI_element* element, std::string info);
+	void createPopUpInfo(UI_element* element, std::string text, bool isTitle = false);
+	void addPopUpInfoLine(UI_element* element, std::string line);
 
 	void LoadLifeBarsDB(pugi::xml_node node);
 	void LoadActionButtonsDB(pugi::xml_node node);
