@@ -553,63 +553,63 @@ Resolution of the screen: 1680x 1050y
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
-		<hotkey key="Q" font_id="3"/>
+		<hotkey key="Q" font_id="10"/>
 	  </button>
 	  <button click_action="51">
 		<position x="742" y="350"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
-		<hotkey key="W" font_id="3"/>
+		<hotkey key="W" font_id="10"/>
 	  </button>
 	  <button click_action="52">
 		<position x="914" y="350"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
-		<hotkey key="E" font_id="3"/>
+		<hotkey key="E" font_id="10"/>
 	  </button>
 	  <button click_action="53">
 		<position x="590" y="504"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
-		<hotkey key="A" font_id="3"/>
+		<hotkey key="A" font_id="10"/>
 	  </button>
 	  <button click_action="54">
 		<position x="742" y="504"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
-		<hotkey key="S" font_id="3"/>
+		<hotkey key="S" font_id="10"/>
 	  </button>
 	  <button click_action="55">
 		<position x="914" y="504"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
-		<hotkey key="D" font_id="3"/>
+		<hotkey key="D" font_id="10"/>
 	  </button>
 	  <button click_action="56">
 		<position x="590" y="663"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
-		<hotkey key="Z" font_id="3"/>
+		<hotkey key="Z" font_id="10"/>
 	  </button>
 	  <button click_action="57">
 		<position x="742" y="663"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
-		<hotkey key="X" font_id="3"/>
+		<hotkey key="X" font_id="10"/>
 	  </button>
 	  <button click_action="58">
 		<position x="914" y="663"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
-		<hotkey key="C" font_id="3"/>
+		<hotkey key="C" font_id="10"/>
 	  </button>
       <button click_action="59">
         <!--Back-->

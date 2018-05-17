@@ -4255,5 +4255,6 @@
 		<font path="fonts/BebasNeue-Regular.ttf" size="43"/>
 		<font path="fonts/BebasNeue-Regular.ttf" size="35"/>
 		<font path="fonts/BebasNeue-Regular.ttf" size="27" bold="true"/>
+		<font path="fonts/ABeeZee-Regular.ttf" size="25" bold="true"/>
 	</fonts>
 </GameData>

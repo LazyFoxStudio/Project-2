@@ -25,7 +25,7 @@ public:
 	{}
 
 	void BlitElement();
-	void displayHotkey(bool display, _TTF_Font* font = nullptr, SDL_Color color = { 255,0,0,255 }, bool atCenter = false);
+	void displayHotkey(bool display, _TTF_Font* font = nullptr, SDL_Color color = { 255,255,255,255 }, bool atCenter = false);
 	void setHotkey(SDL_Scancode hotkey);
 	SDL_Scancode getHotkey() const;
 	void setReadingHotkey();
