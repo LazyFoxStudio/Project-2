@@ -142,6 +142,8 @@ bool j1EntityController::Update(float dt)
 		town_hall->isSelected = true;
 		App->gui->newSelectionDone();
 		
+		((Hero*)getEntitybyID(App->entitycontroller->hero_UID))->current_skill = 0;
+		App->actionscontroller->doingAction = false;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr && (!App->tutorial->doingTutorial || App->tutorial->allowHeroSelection))
