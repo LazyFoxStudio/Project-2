@@ -72,8 +72,6 @@ bool j1Gui::Start()
 	warningMessages->addWarningMessage("You cannot build out of the range", OUT_OF_RANGE);
 	warningMessages->addWarningMessage("You have to place it over an unused mine", NO_MINE);
 
-	
-
 	return true;
 }
 
@@ -1241,7 +1239,7 @@ void j1Gui::assignActionButtonHotkey(uint id, SDL_Scancode newHotkey)
 					inGameMenu->actionButtonsHotkeys[prevId] = inGameMenu->actionButtonsHotkeys[id];
 			}
 			button->setHotkey(newHotkey);
-			button->displayHotkey(true, App->font->getFont(3), { 0,0,0,255 }, true);
+			button->displayHotkey(true, App->font->getFont(10), { 0,0,0,255 }, true);
 		}
 		inGameMenu->actionButtonsHotkeys[id] = newHotkey;
 		inGameMenu->updateActionButtons();

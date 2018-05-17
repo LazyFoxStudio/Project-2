@@ -12,6 +12,7 @@
 #include "UI_NextWaveWindow.h"
 #include "j1WaveController.h"
 #include "j1Tutorial.h"
+#include "UI_CooldownsDisplay.h"
 
 bool j1ActionsController::Update(float dt)
 {
@@ -355,6 +356,8 @@ bool j1ActionsController::Update(float dt)
 			App->scene->Close_game();
 
 			App->gui->UpdateContinueButton();
+			if (App->gui->cooldownsDisplay != nullptr)
+				App->gui->cooldownsDisplay->Reset();
 
 			break;
 		case CHOOSE_MAGE:

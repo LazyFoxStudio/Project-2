@@ -189,6 +189,12 @@ public:
 	int f_dmg_lvl = 0;
 	int f_armor_lvl = 0;
 
+	bool hasBuilt_LumberMill	= false;
+	bool hasBuilt_Barracks		= false;
+	bool hasBuilt_Farm			= false;
+	bool hasBuilt_Mine			= false;
+	bool hasBuilt_GnomeHut		= false;
+
 	function* lose_game;
 	function* reset_hero_cd;
 	function* new_worker_cost;

@@ -530,7 +530,7 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 	{
 		std::vector<Unit*> units_of_squad;
 		(*it)->getUnits(units_of_squad);
-		if (units_of_squad.data()[0]->type != HERO_2 && units_of_squad.data()[0]->type != HERO_1)
+		if (units_of_squad.data() != nullptr && units_of_squad.data()[0]->type != HERO_2 && units_of_squad.data()[0]->type != HERO_1)
 		{
 			pugi::xml_node squad_node = units_node.append_child("squad");
 			squad_node.append_attribute("type_enum") = units_of_squad.data()[0]->type;//SOMEWHAT UNSTABLE
@@ -605,6 +605,13 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 
 	//SAVE_BUILDINGS
 	pugi::xml_node buildings_node = file.append_child("Buildings");
+
+	pugi::xml_node hasBuilt = file.append_child("hasBuilt");
+	hasBuilt.append_child("LumberMill").append_attribute("built") = hasBuilt_LumberMill;
+	hasBuilt.append_child("Barracks").append_attribute("built") = hasBuilt_Barracks;
+	hasBuilt.append_child("Farm").append_attribute("built") = hasBuilt_Farm;
+	hasBuilt.append_child("Mine").append_attribute("built") = hasBuilt_Mine;
+	hasBuilt.append_child("GnomeHut").append_attribute("built") = hasBuilt_GnomeHut;
 
 	pugi::xml_node tw = buildings_node.append_child("town_hall");
 	tw.append_attribute("hp") = town_hall->current_HP;
@@ -845,6 +852,47 @@ bool j1EntityController::Load(pugi::xml_node& file)
 	}
 	other_buildings.clear();
 
+	//Unlock the buttons
+	pugi::xml_node hasBuilt = file.child("hasBuilt");
+	if (hasBuilt.child("LumberMill").attribute("built").as_bool(false))
+	{
+		hasBuilt_LumberMill = true;
+
+		Button* barracks = App->gui->GetActionButton(5);
+		Button* farms = App->gui->GetActionButton(7);
+		Button* mine = App->gui->GetActionButton(22);
+		barracks->Unlock();
+		farms->Unlock();
+		mine->Unlock();
+	}
+	if (hasBuilt.child("Barracks").attribute("built").as_bool(false))
+	{
+		hasBuilt_Barracks = true;
+
+		Button* hut = App->gui->GetActionButton(24);
+		hut->Unlock();
+	}
+	if (hasBuilt.child("Farm").attribute("built").as_bool(false))
+	{
+		hasBuilt_Farm = true;
+
+		Button* turret = App->gui->GetActionButton(23);
+		turret->Unlock();
+	}
+	if (hasBuilt.child("Mine").attribute("built").as_bool(false))
+	{ 
+		hasBuilt_Mine = true;
+
+		Button* church = App->gui->GetActionButton(25);
+		church->Unlock();
+	}
+	if (hasBuilt.child("GnomeHut").attribute("built").as_bool(false))
+	{
+		hasBuilt_GnomeHut = true;
+
+		Button* blacksmith = App->gui->GetActionButton(26);
+		blacksmith->Unlock();
+	}
 
 	return true;
 }
@@ -1008,19 +1056,31 @@ Building* j1EntityController::addBuilding(iPoint pos, Type type)
 		building->workersDisplay = App->gui->createWorkersDisplay(building);
 		if (App->tutorial->doingTutorial)
 			App->tutorial->taskCompleted(PLACE_LUMBER_MILL);
+		hasBuilt_LumberMill = true;
 	}
 	else if (type == MINE)
 	{
 		building->workersDisplay = App->gui->createWorkersDisplay(building);
+		hasBuilt_Mine = true;
 	}
 	else if (type == BARRACKS || type == GNOME_HUT || type == CHURCH)
 	{
 		building->queueDisplay = App->gui->createTroopCreationQueue(building);
-		if (type == BARRACKS && App->tutorial->doingTutorial)
-			App->tutorial->taskCompleted(PLACE_BARRACKS);
+		if (type == BARRACKS)
+		{
+			hasBuilt_Barracks = true;
+			if (App->tutorial->doingTutorial)
+				App->tutorial->taskCompleted(PLACE_BARRACKS);
+		}
 	}
-	else if (type == FARM && App->tutorial->doingTutorial)
-		App->tutorial->taskCompleted(PLACE_FARM);
+	else if (type == FARM)
+	{
+		hasBuilt_Farm = true;
+		if (App->tutorial->doingTutorial)
+			App->tutorial->taskCompleted(PLACE_FARM);
+	}
+	else if (type == GNOME_HUT)
+		hasBuilt_GnomeHut = true;
 	entities.push_back(building);
 	App->gui->createLifeBar(building);
 
