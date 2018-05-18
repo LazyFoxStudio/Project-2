@@ -1,5 +1,6 @@
 #ifndef __UI_BUTTON__
 #define __UI_BUTTON__
+
 #include "UI_element.h"
 #include "UI_Text.h"
 
@@ -30,6 +31,8 @@ public:
 	SDL_Scancode getHotkey() const;
 	void setReadingHotkey();
 	void cancelReadingHotkey();
+	void setCooldown(int cooldown);
+	void Used();
 
 public:
 
@@ -47,6 +50,11 @@ private:
 
 	Text* readingHotkeyLine1 = nullptr;
 	Text* readingHotkeyLine2 = nullptr;
+
+	bool hasCooldown = false;
+	bool inCooldown = false;
+	int cooldown = 0;
+	j1Timer cooldown_timer;
 };
 
 #endif // !__UI_BUTTON__

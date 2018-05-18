@@ -13,6 +13,7 @@
 #include "UI_CooldownsDisplay.h"
 #include "Minimap.h"
 #include "j1Tutorial.h"
+#include "UI_Button.h"
 
 Hero::~Hero()
 {
@@ -67,6 +68,7 @@ bool Hero::Update(float dt)
 				if (type == HERO_1)
 				{
 					App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
+					App->gui->GetActionButton(17)->Used();
 
 					if (skill_one->last_cast.IsZero())
 						App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->cast_pos.x, (float)(skill_one->cast_pos.y) }, false);
@@ -77,7 +79,7 @@ bool Hero::Update(float dt)
 				{
 					App->audio->PlayFx(SFX_CONSECRATION);
 					App->particle->AddParticle(PHOLYDAMAGE, position, false);
-
+					App->gui->GetActionButton(33)->Used();
 				}
 				skill_one->last_cast.SetToZero();
 			}
@@ -95,6 +97,7 @@ bool Hero::Update(float dt)
 				if (type == HERO_1)
 				{
 					App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
+					App->gui->GetActionButton(18)->Used();
 					if (skill_two->last_cast.IsZero())
 						App->particle->AddParticle(POVERFLOW, { (float)skill_two->cast_pos.x, (float)(skill_two->cast_pos.y - 30) }, false);
 					else
@@ -103,6 +106,7 @@ bool Hero::Update(float dt)
 				else if (type == HERO_2)
 				{
 					App->audio->PlayFx(SFX_CIRCLE_OF_LIGHT);
+					App->gui->GetActionButton(34)->Used();
 					if (skill_two->last_cast.IsZero())
 						App->particle->AddParticle(PHOLYHEAL, { (float)skill_two->cast_pos.x, (float)(skill_two->cast_pos.y) }, false);
 					else
@@ -129,11 +133,13 @@ bool Hero::Update(float dt)
 					else
 						App->particle->AddProgressiveParticle(PFLAMETHROWER, position, { (float)skill_three->last_cast.x, (float)(skill_three->last_cast.y) }, 2.5f, 10, false);
 					App->audio->PlayFx(SFX_HERO_YHAMAM_DRAGONBREATH);
+					App->gui->GetActionButton(19)->Used();
 				}
 				else if(type==HERO_2)
 				{
 					App->audio->PlayFx(SFX_HONOR_OF_THE_PURE);
 					App->particle->AddParticle(PHOLYBUFF, position, false);
+					App->gui->GetActionButton(35)->Used();
 				}
 				skill_three->last_cast.SetToZero();
 

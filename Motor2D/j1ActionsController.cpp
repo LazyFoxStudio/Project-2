@@ -194,7 +194,7 @@ bool j1ActionsController::Update(float dt)
 			if (hero = (Hero*)App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID))
 			{
 				hero->current_skill != 1 ? hero->current_skill = 1 : hero->current_skill = 0;
-				doingAction = false;
+				doingAction = false;				
 			}
 			break;
 		case USE_ABILITY2:

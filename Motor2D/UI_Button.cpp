@@ -37,6 +37,20 @@ void Button::BlitElement()
 			break;
 		}
 
+		if (hasCooldown && inCooldown)
+		{
+			if (cooldown_timer.Read() >= cooldown * 1000)
+			{
+				inCooldown = false;
+				displayHotkey(true, App->font->getFont(3), { 255,255,255,255 });
+			}
+			else
+			{
+				float percentage = (cooldown_timer.Read()/1000.0f) / (float)cooldown;
+				App->render->DrawQuad({ globalPos.x, globalPos.y + (int)(section.h*percentage), section.w, section.h - (int)(section.h*percentage) }, Translucid_White, true, false, true);
+			}
+		}
+
 		UI_element::BlitElement();
 	}
 }
@@ -108,4 +122,20 @@ void Button::cancelReadingHotkey()
 		readingHotkeyLine2->active = false;
 	if (hotkey_text != nullptr)
 		hotkey_text->active = true;
+}
+
+void Button::setCooldown(int cooldown)
+{
+	hasCooldown = true;
+	this->cooldown = cooldown;
+}
+
+void Button::Used()
+{
+	if (hasCooldown && !inCooldown)
+	{
+		inCooldown = true;
+		cooldown_timer.Start();
+		displayHotkey(true, App->font->getFont(3), { 255,0,0,255 });
+	}
 }

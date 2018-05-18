@@ -1075,6 +1075,15 @@ void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
 			button->displayHotkey(true, App->font->getFont(hotkey.attribute("font_id").as_int()));
 		}
 	}
+
+	//HARDCODED
+	App->gui->GetActionButton(17)->setCooldown(MAGE_ABILITY_1_COOLDOWN);
+	App->gui->GetActionButton(18)->setCooldown(MAGE_ABILITY_2_COOLDOWN);
+	App->gui->GetActionButton(19)->setCooldown(MAGE_ABILITY_3_COOLDOWN);
+
+	App->gui->GetActionButton(33)->setCooldown(PALADIN_ABILITY_1_COOLDOWN);
+	App->gui->GetActionButton(34)->setCooldown(PALADIN_ABILITY_2_COOLDOWN);
+	App->gui->GetActionButton(35)->setCooldown(PALADIN_ABILITY_3_COOLDOWN);
 }
 
 void j1Gui::LoadWorkersDisplayDB(pugi::xml_node node)
@@ -1135,7 +1144,7 @@ SDL_Rect j1Gui::GetLifeBarRect(std::string tag)
 	return LifeBarRect.at(tag);
 }
 
-Button * j1Gui::GetActionButton(uint id)
+Button* j1Gui::GetActionButton(uint id)
 {
 	return actionButtons.at(id);
 }
