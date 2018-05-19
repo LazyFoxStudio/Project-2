@@ -5,6 +5,7 @@
 #include "j1Window.h"
 #include "j1Gui.h"
 #include "UI_Button.h"
+#include "UI_WarningMessages.h"
 #include "SDL/include/SDL.h"
 
 #define MAX_KEYS 300
@@ -159,9 +160,15 @@ bool j1Input::Update(float dt)
 {
 	if (assignNewHotkey && wasKeyDown != SDL_SCANCODE_UNKNOWN)
 	{
-		App->gui->assignActionButtonHotkey(buttonId, wasKeyDown);
+		if (wasKeyDown >= SDL_SCANCODE_A && wasKeyDown <= SDL_SCANCODE_Z)
+		{
+			App->gui->assignActionButtonHotkey(buttonId, wasKeyDown);
+			App->gui->warningMessages->hideMessage(INVALID_HOTKEY);
 
-		assignNewHotkey = false;
+			assignNewHotkey = false;
+		}
+		else
+			App->gui->warningMessages->showMessage(INVALID_HOTKEY);
 	}
 
 	return true;

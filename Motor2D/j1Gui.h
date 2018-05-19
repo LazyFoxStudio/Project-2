@@ -144,6 +144,7 @@ public:
 
 	void assignActionButtonHotkey(uint id, SDL_Scancode newHotkey);
 	void resetActionButtonHotkeys();
+	void cancelActionButtonsReading();
 	Button* searchButtonbyHotkey(SDL_Scancode hotkey) const;
 	Button* getButtonbyId(uint id) const;
 	uint getIDbyButton(Button* button) const;
