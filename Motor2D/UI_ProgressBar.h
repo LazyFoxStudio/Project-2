@@ -20,7 +20,10 @@ public:
 
 	void setProgress(float newProgress);
 	float getProgress() const;
-	bool enterCurrentValue(float current_value);
+	//return -1 if new value is lower than previous
+	//return 0 if new value is the same than previous
+	//return 1 if new value is higher than previous
+	int enterCurrentValue(float current_value);
 	void BlitElement();
 
 public:

@@ -1100,7 +1100,7 @@ Squad* j1EntityController::AddSquad(Type type, fPoint position)
 
 	HandleReadySFX(type, 70);
 
-	if (App->pathfinding->GatherWalkableAdjacents(map_p, getUnitFromDB(type)->squad_members, positions))
+	if (getUnitFromDB(type) != nullptr && App->pathfinding->GatherWalkableAdjacents(map_p, getUnitFromDB(type)->squad_members, positions))
 	{
 		for (int i = 0; i < unit_template->squad_members; ++i)
 		{
@@ -1224,6 +1224,8 @@ void j1EntityController::buildingProcessDraw()
 		{
 			if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, false, false, true))
 				App->gui->warningMessages->showMessage(NO_MINE);
+			else
+				App->gui->warningMessages->hideMessage(NO_MINE);
 				
 			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);			
 		}
