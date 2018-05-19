@@ -133,18 +133,6 @@ bool j1Scene::Update(float dt)
 		mouse_pos=App->render->ScreenToWorld(x, y);
 		App->entitycontroller->AddSquad(FOOTMAN, {(float)mouse_pos.x,(float)mouse_pos.y});
 	}
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_UP)
-	{
-		if (App->isPaused() == false)
-		{
-			App->actionscontroller->activateAction(PAUSE);
-		}
-		else if (App->isPaused() == true)
-		{
-			App->uiscene->toggleMenu(false, PAUSE_MENU);
-			App->resumeGame();
-		}
-	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{

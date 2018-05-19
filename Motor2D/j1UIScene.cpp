@@ -96,6 +96,17 @@ bool j1UIScene::Start()
 
 bool j1UIScene::Update(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_UP)
+	{
+		if (!App->isPaused() && getMenu(INGAME_MENU) != nullptr && getMenu(INGAME_MENU)->active)
+		{
+			App->actionscontroller->activateAction(PAUSE);
+		}
+		else
+		{
+			App->actionscontroller->activateAction(BACK_MENU);
+		}
+	}
 
 	return true;
 }

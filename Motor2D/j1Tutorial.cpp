@@ -203,12 +203,14 @@ void j1Tutorial::stopTutorial(bool skip)
 		Button* farms = App->gui->GetActionButton(7);
 		Button* mine = App->gui->GetActionButton(22);
 		Button* hut = App->gui->GetActionButton(24);
+		Button* turret = App->gui->GetActionButton(23);
 		if (!skip || tutorialDone)
 		{			
 			barracks->Unlock();			
 			farms->Unlock();			
 			mine->Unlock();
 			hut->Unlock();
+			turret->Unlock();
 		}
 		else
 		{
@@ -216,10 +218,9 @@ void j1Tutorial::stopTutorial(bool skip)
 			farms->setCondition("Build first a Lumber Mill");
 			mine->setCondition("Build first a Lumber Mill");
 			hut->setCondition("Build first the Barracks");
+			turret->setCondition("Build first a Farm");
 		}
-		Button* turret = App->gui->GetActionButton(23);
-		turret->setCondition("Build first a Farm");
-		turret->Lock();
+				
 		Button* church = App->gui->GetActionButton(25);
 		church->setCondition("Build first a Mine");
 		church->Lock();

@@ -9,7 +9,7 @@
 #define MUSIC_FOLDER "audio/music/"
 #define FX_FOLDER "audio/fx/"
 #define DEFAULT_MUSIC_MODIFIER 1
-#define DEFAULT_SFX_MODIFIER 1
+#define DEFAULT_SFX_MODIFIER 0.5f
 
 struct _Mix_Music;
 struct Mix_Chunk;
