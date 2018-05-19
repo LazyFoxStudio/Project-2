@@ -13,6 +13,7 @@
 #include "j1WaveController.h"
 #include "j1Tutorial.h"
 #include "UI_CooldownsDisplay.h"
+#include "UI_Button.h"
 
 bool j1ActionsController::Update(float dt)
 {
@@ -216,6 +217,7 @@ bool j1ActionsController::Update(float dt)
 			{
 				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state == OPERATIVE)
 				{
+					App->gui->GetActionButton(20)->Used();
 					((Building*)*App->entitycontroller->selected_entities.begin())->RepairBuilding();
 				}
 			}
