@@ -57,14 +57,14 @@
 		</anim>
 	</template>
 
-<!-- Death Knight -->
+<!-- Gryphon Knight -->
 	<template> 
 		<width value="32"/>
 		<height value="32"/>
-    <parabollic value="true"/>
+    <parabollic value="false"/>
 		<anim>
 			<loop value="true"/>
-			<speed value="5"/>
+			<speed value="10"/>
 			<pushback x="816" y="16" w="32" h="32"/>
 			<pushback x="848" y="16" w="32" h="32"/>
 			<pushback x="880 " y="16" w="32" h="32 "/>

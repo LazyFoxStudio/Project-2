@@ -15,7 +15,7 @@
                 <range value="80"/>
                 <lineOfSight value="500"/>
                 <size x="1" y="1"/>
-                <attackSpeed value="5"/>
+                <attackSpeed value="1"/>
             </Stats>
 			<Info title="Hero Stats:"/>
             <Animations>
@@ -270,6 +270,7 @@
           <movementSpeed value="1.1"/>
           <range value="80"/>
           <lineOfSight value="500"/>
+          <attackSpeed value ="1"/>
           <size x="1" y="1"/>
         </Stats>
         <Info title="Hero Stats:"/>
@@ -531,7 +532,7 @@
                 <workerCost value="5"/>
                 <trainingTime value="3"/>
                 <squadMembers value="4"/>
-                <attackSpeed value="4"/>
+                <attackSpeed value="1"/>
                 <size x="1" y="1"/>
             </Stats>
 			<Info title="Footman Stats:"/>
@@ -761,7 +762,7 @@
                 <workerCost value="4"/>
                 <trainingTime value="5"/>
                 <squadMembers value="4"/>
-                <attackSpeed value="4.5"/>
+                <attackSpeed value="1.2"/>
                 <size x="1" y="1"/>
             </Stats>
 			<Info title="Archer Stats:"/>
@@ -1006,7 +1007,7 @@
           <workerCost value="6"/>
           <trainingTime value="10"/>
           <squadMembers value="3"/>
-          <attackSpeed value="4"/>
+          <attackSpeed value="2"/>
 
           <size x="2" y="2"/>
         </Stats>
@@ -1265,7 +1266,7 @@
           <workerCost value="6"/>
           <trainingTime value="10"/>
           <squadMembers value="3"/>
-          <attackSpeed value="4"/>
+          <attackSpeed value="1"/>
           <size x="2" y="2"/>
         </Stats>
         <Info title="Knight Stats:"/>
@@ -1512,7 +1513,7 @@
         <texture value="Assets\Sprites\Alliance Sprites\Ballista_Spritesheet.png"/>
         <Stats>
           <life value="40"/>
-          <attack value="2"/>
+          <attack value="5"/>
           <defense value="1"/>
           <piercingDamage value="4"/>
           <movementSpeed value="0.6"/>
@@ -1522,8 +1523,8 @@
           <woodCost value="300"/>
           <workerCost value="2"/>
           <trainingTime value="10"/>
-          <squadMembers value="1"/>
-          <attackSpeed value="9"/>
+          <squadMembers value="3"/>
+          <attackSpeed value="0.5"/>
           <size x="2" y="2"/>
         </Stats>
         <Info title="Ballista Stats:"/>
@@ -1774,14 +1775,14 @@
           <defense value="4"/>
           <piercingDamage value="6"/>
           <movementSpeed value="1.1"/>
-          <range value="40"/>
+          <range value="160"/>
           <lineOfSight value="200"/>
           <goldCost value="2100"/>
           <woodCost value="200"/>
           <workerCost value="3"/>
           <trainingTime value="10"/>
           <squadMembers value="3"/>
-          <attackSpeed value="8"/>
+          <attackSpeed value="3"/>
           <size x="2" y="2"/>
         </Stats>
         <Info title="Gryphon Stats:"/>
@@ -2038,7 +2039,7 @@
             <range value="40"/>
             <lineOfSight value="200"/>
             <squadMembers value="5"/>
-            <attackSpeed value="4"/>
+            <attackSpeed value="1"/>
             <size x="1" y="1"/>
           </Stats>
           <Animations>
@@ -2288,8 +2289,8 @@
                 <movementSpeed value="1.05"/>
                 <range value="160"/>
                 <lineOfSight value="250"/>
-                <squadMembers value="3"/>
-                <attackSpeed value="5"/>
+                <squadMembers value="4"/>
+                <attackSpeed value="1.3"/>
                 <size x="1" y="1"/>
             </Stats>
         <Animations>
@@ -2511,7 +2512,7 @@
           <range value="160"/>
           <lineOfSight value="250"/>
           <squadMembers value="2"/>
-          <attackSpeed value="5"/>
+          <attackSpeed value="4"/>
           <size x="2" y="2"/>
         </Stats>
         <Animations>
@@ -2753,7 +2754,7 @@
         <range value="40"/>
         <lineOfSight value="250"/>
         <squadMembers value="4"/>
-        <attackSpeed value="4"/>
+        <attackSpeed value="1.5"/>
         <size x="2" y="2"/>
       </Stats>
       <Animations>
@@ -3000,10 +3001,10 @@
           <defense value="2"/>
           <piercingDamage value="10"/>
           <movementSpeed value="0.5"/>
-          <range value="40"/>
+          <range value="400"/>
           <lineOfSight value="200"/>
           <squadMembers value="3"/>
-          <attackSpeed value="2"/>
+          <attackSpeed value="0.4"/>
           <size x="2" y="2"/>
         </Stats>
         <Info title="Catapult Stats:"/>
@@ -3257,7 +3258,7 @@
           <range value="200"/>
           <lineOfSight value="200"/>
           <squadMembers value="1"/>
-          <attackSpeed value="4"/>
+          <attackSpeed value="1.2"/>
           <size x="2" y="2"/>
         </Stats>
         <Info title="Juggernaut Stats:"/>

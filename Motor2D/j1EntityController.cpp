@@ -2087,7 +2087,7 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 		}
 		for (int i = 16; i <= 23; i++)
 		{
-			unitTemplate->animations.at(i)->speed = unitTemplate->attack_speed;
+			unitTemplate->animations.at(i)->speed = getSpeedFromAtkSpeed(unitTemplate->attack_speed, unitTemplate->animations.at(i)->GetLastFrameinInt());
 		}
 
 		if (!unitTemplate->animations.empty()) unitTemplate->current_anim = unitTemplate->animations.front();
@@ -2157,6 +2157,11 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 	}
 
 	return true;
+}
+
+float j1EntityController::getSpeedFromAtkSpeed(float atk_speed, int anim_frames)
+{
+	return atk_speed * anim_frames;
 }
 
 void j1EntityController::DeleteDB()
