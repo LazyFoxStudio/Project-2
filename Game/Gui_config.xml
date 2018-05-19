@@ -548,6 +548,12 @@ Resolution of the screen: 1680x 1050y
 		<color r="0" g="0" b="0" a="255"/>
         <interactive value="false"/>
 	  </text>
+	  <text text="Invalid key entered" active="false">
+	  <position x="675" y="790"/>
+		<font id="3"/>
+		<color r="255" g="0" b="0" a="255"/>
+        <interactive value="false"/>
+	  </text>
 	  <button click_action="50">
 		<position x="590" y="350"/>
         <standby x="1321" y="0" w="92" h="92"/>

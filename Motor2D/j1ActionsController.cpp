@@ -320,7 +320,7 @@ bool j1ActionsController::Update(float dt)
 
 			if (App->input->isReadingHotkey())
 			{
-				App->gui->warningMessages->hideMessage(INVALID_HOTKEY);
+				App->gui->GetElement(TEXT, 44)->active = false;
 				App->input->stopReadingHotkey();
 				App->gui->cancelActionButtonsReading();
 			}
@@ -466,7 +466,7 @@ bool j1ActionsController::Update(float dt)
 			break;
 		case RESET_KEYS:
 			App->gui->resetActionButtonHotkeys();
-			App->gui->warningMessages->hideMessage(INVALID_HOTKEY);
+			App->gui->GetElement(TEXT, 44)->active = false;
 			App->input->stopReadingHotkey();
 			doingAction = false;
 			break;

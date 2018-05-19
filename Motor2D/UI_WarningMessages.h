@@ -9,8 +9,7 @@ enum message_type
 	NO_RESOURCES,
 	NO_TREES,
 	OUT_OF_RANGE,
-	NO_MINE,
-	INVALID_HOTKEY
+	NO_MINE
 };
 
 class Text;
