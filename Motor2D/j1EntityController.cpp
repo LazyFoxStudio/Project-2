@@ -118,7 +118,7 @@ bool j1EntityController::Update(float dt)
 			HandleOrdersSFX();
 		}
 	}
-	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && to_build_type != NONE_ENTITY && App->actionscontroller->doingAction)
+	if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) && to_build_type != NONE_ENTITY)
 	{
 		to_build_type = NONE_ENTITY;
 		App->actionscontroller->activateAction(NO_ACTION);
