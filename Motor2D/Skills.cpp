@@ -51,7 +51,7 @@ void Skill::DrawRange()
 			{
 				if ((*item)->IsUnit())
 				{
-					if ((*item)->IsEnemy())
+					if ((*item)->IsEnemy() && (*item)->current_HP>0)
 					{
 						SDL_Rect r = { toDraw.front().x,toDraw.front().y,32,32 };
 						SDL_Point mouse = { cast_pos.x,cast_pos.y };
