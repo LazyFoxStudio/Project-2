@@ -1517,7 +1517,7 @@
           <defense value="1"/>
           <piercingDamage value="4"/>
           <movementSpeed value="0.6"/>
-          <range value="210"/>
+          <range value="400"/>
           <lineOfSight value="250"/>
           <goldCost value="800"/>
           <woodCost value="300"/>
