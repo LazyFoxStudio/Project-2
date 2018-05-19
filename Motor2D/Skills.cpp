@@ -45,6 +45,24 @@ void Skill::DrawRange()
 			App->render->DrawQuad(r, Ready() ? (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range ? tile_color : Translucid_Grey) : Translucid_Grey);
 		}
 
+		if (type == NONE_RANGE)
+		{
+			for (std::list<Entity*>::iterator item = App->entitycontroller->entities.begin(); item != App->entitycontroller->entities.end(); item++)
+			{
+				if ((*item)->IsUnit())
+				{
+					if ((*item)->IsEnemy())
+					{
+						SDL_Rect r = { toDraw.front().x,toDraw.front().y,32,32 };
+						if (SDL_HasIntersection(&r, &(*item)->collider))
+						{
+							App->render->DrawQuad((*item)->collider, Red, false);
+						}
+					}
+				}
+			}
+		}
+
 	}
 	else if (type == LINE)
 	{
@@ -128,7 +146,7 @@ bool Skill::Activate()
 			{
 				if ((*item)->IsEnemy())
 				{
-					if (type == AREA || type == NONE_RANGE || type == PLACE || type == BUFF)
+					if (type == AREA || type == PLACE || type == BUFF)
 					{
 						if (type == PLACE || type==BUFF)
 						{
@@ -164,6 +182,16 @@ bool Skill::Activate()
 								(*item)->current_HP -= damage;
 								ret = true;
 							}
+						}
+					}
+					else if (type == NONE_RANGE)
+					{
+						SDL_Rect r = { toDraw.front().x,toDraw.front().y,32,32 };
+
+						if (SDL_HasIntersection(&r, &(*item)->collider))
+						{
+							(*item)->current_HP -= damage;
+							ret = true;
 						}
 					}
 				}
