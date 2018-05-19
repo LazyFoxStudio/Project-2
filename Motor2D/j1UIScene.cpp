@@ -178,6 +178,15 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 		else if (event_type == MOUSE_RIGHT_RELEASE)
 		{}
 	}
+	else if (element->clickAction >= 13 && element->clickAction <= 15)
+	{
+		if (event_type == MOUSE_LEFT_CLICK)
+		{
+			if (element->hasClickAction)
+				App->actionscontroller->activateAction(element->clickAction);
+			element->state = LOCKED;
+		}
+	}
 	else if (event_type == TIMER_ZERO)
 	{
 		LOG("Clock reached zero");

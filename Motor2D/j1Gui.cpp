@@ -1084,6 +1084,8 @@ void j1Gui::LoadActionButtonsDB(pugi::xml_node node)
 	App->gui->GetActionButton(33)->setCooldown(PALADIN_ABILITY_1_COOLDOWN);
 	App->gui->GetActionButton(34)->setCooldown(PALADIN_ABILITY_2_COOLDOWN);
 	App->gui->GetActionButton(35)->setCooldown(PALADIN_ABILITY_3_COOLDOWN);
+
+	App->gui->GetActionButton(20)->setCooldown(REPAIR_COOLDOWN);
 }
 
 void j1Gui::LoadWorkersDisplayDB(pugi::xml_node node)
@@ -1175,7 +1177,7 @@ bool j1Gui::checkActionButtonsHotkeys()
 			if (App->input->GetKey(button->getHotkey()) == KEY_DOWN)
 			{
 				if (button->callback != nullptr)
-				{
+				{											
 					button->callback->OnUIEvent(button, MOUSE_ENTER);
 					button->callback->OnUIEvent(button, MOUSE_LEFT_CLICK);
 					ret = true;

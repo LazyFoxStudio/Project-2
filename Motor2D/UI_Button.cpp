@@ -43,6 +43,7 @@ void Button::BlitElement()
 			{
 				inCooldown = false;
 				displayHotkey(true, App->font->getFont(3), { 255,255,255,255 });
+				Unlock();
 			}
 			else
 			{
@@ -137,5 +138,7 @@ void Button::Used()
 		inCooldown = true;
 		cooldown_timer.Start();
 		displayHotkey(true, App->font->getFont(3), { 255,0,0,255 });
+		Lock();
+		setCondition("In cooldown");
 	}
 }
