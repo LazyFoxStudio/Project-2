@@ -23,8 +23,10 @@ float ProgressBar::getProgress() const
 	return progress;
 }
 
-bool ProgressBar::enterCurrentValue(float current_value)
+int ProgressBar::enterCurrentValue(float current_value)
 {
+	int ret = 0;
+
 	float newProgress;
 	if (current_value == 0)
 		newProgress = 0.0f;
@@ -35,11 +37,14 @@ bool ProgressBar::enterCurrentValue(float current_value)
 
 	if (newProgress != progress)
 	{
+		if (newProgress < progress)
+			ret = -1;
+		else
+			ret = 1;
 		progress = newProgress;
-		return true;
 	}
-	else
-		return false;
+	
+	return ret;
 }
 
 void ProgressBar::BlitElement()

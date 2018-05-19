@@ -1241,7 +1241,7 @@ void j1Gui::assignActionButtonHotkey(uint id, SDL_Scancode newHotkey)
 		if (button != nullptr)
 		{
 			Button* prevButton = searchButtonbyHotkey(newHotkey);
-			if (prevButton != nullptr)
+			if (prevButton != nullptr && prevButton != button)
 			{
 				prevButton->setHotkey(button->getHotkey());
 				uint prevId = getIDbyButton(prevButton);
@@ -1254,6 +1254,7 @@ void j1Gui::assignActionButtonHotkey(uint id, SDL_Scancode newHotkey)
 		inGameMenu->actionButtonsHotkeys[id] = newHotkey;
 		inGameMenu->updateActionButtons();
 	}
+
 }
 
 void j1Gui::resetActionButtonHotkeys()
@@ -1278,6 +1279,19 @@ void j1Gui::resetActionButtonHotkeys()
 	getButtonbyId(8)->setHotkey(DEFAULT_HOTKEY_9);
 
 	inGameMenu->updateActionButtons();
+}
+
+void j1Gui::cancelActionButtonsReading()
+{
+	getButtonbyId(0)->cancelReadingHotkey();
+	getButtonbyId(1)->cancelReadingHotkey();
+	getButtonbyId(2)->cancelReadingHotkey();
+	getButtonbyId(3)->cancelReadingHotkey();
+	getButtonbyId(4)->cancelReadingHotkey();
+	getButtonbyId(5)->cancelReadingHotkey();
+	getButtonbyId(6)->cancelReadingHotkey();
+	getButtonbyId(7)->cancelReadingHotkey();
+	getButtonbyId(8)->cancelReadingHotkey();
 }
 
 Button* j1Gui::searchButtonbyHotkey(SDL_Scancode hotkey) const

@@ -79,7 +79,7 @@ void LifeBar::BlitElement()
 
 	SDL_Rect whiteBar = HIT_LIFEBAR_RECT;
 
-	if (bar->enterCurrentValue(life) && !inMenu)
+	if (bar->enterCurrentValue(life) < 0 && !inMenu)
 		bar->full = whiteBar;
 	else if (bar->full.x == whiteBar.x && bar->full.y == whiteBar.y)
 	{

@@ -64,7 +64,7 @@ void Button::displayHotkey(bool display, _TTF_Font* font, SDL_Color color, bool 
 	{
 		if (hotkey_text != nullptr)
 		{
-			childs.clear();
+			childs.remove(hotkey_text);
 			RELEASE(hotkey_text);
 		}
 		

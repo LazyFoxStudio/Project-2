@@ -51,10 +51,12 @@ void Skill::DrawRange()
 			{
 				if ((*item)->IsUnit())
 				{
-					if ((*item)->IsEnemy())
+					if ((*item)->IsEnemy() && (*item)->current_HP>0)
 					{
 						SDL_Rect r = { toDraw.front().x,toDraw.front().y,32,32 };
-						if (SDL_HasIntersection(&r, &(*item)->collider))
+						SDL_Point mouse = { cast_pos.x,cast_pos.y };
+
+						if (SDL_PointInRect(&mouse, &(*item)->collider))
 						{
 							App->render->DrawQuad((*item)->collider, Red, false);
 						}
@@ -187,8 +189,9 @@ bool Skill::Activate()
 					else if (type == NONE_RANGE)
 					{
 						SDL_Rect r = { toDraw.front().x,toDraw.front().y,32,32 };
+						SDL_Point mouse = { cast_pos.x,cast_pos.y };
 
-						if (SDL_HasIntersection(&r, &(*item)->collider))
+						if (SDL_PointInRect(&mouse, &(*item)->collider))
 						{
 							(*item)->current_HP -= damage;
 							ret = true;
