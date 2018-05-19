@@ -88,6 +88,19 @@ public:
 	bool IsMelee()		{ return (type == HERO_2 || type == FOOTMAN || type == KNIGHT || type == GRUNT); }
 	bool IsRanged()		{ return !IsMelee(); }
 	bool HasAoEDamage() { return (type == DRAGON || type == BALLISTA || type == CATAPULT || type == JUGGERNAUT); }
+
+	int GetPriority()const
+	{
+		int ret = position.y;
+
+		if (current_HP <= 0 || type<=BLACKSMITH)
+			ret-= 1000;
+
+		if (type == DRAGON || type == FLYING_MACHINE || type == GRYPHON)
+			ret += 1000;
+
+		return ret;
+	}
 };
 
 #endif

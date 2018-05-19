@@ -89,6 +89,27 @@ bool j1EntityController::Update(float dt)
 		}
 	}
 
+	while (!SpriteQueue.empty())
+	{
+		Entity* aux_ent = SpriteQueue.top();
+
+		if (aux_ent->IsBuilding())
+		{
+			App->render->Blit(aux_ent->texture, aux_ent->position.x, aux_ent->position.y, ((Building*)aux_ent)->current_sprite);
+		}
+		else
+		{
+			SDL_Rect r = ((Unit*)aux_ent)->current_anim->GetCurrentFrame(dt);
+
+			if (((Unit*)aux_ent)->dir == W || ((Unit*)aux_ent)->dir == NW || ((Unit*)aux_ent)->dir == SW)
+				App->render->Blit(aux_ent->texture, aux_ent->position.x - (r.w / 2), aux_ent->position.y - (r.h / 2), &r, true, false, (1.0F), SDL_FLIP_HORIZONTAL);
+			else
+				App->render->Blit(aux_ent->texture, aux_ent->position.x - (r.w / 2), aux_ent->position.y - (r.h / 2), &r);
+		}
+
+		SpriteQueue.pop();
+	}
+
 	if (App->isPaused())
 		return true;
 

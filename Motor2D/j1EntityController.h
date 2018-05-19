@@ -10,6 +10,7 @@
 
 #include <list>
 #include <map>
+#include <queue>
 
 class Squad;
 class Quadtree;
@@ -75,6 +76,14 @@ struct worker
 struct Forest
 {
 	std::list<iPoint> trees;
+};
+
+struct Order
+{
+	bool operator()(const Entity* entity_1, const Entity* entity_2)const
+	{
+		return  entity_1->GetPriority() > entity_2->GetPriority();
+	}
 };
 
 class j1EntityController : public j1Module
@@ -173,6 +182,8 @@ public:
 	std::map<uint, Entity*> DataBase;
 
 	std::list<Forest*> forests;
+
+	std::priority_queue <Entity*, std::vector<Entity*>, Order> SpriteQueue;
 
 	uint last_UID = 0;
 	uint hero_UID = -1;

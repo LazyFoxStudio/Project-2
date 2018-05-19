@@ -343,7 +343,9 @@ void Building::Draw(float dt)
 {
 	if (App->render->CullingCam(position))
 	{
-		App->render->Blit(texture, position.x, position.y, current_sprite);
+		App->entitycontroller->SpriteQueue.push(this);
+
+		//App->render->Blit(texture, position.x, position.y, current_sprite);
 	}
 }
 
