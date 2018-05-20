@@ -3,13 +3,15 @@
 #include "j1Input.h"
 #include "j1EntityController.h"
 #include "j1ParticleController.h"
+#include "j1WaveController.h"
 #include "Hero.h"
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 #include "Squad.h"
 #include "Effects.h"
 
-Skill::Skill(Hero* hero, uint _radius, int _damage, uint _range, uint _cooldown, rangeType _type) : hero(hero), radius(_radius), damage(_damage), range(_range) , cooldown(_cooldown)
+Skill::Skill(Hero* hero, uint _radius, int _damage, int _upgrade, uint _range, uint _cooldown, rangeType _type) : hero(hero), radius(_radius), damage(_damage),upgrade(_upgrade),
+range(_range) , cooldown(_cooldown)
 {
 	switch (type = _type)
 	{
@@ -159,7 +161,7 @@ bool Skill::Activate()
 
 						if (cast_aux.DistanceTo(pos) < radius)
 						{
-							(*item)->current_HP -= damage;
+								(*item)->current_HP -= (damage + GetUpgrade());
 
 							if (type == BUFF)
 							{
@@ -181,7 +183,7 @@ bool Skill::Activate()
 
 							if (SDL_PointInRect(&enemy_pos, &r))
 							{
-								(*item)->current_HP -= damage;
+								(*item)->current_HP -= (damage + GetUpgrade());
 								ret = true;
 							}
 						}
@@ -193,7 +195,7 @@ bool Skill::Activate()
 
 						if (SDL_PointInRect(&mouse, &(*item)->collider))
 						{
-							(*item)->current_HP -= damage;
+							(*item)->current_HP -= (damage + GetUpgrade());
 							ret = true;
 						}
 					}
@@ -206,7 +208,7 @@ bool Skill::Activate()
 					{
 						if (cast_aux.DistanceTo(pos) < radius)
 						{
-							(*item)->current_HP += damage;
+							(*item)->current_HP += (damage + GetUpgrade());
 							App->particle->AddParticle(PHEALINGHERO, (*item)->position, false);
 
 							ret = true;
@@ -249,7 +251,7 @@ bool Skill::Activate()
 
 						if (cast_aux.DistanceTo(pos) < radius)
 						{
-							(*item)->current_HP -= damage;
+							(*item)->current_HP -= (damage + GetUpgrade());
 							ret = true;
 						}
 					}
@@ -265,7 +267,7 @@ bool Skill::Activate()
 
 							if (SDL_PointInRect(&enemy_pos, &r))
 							{
-								(*item)->current_HP -= damage;
+								(*item)->current_HP -= (damage + GetUpgrade());
 								ret = true;
 							}
 						}
@@ -279,7 +281,7 @@ bool Skill::Activate()
 
 						if (cast_aux.DistanceTo(pos) < radius)
 						{
-							(*item)->current_HP += damage;
+							(*item)->current_HP += (damage + GetUpgrade());
 							App->particle->AddParticle(PHEALINGHERO, (*item)->position, false);
 
 							ret = true;
@@ -310,4 +312,15 @@ bool Skill::Activate()
 	
 
 	return ret;
+}
+
+int Skill::GetUpgrade()
+{
+	int ret = upgrade;
+
+	ret *= App->wavecontroller->current_wave / 2;
+
+	LOG("Bonus %d", ret);
+
+	return ret;	
 }

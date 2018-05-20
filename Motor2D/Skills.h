@@ -29,6 +29,7 @@ public:
 
 	uint				radius = 0;
 	int					damage = 0;
+	int					upgrade = 0;
 	uint				range = 0;
 	iPoint				cast_pos = { 0,0 };
 	iPoint				last_cast = { 0,0 };
@@ -37,13 +38,14 @@ public:
 	Color				tile_color;
 	Hero*				hero = nullptr;
 
+
 	bool				going = false;
 	
 	std::list<iPoint>	toDraw;
 
 public:
 	
-	Skill(Hero* hero, uint _radius, int _damage, uint _range, uint _cooldown, rangeType	type);
+	Skill(Hero* hero, uint _radius, int _damage, int _upgrade, uint _range, uint _cooldown, rangeType	type);
 	~Skill() {};
 
 	bool Activate();
@@ -51,29 +53,9 @@ public:
 	void BFS();
 	void Line();
 
+	int GetUpgrade();
+
 	bool Ready() { return timer.ReadSec() >= cooldown; };
 };
-
-//class Shockwave : public Skill
-//{
-//public:
-//	int				radius = 0;
-//	int				damage = 0;
-//	iPoint			position = { 0,0 };
-//	std::list<iPoint> toDraw;
-//	
-//public:
-//	Shockwave(int radius, int damage) : radius(radius), damage(damage) {}
-//	~Shockwave();
-//
-//	void Activate(Hero* hero);
-//	void DrawRange();
-//	void BFS(int Area);
-//	void MakeDamage();
-//
-//	bool Find(std::list<iPoint> list,const iPoint& point);
-//};
-
-//(...)
 
 #endif
