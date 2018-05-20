@@ -80,7 +80,7 @@ bool j1Input::PreUpdate()
 			}				
 			else if (i == SDL_SCANCODE_LCTRL || i == SDL_SCANCODE_C || i == SDL_SCANCODE_HOME || i == SDL_SCANCODE_HOME
 				|| i == SDL_SCANCODE_END || i == SDL_SCANCODE_LEFT || i == SDL_SCANCODE_RIGHT || i == SDL_SCANCODE_BACKSPACE
-				|| i == SDL_SCANCODE_DELETE || i == SDL_SCANCODE_RETURN)
+				|| i == SDL_SCANCODE_DELETE || i == SDL_SCANCODE_RETURN || i == SDL_SCANCODE_UP || i == SDL_SCANCODE_DOWN)
 			{
 				if (keys[i] == 1)
 				{

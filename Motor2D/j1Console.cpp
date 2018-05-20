@@ -72,6 +72,7 @@ bool j1Console::Update(float dt)
 		editable_text.insert(textpos, App->input->text_buffer);
 		textpos += App->input->text_buffer.length();
 		App->input->text_buffer.clear();
+		pos_in_written_commands = 0;
 		LOG("%s", editable_text.c_str());
 		}
 
@@ -106,6 +107,39 @@ bool j1Console::Update(float dt)
 			Usefunction();
 			textpos = 0;
 		}
+		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+		{
+			std::string str;
+			 if(pos_in_written_commands >= 0)
+			{
+				str = written_commands[written_commands.size()-pos_in_written_commands - 1];
+			}
+
+			if (pos_in_written_commands+1 < written_commands.size())
+			{
+				++pos_in_written_commands;
+			}
+			editable_text = str.c_str();
+			textpos = editable_text.size();
+			
+		}
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+		{
+			std::string str;
+			if (pos_in_written_commands >= 0)
+			{
+				str = written_commands[written_commands.size() - pos_in_written_commands - 1];
+			}
+
+			if (pos_in_written_commands > 0)
+			{
+				--pos_in_written_commands;
+			}
+			editable_text = str.c_str();
+			textpos = editable_text.size();
+
+		}
+
 	}
 
 	return true;
@@ -167,6 +201,7 @@ bool j1Console::Usefunction(/*UIelement* element*/)
 
 	LOG(new_string.c_str());
 	logs.push_back(new_string);
+	written_commands.push_back(new_string);
 	//we gonna need to analyze this string
 
 	std::string maybe;

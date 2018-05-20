@@ -1,4 +1,5 @@
 #include "p2Animation.h"
+#include "j1App.h"
 
 Animation::Animation(Animation& anim)
 {
@@ -22,7 +23,8 @@ void Animation::PushBack(const SDL_Rect& rect)
 SDL_Rect& Animation::GetCurrentFrame(float dt)
 {
 	float tmp = speed;
-	current_frame += tmp * dt;
+	if (!App->isPaused())
+		current_frame += tmp * dt;
 
 	if (current_frame < 0)
 	{

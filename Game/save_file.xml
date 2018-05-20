@@ -5,56 +5,59 @@
 	<textures />
 	<audio>
 		<musicVolumeModifier value="1" />
-		<sfxVolumeModifier value="1" />
+		<sfxVolumeModifier value="0.5" />
 	</audio>
 	<pathfinding />
 	<Console />
 	<map />
 	<fonts />
 	<scene>
-		<gold value="450" />
-		<wood value="400" />
+		<gold value="93050" />
+		<wood value="90950" />
 		<oil value="0" />
 	</scene>
 	<entitycontroller>
 		<Upgrades>
-			<upgrades_1 value="0" />
-			<upgrades_2 value="0" />
-			<upgrades_3 value="0" />
-			<upgrades_4 value="0" />
-			<upgrades_5 value="0" />
-			<upgrades_6 value="0" />
+			<upgrades_1 value="1" />
+			<upgrades_2 value="1" />
+			<upgrades_3 value="1" />
+			<upgrades_4 value="1" />
+			<upgrades_5 value="1" />
+			<upgrades_6 value="1" />
 		</Upgrades>
 		<Units>
-			<Hero type="10" hp="158" x="2058.08203" y="1743.99255" />
-			<squad type_enum="19" type="AXE_THROWER">
-				<unit hp="40" pos_x="1953.13342" pos_y="1031.38684" direction="4" />
-				<unit hp="40" pos_x="1987.76489" pos_y="995.281738" direction="4" />
-				<unit hp="40" pos_x="1952.57495" pos_y="996.191223" direction="4" />
+			<Hero type="10" hp="250" x="2113.88867" y="1937.09534" />
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="90" pos_x="2144" pos_y="3488" direction="4" />
+				<unit hp="90" pos_x="2144" pos_y="3520" direction="4" />
+				<unit hp="90" pos_x="2144" pos_y="3552" direction="4" />
+				<unit hp="90" pos_x="2176" pos_y="3488" direction="4" />
+				<unit hp="90" pos_x="2176" pos_y="3552" direction="4" />
 			</squad>
 			<squad type_enum="18" type="GRUNT">
-				<unit hp="90" pos_x="3552" pos_y="1792" direction="4" />
-				<unit hp="90" pos_x="3552" pos_y="1824" direction="4" />
-				<unit hp="90" pos_x="3552" pos_y="1856" direction="4" />
-				<unit hp="90" pos_x="3584" pos_y="1792" direction="4" />
-				<unit hp="90" pos_x="3584" pos_y="1856" direction="4" />
-			</squad>
-			<squad type_enum="18" type="GRUNT">
-				<unit hp="90" pos_x="2112" pos_y="224" direction="4" />
-				<unit hp="90" pos_x="2112" pos_y="256" direction="4" />
-				<unit hp="90" pos_x="2112" pos_y="288" direction="4" />
-				<unit hp="90" pos_x="2144" pos_y="224" direction="4" />
-				<unit hp="90" pos_x="2144" pos_y="288" direction="4" />
+				<unit hp="90" pos_x="352" pos_y="1920" direction="4" />
+				<unit hp="90" pos_x="352" pos_y="1952" direction="4" />
+				<unit hp="90" pos_x="352" pos_y="1984" direction="4" />
+				<unit hp="90" pos_x="384" pos_y="1920" direction="4" />
+				<unit hp="90" pos_x="384" pos_y="1984" direction="4" />
 			</squad>
 		</Units>
 		<Buildings>
-			<town_hall hp="203" />
+			<town_hall hp="300" />
+			<Building hp="250" pos_x="1696" pos_y="1760" type_enum="3" workers="0" type="LUMBER_MILL" />
+			<Building hp="22" pos_x="2112" pos_y="1824" type_enum="4" workers="5" type="FARM" />
+			<Building hp="120" pos_x="1984" pos_y="1824" type_enum="6" workers="0" type="TURRET" />
+			<Building hp="200" pos_x="1856" pos_y="1888" type_enum="2" workers="0" type="BARRACKS" />
+			<Building hp="200" pos_x="1696" pos_y="2080" type_enum="7" workers="0" type="GNOME_HUT" />
+			<Building hp="200" pos_x="2176" pos_y="2144" type_enum="9" workers="0" type="BLACKSMITH" />
+			<Building hp="300" pos_x="2336" pos_y="2080" type_enum="5" workers="0" type="MINE" />
+			<Building hp="200" pos_x="1952" pos_y="2144" type_enum="8" workers="0" type="UNKNOWN BUILDING" />
 		</Buildings>
 		<hasBuilt>
-			<LumberMill built="false" />
-			<Barracks built="false" />
-			<Farm built="false" />
-			<Mine built="false" />
+			<LumberMill built="true" />
+			<Barracks built="true" />
+			<Farm built="true" />
+			<Mine built="true" />
 			<GnomeHut built="false" />
 		</hasBuilt>
 	</entitycontroller>
@@ -66,14 +69,14 @@
 	<wavecontroller>
 		<wave value="2" />
 		<points value="3" />
-		<wave_timer value="0.00722984411" />
+		<wave_timer value="0.00894124433" />
 		<next_wave>
-			<enemies type="AXE_THROWER" type_enum="19" x="2177" y="3549" />
-			<enemies type="AXE_THROWER" type_enum="19" x="2154" y="256" />
-			<enemies type="AXE_THROWER" type_enum="19" x="410" y="1982" />
+			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
+			<enemies type="GRUNT" type_enum="18" x="2177" y="3549" />
+			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
 		</next_wave>
 	</wavecontroller>
 	<renderer>
-		<camera x="-1166" y="-1422" />
+		<camera x="-1144" y="-1669" />
 	</renderer>
 </game_state>

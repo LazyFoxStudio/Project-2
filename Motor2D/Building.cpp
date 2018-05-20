@@ -75,13 +75,6 @@ Building::~Building()
 
 bool Building::Update(float dt)
 {
-	//minimap_
-	if (App->gui->minimap)
-	{
-		if (ex_state != DESTROYED)	App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
-		else						App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
-	}
-
 	if (current_HP <= 0 && ex_state != DESTROYED)   Destroy();
 
 	switch (ex_state)
@@ -347,6 +340,11 @@ void Building::Draw(float dt)
 
 		//App->render->Blit(texture, position.x, position.y, current_sprite);
 	}
+
+	if (ex_state != DESTROYED)
+		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
+	else
+		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
 }
 
 void Building::turretBehavior()
