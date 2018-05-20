@@ -3428,7 +3428,7 @@
           <Animation>
             <!-- 20- AttackingSouth-->
             <rows value="0"/>
-            <columns value="4"/>
+            <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="4"/>
             <speed value="0"/>

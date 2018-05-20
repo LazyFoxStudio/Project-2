@@ -188,8 +188,7 @@ Resolution of the screen: 1680x 1050y
 		<color r="255" g="255" b="255" a="255"/>
 		<interactive value="false"/>
 	</text>
-
-   </menu>
+  </menu>
     
 	<!-- MAIN_MENU  -->
     <menu type="0" active="true">
