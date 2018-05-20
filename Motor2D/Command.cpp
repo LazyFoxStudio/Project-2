@@ -135,14 +135,18 @@ bool Attack::OnUpdate(float dt)
 
 		if (SDL_HasIntersection(&r, &enemy->collider) && (!unit->IsMelee() || unit->position.DistanceTo({ (float)current_target.x, (float)current_target.y }) < 5))
 		{
+
 			if (type == ATTACKING_MOVETO)
 				type = ATTACK; 
-			else if (unit->current_anim->justFinished())
+
+			else if ((int)unit->current_anim->GetCurrentFrameinFloat() == unit->current_anim->GetLastFrameinInt()-2 && unit->atk_done == false)
 			{
+
 				if(App->render->CullingCam(unit->position))
 					App->entitycontroller->HandleAttackSFX(unit->type, 30);
 
 				App->entitycontroller->HandleParticles(unit->type, unit->position, { enemy->position.x + (enemy->collider.w / 2), enemy->position.y + (enemy->collider.h / 2) });
+
 
 				if (unit->HasAoEDamage())
 					AoE_Damage(enemy);
@@ -153,8 +157,12 @@ bool Attack::OnUpdate(float dt)
 					if (enemy->current_HP < 0) { enemy->Destroy(); current_target.SetToZero(); }
 					else					   callRetaliation(enemy, unit->squad->UID);
 				}
+				unit->atk_done = true;
 			}
-
+			if (unit->current_anim->justFinished())
+			{
+				unit->atk_done = false;
+			}
 			unit->lookAt(enemy->position - unit->position);
 			return true;
 		}
@@ -170,6 +178,7 @@ bool Attack::OnUpdate(float dt)
 
 			moveToTarget(enemy->position);
 		}
+
 	}
 	else Stop();
 
@@ -452,8 +461,6 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 
 	return true;
 }
-
-
 
 bool AttackingMoveToSquadFlying::OnUpdate(float dt)
 {

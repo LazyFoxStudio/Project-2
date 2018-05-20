@@ -44,6 +44,7 @@ public:
 	std::list<Effect*> effects;
 	std::deque<Command*> commands;
 	j1PerfTimer anim_timer;
+	bool atk_done = false;
 	
 
 public:
