@@ -32,6 +32,7 @@
 #include "Minimap.h"
 #include "UI_Slider.h"
 #include "UI_TextBox.h"
+#include "UI_UnlockDisplay.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -66,6 +67,8 @@ bool j1Gui::Start()
 	cooldownsDisplay = new CooldownsDisplay();
 	cooldownsDisplay->active = true;
 	workersManager = new FarmWorkersManager();
+	unlockDisplay = new UnlockDisplay();
+
 	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
 	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
 	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
@@ -251,6 +254,10 @@ bool j1Gui::PostUpdate()
 	//Draw cooldowns display
 	if(cooldownsDisplay->active)
 		cooldownsDisplay->BlitElement();
+
+	//Draw unlockments
+	if (unlockDisplay != nullptr)
+		unlockDisplay->BlitElement();
 
 	//Draw Debug
 	if (UI_Debug)

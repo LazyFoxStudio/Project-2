@@ -25,6 +25,7 @@
 #include "j1Tutorial.h"
 #include "UI_CooldownsDisplay.h"
 #include "UI_TroopCreationQueue.h"
+#include "UI_UnlockDisplay.h"
 #include <algorithm>
 
 #define SQUAD_MAX_FRAMETIME 0.1f
@@ -211,31 +212,59 @@ void j1EntityController::buildingCalculations()
 				{
 					//Hardcoded
 					Button* barracks = App->gui->GetActionButton(5);
-					barracks->Unlock();					
+					if (barracks->isLocked())
+					{
+						barracks->Unlock();
+						App->gui->unlockDisplay->unlockedBuilding(barracks->section, "Barracks");
+					}
 					Button* farms = App->gui->GetActionButton(7);
-					farms->Unlock();
+					if (farms->isLocked())
+					{
+						farms->Unlock();
+						App->gui->unlockDisplay->unlockedBuilding(farms->section, "Farm");
+					}
 					Button* mine = App->gui->GetActionButton(22);
-					mine->Unlock();
+					if (mine->isLocked())
+					{
+						mine->Unlock();
+						App->gui->unlockDisplay->unlockedBuilding(mine->section, "Mine");
+					}
 				}
 				if (to_build_type == BARRACKS && !App->tutorial->doingTutorial)
 				{
 					Button* hut = App->gui->GetActionButton(24);
-					hut->Unlock();
+					if (hut->isLocked())
+					{
+						hut->Unlock();
+						App->gui->unlockDisplay->unlockedBuilding(hut->section, "Gnome Hut");
+					}
 				}
 				if (to_build_type == FARM && !App->tutorial->doingTutorial)
 				{
 					Button* turret = App->gui->GetActionButton(23);
-					turret->Unlock();
+					if (turret->isLocked())
+					{
+						turret->Unlock();
+						App->gui->unlockDisplay->unlockedBuilding(turret->section, "Turret");
+					}
 				}
 				if (to_build_type == MINE && !App->tutorial->doingTutorial)
 				{
 					Button* church = App->gui->GetActionButton(25);
-					church->Unlock();
+					if (church->isLocked())
+					{
+						church->Unlock();
+						App->gui->unlockDisplay->unlockedBuilding(church->section, "Church");
+					}
 				}
 				if (to_build_type == GNOME_HUT && !App->tutorial->doingTutorial)
 				{
 					Button* blacksmith = App->gui->GetActionButton(26);
-					blacksmith->Unlock();
+					if (blacksmith->isLocked())
+					{
+						blacksmith->Unlock();
+						App->gui->unlockDisplay->unlockedBuilding(blacksmith->section, "Blacksmith");
+					}
 				}
 				App->gui->warningMessages->hideMessage(NO_TREES);
 				App->entitycontroller->SpendCost(to_build_type);

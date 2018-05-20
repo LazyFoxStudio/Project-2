@@ -36,6 +36,7 @@ class TroopCreationQueue;
 class FarmWorkersManager;
 class Minimap;
 class Slider;
+class UnlockDisplay;
 
 enum event_type
 {
@@ -174,6 +175,7 @@ public:
 	CooldownsDisplay* cooldownsDisplay = nullptr;
 	FarmWorkersManager* workersManager = nullptr;
 	Minimap* minimap = nullptr;
+	UnlockDisplay* unlockDisplay = nullptr;
 
 private:
 

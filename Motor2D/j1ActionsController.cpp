@@ -14,6 +14,7 @@
 #include "j1Tutorial.h"
 #include "UI_CooldownsDisplay.h"
 #include "UI_Button.h"
+#include "UI_UnlockDisplay.h"
 
 bool j1ActionsController::Update(float dt)
 {
@@ -291,15 +292,12 @@ bool j1ActionsController::Update(float dt)
 			doingAction = false;
 			break;
 		case NEW_GAME:	
-			if (App->tutorial->active)
-				App->tutorial->startTutorial();
 			App->scene->active = true;
 			App->entitycontroller->active = true;
 			App->wavecontroller->active = true;
 			App->uiscene->toggleMenu(false, START_MENU);
 			App->uiscene->toggleMenu(true, INGAME_MENU);				
 			App->scene->Start_game();	
-			App->tutorial->stopTutorial();
 			doingAction = false;
 			App->pauseGame();
 			break;
@@ -370,6 +368,8 @@ bool j1ActionsController::Update(float dt)
 			App->tutorial->taskCompleted(CHOOSE_HERO);
 			App->entitycontroller->addHero(iPoint(1950, 2100), HERO_1);
 			App->uiscene->toggleMenu(false, HERO_SELECTION_MENU);
+			if (!App->tutorial->doingTutorial)
+				App->gui->unlockDisplay->unlockedBuilding(App->gui->GetActionButton(6)->section, "Lumber Mill");
 			App->resumeGame();
 			doingAction = false;
 			break;
@@ -377,6 +377,8 @@ bool j1ActionsController::Update(float dt)
 			App->tutorial->taskCompleted(CHOOSE_HERO);
 			App->entitycontroller->addHero(iPoint(1950, 2100), HERO_2);
 			App->uiscene->toggleMenu(false, HERO_SELECTION_MENU);
+			if (!App->tutorial->doingTutorial)
+				App->gui->unlockDisplay->unlockedBuilding(App->gui->GetActionButton(6)->section, "Lumber Mill");
 			App->resumeGame();
 			doingAction = false;
 			break;

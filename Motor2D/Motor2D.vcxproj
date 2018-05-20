@@ -127,6 +127,7 @@
     <ClCompile Include="UI_Text.cpp" />
     <ClCompile Include="UI_TextBox.cpp" />
     <ClCompile Include="UI_TroopCreationQueue.cpp" />
+    <ClCompile Include="UI_UnlockDisplay.cpp" />
     <ClCompile Include="UI_WarningMessages.cpp" />
     <ClCompile Include="UI_Window.cpp" />
     <ClCompile Include="UI_WorkersDisplay.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="UI_Text.h" />
     <ClInclude Include="UI_TextBox.h" />
     <ClInclude Include="UI_TroopCreationQueue.h" />
+    <ClInclude Include="UI_UnlockDisplay.h" />
     <ClInclude Include="UI_WarningMessages.h" />
     <ClInclude Include="UI_Window.h" />
     <ClInclude Include="UI_WorkersDisplay.h" />

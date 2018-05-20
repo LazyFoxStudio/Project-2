@@ -229,7 +229,7 @@ void j1Scene::Start_game(bool continuing)
 	if (!App->tutorial->active)
 		Close_game();
 
-	if (App->tutorial->doingTutorial)
+	if (App->tutorial->active && !continuing)
 	{
 		App->render->camera.x = 0;
 		App->render->camera.y = -3200;

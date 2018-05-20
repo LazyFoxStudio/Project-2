@@ -703,6 +703,6 @@ Resolution of the screen: 1680x 1050y
 			<OnClick x="5" y="491" w="121" h="45"/>
 		</button>
 	</menu>
-	
+		
 </config>
 
