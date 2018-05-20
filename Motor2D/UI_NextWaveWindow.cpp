@@ -124,7 +124,7 @@ bool NextWaveWindow::createIncomingEnemy(Type type, int amount)
 		enemyIcon->image->parent = this;
 		enemiesIcons.push_back(enemyIcon);
 
-		Text* num = new Text(("x" + std::to_string(amount * App->entitycontroller->getUnitFromDB(type)->squad_members)), firstIcon_pos.x + (icons_offset.x*counterX) + 80, firstIcon_pos.y + (icons_offset.y*counterY) + 10, App->font->fonts.front(), { 255,255,255,255 }, nullptr);
+		Text* num = new Text(("x" + std::to_string(amount * App->entitycontroller->getUnitFromDB(type)->squad_members)), firstIcon_pos.x + (icons_offset.x*counterX) + 78, firstIcon_pos.y + (icons_offset.y*counterY) + 15, App->font->getFont(11), { 255,255,255,255 }, nullptr);
 		num->parent = this;
 		squads.push_back(num);
 		

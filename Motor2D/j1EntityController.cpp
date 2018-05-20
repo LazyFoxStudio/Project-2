@@ -75,7 +75,7 @@ bool j1EntityController::Update(float dt)
 		{
 			colliderQT->insert(*it);
 
-			if (!App->scene->toRestart)
+			if (!App->scene->toRestart && !App->isPaused())
 			{
 				if (!(*it)->Update(dt))	entities_to_destroy.push_back((*it)->UID);
 			}
@@ -1213,6 +1213,7 @@ void j1EntityController::buildingProcessDraw()
 	else							App->gui->warningMessages->hideMessage(NO_RESOURCES);
 
 	App->gui->warningMessages->hideMessage(NO_TREES);
+	App->gui->warningMessages->hideMessage(NO_MINE);
 
 	if (to_build_type != MINE)
 	{

@@ -71,6 +71,14 @@ void Unit::Draw(float dt)
 		else
 			App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r);*/
 	}
+
+	//minimap
+	if (IsEnemy())
+		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
+	else if (IsHero())
+		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,75,75 }, White);
+	else
+		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
 	
 }
 
@@ -129,14 +137,6 @@ bool Unit::Update(float dt)
 		if (commands.front()->state == FINISHED) commands.pop_front();
 	}
 	else if (squad->commander_pos + squad->getOffset(UID) != mov_target) mov_target = squad->commander_pos + squad->getOffset(UID);
-
-	//minimap_
-	if (App->gui->minimap)
-	{
-		if (IsEnemy()) App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
-		else		   App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
-	}
-
 
 	Move(dt);	
 

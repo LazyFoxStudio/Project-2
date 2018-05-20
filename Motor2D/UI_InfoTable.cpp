@@ -24,7 +24,7 @@ void InfoTable::newSelection()
 			int counterY = 1;
 			for (std::list<InfoLineData*>::iterator it_l = data->linesData.begin(); it_l != data->linesData.end(); it_l++)
 			{
-				lines.push_back(new InfoLine((*it_l), position.x + 10, position.y + (counterY*LINES_SEPARATION))); //MEMLEAK
+				lines.push_back(new InfoLine((*it_l), position.x + 5, position.y + (counterY*LINES_SEPARATION))); //MEMLEAK
 				counterY++;
 			}
 		}
