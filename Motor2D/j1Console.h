@@ -36,6 +36,8 @@ public:
 	bool Load(pugi::xml_node& node);
 
 	std::list<std::string> logs;
+	std::vector<std::string> written_commands;
+	int pos_in_written_commands = 0;
 	
 	//text being written in the console
 	std::string editable_text;
