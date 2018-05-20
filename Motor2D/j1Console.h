@@ -45,6 +45,8 @@ public:
 	function* AddFunction(const char*, j1Module* ,int, int, const char* = "");
 
 	function* help;
+	function* help_units;
+	function* help_buildings;
 
 	bool Console_Interaction(std::string& function, std::vector<int>& arguments);
 

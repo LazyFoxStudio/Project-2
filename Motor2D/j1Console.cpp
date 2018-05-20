@@ -19,6 +19,8 @@ j1Console::j1Console()
 bool j1Console::Start()
 {
 	help = AddFunction("help", this, 0, 0);
+	help_units = AddFunction("help_units", this, 0, 0);
+	help_buildings = AddFunction("help_buildings", this, 0, 0);
 
 	return true;
 }
@@ -230,7 +232,7 @@ function* j1Console::AddFunction(const char* name, j1Module* callback, int min_a
 
 bool j1Console::Console_Interaction(std::string& _function, std::vector<int>& arguments)
 {
-	if (_function == "help")
+	if (_function == help->name.c_str())
 	{
 		logs.push_back("The avalible commands are the following:");
 		for (std::list<function*>::iterator it = functions.begin(); it != functions.end(); it++)
@@ -245,6 +247,61 @@ bool j1Console::Console_Interaction(std::string& _function, std::vector<int>& ar
 			LOG("%s", (*it)->name.c_str());
 		}
 		logs.push_back("");
+	}
+
+	if (_function == help_units->name.c_str())
+	{
+		logs.push_back("The units numbers are:");
+		//logs.push_back("1 : TOWN_HALL");
+		//logs.push_back("2 : BARRACKS");
+		//logs.push_back("3 : LUMBER_MILL");
+		//logs.push_back("4 : FARM");
+		//logs.push_back("5 : MINE");
+		//logs.push_back("6 : TURRET");
+		//logs.push_back("7 : GNOME_HUT");
+		//logs.push_back("8 : CHURCH");
+		//logs.push_back("9 : BLACKSMITH");
+		logs.push_back("10 : HERO_1");
+		logs.push_back("11 : HERO_2");
+		logs.push_back("12 : FOOTMAN");
+		logs.push_back("13 : ARCHER");
+		logs.push_back("14 : KNIGHT");
+		logs.push_back("15 : GRYPHON");
+		logs.push_back("16 : BALLISTA");
+		logs.push_back("17 : FLYING_MACHINE");
+		logs.push_back("18 : GRUNT");
+		logs.push_back("19 : AXE_THROWER");
+		logs.push_back("20 : DEATH_KNIGHT");
+		logs.push_back("21 : DRAGON");
+		logs.push_back("22 : CATAPULT");
+		logs.push_back("23 : JUGGERNAUT");
+	}
+	if (_function == help_buildings->name.c_str())
+	{
+		logs.push_back("The buildings numbers are:");
+		logs.push_back("1 : TOWN_HALL");
+		logs.push_back("2 : BARRACKS");
+		logs.push_back("3 : LUMBER_MILL");
+		logs.push_back("4 : FARM");
+		logs.push_back("5 : MINE");
+		logs.push_back("6 : TURRET");
+		logs.push_back("7 : GNOME_HUT");
+		logs.push_back("8 : CHURCH");
+		logs.push_back("9 : BLACKSMITH");
+		//logs.push_back("10 : HERO_1");
+		//logs.push_back("11 : HERO_2");
+		//logs.push_back("12 : FOOTMAN");
+		//logs.push_back("13 : ARCHER");
+		//logs.push_back("14 : KNIGHT");
+		//logs.push_back("15 : GRYPHON");
+		//logs.push_back("16 : BALLISTA");
+		//logs.push_back("17 : FLYING_MACHINE");
+		//logs.push_back("18 : GRUNT");
+		//logs.push_back("19 : AXE_THROWER");
+		//logs.push_back("20 : DEATH_KNIGHT");
+		//logs.push_back("21 : DRAGON");
+		//logs.push_back("22 : CATAPULT");
+		//logs.push_back("23 : JUGGERNAUT");
 	}
 	return true;
 }
