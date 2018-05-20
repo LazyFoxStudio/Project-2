@@ -159,10 +159,12 @@ bool Attack::OnUpdate(float dt)
 				}
 				unit->atk_done = true;
 			}
-			if (unit->current_anim->justFinished())
+			else if (unit->current_anim->justFinished())
 			{
 				unit->atk_done = false;
 			}
+				
+			
 			unit->lookAt(enemy->position - unit->position);
 			return true;
 		}
