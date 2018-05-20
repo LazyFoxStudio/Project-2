@@ -161,7 +161,7 @@ bool Skill::Activate()
 
 						if (cast_aux.DistanceTo(pos) < radius)
 						{
-							(*item)->current_HP -= (damage + GetUpgrade());
+								(*item)->current_HP -= (damage + GetUpgrade());
 
 							if (type == BUFF)
 							{

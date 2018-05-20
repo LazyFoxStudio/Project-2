@@ -2,6 +2,7 @@
 #include "j1Render.h"
 #include "UI_Text.h"
 #include "j1Fonts.h"
+#include "UI_Button.h"
 
 UI_element::~UI_element()
 {
@@ -157,9 +158,17 @@ void UI_element::setCondition(std::string condition)
 void UI_element::Lock()
 {
 	state = LOCKED;
+	if (this->element_type == BUTTON)
+	{
+		((Button*)this)->displayHotkey(true, App->font->getFont(3), { 255,0,0,255 });
+	}
 }
 
 void UI_element::Unlock()
 {
 	state = STANDBY;
+	if (this->element_type == BUTTON)
+	{
+		((Button*)this)->displayHotkey(true, App->font->getFont(3), { 255,255,255,255 });
+	}
 }
