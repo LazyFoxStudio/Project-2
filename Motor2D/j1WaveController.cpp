@@ -121,6 +121,7 @@ bool j1WaveController::CleanUp()
 {
 	spawns.clear();
 	costs.clear();
+
 	return true;
 }
 

@@ -97,7 +97,7 @@ public:
 			ret-= 1000;
 
 		if (type == DRAGON || type == FLYING_MACHINE || type == GRYPHON)
-			ret += 1000;
+			ret += 2000;
 
 		return ret;
 	}

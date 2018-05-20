@@ -1068,15 +1068,15 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 
 	if (type == HERO_1)
 	{
-		hero->skill_one = new Skill(hero, 3, 80, 300, MAGE_ABILITY_1_COOLDOWN, AREA);		//Icicle Crash
-		hero->skill_two = new Skill(hero, 0, 290, 700, MAGE_ABILITY_2_COOLDOWN, NONE_RANGE);	//Overflow
-		hero->skill_three = new Skill(hero, 0, 200, 200, MAGE_ABILITY_3_COOLDOWN, LINE);		//Dragon Breath
+		hero->skill_one = new Skill(hero, 3, 80,5, 300, MAGE_ABILITY_1_COOLDOWN, AREA);		//Icicle Crash
+		hero->skill_two = new Skill(hero, 0, 290,5, 700, MAGE_ABILITY_2_COOLDOWN, NONE_RANGE);	//Overflow
+		hero->skill_three = new Skill(hero, 0, 200,5, 200, MAGE_ABILITY_3_COOLDOWN, LINE);		//Dragon Breath
 	}
 	if (type == HERO_2)
 	{
-		hero->skill_one = new Skill(hero, 3, 70, 3000000, PALADIN_ABILITY_1_COOLDOWN, PLACE);	//Consecration
-		hero->skill_two = new Skill(hero, 3, 10, 700, PALADIN_ABILITY_2_COOLDOWN, HEAL);		//Circle of Light
-		hero->skill_three = new Skill(hero, 3, 0, 3000000, PALADIN_ABILITY_3_COOLDOWN, BUFF);	//Honor of the pure
+		hero->skill_one = new Skill(hero, 3, 70,5, 3000000, PALADIN_ABILITY_1_COOLDOWN, PLACE);	//Consecration
+		hero->skill_two = new Skill(hero, 3, 10,5, 700, PALADIN_ABILITY_2_COOLDOWN, HEAL);		//Circle of Light
+		hero->skill_three = new Skill(hero, 3, 0,5, 3000000, PALADIN_ABILITY_3_COOLDOWN, BUFF);	//Honor of the pure
 	}
 
 	App->gui->createLifeBar(hero);

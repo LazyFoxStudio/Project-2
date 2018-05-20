@@ -62,6 +62,7 @@ public:
 	std::list<NextWave*> next_wave;
 	
 	std::vector<fPoint> spawns;
-	std::vector<int> costs;
+	std::vector<int>	costs;
+
 };	
 #endif
