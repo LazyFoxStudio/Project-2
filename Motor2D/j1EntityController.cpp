@@ -26,6 +26,7 @@
 #include "UI_CooldownsDisplay.h"
 #include "UI_TroopCreationQueue.h"
 #include "UI_UnlockDisplay.h"
+#include "j1Fonts.h"
 #include <algorithm>
 
 #define SQUAD_MAX_FRAMETIME 0.1f
@@ -1071,12 +1072,20 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 		hero->skill_one = new Skill(hero, 3, 80, 300, MAGE_ABILITY_1_COOLDOWN, AREA);		//Icicle Crash
 		hero->skill_two = new Skill(hero, 0, 290, 700, MAGE_ABILITY_2_COOLDOWN, NONE_RANGE);	//Overflow
 		hero->skill_three = new Skill(hero, 0, 200, 200, MAGE_ABILITY_3_COOLDOWN, LINE);		//Dragon Breath
+		App->gui->GetActionButton(18)->Lock();
+		App->gui->GetActionButton(18)->setCondition("Unlocked at wave 5");
+		App->gui->GetActionButton(19)->Lock();
+		App->gui->GetActionButton(19)->setCondition("Unlocked at wave 10");
 	}
 	if (type == HERO_2)
 	{
 		hero->skill_one = new Skill(hero, 3, 70, 3000000, PALADIN_ABILITY_1_COOLDOWN, PLACE);	//Consecration
 		hero->skill_two = new Skill(hero, 3, 10, 700, PALADIN_ABILITY_2_COOLDOWN, HEAL);		//Circle of Light
 		hero->skill_three = new Skill(hero, 3, 0, 3000000, PALADIN_ABILITY_3_COOLDOWN, BUFF);	//Honor of the pure
+		App->gui->GetActionButton(34)->Lock();
+		App->gui->GetActionButton(34)->setCondition("Unlocked at wave 5");
+		App->gui->GetActionButton(35)->Lock();
+		App->gui->GetActionButton(35)->setCondition("Unlocked at wave 10");
 	}
 
 	App->gui->createLifeBar(hero);

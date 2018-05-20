@@ -9,6 +9,9 @@
 #include "Minimap.h"
 #include "UI_NextWaveWindow.h"
 #include "j1Tutorial.h"
+#include "UI_Button.h"
+#include "UI_UnlockDisplay.h"
+#include "j1Fonts.h"
 
 #include <time.h>
 
@@ -174,6 +177,34 @@ void j1WaveController::Generate_Wave()
 			AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->getCommander(), TOWN_HALL_POS);
 			new_atk_order->flow_field = flow_field;
 			squad->commands.push_back(new_atk_order);
+		}
+	}
+
+	//Unlock hero abilities
+	if (current_wave == 5)
+	{
+		if (App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID)->type == HERO_1)
+		{
+			App->gui->GetActionButton(18)->Unlock();
+			App->gui->unlockDisplay->unlockedAbility(App->gui->GetActionButton(18)->section, "Overflow");
+		}
+		else
+		{
+			App->gui->GetActionButton(34)->Unlock();
+			App->gui->unlockDisplay->unlockedAbility(App->gui->GetActionButton(34)->section, "Circle of light");
+		}
+	}
+	else if (current_wave == 10)
+	{
+		if (App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID)->type == HERO_1)
+		{
+			App->gui->GetActionButton(19)->Unlock();
+			App->gui->unlockDisplay->unlockedAbility(App->gui->GetActionButton(19)->section, "Dragon Breath");
+		}
+		else
+		{
+			App->gui->GetActionButton(35)->Unlock();
+			App->gui->unlockDisplay->unlockedAbility(App->gui->GetActionButton(35)->section, "Honor of the pure");
 		}
 	}
 
