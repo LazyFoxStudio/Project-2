@@ -100,6 +100,7 @@ public:
 
 	void Lock();
 	void Unlock();
+	bool isLocked() const { return (state == LOCKED || state == LOCKED_MOUSEOVER); }
 
 public:
 

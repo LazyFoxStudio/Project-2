@@ -10,6 +10,7 @@
 #include "j1WaveController.h"
 #include "j1EntityController.h"
 #include "UI_Button.h"
+#include "UI_UnlockDisplay.h"
 
 j1Tutorial::j1Tutorial()
 {
@@ -206,11 +207,17 @@ void j1Tutorial::stopTutorial(bool skip)
 		Button* turret = App->gui->GetActionButton(23);
 		if (!skip || tutorialDone)
 		{			
-			barracks->Unlock();			
-			farms->Unlock();			
+			App->gui->unlockDisplay->unlockedBuilding(lumber->section, "Lumber Mill");
+			barracks->Unlock();		
+			App->gui->unlockDisplay->unlockedBuilding(barracks->section, "Barracks");
+			farms->Unlock();
+			App->gui->unlockDisplay->unlockedBuilding(farms->section, "Farm");
 			mine->Unlock();
+			App->gui->unlockDisplay->unlockedBuilding(mine->section, "Mine");
 			hut->Unlock();
+			App->gui->unlockDisplay->unlockedBuilding(hut->section, "Gnome Hut");
 			turret->Unlock();
+			App->gui->unlockDisplay->unlockedBuilding(turret->section, "Turret");
 		}
 		else
 		{

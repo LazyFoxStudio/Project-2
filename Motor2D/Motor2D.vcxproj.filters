@@ -166,6 +166,9 @@
     <ClCompile Include="UI_Slider.cpp">
       <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClCompile>
+    <ClCompile Include="UI_UnlockDisplay.cpp">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -345,6 +348,9 @@
     </ClInclude>
     <ClInclude Include="Unit.h">
       <Filter>Desenvolupament  ========\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_UnlockDisplay.h">
+      <Filter>Desenvolupament  ========\GUI\Compund Elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

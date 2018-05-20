@@ -189,7 +189,7 @@ bool j1UIScene::OnUIEvent(UI_element* element, event_type event_type)
 		else if (event_type == MOUSE_RIGHT_RELEASE)
 		{}
 	}
-	else if (element->clickAction >= 13 && element->clickAction <= 15)
+	else if ( element->clickAction == 13 || (element->clickAction == 14 && App->wavecontroller->current_wave >= 5) || (element->clickAction == 15 && App->wavecontroller->current_wave >= 10))
 	{
 		if (event_type == MOUSE_LEFT_CLICK)
 		{

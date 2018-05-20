@@ -42,7 +42,6 @@ void Button::BlitElement()
 			if (cooldown_timer.Read() >= cooldown * 1000)
 			{
 				inCooldown = false;
-				displayHotkey(true, App->font->getFont(3), { 255,255,255,255 });
 				Unlock();
 			}
 			else
@@ -60,7 +59,7 @@ void Button::displayHotkey(bool display, _TTF_Font* font, SDL_Color color, bool 
 {
 	displayingHotkey = display;
 
-	if (display = true && font != nullptr && Hotkey != 0)
+	if (display == true && font != nullptr && Hotkey != 0)
 	{
 		if (hotkey_text != nullptr)
 		{
@@ -137,7 +136,6 @@ void Button::Used()
 	{
 		inCooldown = true;
 		cooldown_timer.Start();
-		displayHotkey(true, App->font->getFont(3), { 255,0,0,255 });
 		Lock();
 		setCondition("In cooldown");
 	}
