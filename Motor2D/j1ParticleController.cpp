@@ -73,7 +73,11 @@ bool j1ParticleController::Update(float dt)
 			if (App->render->CullingCam(p->position) && p->active)
 			{
 				SDL_Rect frame = p->anim.GetCurrentFrame(dt);
-				App->render->Blit(graphics, p->position.x - (frame.w*p->scale) / 2, p->position.y - (frame.h*p->scale) / 2, &frame, true, false, p->scale, SDL_FLIP_NONE, 1, RADTODEG * p->angle);
+				if(p->speed.x >= 0)
+					App->render->Blit(graphics, p->position.x - (frame.w*p->scale) / 2, p->position.y - (frame.h*p->scale) / 2, &frame, true, false, p->scale, SDL_FLIP_NONE, 1, RADTODEG * p->angle);
+				else
+					App->render->Blit(graphics, p->position.x - (frame.w*p->scale) / 2, p->position.y - (frame.h*p->scale) / 2, &frame, true, false, p->scale, SDL_FLIP_NONE, 1, 180 - RADTODEG * p->angle);
+
 			}
 		}
 
