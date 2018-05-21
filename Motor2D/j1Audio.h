@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "j1Timer.h"
 #include <vector>
+#include <list>
 
 #define DEFAULT_MUSIC_FADE_TIME 2
 #define MUSIC_FOLDER "audio/music/"
@@ -13,60 +14,6 @@
 
 struct _Mix_Music;
 struct Mix_Chunk;
-
-class j1Audio : public j1Module
-{
-public:
-
-	j1Audio();
-
-	// Destructor
-	virtual ~j1Audio();
-
-	// Called before render is available
-	bool Awake(pugi::xml_node&);
-
-	// Called before quitting
-	bool CleanUp();
-
-	bool Save(pugi::xml_node&) const;
-	bool Load(pugi::xml_node&);
-
-
-	bool j1Audio::PlayMusic(uint id, uint fade_time = DEFAULT_MUSIC_FADE_TIME);
-
-	void LoadFx(const char* path);
-	void LoadMusic(const char* path);
-
-	void LoadFXFromXML();
-
-	// Play a previously loaded WAV
-	bool PlayFx(unsigned int fx, uint volume = 128, int repeat = 0);
-
-	void ModifyMusicVolume(float value);
-	void ModifySFXVolume(float value);
-
-
-
-private:
-
-	float						musicVolumeModifier = 1;
-	float						sfxVolumeModifier = 1;
-	_Mix_Music*					current_track = nullptr;
-	std::vector<Mix_Chunk*>		fx;
-	std::vector<_Mix_Music*>	music;
-
-public:
-	j1Timer followOrdersCooldown;
-
-};
-
-enum MusicList
-{
-	MAIN_THEME,
-	INGAME_THEME,
-	DEFEAT_THEME
-};
 
 enum SFXList
 {
@@ -133,13 +80,73 @@ enum SFXList
 	SFX_MAP_ASSIST,//Massist
 	SFX_MAP_ATTACK,//Mattack
 	SFX_TUTORIAL_STEP,//Tutorial_step
+	SFX_UNLOCK_BUILDING,//UnlockBuilding
 
 	//HERO PALADIN
-
 	SFX_CONSECRATION,//Invisibl
 	SFX_CIRCLE_OF_LIGHT,//Holyvisn
 	SFX_HONOR_OF_THE_PURE,//Exorcism
 
 	SFX_NO_SFX
 };
+
+
+
+class j1Audio : public j1Module
+{
+public:
+
+	j1Audio();
+
+	// Destructor
+	virtual ~j1Audio();
+
+	// Called before render is available
+	bool Awake(pugi::xml_node&);
+
+	// Called before quitting
+	bool CleanUp();
+
+	bool PostUpdate();
+
+	bool Save(pugi::xml_node&) const;
+	bool Load(pugi::xml_node&);
+
+
+	bool j1Audio::PlayMusic(uint id, uint fade_time = DEFAULT_MUSIC_FADE_TIME);
+
+	void LoadFx(const char* path);
+	void LoadMusic(const char* path);
+
+	void LoadFXFromXML();
+
+	// Play a previously loaded WAV
+	bool PlayFx(unsigned int fx, uint volume = 128, int repeat = 0);
+
+	void ModifyMusicVolume(float value);
+	void ModifySFXVolume(float value);
+
+
+
+private:
+
+	std::list<SFXList>			blackList;
+	float						musicVolumeModifier = 1;
+	float						sfxVolumeModifier = 1;
+	_Mix_Music*					current_track = nullptr;
+	std::vector<Mix_Chunk*>		fx;
+	std::vector<_Mix_Music*>	music;
+
+public:
+	j1Timer followOrdersCooldown;
+
+};
+
+enum MusicList
+{
+	MAIN_THEME,
+	INGAME_THEME,
+	DEFEAT_THEME
+};
+
 #endif // __j1AUDIO_H__

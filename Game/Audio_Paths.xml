@@ -70,12 +70,12 @@
 	<path sfx="Map/Massist.wav"/>
 	<path sfx="Map/Mattack.wav"/>
 	<path sfx="Misc/Tutorial_step.wav"/>
+	<path sfx="Misc/UnlockBuilding.wav"/>
 
   <!-- Hero Paladin -->
-
-  <path sfx="Spells/Invisibl.wav"/>
-  <path sfx="Spells/Holyvisn.wav"/>
-  <path sfx="Spells/Exorcism.wav"/>
+  	<path sfx="Spells/Invisibl.wav"/>
+  	<path sfx="Spells/Holyvisn.wav"/>
+  	<path sfx="Spells/Exorcism.wav"/>
      
    </SFX>
    <Music>

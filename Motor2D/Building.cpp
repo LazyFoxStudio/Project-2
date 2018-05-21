@@ -113,7 +113,7 @@ bool Building::Update(float dt)
 					if (healingParticleTimer.ReadSec() > 5)
 					{
 						App->particle->AddParticle(PHEALINGHERO, hero->position, false);
-						App->audio->PlayFx(SFX_MISCELLANEOUS_THHEAL, 50);
+						App->audio->PlayFx(SFX_MISCELLANEOUS_THHEAL);
 						healingParticleTimer.Restart();
 						hero->current_HP += 10;
 					}

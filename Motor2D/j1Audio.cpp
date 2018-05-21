@@ -69,6 +69,13 @@ bool j1Audio::CleanUp()
 	return true;
 }
 
+bool j1Audio::PostUpdate()
+{
+	blackList.clear();
+
+	return true;
+}
+
 bool j1Audio::Save(pugi::xml_node & config) const
 {
 	config.append_child("musicVolumeModifier").append_attribute("value") = musicVolumeModifier;
@@ -116,11 +123,20 @@ bool j1Audio::PlayMusic(uint id, uint fade_time)
 // Play WAV
 bool j1Audio::PlayFx(unsigned int id, uint volume, int repeat)
 {
+
 	if (id < fx.size() && active)
 	{
-		Mix_VolumeChunk(fx[id], volume*sfxVolumeModifier);
-		Mix_PlayChannel(-1, fx[id], repeat);
-		return true;
+		bool tmp = false;
+		for (std::list<SFXList>::iterator it = blackList.begin(); it != blackList.end(); it++)
+			if (*it == id) { tmp = true; }
+			
+			if(!tmp)
+			{
+				blackList.push_back((SFXList)id);
+				Mix_VolumeChunk(fx[id], volume*sfxVolumeModifier);
+				Mix_PlayChannel(-1, fx[id], repeat);
+				return true;
+			}
 	}
 
 	return false;

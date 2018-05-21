@@ -433,7 +433,7 @@ void j1EntityController::HandleOrdersSFX()
 {
 	for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
 	{
-		App->audio->PlayFx((*it)->FollowingOrdersSFX, 70);
+		App->audio->PlayFx((*it)->FollowingOrdersSFX);
 	}
 }
 void j1EntityController::HandleParticles(Type type, fPoint pos, fPoint obj, float speed)

@@ -127,7 +127,7 @@ bool j1ActionsController::Update(float dt)
 				}
 				else
 				{
-					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT, 40);
+					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT);
 				}
 			}
 			doingAction = false;
@@ -139,7 +139,7 @@ bool j1ActionsController::Update(float dt)
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(ARCHER);
 				else
 				{
-					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT, 40);
+					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT);
 				}
 			}
 			doingAction = false;
@@ -151,7 +151,7 @@ bool j1ActionsController::Update(float dt)
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(KNIGHT);
 				else
 				{
-					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT, 40);
+					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT);
 				}
 			}
 			doingAction = false;
@@ -163,7 +163,7 @@ bool j1ActionsController::Update(float dt)
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(GRYPHON);
 				else
 				{
-					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT, 40);
+					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT);
 				}
 			}
 			doingAction = false;
@@ -175,7 +175,7 @@ bool j1ActionsController::Update(float dt)
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(BALLISTA);
 				else
 				{
-					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT, 40);
+					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT);
 				}
 			}
 			doingAction = false;
@@ -187,7 +187,7 @@ bool j1ActionsController::Update(float dt)
 					((Building*)*App->entitycontroller->selected_entities.begin())->AddUnitToQueue(FLYING_MACHINE);
 				else
 				{
-					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT, 60);
+					App->audio->PlayFx(SFXList::SFX_CANTDOTHAT);
 				}
 			}
 			doingAction = false;

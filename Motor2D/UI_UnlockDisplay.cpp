@@ -3,6 +3,7 @@
 #include "UI_Image.h"
 #include "UI_Text.h"
 #include "j1Fonts.h"
+#include "j1Audio.h"
 
 UnlockDisplay::UnlockDisplay()
 {
@@ -45,6 +46,7 @@ void UnlockDisplay::unlockedAbility(SDL_Rect icon, std::string name)
 	newUnlock->name = new Text(name, 360, 675 - Y_offset, App->font->getFont(8), { 255,255,255,255 }, nullptr);
 	newUnlock->name->setOutlined(true);
 	newUnlock->timer.Start();
+	App->audio->PlayFx(SFXList::SFX_UNLOCK_BUILDING);
 
 	unlockments.push_back(newUnlock);
 }
@@ -61,6 +63,8 @@ void UnlockDisplay::unlockedBuilding(SDL_Rect icon, std::string name)
 	newUnlock->name = new Text(name, 360, 675 - Y_offset, App->font->getFont(8), { 255,255,255,255 }, nullptr);
 	newUnlock->name->setOutlined(true);
 	newUnlock->timer.Start();
+	App->audio->PlayFx(SFXList::SFX_UNLOCK_BUILDING);
+
 
 	unlockments.push_back(newUnlock);
 }

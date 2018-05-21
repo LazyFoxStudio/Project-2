@@ -171,7 +171,7 @@ bool j1Input::Update(float dt)
 		else
 		{
 			App->gui->GetElement(TEXT, 44)->active = true;
-			App->audio->PlayFx(SFXList::SFX_CANTDOTHAT, 80);
+			App->audio->PlayFx(SFXList::SFX_CANTDOTHAT);
 		}
 	}
 
