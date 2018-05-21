@@ -408,10 +408,7 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 		for (int i = 0; i < units.size(); i++)
 		{
 			if (units[i]->commands.empty() ? true : (units[i]->getCurrentCommand() != ATTACK && units[i]->getCurrentCommand() != ATTACKING_MOVETO))
-			{
-				if(units[i]->type == JUGGERNAUT)	units[i]->commands.push_front(new MultiTargetAttack(units[i], &enemy_atk_slots, &target_squad_id));
-				else								units[i]->commands.push_front(new Attack(units[i], &enemy_atk_slots, &target_squad_id));
-			}
+				units[i]->commands.push_front(new Attack(units[i], &enemy_atk_slots, &target_squad_id));
 		}
 
 	}
@@ -478,7 +475,10 @@ bool AttackingMoveToSquadFlying::OnUpdate(float dt)
 		for (int i = 0; i < units.size(); i++)
 		{
 			if (units[i]->commands.empty() ? true : (units[i]->getCurrentCommand() != ATTACK && units[i]->getCurrentCommand() != ATTACKING_MOVETO))
-				units[i]->commands.push_front(new Attack(units[i], &enemy_atk_slots, &target_squad_id));
+			{
+				if (units[i]->type == JUGGERNAUT)	units[i]->commands.push_front(new MultiTargetAttack(units[i], &enemy_atk_slots, &target_squad_id));
+				else								units[i]->commands.push_front(new Attack(units[i], &enemy_atk_slots, &target_squad_id));
+			}
 		}
 
 	}
