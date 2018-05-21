@@ -182,7 +182,7 @@ void j1WaveController::Generate_Wave()
 	}
 
 	//Unlock hero abilities
-	if (current_wave == 3)
+	if (current_wave == UNLOCK_ABILITY_1_WAVE)
 	{
 		if (App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID)->type == HERO_1)
 		{
@@ -195,7 +195,7 @@ void j1WaveController::Generate_Wave()
 			App->gui->unlockDisplay->unlockedAbility(App->gui->GetActionButton(34)->section, "Circle of light");
 		}
 	}
-	else if (current_wave == 6)
+	else if (current_wave == UNLOCK_ABILITY_2_WAVE)
 	{
 		if (App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID)->type == HERO_1)
 		{
