@@ -61,19 +61,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 // Called before the first frame
 bool j1Gui::Start()
 {
-	//Create warning messages
-	warningMessages = new WarningMessages();
-	warningMessages->active = false;
-	cooldownsDisplay = new CooldownsDisplay();
-	cooldownsDisplay->active = true;
-	workersManager = new FarmWorkersManager();
-	unlockDisplay = new UnlockDisplay();
-
-	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
-	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
-	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
-	warningMessages->addWarningMessage("You cannot build out of the range", OUT_OF_RANGE);
-	warningMessages->addWarningMessage("You have to place it over an unused mine", NO_MINE);
+	
 
 	return true;
 }
@@ -228,7 +216,7 @@ bool j1Gui::PostUpdate()
 	}
 
 	//Draw workers manager
-	workersManager->BlitElement();
+	//workersManager->BlitElement();
 
 	//Draw PopUp
 	if (current_hovering_element != nullptr && current_hovering_element->blitPopUpInfo)
@@ -248,7 +236,7 @@ bool j1Gui::PostUpdate()
 	}
 
 	//Draw warning messages
-	if (warningMessages != nullptr && warningMessages->active)
+	/*if (warningMessages != nullptr && warningMessages->active)
 		warningMessages->BlitElement();
 
 	//Draw cooldowns display
@@ -257,7 +245,7 @@ bool j1Gui::PostUpdate()
 
 	//Draw unlockments
 	if (unlockDisplay != nullptr)
-		unlockDisplay->BlitElement();
+		unlockDisplay->BlitElement();*/
 
 	//Draw Debug
 	if (UI_Debug)
@@ -345,6 +333,9 @@ bool j1Gui::CleanUp()
 	RELEASE(cooldownsDisplay);
 	RELEASE(workersManager);
 	RELEASE(minimap);
+	RELEASE(unlockDisplay);
+	RELEASE(inGameMenu);
+	RELEASE(workersDisplayBase);
 
 	return true;
 }
@@ -898,6 +889,35 @@ Slider* j1Gui::createSlider(pugi::xml_node node, j1Module* callback, bool saveIn
 	ret->setDragable(true, true);
 
 	return ret;
+}
+
+void j1Gui::createExtraIngameMenuElements()
+{
+	warningMessages = new WarningMessages();
+	warningMessages->active = false;
+	cooldownsDisplay = new CooldownsDisplay();
+	cooldownsDisplay->active = true;
+	workersManager = new FarmWorkersManager();
+	unlockDisplay = new UnlockDisplay();
+
+	warningMessages->addWarningMessage("All workers are busy", NO_WORKERS);
+	warningMessages->addWarningMessage("Not enough resources", NO_RESOURCES);
+	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
+	warningMessages->addWarningMessage("You cannot build out of the range", OUT_OF_RANGE);
+	warningMessages->addWarningMessage("You have to place it over an unused mine", NO_MINE);
+
+	menu* Menu = App->uiscene->getMenu(INGAME_MENU);
+	if (Menu != nullptr)
+	{
+		Menu->elements.push_back(warningMessages);
+		warningMessages->menu = INGAME_MENU;
+		Menu->elements.push_back(cooldownsDisplay);
+		cooldownsDisplay->menu = INGAME_MENU;
+		Menu->elements.push_back(workersManager);
+		workersManager->menu = INGAME_MENU;
+		Menu->elements.push_back(unlockDisplay);
+		unlockDisplay->menu = INGAME_MENU;
+	}
 }
 
 void j1Gui::createMinimap(pugi::xml_node node, j1Module* callback)

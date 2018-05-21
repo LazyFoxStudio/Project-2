@@ -25,6 +25,7 @@
 #include "j1ActionsController.h"
 #include "UI_WarningMessages.h"
 #include "j1Tutorial.h"
+#include "UI_UnlockDisplay.h"
 
 j1Scene::j1Scene() : j1Module() { name = "scene"; pausable = false; }
 
@@ -252,8 +253,6 @@ void j1Scene::Start_game(bool continuing)
 	App->entitycontroller->DeleteDB();
 		gameData = App->LoadFile(doc, "GameData.xml");
 		App->entitycontroller->loadEntitiesDB(gameData);
-	
-	
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	App->entitycontroller->town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
@@ -335,6 +334,8 @@ void j1Scene::Start_game(bool continuing)
 		else
 			App->uiscene->toggleMenu(true, HERO_SELECTION_MENU);
 	}
+
+	App->gui->unlockDisplay->cleanUnlockments();
 
 	toRestart = false;
 }

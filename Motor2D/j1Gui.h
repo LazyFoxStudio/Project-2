@@ -108,6 +108,7 @@ public:
 	TroopCreationQueue* createTroopCreationQueue(Building* building);
 	Slider* j1Gui::createSlider(pugi::xml_node node, j1Module* callback = nullptr, bool saveIntoGUI = true);
 
+	void createExtraIngameMenuElements();
 
 	//minimap_
 	void createMinimap(pugi::xml_node node, j1Module* callback = nullptr);

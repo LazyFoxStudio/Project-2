@@ -31,6 +31,8 @@ public:
 	void unlockedAbility(SDL_Rect icon, std::string name);
 	void unlockedBuilding(SDL_Rect icon, std::string name);
 
+	void cleanUnlockments();
+
 public:
 
 	std::list<Unlockment*> unlockments;
