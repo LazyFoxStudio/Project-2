@@ -1074,9 +1074,9 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 		hero->skill_three = new Skill(hero, 0, 200,5, 200, MAGE_ABILITY_3_COOLDOWN, LINE);		//Dragon Breath
 		
 		App->gui->GetActionButton(18)->Lock();
-		App->gui->GetActionButton(18)->setCondition("Unlocked at wave 3");
+		App->gui->GetActionButton(18)->setCondition("Unlocked at wave " + std::to_string(UNLOCK_ABILITY_1_WAVE));
 		App->gui->GetActionButton(19)->Lock();
-		App->gui->GetActionButton(19)->setCondition("Unlocked at wave 6");
+		App->gui->GetActionButton(19)->setCondition("Unlocked at wave " + std::to_string(UNLOCK_ABILITY_2_WAVE));
 	}
 	if (type == HERO_2)
 	{

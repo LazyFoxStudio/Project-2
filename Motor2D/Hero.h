@@ -8,6 +8,8 @@
 #include "j1Timer.h"
 
 #define HERO_REVIVE_COOLDOWN 10
+#define UNLOCK_ABILITY_1_WAVE 3
+#define UNLOCK_ABILITY_2_WAVE 6
 
 class Hero : public Unit
 {
