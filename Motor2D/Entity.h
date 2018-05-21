@@ -84,8 +84,8 @@ public:
 	bool IsUnit()		{ return type >= HERO_1; };
 	bool IsHero()		{ return (type >= HERO_1 && type < FOOTMAN); }
 	bool IsBuilding()	{ return type <= BLACKSMITH; };
-	bool IsFlying()		{ return (type == DRAGON || type == FLYING_MACHINE || type == GRYPHON); }
-	bool IsMelee()		{ return (type == HERO_2 || type == FOOTMAN || type == KNIGHT || type == GRUNT); }
+	bool IsFlying()		{ return (type == DRAGON || type == FLYING_MACHINE || type == GRYPHON || type == JUGGERNAUT); }
+	bool IsMelee()		{ return (type == HERO_2 || type == FOOTMAN || type == KNIGHT || type == GRUNT || type == DEATH_KNIGHT); }
 	bool IsRanged()		{ return !IsMelee(); }
 	bool HasAoEDamage() { return (type == DRAGON || type == BALLISTA || type == CATAPULT || type == JUGGERNAUT); }
 
