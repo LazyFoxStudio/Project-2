@@ -114,7 +114,7 @@
 		<height value="160"/>
 		<anim>
 			<loop value="false"/>
-			<speed value="12"/>
+			<speed value="10"/>
 			<pushback x="0" y="320" w="160" h="160"/>
 			<pushback x="160" y="320" w="160" h="160"/>
 			<pushback x="320" y="320" w="160" h="160"/>
