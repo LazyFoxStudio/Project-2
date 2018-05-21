@@ -25,6 +25,8 @@ FarmWorkersManager::FarmWorkersManager(): UI_element(1400, 800, PRODUCTIONDISPLA
 			counterX = 0;
 		}
 	}
+
+	interactive = false;
 }
 
 

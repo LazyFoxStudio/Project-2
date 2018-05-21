@@ -11,6 +11,7 @@ UnlockDisplay::UnlockDisplay()
 
 UnlockDisplay::~UnlockDisplay()
 {
+	cleanUnlockments();
 }
 
 void UnlockDisplay::BlitElement()
@@ -62,6 +63,18 @@ void UnlockDisplay::unlockedBuilding(SDL_Rect icon, std::string name)
 	newUnlock->timer.Start();
 
 	unlockments.push_back(newUnlock);
+}
+
+void UnlockDisplay::cleanUnlockments()
+{
+	std::list<Unlockment*>::iterator it_u;
+	it_u = unlockments.begin();
+	while (it_u != unlockments.end())
+	{
+		RELEASE((*it_u));
+		it_u++;
+	}
+	unlockments.clear();
 }
 
 Unlockment::~Unlockment()

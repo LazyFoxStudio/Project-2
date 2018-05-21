@@ -5,6 +5,7 @@
 
 WarningMessages::WarningMessages()
 {
+	interactive = false;
 }
 
 
@@ -26,6 +27,7 @@ void WarningMessages::addWarningMessage(std::string message, message_type type)
 	Text* text = new Text(message, 0, 0, App->font->fonts.front(), { 255,0,0, 255 }, nullptr);
 	text->setBackground(true, { 50, 50, 50, 130 });
 	text->active = false;
+	text->interactive = false;
 
 	warnings.push_back(text);//Should be inserted in type position
 }
@@ -62,17 +64,20 @@ void WarningMessages::hideMessage(message_type type)
 
 void WarningMessages::BlitElement()
 {
-	App->gui->moveElementToMouse(this);
-
-	int counterY = 1;
-	for (int i = 0; i < warnings.size(); i++)
+	if (!App->isPaused())
 	{
-		if (warnings.at(i)->active)
+		App->gui->moveElementToMouse(this);
+
+		int counterY = 1;
+		for (int i = 0; i < warnings.size(); i++)
 		{
-			warnings.at(i)->localPosition.x = localPosition.x;
-			warnings.at(i)->localPosition.y = localPosition.y - (warnings.at(i)->section.h*counterY);
-			warnings.at(i)->BlitElement();
-			counterY++;
+			if (warnings.at(i)->active)
+			{
+				warnings.at(i)->localPosition.x = localPosition.x;
+				warnings.at(i)->localPosition.y = localPosition.y - (warnings.at(i)->section.h*counterY);
+				warnings.at(i)->BlitElement();
+				counterY++;
+			}
 		}
 	}
 }

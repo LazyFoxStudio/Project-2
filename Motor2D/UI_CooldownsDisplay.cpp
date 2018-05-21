@@ -10,13 +10,18 @@
 CooldownsDisplay::CooldownsDisplay(): UI_element(0,0,TEXT, {0,0,0,0}, nullptr)
 {
 	hero = new Text("Hero will respawn in: ", 5, 60, App->font->getFont(1), { 255,255,0,255 }, nullptr);
+	hero->interactive = false;
 	hero->active = false;
 	hero_timer = new Chrono(210, 60, TIMER, App->font->getFont(1), { 255,255,0,255 }, nullptr);
+	hero_timer->interactive = false;
 	hero_timer->setStartValue(HERO_REVIVE_COOLDOWN);
 	hero_timer->active = false;
 	skill1 = new Chrono(0, 0, TIMER, App->font->getFont(1), { 255,255,255,255 }, nullptr);	
+	skill1->interactive = false;
 	skill2 = new Chrono(0, 0, TIMER, App->font->getFont(1), { 255,255,255,255 }, nullptr);	
+	skill2->interactive = false;
 	skill3 = new Chrono(0, 0, TIMER, App->font->getFont(1), { 255,255,255,255 }, nullptr);	
+	skill3->interactive = false;
 }
 
 
@@ -37,17 +42,20 @@ void CooldownsDisplay::BlitElement()
 	{
 		if (heroE->current_skill == 1 && !heroE->skill_one->Ready())
 		{
-			App->gui->moveElementToMouse(skill1);
+			if (!App->isPaused())
+				App->gui->moveElementToMouse(skill1);
 			skill1->BlitElement();
 		}
 		else if (heroE->current_skill == 2 && !heroE->skill_two->Ready())
 		{
-			App->gui->moveElementToMouse(skill2);
+			if (!App->isPaused())
+				App->gui->moveElementToMouse(skill2);
 			skill2->BlitElement();
 		}
 		else if (heroE->current_skill == 3 && !heroE->skill_three->Ready())
 		{
-			App->gui->moveElementToMouse(skill3);
+			if (!App->isPaused())
+				App->gui->moveElementToMouse(skill3);
 			skill3->BlitElement();
 		}
 

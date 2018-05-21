@@ -33,12 +33,9 @@ bool j1UIScene::Start()
 
 	guiconfig = App->LoadFile(Gui_config_file, "Gui_config.xml");
 
-	//App->audio->PlayMusic("Main_Theme.mp3");
-
 	LoadUI(guiconfig);
 
-	/*Button* button = new Button(0, 0, App->gui->atlas, { 1182, 1188, 49, 48 }, { 1182, 1188, 49, 48 }, { 1182, 1188, 49, 48 }, App->uiscene);
-	App->gui->createSlider(100, 100, { 739, 1297, 775, 55 }, { 739, 1297, 775, 55 }, button, 0.5, App->uiscene);*/
+	App->gui->createExtraIngameMenuElements();
 
 	//Set resource counters
 	Text* text_position_y = (Text*)App->gui->GetElement(TEXT, 0);
@@ -137,6 +134,14 @@ void j1UIScene::LoadUI(pugi::xml_node node)
 
 bool j1UIScene::CleanUp()
 {
+	std::list<menu*>::iterator it_m;
+	it_m = menus.begin();
+	while (it_m != menus.end())
+	{
+		RELEASE((*it_m));
+		it_m++;
+	}
+	menus.clear();
 
 	return true;
 }
