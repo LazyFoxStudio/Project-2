@@ -522,7 +522,6 @@ bool AttackingMoveToSquadFlying::OnUpdate(float dt)
 	return true;
 }
 
-
 bool PatrolSquad::OnUpdate(float dt)
 {
 	iPoint current_point = patrol_points.front();

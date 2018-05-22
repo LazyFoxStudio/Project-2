@@ -132,7 +132,7 @@ bool j1Scene::Update(float dt)
 		iPoint mouse_pos;
 		App->input->GetMousePosition(x,y);
 		mouse_pos=App->render->ScreenToWorld(x, y);
-		App->entitycontroller->AddSquad(FOOTMAN, {(float)mouse_pos.x,(float)mouse_pos.y});
+		App->entitycontroller->AddSquad(CATAPULT, {(float)mouse_pos.x,(float)mouse_pos.y});
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
