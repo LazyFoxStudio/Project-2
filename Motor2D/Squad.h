@@ -41,8 +41,6 @@ public:
 	void getUnits(std::vector<Unit*>& list_to_fill);
 	Unit* getCommander();
 	
-	void removeUnit(uint unit_id);
-
 	void calculateOffsets();
 	fPoint getOffset(uint unit_UID);
 	void calculateAttackSlots();

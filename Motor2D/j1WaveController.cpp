@@ -165,19 +165,21 @@ void j1WaveController::Generate_Wave()
 		//minimap_
 		App->gui->minimap->AddAlert((*it)->spawn.x, (*it)->spawn.y, 5, alert_type::DANGER);
 
-		if (squad->isFlying())
+		if (Unit* commander = squad->getCommander())
 		{
-			iPoint TownHall_pos = TOWN_HALL_POS;
-			TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
-			iPoint dest = App->map->WorldToMap((*it)->spawn.x, (*it)->spawn.y);
-			TownHall_pos = App->pathfinding->FirstWalkableAdjacentSafeProof(TownHall_pos, dest);
-			squad->commands.push_back(new AttackingMoveToSquadFlying(squad->getCommander(), TownHall_pos));
-		}
-		else
-		{
-			AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(squad->getCommander(), TOWN_HALL_POS);
-			new_atk_order->flow_field = flow_field;
-			squad->commands.push_back(new_atk_order);
+			if (commander->IsFlying())
+				squad->commands.push_back(new AttackingMoveToSquadFlying(commander, TOWN_HALL_POS));
+			else
+			{
+				iPoint TownHall_pos = TOWN_HALL_POS;
+				TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
+				iPoint dest = App->map->WorldToMap(commander->position.x, commander->position.y);
+				TownHall_pos = App->pathfinding->FirstWalkableAdjacentSafeProof(TownHall_pos, dest);
+
+				AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(commander, TownHall_pos);
+				new_atk_order->flow_field = flow_field;
+				squad->commands.push_back(new_atk_order);
+			}
 		}
 	}
 

@@ -205,19 +205,21 @@ void j1Scene::Close_game()
 	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
 	{
 		App->gui->entityDeleted(*it);
-		App->entitycontroller->DeleteEntity((*it)->UID);
+		App->entitycontroller->DeleteEntity(*it);
 	}
 
 	for (std::list<Squad*>::iterator it = App->entitycontroller->squads.begin(); it != App->entitycontroller->squads.end(); it++)
-		App->entitycontroller->DeleteSquad((*it)->UID);
+		App->entitycontroller->DeleteSquad(*it);
 
 	App->entitycontroller->last_UID = 0;
 
 	//CLEANING ENTITY LISTS---------------------------------------------------
-	App->entitycontroller->selected_entities.clear();
-	App->entitycontroller->selected_squads.clear();
 	App->entitycontroller->entities.clear();
+	App->entitycontroller->selected_entities.clear();
+	App->entitycontroller->operative_entities.clear();
+
 	App->entitycontroller->squads.clear();
+	App->entitycontroller->selected_squads.clear();
 
 	if (App->tutorial->active)
 		App->tutorial->stopTutorial();
@@ -251,8 +253,8 @@ void j1Scene::Start_game(bool continuing)
 	pugi::xml_node gameData;
 
 	App->entitycontroller->DeleteDB();
-		gameData = App->LoadFile(doc, "GameData.xml");
-		App->entitycontroller->loadEntitiesDB(gameData);
+	gameData = App->LoadFile(doc, "GameData.xml");
+	App->entitycontroller->loadEntitiesDB(gameData);
 
 	iPoint town_hall_pos = TOWN_HALL_POS;
 	App->entitycontroller->town_hall = App->entitycontroller->addBuilding(town_hall_pos, TOWN_HALL);
@@ -260,8 +262,7 @@ void j1Scene::Start_game(bool continuing)
 	App->wavecontroller->updateFlowField();
 	App->entitycontroller->buildingArea.w = BUILDINGAREA;
 	App->entitycontroller->buildingArea.h = BUILDINGAREA;
-	//buildingArea.x = -BUILDINGAREA / 2 + town_hall_pos.x / 2;
-	//buildingArea.y = -BUILDINGAREA / 2 + town_hall_pos.y / 2;
+
 	App->entitycontroller->buildingArea.x = town_hall_pos.x - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_width / 2);
 	App->entitycontroller->buildingArea.y = town_hall_pos.y - (BUILDINGAREA / 2) + (App->entitycontroller->town_hall->size.x*App->map->data.tile_height / 2);
 /*

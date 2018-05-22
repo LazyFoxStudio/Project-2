@@ -50,7 +50,6 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 
 Unit::~Unit()
 {
-	Halt();
 	for (int i = 0; i < animations.size(); i++)
 		RELEASE(animations[i]);
 
@@ -60,39 +59,22 @@ Unit::~Unit()
 
 void Unit::Draw(float dt)
 {
-	//SDL_Rect r = current_anim->GetCurrentFrame(dt);
-	
-	if (App->render->CullingCam(position))
-	{
-		App->entitycontroller->SpriteQueue.push(this);
-
-		/*if (dir == W || dir == NW || dir == SW)
-			App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r, true, false, (1.0F), SDL_FLIP_HORIZONTAL);
-		else
-			App->render->Blit(texture, position.x - (r.w / 2), position.y - (r.h / 2), &r);*/
-	}
-
-	//minimap
-	if (IsEnemy())
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
-	else if (IsHero())
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,75,75 }, White);
-	else
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
-	
-}
-
-bool Unit::Update(float dt)
-{
-	if (!squad) return false;
-
 	if (anim_timer.ReadMs() > 10)
 	{
 		anim_timer.Start();
 		animationController();
 	}
-	
 
+	App->entitycontroller->SpriteQueue.push(this);
+}
+
+bool Unit::Update(float dt)
+{
+	if (current_HP <= 0)
+	{
+		Destroy();
+		return true;
+	}
 	//take buffs out here
  	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
 	{
@@ -122,15 +104,6 @@ bool Unit::Update(float dt)
 		(*it)->applied = true;
 	}
 
-
-	if (current_HP <= 0)
-	{
-		if (ex_state != DESTROYED) { Destroy(); squad->removeUnit(UID); }
-
-		else if (timer.ReadSec() > DEATH_TIME)  return false;
-		return true;
-	}
-
 	if (!commands.empty())
 	{
 		commands.front()->Execute(dt);
@@ -139,6 +112,12 @@ bool Unit::Update(float dt)
 	else if (squad->commander_pos + squad->getOffset(UID) != mov_target) mov_target = squad->commander_pos + squad->getOffset(UID);
 
 	Move(dt);	
+
+	//minimap
+	if (IsEnemy())
+		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
+	else
+		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
 
 	return true;
 }
@@ -224,12 +203,17 @@ void Unit::Destroy()
 	timer.Start();
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
-	if (App->tutorial->doingTutorial && this->IsEnemy())
+	App->entitycontroller->operative_entities.remove(this);
+	isSelected = false;
+	if (App->tutorial->doingTutorial && IsEnemy())
 	{
-		if (squad->units_id.size() <= 1) //It was last enemy
+		std::vector<Unit*> units;
+		squad->getUnits(units);
+		if (units.empty()) //It was last enemy
 			App->tutorial->taskCompleted(KILL_ENEMIES);
 	}
 	App->gui->entityDeleted(this);
+	Halt();
 }
 
 void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)
@@ -280,7 +264,7 @@ void Unit::animationController()
 		lookAt(mov_direction);
 
 	animationType new_animation = IDLE_S;
-	if (ex_state != DESTROYED)
+	if (current_HP > 0)
 	{
 		if (mov_module > 0.5)
 		{
@@ -363,12 +347,11 @@ void Unit::animationController()
 	{
 		if (animations[new_animation] != current_anim)
 		{
-			
 			current_anim = animations[new_animation];
 			current_anim->Reset();
 		}
 	}
-
+	
 	last_anim = new_animation;
 }
 

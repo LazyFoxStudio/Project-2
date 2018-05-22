@@ -5,6 +5,7 @@
 #include "j1Pathfinding.h"
 #include "j1Input.h"
 #include "j1Render.h"
+#include "j1WaveController.h"
 
 Squad::Squad(std::vector<uint>& units) : units_id(units)
 {
@@ -34,81 +35,54 @@ Squad::~Squad()
 
 bool Squad::Update(float dt)
 {
-	if (units_id.empty()) {
-		bool used = false;
-		for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+	if (timer.ReadSec() > 0.25f)
+	{
+		calculateAttackSlots();
+		timer.Start();
+	}
+	if (!commands.empty())
+	{
+		commands.front()->Execute(dt);
+		if (commands.front()->state == FINISHED) commands.pop_front();
+
+		if (!squad_movement.IsZero())
 		{
-			if ((*it)->IsUnit())
+			if (Unit* commander = getCommander())
 			{
-				if (((Unit*)(*it))->squad == this)
-				{
-					used = true;
-					break;
-				}
+				commander_pos = commander->position + (everyone_in_position ? squad_movement : squad_movement * MIN_NEXT_STEP_MULTIPLIER);
+				squad_direction = squad_movement.Normalized();
 			}
-			
+
 		}
-		if(!used)
-		{ 
-			Destroy(); 
-			return false; 
-		}
-		else return true;
-		
 	}
 	else
 	{
-		if (timer.ReadSec() > 0.25f)
+		squad_movement = { 0.0f,0.0f };
+		if (Unit* commander = getCommander())
 		{
-			calculateAttackSlots();
-			timer.Start();
-		}
-		if (!commands.empty())
-		{
-			commands.front()->Execute(dt);
-			if (commands.front()->state == FINISHED) commands.pop_front();
-
-			if (!squad_movement.IsZero())
+			if (commander->IsEnemy())
 			{
-				if (Unit* commander = getCommander())
-				{
-					commander_pos = commander->position + (everyone_in_position ? squad_movement : squad_movement * MIN_NEXT_STEP_MULTIPLIER);
-					squad_direction = squad_movement.Normalized();
-				}
-
-			}
-		}
-		else
-		{
-			squad_movement = { 0.0f,0.0f };
-			if (Unit* commander = getCommander())
-			{
-				if (commander->IsEnemy())
+				if(commander->IsFlying())
+					commands.push_back(new AttackingMoveToSquadFlying(commander, TOWN_HALL_POS));
+				else
 				{
 					iPoint TownHall_pos = TOWN_HALL_POS;
 					TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
 					iPoint dest = App->map->WorldToMap(commander->position.x, commander->position.y);
 					TownHall_pos = App->pathfinding->FirstWalkableAdjacentSafeProof(TownHall_pos, dest);
-					commands.push_back(new AttackingMoveToSquadFlying(commander, TownHall_pos));
+
+					AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(commander, TownHall_pos);
+					new_atk_order->flow_field = App->wavecontroller->flow_field;
+					commands.push_back(new_atk_order);
 				}
 			}
 		}
 	}
+
 	bool everyone_in_position = true;
 	return true;
 }
 
-void Squad::removeUnit(uint unit_ID)
-{
-	for (int i = 0; i < units_id.size(); i++)
-		if (units_id[i] == unit_ID)
-		{
-			units_id.erase(units_id.begin() + i);
-			units_offsets.erase(units_offsets.begin() + i);
-			calculateOffsets();
-			return;
-		}
-}
 
 fPoint Squad::getOffset(uint unit_UID)
 {
@@ -214,7 +188,7 @@ bool Squad::findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_
 
 		if (isEnemy)
 		{
-			for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+			for (std::list<Entity*>::iterator it = App->entitycontroller->operative_entities.begin(); it != App->entitycontroller->operative_entities.end(); it++)
 			{
 				if ((*it)->IsBuilding() && isInSquadSight((*it)->position) && (*it)->isActive && (*it)->ex_state != DESTROYED)
 				{
@@ -254,34 +228,19 @@ void Squad::Halt()
 
 void Squad::getUnits(std::vector<Unit*>& list_to_fill)
 {
-	std::vector<uint> to_erase;
-
 	for (int i = 0; i < units_id.size(); i++)
-	{
-		if (Unit* unit = (Unit*)App->entitycontroller->getEntitybyID(units_id[i]))	list_to_fill.push_back(unit);
-		else																		to_erase.push_back(units_id[i]);
-	}
-
-	for (int j = 0; j < to_erase.size(); j++)
-		removeUnit(to_erase[j]);
+		if (Unit* unit = (Unit*)App->entitycontroller->getEntitybyID(units_id[i]))	
+			list_to_fill.push_back(unit);
 }
 
 
 Unit* Squad::getCommander()
 {
-	std::vector<uint> to_erase;
-	Unit* ret = nullptr;
-
 	for (int i = 0; i < units_id.size(); i++)
-	{
-		if (Unit* unit = (Unit*)App->entitycontroller->getEntitybyID(units_id[i])) { ret = unit; break; }
-		else																		to_erase.push_back(units_id[i]);
-	}
-
-	for (int j = 0; j < to_erase.size(); j++)
-		removeUnit(to_erase[j]);
-
-	return ret;
+		if (Unit* unit = (Unit*)App->entitycontroller->getEntitybyID(units_id[i]))
+			return unit;
+	
+	return nullptr;
 }
 
 bool ComparePoints(iPoint p1, iPoint p2)
@@ -340,4 +299,6 @@ void Squad::Destroy()
 	Halt();
 	units_id.clear();
 	App->entitycontroller->selected_squads.remove(this);
+	App->entitycontroller->squads.remove(this);
+
 }

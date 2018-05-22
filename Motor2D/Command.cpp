@@ -611,7 +611,7 @@ bool Attack::searchTarget()
 
 	std::vector<iPoint> slots_in_use;
 
-	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+	for (std::list<Entity*>::iterator it = App->entitycontroller->operative_entities.begin(); it != App->entitycontroller->operative_entities.end(); it++)
 	{
 		if ((*it)->IsEnemy() == unit->IsEnemy() && (*it)->IsUnit())
 		{
