@@ -60,7 +60,7 @@ public:
 	void animationController();
 
 	void Halt();
-	void Destroy();
+	virtual void Destroy();
 
 	void calculateSeparationVector(fPoint& separation_v, float& weight);
 	Command_Type getCurrentCommand() { return (commands.empty() ? NOTHING : commands.front()->type); }

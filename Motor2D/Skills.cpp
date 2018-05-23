@@ -49,7 +49,7 @@ void Skill::DrawRange()
 
 		if (type == NONE_RANGE)
 		{
-			for (std::list<Entity*>::iterator item = App->entitycontroller->entities.begin(); item != App->entitycontroller->entities.end(); item++)
+			for (std::list<Entity*>::iterator item = App->entitycontroller->operative_entities.begin(); item != App->entitycontroller->operative_entities.end(); item++)
 			{
 				if ((*item)->IsUnit())
 				{
@@ -144,7 +144,7 @@ bool Skill::Activate()
 		hero->squad->Halt();
 		iPoint cast_aux = App->map->WorldToMap(cast_pos.x, cast_pos.y);
 
-		for (std::list<Entity*>::iterator item = App->entitycontroller->entities.begin(); item != App->entitycontroller->entities.end(); item++)
+		for (std::list<Entity*>::iterator item = App->entitycontroller->operative_entities.begin(); item != App->entitycontroller->operative_entities.end(); item++)
 		{
 			if ((*item)->IsUnit())
 			{
@@ -239,7 +239,7 @@ bool Skill::Activate()
 		going = false;
 		iPoint cast_aux = App->map->WorldToMap(last_cast.x, last_cast.y);
 
-		for (std::list<Entity*>::iterator item = App->entitycontroller->entities.begin(); item != App->entitycontroller->entities.end(); item++)
+		for (std::list<Entity*>::iterator item = App->entitycontroller->operative_entities.begin(); item != App->entitycontroller->operative_entities.end(); item++)
 		{
 			if ((*item)->IsUnit())
 			{

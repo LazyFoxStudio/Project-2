@@ -28,31 +28,11 @@ Hero::~Hero()
 
 bool Hero::Update(float dt)
 {
-	animationController();
-
 	if (current_HP <= 0)
 	{
-		if (isActive)
-		{
-			Deactivate();
-			App->gui->cooldownsDisplay->heroDead();
-		}
-		else if (timer.ReadSec() > HERO_REVIVE_COOLDOWN)
-		{
-			iPoint th_w_pos = TOWN_HALL_POS;
-			iPoint th_m_pos = App->map->WorldToMap(th_w_pos.x, th_w_pos.y);
-			th_m_pos = App->pathfinding->FirstWalkableAdjacentSafeProof(th_m_pos, App->map->WorldToMap(position.x, position.y));
+		if(timer.ReadSec() > HERO_REVIVE_COOLDOWN)
+			Reactivate();
 
-			if (th_m_pos != iPoint(-1, -1))
-			{
-				th_w_pos = App->map->MapToWorld(th_m_pos.x, th_m_pos.y);
-				position = { (float)th_w_pos.x + App->map->data.tile_width / 2, (float)th_w_pos.y + App->map->data.tile_height / 2 };
-			}
-			current_HP = max_HP; 
-			setActive(true);
-			ex_state = OPERATIVE;
-			App->gui->createLifeBar(this);
-		}
 		return true;
 	}
 
@@ -168,11 +148,13 @@ bool Hero::Update(float dt)
 	}
 
 	Move(dt);
+	
+	App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,75,75 }, White);
 
 	return true;
 }
 
-void Hero::Deactivate()
+void Hero::Destroy()
 {
 	Halt();
 	mov_direction.SetToZero();
@@ -183,4 +165,24 @@ void Hero::Deactivate()
 	App->entitycontroller->selected_entities.remove(this);
 	App->gui->entityDeleted(this);
 	current_skill = 0;
+
+	if(App->gui->cooldownsDisplay)
+		App->gui->cooldownsDisplay->heroDead();
+}
+
+void Hero::Reactivate()
+{
+	iPoint th_w_pos = TOWN_HALL_POS;
+	iPoint th_m_pos = App->map->WorldToMap(th_w_pos.x, th_w_pos.y);
+	th_m_pos = App->pathfinding->FirstWalkableAdjacentSafeProof(th_m_pos, App->map->WorldToMap(position.x, position.y));
+
+	if (th_m_pos != iPoint(-1, -1))
+	{
+		th_w_pos = App->map->MapToWorld(th_m_pos.x, th_m_pos.y);
+		position = { (float)th_w_pos.x + App->map->data.tile_width / 2, (float)th_w_pos.y + App->map->data.tile_height / 2 };
+	}
+	current_HP = max_HP;
+	setActive(true);
+	ex_state = OPERATIVE;
+	App->gui->createLifeBar(this);
 }

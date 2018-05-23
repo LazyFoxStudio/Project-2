@@ -104,8 +104,8 @@ public:
 	float getSpeedFromAtkSpeed(float atk_speed, int anim_frames);
 
 	
-	void DeleteEntity(uint UID);
-	void DeleteSquad(uint UID);
+	void DeleteEntity(Entity* entity);
+	void DeleteSquad(Squad* squad);
 	void DeleteDB();
 
 	Unit* addUnit(iPoint pos, Type type, Squad* squad = nullptr);
@@ -172,12 +172,11 @@ public:
 
 	std::list<Entity*> entities;
 	std::list<Entity*> selected_entities;
+	std::list<Entity*> operative_entities;
 
 	std::list<Squad*> squads;
 	std::list<Squad*> selected_squads;
 
-	std::vector<uint> entities_to_destroy;
-	std::vector<uint> squads_to_destroy;
 
 	std::map<uint, Entity*> DataBase;
 

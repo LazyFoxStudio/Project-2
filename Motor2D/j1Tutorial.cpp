@@ -39,7 +39,7 @@ bool j1Tutorial::PreUpdate()
 	if (doingTutorial && activeStep != nullptr && !activeStep->finished && activeStep->task == KILL_ENEMIES)
 	{
 		bool enemies_found = false;
-		for (std::list<Entity*>::iterator it_e = App->entitycontroller->entities.begin(); it_e != App->entitycontroller->entities.end(); it_e++)
+		for (std::list<Entity*>::iterator it_e = App->entitycontroller->operative_entities.begin(); it_e != App->entitycontroller->operative_entities.end(); it_e++)
 		{
 			if ((*it_e)->IsEnemy() && (*it_e)->ex_state != existence_state::DESTROYED)
 			{

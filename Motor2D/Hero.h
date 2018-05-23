@@ -29,7 +29,8 @@ public:
 	~Hero();
 
 	bool Update(float dt);
-	void Deactivate();
+	void Destroy();
+	void Reactivate();
 
 };
 

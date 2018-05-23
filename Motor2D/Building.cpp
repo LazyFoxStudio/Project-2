@@ -16,6 +16,7 @@
 #include "UI_CooldownsDisplay.h"
 #include "Unit.h"
 #include "j1Pathfinding.h"
+#include "j1WaveController.h"
 #include "j1ActionsController.h"
 
 #define TURRET_ROF 0.5f
@@ -61,6 +62,7 @@ Building::Building(iPoint pos, Building& building)
 
 	healingParticleTimer.Start();
 	timer.Start();
+	repair_timer.Start();
 }
 
 Building::~Building()
@@ -122,17 +124,14 @@ bool Building::Update(float dt)
 		}
 		break;
 
-	case DESTROYED:
-		if (timer.ReadSec() > DEATH_TIME)
-			App->entitycontroller->entities_to_destroy.push_back(UID);
-
-		break;
 	}
 
-	if (recently_repaired && repair_timer.ReadSec() > REPAIR_COOLDOWN)
-	{
-		recently_repaired = false;
-	}
+	recently_repaired = repair_timer.ReadSec() > REPAIR_COOLDOWN;
+
+	if (ex_state != DESTROYED)
+		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
+	else
+		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
 
 	return true;
 }
@@ -141,6 +140,7 @@ void Building::Destroy()
 {
 	ex_state = DESTROYED;
 	App->entitycontroller->selected_entities.remove(this);
+	App->entitycontroller->operative_entities.remove(this);
 	isSelected = false;
 	current_sprite = &sprites[RUIN];
 	if (workersDisplay != nullptr)
@@ -156,7 +156,6 @@ void Building::Destroy()
 			(*it)->to_destroy = true;
 		}
 		break;
-	case MINE:
 	case LUMBER_MILL:
 		CalculateResourceProduction();
 		App->entitycontroller->GetTotalIncome();
@@ -174,14 +173,23 @@ void Building::Destroy()
 		}
 		App->audio->PlayMusic(DEFEAT_THEME, 0);
 		current_sprite = &sprites[4];
-		App->gui->Chronos->counter.PauseTimer();
-		App->gui->cooldownsDisplay->Reset();
+
+		if(App->gui->Chronos)
+			App->gui->Chronos->counter.PauseTimer();
+		if(App->gui->cooldownsDisplay)
+			App->gui->cooldownsDisplay->Reset();
+
 		App->scene->toRestart = true;
 		App->scene->Restart_timer.Start();
 		App->uiscene->toggleMenu(true, GAMEOVER_MENU);
 		break;
 	}
 
+	if (type != MINE)
+		App->map->WalkabilityArea(position.x, position.y, size.x, size.y, true);
+
+	if (!App->scene->toRestart)
+		App->wavecontroller->updateFlowField();
 
 	timer.Start();
 	App->gui->entityDeleted(this);
@@ -340,11 +348,6 @@ void Building::Draw(float dt)
 
 		//App->render->Blit(texture, position.x, position.y, current_sprite);
 	}
-
-	if (ex_state != DESTROYED)
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
-	else
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
 }
 
 void Building::turretBehavior()
@@ -353,9 +356,9 @@ void Building::turretBehavior()
 	{
 		fPoint building_center = { position.x + collider.w / 2, position.y + collider.h / 2 };
 
-		for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+		for (std::list<Entity*>::iterator it = App->entitycontroller->operative_entities.begin(); it != App->entitycontroller->operative_entities.end(); it++)
 		{
-			if ((*it)->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED)
+			if ((*it)->IsEnemy())
 			{
 				if (building_center.DistanceTo((*it)->position) < range)
 				{

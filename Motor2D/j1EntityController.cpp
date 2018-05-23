@@ -66,28 +66,15 @@ bool CompareSquad(Squad* s1, Squad* s2)
 
 bool j1EntityController::Update(float dt)
 {
-	BROFILER_CATEGORY("Entites update", Profiler::Color::Bisque);
-
+	BROFILER_CATEGORY("Entity controller update", Profiler::Color::Maroon);
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
-	Hero* hero = (Hero*)getEntitybyID(hero_UID);
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
-		if ((*it)->isActive || (*it) == hero)
+		if (App->render->CullingCam((*it)->position))
 		{
-			colliderQT->insert(*it);
-
-			if (!App->scene->toRestart && !App->isPaused())
-			{
-				if (!(*it)->Update(dt))	entities_to_destroy.push_back((*it)->UID);
-			}
-			
 			(*it)->Draw(dt);
-
-			if (App->render->CullingCam((*it)->position))
-			{
-				if (debug) debugDrawEntity(*it);
-			}
+			if (debug) debugDrawEntity(*it);
 		}
 	}
 
@@ -112,21 +99,19 @@ bool j1EntityController::Update(float dt)
 		SpriteQueue.pop();
 	}
 
-	if (App->isPaused())
+	if (App->isPaused() || App->scene->toRestart)
 		return true;
 
+	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end(); it++)
+		(*it)->Update(dt);
 
-	BROFILER_CATEGORY("Squad update", Profiler::Color::BurlyWood);
-	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end() && !App->scene->toRestart; it++)
+	for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 	{
-		if (!(*it)->Update(dt)) squads_to_destroy.push_back((*it)->UID);
+		colliderQT->insert(*it);
+		(*it)->Update(dt);
 	}
-
-	if (App->scene->toRestart) return true;
-
 	
-
-	BROFILER_CATEGORY("Entity controller update", Profiler::Color::Maroon);
+	Hero* hero = (Hero*)getEntitybyID(hero_UID);
 
 	if (to_build_type != NONE_ENTITY)
 		buildingCalculations();
@@ -477,7 +462,7 @@ void j1EntityController::GetTotalIncome()
 {
 	App->scene->wood_production_per_second = 0;
 	App->scene->gold_production_per_second = 0;
-	for (std::list<Entity*>::iterator tmp = entities.begin(); tmp != entities.end(); tmp++)
+	for (std::list<Entity*>::iterator tmp = operative_entities.begin(); tmp != operative_entities.end(); tmp++)
 	{
 		if ((*tmp)->IsBuilding())
 		{
@@ -494,27 +479,34 @@ bool j1EntityController::PostUpdate()
 	BROFILER_CATEGORY("Entites postupdate", Profiler::Color::Maroon);
 
 	int selected_size = selected_entities.size();
+	std::vector<Entity*> entities_to_destroy;
+	std::vector<Squad*> squads_to_destroy;
 
-	for (int i = 0; i < entities_to_destroy.size(); i++)
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
-		if (Entity* entity = getEntitybyID(entities_to_destroy[i]))
-		{
-			DeleteEntity(entities_to_destroy[i]);
-			entities.remove(getEntitybyID(entities_to_destroy[i]));		
-		}
+		if ((*it)->ex_state == DESTROYED && (*it)->timer.ReadSec() > DEATH_TIME)
+			entities_to_destroy.push_back(*it);
+	}
+
+	for(int i = 0; i < entities_to_destroy.size(); i++)
+		DeleteEntity(entities_to_destroy[i]);
+
+	entities_to_destroy.clear();
+
+	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end(); it++)
+	{
+		std::vector<Unit*> units;
+		(*it)->getUnits(units);
+		if (units.empty()) squads_to_destroy.push_back(*it);
 	}
 
 	for (int i = 0; i < squads_to_destroy.size(); i++)
-	{
 		DeleteSquad(squads_to_destroy[i]);
-		squads.remove(getSquadbyID(squads_to_destroy[i]));
-	}
+
+	squads_to_destroy.clear();
 
 	if(selected_size != selected_entities.size())
 		App->gui->newSelectionDone();
-
-	entities_to_destroy.clear();
-	squads_to_destroy.clear();
 
 	DestroyWorkers();
 
@@ -530,28 +522,24 @@ bool j1EntityController::CleanUp()
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
 		App->gui->entityDeleted(*it);
-		DeleteEntity((*it)->UID);
+		DeleteEntity((*it));
 	}
 
 	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end(); it++)
-		DeleteSquad((*it)->UID);
+		DeleteSquad((*it));
 
 	DeleteDB();
 
-	entities_to_destroy.clear();
-	squads_to_destroy.clear();
-
-	selected_entities.clear();
-	selected_squads.clear();
-
 	entities.clear();
+	selected_entities.clear();
+	operative_entities.clear();
+
+	selected_squads.clear();
 	squads.clear();
 
 	last_UID = 0;
 	RELEASE(colliderQT);
-	/*
-	entity_iterator = entities.begin();
-	squad_iterator = squads.begin();*/
+
 
 	return true;
 }
@@ -667,7 +655,7 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 	pugi::xml_node tw = buildings_node.append_child("town_hall");
 	tw.append_attribute("hp") = town_hall->current_HP;
 
-	for (std::list<Entity*>::const_iterator it = entities.begin(); it != entities.end(); it++)
+	for (std::list<Entity*>::const_iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 	{
 		if ((*it)->IsBuilding() && (*it)->type != TOWN_HALL)
 		{
@@ -744,15 +732,7 @@ bool j1EntityController::Load(pugi::xml_node& file)
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
 		if ((*it)->type != TOWN_HALL )
-		{
-			if ((*it)->IsUnit())
-			{
-				((Unit*)(*it))->commands.clear();
-			}
-			App->gui->entityDeleted(*it);
-			DeleteEntity((*it)->UID);
-			entities.remove(*it);
-		}
+			DeleteEntity(*it);
 	}
 	pugi::xml_node units = file.child("Units");
 	pugi::xml_node squads_node;
@@ -826,10 +806,8 @@ bool j1EntityController::Load(pugi::xml_node& file)
 				//KILL IT
 				int space_of_the_entity = units_of_squad.size()-1 - iterations_done;
 				
-				squad->removeUnit(units_of_squad.data()[space_of_the_entity]->UID);
 				App->gui->entityDeleted(units_of_squad.data()[space_of_the_entity]);
-				DeleteEntity(units_of_squad.data()[space_of_the_entity]->UID);
-				entities.remove(getEntitybyID(units_of_squad.data()[space_of_the_entity]->UID));
+				DeleteEntity(units_of_squad.data()[space_of_the_entity]);
 			}
 		}
 	}
@@ -948,65 +926,44 @@ bool j1EntityController::Load(pugi::xml_node& file)
 	return true;
 }
 
-void j1EntityController::DeleteEntity(uint UID)
+void j1EntityController::DeleteEntity(Entity* entity)
 {
-	if (Entity* entity = getEntitybyID(UID))
-	{/*
-		if(entity == *entity_iterator)
-			entity_iterator = entities.begin();*/
+	if (entity->ex_state != DESTROYED)
+		entity->Destroy();
 
-		selected_entities.remove(entity);
+	entities.remove(entity);
 
-		if (entity->IsUnit())
+	if (entity->IsUnit())
+	{
+		Unit* unit_to_remove = (Unit*)(entity);
+
+		if (unit_to_remove->IsHero())
 		{
-			Unit* unit_to_remove = (Unit*)(entity);
-
-			if (unit_to_remove->IsHero())
-			{
-				Hero* hero_to_remove = (Hero*)unit_to_remove;
-				RELEASE(hero_to_remove);
-			}
-			else
-				{ RELEASE(unit_to_remove); }
+			Hero* hero_to_remove = (Hero*)unit_to_remove;
+			RELEASE(hero_to_remove);
 		}
-		else   // is building
+		else
 		{
-			Building* building_to_remove = (Building*)(entity);
-			if (building_to_remove->type != MINE)
-			{
-				App->map->WalkabilityArea(building_to_remove->position.x, building_to_remove->position.y, building_to_remove->size.x, building_to_remove->size.y, true);
-			}
-
-			if (App->scene->toRestart)
-			{
-				for (std::list<worker*>::iterator it = building_to_remove->workers_inside.begin(); it != building_to_remove->workers_inside.end(); it++)
-				{
-					(*it)->to_destroy = true;
-				}
-			}
-
-			if(!App->scene->toRestart)
-				App->wavecontroller->updateFlowField();
-
-			RELEASE(building_to_remove);
+			RELEASE(unit_to_remove);
 		}
 	}
+	else   // is building
+	{
+		Building* building_to_remove = (Building*)(entity);
+		RELEASE(building_to_remove);
+	}
+
 }
 
-void j1EntityController::DeleteSquad(uint UID)
+void j1EntityController::DeleteSquad(Squad* squad)
 {
-	if (Squad* squad = getSquadbyID(UID))
-	{
-		selected_squads.remove(squad);
-
-		squad->Destroy();
-		RELEASE(squad);
-	}
+	squad->Destroy();
+	RELEASE(squad);
 }
 
 Entity* j1EntityController::getEntitybyID(uint ID)
 {
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 		if ((*it)->UID == ID) return *it;
 	
 	return nullptr;
@@ -1026,6 +983,7 @@ Unit* j1EntityController::addUnit(iPoint pos, Type type, Squad* squad)
 
 	unit->UID = last_UID++;
 	entities.push_back(unit);
+	operative_entities.push_back(unit);
 	App->gui->createLifeBar(unit);
 	
 	// if(App->render->CullingCam(unit->position))  App->audio->PlayFx(UNIT_CREATED_FX);
@@ -1095,6 +1053,7 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	App->gui->cooldownsDisplay->heroChoosen(hero);
 
 	entities.push_back(hero);
+	operative_entities.push_back(hero);
 
 	std::vector<uint>aux_vector;
 	aux_vector.push_back(hero->UID);
@@ -1142,7 +1101,10 @@ Building* j1EntityController::addBuilding(iPoint pos, Type type)
 	}
 	else if (type == GNOME_HUT)
 		hasBuilt_GnomeHut = true;
+
 	entities.push_back(building);
+	operative_entities.push_back(building);
+
 	App->gui->createLifeBar(building);
 
 	if (type != TOWN_HALL)
@@ -1364,7 +1326,7 @@ Entity* j1EntityController::CheckMouseHover(iPoint mouse_world)
 	Entity* ret = nullptr;
 
 	std::vector<Entity*> hovered_entities;
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)	
+	for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 		if (SDL_HasIntersection(&r, &(*it)->collider))
 			hovered_entities.push_back(*it);
 
@@ -1422,7 +1384,7 @@ void j1EntityController::commandControl()
 	}
 	else
 	{
-		if (entity->IsEnemy() && entity->ex_state != DESTROYED && entity->isActive)    //clicked on a enemy
+		if (entity->IsEnemy())    //clicked on a enemy
 		{
 			FlowField* shared_flowfield = nullptr;
 			for (std::list<Squad*>::iterator it = selected_squads.begin(); it != selected_squads.end(); it++)
@@ -1491,34 +1453,31 @@ void j1EntityController::selectionControl()
 			if (selection_rect.h < 0) { selection_rect.h = -selection_rect.h; selection_rect.y -= selection_rect.h; }
 		}
 
-		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 		{
-			if ((*it)->isActive && (*it)->ex_state != DESTROYED) {
-
-				if (SDL_HasIntersection(&(*it)->collider, &selection_rect))
+			if (SDL_HasIntersection(&(*it)->collider, &selection_rect))
+			{
+				if ((*it)->IsUnit())
 				{
-					if ((*it)->IsUnit())
+					if (!(*it)->IsEnemy() && (*it)->current_HP > 0)
 					{
-						if (!(*it)->IsEnemy())
-						{
-							if((*it)->IsHero()) selected_squads.push_front(((Unit*)*it)->squad);
-							else				selected_squads.push_back(((Unit*)*it)->squad);
-							if (!units) units = true;
-						}
+						if ((*it)->IsHero()) selected_squads.push_front(((Unit*)*it)->squad);
+						else				selected_squads.push_back(((Unit*)*it)->squad);
+						if (!units) units = true;
 					}
-					else // is building
+				}
+				else // is building
+				{
+					if ((*it)->ex_state == OPERATIVE)
 					{
-						if ((*it)->ex_state == OPERATIVE)
-						{
-							selected_entities.push_back(*it);
-							if ((*it)->type == TOWN_HALL && App->tutorial->doingTutorial)
-								App->tutorial->taskCompleted(SELECT_TOWN_HALL);
-							else if ((*it)->type == LUMBER_MILL && App->tutorial->doingTutorial)
-								App->tutorial->taskCompleted(SELECT_LUMBER_MILL);
-							(*it)->isSelected = true;
-							App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
-							if (!buildings) buildings = true;
-						}
+						selected_entities.push_back(*it);
+						if ((*it)->type == TOWN_HALL && App->tutorial->doingTutorial)
+							App->tutorial->taskCompleted(SELECT_TOWN_HALL);
+						else if ((*it)->type == LUMBER_MILL && App->tutorial->doingTutorial)
+							App->tutorial->taskCompleted(SELECT_LUMBER_MILL);
+						(*it)->isSelected = true;
+						App->actionscontroller->newSquadPos = { (*it)->position.x, (*it)->position.y + (*it)->collider.h };
+						if (!buildings) buildings = true;
 					}
 				}
 			}
@@ -1567,7 +1526,7 @@ void j1EntityController::selectionControl()
 void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entity*>& list_to_fill, Entity* entity_to_ignore)
 {
 
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 	{
 		if ((*it) != entity_to_ignore && (*it)->ex_state !=  DESTROYED && (*it)->isActive)
 			if (SDL_HasIntersection(&collider, &(*it)->collider)) 
@@ -1795,7 +1754,7 @@ void j1EntityController::UpgradeExistingUnits(Type type1, Type type2, UpgradeTyp
 	switch (up_type)
 	{
 	case MELEE_ATTACK_UPGRADE:
-		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 		{
 			if ((*it)->type == type1 || (*it)->type == type2)
 			{
@@ -1804,7 +1763,7 @@ void j1EntityController::UpgradeExistingUnits(Type type1, Type type2, UpgradeTyp
 		}
 		break;
 	case MELEE_DEFENSE_UPGRADE:
-		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 		{
 			if ((*it)->type == type1 || (*it)->type == type2)
 			{
@@ -1813,7 +1772,7 @@ void j1EntityController::UpgradeExistingUnits(Type type1, Type type2, UpgradeTyp
 		}
 		break;
 	case RANGED_ATTACK_UPGRADE:
-		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 		{
 			if ((*it)->type == type1 || (*it)->type == type2)
 			{
@@ -1822,7 +1781,7 @@ void j1EntityController::UpgradeExistingUnits(Type type1, Type type2, UpgradeTyp
 		}
 		break;
 	case RANGED_DEFENSE_UPGRADE:
-		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 		{
 			if ((*it)->type == type1 || (*it)->type == type2)
 			{
@@ -1831,7 +1790,7 @@ void j1EntityController::UpgradeExistingUnits(Type type1, Type type2, UpgradeTyp
 		}
 		break;
 	case FLYING_ATTACK_UPGRADE:
-		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 		{
 			if ((*it)->type == type1 || (*it)->type == type2)
 			{
@@ -1840,7 +1799,7 @@ void j1EntityController::UpgradeExistingUnits(Type type1, Type type2, UpgradeTyp
 		}
 		break;
 	case FLYING_DEFENSE_UPGRADE:
-		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 		{
 			if ((*it)->type == type1 || (*it)->type == type2)
 			{
@@ -1894,7 +1853,7 @@ void j1EntityController::RefundResources(Type type)
 Entity* j1EntityController::getNearestEnemy(Entity* entity, int target_squad)
 {
 	Entity* ret = nullptr;
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+	for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 	{
 		if (target_squad != -1)
 		{
@@ -1924,7 +1883,7 @@ bool j1EntityController::getNearestEnemies(Entity* entity, int squad_target, int
 	for (int j = 0; j < number; j++)
 	{
 		Entity* nearest = nullptr;
-		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 		{
 			if (squad_target != -1)
 			{
@@ -2409,7 +2368,7 @@ bool j1EntityController::Console_Interaction(std::string& function, std::vector<
 			if ((*it)->IsUnit() && !(*it)->IsHero())
 			{
 				LOG("deleted %d via comand", (*it)->UID);
-				DeleteEntity((*it)->UID);
+				DeleteEntity((*it));
 			}
 		}
 	}
@@ -2427,17 +2386,10 @@ bool j1EntityController::Console_Interaction(std::string& function, std::vector<
 
 	if (function == next_wave->name)
 	{
-		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 		{
-			if ((*it)->type >= Type::GRUNT && (*it)->type <= Type::JUGGERNAUT)
-			{
-				if ((*it)->IsUnit())
-				{
-					((Unit*)(*it))->commands.clear();
-				}
-				App->gui->entityDeleted(*it);
-				DeleteEntity((*it)->UID);
-			}
+			if ((*it)->IsEnemy())
+				DeleteEntity((*it));
 		}
 	}
 

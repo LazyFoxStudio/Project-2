@@ -35,7 +35,7 @@ bool j1PathFinding::PostUpdate()
 			if ((*it)->flow_field != App->wavecontroller->flow_field && (*it)->flow_field != App->wavecontroller->flow_field_aux)
 			{
 				to_erase = true;
-				for (std::list<Entity*>::iterator it2 = App->entitycontroller->entities.begin(); it2 != App->entitycontroller->entities.end(); it2++)
+				for (std::list<Entity*>::iterator it2 = App->entitycontroller->operative_entities.begin(); it2 != App->entitycontroller->operative_entities.end(); it2++)
 				{
 					if ((*it2)->IsUnit())
 					{
