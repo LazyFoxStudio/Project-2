@@ -46,6 +46,8 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 	collider.x = pos.x - (collider.w / 2);
 	collider.y = pos.y - (collider.h / 2);
 
+
+
 }
 
 Unit::~Unit()
@@ -59,7 +61,7 @@ Unit::~Unit()
 
 void Unit::Draw(float dt)
 {
-	if (anim_timer.ReadMs() > 10)
+	if (anim_timer.ReadMs() > 100)
 	{
 		anim_timer.Start();
 		animationController();
@@ -166,6 +168,7 @@ void Unit::Move(float dt)
 
 	collider.x = position.x - (collider.w / 2);
 	collider.y = position.y - (collider.h / 2);
+	
 }
 
 
@@ -258,6 +261,8 @@ void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)
 	}
 }
 
+
+
 void Unit::animationController()
 {
 	if(getCurrentCommand() != ATTACK)
@@ -314,6 +319,12 @@ void Unit::animationController()
 		}
 		else
 		{
+			if (idle_timer.ReadMs() > 15000)
+			{
+				idle_timer.Start();
+				int number = rand() % 7;
+				dir = (direction)number;
+			}
 			switch (dir)
 			{
 			case E:  new_animation = IDLE_E;  break;
@@ -325,6 +336,7 @@ void Unit::animationController()
 			case NW: new_animation = IDLE_NW; break;
 			case SW: new_animation = IDLE_SW; break;
 			}
+
 		}
 		
 	}
@@ -354,6 +366,7 @@ void Unit::animationController()
 	
 	last_anim = new_animation;
 }
+
 
 //buffs
 void Unit::AddDamagebuff(int duration, int amount, operation_sign sign)

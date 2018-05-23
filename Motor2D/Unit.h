@@ -44,6 +44,7 @@ public:
 	std::list<Effect*> effects;
 	std::deque<Command*> commands;
 	j1PerfTimer anim_timer;
+	j1PerfTimer idle_timer;
 	bool atk_done = false;
 	
 
@@ -70,6 +71,7 @@ public:
 	void AddSpeedbuff(int duration, int amount, operation_sign sign);
 	void AddDefensebuff(int duration, int amount, operation_sign sign);
 	void AddRangebuff(int duration, int amount, operation_sign sign);
+
 
 
 };
