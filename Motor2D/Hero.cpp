@@ -50,7 +50,7 @@ bool Hero::Update(float dt)
 					App->audio->PlayFx(SFX_HERO_YHAMAM_ICICLECRASH);
 					App->gui->GetActionButton(17)->Used();
 
-					if (skill_one->last_cast.IsZero())
+					if (skill_one->last_cast.IsZero() || App->input->GetMouseButtonDown(1) == KEY_DOWN)
 						App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->cast_pos.x, (float)(skill_one->cast_pos.y) }, false);
 					else
 						App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->last_cast.x, (float)(skill_one->last_cast.y) }, false);
@@ -78,7 +78,7 @@ bool Hero::Update(float dt)
 				{
 					App->audio->PlayFx(SFX_HERO_YHAMAM_OVERFLOW);
 					App->gui->GetActionButton(18)->Used();
-					if (skill_two->last_cast.IsZero())
+					if (skill_two->last_cast.IsZero() || App->input->GetMouseButtonDown(1) == KEY_DOWN)
 						App->particle->AddParticle(POVERFLOW, { (float)skill_two->cast_pos.x, (float)(skill_two->cast_pos.y - 30) }, false);
 					else
 						App->particle->AddParticle(POVERFLOW, { (float)skill_two->last_cast.x, (float)(skill_two->last_cast.y - 30) }, false);
@@ -87,7 +87,7 @@ bool Hero::Update(float dt)
 				{
 					App->audio->PlayFx(SFX_CIRCLE_OF_LIGHT);
 					App->gui->GetActionButton(34)->Used();
-					if (skill_two->last_cast.IsZero())
+					if (skill_two->last_cast.IsZero() || App->input->GetMouseButtonDown(1) == KEY_DOWN)
 						App->particle->AddParticle(PHOLYHEAL, { (float)skill_two->cast_pos.x, (float)(skill_two->cast_pos.y) }, false);
 					else
 						App->particle->AddParticle(PHOLYHEAL, { (float)skill_two->last_cast.x, (float)(skill_two->last_cast.y) }, false);
@@ -108,7 +108,7 @@ bool Hero::Update(float dt)
 			{
 				if (type == HERO_1)
 				{
-					if (skill_three->last_cast.IsZero())
+					if (skill_three->last_cast.IsZero() || App->input->GetMouseButtonDown(1) == KEY_DOWN)
 						App->particle->AddProgressiveParticle(PFLAMETHROWER, position, { (float)skill_three->cast_pos.x, (float)(skill_three->cast_pos.y) }, 2.5f, 10, false);
 					else
 						App->particle->AddProgressiveParticle(PFLAMETHROWER, position, { (float)skill_three->last_cast.x, (float)(skill_three->last_cast.y) }, 2.5f, 10, false);
