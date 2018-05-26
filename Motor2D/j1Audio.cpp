@@ -71,8 +71,11 @@ bool j1Audio::CleanUp()
 
 bool j1Audio::PostUpdate()
 {
-	blackList.clear();
-
+	if (blackListCooldown.Read() < 300)
+	{
+		blackList.clear();
+		blackListCooldown.Restart();
+	}
 	return true;
 }
 

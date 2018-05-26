@@ -130,6 +130,7 @@ public:
 
 private:
 
+	j1Timer						blackListCooldown;
 	std::list<SFXList>			blackList;
 	float						musicVolumeModifier = 1;
 	float						sfxVolumeModifier = 1;
