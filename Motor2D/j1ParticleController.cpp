@@ -3,6 +3,7 @@
 #include "j1Textures.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Input.h"
 #include "j1ParticleController.h"
 
 
@@ -56,6 +57,9 @@ bool j1ParticleController::CleanUp()
 // Update: draw background
 bool j1ParticleController::Update(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+		AddProgressiveParticle(PFLAMETHROWER, { 100,100 }, { 1000,1000 });
+
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
 		Particle* p = active[i];
@@ -253,7 +257,7 @@ void j1ParticleController::AddProgressiveParticle(particleType type, fPoint posi
 				p->position.x = position.x + (float)(vec.x*j);
 				p->position.y = position.y + (float)(vec.y*j);
 
-				p->delay = j*(500 / numofseparations);
+				p->delay = 1 + j*(500 / numofseparations);
 
 				float tmp = (float)(1 / numofseparations);
 				p->scale = negativespread + (spread - negativespread) * ((float)(tmp * j));

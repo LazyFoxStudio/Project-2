@@ -71,7 +71,7 @@ public:
 	//double GetAngleInDegrees(Particle* p);
 
 	void AddParticle(particleType type = PNO_TYPE, fPoint position = { 0,0 }, bool using_center = true);
-	void AddProjectile(particleType type = PNO_TYPE, fPoint position = { 0,0 }, fPoint objective = { 0,0 }, float speed = 0, bool using_camera = true);
+	void AddProjectile(particleType type = PNO_TYPE, fPoint position = { 0,0 }, fPoint objective = { 0,0 }, float speed = 300, bool using_camera = true);
 	void AddProgressiveParticle(particleType type = PNO_TYPE, fPoint position = { 0,0 }, fPoint objective = { 0,0 },float spread = 1, float numofseparations = 10, bool using_camera = true, float negativespread = 1);
 	//void DeleteParticle();
 
