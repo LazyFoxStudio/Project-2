@@ -136,7 +136,7 @@ void Unit::Move(float dt)
 
 	calculateSeparationVector(separation_v, separation_w);
 
-	if ((mov_target - position).GetModule() > 0 && (!commands.empty() ? commands.front()->type != ATTACK : false))
+	if ((mov_target - position).GetModule() > 0 && getCurrentCommand() != ATTACK)
 	{
 		if (getCurrentCommand() != NOTHING || separation_w == 0)
 		{
@@ -154,7 +154,7 @@ void Unit::Move(float dt)
 	{
 		mov_target = position;
 		mov_module = 0;
-		separation_w *= 2;
+		separation_w = 0;
 	}
 
 	fPoint movement = (((mov_direction * mov_module) + (separation_v * separation_w)) * max_step);

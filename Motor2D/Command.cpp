@@ -59,7 +59,7 @@ bool MoveTo::OnUpdate(float dt)
 		fPoint desired_place = getDesiredPlace();
 		map_p = App->map->WorldToMap(unit->position.x, unit->position.y);
 		
-		if (useSquadPosition(desired_place))
+		if (useSquadPosition(desired_place) && (unit->squad->getCommander()->getCurrentCommand() != ATTACK && unit->squad->getCommander()->getCurrentCommand() != ATTACKING_MOVETO))
 		{
 			unit->mov_target = desired_place;
 			if (unit->squad->squad_movement.IsZero() && unit->mov_target.DistanceTo(unit->position) < PROXIMITY_FACTOR_PIXELS)
@@ -396,7 +396,6 @@ bool MoveToSquadFlying::OnStop()
 
 bool AttackingMoveToSquad::OnUpdate(float dt)
 {
-	squad->findAttackSlots(enemy_atk_slots, target_squad_id);
 
 	if (!enemy_atk_slots.empty())
 	{
@@ -405,7 +404,7 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 		std::vector<Unit*> units;
 		squad->getUnits(units);
 
-		for (int i = 0; i < units.size(); i++)
+		for (int i = 0; i < enemy_atk_slots.size() && i < units.size(); i++)
 		{
 			if (units[i]->commands.empty() ? true : (units[i]->getCurrentCommand() != ATTACK && units[i]->getCurrentCommand() != ATTACKING_MOVETO))
 				units[i]->commands.push_front(new Attack(units[i], &enemy_atk_slots, &target_squad_id));
@@ -426,7 +425,7 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 					world_parent += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
 
 					fPoint movement = fPoint((float)world_parent.x, (float)world_parent.y) - commander->position;
-					if (parent->position == dest)
+					if (parent->position != dest)
 					{
 						movement = movement.Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
 						squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
@@ -458,12 +457,14 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 	if (!launched && !squad->squad_movement.IsZero()) 
 		Launch();
 
+
+	squad->findAttackSlots(enemy_atk_slots, target_squad_id);
+
 	return true;
 }
 
 bool AttackingMoveToSquadFlying::OnUpdate(float dt)
 {
-	squad->findAttackSlots(enemy_atk_slots, target_squad_id);
 
 	if (!enemy_atk_slots.empty())
 	{
@@ -517,6 +518,8 @@ bool AttackingMoveToSquadFlying::OnUpdate(float dt)
 			Stop();
 		}
 	}
+
+	squad->findAttackSlots(enemy_atk_slots, target_squad_id);
 
 	return true;
 }
@@ -608,53 +611,39 @@ bool Attack::searchTarget()
 {
 	if (enemy_atk_slots->empty()) { Stop(); return false; }
 
-	std::vector<iPoint> slots_in_use;
-
-	for (std::list<Entity*>::iterator it = App->entitycontroller->operative_entities.begin(); it != App->entitycontroller->operative_entities.end(); it++)
-	{
-		if ((*it)->IsEnemy() == unit->IsEnemy() && (*it)->IsUnit())
-		{
-			Unit* ally = (Unit*)(*it);
-			if (ally->getCurrentCommand() == ATTACK || ally->getCurrentCommand() == ATTACKING_MOVETO)
-				slots_in_use.push_back(((Attack*)ally->commands.front())->current_target);
-		}
-	}
-
 	current_target.SetToZero();
 	
-	for (int i = 0; i < enemy_atk_slots->size(); i++)
+	for (std::vector<iPoint>::iterator it = enemy_atk_slots->begin(); it != enemy_atk_slots->end(); it++)
 	{
-		bool used = false;
-		for (int j = 0; j < slots_in_use.size(); j++)
+		bool available = true;
+
+		if (!unit->IsFlying())
 		{
-			if(slots_in_use[j] == enemy_atk_slots->at(i))
-				{ used = true; break;}
+			iPoint targetMap_p = App->map->WorldToMap(current_target.x, current_target.y);
+
+			if (!App->pathfinding->IsWalkable(targetMap_p) && unit->IsRanged())
+			{
+				iPoint nearest_available = App->pathfinding->FirstWalkableAdjacentSafeProof(targetMap_p, map_p);
+
+				if (nearest_available.DistanceManhattan(targetMap_p) > ((int)(unit->range / App->map->data.tile_width)))
+				{
+					available = false;
+					it--;
+				}
+			}
 		}
-		if (used) continue;
 
-		if (enemy_atk_slots->at(i).DistanceTo({ (int)unit->position.x, (int)unit->position.y }) < current_target.DistanceTo({ (int)unit->position.x, (int)unit->position.y }))
-			current_target = enemy_atk_slots->at(i);
-
+		if (available)
+		{
+			if ((*it).DistanceTo({ (int)unit->position.x, (int)unit->position.y }) < current_target.DistanceTo({ (int)unit->position.x, (int)unit->position.y }))
+				current_target = (*it);
+		}
 	}
 
 	if (current_target.IsZero())
 	{
 		return false;
 		state == ATTACKING_MOVETO;
-	}
-
-	if (!unit->IsFlying())
-	{
-		iPoint targetMap_p = App->map->WorldToMap(current_target.x, current_target.y);
-
-		if (!App->pathfinding->IsWalkable(targetMap_p) && unit->IsRanged())
-		{
-			targetMap_p = App->pathfinding->FirstWalkableAdjacentSafeProof(targetMap_p, map_p);
-			iPoint world_p = App->map->MapToWorld(targetMap_p.x, targetMap_p.y);
-
-			if(world_p.DistanceTo(current_target) > (unit->range - App->map->data.tile_width))
-				{ Stop(); return true; }
-		}
 	}
 
 	return true;

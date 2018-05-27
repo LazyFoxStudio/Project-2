@@ -207,6 +207,33 @@ bool Squad::findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_
 		}
 	}
 
+	if (!list_to_fill.empty())
+	{
+		std::vector<iPoint> slots_in_use;
+
+		for (std::list<Entity*>::iterator it = App->entitycontroller->operative_entities.begin(); it != App->entitycontroller->operative_entities.end(); it++)
+		{
+			if ((*it)->IsEnemy() == getCommander()->IsEnemy() && (*it)->IsUnit())
+			{
+				Unit* ally = (Unit*)(*it);
+				if (ally->getCurrentCommand() == ATTACK || ally->getCurrentCommand() == ATTACKING_MOVETO)
+					slots_in_use.push_back(((Attack*)ally->commands.front())->current_target);
+			}
+		}
+
+		for (std::vector<iPoint>::iterator it = list_to_fill.begin(); it != list_to_fill.end(); it++)
+		{
+			for (int i = 0; i < slots_in_use.size(); i++)
+			{
+				if (slots_in_use[i] == (*it))
+				{
+					list_to_fill.erase(it);
+					it--; break;
+				}
+			}
+		}
+	}
+
 	return !list_to_fill.empty();
 }
 
