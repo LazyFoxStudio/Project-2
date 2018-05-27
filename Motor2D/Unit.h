@@ -42,6 +42,8 @@ public:
 	direction last_dir = S;
 	direction last_last_dir = S;
 
+	SDL_Rect anim = { 0,0,0,0 };
+
 	std::vector<Animation*> animations;
 	std::list<Effect*> effects;
 	std::deque<Command*> commands;

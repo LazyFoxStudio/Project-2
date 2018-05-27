@@ -73,9 +73,9 @@ bool j1EntityController::Update(float dt)
 	{
 		if (App->render->CullingCam((*it)->position))
 		{
-			(*it)->Draw(dt);
 			if (debug) debugDrawEntity(*it);
 		}
+		(*it)->Draw(dt);
 	}
 
 	while (!SpriteQueue.empty())
@@ -88,12 +88,10 @@ bool j1EntityController::Update(float dt)
 		}
 		else
 		{
-			SDL_Rect r = ((Unit*)aux_ent)->current_anim->GetCurrentFrame(dt);
-
 			if (((Unit*)aux_ent)->dir == W || ((Unit*)aux_ent)->dir == NW || ((Unit*)aux_ent)->dir == SW)
-				App->render->Blit(aux_ent->texture, aux_ent->position.x - (r.w / 2), aux_ent->position.y - (r.h / 2), &r, true, false, (1.0F), SDL_FLIP_HORIZONTAL);
+				App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim, true, false, (1.0F), SDL_FLIP_HORIZONTAL);
 			else
-				App->render->Blit(aux_ent->texture, aux_ent->position.x - (r.w / 2), aux_ent->position.y - (r.h / 2), &r);
+				App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim);
 		}
 
 		SpriteQueue.pop();
