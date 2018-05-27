@@ -41,7 +41,7 @@ bool j1Tutorial::PreUpdate()
 		bool enemies_found = false;
 		for (std::list<Entity*>::iterator it_e = App->entitycontroller->operative_entities.begin(); it_e != App->entitycontroller->operative_entities.end(); it_e++)
 		{
-			if ((*it_e)->IsEnemy() && (*it_e)->ex_state != existence_state::DESTROYED)
+			if ((*it_e)->IsEnemy())
 			{
 				enemies_found = true;
 				break;

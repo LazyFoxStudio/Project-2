@@ -83,9 +83,7 @@ bool j1EntityController::Update(float dt)
 		Entity* aux_ent = SpriteQueue.top();
 
 		if (aux_ent->IsBuilding())
-		{
 			App->render->Blit(aux_ent->texture, aux_ent->position.x, aux_ent->position.y, ((Building*)aux_ent)->current_sprite);
-		}
 		else
 		{
 			if (((Unit*)aux_ent)->dir == W || ((Unit*)aux_ent)->dir == NW || ((Unit*)aux_ent)->dir == SW)
@@ -106,7 +104,11 @@ bool j1EntityController::Update(float dt)
 	for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 	{
 		colliderQT->insert(*it);
-		(*it)->Update(dt);
+		if (!(*it)->Update(dt))
+		{
+			operative_entities.erase(it);
+			it--;
+		}
 	}
 	
 	Hero* hero = (Hero*)getEntitybyID(hero_UID);
@@ -1526,7 +1528,7 @@ void j1EntityController::CheckCollidingWith(SDL_Rect collider, std::vector<Entit
 
 	for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 	{
-		if ((*it) != entity_to_ignore && (*it)->ex_state !=  DESTROYED && (*it)->isActive)
+		if ((*it) != entity_to_ignore && (*it)->isActive)
 			if (SDL_HasIntersection(&collider, &(*it)->collider)) 
 				list_to_fill.push_back((*it));
 	}
@@ -1859,7 +1861,7 @@ Entity* j1EntityController::getNearestEnemy(Entity* entity, int target_squad)
 			else if (((Unit*)(*it))->squad->UID != target_squad) continue;
 		}
 
-		if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED && !(entity->IsMelee() && (*it)->IsFlying()))
+		if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && !(entity->IsMelee() && (*it)->IsFlying()))
 		{
 			if (!ret) ret = *it;
 			else
@@ -1889,7 +1891,7 @@ bool j1EntityController::getNearestEnemies(Entity* entity, int squad_target, int
 				else if (((Unit*)(*it))->squad->UID != squad_target) continue;
 			}
 
-			if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && (*it)->ex_state != DESTROYED && !(entity->IsMelee() && (*it)->IsFlying()))
+			if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && !(entity->IsMelee() && (*it)->IsFlying()))
 			{
 				bool used = false;
 				for (int i = 0; i < list_to_fill.size(); i++)

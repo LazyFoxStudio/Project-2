@@ -73,56 +73,56 @@ void Unit::Draw(float dt)
 
 bool Unit::Update(float dt)
 {
-	if (current_HP <= 0)
+	if (current_HP > 0)
 	{
-		Destroy();
+		//take buffs out here
+		for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+		{
+			if ((*it)->applied)
+			{
+				(*it)->Remove();
+			}
+		}
+
+		//remove buffs here
+		for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+		{
+			float time_passed = (*it)->timer.ReadSec();
+			float max_time = (*it)->duration;
+			if ((int)time_passed > (int)max_time)
+			{
+				Effect* to_del = (*it);
+				effects.remove(*it);
+				RELEASE(to_del);
+			}
+		}
+
+		//apply buffs here
+		for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+		{
+			(*it)->Apply();
+			(*it)->applied = true;
+		}
+
+		if (!commands.empty())
+		{
+			commands.front()->Execute(dt);
+			if (commands.front()->state == FINISHED) commands.pop_front();
+		}
+		else if (squad->commander_pos + squad->getOffset(UID) != mov_target) mov_target = squad->commander_pos + squad->getOffset(UID);
+
+		Move(dt);
+
+		//minimap
+		if (IsEnemy())
+			App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
+		else
+			App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
+
 		return true;
 	}
-	//take buffs out here
- 	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
-	{
-		if ((*it)->applied)
-		{
-			(*it)->Remove();
-		}
-	}
-
-	//remove buffs here
-	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
-	{
-		float time_passed= (*it)->timer.ReadSec();
-		float max_time = (*it)->duration;
-		if ((int)time_passed > (int)max_time)
-		{
-			Effect* to_del = (*it);
-			effects.remove(*it);
-			RELEASE(to_del);
-		}
-	}
-
-	//apply buffs here
-	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
-	{
-		(*it)->Apply();
-		(*it)->applied = true;
-	}
-
-	if (!commands.empty())
-	{
-		commands.front()->Execute(dt);
-		if (commands.front()->state == FINISHED) commands.pop_front();
-	}
-	else if (squad->commander_pos + squad->getOffset(UID) != mov_target) mov_target = squad->commander_pos + squad->getOffset(UID);
-
-	Move(dt);	
-
-	//minimap
-	if (IsEnemy())
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
 	else
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
-
-	return true;
+		return false;
 }
 
 
