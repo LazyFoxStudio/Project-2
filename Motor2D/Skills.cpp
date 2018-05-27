@@ -165,7 +165,8 @@ bool Skill::Activate()
 
 							if (type == BUFF)
 							{
-								((Unit*)(*item))->AddDefensebuff(15, -5, PLUS_MINUS);
+								((Unit*)(*item))->AddDefensebuff(PALADIN_BUFF_DURATION, PALADIN_ARMOR_REDUCTION, PLUS_MINUS);
+								((Unit*)(*item))->AddPiercingDamagebuff(PALADIN_BUFF_DURATION, PALADIN_DAMAGE_REDUCTION, PLUS_MINUS);
 							}
 							
 							ret = true;
@@ -221,8 +222,8 @@ bool Skill::Activate()
 						
 						if (cast_aux.DistanceTo(pos) < radius)
 						{
-							((Unit*)(*item))->AddDefensebuff(15, 5, PLUS_MINUS);
-							((Unit*)(*item))->AddPiercingDamagebuff(15, 7, PLUS_MINUS);
+							((Unit*)(*item))->AddDefensebuff(PALADIN_BUFF_DURATION, PALADIN_ARMOR_BUFF, PLUS_MINUS);
+							((Unit*)(*item))->AddPiercingDamagebuff(PALADIN_BUFF_DURATION, PALADIN_DAMAGE_BUFF, PLUS_MINUS);
 							App->particle->AddParticle(PHALO, { (*item)->position.x, (*item)->position.y - 30 }, false);
 							ret = true;
 						}

@@ -268,7 +268,7 @@
           <defense value="10"/>
           <piercingDamage value="10"/>
           <movementSpeed value="1.1"/>
-          <range value="80"/>
+          <range value="40"/>
           <lineOfSight value="500"/>
           <attackSpeed value ="1"/>
           <size x="1" y="1"/>
@@ -3695,13 +3695,13 @@
         <sprite x="545" y="0" w="72" h="70" />
       </sprites>
       <Stats>
-        <life value="120"/>
+        <life value="250"/>
         <villagers value="0"/>
         <buildingTime value="5"/>
         <attack value="3"/>
         <piercingDamage value="6"/>
-        <range value="210"/>
-        <defense value="2"/>
+        <range value="250"/>
+        <defense value="4"/>
         <woodCost value="400"/>
         <goldCost value="50"/>
       </Stats>

@@ -9,7 +9,8 @@ enum message_type
 	NO_RESOURCES,
 	NO_TREES,
 	OUT_OF_RANGE,
-	NO_MINE
+	NO_MINE,
+	CANT_BUILD_OVER_TROOPS 
 };
 
 class Text;
