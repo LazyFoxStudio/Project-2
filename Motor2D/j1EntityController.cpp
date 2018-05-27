@@ -1027,7 +1027,7 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 
 	if (type == HERO_1)
 	{
-		hero->skill_one = new Skill(hero, 3, 80,5, 300, MAGE_ABILITY_1_COOLDOWN, AREA);			//Icicle Crash
+		hero->skill_one = new Skill(hero, 3, 50,5, 300, MAGE_ABILITY_1_COOLDOWN, AREA);			//Icicle Crash
 		hero->skill_two = new Skill(hero, 0, 250,5, 700, MAGE_ABILITY_2_COOLDOWN, NONE_RANGE);	//Overflow
 		hero->skill_three = new Skill(hero, 0, 200,5, 200, MAGE_ABILITY_3_COOLDOWN, LINE);		//Dragon Breath
 		
@@ -1038,7 +1038,7 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	}
 	if (type == HERO_2)
 	{
-		hero->skill_one = new Skill(hero, 5, 70,5, 3000000, PALADIN_ABILITY_1_COOLDOWN, PLACE);	//Consecration
+		hero->skill_one = new Skill(hero, 5, 30,5, 3000000, PALADIN_ABILITY_1_COOLDOWN, PLACE);	//Consecration
 		hero->skill_two = new Skill(hero, 4, 10,5, 700, PALADIN_ABILITY_2_COOLDOWN, HEAL);		//Circle of Light
 		hero->skill_three = new Skill(hero, 5, 0,5, 3000000, PALADIN_ABILITY_3_COOLDOWN, BUFF);	//Honor of the pure
 
@@ -1217,9 +1217,12 @@ void j1EntityController::buildingProcessDraw()
 	App->gui->warningMessages->hideMessage(NO_TREES);
 	App->gui->warningMessages->hideMessage(NO_MINE);
 
+	std::vector<Entity*> collisions;
+	App->entitycontroller->CheckCollidingWith(building_col, collisions);
+
 	if (to_build_type != MINE)
 	{
-		if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && enough_resources && SDL_HasIntersection(&building_col, &buildingArea))
+		if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && enough_resources && SDL_HasIntersection(&building_col, &buildingArea) && collisions.empty())
 			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);
 		else
 			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);
@@ -1239,7 +1242,7 @@ void j1EntityController::buildingProcessDraw()
 	}
 	else
 	{
-		if (!App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, false, false, true) && enough_resources && SDL_HasIntersection(&building_col, &buildingArea))
+		if (!App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y, false, false, true) && enough_resources && SDL_HasIntersection(&building_col, &buildingArea) && collisions.empty())
 		{		
 			App->gui->warningMessages->hideMessage(NO_MINE);
 			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Translucid_Green);		
@@ -1254,6 +1257,7 @@ void j1EntityController::buildingProcessDraw()
 			App->render->DrawQuad({ pos.x,pos.y,to_build->size.x*App->map->data.tile_width,to_build->size.y*App->map->data.tile_height }, Red);			
 		}
 	}
+
 	if (SDL_HasIntersection(&building_col, &buildingArea))
 		App->gui->warningMessages->hideMessage(OUT_OF_RANGE);
 	else

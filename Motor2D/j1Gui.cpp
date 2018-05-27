@@ -905,6 +905,7 @@ void j1Gui::createExtraIngameMenuElements()
 	warningMessages->addWarningMessage("There are no trees in the area", NO_TREES);
 	warningMessages->addWarningMessage("You cannot build out of the range", OUT_OF_RANGE);
 	warningMessages->addWarningMessage("You have to place it over an unused mine", NO_MINE);
+	warningMessages->addWarningMessage("You cannot build over troops", CANT_BUILD_OVER_TROOPS);
 
 	menu* Menu = App->uiscene->getMenu(INGAME_MENU);
 	if (Menu != nullptr)
