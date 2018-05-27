@@ -1,6 +1,4 @@
-# **Alliance: The Last Bastion**
-
-## Description
+## Game Description
 
 
 ## Developer Team
@@ -47,7 +45,7 @@ Team Photo
 Video (15-25 sec)
 
 ## Gameplay
-Video (1 min) with debug features
+Video (1-2 min) with debug features
 
 ## Check the individual contribution of each team member
 
