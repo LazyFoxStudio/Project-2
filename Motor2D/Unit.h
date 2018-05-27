@@ -39,6 +39,7 @@ public:
 	Animation* current_anim = nullptr;
 	animationType last_anim = IDLE_S;
 	direction dir = S;
+	direction last_dir = S;
 
 	std::vector<Animation*> animations;
 	std::list<Effect*> effects;

@@ -4,7 +4,6 @@
 	<template> 
 		<width value="30"/>
 		<height value="3"/>
-    <parabollic value="true"/>
 		<anim>
 			<pushback x="888" y="131" w="30" h="3"/>
 			<loop value="false"/>
@@ -15,7 +14,6 @@
 	<template> 
 		<width value="20"/>
 		<height value="20"/>
-    <parabollic value="true"/>
 		<anim>
 			<loop value="true"/>
 			<speed value="5"/>

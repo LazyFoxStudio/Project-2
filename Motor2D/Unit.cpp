@@ -61,12 +61,9 @@ Unit::~Unit()
 
 void Unit::Draw(float dt)
 {
-	if (anim_timer.ReadMs() > 100)
-	{
-		anim_timer.Start();
-		animationController();
-	}
 
+	animationController();
+	
 	App->entitycontroller->SpriteQueue.push(this);
 }
 
@@ -289,17 +286,27 @@ void Unit::animationController()
 				}
 				break;
 			default:
-				switch (dir)
+				if (dir == last_dir)
 				{
-				case E:  new_animation = MOVE_E;  break;
-				case SE: new_animation = MOVE_SE; break;
-				case NE: new_animation = MOVE_NE; break;
-				case N:  new_animation = MOVE_N;  break;
-				case S:  new_animation = MOVE_S;  break;
-				case W:  new_animation = MOVE_W;  break;
-				case NW: new_animation = MOVE_NW; break;
-				case SW: new_animation = MOVE_SW; break;
+					
+					switch (dir)
+					{
+					case E:  new_animation = MOVE_E;  break;
+					case SE: new_animation = MOVE_SE; break;
+					case NE: new_animation = MOVE_NE; break;
+					case N:  new_animation = MOVE_N;  break;
+					case S:  new_animation = MOVE_S;  break;
+					case W:  new_animation = MOVE_W;  break;
+					case NW: new_animation = MOVE_NW; break;
+					case SW: new_animation = MOVE_SW; break;
+					}
+					anim_timer.Start();
 				}
+				else if (last_dir != dir)
+				{
+					last_dir = dir;
+				}
+
 				break;
 			}
 		}

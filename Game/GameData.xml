@@ -886,36 +886,28 @@
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="0"/>
-
                 <speed value="4.5"/>
-
               </Animation>
               <Animation> <!-- 17- AttackingNorthEast-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="1"/>
-
                 <speed value="4.5"/>
-
               </Animation>
               <Animation> <!-- 18- AttackingEast-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="2"/>
-
                 <speed value="4.5"/>
-
               </Animation>
               <Animation> <!-- 19- AttackingSouthEast-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="3"/>
-
                 <speed value="4.5"/>
-
               </Animation>
               <Animation> <!-- 20- AttackingSouth-->
                 <rows value="1"/>
@@ -923,34 +915,27 @@
                 <StartingRow value="5"/>
                 <StartingColumn value="4"/>
                 <speed value="4.5"/>
-
               </Animation>
               <Animation> <!-- 21- AttackingSouthWest-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="3"/>
-
                 <speed value="4.5"/>
-
               </Animation>
               <Animation> <!-- 22- AttackingWest-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="2"/>
-
                 <speed value="4.5"/>
-
               </Animation>
               <Animation> <!-- 23- AttackingNorthWest-->
                 <rows value="1"/>
                 <columns value="0"/>
                 <StartingRow value="5"/>
                 <StartingColumn value="1"/>
-
                 <speed value="4.5"/>
-
               </Animation>
               <Animation> <!-- 24- DyingNorthEast-->
                 <rows value="0"/>
