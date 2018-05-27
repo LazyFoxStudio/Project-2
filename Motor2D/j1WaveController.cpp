@@ -66,7 +66,10 @@ void j1WaveController::updateFlowField()
 
 void j1WaveController::forceNextWave()
 {
+	points = 1;
 	wave_timer.Start();
+	next_wave.clear();
+	Generate_Next_Wave();
 	Generate_Wave();
 }
 
@@ -141,7 +144,7 @@ void j1WaveController::Generate_Next_Wave()
 		points += points_plus;
 		entity_selector(6);
 		
-		if (current_wave % 5 == 0)
+		if (current_wave >0 && current_wave % 5 == 0)
 		{
 			points_plus++;
 		}
