@@ -339,8 +339,6 @@ void Unit::animationController()
 			}
 
 		}
-		
-
 	}
 	else 
 	{
@@ -356,7 +354,6 @@ void Unit::animationController()
 		case SW: new_animation = DEAD_SW; break;
 		}
 	}
-
 
 	if (last_anim == new_animation)
 	{
