@@ -435,7 +435,7 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 							squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
 					}
 					else
-						squad->squad_movement = movement;
+						squad->squad_movement.SetToZero();
 				}
 				else
 					squad->squad_movement.SetToZero();
@@ -489,11 +489,10 @@ bool AttackingMoveToSquadFlying::OnUpdate(float dt)
 			if (Unit* commander = squad->getCommander())
 			{
 				iPoint map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
-				iPoint world_dest = App->map->MapToWorld(dest.x, dest.y);
-				world_dest += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
+				iPoint map_dest = App->map->WorldToMap(dest.x, dest.y);
 
-				fPoint movement = fPoint((float)world_dest.x, (float)world_dest.y) - commander->position;
-				if (map_p != dest)
+				fPoint movement = fPoint((float)dest.x, (float)dest.y) - commander->position;
+				if (map_p != map_dest)
 				{
 					movement = movement.Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
 					squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
@@ -502,7 +501,7 @@ bool AttackingMoveToSquadFlying::OnUpdate(float dt)
 						squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
 				}
 				else
-					squad->squad_movement = movement;
+					squad->squad_movement.SetToZero();
 			}
 		}
 		else if (enemies_found && target_squad_id != -1)

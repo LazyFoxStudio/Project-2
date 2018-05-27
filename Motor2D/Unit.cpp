@@ -61,64 +61,68 @@ Unit::~Unit()
 
 void Unit::Draw(float dt)
 {
-
 	animationController();
-	
-	App->entitycontroller->SpriteQueue.push(this);
+
+	anim = current_anim->GetCurrentFrame(dt);
+
+	if (App->render->CullingCam(position))
+	{
+		App->entitycontroller->SpriteQueue.push(this);
+	}
 }
 
 bool Unit::Update(float dt)
 {
-	if (current_HP <= 0)
+	if (current_HP > 0)
 	{
-		Destroy();
+		//take buffs out here
+		for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+		{
+			if ((*it)->applied)
+			{
+				(*it)->Remove();
+			}
+		}
+
+		//remove buffs here
+		for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+		{
+			float time_passed = (*it)->timer.ReadSec();
+			float max_time = (*it)->duration;
+			if ((int)time_passed > (int)max_time)
+			{
+				Effect* to_del = (*it);
+				effects.remove(*it);
+				RELEASE(to_del);
+			}
+		}
+
+		//apply buffs here
+		for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
+		{
+			(*it)->Apply();
+			(*it)->applied = true;
+		}
+
+		if (!commands.empty())
+		{
+			commands.front()->Execute(dt);
+			if (commands.front()->state == FINISHED) commands.pop_front();
+		}
+		else if (squad->commander_pos + squad->getOffset(UID) != mov_target) mov_target = squad->commander_pos + squad->getOffset(UID);
+
+		Move(dt);
+
+		//minimap
+		if (IsEnemy())
+			App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
+		else
+			App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
+
 		return true;
 	}
-	//take buffs out here
- 	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
-	{
-		if ((*it)->applied)
-		{
-			(*it)->Remove();
-		}
-	}
-
-	//remove buffs here
-	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
-	{
-		float time_passed= (*it)->timer.ReadSec();
-		float max_time = (*it)->duration;
-		if ((int)time_passed > (int)max_time)
-		{
-			Effect* to_del = (*it);
-			effects.remove(*it);
-			RELEASE(to_del);
-		}
-	}
-
-	//apply buffs here
-	for (std::list<Effect*>::iterator it = effects.begin(); it != effects.end(); it++)
-	{
-		(*it)->Apply();
-		(*it)->applied = true;
-	}
-
-	if (!commands.empty())
-	{
-		commands.front()->Execute(dt);
-		if (commands.front()->state == FINISHED) commands.pop_front();
-	}
-	else if (squad->commander_pos + squad->getOffset(UID) != mov_target) mov_target = squad->commander_pos + squad->getOffset(UID);
-
-	Move(dt);	
-
-	//minimap
-	if (IsEnemy())
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
 	else
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
-
-	return true;
+		return false;
 }
 
 
@@ -271,8 +275,9 @@ void Unit::animationController()
 		if (mov_module > 0.5)
 		{
 			switch (commands.empty() ? MOVETO : commands.front()->type)
-			{				
+			{
 			case ATTACK:
+
 				switch (dir)
 				{
 				case E:  new_animation = ATK_E;  break;
@@ -284,34 +289,26 @@ void Unit::animationController()
 				case NW: new_animation = ATK_NW; break;
 				case SW: new_animation = ATK_SW; break;
 				}
+
 				break;
 			default:
-				if (dir == last_dir)
+				switch (dir)
 				{
-					
-					switch (dir)
-					{
-					case E:  new_animation = MOVE_E;  break;
-					case SE: new_animation = MOVE_SE; break;
-					case NE: new_animation = MOVE_NE; break;
-					case N:  new_animation = MOVE_N;  break;
-					case S:  new_animation = MOVE_S;  break;
-					case W:  new_animation = MOVE_W;  break;
-					case NW: new_animation = MOVE_NW; break;
-					case SW: new_animation = MOVE_SW; break;
-					}
-					anim_timer.Start();
+				case E:  new_animation = MOVE_E;  break;
+				case SE: new_animation = MOVE_SE; break;
+				case NE: new_animation = MOVE_NE; break;
+				case N:  new_animation = MOVE_N;  break;
+				case S:  new_animation = MOVE_S;  break;
+				case W:  new_animation = MOVE_W;  break;
+				case NW: new_animation = MOVE_NW; break;
+				case SW: new_animation = MOVE_SW; break;
 				}
-				else if (last_dir != dir)
-				{
-					last_dir = dir;
-				}
-
 				break;
 			}
 		}
 		else if (commands.empty() ? false : commands.front()->type == ATTACK)
 		{
+
 			switch (dir)
 			{
 			case E:  new_animation = ATK_E;  break;
@@ -323,6 +320,7 @@ void Unit::animationController()
 			case NW: new_animation = ATK_NW; break;
 			case SW: new_animation = ATK_SW; break;
 			}
+
 		}
 		else
 		{
@@ -345,7 +343,6 @@ void Unit::animationController()
 			}
 
 		}
-		
 	}
 	else 
 	{

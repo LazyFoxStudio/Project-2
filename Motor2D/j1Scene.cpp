@@ -126,6 +126,7 @@ bool j1Scene::Update(float dt)
 	GetTotalInactiveWorkers();
 
 	//TEST SPAWNER--------------------------------------------------
+	/*
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		int x, y;
@@ -134,7 +135,95 @@ bool j1Scene::Update(float dt)
 		mouse_pos=App->render->ScreenToWorld(x, y);
 		App->entitycontroller->AddSquad(FOOTMAN, {(float)mouse_pos.x,(float)mouse_pos.y});
 	}
-
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		int x, y;
+		iPoint mouse_pos;
+		App->input->GetMousePosition(x, y);
+		mouse_pos = App->render->ScreenToWorld(x, y);
+		App->entitycontroller->AddSquad(ARCHER, { (float)mouse_pos.x,(float)mouse_pos.y });
+	}
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	{
+		int x, y;
+		iPoint mouse_pos;
+		App->input->GetMousePosition(x, y);
+		mouse_pos = App->render->ScreenToWorld(x, y);
+		App->entitycontroller->AddSquad(KNIGHT, { (float)mouse_pos.x,(float)mouse_pos.y });
+	}
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+	{
+		int x, y;
+		iPoint mouse_pos;
+		App->input->GetMousePosition(x, y);
+		mouse_pos = App->render->ScreenToWorld(x, y);
+		App->entitycontroller->AddSquad(FLYING_MACHINE, { (float)mouse_pos.x,(float)mouse_pos.y });
+	}
+	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+	{
+		int x, y;
+		iPoint mouse_pos;
+		App->input->GetMousePosition(x, y);
+		mouse_pos = App->render->ScreenToWorld(x, y);
+		App->entitycontroller->AddSquad(BALLISTA, { (float)mouse_pos.x,(float)mouse_pos.y });
+	}
+	if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
+	{
+		int x, y;
+		iPoint mouse_pos;
+		App->input->GetMousePosition(x, y);
+		mouse_pos = App->render->ScreenToWorld(x, y);
+		App->entitycontroller->AddSquad(GRYPHON, { (float)mouse_pos.x,(float)mouse_pos.y });
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
+	{
+		int x, y;
+		iPoint mouse_pos;
+		App->input->GetMousePosition(x, y);
+		mouse_pos = App->render->ScreenToWorld(x, y);
+		App->entitycontroller->AddSquad(GRUNT, { (float)mouse_pos.x,(float)mouse_pos.y });
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
+	{
+		int x, y;
+		iPoint mouse_pos;
+		App->input->GetMousePosition(x, y);
+		mouse_pos = App->render->ScreenToWorld(x, y);
+		App->entitycontroller->AddSquad(AXE_THROWER, { (float)mouse_pos.x,(float)mouse_pos.y });
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_3) == KEY_DOWN)
+	{
+		int x, y;
+		iPoint mouse_pos;
+		App->input->GetMousePosition(x, y);
+		mouse_pos = App->render->ScreenToWorld(x, y);
+		App->entitycontroller->AddSquad(DEATH_KNIGHT, { (float)mouse_pos.x,(float)mouse_pos.y });
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_DOWN)
+	{
+		int x, y;
+		iPoint mouse_pos;
+		App->input->GetMousePosition(x, y);
+		mouse_pos = App->render->ScreenToWorld(x, y);
+		App->entitycontroller->AddSquad(DRAGON, { (float)mouse_pos.x,(float)mouse_pos.y });
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_DOWN)
+	{
+		int x, y;
+		iPoint mouse_pos;
+		App->input->GetMousePosition(x, y);
+		mouse_pos = App->render->ScreenToWorld(x, y);
+		App->entitycontroller->AddSquad(CATAPULT, { (float)mouse_pos.x,(float)mouse_pos.y });
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_DOWN)
+	{
+		int x, y;
+		iPoint mouse_pos;
+		App->input->GetMousePosition(x, y);
+		mouse_pos = App->render->ScreenToWorld(x, y);
+		App->entitycontroller->AddSquad(JUGGERNAUT, { (float)mouse_pos.x,(float)mouse_pos.y });
+	}
+	*/
 	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
 		App->SaveGame();
