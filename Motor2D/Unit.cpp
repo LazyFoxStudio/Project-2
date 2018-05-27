@@ -271,8 +271,9 @@ void Unit::animationController()
 		if (mov_module > 0.5)
 		{
 			switch (commands.empty() ? MOVETO : commands.front()->type)
-			{				
+			{
 			case ATTACK:
+
 				switch (dir)
 				{
 				case E:  new_animation = ATK_E;  break;
@@ -284,34 +285,26 @@ void Unit::animationController()
 				case NW: new_animation = ATK_NW; break;
 				case SW: new_animation = ATK_SW; break;
 				}
+
 				break;
 			default:
-				if (dir == last_dir)
+				switch (dir)
 				{
-					
-					switch (dir)
-					{
-					case E:  new_animation = MOVE_E;  break;
-					case SE: new_animation = MOVE_SE; break;
-					case NE: new_animation = MOVE_NE; break;
-					case N:  new_animation = MOVE_N;  break;
-					case S:  new_animation = MOVE_S;  break;
-					case W:  new_animation = MOVE_W;  break;
-					case NW: new_animation = MOVE_NW; break;
-					case SW: new_animation = MOVE_SW; break;
-					}
-					anim_timer.Start();
+				case E:  new_animation = MOVE_E;  break;
+				case SE: new_animation = MOVE_SE; break;
+				case NE: new_animation = MOVE_NE; break;
+				case N:  new_animation = MOVE_N;  break;
+				case S:  new_animation = MOVE_S;  break;
+				case W:  new_animation = MOVE_W;  break;
+				case NW: new_animation = MOVE_NW; break;
+				case SW: new_animation = MOVE_SW; break;
 				}
-				else if (last_dir != dir)
-				{
-					last_dir = dir;
-				}
-
 				break;
 			}
 		}
 		else if (commands.empty() ? false : commands.front()->type == ATTACK)
 		{
+
 			switch (dir)
 			{
 			case E:  new_animation = ATK_E;  break;
@@ -323,6 +316,7 @@ void Unit::animationController()
 			case NW: new_animation = ATK_NW; break;
 			case SW: new_animation = ATK_SW; break;
 			}
+
 		}
 		else
 		{
@@ -346,6 +340,7 @@ void Unit::animationController()
 
 		}
 		
+
 	}
 	else 
 	{
@@ -361,6 +356,7 @@ void Unit::animationController()
 		case SW: new_animation = DEAD_SW; break;
 		}
 	}
+
 
 	if (last_anim == new_animation)
 	{
