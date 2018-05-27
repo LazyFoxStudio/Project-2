@@ -61,10 +61,14 @@ Unit::~Unit()
 
 void Unit::Draw(float dt)
 {
-
 	animationController();
-	
-	App->entitycontroller->SpriteQueue.push(this);
+
+	anim = current_anim->GetCurrentFrame(dt);
+
+	if (App->render->CullingCam(position))
+	{
+		App->entitycontroller->SpriteQueue.push(this);
+	}
 }
 
 bool Unit::Update(float dt)
