@@ -1,4 +1,4 @@
-## Game Description
+# Game Description
 
 
 ## Developer Team
