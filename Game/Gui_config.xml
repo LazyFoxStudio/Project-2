@@ -419,6 +419,9 @@ Resolution of the screen: 1680x 1050y
 				</button>
 			</childs>
 		</image>
+		<image path="gui/counters.png">
+			<position x="1100" y="180"/>
+		</image>
 	  </menu>
 	
     <!-- SETTINGS-->
