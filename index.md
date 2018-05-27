@@ -27,13 +27,19 @@ Team Photo
 
 <p> 
 <img src="https://i.imgur.com/n3lVcl0.png" width="100">
-[Facebook](https://www.facebook.com/Lazy-Fox-Studio-1705377142862573/)
+<p>[Facebook](https://www.facebook.com/Lazy-Fox-Studio-1705377142862573/)</p>
 </p>
 
 <p> 
 <img src="http://icons.iconarchive.com/icons/sicons/basic-round-social/512/twitter-icon.png" width="100">
-[Twitter](https://twitter.com/LazyFoxStudio)
+<p>[Twitter](https://twitter.com/LazyFoxStudio)</p>
 </p>
+
+<p> 
+<img src="https://i.imgur.com/xU9lcDC.png" width="100">
+<p>[Instagram](https://www.instagram.com/lazy_fox_studio/)</p>
+</p>
+
 
 ## Download the latest release [HERE](https://github.com/LazyFoxStudio/Project-2/releases/latest)
 
