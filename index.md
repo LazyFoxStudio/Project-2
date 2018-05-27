@@ -12,6 +12,6 @@ Check the individual contibution of **[Ivan Drofiak - Artist](https://lazyfoxstu
 
 Check the individual contibution of **[Jaume Surís - Audio](https://lazyfoxstudio.github.io/Project-2/jaume)**
 
-Check the individual contibution of **[Adrià Ferrer - UI Designer](https://lazyfoxstudio.github.io/Project-2/)**
+Check the individual contibution of **[Adrià Ferrer - UI Designer](https://lazyfoxstudio.github.io/Project-2/adria)**
 
 Check the individual contibution of **[Hugo Bo - QA](https://lazyfoxstudio.github.io/Project-2/hugo)**
