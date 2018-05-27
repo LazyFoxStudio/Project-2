@@ -369,6 +369,9 @@ Resolution of the screen: 1680x 1050y
 
 	  <!-- PAUSE MENU-->
 	  <menu type="3" active="false">
+		  <image path="gui/counters.png">
+			<position x="1095" y="185"/>
+		  </image>
 		  <image path="gui/pause.png">
 			<position x="650" y="170"/>
 			<childs>
@@ -418,9 +421,6 @@ Resolution of the screen: 1680x 1050y
 					</childs>
 				</button>
 			</childs>
-		</image>
-		<image path="gui/counters.png">
-			<position x="1100" y="180"/>
 		</image>
 	  </menu>
 	
