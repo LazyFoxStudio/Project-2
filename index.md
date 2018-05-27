@@ -26,11 +26,13 @@ Team Photo
 ## Check our social media
 
 <p> 
-<img src="https://png.pngtree.com/element_our/md/20180301/md_5a9794da1b10e.png" width="100">
+<img src="https://i.imgur.com/n3lVcl0.png" width="100">
+[Facebook](https://www.facebook.com/Lazy-Fox-Studio-1705377142862573/)
 </p>
 
 <p> 
 <img src="http://icons.iconarchive.com/icons/sicons/basic-round-social/512/twitter-icon.png" width="100">
+[Twitter](https://twitter.com/LazyFoxStudio)
 </p>
 
 ## Download the latest release [HERE](https://github.com/LazyFoxStudio/Project-2/releases/latest)
