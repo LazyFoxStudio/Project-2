@@ -38,7 +38,6 @@
 	<template> 
 		<width value="46"/>
 		<height value="13"/>
-    <parabollic value="true"/>
 		<anim>
 			<pushback x="400" y="26" w="46" h="13"/>
 			<loop value="false"/>
