@@ -1,5 +1,48 @@
 # **Alliance: The Last Bastion**
 
+## Description
+
+
+## Developer Team
+**[Marc Garcia - Team Lead](https://github.com/MaxitoSama)**
+
+**[Lorien Portella - Designer](https://github.com/Witiza)**
+
+**[Josep Pi - Manager](https://github.com/joseppi)**
+
+**[Rodrigo de Pedro - Programming Leader](https://github.com/rodrigodpl)**
+
+**[Ivan Drofiak - Artist](https://github.com/FurryGhoul)**
+
+**[Jaume Surís - Audio](https://github.com/Farmak09)**
+
+**[Adrià Ferrer - UI Designer](https://github.com/Adria-F)**
+
+**[Hugo Bo - QA](https://github.com/Hugo-Bo-Diaz)**
+
+
+Team Photo
+
+## Check our social media
+
+<p> 
+<img src="https://png.pngtree.com/element_our/md/20180301/md_5a9794da1b10e.png" width="100">
+</p>
+
+<p> 
+<img src="http://icons.iconarchive.com/icons/sicons/basic-round-social/512/twitter-icon.png" width="100">
+</p>
+
+## Download the latest release [HERE](https://github.com/LazyFoxStudio/Project-2/releases/latest)
+
+## Trailer
+Video (15-25 sec)
+
+## Gameplay
+Video (1 min) with debug features
+
+## Check the individual contribution of each team member
+
 Check the individual contibution of **[Marc Garcia - Team Lead](https://lazyfoxstudio.github.io/Project-2/max)**
 
 Check the individual contibution of **[Lorien Portella - Designer](https://lazyfoxstudio.github.io/Project-2/lorien)**
