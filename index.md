@@ -1,5 +1,9 @@
 # Game Description
+Alliance: The Last Bastion is a Real Time Strategy game for PC based on the famous world of Warcraft.
+You will have to take the control of a small village and expand its resources while defending it from the orcs of the Horde that tries to destroy it.
 
+Upgrade your village and turn it to a big fortress, manage your tropes and kill the orcs with your hero!
+It's time to recover the peace in Azeroth.
 
 ## Developer Team
 **[Marc Garcia - Team Lead](https://github.com/MaxitoSama)**
