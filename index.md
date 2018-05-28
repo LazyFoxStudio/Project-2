@@ -27,17 +27,11 @@ Team Photo
 
 ## Check our social media
 
-<p> 
-<img href="https://www.facebook.com/Lazy-Fox-Studio-1705377142862573/" src="https://i.imgur.com/n3lVcl0.png" width="100">
-</p>
+<a href="https://www.facebook.com/Lazy-Fox-Studio-1705377142862573/"><img src="https://i.imgur.com/n3lVcl0.png" alt="https://www.facebook.com/Lazy-Fox-Studio-1705377142862573/" width="100"/></a>
 
-<p> 
-<img href="https://twitter.com/LazyFoxStudio" src="http://icons.iconarchive.com/icons/sicons/basic-round-social/512/twitter-icon.png" width="100">
-</p>
+<a href="https://twitter.com/LazyFoxStudio"><img src="http://icons.iconarchive.com/icons/sicons/basic-round-social/512/twitter-icon.png" alt="https://twitter.com/LazyFoxStudio" width="100"/></a>
 
-<p> 
-<img href="https://www.instagram.com/lazy_fox_studio/" src="https://i.imgur.com/xU9lcDC.png" width="100">
-</p>
+<a href="https://www.instagram.com/lazy_fox_studio/"><img src="https://i.imgur.com/xU9lcDC.png" alt="https://www.instagram.com/lazy_fox_studio/" width="100"/></a>
 
 
 ## Download the latest release [HERE](https://github.com/LazyFoxStudio/Project-2/releases/latest)

@@ -1,5 +1,5 @@
 # Adrià Ferrer - UI Designer
-[Back to main page](https://lazyfoxstudio.github.io/Project-2/)
+**[Back to main page](https://lazyfoxstudio.github.io/Project-2/)**
 
 
 ## GUI design
@@ -48,4 +48,4 @@ as a sequence of steps or "missions" that have to be accomplished to move forwar
 As part of the team, has contributed on the QA by looking for bugs and solving them when possible
 and ensuring that everything works as desired and the correct release build contruction.
 
-[Back to main page](https://lazyfoxstudio.github.io/Project-2/)
+**[Back to main page](https://lazyfoxstudio.github.io/Project-2/)**
