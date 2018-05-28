@@ -1,4 +1,6 @@
 # Adrià Ferrer - UI Designer
+[Back to main page](https://lazyfoxstudio.github.io/Project-2/)
+
 
 ## GUI design
 In charge of designing all the UI layout of the game, from the menus to all the elements seen in-game.
@@ -45,3 +47,5 @@ as a sequence of steps or "missions" that have to be accomplished to move forwar
 ## QA
 As part of the team, has contributed on the QA by looking for bugs and solving them when possible
 and ensuring that everything works as desired and the correct release build contruction.
+
+[Back to main page](https://lazyfoxstudio.github.io/Project-2/)
