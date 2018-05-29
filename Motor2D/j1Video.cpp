@@ -3,7 +3,7 @@
 #include "j1Window.h"
 #include "j1Textures.h"
 #include "j1Render.h"
-
+#include "j1UIScene.h"
 #include "j1Video.h"
 
 j1Video::j1Video()
@@ -17,7 +17,6 @@ j1Video::~j1Video()
 
 bool j1Video::Awake(pugi::xml_node & node)
 {
-	AVIFileInit();                          // Opens The AVIFile Library
 
 	folder = node.child("folder").attribute("value").as_string();
 	return true;
@@ -37,9 +36,13 @@ void j1Video::Initialize(char* path)
 
 void j1Video::OpenAVI(LPCSTR path)
 {
+	AVIFileInit();                          // Opens The AVIFile Library
 
 	if (AVIStreamOpenFromFile(&pavi, path, streamtypeVIDEO, 0, OF_READ, NULL) != 0) // Opens The AVI Stream
+	{
 		LOG("Failed To Open The AVI Stream");
+		return;
+	}
 
 	// Uncomment this when finished TODO 2
 
@@ -55,6 +58,8 @@ void j1Video::OpenAVI(LPCSTR path)
 		LOG("Failed To Open The AVI Frame");
 
 	isVideoFinished = false;
+	videohasplayed = true;
+	videojustended = true;
 }
 
 bool j1Video::PostUpdate()
@@ -65,7 +70,12 @@ bool j1Video::PostUpdate()
 	}
 	else
 	{
-		LOG("video finished");
+		if (videojustended)
+		{
+			LOG("video finished");
+			App->uiscene->toggleMenu(true, START_MENU);
+			videojustended = false;
+		}
 	}
 	return true;
 }
@@ -81,7 +91,8 @@ bool j1Video::GrabAVIFrame()
 	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pdata, width, height, lpbi->biBitCount, width * 3, 0, 0, 0, 0);
 	SDL_Texture* texture = App->tex->LoadSurface(surface);
 
-	App->render->Blit(texture, 0, 0, NULL, false,true,1.0f, SDL_FLIP_VERTICAL);
+	App->render->DrawQuad({0,0,App->win->width,App->win->height},Black,true,false);
+	App->render->Blit(texture,1680/2-width/2 , 1050/2-height/2 , NULL, false,true,1.0f, SDL_FLIP_VERTICAL);
 
 	if (i % 2 == 0)
 	{
@@ -105,9 +116,12 @@ bool j1Video::GrabAVIFrame()
 
 void j1Video::CloseAVI()
 {
-	AVIStreamGetFrameClose(pgf);                // Deallocates The GetFrame Resources
+	if (videohasplayed)
+	{
+		AVIStreamGetFrameClose(pgf);                // Deallocates The GetFrame Resources
 
-	AVIStreamRelease(pavi);                     // Release The Stream
+		AVIStreamRelease(pavi);                     // Release The Stream
 
-	AVIFileExit();                              // Release The File
+		AVIFileExit();                              // Release The File
+	}
 }

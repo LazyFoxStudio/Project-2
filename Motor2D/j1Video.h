@@ -49,6 +49,9 @@ private:
 	char*				pdata;					    // Pointer To Texture Data
 	int					mpf;                        // Will Hold Rough Milliseconds Per Frame
 
+	bool videohasplayed = false;
+	bool videojustended = false;
+
 	int i = 1;
 };
 
