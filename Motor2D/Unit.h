@@ -35,12 +35,12 @@ public:
 	fPoint mov_direction = { 0.0f,0.0f };
 	float mov_module = 0.0f;
 	fPoint mov_target = { 0.0f, 0.0f };
+	fPoint separation_v = { 0.0f, 0.0f };
+	float separation_w = 0.0f;
 	
 	Animation* current_anim = nullptr;
 	animationType last_anim = IDLE_S;
 	direction dir = S;
-	direction last_dir = S;
-	direction last_last_dir = S;
 
 	SDL_Rect anim = { 0,0,0,0 };
 

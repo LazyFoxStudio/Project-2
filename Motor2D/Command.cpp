@@ -379,7 +379,7 @@ bool MoveToSquadFlying::OnUpdate(float dt)
 					squad->squad_movement = squad->squad_movement.Normalized() * movement.GetModule();
 			}
 			else
-				squad->squad_movement = movement;
+				squad->squad_movement.SetToZero();
 		}
 	}
 

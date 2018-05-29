@@ -12,7 +12,7 @@
 #include "Minimap.h"
 #include "j1Tutorial.h"
     
-#define MAX_SEPARATION_WEIGHT 2.0f   
+#define MAX_SEPARATION_WEIGHT 3.0f   
 
 Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 {
@@ -131,32 +131,29 @@ void Unit::Move(float dt)
 {
 	float max_step = dt * speed * SPEED_CONSTANT;
 
-	fPoint separation_v = { 0.0f, 0.0f };
-	float separation_w = 0.0f;
-
-	calculateSeparationVector(separation_v, separation_w);
-
 	if ((mov_target - position).GetModule() > 0 && getCurrentCommand() != ATTACK)
 	{
-		if (getCurrentCommand() != NOTHING || separation_w == 0)
-		{
-			mov_direction = (mov_target - position);
+		mov_direction = (mov_target - position);
 
-			if (mov_direction.GetModule() < max_step)
-				mov_module = mov_direction.GetModule() / max_step;
-			else
-				mov_module = MAX_NEXT_STEP_MULTIPLIER;
+		if (mov_direction.GetModule() < max_step)
+			mov_module = mov_direction.GetModule() / max_step;
+		else
+			mov_module = MAX_NEXT_STEP_MULTIPLIER;
 
-			mov_direction.Normalize();
-		}
+		mov_direction.Normalize();
+
 	}
 	else
 	{
 		mov_target = position;
 		mov_module = 0;
-		separation_w = 0;
+		if (getCurrentCommand() == ATTACK)
+			separation_v.SetToZero();
 	}
 
+	if (getCurrentCommand() == NOTHING && !separation_v.IsZero())
+		mov_module = 0;
+		
 	fPoint movement = (((mov_direction * mov_module) + (separation_v * separation_w)) * max_step);
 
 	if (movement.GetModule() > max_step * MAX_NEXT_STEP_MULTIPLIER)
@@ -170,6 +167,8 @@ void Unit::Move(float dt)
 	collider.x = position.x - (collider.w / 2);
 	collider.y = position.y - (collider.h / 2);
 	
+
+	calculateSeparationVector(separation_v, separation_w);
 }
 
 
@@ -230,7 +229,7 @@ void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)
 
 	for (int i = 0; i < collisions.size(); i++)
 	{
-		if(collisions[i]->ex_state != DESTROYED && collisions[i]->isActive && collisions[i]->IsEnemy() == IsEnemy() && collisions[i] != this)
+		if(collisions[i]->ex_state != DESTROYED && collisions[i]->isActive && collisions[i]->IsEnemy() == IsEnemy() && collisions[i] != this && collisions[i]->IsFlying() == IsFlying())
 		{
 			fPoint current_separation = (position - collisions[i]->position);
 

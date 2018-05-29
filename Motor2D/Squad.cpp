@@ -40,19 +40,17 @@ bool Squad::Update(float dt)
 		calculateAttackSlots();
 		timer.Start();
 	}
-	if (!commands.empty())
+	if (Unit* commander = getCommander())
 	{
-		commands.front()->Execute(dt);
-		if (commands.front()->state == FINISHED) commands.pop_front();
+		commander_pos = commander->position + (everyone_in_position ? squad_movement : squad_movement * MIN_NEXT_STEP_MULTIPLIER);
 
-		if (!squad_movement.IsZero())
+		if (!commands.empty())
 		{
-			if (Unit* commander = getCommander())
-			{
-				commander_pos = commander->position + (everyone_in_position ? squad_movement : squad_movement * MIN_NEXT_STEP_MULTIPLIER);
-				squad_direction = squad_movement.Normalized();
-			}
+			commands.front()->Execute(dt);
+			if (commands.front()->state == FINISHED) commands.pop_front();
 
+			if (!squad_movement.IsZero())
+				squad_direction = squad_movement.Normalized();
 		}
 	}
 	else
