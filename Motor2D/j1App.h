@@ -32,6 +32,8 @@ class j1Console;
 class j1WaveController;
 class j1Tutorial;
 
+class j1Video;
+
 class j1App
 {
 public:
@@ -119,6 +121,7 @@ public:
 	j1Gui*					gui = nullptr;
 	j1WaveController*		wavecontroller = nullptr;
 	j1Tutorial*				tutorial = nullptr;
+	j1Video*				video = nullptr;
 
 	bool fpsCapON = true;
 	std::string			load_game="";

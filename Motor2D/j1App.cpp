@@ -27,6 +27,8 @@
 #include "UI_NextWaveWindow.h"
 #include "j1Tutorial.h"
 
+#include "j1Video.h"
+
 #include <time.h>
 
 // Constructor
@@ -52,6 +54,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	gui					= new j1Gui();
 	wavecontroller		= new j1WaveController();
 	tutorial			= new j1Tutorial();
+	video				= new j1Video();
 	
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -70,9 +73,10 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(uiscene);
 	AddModule(sceneswitch);
 	AddModule(particle);
+
 	AddModule(actionscontroller);
-	
 	AddModule(wavecontroller, false);
+	AddModule(video);//WIP
 
 	// render last to swap buffer
 	AddModule(render);

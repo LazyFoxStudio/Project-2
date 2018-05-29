@@ -33,6 +33,7 @@
 #include "UI_Slider.h"
 #include "UI_TextBox.h"
 #include "UI_UnlockDisplay.h"
+#include "j1Video.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -251,6 +252,11 @@ bool j1Gui::PostUpdate()
 	if (UI_Debug)
 		UIDebugDraw();
 	
+	if (!App->video->isVideoFinished)
+	{
+		App->video->GrabAVIFrame();
+	}
+
 	return true;
 }
 

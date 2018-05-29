@@ -21,6 +21,7 @@
 #include "UI_CostDisplay.h"
 #include "j1WaveController.h"
 #include "j1Tutorial.h"
+#include "j1Video.h"
 
 j1UIScene::j1UIScene() { name = "introscene"; pausable = false; }
 
@@ -87,12 +88,16 @@ bool j1UIScene::Start()
 	blacksmith->setCondition("Build first a Hut");
 	blacksmith->Lock();
 
+	//App->video->Initialize("Untitled.avi");
+
 	return true;
 }
 
 
 bool j1UIScene::Update(float dt)
 {
+
+
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_UP)
 	{
 		if (!App->isPaused() && getMenu(INGAME_MENU) != nullptr && getMenu(INGAME_MENU)->active)
@@ -107,6 +112,7 @@ bool j1UIScene::Update(float dt)
 
 	return true;
 }
+
 
 void j1UIScene::LoadFonts(pugi::xml_node node)
 {

@@ -48,6 +48,7 @@ bool j1Scene::Awake(pugi::xml_node& conf)
 // Called before the first frame
 bool j1Scene::Start()
 {
+
 	int w = -1, h = -1;
 	uchar* data = nullptr;
 
@@ -94,6 +95,8 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+
+
 	BROFILER_CATEGORY("Scene update", Profiler::Color::Chocolate);
 	if (!App->isPaused())
 		App->render->MouseCameraMovement(dt);
