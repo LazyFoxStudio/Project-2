@@ -251,11 +251,7 @@ bool j1Gui::PostUpdate()
 	//Draw Debug
 	if (UI_Debug)
 		UIDebugDraw();
-	
-	if (!App->video->isVideoFinished)
-	{
-		App->video->GrabAVIFrame();
-	}
+
 
 	return true;
 }

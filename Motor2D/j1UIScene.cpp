@@ -88,7 +88,7 @@ bool j1UIScene::Start()
 	blacksmith->setCondition("Build first a Hut");
 	blacksmith->Lock();
 
-	//App->video->Initialize("Untitled.avi");
+	App->video->Initialize("sample(good).avi");
 
 	return true;
 }

@@ -31,7 +31,7 @@ public:
 	void CloseAVI();
 
 public:
-	bool				isVideoFinished = false;
+	bool				isVideoFinished = true;
 
 private:
 

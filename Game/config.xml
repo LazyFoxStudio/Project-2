@@ -52,4 +52,8 @@
       <cost value="10"/><!--Juggernaut-->
     </Costs>
   </wavecontroller>
+
+  <video>
+    <folder value ="videos/"/>
+  </video>
 </config>
