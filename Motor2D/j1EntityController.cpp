@@ -106,7 +106,7 @@ bool j1EntityController::Update(float dt)
 		colliderQT->insert(*it);
 		if (!(*it)->Update(dt))
 		{
-			operative_entities.erase(it);
+			(*it)->Destroy();
 			it--;
 		}
 	}
