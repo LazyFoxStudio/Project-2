@@ -128,11 +128,6 @@ bool Building::Update(float dt)
 
 	recently_repaired = repair_timer.ReadSec() > REPAIR_COOLDOWN;
 
-	if (ex_state != DESTROYED)
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
-	else
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
-
 	return true;
 }
 
@@ -348,6 +343,12 @@ void Building::Draw(float dt)
 
 		//App->render->Blit(texture, position.x, position.y, current_sprite);
 	}
+
+	//minimap
+	if (ex_state != DESTROYED)
+		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Green);
+	else
+		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,100,100 }, Grey);
 }
 
 void Building::turretBehavior()
