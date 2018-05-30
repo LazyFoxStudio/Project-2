@@ -314,13 +314,12 @@ void Building::HandleWorkerProduction()
 
 void Building::RepairBuilding()
 {
-	if (App->scene->wood >= REPAIR_COST && !recently_repaired)
-	{
+
 		App->scene->wood -= REPAIR_COST;
 		current_HP = max_HP;
 		recently_repaired = true;
 		repair_timer.Start();
-	}
+	
 }
 
 void Building::DemolishBuilding()
