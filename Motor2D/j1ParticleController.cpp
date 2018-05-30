@@ -179,7 +179,7 @@ void j1ParticleController::AdjustDirection(Particle* p, fPoint objective, float 
 
 
 
-void j1ParticleController::AddParticle(particleType type, fPoint position, bool using_center)
+void j1ParticleController::AddParticle(particleType type, fPoint position, bool using_center, float scale)
 {
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
@@ -202,7 +202,7 @@ void j1ParticleController::AddParticle(particleType type, fPoint position, bool 
 			p->currentLife.Start();
 			p->active = true;
 			p->delay = 0;
-			p->scale = 1;
+			p->scale = scale;
 			p->angle = 0;
 
 			active[i] = p;
@@ -211,7 +211,7 @@ void j1ParticleController::AddParticle(particleType type, fPoint position, bool 
 	}
 }
 
-void j1ParticleController::AddProjectile(particleType type, fPoint position, fPoint objective, float speed, bool using_camera)
+void j1ParticleController::AddProjectile(particleType type, fPoint position, fPoint objective, float speed, bool using_camera, float scale)
 {
 
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
@@ -231,7 +231,7 @@ void j1ParticleController::AddProjectile(particleType type, fPoint position, fPo
 
 			p->active = true;
 			p->delay = 0;
-			p->scale = 1;
+			p->scale = scale;
 
 			active[i] = p;
 			break;
