@@ -85,6 +85,7 @@ public:
 
 	iPoint map_p = { 0,0 };
 	iPoint current_target = { 0,0 };
+	Entity* enemy = nullptr;
 
 	std::list<iPoint> path;
 	std::vector<iPoint>* enemy_atk_slots = nullptr;
@@ -94,7 +95,7 @@ public:
 	Attack(Unit* unit, std::vector<iPoint>* enemy_atk_slots, int* squad_target) : Command(unit, ATTACK), enemy_atk_slots(enemy_atk_slots), squad_target(squad_target) {};
 
 	bool searchTarget();
-	void moveToTarget(fPoint enemy_position);
+	void moveToTarget();
 	void callRetaliation(Entity* enemy, uint squad_UID);
 	
 	int dealDamage(Entity* attacker, Entity* defender);

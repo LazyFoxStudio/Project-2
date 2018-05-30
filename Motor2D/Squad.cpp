@@ -184,7 +184,7 @@ bool Squad::findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_
 			}
 		}
 
-		if (isEnemy)
+		if (isEnemy && target_squad_UID == -1)
 		{
 			for (std::list<Entity*>::iterator it = App->entitycontroller->operative_entities.begin(); it != App->entitycontroller->operative_entities.end(); it++)
 			{
