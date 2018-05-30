@@ -216,7 +216,7 @@ bool j1ActionsController::Update(float dt)
 		case REPAIR_BUILDING:
 			if (!App->entitycontroller->selected_entities.empty())
 			{
-				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state == OPERATIVE)
+				if (((Building*)*App->entitycontroller->selected_entities.begin())->ex_state == OPERATIVE && App->scene->wood >= REPAIR_COST && !((Building*)*App->entitycontroller->selected_entities.begin())->recently_repaired)
 				{
 					App->gui->GetActionButton(20)->Used();
 					((Building*)*App->entitycontroller->selected_entities.begin())->RepairBuilding();
