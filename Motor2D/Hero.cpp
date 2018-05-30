@@ -51,14 +51,14 @@ bool Hero::Update(float dt)
 					App->gui->GetActionButton(17)->Used();
 
 					if (skill_one->last_cast.IsZero() || App->input->GetMouseButtonDown(1) == KEY_DOWN)
-						App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->cast_pos.x, (float)(skill_one->cast_pos.y) }, false);
+						App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->cast_pos.x, (float)(skill_one->cast_pos.y) }, false, (float)skill_one->radius/3);
 					else
-						App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->last_cast.x, (float)(skill_one->last_cast.y) }, false);
+						App->particle->AddParticle(PICICLE_CRASH, { (float)skill_one->last_cast.x, (float)(skill_one->last_cast.y) }, false, (float)skill_one->radius/3);
 				}
 				else if (type == HERO_2)
 				{
 					App->audio->PlayFx(SFX_CONSECRATION);
-					App->particle->AddParticle(PHOLYDAMAGE, position, false);
+					App->particle->AddParticle(PHOLYDAMAGE, position, false, (float)skill_one->radius/3);
 					App->gui->GetActionButton(33)->Used();
 				}
 				skill_one->last_cast.SetToZero();
@@ -88,9 +88,9 @@ bool Hero::Update(float dt)
 					App->audio->PlayFx(SFX_CIRCLE_OF_LIGHT);
 					App->gui->GetActionButton(34)->Used();
 					if (skill_two->last_cast.IsZero() || App->input->GetMouseButtonDown(1) == KEY_DOWN)
-						App->particle->AddParticle(PHOLYHEAL, { (float)skill_two->cast_pos.x, (float)(skill_two->cast_pos.y) }, false);
+						App->particle->AddParticle(PHOLYHEAL, { (float)skill_two->cast_pos.x, (float)(skill_two->cast_pos.y) }, false, (float)skill_one->radius / 3);
 					else
-						App->particle->AddParticle(PHOLYHEAL, { (float)skill_two->last_cast.x, (float)(skill_two->last_cast.y) }, false);
+						App->particle->AddParticle(PHOLYHEAL, { (float)skill_two->last_cast.x, (float)(skill_two->last_cast.y) }, false, (float)skill_one->radius / 3);
 				}
 				skill_two->last_cast.SetToZero();
 			}
@@ -118,7 +118,7 @@ bool Hero::Update(float dt)
 				else if(type==HERO_2)
 				{
 					App->audio->PlayFx(SFX_HONOR_OF_THE_PURE);
-					App->particle->AddParticle(PHOLYBUFF, position, false);
+					App->particle->AddParticle(PHOLYBUFF, position, false, (float)skill_one->radius / 3);
 					App->gui->GetActionButton(35)->Used();
 				}
 				skill_three->last_cast.SetToZero();
