@@ -132,6 +132,8 @@ bool Unit::Update(float dt)
 void Unit::Move(float dt)
 {
 	float max_step = dt * speed * SPEED_CONSTANT;
+	mov_direction.SetToZero();
+	mov_module = 0;
 
 	if ((mov_target - position).GetModule() > 0 && getCurrentCommand() != ATTACK)
 	{
@@ -168,8 +170,13 @@ void Unit::Move(float dt)
 
 	collider.x = position.x - (collider.w / 2);
 	collider.y = position.y - (collider.h / 2);
-	
 
+	if (getCurrentCommand() == NOTHING && separation_w > 0.25)
+	{
+		mov_direction = separation_v;
+		mov_module = separation_w * 2;
+	}
+	
 	calculateSeparationVector(separation_v, separation_w);
 }
 
@@ -224,7 +231,7 @@ void Unit::Destroy()
 void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)
 {
 	std::vector<Entity*> collisions;
-	App->entitycontroller->colliderQT->FillCollisionVector(collisions, collider);
+	App->entitycontroller->CheckCollidingWith(collider, collisions, this);
 
 	separation_v = { 0.0f,0.0f };
 	weight = 0;
@@ -273,7 +280,7 @@ void Unit::animationController()
 	animationType new_animation = IDLE_S;
 	if (current_HP > 0)
 	{
-		if (mov_module > 0.5)
+		if (mov_module >= 0.5)
 		{
 			switch (commands.empty() ? MOVETO : commands.front()->type)
 			{

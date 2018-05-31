@@ -559,11 +559,18 @@ bool j1EntityController::Save(pugi::xml_node& file) const
 	pugi::xml_node units_node = file.append_child("Units");
 
 	pugi::xml_node hero_node = units_node.append_child("Hero");
-	Hero* heroE = (Hero*)App->entitycontroller->getEntitybyID(App->entitycontroller->hero_UID);
-	hero_node.append_attribute("type") = heroE->type;
-	hero_node.append_attribute("hp") = heroE->current_HP;
-	hero_node.append_attribute("x") = heroE->position.x;
-	hero_node.append_attribute("y") = heroE->position.y;
+
+	Hero* heroE = nullptr;
+	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+		if ((*it)->IsHero()) heroE = (Hero*)(*it);
+
+	if (heroE)
+	{
+		hero_node.append_attribute("type") = heroE->type;
+		hero_node.append_attribute("hp") = heroE->current_HP;
+		hero_node.append_attribute("x") = heroE->position.x;
+		hero_node.append_attribute("y") = heroE->position.y;
+	}
 
 	for (std::list<Squad*>::const_iterator it = squads.begin(); it != squads.end(); it++)
 	{
@@ -1854,11 +1861,14 @@ void j1EntityController::RefundResources(Type type)
 	App->scene->wood += DataBase[type]->cost.wood_cost;
 }
 
-Entity* j1EntityController::getNearestEnemy(Entity* entity, int target_squad)
+Entity* j1EntityController::getNearestEnemy(Entity* entity, int target_squad, Entity* current_enemy)
 {
 	Entity* ret = nullptr;
 	for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 	{
+		if ((*it) == current_enemy)
+			return (*it);
+
 		if (target_squad != -1)
 		{
 			if (!(*it)->IsUnit()) continue;
