@@ -1032,12 +1032,14 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	hero->collider.x = pos.x - (hero->collider.w / 2);
 	hero->collider.y = pos.y - (hero->collider.h / 2);
 
+	hero->Skill_text = App->tex->Load("Assets/Sprites/Alliance Sprites/Skill_Texture.png");
+
 	if (type == HERO_1)
 	{
 		hero->skill_one = new Skill(hero, 3, 50,5, 300, MAGE_ABILITY_1_COOLDOWN, AREA);			//Icicle Crash
 		hero->skill_two = new Skill(hero, 0, 250,5, 700, MAGE_ABILITY_2_COOLDOWN, NONE_RANGE);	//Overflow
 		hero->skill_three = new Skill(hero, 0, 200,5, 200, MAGE_ABILITY_3_COOLDOWN, LINE);		//Dragon Breath
-		
+
 		App->gui->GetActionButton(18)->Lock();
 		App->gui->GetActionButton(18)->setCondition("Unlocked at wave " + std::to_string(UNLOCK_ABILITY_1_WAVE));
 		App->gui->GetActionButton(19)->Lock();

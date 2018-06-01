@@ -369,7 +369,7 @@ void Building::turretBehavior()
 
 					(*it)->current_HP -= MAX((RANDOM_FACTOR * (piercing_atk + ((((int)attack - (int)(*it)->defense) <= 0) ? 0 : attack - (*it)->defense))), 1);
 					
-					if ((*it)->current_HP < 0) ((Unit*)(*it))->Destroy();
+					if ((*it)->current_HP <= 0) ((Unit*)(*it))->Destroy();
 					timer.Start();
 					break;
 				}

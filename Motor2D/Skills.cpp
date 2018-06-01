@@ -47,6 +47,8 @@ void Skill::DrawRange()
 			App->render->DrawQuad(r, Ready() ? (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range ? tile_color : Translucid_Grey) : Translucid_Grey);
 		}
 
+		App->render->Blit(hero->Skill_text,toDraw.front().x, toDraw.front().y);
+
 		if (type == NONE_RANGE)
 		{
 			for (std::list<Entity*>::iterator item = App->entitycontroller->operative_entities.begin(); item != App->entitycontroller->operative_entities.end(); item++)
