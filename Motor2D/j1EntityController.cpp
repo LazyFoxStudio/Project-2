@@ -101,15 +101,20 @@ bool j1EntityController::Update(float dt)
 	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end(); it++)
 		(*it)->Update(dt);
 
+	std::vector<Entity*> entities_to_destroy;
 	for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 	{
 		colliderQT->insert(*it);
 		if (!(*it)->Update(dt))
 		{
-			(*it)->Destroy();
+			entities_to_destroy.push_back(*it);
+			operative_entities.erase(it);
 			it--;
 		}
 	}
+
+	for (int i = 0; i < entities_to_destroy.size(); i++)
+		entities_to_destroy[i]->Destroy();
 	
 	Hero* hero = (Hero*)getEntitybyID(hero_UID);
 
