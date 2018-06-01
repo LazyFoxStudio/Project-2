@@ -33,7 +33,8 @@ void Command::Execute(float dt)
 	default:												break;
 	}
 
-	if (!ret) LOG("Error in command flow");
+	if (!ret) 
+		LOG("Error in command flow");
 }
 
 void Command::Stop()	{ state = TO_STOP; }
@@ -101,7 +102,7 @@ bool MoveToFlying::OnUpdate(float dt)
 	if (!desired_place.IsZero())
 	{
 		unit->mov_target = desired_place;
-		if (unit->squad->squad_movement.IsZero() && map_p.DistanceTo(dest) < PROXIMITY_FACTOR_TILES)
+		if (unit->squad->squad_movement.IsZero() && map_p.DistanceTo(dest) <= 2)
 			Stop();
 	}
 
@@ -131,7 +132,11 @@ bool Attack::OnUpdate(float dt)
 
 	if (enemy = App->entitycontroller->getNearestEnemy(unit, *squad_target, enemy))
 	{
+		if (type == ATTACKING_MOVETO) unit->range *= 0.8f;
+
 		SDL_Rect r = { unit->position.x - unit->range, unit->position.y - unit->range, unit->range * 2, unit->range * 2 };
+
+		if (type == ATTACKING_MOVETO) unit->range = unit->range / 0.8f;
 
 		if (SDL_HasIntersection(&r, &enemy->collider) && (!unit->IsMelee() || unit->position.DistanceTo({ (float)current_target.x, (float)current_target.y }) < 5))
 		{
@@ -385,7 +390,7 @@ bool MoveToSquadFlying::OnUpdate(float dt)
 			dest_p += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
 
 			fPoint movement = fPoint((float)dest_p.x, (float)dest_p.y) - commander->position;
-			if (map_p != dest)
+			if (map_p != dest && commander->getCurrentCommand() != NOTHING)
 			{
 				movement = movement.Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
 				squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
@@ -507,10 +512,10 @@ bool AttackingMoveToSquadFlying::OnUpdate(float dt)
 			if (Unit* commander = squad->getCommander())
 			{
 				iPoint map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
-				iPoint map_dest = App->map->WorldToMap(dest.x, dest.y);
+				iPoint world_dest = App->map->MapToWorld(dest.x, dest.y);
 
-				fPoint movement = fPoint((float)dest.x, (float)dest.y) - commander->position;
-				if (map_p != map_dest)
+				fPoint movement = fPoint((float)world_dest.x, (float)world_dest.y) - commander->position;
+				if (map_p != dest && commander->getCurrentCommand() != NOTHING)
 				{
 					movement = movement.Normalized() * dt * squad->max_speed * SPEED_CONSTANT;
 					squad->squad_movement = ((squad->squad_movement * STEERING_FACTOR) + movement);
@@ -536,6 +541,7 @@ bool AttackingMoveToSquadFlying::OnUpdate(float dt)
 		}
 	}
 
+	squad->findAttackSlots(enemy_atk_slots, target_squad_id);
 
 	return true;
 }
@@ -708,8 +714,16 @@ void Attack::moveToTarget()
 		}
 	}
 	else
-		unit->mov_target = { (float)current_target.x, (float)current_target.y };
-		
+	{
+		if (unit->position.DistanceTo(fPoint((float)current_target.x, (float)current_target.y)) < 5)
+		{
+			if (!searchTarget())
+				Stop();
+			enemy = nullptr;
+		}
+		else
+			unit->mov_target = { (float)current_target.x, (float)current_target.y };
+	}
 }
 
 void Attack::callRetaliation(Entity* enemy, uint squad_UID)
