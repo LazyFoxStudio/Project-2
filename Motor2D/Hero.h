@@ -24,10 +24,6 @@ public:
 
 	SDL_Texture* Skill_text = nullptr;
 
-	SDL_Rect rect_1 = { 0,0,0,0 };
-	SDL_Rect rect_2 = { 0,0,0,0 };
-	SDL_Rect rect_3 = { 0,0,0,0 };
-
 	uint current_skill = 0;
 
 public:

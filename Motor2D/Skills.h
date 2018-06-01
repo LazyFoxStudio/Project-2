@@ -5,6 +5,7 @@
 #include "j1Timer.h"
 #include "p2Point.h"
 #include "Color.h"
+#include "SDL/include/SDL.h"
 
 #include <list>
 
@@ -38,6 +39,7 @@ public:
 	Color				tile_color;
 	Hero*				hero = nullptr;
 
+	SDL_Rect			text_rec = { 0,0,0,0 };
 
 	bool				going = false;
 	
