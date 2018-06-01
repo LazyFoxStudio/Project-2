@@ -211,10 +211,10 @@ bool Squad::findAttackSlots(std::vector<iPoint>& list_to_fill, int target_squad_
 
 		for (std::list<Entity*>::iterator it = App->entitycontroller->operative_entities.begin(); it != App->entitycontroller->operative_entities.end(); it++)
 		{
-			if ((*it)->IsEnemy() == getCommander()->IsEnemy() && (*it)->IsUnit())
+			if ((*it)->IsUnit())
 			{
 				Unit* ally = (Unit*)(*it);
-				if (ally->getCurrentCommand() == ATTACK || ally->getCurrentCommand() == ATTACKING_MOVETO)
+				if (ally->getCurrentCommand() == ATTACK)
 					slots_in_use.push_back(((Attack*)ally->commands.front())->current_target);
 			}
 		}
@@ -300,12 +300,12 @@ void Squad::calculateAttackSlots()
 
 	for (std::list<iPoint>::iterator it = atk_slots.begin(); it != atk_slots.end(); it++)
 	{
-		for (int i = 0; i < squad_units.size(); i++)
+		for (int i = 0; i < units_map_p.size(); i++)
 		{
 			iPoint world_atk_p = App->map->MapToWorld((*it).x, (*it).y);
 			world_atk_p += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
 
-			if (squad_units[i]->position.DistanceTo({(float)world_atk_p.x, (float)world_atk_p.y}) < squad_units[i]->collider.w * 0.6f)
+			if (squad_units[i]->position.DistanceTo({(float)world_atk_p.x, (float)world_atk_p.y}) < squad_units[i]->collider.w * 0.6f || !App->pathfinding->IsWalkable(*it))
 				{ atk_slots.erase(it); it--; break; }
 		}
 	}

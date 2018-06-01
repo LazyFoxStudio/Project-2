@@ -135,7 +135,13 @@ bool Attack::OnUpdate(float dt)
 
 		if (SDL_HasIntersection(&r, &enemy->collider) && (!unit->IsMelee() || unit->position.DistanceTo({ (float)current_target.x, (float)current_target.y }) < 5))
 		{
-			
+			if (enemy->position.DistanceTo(unit->position) < unit->collider.w / 2)
+			{
+				if (!searchTarget()) 
+					{ Stop(); }
+				return true;
+			}
+
 			if (type == ATTACKING_MOVETO)
 				type = ATTACK; 
 			else
@@ -172,16 +178,12 @@ bool Attack::OnUpdate(float dt)
 		}
 		else
 		{
+			bool enemy_moved = true;
+			for (int i = 0; i < enemy_atk_slots->size(); i++)
+				if (current_target == enemy_atk_slots->at(i)) { enemy_moved = false; break; }
 
-			if (current_target.IsZero() || current_target == iPoint(unit->position.x, unit->position.y) || (enemy->IsUnit() && enemy->position.DistanceTo(fPoint(current_target.x, current_target.y)) > enemy->collider.w + 80))
-			{
-				unit->squad->findAttackSlots(*enemy_atk_slots, enemy->IsUnit() ? ((Unit*)enemy)->squad->UID : *squad_target);
+			if (current_target.IsZero() || enemy_moved) {
 
-				if (enemy_atk_slots->empty())
-				{
-					unit->squad->findAttackSlots(*enemy_atk_slots, -1);
-					enemy = nullptr;
-				}
 				if (!searchTarget()) 
 					{ Stop(); return true;}
 			}
@@ -426,7 +428,6 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 	}
 	else
 	{
-		squad->findAttackSlots(enemy_atk_slots, target_squad_id);
 
 		if (!enemies_found || (unit->IsEnemy() || hold))
 		{
@@ -473,6 +474,7 @@ bool AttackingMoveToSquad::OnUpdate(float dt)
 		Launch();
 
 
+	squad->findAttackSlots(enemy_atk_slots, target_squad_id);
 
 	return true;
 }
@@ -626,6 +628,7 @@ bool Attack::searchTarget()
 	if (enemy_atk_slots->empty())
 		return false; 
 
+	iPoint last_target = current_target;
 	current_target.SetToZero();
 	
 	for (std::vector<iPoint>::iterator it = enemy_atk_slots->begin(); it != enemy_atk_slots->end(); it++)
@@ -648,7 +651,7 @@ bool Attack::searchTarget()
 			}
 		}
 
-		if (available)
+		if (available && (*it) != last_target)
 		{
 			if ((*it).DistanceTo({ (int)unit->position.x, (int)unit->position.y }) < current_target.DistanceTo({ (int)unit->position.x, (int)unit->position.y }))
 				current_target = (*it);
@@ -656,10 +659,7 @@ bool Attack::searchTarget()
 	}
 
 	if (current_target.IsZero())
-	{
 		return false;
-		state == ATTACKING_MOVETO;
-	}
 
 	return true;
 }
@@ -696,12 +696,13 @@ void Attack::moveToTarget()
 			}
 			else
 			{
-				if (unit->position != fPoint((float)current_target.x, (float)current_target.y))
+				if (unit->position.DistanceTo(fPoint((float)current_target.x, (float)current_target.y)) > 5)
 					unit->mov_target = { (float)current_target.x, (float)current_target.y };
 				else
 				{
-					current_target.SetToZero();
-					enemy = App->entitycontroller->getNearestEnemy(unit, *squad_target);
+					if (!searchTarget())
+						Stop();
+					enemy = nullptr;
 				}
 			}
 		}

@@ -151,7 +151,7 @@ void Unit::Move(float dt)
 	{
 		mov_target = position;
 		mov_module = 0;
-		if (getCurrentCommand() == ATTACK)
+		if (getCurrentCommand() == ATTACK || getCurrentCommand() == ATTACKING_MOVETO)
 			separation_v.SetToZero();
 	}
 
@@ -162,6 +162,9 @@ void Unit::Move(float dt)
 
 	if (movement.GetModule() > max_step * MAX_NEXT_STEP_MULTIPLIER)
 		movement = movement.Normalized() * max_step * MAX_NEXT_STEP_MULTIPLIER;
+
+	if (movement.GetModule() > 10)
+		movement = movement.Normalized() * 10;
 
 	if (App->pathfinding->IsWalkable(App->map->WorldToMap(position.x + movement.x, position.y + movement.y)) || IsFlying())
 		position += movement;
@@ -238,7 +241,7 @@ void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)
 
 	for (int i = 0; i < collisions.size(); i++)
 	{
-		if(collisions[i]->ex_state != DESTROYED && collisions[i]->isActive && collisions[i]->IsEnemy() == IsEnemy() && collisions[i] != this && collisions[i]->IsFlying() == IsFlying())
+		if(collisions[i]->isActive && collisions[i]->IsEnemy() == IsEnemy() && collisions[i] != this && collisions[i]->IsFlying() == IsFlying())
 		{
 			fPoint current_separation = (position - collisions[i]->position);
 
