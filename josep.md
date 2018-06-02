@@ -4,18 +4,19 @@
 ## Animations
 ### Code
 I've made the animControllerFunction().
-<a href="https://gyazo.com/51a8e1f9045c559744084e478dcb6bb4"><img src="https://gyazo.com/51a8e1f9045c559744084e478dcb6bb4" alt="https://gyazo.com/51a8e1f9045c559744084e478dcb6bb4" width="1342.4"/></a>
+<a href="https://gyazo.com/51a8e1f9045c559744084e478dcb6bb4"><img src="https://i.gyazo.com/51a8e1f9045c559744084e478dcb6bb4.png" alt="https://gyazo.com/51a8e1f9045c559744084e478dcb6bb4" width="594"/></a>
 
 ### Sprite Sheets Organization
 I've helped the artist with the organization of all the sprite sheets and tables of the horde. 
 
-<a href="https://gyazo.com/f4bbde4b89f0a4f6789a5587b7fab818"><img src="https://gyazo.com/f4bbde4b89f0a4f6789a5587b7fab818" alt="https://gyazo.com/f4bbde4b89f0a4f6789a5587b7fab818" width="1342.4"/></a>
+<a href="https://gyazo.com/f4bbde4b89f0a4f6789a5587b7fab818"><img src="https://i.gyazo.com/f4bbde4b89f0a4f6789a5587b7fab818.png" alt="https://gyazo.com/f4bbde4b89f0a4f6789a5587b7fab818" width="310"/></a>
 Here we have an example of a sprite sheet.
 
 ### Filling the Data Base with them
 We've used a module that animates automatically by filling the data base and organizing the spritesheet.
 
 <a href="https://gyazo.com/70c71631c35e85e1515b05d467487120"><img src="https://gyazo.com/70c71631c35e85e1515b05d467487120" alt="https://gyazo.com/70c71631c35e85e1515b05d467487120" width="1342.4"/></a>
+
 Here is how we implement the animations to the entities.
 
 ### Sync attack speed and animations
