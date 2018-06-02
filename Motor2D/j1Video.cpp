@@ -5,6 +5,8 @@
 #include "j1Render.h"
 #include "j1UIScene.h"
 #include "j1Video.h"
+#include "j1Input.h"
+#include "j1Audio.h"
 
 j1Video::j1Video()
 {
@@ -67,6 +69,10 @@ bool j1Video::PostUpdate()
 	if (!App->video->isVideoFinished)
 	{
 		App->video->GrabAVIFrame();
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+		{
+			isVideoFinished = true;
+		}
 	}
 	else
 	{
@@ -74,6 +80,7 @@ bool j1Video::PostUpdate()
 		{
 			LOG("video finished");
 			App->uiscene->toggleMenu(true, START_MENU);
+			App->audio->PlayMusic(MAIN_THEME);
 			videojustended = false;
 		}
 	}

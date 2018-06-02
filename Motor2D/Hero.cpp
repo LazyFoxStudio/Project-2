@@ -21,6 +21,8 @@ Hero::~Hero()
 	animations.clear();
 	effects.clear();
 
+	App->tex->UnLoad(Skill_text);
+
 	RELEASE(skill_one);
 	RELEASE(skill_two);
 	RELEASE(skill_three);

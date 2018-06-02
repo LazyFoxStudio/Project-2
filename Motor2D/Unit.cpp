@@ -151,7 +151,7 @@ void Unit::Move(float dt)
 	{
 		mov_target = position;
 		mov_module = 0;
-		if (getCurrentCommand() == ATTACK)
+		if (getCurrentCommand() == ATTACK || getCurrentCommand() == ATTACKING_MOVETO)
 			separation_v.SetToZero();
 	}
 
@@ -162,6 +162,9 @@ void Unit::Move(float dt)
 
 	if (movement.GetModule() > max_step * MAX_NEXT_STEP_MULTIPLIER)
 		movement = movement.Normalized() * max_step * MAX_NEXT_STEP_MULTIPLIER;
+
+	if (movement.GetModule() > 10)
+		movement = movement.Normalized() * 10;
 
 	if (App->pathfinding->IsWalkable(App->map->WorldToMap(position.x + movement.x, position.y + movement.y)) || IsFlying())
 		position += movement;
@@ -225,6 +228,16 @@ void Unit::Destroy()
 			App->tutorial->taskCompleted(KILL_ENEMIES);
 	}
 	App->gui->entityDeleted(this);
+	
+	for (std::vector<uint>::iterator it = squad->units_id.begin(); it != squad->units_id.end(); it++)
+	{
+		if (UID == *it)
+		{
+			squad->units_id.erase(it);
+			break;
+		}
+	}
+
 	Halt();
 }
 
@@ -238,7 +251,7 @@ void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)
 
 	for (int i = 0; i < collisions.size(); i++)
 	{
-		if(collisions[i]->ex_state != DESTROYED && collisions[i]->isActive && collisions[i]->IsEnemy() == IsEnemy() && collisions[i] != this && collisions[i]->IsFlying() == IsFlying())
+		if(collisions[i]->isActive && collisions[i]->IsEnemy() == IsEnemy() && collisions[i] != this && collisions[i]->IsFlying() == IsFlying())
 		{
 			fPoint current_separation = (position - collisions[i]->position);
 
@@ -265,7 +278,7 @@ void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)
 		fPoint world_separation = position + (separation_v * weight);
 		iPoint map_separation = App->map->WorldToMap(world_separation.x, world_separation.y);
 
-		if (!App->pathfinding->IsWalkable(map_separation))
+		if (!App->pathfinding->IsWalkable(map_separation) && !IsFlying())
 			weight = 0;
 	}
 }

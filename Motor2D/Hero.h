@@ -22,6 +22,8 @@ public:
 	Skill* skill_two = nullptr;
 	Skill* skill_three = nullptr;
 
+	SDL_Texture* Skill_text = nullptr;
+
 	uint current_skill = 0;
 
 public:

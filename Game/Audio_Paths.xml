@@ -82,6 +82,7 @@
 	<path track="Main_Theme.ogg"/>
 	<path track="Normal_Round_Theme.ogg"/>
 	<path track="Defeat Theme.ogg"/>
+  <path track="Logo_Theme.ogg"/>
    </Music>
 
   <path sfx="Map/Massist.wav"/>

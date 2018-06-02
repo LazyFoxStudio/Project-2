@@ -15,12 +15,12 @@ range(_range) , cooldown(_cooldown)
 {
 	switch (type = _type)
 	{
-	case AREA: tile_color = Translucid_Green;	break; 
-	case LINE: tile_color = Translucid_Yellow;	break;
+	case AREA: tile_color = Translucid_sky_Blue;	break;
+	case LINE: tile_color = Translucid_Orange;	break;
 	case PLACE:	tile_color = Translucid_light_Blue; break;
 	case HEAL:	tile_color = Translucid_Yellow; break;
 	case BUFF:	tile_color = Translucid_pink; break;
-	default:   tile_color = Translucid_Blue;	break; 
+	default:   tile_color = Translucid_Purple;	break;
 	}
 
 	timer.Start();
@@ -30,7 +30,7 @@ void Skill::DrawRange()
 {
 	if(type!=PLACE)
 	{
-		App->render->DrawCircle(hero->position.x, hero->position.y, range, Red, true);
+		App->render->DrawCircle(hero->position.x, hero->position.y, range, tile_color, true);
 	}
 
 	iPoint mouse_pos;
@@ -41,11 +41,21 @@ void Skill::DrawRange()
 	{
 		BFS();
 		
-		for (std::list<iPoint>::iterator item = toDraw.begin(); item != toDraw.end(); item++)
+	/*	for (std::list<iPoint>::iterator item = toDraw.begin(); item != toDraw.end(); item++)
 		{
 			SDL_Rect r = { (*item).x,(*item).y, App->map->data.tile_width,App->map->data.tile_height };
 			App->render->DrawQuad(r, Ready() ? (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range ? tile_color : Translucid_Grey) : Translucid_Grey);
-		}
+		}*/
+		
+		if(hero->type==HERO_1)
+			App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y, &text_rec);
+		else
+			if(type==PLACE || type==BUFF)
+				App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y-64, &text_rec);
+			if(type==HEAL)
+				App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y - 32, &text_rec);
+
+
 
 		if (type == NONE_RANGE)
 		{
@@ -77,7 +87,8 @@ void Skill::DrawRange()
 			for (std::list<iPoint>::iterator item = toDraw.begin(); item != toDraw.end(); item++)
 			{
 				SDL_Rect r = { (*item).x,(*item).y, App->map->data.tile_width,App->map->data.tile_height };
-				App->render->DrawQuad(r, Ready() ? tile_color : Translucid_Grey);
+				//App->render->DrawQuad(r, Ready() ? tile_color : Translucid_Grey);
+				App->render->Blit(hero->Skill_text, r.x, r.y, &text_rec);
 			}
 		}
 	}
@@ -104,7 +115,7 @@ void Skill::BFS()
 				world_tile_cast = App->map->WorldToMap(cast_pos.x, cast_pos.y);
 			}
 
-			if (world_tile.DistanceTo(world_tile_cast) < radius && App->pathfinding->IsWalkable(iPoint(i, j)))
+			if (world_tile.DistanceTo(world_tile_cast) < radius /*&& App->pathfinding->IsWalkable(iPoint(i, j))*/)
 			{
 				toDraw.push_back(App->map->MapToWorld(world_tile.x,world_tile.y));
 			}

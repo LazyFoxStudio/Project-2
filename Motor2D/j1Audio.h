@@ -147,7 +147,8 @@ enum MusicList
 {
 	MAIN_THEME,
 	INGAME_THEME,
-	DEFEAT_THEME
+	DEFEAT_THEME,
+	LOGO_THEME
 };
 
 #endif // __j1AUDIO_H__
