@@ -200,6 +200,7 @@ public:
 	std::list<Squad*>::iterator squad_iterator;*/
 
 	bool debug = false;
+	bool blit_skill = false;
 
 	Quadtree* colliderQT = nullptr;
 

@@ -41,7 +41,7 @@ bool Hero::Update(float dt)
 	switch (current_skill)
 	{
 	case 1: 
-		skill_one->DrawRange(); 
+		//skill_one->DrawRange(); 
 		if ((App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_one->Ready()) && !App->gui->leftClickedOnUI || skill_one->going)
 		{
 			skill_one->Activate();
@@ -70,7 +70,7 @@ bool Hero::Update(float dt)
 		skill_one->toDraw.clear();
 		break;
 	case 2:
-		skill_two->DrawRange();
+		//skill_two->DrawRange();
 		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_two->Ready() && !App->gui->leftClickedOnUI || skill_two->going)
 		{
 			skill_two->Activate();
@@ -101,7 +101,7 @@ bool Hero::Update(float dt)
 		skill_two->toDraw.clear();		
 		break;
 	case 3:
-		skill_three->DrawRange();
+		//skill_three->DrawRange();
 		if (App->input->GetMouseButtonDown(1) == KEY_DOWN && skill_three->Ready() && !App->gui->leftClickedOnUI || skill_three->going)
 		{
 			skill_three->Activate();

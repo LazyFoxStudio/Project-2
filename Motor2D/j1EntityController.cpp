@@ -67,6 +67,9 @@ bool CompareSquad(Squad* s1, Squad* s2)
 bool j1EntityController::Update(float dt)
 {
 	BROFILER_CATEGORY("Entity controller update", Profiler::Color::Maroon);
+
+	Hero* hero = (Hero*)getEntitybyID(hero_UID);
+
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
@@ -76,6 +79,44 @@ bool j1EntityController::Update(float dt)
 			if (debug) debugDrawEntity(*it);
 		}
 		(*it)->Draw(dt);
+	}
+
+	if (hero != nullptr)
+	{
+		switch (hero->current_skill)
+		{
+		case 1:
+			hero->skill_one->DrawRange();
+			break;
+		case 2:
+			hero->skill_two->DrawRange();
+			break;
+		case 3:
+			hero->skill_three->DrawRange();
+			break;
+		default:
+			break;
+		}
+	}
+
+	while (!SpriteQueue.empty())
+	{
+		Entity* aux_ent = SpriteQueue.top();
+
+		if (aux_ent != nullptr && aux_ent->isActive)
+		{
+			if (aux_ent->IsBuilding())
+				App->render->Blit(aux_ent->texture, aux_ent->position.x, aux_ent->position.y, ((Building*)aux_ent)->current_sprite);
+			else
+			{
+				if (((Unit*)aux_ent)->dir == W || ((Unit*)aux_ent)->dir == NW || ((Unit*)aux_ent)->dir == SW)
+					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim, true, false, aux_ent->scale, SDL_FLIP_HORIZONTAL);
+				else
+					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim, true, false, aux_ent->scale);
+			}
+		}
+
+		SpriteQueue.pop();
 	}
 
 	if (App->isPaused() || App->scene->toRestart)
@@ -96,31 +137,9 @@ bool j1EntityController::Update(float dt)
 		}
 	}
 
-	while (!SpriteQueue.empty())
-	{
-		Entity* aux_ent = SpriteQueue.top();
-
-		if (aux_ent != nullptr && aux_ent->isActive)
-		{
-			if (aux_ent->IsBuilding())
-				App->render->Blit(aux_ent->texture, aux_ent->position.x, aux_ent->position.y, ((Building*)aux_ent)->current_sprite);
-			else
-			{
-				if (((Unit*)aux_ent)->dir == W || ((Unit*)aux_ent)->dir == NW || ((Unit*)aux_ent)->dir == SW)
-					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim, true, false,aux_ent->scale, SDL_FLIP_HORIZONTAL);
-				else
-					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim,true, false, aux_ent->scale);
-			}
-		}
-
-		SpriteQueue.pop();
-	}
-
 	for (int i = 0; i < entities_to_destroy.size(); i++)
 		entities_to_destroy[i]->Destroy();
 	
-	Hero* hero = (Hero*)getEntitybyID(hero_UID);
-
 	if (to_build_type != NONE_ENTITY)
 		buildingCalculations();
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->actionscontroller->doingAction_lastFrame && (hero ? hero->current_skill == 0 : true) && !App->gui->leftClickedOnUI)
