@@ -1,4 +1,4 @@
-# Josep Pi
+# Josep Pi - Manager
 **[Back to main page](https://lazyfoxstudio.github.io/Project-2/)**
 
 ## Animations
