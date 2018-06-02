@@ -40,6 +40,7 @@ public:
 	Hero*				hero = nullptr;
 
 	SDL_Rect			text_rec = { 0,0,0,0 };
+	SDL_Rect			Itext_rec = { 0,0,0,0 };
 
 	bool				going = false;
 	

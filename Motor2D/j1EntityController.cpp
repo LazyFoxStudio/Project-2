@@ -1067,10 +1067,13 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	{
 		hero->skill_one = new Skill(hero, 3, 50,5, 300, MAGE_ABILITY_1_COOLDOWN, AREA);			//Icicle Crash
 		hero->skill_one->text_rec = { 1,1,160,160 };
+		hero->skill_one->Itext_rec = { 162,1,160,160 };
 		hero->skill_two = new Skill(hero, 0, 250,5, 700, MAGE_ABILITY_2_COOLDOWN, NONE_RANGE);	//Overflow
 		hero->skill_two->text_rec = { 1,162,32,32 };
+		hero->skill_two->Itext_rec = { 67,162,32,32 };
 		hero->skill_three = new Skill(hero, 0, 200,5, 200, MAGE_ABILITY_3_COOLDOWN, LINE);		//Dragon Breath
 		hero->skill_three->text_rec = { 34,162,32,32 };
+		hero->skill_three->Itext_rec = { 100,162,32,32 };
 
 		App->gui->GetActionButton(18)->Lock();
 		App->gui->GetActionButton(18)->setCondition("Unlocked at wave " + std::to_string(UNLOCK_ABILITY_1_WAVE));
@@ -1080,11 +1083,14 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	if (type == HERO_2)
 	{
 		hero->skill_one = new Skill(hero, 5, 30,5, 3000000, PALADIN_ABILITY_1_COOLDOWN, PLACE);	//Consecration
-		hero->skill_one->text_rec = { 162,1,288,288 };
+		hero->skill_one->text_rec = { 1,515,288,288 };
+		hero->skill_one->Itext_rec = { 290,515 ,288,288 };
 		hero->skill_two = new Skill(hero, 4, 10,5, 700, PALADIN_ABILITY_2_COOLDOWN, HEAL);		//Circle of Light
-		hero->skill_two->text_rec = { 450,1,224,224 };
+		hero->skill_two->text_rec = { 1,290,224,224 };
+		hero->skill_two->Itext_rec = { 226,290,224,224 };
 		hero->skill_three = new Skill(hero, 5, 0,5, 3000000, PALADIN_ABILITY_3_COOLDOWN, BUFF);	//Honor of the pure
-		hero->skill_three->text_rec = { 162,289,288,288 };
+		hero->skill_three->text_rec = { 323,1,288,288 };
+		hero->skill_three->Itext_rec = { 612,1,288,288 };
 
 		App->gui->GetActionButton(34)->Lock();
 		App->gui->GetActionButton(34)->setCondition("Unlocked at wave 3");

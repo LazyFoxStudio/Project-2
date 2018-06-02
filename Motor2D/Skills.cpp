@@ -48,12 +48,12 @@ void Skill::DrawRange()
 		}*/
 		
 		if(hero->type==HERO_1)
-			App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y, &text_rec);
+			App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y, Ready() ? (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range ? &text_rec : &Itext_rec) : &Itext_rec);
 		else
 			if(type==PLACE || type==BUFF)
-				App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y-64, &text_rec);
+				App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y-64, Ready() ? (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range ? &text_rec : &Itext_rec) : &Itext_rec);
 			if(type==HEAL)
-				App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y - 32, &text_rec);
+				App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y - 32, Ready() ? (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range ? &text_rec : &Itext_rec) : &Itext_rec);
 
 
 
@@ -88,7 +88,7 @@ void Skill::DrawRange()
 			{
 				SDL_Rect r = { (*item).x,(*item).y, App->map->data.tile_width,App->map->data.tile_height };
 				//App->render->DrawQuad(r, Ready() ? tile_color : Translucid_Grey);
-				App->render->Blit(hero->Skill_text, r.x, r.y, &text_rec);
+				App->render->Blit(hero->Skill_text, r.x, r.y, Ready() ? (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range ? &text_rec : &Itext_rec) : &Itext_rec);
 			}
 		}
 	}
