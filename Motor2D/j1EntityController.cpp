@@ -96,6 +96,26 @@ bool j1EntityController::Update(float dt)
 		}
 	}
 
+	while (!SpriteQueue.empty())
+	{
+		Entity* aux_ent = SpriteQueue.top();
+
+		if (aux_ent != nullptr && aux_ent->isActive)
+		{
+			if (aux_ent->IsBuilding())
+				App->render->Blit(aux_ent->texture, aux_ent->position.x, aux_ent->position.y, ((Building*)aux_ent)->current_sprite);
+			else
+			{
+				if (((Unit*)aux_ent)->dir == W || ((Unit*)aux_ent)->dir == NW || ((Unit*)aux_ent)->dir == SW)
+					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim, true, false, (1.0F), SDL_FLIP_HORIZONTAL);
+				else
+					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim);
+			}
+		}
+
+		SpriteQueue.pop();
+	}
+
 	for (int i = 0; i < entities_to_destroy.size(); i++)
 		entities_to_destroy[i]->Destroy();
 	
@@ -167,22 +187,7 @@ bool j1EntityController::Update(float dt)
 		App->gui->newSelectionDone();
 	}
 
-	while (!SpriteQueue.empty())
-	{
-		Entity* aux_ent = SpriteQueue.top();
 
-		if (aux_ent->IsBuilding())
-			App->render->Blit(aux_ent->texture, aux_ent->position.x, aux_ent->position.y, ((Building*)aux_ent)->current_sprite);
-		else
-		{
-			if (((Unit*)aux_ent)->dir == W || ((Unit*)aux_ent)->dir == NW || ((Unit*)aux_ent)->dir == SW)
-				App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim, true, false, (1.0F), SDL_FLIP_HORIZONTAL);
-			else
-				App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim);
-		}
-
-		SpriteQueue.pop();
-	}
 
 	return true;
 }

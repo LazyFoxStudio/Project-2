@@ -15,12 +15,12 @@ range(_range) , cooldown(_cooldown)
 {
 	switch (type = _type)
 	{
-	case AREA: tile_color = Translucid_Green;	break; 
-	case LINE: tile_color = Translucid_Yellow;	break;
+	case AREA: tile_color = Translucid_sky_Blue;	break;
+	case LINE: tile_color = Translucid_Orange;	break;
 	case PLACE:	tile_color = Translucid_light_Blue; break;
 	case HEAL:	tile_color = Translucid_Yellow; break;
 	case BUFF:	tile_color = Translucid_pink; break;
-	default:   tile_color = Translucid_Blue;	break; 
+	default:   tile_color = Translucid_Purple;	break;
 	}
 
 	timer.Start();
@@ -30,7 +30,7 @@ void Skill::DrawRange()
 {
 	if(type!=PLACE)
 	{
-		App->render->DrawCircle(hero->position.x, hero->position.y, range, Red, true);
+		App->render->DrawCircle(hero->position.x, hero->position.y, range, tile_color, true);
 	}
 
 	iPoint mouse_pos;
