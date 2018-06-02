@@ -118,7 +118,7 @@ bool j1Gui::PreUpdate()
 				ret = element->callback->OnUIEvent(element, MOUSE_LEFT_CLICK);
 			}
 			if (element->element_type == BUTTON)
-				App->audio->PlayFx(SFX_BUTTON_CLICKED, 0);
+				App->audio->PlayFx(SFX_BUTTON_CLICKED);
 
 			if (element->dragable)
 			{

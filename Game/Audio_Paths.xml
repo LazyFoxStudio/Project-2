@@ -3,7 +3,7 @@
 <!-- Peasant -->
 	<path sfx="Peasant/Psready.wav"/>
 	<path sfx="Peasant/Pswhat1.wav"/>	
-	<path sfx="Peasant/Pspissd7.wav"/>	
+	<path sfx="Peasant/Pspissd6.wav"/>	
 	<path sfx="Peasant/Psyessr4.wav"/>	
 	<path sfx="Peasant/Pswrkdon.wav"/>
 	
@@ -66,7 +66,7 @@
 
 <!-- UI/Map -->
 	<path sfx="Misc/Cantdothat.wav"/>
-	<path sfx="Map/Massist.wav"/>
+	<path sfx="Misc/Buttonsfx.wav"/>
 	<path sfx="Map/Massist.wav"/>
 	<path sfx="Map/Mattack.wav"/>
 	<path sfx="Misc/Tutorial_step.wav"/>
