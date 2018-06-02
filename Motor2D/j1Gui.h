@@ -195,6 +195,8 @@ private:
 	UI_element* draggingElement = nullptr;
 	WorkersDisplay* workersDisplayBase = nullptr;
 
+	bool UIdisabled = false;
+
 	std::map<Type, SDL_Rect> unitIconRect;
 	/*std::map<heroType, SDL_Rect> heroIconRect;*/
 	std::map<Type, SDL_Rect> buildingIconRect;
