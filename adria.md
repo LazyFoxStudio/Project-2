@@ -32,7 +32,7 @@ Responsible of the implementation of the UI system:
 	
    - All the graphic feedback and game information needed for the player (except particles).
 	
-   - Connection with all the other modules in order to interact with the game (create troops, create buildings, manage workers on buildings, next wave enemies, squads management and resource management).
+   - Connection with all the other modules in order to interact with the game (create troops and queue, create buildings, manage workers on buildings, next wave enemies, squads management and resource management).
 	
    - Create a system to read all the UI composition from an XML document and to be as easy to understand as possible, so it can be easily changed without touching the code.
 	
@@ -47,5 +47,7 @@ as a sequence of steps or "missions" that have to be accomplished to move forwar
 ## QA
 As part of the team, has contributed on the QA by looking for bugs and solving them when possible
 and ensuring that everything works as desired and the correct release build contruction.
+
+Also helped a bit in art, by creating the cards for hero selection and creating and upgrading some icons.
 
 **[Back to main page](https://lazyfoxstudio.github.io/Project-2/)**
