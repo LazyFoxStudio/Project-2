@@ -107,9 +107,9 @@ bool j1EntityController::Update(float dt)
 			else
 			{
 				if (((Unit*)aux_ent)->dir == W || ((Unit*)aux_ent)->dir == NW || ((Unit*)aux_ent)->dir == SW)
-					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim, true, false, (1.0F), SDL_FLIP_HORIZONTAL);
+					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim, true, false,aux_ent->scale, SDL_FLIP_HORIZONTAL);
 				else
-					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim);
+					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim,true, false, aux_ent->scale);
 			}
 		}
 
@@ -1086,6 +1086,8 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	Squad* new_squad = new Squad(aux_vector);
 	new_squad->UID = last_UID++;
 	squads.push_back(new_squad);
+
+	hero->scale = 1.2f;
 
 	return hero;
 }
