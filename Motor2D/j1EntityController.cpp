@@ -78,23 +78,6 @@ bool j1EntityController::Update(float dt)
 		(*it)->Draw(dt);
 	}
 
-	while (!SpriteQueue.empty())
-	{
-		Entity* aux_ent = SpriteQueue.top();
-
-		if (aux_ent->IsBuilding())
-			App->render->Blit(aux_ent->texture, aux_ent->position.x, aux_ent->position.y, ((Building*)aux_ent)->current_sprite);
-		else
-		{
-			if (((Unit*)aux_ent)->dir == W || ((Unit*)aux_ent)->dir == NW || ((Unit*)aux_ent)->dir == SW)
-				App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim, true, false, (1.0F), SDL_FLIP_HORIZONTAL);
-			else
-				App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim);
-		}
-
-		SpriteQueue.pop();
-	}
-
 	if (App->isPaused() || App->scene->toRestart)
 		return true;
 
@@ -111,6 +94,26 @@ bool j1EntityController::Update(float dt)
 			operative_entities.erase(it);
 			it--;
 		}
+	}
+
+	while (!SpriteQueue.empty())
+	{
+		Entity* aux_ent = SpriteQueue.top();
+
+		if (aux_ent != nullptr && aux_ent->isActive)
+		{
+			if (aux_ent->IsBuilding())
+				App->render->Blit(aux_ent->texture, aux_ent->position.x, aux_ent->position.y, ((Building*)aux_ent)->current_sprite);
+			else
+			{
+				if (((Unit*)aux_ent)->dir == W || ((Unit*)aux_ent)->dir == NW || ((Unit*)aux_ent)->dir == SW)
+					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim, true, false,aux_ent->scale, SDL_FLIP_HORIZONTAL);
+				else
+					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim,true, false, aux_ent->scale);
+			}
+		}
+
+		SpriteQueue.pop();
 	}
 
 	for (int i = 0; i < entities_to_destroy.size(); i++)
@@ -183,6 +186,8 @@ bool j1EntityController::Update(float dt)
 	
 		App->gui->newSelectionDone();
 	}
+
+
 
 	return true;
 }
@@ -1037,16 +1042,16 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	hero->collider.x = pos.x - (hero->collider.w / 2);
 	hero->collider.y = pos.y - (hero->collider.h / 2);
 
-	hero->Skill_text = App->tex->Load("Assets/Sprites/Alliance Sprites/Skill_Texture.png");
+	hero->Skill_text = App->tex->Load("Assets/Sprites/Alliance Sprites/HeroAbilitiesLayout_Spritesheet.png");
 
 	if (type == HERO_1)
 	{
 		hero->skill_one = new Skill(hero, 3, 50,5, 300, MAGE_ABILITY_1_COOLDOWN, AREA);			//Icicle Crash
-		hero->skill_one->text_rec = { 0,0,160,160 };
+		hero->skill_one->text_rec = { 1,1,160,160 };
 		hero->skill_two = new Skill(hero, 0, 250,5, 700, MAGE_ABILITY_2_COOLDOWN, NONE_RANGE);	//Overflow
-		hero->skill_two->text_rec = { 160,0,32,32 };
+		hero->skill_two->text_rec = { 1,162,32,32 };
 		hero->skill_three = new Skill(hero, 0, 200,5, 200, MAGE_ABILITY_3_COOLDOWN, LINE);		//Dragon Breath
-		hero->skill_three->text_rec = { 160,0,32,32 };
+		hero->skill_three->text_rec = { 34,162,32,32 };
 
 		App->gui->GetActionButton(18)->Lock();
 		App->gui->GetActionButton(18)->setCondition("Unlocked at wave " + std::to_string(UNLOCK_ABILITY_1_WAVE));
@@ -1056,11 +1061,11 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	if (type == HERO_2)
 	{
 		hero->skill_one = new Skill(hero, 5, 30,5, 3000000, PALADIN_ABILITY_1_COOLDOWN, PLACE);	//Consecration
-		hero->skill_one->text_rec = { 0,0,160,160 };
+		hero->skill_one->text_rec = { 162,1,288,288 };
 		hero->skill_two = new Skill(hero, 4, 10,5, 700, PALADIN_ABILITY_2_COOLDOWN, HEAL);		//Circle of Light
-		hero->skill_two->text_rec = { 0,0,160,160 };
+		hero->skill_two->text_rec = { 450,1,224,224 };
 		hero->skill_three = new Skill(hero, 5, 0,5, 3000000, PALADIN_ABILITY_3_COOLDOWN, BUFF);	//Honor of the pure
-		hero->skill_three->text_rec = { 0,0,160,160 };
+		hero->skill_three->text_rec = { 162,289,288,288 };
 
 		App->gui->GetActionButton(34)->Lock();
 		App->gui->GetActionButton(34)->setCondition("Unlocked at wave 3");
@@ -1081,6 +1086,8 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	Squad* new_squad = new Squad(aux_vector);
 	new_squad->UID = last_UID++;
 	squads.push_back(new_squad);
+
+	hero->scale = 1.2f;
 
 	return hero;
 }

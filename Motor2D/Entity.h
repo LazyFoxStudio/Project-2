@@ -58,6 +58,8 @@ public:
 	float attack_speed = 3;
 	bool flying = false;
 
+	float scale				= 1.0f;
+
 	j1Timer timer;
 	Cost cost;
 	bool isSelected = false;

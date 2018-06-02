@@ -33,9 +33,9 @@ public:
 	void Restart();
 
 private:
-	virtual bool OnInit()			{ return false; };
-	virtual bool OnUpdate(float dt) { return false; };
-	virtual bool OnStop()			{ return false; };
+	virtual bool OnInit()			{ return true; };
+	virtual bool OnUpdate(float dt) { return true; };
+	virtual bool OnStop()			{ return true; };
 
 };
 

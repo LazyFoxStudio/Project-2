@@ -88,7 +88,8 @@ bool j1UIScene::Start()
 	blacksmith->setCondition("Build first a Hut");
 	blacksmith->Lock();
 
-	App->video->Initialize("sample(good).avi");
+	App->video->Initialize("Logo.avi");
+	App->audio->PlayMusic(LOGO_THEME, 0);
 
 	return true;
 }

@@ -52,7 +52,6 @@ bool j1Scene::Start()
 	int w = -1, h = -1;
 	uchar* data = nullptr;
 
-	App->audio->PlayMusic(MAIN_THEME);
 	App->map->Load_map("map1.tmx");
 
 	if (App->map->CreateWalkabilityMap(w, h, &data))	
