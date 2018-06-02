@@ -228,6 +228,16 @@ void Unit::Destroy()
 			App->tutorial->taskCompleted(KILL_ENEMIES);
 	}
 	App->gui->entityDeleted(this);
+	
+	for (std::vector<uint>::iterator it = squad->units_id.begin(); it != squad->units_id.end(); it++)
+	{
+		if (UID == *it)
+		{
+			squad->units_id.erase(it);
+			break;
+		}
+	}
+
 	Halt();
 }
 
@@ -268,7 +278,7 @@ void Unit::calculateSeparationVector(fPoint& separation_v, float& weight)
 		fPoint world_separation = position + (separation_v * weight);
 		iPoint map_separation = App->map->WorldToMap(world_separation.x, world_separation.y);
 
-		if (!App->pathfinding->IsWalkable(map_separation))
+		if (!App->pathfinding->IsWalkable(map_separation) && !IsFlying())
 			weight = 0;
 	}
 }

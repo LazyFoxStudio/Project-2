@@ -47,7 +47,15 @@ void Skill::DrawRange()
 			App->render->DrawQuad(r, Ready() ? (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range ? tile_color : Translucid_Grey) : Translucid_Grey);
 		}
 		
-		App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y, &text_rec);
+		if(hero->type==HERO_1)
+			App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y, &text_rec);
+		else
+			if(type==PLACE || type==BUFF)
+				App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y-64, &text_rec);
+			if(type==HEAL)
+				App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y - 32, &text_rec);
+
+
 
 		if (type == NONE_RANGE)
 		{
@@ -107,7 +115,7 @@ void Skill::BFS()
 				world_tile_cast = App->map->WorldToMap(cast_pos.x, cast_pos.y);
 			}
 
-			if (world_tile.DistanceTo(world_tile_cast) < radius && App->pathfinding->IsWalkable(iPoint(i, j)))
+			if (world_tile.DistanceTo(world_tile_cast) < radius /*&& App->pathfinding->IsWalkable(iPoint(i, j))*/)
 			{
 				toDraw.push_back(App->map->MapToWorld(world_tile.x,world_tile.y));
 			}
