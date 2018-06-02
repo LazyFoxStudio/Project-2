@@ -345,7 +345,7 @@ void Unit::animationController()
 		}
 		else
 		{
-			if (idle_timer.ReadMs() > 15000)
+			if (idle_timer.ReadMs() > 15000 && !App->isPaused())
 			{
 				idle_timer.Start();
 				int number = rand() % 7;

@@ -164,6 +164,8 @@ bool j1Gui::Update(float dt)
 	BROFILER_CATEGORY("Gui Update", Profiler::Color::Beige);
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 		UI_Debug = !UI_Debug;
+	else if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+		UIdisabled = !UIdisabled;
 
 	return true;
 }
@@ -178,6 +180,9 @@ bool j1Gui::PostUpdate()
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
 		rightClickedOnUI = false;
+
+	if (UIdisabled)
+		return true;
 
 	//Draw selection quads
 	for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
