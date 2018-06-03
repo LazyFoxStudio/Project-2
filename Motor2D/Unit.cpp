@@ -48,6 +48,7 @@ Unit::Unit(iPoint pos, Unit& unit, Squad* squad) : squad(squad)
 
 
 
+
 }
 
 Unit::~Unit()
