@@ -3,10 +3,7 @@
 
 ## Animations
 ### Code
-I've created the animationcontrolled method based on the commands of the pathfinding and connecting it to the animations in a list.
-
-
-<a href="https://gyazo.com/51a8e1f9045c559744084e478dcb6bb4"><img src="https://i.gyazo.com/51a8e1f9045c559744084e478dcb6bb4.png" alt="https://gyazo.com/51a8e1f9045c559744084e478dcb6bb4" width="594"/></a>
+I've created the animationcontrolled method inside units.cpp. It's based on the commands of the path finding and relating each action of the path finding with the correct set of animations for every single unit.
 
 ### Sprite Sheets Organization
 I've helped the artist with the organization of all the sprite sheets and tables of the horde. 
@@ -49,7 +46,8 @@ Writing all the points we need to talk about at the white board and making sure 
 <a href="https://gyazo.com/80dbc0fdf4b4877009973a24eb84d676"><img src="https://i.gyazo.com/80dbc0fdf4b4877009973a24eb84d676.jpg" alt="https://gyazo.com/80dbc0fdf4b4877009973a24eb84d676" width="1595"/></a>
 
 ## QA
-### Creating issues and controlling the resolution and assignment to them.
+### Issues at github.
+Creating and reassign each member of the team to their area of knowledge. Keeping track every issue is taken care of and closing the ones that are fixed.
 
 
 <a href="https://gyazo.com/2a84cf7ba546de07db76c816ebb93bd5"><img src="https://i.gyazo.com/2a84cf7ba546de07db76c816ebb93bd5.png" alt="https://gyazo.com/2a84cf7ba546de07db76c816ebb93bd5" width="1555"/></a>
