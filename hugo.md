@@ -1,6 +1,5 @@
 # Hugo Bo - QA
 **[Back to main page](https://lazyfoxstudio.github.io/Project-2/)**
-W.I.P
 ## Console
 
 A console made to aid testing the game.
@@ -32,5 +31,9 @@ I polished some parts to make it fit better into our game, things like centering
 Made with the help of this research page: **[Page for the research on this specific topic](https://github.com/JoanValiente/Video-Player-Research)**
 
 ![example](https://imgur.com/UkvstsQ.png)
+
+## QA
+
+As the QA of the team I did some testing to make sure everything worked and tried to make sure everything was on its place in the releases, which were done effectively and easy due to making sure the assets folder was organized and easy to prepare.
 
 **[Back to main page](https://lazyfoxstudio.github.io/Project-2/)**
