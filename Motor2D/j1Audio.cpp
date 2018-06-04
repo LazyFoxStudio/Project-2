@@ -131,7 +131,7 @@ bool j1Audio::PlayFx(unsigned int id, uint volume, int repeat)
 	{
 		bool tmp = false;
 		for (std::list<SFXList>::iterator it = blackList.begin(); it != blackList.end(); it++)
-			if (*it == id) { tmp = true; }
+			if (*it == id && *it != SFX_BUTTON_CLICKED) { tmp = true; }
 			
 			if(!tmp)
 			{
