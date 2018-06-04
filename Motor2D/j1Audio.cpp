@@ -81,17 +81,17 @@ bool j1Audio::PostUpdate()
 
 bool j1Audio::Save(pugi::xml_node & config) const
 {
-	config.append_child("musicVolumeModifier").append_attribute("value") = musicVolumeModifier;
-	config.append_child("sfxVolumeModifier").append_attribute("value") = sfxVolumeModifier;
+	//config.append_child("musicVolumeModifier").append_attribute("value") = musicVolumeModifier;
+	//config.append_child("sfxVolumeModifier").append_attribute("value") = sfxVolumeModifier;
 	return true;
 }
 
 bool j1Audio::Load(pugi::xml_node & config)
 {
-	musicVolumeModifier = config.child("musicVolumeModifier").attribute("value").as_float();
-	sfxVolumeModifier = config.child("sfxVolumeModifier").attribute("value").as_float();
+	//musicVolumeModifier = config.child("musicVolumeModifier").attribute("value").as_float();
+	//sfxVolumeModifier = config.child("sfxVolumeModifier").attribute("value").as_float();
 
-	Mix_VolumeMusic(128 * musicVolumeModifier);
+	//Mix_VolumeMusic(128 * musicVolumeModifier);
 
 	return true;
 }

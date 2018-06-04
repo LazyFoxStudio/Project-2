@@ -3,17 +3,14 @@
 	<input />
 	<window />
 	<textures />
-	<audio>
-		<musicVolumeModifier value="0.039794609" />
-		<sfxVolumeModifier value="0.0603337623" />
-	</audio>
+	<audio />
 	<pathfinding />
 	<Console />
 	<map />
 	<fonts />
 	<scene>
 		<gold value="450" />
-		<wood value="0" />
+		<wood value="100" />
 		<oil value="0" />
 		<gold_per_sec value="0" />
 		<wood_per_sec value="0" />
@@ -28,13 +25,33 @@
 			<upgrades_6 value="0" />
 		</Upgrades>
 		<Units>
-			<Hero type="10" hp="228" x="2288.00293" y="2171.42896" />
+			<Hero type="10" hp="-2" x="1210.88635" y="2063.99951" />
 			<squad type_enum="18" type="GRUNT">
-				<unit hp="70" pos_x="2113.11938" pos_y="2083.78125" direction="5" />
-				<unit hp="70" pos_x="2000" pos_y="2128" direction="6" />
-				<unit hp="70" pos_x="2096" pos_y="2128" direction="6" />
-				<unit hp="58" pos_x="2112.65283" pos_y="2037.46838" direction="3" />
-				<unit hp="70" pos_x="2112.89453" pos_y="2070.1416" direction="5" />
+				<unit hp="70" pos_x="1171.77246" pos_y="2031.47241" direction="2" />
+				<unit hp="70" pos_x="1140.54163" pos_y="2029.49316" direction="0" />
+				<unit hp="70" pos_x="1164.76721" pos_y="2038.37512" direction="4" />
+				<unit hp="70" pos_x="1178.43359" pos_y="2064.16724" direction="0" />
+				<unit hp="70" pos_x="1209.8324" pos_y="2064.76709" direction="0" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="2128.00073" pos_y="1143.45837" direction="4" />
+				<unit hp="70" pos_x="2163.20166" pos_y="1108.25928" direction="4" />
+				<unit hp="70" pos_x="2128.00171" pos_y="1108.25842" direction="4" />
+				<unit hp="70" pos_x="2092.80151" pos_y="1108.25757" direction="4" />
+				<unit hp="70" pos_x="2092.80078" pos_y="1143.45752" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="1259.48059" pos_y="2031.99988" direction="7" />
+				<unit hp="70" pos_x="1192.12769" pos_y="1999.99988" direction="6" />
+				<unit hp="70" pos_x="1193.06177" pos_y="2031.9939" direction="6" />
+				<unit hp="70" pos_x="1196.31213" pos_y="2063.18652" direction="6" />
+				<unit hp="70" pos_x="1230.13123" pos_y="2063.98975" direction="6" />
+			</squad>
+			<squad type_enum="19" type="AXE_THROWER">
+				<unit hp="40" pos_x="352" pos_y="1920" direction="4" />
+				<unit hp="40" pos_x="352" pos_y="1952" direction="4" />
+				<unit hp="40" pos_x="352" pos_y="1984" direction="4" />
+				<unit hp="40" pos_x="384" pos_y="1920" direction="4" />
 			</squad>
 			<squad type_enum="18" type="GRUNT">
 				<unit hp="70" pos_x="2144" pos_y="3488" direction="4" />
@@ -44,23 +61,23 @@
 				<unit hp="70" pos_x="2176" pos_y="3552" direction="4" />
 			</squad>
 			<squad type_enum="18" type="GRUNT">
+				<unit hp="70" pos_x="384" pos_y="1984" direction="4" />
+				<unit hp="70" pos_x="416" pos_y="1920" direction="4" />
+				<unit hp="70" pos_x="416" pos_y="1952" direction="4" />
+				<unit hp="70" pos_x="416" pos_y="1984" direction="4" />
+				<unit hp="70" pos_x="320" pos_y="2016" direction="4" />
+			</squad>
+			<squad type_enum="18" type="GRUNT">
 				<unit hp="70" pos_x="2208" pos_y="3488" direction="4" />
 				<unit hp="70" pos_x="2208" pos_y="3520" direction="4" />
 				<unit hp="70" pos_x="2208" pos_y="3552" direction="4" />
 				<unit hp="70" pos_x="2112" pos_y="3584" direction="4" />
 				<unit hp="70" pos_x="2144" pos_y="3584" direction="4" />
 			</squad>
-			<squad type_enum="18" type="GRUNT">
-				<unit hp="70" pos_x="3552" pos_y="1792" direction="4" />
-				<unit hp="70" pos_x="3552" pos_y="1824" direction="4" />
-				<unit hp="70" pos_x="3552" pos_y="1856" direction="4" />
-				<unit hp="70" pos_x="3584" pos_y="1792" direction="4" />
-				<unit hp="70" pos_x="3584" pos_y="1856" direction="4" />
-			</squad>
 		</Units>
 		<Buildings>
-			<town_hall hp="84" />
-			<Building hp="250" pos_x="2080" pos_y="2176" type_enum="3" workers="0" type="LUMBER_MILL" />
+			<town_hall hp="57" />
+			<Building hp="250" pos_x="1824" pos_y="1984" type_enum="3" workers="0" type="LUMBER_MILL" />
 		</Buildings>
 		<hasBuilt>
 			<LumberMill built="true" />
@@ -76,18 +93,19 @@
 	<particle />
 	<actionscontroller />
 	<wavecontroller>
-		<wave value="2" />
-		<points value="4" />
-		<wave_timer value="0.00400820142" />
+		<wave value="3" />
+		<points value="5" />
+		<wave_timer value="0.0659858733" />
 		<next_wave>
 			<enemies type="AXE_THROWER" type_enum="19" x="2177" y="3549" />
+			<enemies type="AXE_THROWER" type_enum="19" x="2177" y="3549" />
+			<enemies type="GRUNT" type_enum="18" x="2154" y="256" />
 			<enemies type="GRUNT" type_enum="18" x="3605" y="1844" />
-			<enemies type="AXE_THROWER" type_enum="19" x="3605" y="1844" />
-			<enemies type="AXE_THROWER" type_enum="19" x="2154" y="256" />
+			<enemies type="GRUNT" type_enum="18" x="2154" y="256" />
 		</next_wave>
 	</wavecontroller>
 	<video />
 	<renderer>
-		<camera x="-1568" y="-1681" />
+		<camera x="-519" y="-1690" />
 	</renderer>
 </game_state>
