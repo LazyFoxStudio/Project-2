@@ -2170,6 +2170,8 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 			Animation* animation = new Animation();
 			if (animation->LoadAnimation(AnimInfo, anim_width, anim_height))
 				unitTemplate->animations.push_back(animation);
+			else
+				RELEASE(animation);
 		}
 		for (int i = 16; i <= 23; i++)
 		{
@@ -2255,6 +2257,7 @@ void j1EntityController::DeleteDB()
 	for (std::map<uint, Entity*>::iterator it = DataBase.begin(); it != DataBase.end(); it++)
 	{
 		Entity* entity = (*it).second;
+		RELEASE(entity->infoData);
 		if (entity->IsUnit())
 		{
 			Unit* unit_to_delete = (Unit*)entity;
