@@ -166,7 +166,9 @@ void Building::Destroy()
 		{
 			(*it)->to_destroy = true;
 		}
-		App->audio->PlayMusic(DEFEAT_THEME, 0);
+		if (App->audio->canDefeat)
+			App->audio->PlayMusic(DEFEAT_THEME, 0);
+
 		current_sprite = &sprites[4];
 
 		if(App->gui->Chronos)

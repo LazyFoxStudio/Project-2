@@ -139,6 +139,7 @@ private:
 	std::vector<_Mix_Music*>	music;
 
 public:
+	bool canDefeat = false;
 	j1Timer followOrdersCooldown;
 
 };
