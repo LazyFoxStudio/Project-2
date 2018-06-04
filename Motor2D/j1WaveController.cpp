@@ -164,7 +164,7 @@ void j1WaveController::Generate_Wave()
 {
 	for (std::list<NextWave*>::iterator it = next_wave.begin(); it != next_wave.end(); it++)
 	{
-		Squad* squad = App->entitycontroller->AddSquad((*it)->type, (*it)->spawn);
+		Squad* squad = App->entitycontroller->AddSquad(GRUNT, spawns[0]);
 		//minimap_
 		App->gui->minimap->AddAlert((*it)->spawn.x, (*it)->spawn.y, 5, alert_type::DANGER);
 

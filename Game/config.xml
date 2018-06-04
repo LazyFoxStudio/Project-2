@@ -11,7 +11,7 @@
   </renderer>
 
   <window>
-    <resolution default="false" width="1680" height="1050" scale="1"/>
+    <resolution default="true" width="1680" height="1050" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
@@ -35,7 +35,7 @@
   </scene>
 
   <wavecontroller>
-    <initialWait value="100"/>
+    <initialWait value="5000"/>
     <waitBetweenWaves value="70"/>
     <Spawns>
       <spawn x="2154" y="256"/>
