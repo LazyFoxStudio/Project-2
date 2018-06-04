@@ -54,6 +54,7 @@ void TroopCreationQueue::BlitElement()
 			}
 			App->entitycontroller->RefundResources(building->unit_queue.at(counter));
 			building->unit_queue.erase(building->unit_queue.begin()+counter);
+			App->audio->PlayFx(SFX_MISCELLANEOUS_CANCEL_TROOP);
 
 			continue;
 		}
