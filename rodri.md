@@ -17,6 +17,8 @@ This algorithm is fairly known in programming environments. It's very efficient 
 
 This algorithm is based on create a surface over the map containing the directions a unit must follow to reach a specific destination. It's main benefit is that a single call allows to create a surface which can be shared among any number of units as long as they have in common the destination, being specially useful in our game where units are created and controlled in groups. This is the system used by units when moving outside the combat.
 
+![Imgur](https://i.imgur.com/rPBVS3I.gifv)
+
 ### Separation
 
 The separation algorithm, as it's name states, is used to avoid units from overlapping over each other. It works like two magnets of the same polarity, repelling other nearby units until they are not colliding anymore. This system is always active to ensure units are always in proper positions.
@@ -52,7 +54,7 @@ To avoid this, we have implented a command system. Instead of using states, each
 ## Other
 
 - Entity controller: memory managing for entities, utility methods...
-- Parabollic particles: arrows that fly in a curve in the air before reaching it's target
+- Parabollic behavior in particles: arrows that fly in a curve in the air before reaching it's target.
 - Collider, range and line of sight systems: allows units to chase enemies and help nearby allies in a realistic way.
 - Entity DataBase: a vector which stores information about units allowing to easy access for different operations.
 
