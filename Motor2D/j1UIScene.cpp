@@ -89,7 +89,7 @@ bool j1UIScene::Start()
 	blacksmith->Lock();
 
 	App->video->Initialize("Logo.avi");
-	App->audio->PlayMusic(LOGO_THEME, 0);
+	App->audio->PlayMusic(LOGO_THEME, 0, 1);
 
 	return true;
 }

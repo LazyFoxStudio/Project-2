@@ -113,7 +113,7 @@ public:
 	bool Load(pugi::xml_node&);
 
 
-	bool j1Audio::PlayMusic(uint id, uint fade_time = DEFAULT_MUSIC_FADE_TIME);
+	bool j1Audio::PlayMusic(uint id, uint fade_time = DEFAULT_MUSIC_FADE_TIME, int loops = -1);
 
 	void LoadFx(const char* path);
 	void LoadMusic(const char* path);
