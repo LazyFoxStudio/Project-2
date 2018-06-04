@@ -37,7 +37,7 @@ Responsible of the implementation of the UI system:
    - Create a system to read all the UI composition from an XML document and to be as easy to understand as possible, so it can be easily changed without touching the code.
 	
 ### UI UML:
-<a <img src="https://i.imgur.com/5t0a6kO.png"/></a>
+<a> <img src="https://i.imgur.com/5t0a6kO.png"/></a>
 	
 ## Tutorial
 Designed the tutorial, how would it look and the diferent steps needed to understand the basics of the game.
