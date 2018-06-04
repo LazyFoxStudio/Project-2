@@ -63,6 +63,7 @@
 	<path sfx="Misc/Burning.wav"/>
 	<path sfx="Misc/Explode.wav"/>
 	<path sfx="Spells/Heal.wav"/>
+	<path sfx="Misc/cancel_troop.wav"/>
 
 <!-- UI/Map -->
 	<path sfx="Misc/Cantdothat.wav"/>
