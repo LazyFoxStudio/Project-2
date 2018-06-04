@@ -3923,12 +3923,14 @@
 			<standby x="576" y="704" w="82" h="82"/>
 			<OnMouse x="672" y="704" w="82" h="82"/>
 			<OnClick x="770" y="704" w="82" h="82"/>
+			<hotkey key="Q" font_id="3"/>
 		</unassignWorker>
 		<assignWorker id="9" click_action="6">
 			<position x="0" y="0"/>
 			<standby x="285" y="704" w="82" h="82"/>
 			<OnMouse x="384" y="704" w="82" h="82"/>
 			<OnClick x="481" y="704" w="82" h="82"/>
+			<hotkey key="E" font_id="3"/>
 		</assignWorker>
 		<emptySpace id="10">
 			<position x="0" y="0"/>

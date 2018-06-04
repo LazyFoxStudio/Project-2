@@ -66,13 +66,17 @@ void IngameMenu::updateActionButtons()
 	int counter = 0;
 	int counterX = 0;
 	int counterY = 0;
+	int extraXvalue = 0;
 	int extraYvalue = 0;
 	for (std::list<Button*>::iterator it_b = actionButtons.begin(); it_b != actionButtons.end(); it_b++)
 	{
 		if ((*it_b)->clickAction == ASSIGN_WORKER || (*it_b)->clickAction == UNASSIGN_WORKER) //HARDCODED
+		{
+			extraXvalue = -10;
 			extraYvalue = 50;
+		}
 		else extraYvalue = 0;
-		(*it_b)->localPosition.x = firstButton_pos.x + (buttons_offset.x*counterX);
+		(*it_b)->localPosition.x = firstButton_pos.x + (buttons_offset.x*counterX) + extraXvalue;
 		(*it_b)->localPosition.y = firstButton_pos.y + (buttons_offset.y*counterY) + extraYvalue;
 		(*it_b)->active = true;
 		(*it_b)->setHotkey(actionButtonsHotkeys[counter]);
