@@ -170,7 +170,10 @@ bool j1Map::WalkabilityArea(int x, int y, int rows, int columns, bool modify, bo
 				for (int i = 0; i < rows; i++)
 				{
 					iPoint currentMapTile = WorldToMap(currentTile.x + j * data.tile_width, currentTile.y + i * data.tile_height);
-					if ((tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 373 && check_trees) || (IsMine(tree_layer->GetID(currentMapTile.x,currentMapTile.y))&& check_mines))
+					if ((tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 373 || tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 136 || tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 137 ||
+						tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 134 || tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 128 || tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 107 ||
+						tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 131 || tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 125 || tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 108 ||
+						tree_layer->GetID(currentMapTile.x, currentMapTile.y) == 111 && check_trees) || (IsMine(tree_layer->GetID(currentMapTile.x,currentMapTile.y))&& check_mines))
 					{
 						ret = false;
 						if (check_trees)

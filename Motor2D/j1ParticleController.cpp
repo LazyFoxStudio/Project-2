@@ -125,33 +125,6 @@ void j1ParticleController::LoadParticlesFromXML()
 
 }
 
-//particleType j1ParticleController::GetTypeFromInt(int posOnEnum)
-//{
-//	switch (posOnEnum)
-//	{
-//	case 9:
-//		return particleType::PJUGGERNAUT;
-//	case 8:
-//		return particleType::PCATAPULT;
-//	case 7:
-//		return particleType::PDRAGON;
-//	case 6:
-//		return particleType::PDEATHKNIGHT;
-//	case 5:
-//		return particleType::PFLYINGMACHINE;
-//	case 4:
-//		return particleType::PBALLISTA;
-//	case 3:
-//		return particleType::PYAHMAM_AA;
-//	case 2:
-//		return particleType::PTOMAHAWK;
-//	case 1:
-//		return particleType::PARROW;
-//	default:
-//		return particleType::PNO_TYPE;
-//	}
-//}
-
 Particle* j1ParticleController::FindParticleType(particleType type)
 {
 	Particle tmp;
@@ -269,28 +242,6 @@ void j1ParticleController::AddProgressiveParticle(particleType type, fPoint posi
 		}
 	}
 }
-
-// Funtion that takes care of its collision
-//void j1ParticleController::OnCollision(Collider* c1, Collider* c2)
-//{
-//	// Colliders that are deleted on contact are deleted here
-//	if (c1->type == COLLIDER_PLAYER_SHOT || c1->type == COLLIDER_PLAYER2_SHOT || c1->type == COLLIDER_ENEMY_SHOT || c2->type == COLLIDER_WALL)
-//	{
-//		for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
-//		{
-//			if (active[i] != nullptr && active[i]->collider == c1)
-//			{
-//				delete active[i];
-//				active[i] = nullptr;
-//				break;
-//			}
-//		}
-//	}
-//}
-
-
-// -------------------------------------------------------------
-// -------------------------------------------------------------
 
 Particle::Particle()
 {

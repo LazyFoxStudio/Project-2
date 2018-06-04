@@ -67,6 +67,9 @@ bool CompareSquad(Squad* s1, Squad* s2)
 bool j1EntityController::Update(float dt)
 {
 	BROFILER_CATEGORY("Entity controller update", Profiler::Color::Maroon);
+
+	Hero* hero = (Hero*)getEntitybyID(hero_UID);
+
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
@@ -76,6 +79,44 @@ bool j1EntityController::Update(float dt)
 			if (debug) debugDrawEntity(*it);
 		}
 		(*it)->Draw(dt);
+	}
+
+	if (hero != nullptr)
+	{
+		switch (hero->current_skill)
+		{
+		case 1:
+			hero->skill_one->DrawRange();
+			break;
+		case 2:
+			hero->skill_two->DrawRange();
+			break;
+		case 3:
+			hero->skill_three->DrawRange();
+			break;
+		default:
+			break;
+		}
+	}
+
+	while (!SpriteQueue.empty())
+	{
+		Entity* aux_ent = SpriteQueue.top();
+
+		if (aux_ent != nullptr && aux_ent->isActive)
+		{
+			if (aux_ent->IsBuilding())
+				App->render->Blit(aux_ent->texture, aux_ent->position.x, aux_ent->position.y, ((Building*)aux_ent)->current_sprite);
+			else
+			{
+				if (((Unit*)aux_ent)->dir == W || ((Unit*)aux_ent)->dir == NW || ((Unit*)aux_ent)->dir == SW)
+					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - 10 - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim, true, false, aux_ent->scale, SDL_FLIP_HORIZONTAL);
+				else
+					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - 10 - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim, true, false, aux_ent->scale);
+			}
+		}
+
+		SpriteQueue.pop();
 	}
 
 	if (App->isPaused() || App->scene->toRestart)
@@ -96,31 +137,9 @@ bool j1EntityController::Update(float dt)
 		}
 	}
 
-	while (!SpriteQueue.empty())
-	{
-		Entity* aux_ent = SpriteQueue.top();
-
-		if (aux_ent != nullptr && aux_ent->isActive)
-		{
-			if (aux_ent->IsBuilding())
-				App->render->Blit(aux_ent->texture, aux_ent->position.x, aux_ent->position.y, ((Building*)aux_ent)->current_sprite);
-			else
-			{
-				if (((Unit*)aux_ent)->dir == W || ((Unit*)aux_ent)->dir == NW || ((Unit*)aux_ent)->dir == SW)
-					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim, true, false,aux_ent->scale, SDL_FLIP_HORIZONTAL);
-				else
-					App->render->Blit(aux_ent->texture, aux_ent->position.x - (((Unit*)aux_ent)->anim.w / 2), aux_ent->position.y - (((Unit*)aux_ent)->anim.h / 2), &((Unit*)aux_ent)->anim,true, false, aux_ent->scale);
-			}
-		}
-
-		SpriteQueue.pop();
-	}
-
 	for (int i = 0; i < entities_to_destroy.size(); i++)
 		entities_to_destroy[i]->Destroy();
 	
-	Hero* hero = (Hero*)getEntitybyID(hero_UID);
-
 	if (to_build_type != NONE_ENTITY)
 		buildingCalculations();
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_IDLE && !App->actionscontroller->doingAction_lastFrame && (hero ? hero->current_skill == 0 : true) && !App->gui->leftClickedOnUI)
@@ -1048,10 +1067,13 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	{
 		hero->skill_one = new Skill(hero, 3, 50,5, 300, MAGE_ABILITY_1_COOLDOWN, AREA);			//Icicle Crash
 		hero->skill_one->text_rec = { 1,1,160,160 };
+		hero->skill_one->Itext_rec = { 162,1,160,160 };
 		hero->skill_two = new Skill(hero, 0, 250,5, 700, MAGE_ABILITY_2_COOLDOWN, NONE_RANGE);	//Overflow
 		hero->skill_two->text_rec = { 1,162,32,32 };
+		hero->skill_two->Itext_rec = { 67,162,32,32 };
 		hero->skill_three = new Skill(hero, 0, 200,5, 200, MAGE_ABILITY_3_COOLDOWN, LINE);		//Dragon Breath
 		hero->skill_three->text_rec = { 34,162,32,32 };
+		hero->skill_three->Itext_rec = { 100,162,32,32 };
 
 		App->gui->GetActionButton(18)->Lock();
 		App->gui->GetActionButton(18)->setCondition("Unlocked at wave " + std::to_string(UNLOCK_ABILITY_1_WAVE));
@@ -1061,11 +1083,14 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	if (type == HERO_2)
 	{
 		hero->skill_one = new Skill(hero, 5, 30,5, 3000000, PALADIN_ABILITY_1_COOLDOWN, PLACE);	//Consecration
-		hero->skill_one->text_rec = { 162,1,288,288 };
+		hero->skill_one->text_rec = { 1,515,288,288 };
+		hero->skill_one->Itext_rec = { 290,515 ,288,288 };
 		hero->skill_two = new Skill(hero, 4, 10,5, 700, PALADIN_ABILITY_2_COOLDOWN, HEAL);		//Circle of Light
-		hero->skill_two->text_rec = { 450,1,224,224 };
+		hero->skill_two->text_rec = { 1,290,224,224 };
+		hero->skill_two->Itext_rec = { 226,290,224,224 };
 		hero->skill_three = new Skill(hero, 5, 0,5, 3000000, PALADIN_ABILITY_3_COOLDOWN, BUFF);	//Honor of the pure
-		hero->skill_three->text_rec = { 162,289,288,288 };
+		hero->skill_three->text_rec = { 323,1,288,288 };
+		hero->skill_three->Itext_rec = { 612,1,288,288 };
 
 		App->gui->GetActionButton(34)->Lock();
 		App->gui->GetActionButton(34)->setCondition("Unlocked at wave 3");
