@@ -552,14 +552,23 @@ bool j1EntityController::PostUpdate()
 
 bool j1EntityController::CleanUp()
 {
+
+	std::vector<Entity*> to_delete_units;
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		to_delete_units.push_back(*it);
+
+	for (int i = 0; i < to_delete_units.size(); i++)
 	{
-		App->gui->entityDeleted(*it);
-		DeleteEntity((*it));
+		App->gui->entityDeleted(to_delete_units[i]);
+		DeleteEntity(to_delete_units[i]);
 	}
 
+	std::vector<Squad*> to_delete_squads;
 	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end(); it++)
-		DeleteSquad((*it));
+		to_delete_squads.push_back(*it);
+
+	for (int i = 0; i < to_delete_squads.size(); i++)
+		DeleteSquad(to_delete_squads[i]);
 
 	DeleteDB();
 
@@ -769,11 +778,24 @@ bool j1EntityController::Load(pugi::xml_node& file)
 	LoadUpgrades(q, w, e, r, t, y);
 
 	//UNITS
+	std::vector<Entity*> to_delete_units;
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
+		to_delete_units.push_back(*it);
+
+	for (int i = 0; i < to_delete_units.size(); i++)
 	{
-		if ((*it)->type != TOWN_HALL )
-			DeleteEntity(*it);
+		App->gui->entityDeleted(to_delete_units[i]);
+		DeleteEntity(to_delete_units[i]);
 	}
+
+	std::vector<Squad*> to_delete_squads;
+	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end(); it++)
+		to_delete_squads.push_back(*it);
+
+	for (int i = 0; i < to_delete_squads.size(); i++)
+		DeleteSquad(to_delete_squads[i]);
+
+
 	pugi::xml_node units = file.child("Units");
 	pugi::xml_node squads_node;
 
@@ -2426,13 +2448,17 @@ bool j1EntityController::Console_Interaction(std::string& function, std::vector<
 
 	if (function == kill_selected->name)
 	{
+		std::vector<Entity*> to_delete;
 		for (std::list<Entity*>::iterator it = selected_entities.begin(); it != selected_entities.end(); it++)
 		{
 			if ((*it)->IsUnit() && !(*it)->IsHero())
-			{
-				LOG("deleted %d via comand", (*it)->UID);
-				DeleteEntity((*it));
-			}
+				to_delete.push_back(*it);
+		}
+
+		for(int i = 0; i < to_delete.size(); i++)
+		{
+			LOG("deleted %d via comand", to_delete[i]->UID);
+			DeleteEntity(to_delete[i]);
 		}
 	}
 
@@ -2449,11 +2475,16 @@ bool j1EntityController::Console_Interaction(std::string& function, std::vector<
 
 	if (function == next_wave->name)
 	{
+		std::vector<Entity*> to_delete;
 		for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 		{
 			if ((*it)->IsEnemy())
-				DeleteEntity((*it));
+				to_delete.push_back(*it);
 		}
+
+		for (int i = 0; i < to_delete.size(); i++)
+			DeleteEntity(to_delete[i]);
+
 	}
 
 	if (function == spawn_squad->name)

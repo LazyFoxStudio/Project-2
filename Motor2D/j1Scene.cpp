@@ -298,14 +298,22 @@ bool j1Scene::Save(pugi::xml_node& data) const
 void j1Scene::Close_game()
 {
 	//DELETING ENTITIES-------------------------------------------------------
+	std::vector<Entity*> to_delete_units;
 	for (std::list<Entity*>::iterator it = App->entitycontroller->entities.begin(); it != App->entitycontroller->entities.end(); it++)
+		to_delete_units.push_back(*it);
+
+	for (int i = 0; i < to_delete_units.size(); i++)
 	{
-		App->gui->entityDeleted(*it);
-		App->entitycontroller->DeleteEntity(*it);
+		App->gui->entityDeleted(to_delete_units[i]);
+		App->entitycontroller->DeleteEntity(to_delete_units[i]);
 	}
 
+	std::vector<Squad*> to_delete_squads;
 	for (std::list<Squad*>::iterator it = App->entitycontroller->squads.begin(); it != App->entitycontroller->squads.end(); it++)
-		App->entitycontroller->DeleteSquad(*it);
+		to_delete_squads.push_back(*it);
+
+	for (int i = 0; i < to_delete_squads.size(); i++)
+		App->entitycontroller->DeleteSquad(to_delete_squads[i]);
 
 	App->entitycontroller->last_UID = 0;
 
