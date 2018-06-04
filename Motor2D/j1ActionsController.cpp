@@ -292,6 +292,7 @@ bool j1ActionsController::Update(float dt)
 			doingAction = false;
 			break;
 		case NEW_GAME:	
+			App->audio->canDefeat = true;
 			App->scene->active = true;
 			App->entitycontroller->active = true;
 			App->wavecontroller->active = true;
@@ -356,6 +357,7 @@ bool j1ActionsController::Update(float dt)
 			App->uiscene->toggleMenu(false, PAUSE_MENU);
 			App->uiscene->toggleMenu(false, HERO_SELECTION_MENU);
 			App->audio->PlayMusic(MAIN_THEME, 0);
+			App->audio->canDefeat = false;
 			doingAction = false;
 			App->scene->Close_game();
 
@@ -406,6 +408,7 @@ bool j1ActionsController::Update(float dt)
 			doingAction = false;
 			break;
 		case LOAD_GAME:
+			App->audio->canDefeat = true;
 			App->scene->active = true;
 			App->entitycontroller->active = true;
 			App->wavecontroller->active = true;
