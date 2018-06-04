@@ -170,15 +170,15 @@ void j1WaveController::Generate_Wave()
 
 		if (Unit* commander = squad->getCommander())
 		{
+			iPoint TownHall_pos = TOWN_HALL_POS;
+			TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
+			iPoint dest = App->map->WorldToMap(commander->position.x, commander->position.y);
+			TownHall_pos = App->pathfinding->FirstWalkableAdjacentSafeProof(TownHall_pos, dest);
+
 			if (commander->IsFlying())
-				squad->commands.push_back(new AttackingMoveToSquadFlying(commander, TOWN_HALL_POS));
+				squad->commands.push_back(new AttackingMoveToSquadFlying(commander, TownHall_pos));
 			else
 			{
-				iPoint TownHall_pos = TOWN_HALL_POS;
-				TownHall_pos = App->map->WorldToMap(TownHall_pos.x, TownHall_pos.y);
-				iPoint dest = App->map->WorldToMap(commander->position.x, commander->position.y);
-				TownHall_pos = App->pathfinding->FirstWalkableAdjacentSafeProof(TownHall_pos, dest);
-
 				AttackingMoveToSquad* new_atk_order = new AttackingMoveToSquad(commander, TownHall_pos);
 				new_atk_order->flow_field = flow_field;
 				squad->commands.push_back(new_atk_order);
