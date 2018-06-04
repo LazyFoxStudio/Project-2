@@ -1780,7 +1780,7 @@
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="0"/>
-            <speed value="0"/>
+            <speed value="4"/>
           </Animation>
           <Animation>
             <!-- 1- IdleNorthEast-->
@@ -1788,7 +1788,7 @@
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="1"/>
-            <speed value="0"/>
+            <speed value="4"/>
           </Animation>
           <Animation>
             <!-- 2- IdleEast-->
@@ -1796,7 +1796,7 @@
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="2"/>
-            <speed value="0"/>
+            <speed value="4"/>
           </Animation>
           <Animation>
             <!-- 3- IdleSouthEast-->
@@ -1804,15 +1804,15 @@
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="3"/>
-            <speed value="0"/>
+            <speed value="4"/>
           </Animation>
           <Animation>
             <!-- 4- IdleSouth-->
             <rows value="3"/>
-            <columns value="4"/>
+            <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="4"/>
-            <speed value="0"/>
+            <speed value="4"/>
           </Animation>
           <Animation>
             <!-- 5- IdleSouthWest-->
@@ -1820,7 +1820,7 @@
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="3"/>
-            <speed value="0"/>
+            <speed value="4"/>
           </Animation>
           <Animation>
             <!-- 6- IdleWest-->
@@ -1828,7 +1828,7 @@
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="2"/>
-            <speed value="0"/>
+            <speed value="4"/>
           </Animation>
           <Animation>
             <!-- 7- IdleNorthWest-->
@@ -1836,7 +1836,7 @@
             <columns value="0"/>
             <StartingRow value="0"/>
             <StartingColumn value="1"/>
-            <speed value="0"/>
+            <speed value="4"/>
           </Animation>
           <Animation>
             <!-- 8- WalkingNorth-->
