@@ -71,13 +71,6 @@ void Unit::Draw(float dt)
 		App->entitycontroller->SpriteQueue.push(this);
 	}
 
-	//minimap
-	if (IsEnemy())
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
-	else if (IsHero())
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,75,75 }, White);
-	else
-		App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
 }
 
 bool Unit::Update(float dt)
@@ -121,6 +114,15 @@ bool Unit::Update(float dt)
 		else if (squad->commander_pos + squad->getOffset(UID) != mov_target) mov_target = squad->commander_pos + squad->getOffset(UID);
 
 		Move(dt);
+
+
+		//minimap
+		if (IsEnemy())
+			App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Red);
+		else if (IsHero())
+			App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,75,75 }, White);
+		else
+			App->gui->minimap->Addpoint({ (int)position.x,(int)position.y,50,50 }, Green);
 
 		return true;
 	}
