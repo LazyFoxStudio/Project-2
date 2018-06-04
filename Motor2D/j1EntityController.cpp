@@ -294,7 +294,7 @@ void j1EntityController::buildingCalculations()
 }
 
 void j1EntityController::debugDrawEntity(Entity* entity)
-{/*
+{
 	App->render->DrawQuad(entity->collider, Green);
 	if (entity->IsUnit())
 	{
@@ -334,7 +334,7 @@ void j1EntityController::debugDrawEntity(Entity* entity)
 			world_p += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
 			App->render->DrawCircle(world_p.x, world_p.y, 5, Green);
 		}
-	}*/
+	}
 }
 
 SFXList j1EntityController::GetOrdersSFXFromType(Type type)

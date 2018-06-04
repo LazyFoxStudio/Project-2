@@ -50,7 +50,7 @@ void j1Map::Draw()
 					App->render->Blit(tileset->texture, tileWorld.x, tileWorld.y, &r);
 				}
 
-				/*if (debug)
+				if (debug)
 				{
 					if (!App->pathfinding->IsWalkable(iPoint{ (int)j,(int)i }))
 					{
@@ -58,7 +58,7 @@ void j1Map::Draw()
 						SDL_Rect debug_r = { tileWorld.x, tileWorld.y, data.tile_width, data.tile_height };
 						App->render->DrawQuad(debug_r, Red);
 					}
-				}*/
+				}
 
 			}
 }
