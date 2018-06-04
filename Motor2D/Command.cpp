@@ -140,7 +140,7 @@ bool Attack::OnUpdate(float dt)
 
 		if (SDL_HasIntersection(&r, &enemy->collider) && (!unit->IsMelee() || unit->position.DistanceTo({ (float)current_target.x, (float)current_target.y }) < 5))
 		{
-			if (enemy->position.DistanceTo(unit->position) < unit->collider.w / 2)
+			if (unit->IsMelee() && enemy->position.DistanceTo(unit->position) < unit->collider.w / 2)
 			{
 				if (!searchTarget()) 
 					{ Stop(); }

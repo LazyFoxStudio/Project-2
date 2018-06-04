@@ -1911,17 +1911,17 @@ Entity* j1EntityController::getNearestEnemy(Entity* entity, int target_squad, En
 	Entity* ret = nullptr;
 	for (std::list<Entity*>::iterator it = operative_entities.begin(); it != operative_entities.end(); it++)
 	{
-		if ((*it) == current_enemy)
-			return (*it);
-
-		if (target_squad != -1)
-		{
-			if (!(*it)->IsUnit()) continue;
-			else if (((Unit*)(*it))->squad->UID != target_squad) continue;
-		}
-
 		if ((*it)->IsEnemy() != entity->IsEnemy() && (*it)->isActive && !(entity->IsMelee() && (*it)->IsFlying()))
 		{
+			if ((*it) == current_enemy)
+				return (*it);
+
+			if (target_squad != -1)
+			{
+				if (!(*it)->IsUnit()) continue;
+				else if (((Unit*)(*it))->squad->UID != target_squad) continue;
+			}
+
 			if (!ret) ret = *it;
 			else
 			{
