@@ -18,6 +18,8 @@ content.
 ### Layout
 In order to improve both feedback wise and the asthetic elements of the abilities, i've come with design of layouts of the area of effect of each abilities of each hero.
 
+<a href="https://imgur.com/PenUu81"><img src="https://i.imgur.com/PenUu81.png" title="source: imgur.com" /></a>
+
 ## Artist
 As the artist of Lazy Fox i've been given my point of view in any matter regarding to art. For example: change sprite form units we already haved, the asthetics points of view of all elements... . I've also been the one who has recommended which tools to use regarding art work and the one to set and organization to all the work coming from this area.
 
@@ -31,6 +33,8 @@ A part from the specific work of creating a new unit, i've also been working on 
 - Animated logo intro.
 
 - Forest tileset.
+
+<a href="https://imgur.com/33WynCc"><img src="https://i.imgur.com/33WynCc.png" title="source: imgur.com" /></a>
 
 ### QA
 As a memeber of the team i´ve also have to make sure everything works and therefore qa needs to be done. Whenever i found a buf i made and issue and in some cases fix it in the code.
