@@ -21,7 +21,7 @@ void Chrono::restartChrono()
 	{
 		text->setColor(default_color);
 	}
-	time = -1;
+	time = -1000;
 }
 
 void Chrono::Blink()
@@ -32,7 +32,7 @@ void Chrono::Blink()
 	}
 	if (counter.Read() - last_blink > blinkTime)
 	{
-		if (text->color.r == 255 && text->color.g == 255 && text->color.b == 255)
+		if (text->color.r == default_color.r && text->color.g == default_color.g && text->color.b == default_color.b)
 			text->setColor({ 255,0,0,255 });
 		else
 			text->setColor(default_color);
@@ -74,7 +74,7 @@ void Chrono::BlitElement()
 			}
 			break;
 		case TIMER:			
-			if (start_value - time_elapsed != time && time != 0)
+			if (start_value - time_elapsed != time && (time > 0 || time == -1000))
 			{
 				time = start_value - time_elapsed;
 

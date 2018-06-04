@@ -185,7 +185,7 @@ bool j1EntityController::Update(float dt)
 		App->actionscontroller->doingAction = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr && (!App->tutorial->doingTutorial || App->tutorial->allowHeroSelection))
+	if ((App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) && hero != nullptr && hero->isActive && (!App->tutorial->doingTutorial || App->tutorial->allowHeroSelection))
 	{
 		to_build_type = NONE_ENTITY;
 		App->actionscontroller->activateAction(NO_ACTION);
@@ -1127,6 +1127,9 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	App->gui->createLifeBar(hero);
 
 	App->gui->cooldownsDisplay->heroChoosen(hero);
+	App->gui->cooldownsDisplay->skillUsed(1);
+	App->gui->cooldownsDisplay->skillUsed(2);
+	App->gui->cooldownsDisplay->skillUsed(3);
 
 	entities.push_back(hero);
 	operative_entities.push_back(hero);
