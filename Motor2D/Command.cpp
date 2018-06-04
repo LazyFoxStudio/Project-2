@@ -386,7 +386,15 @@ bool MoveToSquadFlying::OnUpdate(float dt)
 		if (Unit* commander = squad->getCommander())
 		{
 			iPoint map_p = App->map->WorldToMap(commander->position.x, commander->position.y);
-			iPoint dest_p = App->map->MapToWorld(dest.x, dest.y);
+			iPoint dest_p;
+			if (!commander->IsEnemy())
+			{
+				dest_p = App->map->MapToWorld(dest.x, dest.y);
+			}
+			else
+			{
+				dest_p = App->map->WorldToMap(dest.x, dest.y);
+			}
 			dest_p += {App->map->data.tile_width / 2, App->map->data.tile_height / 2};
 
 			fPoint movement = fPoint((float)dest_p.x, (float)dest_p.y) - commander->position;
