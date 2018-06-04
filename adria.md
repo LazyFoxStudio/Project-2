@@ -36,6 +36,9 @@ Responsible of the implementation of the UI system:
 	
    - Create a system to read all the UI composition from an XML document and to be as easy to understand as possible, so it can be easily changed without touching the code.
 	
+### UI UML:
+<a <img src="https://i.imgur.com/5t0a6kO.png"/></a>
+	
 ## Tutorial
 Designed the tutorial, how would it look and the diferent steps needed to understand the basics of the game.
 
@@ -43,6 +46,9 @@ Designed the tutorial, how would it look and the diferent steps needed to unders
 
 The implementation in code has been done by adapting his research on a [Cutscene Manager](https://adria-f.github.io/Cutscene-Manager/) in order to work
 as a sequence of steps or "missions" that have to be accomplished to move forward into the tutorial.
+
+## Game videos
+Created the videos that can be seen in the [main page](https://lazyfoxstudio.github.io/Project-2/) of this web. The trailer and the gameplay preview.
 
 ## QA
 As part of the team, has contributed on the QA by looking for bugs and solving them when possible
