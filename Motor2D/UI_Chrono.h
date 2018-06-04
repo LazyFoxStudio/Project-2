@@ -28,7 +28,7 @@ public:
 		section.h = text->tex_height;
 		default_color = color;
 		//counter.Pause();
-		time = -1;
+		time = -1000;
 	}
 
 	~Chrono()
