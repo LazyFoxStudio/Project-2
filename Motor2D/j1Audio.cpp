@@ -98,7 +98,7 @@ bool j1Audio::Load(pugi::xml_node & config)
 
 // Play a music file
 
-bool j1Audio::PlayMusic(uint id, uint fade_time)
+bool j1Audio::PlayMusic(uint id, uint fade_time, int loops)
 {
 	bool ret = false;
 
@@ -113,8 +113,8 @@ bool j1Audio::PlayMusic(uint id, uint fade_time)
 
 		if (current_track = music[id])
 		{
-			if (fade_time)	ret = (Mix_FadeInMusic(current_track, -1, fade_time * 1000) < 0);
-			else			ret = (Mix_PlayMusic(current_track, -1) < 0);
+			if (fade_time)	ret = (Mix_FadeInMusic(current_track, loops, fade_time * 1000) < 0);
+			else			ret = (Mix_PlayMusic(current_track, loops) < 0);
 		}
 
 	}
