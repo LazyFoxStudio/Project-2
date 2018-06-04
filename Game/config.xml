@@ -47,7 +47,7 @@
       <cost value="1"/><!--Grunt-->
       <cost value="1"/><!--Axe thrower-->
       <cost value="4"/><!--Death Knight-->
-      <cost value="6"/><!--Catapulta-->
+      <cost value="6"/><!--Catapult-->
       <cost value="8"/><!--Dragon-->
       <cost value="10"/><!--Juggernaut-->
     </Costs>
