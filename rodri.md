@@ -1,7 +1,7 @@
 # Rodrigo de Pedro
 **[Back to main page](https://lazyfoxstudio.github.io/Project-2/)**       
 
-As the team's coder, my duty is to ensure all code implemented into the project is stable, optimized and readable. To achieve this, I've stablished coding guidelines and rules, as well as personally reviewed most code introduced by any member of the team. Also, I've served as consultant for any code-related question in the project, while keeping the team's objectives achievable and realistic.       
+As the team's coder, my duty is to ensure all code implemented into the project is stable, optimized and readable. To achieve this, I've stablished coding guidelines and rules, as well as personally reviewed most code introduced by any member of the team. I've served also as consultant for any code-related question in the project, while keeping the team's objectives achievable and realistic. Finally, I've also been in charge of fixing most of bugs that appeared during the development.
 
 The core mechanics I've personally implented are:       
 
@@ -49,5 +49,11 @@ One of the problems developers face when implementing agents working with a stat
 
 To avoid this, we have implented a command system. Instead of using states, each unit and squad has a command list, which will be executed in order. Each command is a self-executable piece of code, composed of Init, Update and Stop methods, which defines an action inside the game as move or attack. This allows to store several commands in a unit list, so we can easily concatenate actions.
 
+## Other
+
+- Entity controller: memory managing for entities, utility methods...
+- Parabollic particles: arrows that fly in a curve in the air before reaching it's target
+- Collider, range and line of sight systems: allows units to chase enemies and help nearby allies in a realistic way.
+- Entity DataBase: a vector which stores information about units allowing to easy access for different operations.
 
 **[Back to main page](https://lazyfoxstudio.github.io/Project-2/)**       
