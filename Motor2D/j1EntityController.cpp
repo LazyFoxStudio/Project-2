@@ -185,7 +185,7 @@ bool j1EntityController::Update(float dt)
 		App->actionscontroller->doingAction = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && hero != nullptr && (!App->tutorial->doingTutorial || App->tutorial->allowHeroSelection))
+	if ((App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) && hero != nullptr && hero->isActive && (!App->tutorial->doingTutorial || App->tutorial->allowHeroSelection))
 	{
 		to_build_type = NONE_ENTITY;
 		App->actionscontroller->activateAction(NO_ACTION);
@@ -1127,6 +1127,9 @@ Hero* j1EntityController::addHero(iPoint pos, Type type)
 	App->gui->createLifeBar(hero);
 
 	App->gui->cooldownsDisplay->heroChoosen(hero);
+	App->gui->cooldownsDisplay->skillUsed(1);
+	App->gui->cooldownsDisplay->skillUsed(2);
+	App->gui->cooldownsDisplay->skillUsed(3);
 
 	entities.push_back(hero);
 	operative_entities.push_back(hero);
@@ -2192,6 +2195,8 @@ bool j1EntityController::loadEntitiesDB(pugi::xml_node& data)
 			Animation* animation = new Animation();
 			if (animation->LoadAnimation(AnimInfo, anim_width, anim_height))
 				unitTemplate->animations.push_back(animation);
+			else
+				RELEASE(animation);
 		}
 		for (int i = 16; i <= 23; i++)
 		{
@@ -2277,6 +2282,7 @@ void j1EntityController::DeleteDB()
 	for (std::map<uint, Entity*>::iterator it = DataBase.begin(); it != DataBase.end(); it++)
 	{
 		Entity* entity = (*it).second;
+		RELEASE(entity->infoData);
 		if (entity->IsUnit())
 		{
 			Unit* unit_to_delete = (Unit*)entity;

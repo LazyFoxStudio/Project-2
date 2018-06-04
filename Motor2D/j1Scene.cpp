@@ -245,7 +245,10 @@ bool j1Scene::PostUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN )
 		return false;
 
-	if (toRestart && Restart_timer.ReadSec() >= restart_time) Start_game();
+	if (toRestart && Restart_timer.ReadSec() >= restart_time)
+	{
+		App->actionscontroller->activateAction(START_SCENE);
+	}
 	return true;
 }
 

@@ -300,7 +300,7 @@ bool j1ActionsController::Update(float dt)
 			App->uiscene->toggleMenu(true, INGAME_MENU);				
 			App->scene->Start_game();	
 			doingAction = false;
-			App->pauseGame();
+			//App->pauseGame();
 			break;
 		case CROSS_MENU:
 		case BACK_MENU:
