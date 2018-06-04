@@ -211,7 +211,10 @@ void j1App::FinishUpdate()
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
 	static char title[256];
-	sprintf_s(title, 256, "Alliance The last Bastion: FPS: %i Avg.FPS: %.2f last frame ms: %02u", frames_on_last_update, avg_fps, last_frame_ms);
+	if (entitycontroller->debug)
+		sprintf_s(title, 256, "Alliance: The last Bastion | FPS: %i Avg.FPS: %.2f last frame ms: %02u", frames_on_last_update, avg_fps, last_frame_ms);
+	else
+		sprintf_s(title, 256, "Alliance: The last Bastion | FPS %i", frames_on_last_update);
 	App->win->SetTitle(title);
 
 	if (framerate && last_frame_ms < framerate && fpsCapON) SDL_Delay(framerate - last_frame_ms);
