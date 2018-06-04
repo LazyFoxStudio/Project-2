@@ -17,9 +17,13 @@ This algorithm is fairly known in programming environments. It's very efficient 
 
 This algorithm is based on create a surface over the map containing the directions a unit must follow to reach a specific destination. It's main benefit is that a single call allows to create a surface which can be shared among any number of units as long as they have in common the destination, being specially useful in our game where units are created and controlled in groups. This is the system used by units when moving outside the combat.
 
+![Imgur](https://i.imgur.com/rPBVS3I.gif)
+
 ### Separation
 
 The separation algorithm, as it's name states, is used to avoid units from overlapping over each other. It works like two magnets of the same polarity, repelling other nearby units until they are not colliding anymore. This system is always active to ensure units are always in proper positions.
+
+![Imgur](https://i.imgur.com/7LmYJ0M.gif)
 
 ### Pooled pathfinding
 
@@ -29,11 +33,15 @@ Pathfinding operations are among the most resource expensive mechanics of a stra
 
 To be able to move and hold in formation, units have a set of stablished offsets that are applied along the commander position. These move accordingly as the group moves and rotates. If a unit breaks formation, let's say, because it has found an obstacle along the way, the remaining units of the squad will carry on at a slower pace to allow the other unit to reach them.
 
+![Imgur](https://i.imgur.com/1g5Jr6U.gif)
+
 ## Combat system
 
 As other similar games, Alliance: the last bastion uses unit stats as range, defense or line of sight which define how they will behave in combat. However, simply implementing this stats to in-game mechanics is not enough to give the feeling of "smart" units. One of the examples are melee combatants given the map is based on square tiles. As the number of spaces surrounding an enemy which would allow to melee attack are limited, units must know how to distribute themselves along the tiles to deal the more damage possible.
 
 To overcome this problem, squads of units store which tiles around them are available for melee enemies. Then, when those enemies are found, they distribute those tiles among them so all possible tiles are filled. If there are more enemies than tiles, the remanining enemies will cunningly wait for a spot to be freed to enter the battle.
+
+![Imgur](https://i.imgur.com/YzhalSo.gif)
 
 ### MultiTarget attack
 
@@ -42,6 +50,8 @@ The Juggernaut is the most poweful enemy the player can face in the game, so it 
 ## Flying units
 
 Some units in the game have the ability to fly, going over obstacles and non-flying units. These units required from dedicated code to allow them to use this characteristic.
+
+![Imgur](https://i.imgur.com/uzsPYPJ.gif)
 
 ## Command system
 
@@ -52,7 +62,7 @@ To avoid this, we have implented a command system. Instead of using states, each
 ## Other
 
 - Entity controller: memory managing for entities, utility methods...
-- Parabollic particles: arrows that fly in a curve in the air before reaching it's target
+- Parabollic behavior in particles: arrows that fly in a curve in the air before reaching it's target.
 - Collider, range and line of sight systems: allows units to chase enemies and help nearby allies in a realistic way.
 - Entity DataBase: a vector which stores information about units allowing to easy access for different operations.
 

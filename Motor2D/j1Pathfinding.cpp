@@ -437,7 +437,8 @@ void FlowField::DebugDraw()
 	for (int x = 0; x < width; x++)
 		for (int y = 0; y < height; y++)
 		{
-			if (field[x][y].parent)
+			iPoint world_p = App->map->MapToWorld(field[x][y].position.x, field[x][y].position.y);
+			if (field[x][y].parent && App->render->CullingCam(fPoint(world_p.x, world_p.y)))
 			{
 				iPoint world_pos_1 = App->map->MapToWorld(field[x][y].position.x, field[x][y].position.y);
 				iPoint world_pos_2 = App->map->MapToWorld(field[x][y].parent->position.x, field[x][y].parent->position.y);
