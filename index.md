@@ -22,8 +22,9 @@ It's time to recover the peace in Azeroth.
 
 **[Hugo Bo - QA](https://github.com/Hugo-Bo-Diaz)**
 
-
-<a> <img src="https://scontent-mad1-1.cdninstagram.com/vp/0e0f3fe3841cf8db1f20dc1595a512e7/5BB63405/t51.2885-15/s1080x1080/e15/fr/27581137_939646506190810_3982663726938456064_n.jpg"/> </a>
+<p> 
+<img src="https://scontent-mad1-1.cdninstagram.com/vp/0e0f3fe3841cf8db1f20dc1595a512e7/5BB63405/t51.2885-15/s1080x1080/e15/fr/27581137_939646506190810_3982663726938456064_n.jpg">
+</p>
 
 ## Check our social media
 
