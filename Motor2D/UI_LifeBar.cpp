@@ -79,22 +79,24 @@ void LifeBar::BlitElement()
 
 	SDL_Rect whiteBar = HIT_LIFEBAR_RECT;
 
-	if (bar->enterCurrentValue(life) < 0 && !inMenu)
-		bar->full = whiteBar;
-	else if (bar->full.x == whiteBar.x && bar->full.y == whiteBar.y)
+	if (!inMenu)
 	{
-		if (entity->IsEnemy())
-			bar->full = App->gui->GetLifeBarRect("R_full");
-		else if (entity->IsBuilding())
-			bar->full = App->gui->GetLifeBarRect("Y_full");
-		else
-			bar->full = App->gui->GetLifeBarRect("G_full");
+		if (bar->enterCurrentValue(life) < 0)
+			bar->full = whiteBar;
+		else if (bar->full.x == whiteBar.x && bar->full.y == whiteBar.y)
+		{
+			if (entity->IsEnemy())
+				bar->full = App->gui->GetLifeBarRect("R_full");
+			else if (entity->IsBuilding())
+				bar->full = App->gui->GetLifeBarRect("Y_full");
+			else
+				bar->full = App->gui->GetLifeBarRect("G_full");
+		}
 	}
-
 
 	if (inMenu)
 	{
-		if (life / max_life != bar->progress)
+		if (bar->enterCurrentValue(life) != 0)
 		{
 			if (bar->progress >= 0.5)
 			{
