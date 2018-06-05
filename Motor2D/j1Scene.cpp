@@ -128,7 +128,7 @@ bool j1Scene::Update(float dt)
 	GetTotalInactiveWorkers();
 
 	//TEST SPAWNER--------------------------------------------------
-	/*
+	
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		int x, y;
@@ -234,7 +234,6 @@ bool j1Scene::Update(float dt)
 	{
 		App->LoadGame();
 	}
-	*/
 
 	return true;
 }
