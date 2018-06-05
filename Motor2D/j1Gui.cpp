@@ -117,7 +117,7 @@ bool j1Gui::PreUpdate()
 			{
 				ret = element->callback->OnUIEvent(element, MOUSE_LEFT_CLICK);
 			}
-			if (element->element_type == BUTTON)
+			if (element->element_type == BUTTON && !element->isLocked())
 				App->audio->PlayFx(SFX_BUTTON_CLICKED);
 
 			if (element->dragable)
@@ -183,6 +183,10 @@ bool j1Gui::PostUpdate()
 
 	if (UIdisabled)
 		return true;
+
+	//Draw selection quads
+	for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
+		App->render->DrawQuad((*it_e)->collider, Green, false);
 	
 	//Draw LifeBars
 	for (std::list<LifeBar*>::iterator it_l = LifeBars.begin(); it_l != LifeBars.end(); it_l++)

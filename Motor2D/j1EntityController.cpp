@@ -72,10 +72,6 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
-	//Draw selection quads
-	for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
-		App->render->DrawQuad((*it_e)->collider, Green, false);
-
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
 		if (App->render->CullingCam((*it)->position))
@@ -784,8 +780,11 @@ bool j1EntityController::Load(pugi::xml_node& file)
 
 	for (int i = 0; i < to_delete_units.size(); i++)
 	{
-		App->gui->entityDeleted(to_delete_units[i]);
-		DeleteEntity(to_delete_units[i]);
+		if (to_delete_units[i]->type != TOWN_HALL)
+		{
+			App->gui->entityDeleted(to_delete_units[i]);
+			DeleteEntity(to_delete_units[i]);
+		}
 	}
 
 	std::vector<Squad*> to_delete_squads;
