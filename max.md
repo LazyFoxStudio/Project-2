@@ -5,7 +5,11 @@
 Programming and implementation of all the gameplay mechanics:
 
 ### Mage adn Paladin Skills and Skill system:
-Blit, Cooldown, Usability, Area, Implemented Buffs, Damage...
+Responsable to create the Hero class and add the command and squad systems to it. Also responsable of the Skill system wich includes: Damage the enemies in a specific area, Blit Skill paterns, Skill Logic and Usability in terms of gameplay
+
+### Mage Skills:
+
+[Imgur](https://i.imgur.com/zoVVF82.gifv) [Imgur](https://i.imgur.com/4VKr2pX.gifv) [Imgur](https://i.imgur.com/YGPdvb4.gifv)
 
 ### Wave System
 
@@ -22,6 +26,7 @@ Ordering of the sprites that appear in the screen in funciton of the Y position 
 
 ## QuadTree:
 Programming and implementation of the Quadtree to optimize collisions and make the game more fluid. It is visible in the debug mode:
+[Imgur](https://i.imgur.com/osax5v7.gifv)
 
 ## Tutorial Design:
 Design of the tutorial and accessivility of the game for people that are new for the RTS genre with Adria. 
