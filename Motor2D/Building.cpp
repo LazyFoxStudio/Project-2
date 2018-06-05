@@ -179,6 +179,7 @@ void Building::Destroy()
 
 		App->scene->toRestart = true;
 		App->scene->Restart_timer.Start();
+		App->scene->DeleteWorkers();
 		App->uiscene->toggleMenu(true, GAMEOVER_MENU);
 		break;
 	}
