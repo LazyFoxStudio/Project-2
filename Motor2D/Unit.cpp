@@ -80,6 +80,17 @@ void Unit::Draw(float dt)
 		App->render->DrawQuad(r2, Translucid_Black);
 		App->render->DrawQuad(r3, Translucid_Black);
 	}
+
+	else
+	{
+		SDL_Rect r1 = { position.x - collider.w / 6 - 5, position.y - collider.h / 6 + 5, collider.w / 3 + 10, collider.h / 3 };
+		SDL_Rect r2 = { position.x - collider.w / 6 - 3, position.y - collider.h / 6 - 3 + 5, collider.w / 3 + 6, collider.h / 3 + 6 };
+		SDL_Rect r3 = { position.x - collider.w / 6, position.y - collider.h / 6 - 4 + 5, collider.w / 3, collider.h / 3 + 8 };
+		App->render->DrawQuad(r1, Translucid_Black);
+		App->render->DrawQuad(r2, Translucid_Black);
+		App->render->DrawQuad(r3, Translucid_Black);
+	}
+
 		
 }
 
