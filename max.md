@@ -10,19 +10,19 @@ Responsable to create the Hero class and add the command and squad systems to it
 ### Mage Skills:
 The Mage was created for a distance attack:
 
-<img src="https://i.imgur.com/zoVVF82.gif" width="300"> <img src="https://i.imgur.com/4VKr2pX.gif" width="300"> 
+<img src="https://i.imgur.com/zoVVF82.gif" width="400"> <img src="https://i.imgur.com/4VKr2pX.gif" width="400"> 
 
 <p align="center"> 
-<img src="https://i.imgur.com/YGPdvb4.gif" width="300">
+<img src="https://i.imgur.com/YGPdvb4.gif" width="400">
 </p>
 
 ### Paladin Skills:
 The Paladin was created for a melee attack:
 
-<img src="https://i.imgur.com/dN8GzNJ.gif" width="300"> <img src="https://i.imgur.com/hIio5hi.gif" width="300"> 
+<img src="https://i.imgur.com/dN8GzNJ.gif" width="400"> <img src="https://i.imgur.com/hIio5hi.gif" width="400"> 
 
 <p align="center"> 
-<img src="https://i.imgur.com/1fyhwXd.gif" width="200">
+<img src="https://i.imgur.com/1fyhwXd.gif" width="400">
 </p>
 
 ### Wave System:
