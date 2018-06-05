@@ -6,6 +6,10 @@ Upgrade your village and turn it to a big fortress, manage your tropes and kill 
 It's time to recover the peace in Azeroth.
 
 ## Developer Team
+<p> 
+<img src="https://scontent-mad1-1.cdninstagram.com/vp/0e0f3fe3841cf8db1f20dc1595a512e7/5BB63405/t51.2885-15/s1080x1080/e15/fr/27581137_939646506190810_3982663726938456064_n.jpg">
+</p>
+
 **[Marc Garcia - Team Lead](https://github.com/MaxitoSama)**
 
 **[Lorien Portella - Designer](https://github.com/Witiza)**
@@ -22,10 +26,6 @@ It's time to recover the peace in Azeroth.
 
 **[Hugo Bo - QA](https://github.com/Hugo-Bo-Diaz)**
 
-<p> 
-<img src="https://scontent-mad1-1.cdninstagram.com/vp/0e0f3fe3841cf8db1f20dc1595a512e7/5BB63405/t51.2885-15/s1080x1080/e15/fr/27581137_939646506190810_3982663726938456064_n.jpg">
-</p>
-
 ## Check our social media
 <p align="center"> 
 <a href="https://www.facebook.com/Lazy-Fox-Studio-1705377142862573/"><img src="https://i.imgur.com/n3lVcl0.png" alt="https://www.facebook.com/Lazy-Fox-Studio-1705377142862573/" width="100"/></a>            <a href="https://twitter.com/LazyFoxStudio"><img src="http://icons.iconarchive.com/icons/sicons/basic-round-social/512/twitter-icon.png" alt="https://twitter.com/LazyFoxStudio" width="100"/></a>            <a href="https://www.instagram.com/lazy_fox_studio/"><img src="https://i.imgur.com/xU9lcDC.png" alt="https://www.instagram.com/lazy_fox_studio/" width="100"/></a>
@@ -34,7 +34,7 @@ It's time to recover the peace in Azeroth.
 ## Download the latest release [HERE](https://github.com/LazyFoxStudio/Project-2/releases/latest)
 
 ## Trailer
-Video (15-25 sec)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/n_4vpCjaRbg?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Gameplay
 Video (1-2 min) with debug features
