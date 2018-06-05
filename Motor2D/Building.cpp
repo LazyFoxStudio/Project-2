@@ -126,7 +126,8 @@ bool Building::Update(float dt)
 
 	}
 
-	recently_repaired = repair_timer.ReadSec() > REPAIR_COOLDOWN;
+	if (recently_repaired && repair_timer.ReadSec() > REPAIR_COOLDOWN)
+		recently_repaired = false;
 
 	return true;
 }
