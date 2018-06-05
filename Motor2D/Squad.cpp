@@ -78,7 +78,7 @@ bool Squad::Update(float dt)
 		}
 	}
 
-	bool everyone_in_position = true;
+	everyone_in_position = true;
 	return true;
 }
 
