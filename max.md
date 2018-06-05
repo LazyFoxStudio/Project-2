@@ -16,10 +16,11 @@ The Mage was created for a distance attack. Example, the mage W and E:
 </p>
 
 ### Paladin Skills:
-The Paladin was created for a melee attack. Exampl, the paladin Q:
+The Paladin was created for a melee attack. Exampl, the paladin Q and W:
 
 <p align="center"> 
 <img src="https://i.imgur.com/dN8GzNJ.gif" width="600">
+<img src="https://i.imgur.com/hIio5hi.gif" width="600">
 </p>
 
 ### Wave System:
@@ -40,7 +41,10 @@ Ordering of the sprites that appear in the screen in funciton of the Y position 
 
 ## QuadTree:
 Programming and implementation of the Quadtree to optimize collisions and make the game more fluid. It is visible on the debug mode:
-<img src="https://i.imgur.com/yWvifvL.gif" width="400">
+
+<p align="center">
+<img src="https://i.imgur.com/yWvifvL.gif" width="600">
+ </p>
 
 ## Tutorial Design:
 Design of the tutorial and accessivility of the game for people that are new in the RTS genre with [Adria](https://github.com/Adria-F). 
@@ -53,7 +57,7 @@ Bulding system, Workers system, UI, Animation, Pathfinding and Gameplay.
 Creating the Tittle of the Game and the end image with a Warcraft Style:
 
 <p align="center"> 
-<a href="https://gyazo.com/ef40c82988f815a9f9d5d688d30a55c3"><img src="https://i.gyazo.com/ef40c82988f815a9f9d5d688d30a55c3.png" alt="https://gyazo.com/ef40c82988f815a9f9d5d688d30a55c3" width="373"/></a>
+<a href="https://gyazo.com/ef40c82988f815a9f9d5d688d30a55c3"><img src="https://i.gyazo.com/ef40c82988f815a9f9d5d688d30a55c3.png" alt="https://gyazo.com/ef40c82988f815a9f9d5d688d30a55c3" width="398"/></a>
 <a href="https://gyazo.com/10f7022c9cf2de6a00b32cd4a27ed0cb"><img src="https://i.gyazo.com/10f7022c9cf2de6a00b32cd4a27ed0cb.png" alt="https://gyazo.com/10f7022c9cf2de6a00b32cd4a27ed0cb" width="398"/></a>
 </p>
 
