@@ -25,6 +25,7 @@ public:
 	SDL_Texture* Skill_text = nullptr;
 
 	uint current_skill = 0;
+	j1Timer reactivation_timer;
 
 public:
 
