@@ -292,6 +292,7 @@ bool j1ActionsController::Update(float dt)
 			doingAction = false;
 			break;
 		case NEW_GAME:	
+			remove(App->save_game.c_str());
 			App->audio->canDefeat = true;
 			App->scene->active = true;
 			App->entitycontroller->active = true;

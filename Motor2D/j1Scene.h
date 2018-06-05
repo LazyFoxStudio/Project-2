@@ -2,7 +2,7 @@
 #define __j1SCENE_H__
 
 #include "j1Module.h"
-#include "j1Timer.h"
+#include "j1PerfTimer.h"
 #include "j1Console.h"
 
 struct SDL_Texture;
@@ -59,7 +59,7 @@ public:
 
 public:
 
-	j1Timer Restart_timer;
+	j1PerfTimer Restart_timer;
 	bool toRestart=false;
 	int restart_time = 0;
 
