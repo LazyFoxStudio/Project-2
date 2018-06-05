@@ -1240,9 +1240,9 @@
         <texture value="Assets\Sprites\Alliance Sprites\Knight_Spritesheet.png"/>
         <Stats>
           <life value="100"/>
-          <attack value="7"/>
+          <attack value="4"/>
           <defense value="5"/>
-          <piercingDamage value="1"/>
+          <piercingDamage value="3"/>
           <movementSpeed value="1.10"/>
           <range value="40"/>
           <lineOfSight value="150"/>
@@ -2489,10 +2489,10 @@
         <iconData x="86" y="200" w="72" h="59"/>
         <texture value="Assets\Sprites\Horde Sprites\Dragon_SpriteSheet.png"/>
         <Stats>
-          <life value="300"/>
-          <attack value="3"/>
+          <life value="350"/>
+          <attack value="1"/>
           <defense value="5"/>
-          <piercingDamage value="3"/>
+          <piercingDamage value="2"/>
           <movementSpeed value="1.05"/>
           <range value="160"/>
           <lineOfSight value="250"/>
@@ -2731,11 +2731,11 @@
       <iconData x="392" y="72" w="71" h="59"/>
       <texture value="Assets\Sprites\Horde Sprites\Death Knight_SpriteSheet.png"/>
       <Stats>
-        <life value="200"/>
+        <life value="180"/>
         <attack value="7"/>
-        <defense value="6"/>
+        <defense value="4"/>
         <piercingDamage value="4"/>
-        <movementSpeed value="1.10"/>
+        <movementSpeed value="1.2"/>
         <range value="40"/>
         <lineOfSight value="250"/>
         <squadMembers value="4"/>
@@ -3239,11 +3239,11 @@
           <attack value="4"/>
           <defense value="10"/>
           <piercingDamage value="7"/>
-          <movementSpeed value="0.5"/>
+          <movementSpeed value="0.6"/>
           <range value="200"/>
           <lineOfSight value="200"/>
           <squadMembers value="1"/>
-          <attackSpeed value="1.7"/>
+          <attackSpeed value="1.8"/>
           <size x="2" y="2"/>
         </Stats>
         <Info title="Juggernaut Stats:"/>
