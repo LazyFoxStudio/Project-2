@@ -185,7 +185,7 @@ bool j1Gui::PostUpdate()
 		return true;
 
 	//Draw selection quads
-	for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
+	for (std::list<Entity*>::iterator it_e = App->entitycontroller->selected_entities.begin(); it_e != App->entitycontroller->selected_entities.end(); it_e++)
 		App->render->DrawQuad((*it_e)->collider, Green, false);
 	
 	//Draw LifeBars
