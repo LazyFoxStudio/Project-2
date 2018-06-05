@@ -72,7 +72,7 @@ bool j1Video::PostUpdate()
 	if (!App->video->isVideoFinished)
 	{
 		App->video->GrabAVIFrame();
-		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_DOWN)
 		{
 			isVideoFinished = true;
 		}
@@ -86,6 +86,7 @@ bool j1Video::PostUpdate()
 			App->audio->PlayMusic(MAIN_THEME);
 			videojustended = false;
 			SDL_ShowCursor(SDL_ENABLE);
+			SDL_WarpMouseInWindow(App->win->window, App->win->width / 2 , App->win->height / 2 );
 		}
 	}
 	return true;
