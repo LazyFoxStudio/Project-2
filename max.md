@@ -54,16 +54,17 @@ Deep knowledge of the rest code parts in order to solve bugs and crash and also 
 Bulding system, Workers system, UI, Animation, Pathfinding and Gameplay.  
 
 ## Art:
-Creating the Tittle of the Game and the end image with a Warcraft Style:
+* Creating the Tittle of the Game and the end image with a Warcraft Style:
 
 <p align="center"> 
 <a href="https://gyazo.com/ef40c82988f815a9f9d5d688d30a55c3"><img src="https://i.gyazo.com/ef40c82988f815a9f9d5d688d30a55c3.png" alt="https://gyazo.com/ef40c82988f815a9f9d5d688d30a55c3" width="398"/></a>
 <a href="https://gyazo.com/10f7022c9cf2de6a00b32cd4a27ed0cb"><img src="https://i.gyazo.com/10f7022c9cf2de6a00b32cd4a27ed0cb.png" alt="https://gyazo.com/10f7022c9cf2de6a00b32cd4a27ed0cb" width="398"/></a>
 </p>
 
-UI art implementation: Buttons images, tutorial arrows, skills sprites...
+
+* UI art implementation: Buttons images, tutorial arrows, skills sprites...
 
 ## Minor Things:
-Some other things like use the UI methods to create the units menu, camera movement accessivility with arrows...
+Some other things like use the UI methods to create the units menu, camera movement with arrows...
 
 **[Back to main page](https://lazyfoxstudio.github.io/Project-2/)**
