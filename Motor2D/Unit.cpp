@@ -71,7 +71,7 @@ void Unit::Draw(float dt)
 		App->entitycontroller->SpriteQueue.push(this);
 	}
 
-	if (IsFlying())
+	if (IsFlying() && ex_state != DESTROYED)
 	{
 		SDL_Rect r1 = { position.x - collider.w / 6 - 4, position.y - collider.h / 6 + 80, collider.w / 3 + 8, collider.h / 3 };
 		SDL_Rect r2 = { position.x - collider.w / 6 - 2, position.y - collider.h / 6 - 2 + 80, collider.w / 3 + 4, collider.h / 3 + 4 };
