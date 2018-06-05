@@ -507,6 +507,8 @@ bool j1EntityController::PostUpdate()
 {
 	BROFILER_CATEGORY("Entites postupdate", Profiler::Color::Maroon);
 
+	DestroyWorkers();
+
 	int selected_size = selected_entities.size();
 	std::vector<Entity*> entities_to_destroy;
 	std::vector<Squad*> squads_to_destroy;
@@ -536,8 +538,6 @@ bool j1EntityController::PostUpdate()
 
 	if(selected_size != selected_entities.size())
 		App->gui->newSelectionDone();
-
-	DestroyWorkers();
 
 	if(debug)
 		colliderQT->BlitSection();
