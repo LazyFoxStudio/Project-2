@@ -26,7 +26,12 @@ TroopCreationQueue::~TroopCreationQueue()
 void TroopCreationQueue::BlitElement()
 {
 	if (building != nullptr && building->isSelected)
+	{
 		text->BlitElement();
+		interactive = true;
+	}
+	else
+		interactive = false;
 
 	int counterX = 0;
 	int counterY = 0;
