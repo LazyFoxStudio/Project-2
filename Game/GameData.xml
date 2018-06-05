@@ -4049,7 +4049,7 @@
 				<Info text="Repair Building"/>
 				<Cost wood="400" gold="" oil="" workers="" time=""/>
 			</popUp>
-      <hotkey key="" font_id="3"/>
+			<hotkey key="" font_id="3"/>
 		</repairBuilding>
 		<demolishBuilding id="21" click_action="17">
 			<position x="0" y="0"/>
@@ -4059,6 +4059,7 @@
 			<popUp>
 				<Info text="Demolish Building"/>
 			</popUp>
+			<hotkey key="" font_id="3"/>
 		</demolishBuilding>
     <buildMine id="22" release_action="19">
       <position x="0" y="0"/>
