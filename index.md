@@ -37,7 +37,7 @@ It's time to recover the peace in Azeroth.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/n_4vpCjaRbg?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Gameplay
-Video (1-2 min) with debug features
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RyW-BIhwF90?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Check the individual contribution of each team member
 
