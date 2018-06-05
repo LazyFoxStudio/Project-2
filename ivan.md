@@ -2,6 +2,7 @@
 **[Back to main page](https://lazyfoxstudio.github.io/Project-2/)**
 
 ## Heroes
+
 ### Concept Art
 As responsible for the creation of the two new units, i've created concpet arts of one of the 2 heroes, the mage. It a drawing made by hand and then passe to the computer which shows all the elements that the hero will have which will then be transformed into pixel art.
 
@@ -26,7 +27,7 @@ In order to improve both feedback wise and the asthetic elements of the abilitie
 
 <p align="center"> 
 <img src="https://i.imgur.com/PenUu81.png">
-<p> 
+</p> 
 
 ## Artist
 As the artist of Lazy Fox i've been given my point of view in any matter regarding to art. For example: change sprite form units we already haved, the asthetics points of view of all elements... . I've also been the one who has recommended which tools to use regarding art work and the one to set and organization to all the work coming from this area.
