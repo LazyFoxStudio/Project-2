@@ -188,7 +188,7 @@ bool Attack::OnUpdate(float dt)
 				if (current_target == enemy_atk_slots->at(i)) { enemy_moved = false; break; }
 
 			if (current_target.IsZero() || enemy_moved) {
-
+				type = ATTACKING_MOVETO;
 				if (!searchTarget()) 
 					{ Stop(); return true;}
 			}
