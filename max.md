@@ -9,11 +9,11 @@ Responsable to create the Hero class and add the command and squad systems to it
 
 ### Mage Skills:
 The Mage was created for a distance attack:
-<img src="https://i.imgur.com/zoVVF82.gif" width="400"> <img src="https://i.imgur.com/4VKr2pX.gif" width="400"> <img src="https://i.imgur.com/YGPdvb4.gif" width="400">
+<img src="https://i.imgur.com/zoVVF82.gif" width="100"> <img src="https://i.imgur.com/4VKr2pX.gif" width="100"> <img src="https://i.imgur.com/YGPdvb4.gif" width="100">
 
 ### Paladin Skills:
 The Paladin was created for a melee attack:
-<img src="https://i.imgur.com/dN8GzNJ.gif" width="400"> <img src="https://i.imgur.com/hIio5hi.gif" width="400"> <img src="https://i.imgur.com/qJ9bJiM.gif" width="400">
+<img src="https://i.imgur.com/dN8GzNJ.gif" width="100"> <img src="https://i.imgur.com/hIio5hi.gif" width="100"> <img src="https://i.imgur.com/qJ9bJiM.gif" width="100">
 
 ### Wave System:
 The wave system has the property to generate enemies randombly in the 4 spawners.
@@ -42,8 +42,8 @@ Bulding system, Workers system, UI, Animation, Pathfinding and Gameplay.
 
 ## Art:
 Creating the Tittle of the Game and the end image with a Warcraft Style:
-<a href="https://gyazo.com/ef40c82988f815a9f9d5d688d30a55c3">
-<a href="https://gyazo.com/10f7022c9cf2de6a00b32cd4a27ed0cb">
+<a href="https://gyazo.com/ef40c82988f815a9f9d5d688d30a55c3"><img src="https://i.gyazo.com/ef40c82988f815a9f9d5d688d30a55c3.png" alt="https://gyazo.com/ef40c82988f815a9f9d5d688d30a55c3" width="353"/></a>
+<a href="https://gyazo.com/10f7022c9cf2de6a00b32cd4a27ed0cb"><img src="https://i.gyazo.com/10f7022c9cf2de6a00b32cd4a27ed0cb.png" alt="https://gyazo.com/10f7022c9cf2de6a00b32cd4a27ed0cb" width="398"/></a>
 
 UI art implementation: Buttons images, tutorial arrows, skills sprites...
 
