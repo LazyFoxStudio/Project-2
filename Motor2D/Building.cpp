@@ -180,6 +180,8 @@ void Building::Destroy()
 		App->scene->toRestart = true;
 		App->scene->Restart_timer.Start();
 		App->uiscene->toggleMenu(true, GAMEOVER_MENU);
+
+		remove(App->save_game.c_str());
 		break;
 	}
 
