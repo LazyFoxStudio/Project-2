@@ -75,7 +75,12 @@ void IngameMenu::updateActionButtons()
 			extraXvalue = -10;
 			extraYvalue = 50;
 		}
-		else extraYvalue = 0;
+		else
+		{
+			extraYvalue = 0;
+			extraXvalue = 0;
+		}
+	
 		(*it_b)->localPosition.x = firstButton_pos.x + (buttons_offset.x*counterX) + extraXvalue;
 		(*it_b)->localPosition.y = firstButton_pos.y + (buttons_offset.y*counterY) + extraYvalue;
 		(*it_b)->active = true;
