@@ -43,6 +43,8 @@ A part from the specific work of creating a new unit, i've also been working on 
 
 * Forest tileset.
 
+* Executable icon.
+
 <p align="center">  
 <img src="https://i.imgur.com/33WynCc.png">
 </p> 
