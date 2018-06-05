@@ -813,6 +813,9 @@ bool j1EntityController::Load(pugi::xml_node& file)
 		Type type = (Type)squads_node.attribute("type_enum").as_int();
 
 		Squad* squad = AddSquad(type, { 1000,1000 });//WILL NEED CHANGE :^)
+		if (!squad)
+			continue;
+
 		std::vector<Unit*> units_of_squad;
 		squad->getUnits(units_of_squad);
 		pugi::xml_node node_units = squads_node.child("unit");
