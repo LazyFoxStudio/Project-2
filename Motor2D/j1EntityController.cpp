@@ -1253,6 +1253,13 @@ bool j1EntityController::placeBuilding(iPoint position)
 	std::vector<Entity*> collisions;
 	App->entitycontroller->CheckCollidingWith(building_col, collisions);
 
+	for (std::vector<Entity*>::iterator it = collisions.begin(); it != collisions.end();)
+	{
+		if ((*it)->IsFlying())
+			collisions.erase(it);
+		else it++;
+	}
+
 	if (App->map->WalkabilityArea(pos.x, pos.y, to_build->size.x, to_build->size.y) && collisions.empty() && SDL_HasIntersection(&building_col,&buildingArea) && to_build->type != MINE)
 	{
 		Building* tmp = addBuilding(pos, to_build_type);
@@ -1303,6 +1310,13 @@ void j1EntityController::buildingProcessDraw()
 
 	std::vector<Entity*> collisions;
 	App->entitycontroller->CheckCollidingWith(building_col, collisions);
+
+	for (std::vector<Entity*>::iterator it = collisions.begin(); it != collisions.end();)
+	{
+		if ((*it)->IsFlying())
+			collisions.erase(it);
+		else it++;
+	}
 
 	if (to_build_type != MINE)
 	{
