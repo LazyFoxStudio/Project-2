@@ -181,8 +181,10 @@ void Building::Destroy()
 		App->scene->Restart_timer.Start();
 		App->scene->DeleteWorkers();
 		App->uiscene->toggleMenu(true, GAMEOVER_MENU);
-
-		remove(App->save_game.c_str());
+		if (current_HP <= 0)
+		{
+			remove(App->save_game.c_str());
+		}
 		break;
 	}
 

@@ -21,6 +21,9 @@ bool j1Video::Awake(pugi::xml_node & node)
 {
 
 	folder = node.child("folder").attribute("value").as_string();
+	
+	SDL_ShowCursor(SDL_DISABLE);
+
 	return true;
 }
 
@@ -69,7 +72,7 @@ bool j1Video::PostUpdate()
 	if (!App->video->isVideoFinished)
 	{
 		App->video->GrabAVIFrame();
-		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
 			isVideoFinished = true;
 		}
@@ -82,6 +85,7 @@ bool j1Video::PostUpdate()
 			App->uiscene->toggleMenu(true, START_MENU);
 			App->audio->PlayMusic(MAIN_THEME);
 			videojustended = false;
+			SDL_ShowCursor(SDL_ENABLE);
 		}
 	}
 	return true;
