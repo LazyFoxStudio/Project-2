@@ -128,7 +128,7 @@ bool j1Scene::Update(float dt)
 	GetTotalInactiveWorkers();
 
 	//TEST SPAWNER--------------------------------------------------
-	/*
+	
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		int x, y;
@@ -234,7 +234,6 @@ bool j1Scene::Update(float dt)
 	{
 		App->LoadGame();
 	}
-	*/
 
 	return true;
 }
@@ -311,6 +310,10 @@ void j1Scene::Close_game()
 		App->entitycontroller->DeleteEntity(to_delete_units[i]);
 	}
 
+	App->entitycontroller->entities.clear();
+	App->entitycontroller->selected_entities.clear();
+	App->entitycontroller->operative_entities.clear();
+
 	std::vector<Squad*> to_delete_squads;
 	for (std::list<Squad*>::iterator it = App->entitycontroller->squads.begin(); it != App->entitycontroller->squads.end(); it++)
 		to_delete_squads.push_back(*it);
@@ -321,10 +324,6 @@ void j1Scene::Close_game()
 	App->entitycontroller->last_UID = 0;
 
 	//CLEANING ENTITY LISTS---------------------------------------------------
-	App->entitycontroller->entities.clear();
-	App->entitycontroller->selected_entities.clear();
-	App->entitycontroller->operative_entities.clear();
-
 	App->entitycontroller->squads.clear();
 	App->entitycontroller->selected_squads.clear();
 
