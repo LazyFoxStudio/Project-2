@@ -780,8 +780,11 @@ bool j1EntityController::Load(pugi::xml_node& file)
 
 	for (int i = 0; i < to_delete_units.size(); i++)
 	{
-		App->gui->entityDeleted(to_delete_units[i]);
-		DeleteEntity(to_delete_units[i]);
+		if (to_delete_units[i]->type != TOWN_HALL)
+		{
+			App->gui->entityDeleted(to_delete_units[i]);
+			DeleteEntity(to_delete_units[i]);
+		}
 	}
 
 	std::vector<Squad*> to_delete_squads;
