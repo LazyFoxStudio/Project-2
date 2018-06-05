@@ -31,6 +31,8 @@
 
 #include <time.h>
 
+#include "SDL_image/include/SDL_image.h"
+#pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -115,6 +117,8 @@ bool j1App::Awake()
 		organization = config.child("app").child("organization").child_value();
 		int cap = config.child("app").attribute("framerate_cap").as_int(0);
 
+		cursor_path = config.child("app").child("cursor").attribute("img_path").as_string();
+
 		if (cap) framerate = 1000 / cap;
 
 		for (std::list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++)
@@ -141,6 +145,12 @@ bool j1App::Start()
 		else return false;
 	}
 	PERF_PEEK(ptimer);
+
+	SDL_Surface* s = IMG_Load(cursor_path.c_str());
+	cursor = SDL_CreateColorCursor(s, 0, 0);
+	SDL_SetCursor(cursor);
+	SDL_FreeSurface(s);
+
 
 	return true;
 }

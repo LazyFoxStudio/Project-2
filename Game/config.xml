@@ -4,6 +4,7 @@
   <app framerate_cap="60">
     <title>Alliance: The last Bastion</title>
     <organization>UPC</organization>
+    <cursor img_path ="Assets/Sprites/cursor.png"/>
   </app>
 	
   <renderer>

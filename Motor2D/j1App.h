@@ -7,6 +7,8 @@
 #include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
 
+#include "SDL\include\SDL_mouse.h"
+
 #include <list>
 #include <vector>
 #include <string>
@@ -127,6 +129,8 @@ public:
 	std::string			load_game="";
 	j1PerfTimer			gameTime;
 
+	mutable std::string	save_game;
+
 private:
 
 	std::list<j1Module*>	modules;
@@ -142,8 +146,6 @@ private:
 	bool				paused = false;
 	bool				cleaning = false;
 
-	mutable std::string	save_game;
-
 	j1PerfTimer			ptimer;
 	uint64				frame_count = 0;
 	j1PerfTimer			startup_time;
@@ -155,6 +157,10 @@ private:
 
 public:
 	uint16_t			framerate = 0;
+
+	SDL_Cursor* cursor;
+
+	std::string cursor_path;
 
 };
 
