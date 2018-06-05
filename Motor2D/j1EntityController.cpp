@@ -559,6 +559,10 @@ bool j1EntityController::CleanUp()
 		DeleteEntity(to_delete_units[i]);
 	}
 
+	entities.clear();
+	selected_entities.clear();
+	operative_entities.clear();
+
 	std::vector<Squad*> to_delete_squads;
 	for (std::list<Squad*>::iterator it = squads.begin(); it != squads.end(); it++)
 		to_delete_squads.push_back(*it);
@@ -568,9 +572,6 @@ bool j1EntityController::CleanUp()
 
 	DeleteDB();
 
-	entities.clear();
-	selected_entities.clear();
-	operative_entities.clear();
 
 	selected_squads.clear();
 	squads.clear();
