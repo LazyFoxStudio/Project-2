@@ -27,7 +27,7 @@
 
 <a href="https://gyazo.com/b127c53744ba204b208c1cb9736a56bf"><img src="https://gyazo.com/b127c53744ba204b208c1cb9736a56bf.gif" alt="https://gyazo.com/b127c53744ba204b208c1cb9736a56bf" width="800"/></a>
                                                                             
-- Damage and Upgrade System: Implementing the upgrade system and the damage methods.
+# Damage and Upgrade System: Implementing the upgrade system and the damage methods.
 
                                                                             
 <a href="https://gyazo.com/1fa8cf30e03c1a49a37e551d4765b2f8"><img src="https://gyazo.com/1fa8cf30e03c1a49a37e551d4765b2f8.png" alt="hhttps://gyazo.com/1fa8cf30e03c1a49a37e551d4765b2f8" width="400"/></a>
