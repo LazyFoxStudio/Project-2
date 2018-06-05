@@ -279,65 +279,67 @@ Resolution of the screen: 1680x 1050y
   
     <!-- CREDITS-->
     <menu type="5" active="false">
-		<image path="gui/credits.png">
+		<image path="gui/settings.png">
 		  <position x="0" y="0"/>
 		</image>
-      <text text=" MIT License" center="true" counter="false">
-        <position x="350" y="200"/>
-      </text>
-      <text text=" Copyright (c) 2018 Marc Garcia, Josep Pi, Ivan Drofiak, Adria Ferrer," center="true" counter="false">
-        <position x="350" y="250"/>
-      </text>
-      <text text=" Jaume Suris, Lorien Portella, Hugo Bo and Rodrigo de Pedro." center="true" counter="false">
-        <position x="350" y="275"/>
-      </text>
-      <text text=" Permission is hereby granted, free of charge, to any person obtaining a copy" center="true" counter="false">
-        <position x="350" y="325"/>
-      </text>
-      <text text=" of this software and associated documentation files (the ''Software''), to deal" center="true" counter="false">
-        <position x="350" y="350"/>
-      </text>
-      <text text=" in the Software without restriction, including without limitation the rights" center="true" counter="false">
-        <position x="350" y="375"/>
-      </text>
-      <text text=" to use, copy, modify, merge, publish, distribute, sublicense, and/or sell" center="true" counter="false">
-        <position x="350" y="400"/>
-      </text>
-      <text text=" copies of the Software, and to permit persons to whom the Software is" center="true" counter="false">
-        <position x="350" y="425"/>
-      </text>
-      <text text=" furnished to do so, subject to the following conditions:" center="true" counter="false">
-        <position x="350" y="450"/>
-      </text>
-      <text text=" The above copyright notice and this permission notice shall be included in all" center="true" counter="false">
-        <position x="350" y="500"/>
-      </text>
-      <text text=" copies or substantial portions of the Software." center="true" counter="false">
-        <position x="350" y="525"/>
-      </text>
-      <text text=" THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR" center="true" counter="false">
-        <position x="350" y="550"/>
-      </text>
-      <text text=" IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY," center="true" counter="false">
-        <position x="350" y="575"/>
-      </text>
-      <text text=" FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE" center="true" counter="false">
-        <position x="350" y="600"/>
-      </text>
-      <text text=" AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER" center="true" counter="false">
-        <position x="350" y="625"/>
-      </text>
-      <text text=" AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER" center="true" counter="false">
-        <position x="350" y="650"/>
-      </text>
-      <text text=" OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE" center="true" counter="false">
-        <position x="350" y="675"/>
-      </text>
-      <text text=" SOFTWARE." center="true" counter="false">
-        <position x="350" y="700"/>
-      </text>
+      <text text=" MIT License">
+        <position x="515" y="275"/>
+		<childs>
+			<text text=" Copyright (c) 2018 Marc Garcia, Josep Pi, Ivan Drofiak, Adria Ferrer,">
+				<position x="0" y="50"/>
+			</text>
+			<text text=" Jaume Suris, Lorien Portella, Hugo Bo and Rodrigo de Pedro.">
+				<position x="0" y="75"/>
+			</text>
+			<text text=" Permission is hereby granted, free of charge, to any person obtaining a copy">
+				<position x="0" y="125"/>
+			</text>
+			<text text=" of this software and associated documentation files (the ''Software''), to deal">
+				<position x="0" y="150"/>
+			</text>
+			<text text=" in the Software without restriction, including without limitation the rights">
+				<position x="0" y="175"/>
+			</text>
+			<text text=" to use, copy, modify, merge, publish, distribute, sublicense, and/or sell">
+				<position x="0" y="200"/>
+			</text>
+			<text text=" copies of the Software, and to permit persons to whom the Software is">
+				<position x="0" y="225"/>
+			</text>
+			<text text=" furnished to do so, subject to the following conditions:">
+				<position x="0" y="250"/>
+			</text>
+			<text text=" The above copyright notice and this permission notice shall be included in all">
+				<position x="0" y="300"/>
+			</text>
+			<text text=" copies or substantial portions of the Software.">
+				<position x="0" y="325"/>
+			</text>
+			<text text=" THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR">
+				<position x="0" y="350"/>
+			</text>
+			<text text=" IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,">
+				<position x="0" y="375"/>
+			</text>
+			<text text=" FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE">
+				<position x="0" y="400"/>
+			</text>
+			<text text=" AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER">
+				<position x="0" y="425"/>
+			</text>
+			<text text=" AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER">
+				<position x="0" y="450"/>
+			</text>
+			<text text=" OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE">
+				<position x="0" y="475"/>
+			</text>
+			<text text=" SOFTWARE.">
+				<position x="0" y="500"/>
+			</text>
+		</childs>
+	  </text>
 		<button click_action="32"> <!--Back-->
-			<position x="190" y="875"/>
+			<position x="1230" y="875"/>
 			<standby x="196" y="0" w="192" h="56"/>
 			<OnMouse x="0" y="0" w="192" h="56"/>
 			<OnClick x="392" y="0" w="192" h="56"/>
@@ -430,13 +432,13 @@ Resolution of the screen: 1680x 1050y
       <position x="0" y="0"/>
     </image>
 	<text text="Settings">
-        <position x="700" y="150"/>
+        <position x="765" y="150"/>
         <font id="6"/>
         <color r="0" g="0" b="0" a="255"/>
         <interactive value="false"/>
       </text>
     <text text="Audio" center="true" counter="false">
-      <position x="350" y="325"/>
+      <position x="375" y="325"/>
       <font id="4"/>
       <color r="0" g="0" b="0" a="255"/>
       <interactive value="false"/>
@@ -475,25 +477,6 @@ Resolution of the screen: 1680x 1050y
 			<OnClick x="1182" y="1188" w="49" h="48"/>
 		</button>
 	</slider>
-    <!--<text text="Video" center="true" counter="false">
-      <position x="350" y="575"/>
-      <font id="4"/>
-      <color r="0" g="0" b="0" a="255"/>
-      <interactive value="false"/>
-    </text>
-    <text text="Fullscreen" center="true" counter="false">
-      <position x="400" y="650"/>
-      <font id="3"/>
-      <color r="0" g="0" b="0" a="255"/>
-      <interactive value="false"/>
-    </text>
-	<switch click_action="43">
-		<position x="600" y="625"/>
-		<standbyOff x="1464" y="119" w="81" h="53"/>
-		<OnMouseOff x="1464" y="173" w="81" h="53"/>
-		<standbyOn x="1553" y="119" w="81" h="53"/>
-		<OnMouseOn x="1553" y="173" w="81" h="53"/>
-	</switch>-->
 	<button click_action="32">
         <!--Apply-->
         <position x="1230" y="875"/>
@@ -524,7 +507,7 @@ Resolution of the screen: 1680x 1050y
       </childs>
     </button>
       <button click_action="36"><!--CHANGE_HOTKEYS-->
-        <position x="600" y="700"/>
+        <position x="640" y="700"/>
         <standby x="687" y="1186" w="469" h="66"/>
         <OnMouse x="687" y="1119" w="469" h="66"/>
         <OnClick x="687" y="1051" w="469" h="66"/>
@@ -541,79 +524,79 @@ Resolution of the screen: 1680x 1050y
 
     <!-- CHANGE_HOTKEYS_MENU-->
     <menu type="7" active="false">
-      <image path="gui/credits.png">
+      <image path="gui/settings.png">
         <position x="0" y="0"/>
       </image>
 	  <text text="Assign the hotkeys related to the action buttons">
-		<position x="460" y="225"/>
+		<position x="540" y="225"/>
 		<font id="7"/>
 		<color r="0" g="0" b="0" a="255"/>
         <interactive value="false"/>
 	  </text>
 	  <text text="Invalid key entered" active="false">
-	  <position x="675" y="790"/>
+	  <position x="760" y="790"/>
 		<font id="3"/>
 		<color r="255" g="0" b="0" a="255"/>
         <interactive value="false"/>
 	  </text>
 	  <button click_action="50">
-		<position x="590" y="350"/>
+		<position x="675" y="350"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="Q" font_id="10"/>
 	  </button>
 	  <button click_action="51">
-		<position x="742" y="350"/>
+		<position x="827" y="350"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="W" font_id="10"/>
 	  </button>
 	  <button click_action="52">
-		<position x="914" y="350"/>
+		<position x="999" y="350"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="E" font_id="10"/>
 	  </button>
 	  <button click_action="53">
-		<position x="590" y="504"/>
+		<position x="675" y="504"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="A" font_id="10"/>
 	  </button>
 	  <button click_action="54">
-		<position x="742" y="504"/>
+		<position x="827" y="504"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="S" font_id="10"/>
 	  </button>
 	  <button click_action="55">
-		<position x="914" y="504"/>
+		<position x="999" y="504"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="D" font_id="10"/>
 	  </button>
 	  <button click_action="56">
-		<position x="590" y="663"/>
+		<position x="675" y="663"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="Z" font_id="10"/>
 	  </button>
 	  <button click_action="57">
-		<position x="742" y="663"/>
+		<position x="827" y="663"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
 		<hotkey key="X" font_id="10"/>
 	  </button>
 	  <button click_action="58">
-		<position x="914" y="663"/>
+		<position x="999" y="663"/>
         <standby x="1321" y="0" w="92" h="92"/>
 		<OnMouse x="1420" y="0" w="92" h="92"/>
 		<OnClick x="1520" y="0" w="92" h="92"/>
@@ -621,7 +604,7 @@ Resolution of the screen: 1680x 1050y
 	  </button>
       <button click_action="59">
         <!--Back-->
-        <position x="190" y="875"/>
+        <position x="310" y="875"/>
         <standby x="196" y="0" w="192" h="56"/>
 		<OnMouse x="0" y="0" w="192" h="56"/>
 		<OnClick x="392" y="0" w="192" h="56"/>
