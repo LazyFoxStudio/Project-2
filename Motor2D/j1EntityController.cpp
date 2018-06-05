@@ -72,10 +72,6 @@ bool j1EntityController::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { debug = !debug; App->map->debug = debug; };
 
-	//Draw selection quads
-	for (std::list<Entity*>::iterator it_e = selected_entities.begin(); it_e != selected_entities.end(); it_e++)
-		App->render->DrawQuad((*it_e)->collider, Green, false);
-
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++)
 	{
 		if (App->render->CullingCam((*it)->position))

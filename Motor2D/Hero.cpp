@@ -32,7 +32,7 @@ bool Hero::Update(float dt)
 {
 	if (current_HP <= 0)
 	{
-		if(timer.ReadSec() > HERO_REVIVE_COOLDOWN)
+		if(reactivation_timer.ReadSec() > HERO_REVIVE_COOLDOWN)
 			Reactivate();
 
 		return true;
@@ -162,7 +162,7 @@ void Hero::Destroy()
 	mov_direction.SetToZero();
 	mov_module = 0.0f;
 	setActive(false);
-	timer.Start();
+	reactivation_timer.Start();
 	App->entitycontroller->selected_squads.remove(squad);
 	App->entitycontroller->selected_entities.remove(this);
 	App->gui->entityDeleted(this);

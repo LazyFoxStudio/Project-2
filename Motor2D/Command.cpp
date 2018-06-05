@@ -68,7 +68,7 @@ bool MoveTo::OnUpdate(float dt)
 		}
 		else
 		{
-			if (unit->squad)
+			if (unit->squad && unit->squad->getCommander()->getCurrentCommand() != ATTACKING_MOVETO)
 				unit->squad->everyone_in_position = false;
 
 			if (map_p.DistanceTo(dest) <= PROXIMITY_FACTOR_TILES)
