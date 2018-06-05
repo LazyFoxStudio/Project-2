@@ -9,17 +9,27 @@ Responsable to create the Hero class and add the command and squad systems to it
 
 ### Mage Skills:
 The Mage was created for a distance attack:
-<img src="https://i.imgur.com/zoVVF82.gif" width="200"> <img src="https://i.imgur.com/4VKr2pX.gif" width="200"> <img src="https://i.imgur.com/YGPdvb4.gif" width="200">
+
+<img src="https://i.imgur.com/zoVVF82.gif" width="300"> <img src="https://i.imgur.com/4VKr2pX.gif" width="300"> 
+
+<p align="center"> 
+<img src="https://i.imgur.com/YGPdvb4.gif" width="300">
+</p>
 
 ### Paladin Skills:
 The Paladin was created for a melee attack:
-<img src="https://i.imgur.com/dN8GzNJ.gif" width="200"> <img src="https://i.imgur.com/hIio5hi.gif" width="200"> <img src="https://i.imgur.com/1fyhwXd.gif" width="200">
+
+<img src="https://i.imgur.com/dN8GzNJ.gif" width="300"> <img src="https://i.imgur.com/hIio5hi.gif" width="300"> 
+
+<p align="center"> 
+<img src="https://i.imgur.com/1fyhwXd.gif" width="200">
+</p>
 
 ### Wave System:
 The wave system has the property to generate enemies randombly in the 4 spawners.
 
-	- Enemy Spawn Management: Complex management of what to spawn and in which wave.
-	- Waves difficulty: Management of the difficulty of the game. Each wave the game turns more difficult because there are more enemies and differents.
+* Enemy Spawn Management: Complex management of what to spawn and in which wave.
+* Waves difficulty: Management of the difficulty of the game. Each wave the game turns more difficult because there are more enemies and differents.
 
 ### Squad Selection and AddEntities() functions:
 Creation of the Spawn functions that can be used to spawn allies in the different town buildings and spawn enemies in the 4 differents spawn points. Also the AddHero() function that make possible create the Hero with the skill depending on the selection (Mage or Paladin).
