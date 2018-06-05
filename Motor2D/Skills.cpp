@@ -41,12 +41,6 @@ void Skill::DrawRange()
 	{
 		BFS();
 		
-	/*	for (std::list<iPoint>::iterator item = toDraw.begin(); item != toDraw.end(); item++)
-		{
-			SDL_Rect r = { (*item).x,(*item).y, App->map->data.tile_width,App->map->data.tile_height };
-			App->render->DrawQuad(r, Ready() ? (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range ? tile_color : Translucid_Grey) : Translucid_Grey);
-		}*/
-		
 		if(hero->type==HERO_1)
 			App->render->Blit(hero->Skill_text, toDraw.front().x, toDraw.front().y, Ready() ? (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range ? &text_rec : &Itext_rec) : &Itext_rec);
 		else
@@ -87,7 +81,6 @@ void Skill::DrawRange()
 			for (std::list<iPoint>::iterator item = toDraw.begin(); item != toDraw.end(); item++)
 			{
 				SDL_Rect r = { (*item).x,(*item).y, App->map->data.tile_width,App->map->data.tile_height };
-				//App->render->DrawQuad(r, Ready() ? tile_color : Translucid_Grey);
 				App->render->Blit(hero->Skill_text, r.x, r.y, Ready() ? (cast_pos.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range ? &text_rec : &Itext_rec) : &Itext_rec);
 			}
 		}
@@ -245,7 +238,6 @@ bool Skill::Activate()
 		timer.Start();
 	}
 
-	//HARDCODED Moveto()
 	else if (going && last_cast.DistanceTo(iPoint(hero->position.x, hero->position.y)) < range)
 	{
 		going = false;
