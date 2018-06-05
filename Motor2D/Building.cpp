@@ -172,8 +172,8 @@ void Building::Destroy()
 
 		current_sprite = &sprites[4];
 
-		if(App->gui->Chronos)
-			App->gui->Chronos->counter.PauseTimer();
+		App->pauseGame();
+
 		if(App->gui->cooldownsDisplay)
 			App->gui->cooldownsDisplay->Reset();
 
