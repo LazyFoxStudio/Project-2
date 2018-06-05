@@ -93,7 +93,7 @@ public:
 
 	int GetPriority()const
 	{
-		int ret = position.y;
+		int ret = position.y+collider.h/2;
 
 		if (current_HP <= 0 || type<=BLACKSMITH)
 			ret-= 1000;
