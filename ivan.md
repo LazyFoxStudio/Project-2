@@ -5,26 +5,26 @@
 ### Concept Art
 As responsible for the creation of the two new units, i've created concpet arts of one of the 2 heroes, the mage. It a drawing made by hand and then passe to the computer which shows all the elements that the hero will have which will then be transformed into pixel art.
 
-<p> 
+<p align="center"> 
 <img src="https://i.imgur.com/Jj7sO0o.png">
-<p> 
+</p> 
 
 ### Pixel Art
 From the previous concept art and another done by my collegue, i've created from sratch a new spritesheet with all the necessary movement and position of each hero for our game. This spritesheet consists of movement, attack and death animations each of them adapted to the style of Warcraft II pixel art.
 content.
 
-<p> 
+<p align="center">  
 <img src="https://i.imgur.com/GZzBqzF.png">
-<p> 
+</p> 
 
-<p> 
+<p align="center"> 
 <img src="https://i.imgur.com/5CWJ35H.png">
-<p> 
+</p> 
 
 ### Layout
 In order to improve both feedback wise and the asthetic elements of the abilities, i've come with design of layouts of the area of effect of each abilities of each hero.
 
-<p> 
+<p align="center"> 
 <img src="https://i.imgur.com/PenUu81.png">
 <p> 
 
@@ -34,17 +34,17 @@ As the artist of Lazy Fox i've been given my point of view in any matter regardi
 ### General Art
 A part from the specific work of creating a new unit, i've also been working on any task regarding the already excrated art and off game art.
 
-- New sprites for building to show during the building process.
+* New sprites for building to show during the building process.
 
-- Team logo.
+* Team logo.
 
-- Animated logo intro.
+* Animated logo intro.
 
-- Forest tileset.
+* Forest tileset.
 
-<p> 
+<p align="center">  
 <img src="https://i.imgur.com/33WynCc.png">
-<p> 
+</p> 
 
 ### QA
 As a memeber of the team i´ve also have to make sure everything works and therefore qa needs to be done. Whenever i found a buf i made and issue and in some cases fix it in the code.
