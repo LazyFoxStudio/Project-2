@@ -127,6 +127,8 @@ public:
 	std::string			load_game="";
 	j1PerfTimer			gameTime;
 
+	mutable std::string	save_game;
+
 private:
 
 	std::list<j1Module*>	modules;
@@ -142,8 +144,7 @@ private:
 	bool				paused = false;
 	bool				cleaning = false;
 
-	mutable std::string	save_game;
-
+	
 	j1PerfTimer			ptimer;
 	uint64				frame_count = 0;
 	j1PerfTimer			startup_time;
